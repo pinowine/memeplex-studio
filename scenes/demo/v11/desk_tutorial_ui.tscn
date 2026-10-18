@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/desk/v3/design_print_paper.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/desk/v3/portrait_67.png" id="2"]
+
+[node name="TutorialUI" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+layout_mode = 3
+mouse_filter = 2
+
+[node name="Card" type="TextureRect" parent="."]
+mouse_filter = 0
+texture = ExtResource("1")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="Portrait67" type="TextureRect" parent="Card"]
+offset_left = 22.0
+offset_top = 26.0
+offset_right = 132.0
+offset_bottom = 136.0
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Speaker" type="Label" parent="Card"]
+offset_left = 26.0
+offset_top = 140.0
+offset_right = 132.0
+offset_bottom = 168.0
+text = "67"
+horizontal_alignment = 1
+mouse_filter = 2
+
+[node name="Content" type="VBoxContainer" parent="Card"]
+offset_left = 154.0
+offset_top = 22.0
+offset_right = 600.0
+offset_bottom = 236.0
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Card/Content"]
+layout_mode = 2
+text = "一份工作"
+theme_override_font_sizes/font_size = 23
+
+[node name="Body" type="Label" parent="Card/Content"]
+layout_mode = 2
+text = "你是工作室的印刷编辑。"
+autowrap_mode = 3
+size_flags_vertical = 3
+
+[node name="Waiting" type="Label" parent="Card/Content"]
+layout_mode = 2
+text = ""
+autowrap_mode = 3
+
+[node name="Actions" type="HBoxContainer" parent="Card/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Continue" type="Button" parent="Card/Content/Actions"]
+layout_mode = 2
+custom_minimum_size = Vector2(110,38)
+text = "继续"
+
+[node name="Skip" type="Button" parent="Card/Content/Actions"]
+layout_mode = 2
+custom_minimum_size = Vector2(110,38)
+text = "跳过讲解"

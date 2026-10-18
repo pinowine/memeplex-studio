@@ -1,0 +1,23 @@
+Memeplex Studio - asset and data notices
+
+Game Icon Pack v1.4: Nieobie. CC0 1.0 Universal.
+https://github.com/Nieobie/game-icon-pack
+https://nieobie.itch.io/free-icons
+https://creativecommons.org/publicdomain/zero/1.0/
+Icon shapes are adapted from this pack.
+
+Map reference areas use World Bank WDI / FAOSTAT land-area data
+(AG.LND.TOTL.K2, 2023), with the separate Vatican City reference below.
+World Bank data: CC BY 4.0.
+https://data.worldbank.org/indicator/AG.LND.TOTL.K2
+https://creativecommons.org/licenses/by/4.0/
+Vatican City uses a separate official surface-area reference (0.44 km2).
+Attribution: Governorate of Vatican City State.
+https://www.vaticanstate.va/en/state-and-government/general-informations/geography.html
+The map uses fictional territories weighted from these reference areas.
+
+Some printing-desk PNG assets were produced with an image-generation tool.
+Other assets include adapted third-party icons and procedural graphics.
+
+Godot Engine: MIT license. Engine and bundled-component notices for executable
+distribution are available at https://godotengine.org/license/

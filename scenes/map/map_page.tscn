@@ -1,0 +1,921 @@
+[gd_scene format=3 uid="uid://cqglth41h2s76"]
+
+[ext_resource type="Script" uid="uid://bvp6cwrh17oyg" path="res://scripts/map/map_page.gd" id="1"]
+[ext_resource type="Resource" path="res://content/map/world_settings.tres" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/map/map_site_label.tscn" id="3"]
+[ext_resource type="Script" uid="uid://dtnvdc6672t25" path="res://scripts/map/map_borders.gd" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/map/country_label.tscn" id="5"]
+[ext_resource type="Theme" uid="uid://c2ckoq3sb42ka" path="res://assets/themes/map_theme.tres" id="6"]
+[ext_resource type="Material" path="res://assets/print/clock_material.tres" id="clock"]
+[ext_resource type="SystemFont" path="res://assets/fonts/print_emoji_font.tres" id="emoji"]
+[ext_resource type="Material" path="res://assets/print/map_finish_material.tres" id="finish"]
+[ext_resource type="Texture2D" uid="uid://ubsfiojhuia2" path="res://assets/print/icons/season_autumn.svg" id="icon_season_autumn"]
+[ext_resource type="Texture2D" uid="uid://duw4omjavh8h1" path="res://assets/print/icons/season_spring.svg" id="icon_season_spring"]
+[ext_resource type="Texture2D" uid="uid://bxootar1yokdo" path="res://assets/print/icons/season_summer.svg" id="icon_season_summer"]
+[ext_resource type="Texture2D" uid="uid://c6wxkk165h6ft" path="res://assets/print/icons/season_winter.svg" id="icon_season_winter"]
+[ext_resource type="Texture2D" uid="uid://c6n7xb58xtcg0" path="res://assets/print/icons/speed_fast.svg" id="icon_speed_fast"]
+[ext_resource type="Texture2D" uid="uid://3lscyer3yjel" path="res://assets/print/icons/speed_normal.svg" id="icon_speed_normal"]
+[ext_resource type="Texture2D" uid="uid://c3agp6boy0yfy" path="res://assets/print/icons/speed_pause.svg" id="icon_speed_pause"]
+[ext_resource type="Script" path="res://scripts/map/map_latitude_grid.gd" id="latitude_grid"]
+[ext_resource type="Texture2D" uid="uid://c6wqwu48n6irk" path="res://assets/print/paper_fibers.svg" id="paper"]
+[ext_resource type="Texture2D" uid="uid://1r5g18605pq7" path="res://assets/print/press_mark.svg" id="press"]
+[ext_resource type="Script" uid="uid://d4f3bdqeg335f" path="res://scripts/map/map_surface.gd" id="surface"]
+[ext_resource type="Script" uid="uid://dkqqqkus7phsq" path="res://scripts/map/map_water.gd" id="water"]
+
+[node name="MapPage" type="Node2D" unique_id=1883533078]
+script = ExtResource("1")
+settings = ExtResource("2")
+
+[node name="MapCamera" type="Camera2D" parent="." unique_id=1659854465]
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=7729186]
+
+[node name="HUD" type="Control" parent="Interface" unique_id=1284374154]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("6")
+
+[node name="MapInput" type="Control" parent="Interface/HUD" unique_id=1787390958]
+unique_name_in_owner = true
+z_index = -10
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+
+[node name="World" type="Node2D" parent="Interface/HUD/MapInput" unique_id=1724129653]
+
+[node name="Sea" type="ColorRect" parent="Interface/HUD/MapInput/World" unique_id=1016641604]
+z_index = -3
+offset_left = -100000.0
+offset_top = -100000.0
+offset_right = 100000.0
+offset_bottom = 100000.0
+mouse_filter = 2
+color = Color(0.16, 0.22, 0.24, 1)
+
+[node name="Terrain" type="Node2D" parent="Interface/HUD/MapInput/World" unique_id=806932715]
+script = ExtResource("4")
+settings = ExtResource("2")
+
+[node name="Surface" type="Node2D" parent="Interface/HUD/MapInput/World/Terrain" unique_id=1665237304]
+show_behind_parent = true
+z_index = -2
+script = ExtResource("surface")
+
+[node name="Water" type="CanvasGroup" parent="Interface/HUD/MapInput/World/Terrain" unique_id=1229695601]
+unique_name_in_owner = true
+visible = false
+show_behind_parent = true
+z_index = -1
+
+[node name="Fill" type="Node2D" parent="Interface/HUD/MapInput/World/Terrain/Water" unique_id=413802743]
+script = ExtResource("water")
+
+[node name="LatitudeGrid" type="Node2D" parent="Interface/HUD/MapInput/World" unique_id=419965110]
+unique_name_in_owner = true
+z_index = -1
+script = ExtResource("latitude_grid")
+settings = ExtResource("2")
+
+[node name="Labels" type="Node2D" parent="Interface/HUD/MapInput" unique_id=1626135052]
+
+[node name="C01" parent="Interface/HUD/MapInput/Labels" unique_id=397507164 instance=ExtResource("5")]
+
+[node name="C01_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=2065444655 instance=ExtResource("3")]
+visible = false
+
+[node name="C01_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=1864028839 instance=ExtResource("3")]
+visible = false
+
+[node name="C01_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=650730979 instance=ExtResource("3")]
+visible = false
+
+[node name="C01_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=196290226 instance=ExtResource("3")]
+visible = false
+
+[node name="C01_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=1999474285 instance=ExtResource("3")]
+visible = false
+
+[node name="C02" parent="Interface/HUD/MapInput/Labels" unique_id=1631806178 instance=ExtResource("5")]
+
+[node name="C02_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=1291604626 instance=ExtResource("3")]
+visible = false
+
+[node name="C02_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=904065372 instance=ExtResource("3")]
+visible = false
+
+[node name="C02_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=2100513784 instance=ExtResource("3")]
+visible = false
+
+[node name="C02_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1323327337 instance=ExtResource("3")]
+visible = false
+
+[node name="C02_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=1366922482 instance=ExtResource("3")]
+visible = false
+
+[node name="C03" parent="Interface/HUD/MapInput/Labels" unique_id=290110051 instance=ExtResource("5")]
+
+[node name="C03_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=700367489 instance=ExtResource("3")]
+visible = false
+
+[node name="C03_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=1750666052 instance=ExtResource("3")]
+visible = false
+
+[node name="C03_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=567111210 instance=ExtResource("3")]
+visible = false
+
+[node name="C03_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=970559287 instance=ExtResource("3")]
+visible = false
+
+[node name="C03_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=2096817999 instance=ExtResource("3")]
+visible = false
+
+[node name="C04" parent="Interface/HUD/MapInput/Labels" unique_id=1205526430 instance=ExtResource("5")]
+
+[node name="C04_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=2035736527 instance=ExtResource("3")]
+visible = false
+
+[node name="C04_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=548430040 instance=ExtResource("3")]
+visible = false
+
+[node name="C04_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=144081759 instance=ExtResource("3")]
+visible = false
+
+[node name="C04_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1816657256 instance=ExtResource("3")]
+visible = false
+
+[node name="C04_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=719434470 instance=ExtResource("3")]
+visible = false
+
+[node name="C05" parent="Interface/HUD/MapInput/Labels" unique_id=1705692654 instance=ExtResource("5")]
+
+[node name="C05_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=1842103133 instance=ExtResource("3")]
+visible = false
+
+[node name="C05_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=547025834 instance=ExtResource("3")]
+visible = false
+
+[node name="C05_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=374230959 instance=ExtResource("3")]
+visible = false
+
+[node name="C05_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=123393698 instance=ExtResource("3")]
+visible = false
+
+[node name="C05_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=1624759748 instance=ExtResource("3")]
+visible = false
+
+[node name="C06" parent="Interface/HUD/MapInput/Labels" unique_id=168424039 instance=ExtResource("5")]
+
+[node name="C06_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=386496295 instance=ExtResource("3")]
+visible = false
+
+[node name="C06_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=205435575 instance=ExtResource("3")]
+visible = false
+
+[node name="C06_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=828344176 instance=ExtResource("3")]
+visible = false
+
+[node name="C06_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=255536882 instance=ExtResource("3")]
+visible = false
+
+[node name="C06_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=818725865 instance=ExtResource("3")]
+visible = false
+
+[node name="C07" parent="Interface/HUD/MapInput/Labels" unique_id=741442933 instance=ExtResource("5")]
+
+[node name="C07_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=974994887 instance=ExtResource("3")]
+visible = false
+
+[node name="C07_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=750159363 instance=ExtResource("3")]
+visible = false
+
+[node name="C07_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=210683313 instance=ExtResource("3")]
+visible = false
+
+[node name="C07_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1817236165 instance=ExtResource("3")]
+visible = false
+
+[node name="C07_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=123259532 instance=ExtResource("3")]
+visible = false
+
+[node name="C08" parent="Interface/HUD/MapInput/Labels" unique_id=1549463499 instance=ExtResource("5")]
+
+[node name="C08_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=1138169426 instance=ExtResource("3")]
+visible = false
+
+[node name="C08_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=1387041268 instance=ExtResource("3")]
+visible = false
+
+[node name="C08_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=306903053 instance=ExtResource("3")]
+visible = false
+
+[node name="C08_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=189461124 instance=ExtResource("3")]
+visible = false
+
+[node name="C08_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=1712319655 instance=ExtResource("3")]
+visible = false
+
+[node name="C09" parent="Interface/HUD/MapInput/Labels" unique_id=868645949 instance=ExtResource("5")]
+
+[node name="C09_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=494968922 instance=ExtResource("3")]
+visible = false
+
+[node name="C09_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=793264473 instance=ExtResource("3")]
+visible = false
+
+[node name="C09_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=908570581 instance=ExtResource("3")]
+visible = false
+
+[node name="C09_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1130273634 instance=ExtResource("3")]
+visible = false
+
+[node name="C09_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=749236510 instance=ExtResource("3")]
+visible = false
+
+[node name="C10" parent="Interface/HUD/MapInput/Labels" unique_id=361769083 instance=ExtResource("5")]
+
+[node name="C10_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=653749512 instance=ExtResource("3")]
+visible = false
+
+[node name="C10_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=1148105685 instance=ExtResource("3")]
+visible = false
+
+[node name="C10_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=2045115664 instance=ExtResource("3")]
+visible = false
+
+[node name="C10_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=736519881 instance=ExtResource("3")]
+visible = false
+
+[node name="C10_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=1414426858 instance=ExtResource("3")]
+visible = false
+
+[node name="C11" parent="Interface/HUD/MapInput/Labels" unique_id=442144614 instance=ExtResource("5")]
+
+[node name="C11_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=456638529 instance=ExtResource("3")]
+visible = false
+
+[node name="C11_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=2130833919 instance=ExtResource("3")]
+visible = false
+
+[node name="C11_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=1503871675 instance=ExtResource("3")]
+visible = false
+
+[node name="C11_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=575711838 instance=ExtResource("3")]
+visible = false
+
+[node name="C11_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=796516460 instance=ExtResource("3")]
+visible = false
+
+[node name="C12" parent="Interface/HUD/MapInput/Labels" unique_id=1007655242 instance=ExtResource("5")]
+
+[node name="C12_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=188509857 instance=ExtResource("3")]
+visible = false
+
+[node name="C12_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=1782348939 instance=ExtResource("3")]
+visible = false
+
+[node name="C12_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=975993285 instance=ExtResource("3")]
+visible = false
+
+[node name="C12_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1176452961 instance=ExtResource("3")]
+visible = false
+
+[node name="C12_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=1527228342 instance=ExtResource("3")]
+visible = false
+
+[node name="C13" parent="Interface/HUD/MapInput/Labels" unique_id=2092570477 instance=ExtResource("5")]
+
+[node name="C13_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=135752567 instance=ExtResource("3")]
+visible = false
+
+[node name="C13_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=1343382862 instance=ExtResource("3")]
+visible = false
+
+[node name="C13_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=107044014 instance=ExtResource("3")]
+visible = false
+
+[node name="C13_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1561180551 instance=ExtResource("3")]
+visible = false
+
+[node name="C13_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=944145202 instance=ExtResource("3")]
+visible = false
+
+[node name="C14" parent="Interface/HUD/MapInput/Labels" unique_id=1682570091 instance=ExtResource("5")]
+
+[node name="C14_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=1762615011 instance=ExtResource("3")]
+visible = false
+
+[node name="C14_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=765244172 instance=ExtResource("3")]
+visible = false
+
+[node name="C14_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=2135622306 instance=ExtResource("3")]
+visible = false
+
+[node name="C14_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1678919758 instance=ExtResource("3")]
+visible = false
+
+[node name="C14_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=2136525784 instance=ExtResource("3")]
+visible = false
+
+[node name="C15" parent="Interface/HUD/MapInput/Labels" unique_id=8310185 instance=ExtResource("5")]
+
+[node name="C15_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=249859996 instance=ExtResource("3")]
+visible = false
+
+[node name="C15_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=1804357442 instance=ExtResource("3")]
+visible = false
+
+[node name="C15_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=1978902552 instance=ExtResource("3")]
+visible = false
+
+[node name="C15_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=934997920 instance=ExtResource("3")]
+visible = false
+
+[node name="C15_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=1644037329 instance=ExtResource("3")]
+visible = false
+
+[node name="C16" parent="Interface/HUD/MapInput/Labels" unique_id=1981739283 instance=ExtResource("5")]
+
+[node name="C16_Site0" parent="Interface/HUD/MapInput/Labels" unique_id=102419835 instance=ExtResource("3")]
+visible = false
+
+[node name="C16_Site1" parent="Interface/HUD/MapInput/Labels" unique_id=22980675 instance=ExtResource("3")]
+visible = false
+
+[node name="C16_Site2" parent="Interface/HUD/MapInput/Labels" unique_id=403119385 instance=ExtResource("3")]
+visible = false
+
+[node name="C16_Site3" parent="Interface/HUD/MapInput/Labels" unique_id=1077681864 instance=ExtResource("3")]
+visible = false
+
+[node name="C16_Geo" parent="Interface/HUD/MapInput/Labels" unique_id=642631926 instance=ExtResource("3")]
+visible = false
+
+[node name="LatitudeLabels" type="Node2D" parent="Interface/HUD/MapInput" unique_id=694338298]
+unique_name_in_owner = true
+metadata/edge_padding = 14.0
+metadata/line_offset = 17.0
+metadata/hud_clearance = 12.0
+
+[node name="Arctic" type="Label" parent="Interface/HUD/MapInput/LatitudeLabels" unique_id=1633015593]
+offset_right = 238.0
+offset_bottom = 16.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.157, 0.192, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.941, 0.925, 0.875, 0.96)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "MAP_LATITUDE_ARCTIC"
+horizontal_alignment = 2
+metadata/latitude_index = 0
+metadata/label_key = "MAP_LATITUDE_ARCTIC"
+
+[node name="Cancer" type="Label" parent="Interface/HUD/MapInput/LatitudeLabels" unique_id=680812950]
+offset_right = 238.0
+offset_bottom = 16.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.157, 0.192, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.941, 0.925, 0.875, 0.96)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "MAP_LATITUDE_CANCER"
+horizontal_alignment = 2
+metadata/latitude_index = 1
+metadata/label_key = "MAP_LATITUDE_CANCER"
+
+[node name="Equator" type="Label" parent="Interface/HUD/MapInput/LatitudeLabels" unique_id=32159909]
+offset_right = 238.0
+offset_bottom = 16.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.157, 0.192, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.941, 0.925, 0.875, 0.96)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "MAP_LATITUDE_EQUATOR"
+horizontal_alignment = 2
+metadata/latitude_index = 2
+metadata/label_key = "MAP_LATITUDE_EQUATOR"
+
+[node name="Capricorn" type="Label" parent="Interface/HUD/MapInput/LatitudeLabels" unique_id=851829625]
+offset_right = 238.0
+offset_bottom = 16.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.157, 0.192, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.941, 0.925, 0.875, 0.96)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "MAP_LATITUDE_CAPRICORN"
+horizontal_alignment = 2
+metadata/latitude_index = 3
+metadata/label_key = "MAP_LATITUDE_CAPRICORN"
+
+[node name="Antarctic" type="Label" parent="Interface/HUD/MapInput/LatitudeLabels" unique_id=87295788]
+offset_right = 238.0
+offset_bottom = 16.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.157, 0.192, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.941, 0.925, 0.875, 0.96)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "MAP_LATITUDE_ANTARCTIC"
+horizontal_alignment = 2
+metadata/latitude_index = 4
+metadata/label_key = "MAP_LATITUDE_ANTARCTIC"
+
+[node name="MapFinish" type="ColorRect" parent="Interface/HUD" unique_id=1822291486]
+unique_name_in_owner = true
+z_index = -5
+material = ExtResource("finish")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TimeHUD" type="Control" parent="Interface/HUD" unique_id=1870802781]
+anchors_preset = 0
+offset_left = 22.0
+offset_top = 20.0
+offset_right = 238.0
+offset_bottom = 242.0
+mouse_filter = 2
+
+[node name="ClockFace" type="ColorRect" parent="Interface/HUD/TimeHUD" unique_id=485024408]
+unique_name_in_owner = true
+material = ExtResource("clock")
+layout_mode = 0
+offset_right = 216.0
+offset_bottom = 216.0
+mouse_filter = 2
+
+[node name="DateLabel" type="Label" parent="Interface/HUD/TimeHUD" unique_id=2062372054]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 28.0
+offset_top = 73.0
+offset_right = 188.0
+offset_bottom = 104.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.19, 0.18, 0.15, 1)
+theme_override_font_sizes/font_size = 16
+text = "PRINT_DATE_PLACEHOLDER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WeatherLabel" type="Label" parent="Interface/HUD/TimeHUD" unique_id=879561871]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 65.0
+offset_top = 101.0
+offset_right = 151.0
+offset_bottom = 134.0
+theme_override_fonts/font = ExtResource("emoji")
+theme_override_font_sizes/font_size = 27
+text = "☁"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SeasonIcons" type="Node2D" parent="Interface/HUD/TimeHUD" unique_id=494457241]
+unique_name_in_owner = true
+position = Vector2(108, 108)
+metadata/orbit_radius = 82.4
+metadata/notch_angle = 0.66
+
+[node name="SeasonSpring" type="TextureRect" parent="Interface/HUD/TimeHUD/SeasonIcons" unique_id=470985837]
+unique_name_in_owner = true
+offset_left = 47.2656
+offset_top = 47.2656
+offset_right = 69.2656
+offset_bottom = 69.2656
+mouse_filter = 2
+texture = ExtResource("icon_season_spring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SeasonSummer" type="TextureRect" parent="Interface/HUD/TimeHUD/SeasonIcons" unique_id=27082074]
+unique_name_in_owner = true
+offset_left = 47.2656
+offset_top = -69.2656
+offset_right = 69.2656
+offset_bottom = -47.2656
+mouse_filter = 2
+texture = ExtResource("icon_season_summer")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SeasonAutumn" type="TextureRect" parent="Interface/HUD/TimeHUD/SeasonIcons" unique_id=1076372573]
+unique_name_in_owner = true
+offset_left = -69.2656
+offset_top = -69.2656
+offset_right = -47.2656
+offset_bottom = -47.2656
+mouse_filter = 2
+texture = ExtResource("icon_season_autumn")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SeasonWinter" type="TextureRect" parent="Interface/HUD/TimeHUD/SeasonIcons" unique_id=1657555873]
+unique_name_in_owner = true
+offset_left = -69.2656
+offset_top = 47.2656
+offset_right = -47.2656
+offset_bottom = 69.2656
+mouse_filter = 2
+texture = ExtResource("icon_season_winter")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CurrentSeasonIcon" type="TextureRect" parent="Interface/HUD/TimeHUD" unique_id=1827265880]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 73.0
+offset_top = 140.0
+offset_right = 95.0
+offset_bottom = 162.0
+mouse_filter = 2
+texture = ExtResource("icon_season_winter")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CurrentSeason" type="Label" parent="Interface/HUD/TimeHUD" unique_id=126730263]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 102.0
+offset_top = 140.0
+offset_right = 165.0
+offset_bottom = 162.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.157, 0.192, 0.18, 1)
+theme_override_font_sizes/font_size = 13
+text = "PRINT_SEASON_WINTER"
+vertical_alignment = 1
+metadata/season_keys = PackedStringArray("PRINT_SEASON_SPRING", "PRINT_SEASON_SUMMER", "PRINT_SEASON_AUTUMN", "PRINT_SEASON_WINTER")
+
+[node name="IndexMark" type="Polygon2D" parent="Interface/HUD/TimeHUD" unique_id=1538856108]
+position = Vector2(108, 167)
+color = Color(0.6, 0.29, 0.2, 1)
+antialiased = true
+polygon = PackedVector2Array(-3, 0, 0, 7, 3, 0)
+
+[node name="SpeedControl" type="Button" parent="Interface/HUD/TimeHUD" unique_id=1437226116]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 89.0
+offset_top = 174.0
+offset_right = 127.0
+offset_bottom = 212.0
+tooltip_text = "PRINT_SPEED_PAUSE"
+theme_type_variation = &"PrintIconButton"
+theme_override_colors/icon_normal_color = Color(0.157, 0.192, 0.18, 1)
+theme_override_colors/icon_pressed_color = Color(0.6, 0.29, 0.2, 1)
+theme_override_colors/icon_hover_color = Color(0.1, 0.13, 0.12, 1)
+theme_override_colors/icon_disabled_color = Color(0.43, 0.45, 0.39, 1)
+theme_override_constants/icon_max_width = 20
+icon = ExtResource("icon_speed_pause")
+icon_alignment = 1
+expand_icon = true
+metadata/speed_icons = Array[Texture2D]([ExtResource("icon_speed_pause"), ExtResource("icon_speed_normal"), ExtResource("icon_speed_fast")])
+metadata/speed_keys = PackedStringArray("PRINT_SPEED_PAUSE", "PRINT_SPEED_NORMAL", "PRINT_SPEED_FAST")
+
+[node name="PointsButton" type="Button" parent="Interface/HUD" unique_id=703219408]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -226.0
+offset_top = 28.0
+offset_right = -28.0
+offset_bottom = 108.0
+grow_horizontal = 0
+tooltip_text = "PRINT_WORKBENCH_OPEN"
+theme_type_variation = &"PrintIconButton"
+
+[node name="PressMark" type="TextureRect" parent="Interface/HUD/PointsButton" unique_id=1134787443]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 68.0
+offset_bottom = 66.0
+mouse_filter = 2
+texture = ExtResource("press")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PointsValue" type="Label" parent="Interface/HUD/PointsButton" unique_id=399914661]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 78.0
+offset_top = 8.0
+offset_right = 188.0
+offset_bottom = 41.0
+theme_type_variation = &"PrintHeading"
+theme_override_colors/font_color = Color(0.88, 0.81, 0.64, 1)
+theme_override_font_sizes/font_size = 30
+text = "—"
+
+[node name="PointsIncome" type="Label" parent="Interface/HUD/PointsButton" unique_id=78278266]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 80.0
+offset_top = 42.0
+offset_right = 186.0
+offset_bottom = 64.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.72, 0.72, 0.6, 1)
+text = "+—"
+
+[node name="HoverNote" type="PanelContainer" parent="Interface/HUD" unique_id=539139036]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 120.0
+rotation = -0.018
+mouse_filter = 2
+
+[node name="Content" type="VBoxContainer" parent="Interface/HUD/HoverNote" unique_id=1591665938]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="HoverName" type="Label" parent="Interface/HUD/HoverNote/Content" unique_id=1769055986]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrintHeading"
+
+[node name="HoverSummary" type="Label" parent="Interface/HUD/HoverNote/Content" unique_id=16406272]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+autowrap_mode = 3
+
+[node name="CountryDrawer" type="Control" parent="Interface/HUD" unique_id=461939585]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = 126.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Shell" type="PanelContainer" parent="Interface/HUD/CountryDrawer" unique_id=1023151395]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PrintDrawer"
+
+[node name="CabinetCaption" type="Label" parent="Interface/HUD/CountryDrawer" unique_id=776272433]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 15.0
+offset_right = 330.0
+offset_bottom = 37.0
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.65, 0.62, 0.5, 1)
+text = "PRINT_ARCHIVE_LABEL"
+
+[node name="DrawerClose" type="Button" parent="Interface/HUD/CountryDrawer" unique_id=1591494568]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 356.0
+offset_top = 8.0
+offset_right = 403.0
+offset_bottom = 43.0
+tooltip_text = "PRINT_CLOSE"
+theme_type_variation = &"PrintIconButton"
+text = "×"
+
+[node name="FileCard" type="Control" parent="Interface/HUD/CountryDrawer" unique_id=299550282]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = 58.0
+offset_right = -24.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.024
+pivot_offset = Vector2(180, 235)
+mouse_filter = 1
+
+[node name="Paper" type="TextureRect" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=458760729]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("paper")
+expand_mode = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=1058449739]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 21.0
+offset_right = -22.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="Details" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/Scroll" unique_id=1940624384]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="CountryName" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1215230938]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrintHeading"
+theme_override_font_sizes/font_size = 25
+autowrap_mode = 3
+
+[node name="Prototype" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1359171273]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+theme_override_colors/font_color = Color(0.58, 0.25, 0.18, 1)
+autowrap_mode = 3
+
+[node name="Rule" type="HSeparator" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1420225788]
+layout_mode = 2
+
+[node name="Population" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=261999546]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Area" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1790516630]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Conditions" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1483796345]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="TopicsTitle" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1076910889]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_TOPICS"
+
+[node name="Topics" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1183705004]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="EventsTitle" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=993343410]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_EVENTS"
+
+[node name="Events" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=385090295]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="CompetitorsTitle" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1831629992]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_COMPETITORS"
+
+[node name="Competitors" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1407676983]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Notice" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1777889221]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_NOTICE"
+autowrap_mode = 3
+
+[node name="SetupNote" type="PanelContainer" parent="Interface/HUD" unique_id=1240468849]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -264.0
+offset_top = -132.0
+offset_right = 264.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Content" type="VBoxContainer" parent="Interface/HUD/SetupNote" unique_id=1093424862]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Prompt" type="Label" parent="Interface/HUD/SetupNote/Content" unique_id=1822782117]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "PRINT_STUDIO_PICK"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Row" type="HBoxContainer" parent="Interface/HUD/SetupNote/Content" unique_id=817597822]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="SetupCountry" type="Label" parent="Interface/HUD/SetupNote/Content/Row" unique_id=1221820800]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"PrintHeading"
+theme_override_font_sizes/font_size = 20
+text = "PRINT_STUDIO_UNSELECTED"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="StudioConfirm" type="Button" parent="Interface/HUD/SetupNote/Content/Row" unique_id=1270078691]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "PRINT_STUDIO_CONFIRM"
+
+[node name="RestartProgress" type="ProgressBar" parent="Interface/HUD" unique_id=1456414758]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = -39.0
+offset_right = 206.0
+offset_bottom = -29.0
+grow_vertical = 0
+mouse_filter = 2
+max_value = 1.0
+show_percentage = false
+
+[node name="WorkbenchOverlay" type="PanelContainer" parent="Interface/HUD" unique_id=1173093519]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -150.0
+offset_right = 290.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Interface/HUD/WorkbenchOverlay" unique_id=754109290]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Heading" type="Label" parent="Interface/HUD/WorkbenchOverlay/Content" unique_id=1021633090]
+layout_mode = 2
+theme_type_variation = &"PrintHeading"
+text = "PRINT_WORKBENCH_TITLE"
+
+[node name="Notice" type="Label" parent="Interface/HUD/WorkbenchOverlay/Content" unique_id=1187832945]
+layout_mode = 2
+size_flags_vertical = 3
+text = "PRINT_WORKBENCH_PLACEHOLDER"
+autowrap_mode = 3
+
+[node name="WorkbenchClose" type="Button" parent="Interface/HUD/WorkbenchOverlay/Content" unique_id=204694605]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "PRINT_CLOSE"
