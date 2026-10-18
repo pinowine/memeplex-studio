@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_w18"
+kernel_id = &"shared_world"
+title = "W18 · Those Who Know 💀／Still Water／Balkan Rage／Mango"
+required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
+slot_prompts = PackedStringArray("世界前提（可改写）", "共享规则（可改写）", "补写空缺（可改写）")
+default_values = PackedStringArray("少数知情者理解隐藏危险/力量", "共享锚点：💀、trollface、still water、Balkan rage、mango 音频；规则：每个术语可被战力化并继续叠加", "下一个更强的秘密词")
+family_anchor = "共享锚点：💀、trollface、still water、Balkan rage、mango 音频；识别与变异约束：以“X + Y + noradrenaline + 💀”无限加项；slowed phonk、骷髅和隐藏知识门槛最稳定。"
+context_hint = "语义：词组不是稳定故事，而是模拟深层知识的互相引用世界；堆得越多越像“知道”。\n语用：早期可制造神秘恐惧，过饱和后主要用于自嘲脑腐和测试圈外人。\n跨语境：地理标签、城市探险风险和健身词被去语境混合，可能把真实地区降为异国力量符号。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "W18"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\W18.png"
+source_sha256 = "b17bf59bba75a33ea452a3b029c6c99e19fab72b2eb9bc7845139ab84e34ffa4"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\04-共同世界基模.md"
+source_document_sha256 = "ee888a488d3578258054a7923621fbc9a18f9f8e49bf96ab506f41e9808a9b3e"
+source_url = "https://bsky.app/profile/genderevil.bsky.social/post/3l733zohn6d2r"
+evidence_status = &"design_abstraction"

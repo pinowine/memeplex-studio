@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_r04"
+kernel_id = &"relation"
+title = "R04 · 伤害性不高，侮辱性极强"
+required_slots = PackedStringArray("role_a", "role_b", "relation")
+slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
+default_values = PackedStringArray("实施动作的人", "被轻视/尴尬的一方", "物理损失小、面子损失大")
+family_anchor = "识别与变异约束：替换“伤害性/侮辱性”的强弱或对象；固定对仗带来传播节奏。"
+context_hint = "语义：把伤害拆成物质与象征两个维度，突出地位关系。\n语用：用于描述竞争、比较或社交失误中的“破防”，常以旁观口吻放大尴尬。\n跨语境：“面子”解释在中文语境尤其强，但平行句式易被翻译成跨文化反应语。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "R04"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R04.png"
+source_sha256 = "760e24b6941e683f981b20ef1cbf773c304c3eadead60dc7146f69762297cdbc"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\02-关系模板基模.md"
+source_document_sha256 = "3d2290cf6f58d53badf7cf35f40a7cca5dfda7b692195a7fef58689cde2558ee"
+source_url = "https://www.bilibili.com/video/BV1pQ4y187yc/"
+evidence_status = &"design_abstraction"

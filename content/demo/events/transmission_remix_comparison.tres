@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 40.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 46.0
+
+[sub_resource type="Resource" id="Condition_3"]
+script = ExtResource("2_condition")
+field = &"exposed"
+operator = &"ge"
+value = 1400.0
+
+[sub_resource type="Resource" id="Condition_4"]
+script = ExtResource("2_condition")
+field = &"variants"
+operator = &"ge"
+value = 2.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.15
+duration_hours = 5.0
+group_ids = PackedStringArray("students")
+
+[resource]
+script = ExtResource("1_event")
+id = &"transmission_remix_comparison"
+title = "学生并排比较原帖与外部重填"
+narrative = "学生将原帖与一次外部重填并排展示，指出两者轮廓相似，却被用来谈不同的事情。比较帖保留双方的署名和链接，语言与身份话题里随之出现了更多讨论。"
+mentor_comment = "两版并排以后，相似和占有终于不再挤在同一栏，照这个标准继续分账。"
+origin = &"transmission"
+topic_ids = PackedStringArray("language", "identity")
+operation_ids = PackedStringArray("amplify", "contest")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3"), SubResource("Condition_4")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 40.0
+weight = 0.8
+occurrence_chance = 0.03
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 5.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("shared_world")
+evidence_status = &"design"
+external_preset_id = &""

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_p05"
+kernel_id = &"ritual"
+title = "P05 · Tell Me Without Telling Me"
+required_slots = PackedStringArray("trigger", "action", "response_and_exit")
+slot_prompts = PackedStringArray("触发时刻（可改写）", "参与动作（可改写）", "回应与退出（可改写）")
+default_values = PackedStringArray("“Tell me you are X without telling me…”", "展示间接证据", "观众推断 X；接续／退出：点名下一身份/话题或结束")
+family_anchor = "识别与变异约束：替换 X 与展示证据；“不直说”的限制规则是循环发动机。"
+context_hint = "语义：禁止直说迫使参与者用物件、行为和典型情境索引身份。\n语用：用于群体认同、产品展示和讽刺刻板印象；成功依赖观众共享背景知识。\n跨语境：从英语祈使句迁移为中文“告诉我……但别直接说”等，本地证据槽位可完全改写。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "P05"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\P05.png"
+source_sha256 = "be2e8dd02275899128282da3468e69f81882552cda6c3e93d01bc14a8d2c20d8"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\03-参与仪式基模.md"
+source_document_sha256 = "27daa108893057364d60926990d64cc57192445d7ea32bd9d7b705d1cbc87438"
+source_url = "https://bsky.app/profile/crampell.bsky.social/post/3m5bvczcpd22b"
+evidence_status = &"design_abstraction"

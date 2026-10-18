@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_p16"
+kernel_id = &"ritual"
+title = "P16 · Nothing Beats a Jet2 Holiday"
+required_slots = PackedStringArray("trigger", "action", "response_and_exit")
+slot_prompts = PackedStringArray("触发时刻（可改写）", "参与动作（可改写）", "回应与退出（可改写）")
+default_values = PackedStringArray("画面即将失控", "叠加欢快歌曲和“Nothing beats…”旁白", "观众预判事故并复用音轨；接续／退出：新失败素材继续接入")
+family_anchor = "识别与变异约束：替换事故画面，保留女声报价、Jess Glynne 歌曲和灾变时点；可在高潮前剪断。"
+context_hint = "语义：阳光度假承诺与狼狈现实的同步制造强烈音画反讽。\n语用：用户把商业广告变成失败片段的公共配乐；品牌回收该趋势时又模糊自发戏仿与营销。\n跨语境：英国地方性广告随算法成为全球声标，后来还被机构用于政治内容而引发语境争议。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "P16"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\P16.png"
+source_sha256 = "e236a3761f0f3ee2b5aea37e13a41f8b94c008ddab44f5b0967a468e943f4453"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\03-参与仪式基模.md"
+source_document_sha256 = "27daa108893057364d60926990d64cc57192445d7ea32bd9d7b705d1cbc87438"
+source_url = "https://bsky.app/profile/kenziib1999.bsky.social/post/3lyogli6kuc2j"
+evidence_status = &"design_abstraction"

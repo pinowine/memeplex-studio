@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MapCountryDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/map/country_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"C15"
+population_configured = false
+short_name_key = &"C15_SHORT"
+official_name_key = &"C15_NAME"
+prototype_key = &"C15_PROTOTYPE"
+description_key = &"C15_DESCRIPTION"
+topics_key = &"C15_TOPICS"
+events_key = &"C15_EVENTS"
+competitors_key = &"C15_COMPETITORS"
+reference_area_km2 = 7955330
+reference_members = PackedStringArray("AUS", "NZL")
+site_name_keys = PackedStringArray("C15_SITE0", "C15_SITE1", "C15_SITE2", "C15_SITE3")
+geography_name_key = &"C15_GEO"

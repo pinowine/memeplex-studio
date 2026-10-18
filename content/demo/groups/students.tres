@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MemeDemoGroup" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_group.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"students"
+title = "学生 · 独立合成样本"
+tag_ids = PackedStringArray("occupation.student", "interest.creation", "sample.disjoint_students")
+topic_ids = PackedStringArray("education", "sport", "platform_tools", "language", "identity")
+topic_affinities = PackedFloat32Array(0.9, 0.85, 0.9, 0.72, 0.8)
+sample_size = 2000
+language_id = &"zh"
+political_position = Vector2(0.0, -0.1)
+evidence_status = &"design"
+language_access = 0.9
+recognizability = 0.76
+attention_fraction = 0.12

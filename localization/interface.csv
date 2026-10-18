@@ -1,0 +1,240 @@
+keys,zh_CN,en
+MAP_TITLE,模因世界,Meme world
+MAP_SEED,种子,Seed
+MAP_GENERATE,按种子生成,Generate
+MAP_RANDOM,随机地图,Randomize
+MAP_RESET,重置视角,Reset view
+MAP_INSPECTOR,国家档案,COUNTRY PROFILE
+MAP_SELECT_HINT,点击陆地查看国家。国家面积不决定人口。,Select land to inspect a country. Territory size does not determine population.
+MAP_TOPICS,主题兴趣,Topic interests
+MAP_EVENTS,候选事件池,Candidate event pool
+MAP_COMPETITORS,竞争性模因,Competing memes
+MAP_NOTICE,这是虚构地图，面积参考不表示文化或政治归属。城市和地理细节仅供显示；独立地图页不运行传播与事件。,This is a fictional map. Area references do not indicate cultural or political affiliation. Cities and geographical details are for display; the standalone map page does not run propagation or events.
+MAP_HOVER_HINT,将指针移到陆地上,Hover over land
+MAP_WORLD_SUMMARY,%d 国 · 总人口 %.0f 百万,%d countries · %.0f million people
+MAP_POPULATION,人口：%.0f 百万,Population: %.0f million
+MAP_CONTROLS,左键选择 · 中键或空格＋左键平移 · 滚轮平滑缩放 · 放大显示城市与地理细节,Select: left-click · Pan: middle / Space + drag · Smooth zoom: wheel · Zoom in for cities and geography
+MAP_INVALID_SEED,种子必须是 1 至 2147483647 的整数。,Seed must be an integer between 1 and 2147483647.
+C01_SHORT,宁华,Ninghua
+C01_NAME,宁华共和国,Republic of Ninghua
+C01_PROTOTYPE,本土大众网络,Domestic mass internet
+C01_DESCRIPTION,中国网络原型。大型本土平台与语境圈；外来内容需要语境转换。,China-inspired networks. Large domestic platforms; imported references need contextual translation.
+C01_TOPICS,工作与教育、消费、游戏、生活反差,Work and education; consumption; games; everyday contrasts
+C01_EVENTS,审核、自发性解构、品牌节庆,Moderation; spontaneous deconstruction; branded festivals
+C01_COMPETITORS,压力口头禅、消费笑话、粉圈图像,Stress catchphrases; consumer jokes; fandom images
+C02_SHORT,汐原,Shiohara
+C02_NAME,汐原国,State of Shiohara
+C02_PROTOTYPE,作品与引用社群,Works and reference communities
+C02_DESCRIPTION,日本网络原型。成熟创作社群；作品知识影响理解，图像引用密集。,Japan-inspired networks. Established creative communities; shared knowledge shapes image references.
+C02_TOPICS,角色与剧情、日常观察、游戏,Characters and stories; daily observations; games
+C02_EVENTS,新作上线、连载休止、社群争论,New releases; publication hiatus; community disputes
+C02_COMPETITORS,角色反应图、旧作引用、日常四格,Character reactions; older works; everyday comic panels
+C03_SHORT,瑞原,Seowon
+C03_NAME,瑞原共和国,Republic of Seowon
+C03_PROTOTYPE,粉丝协作网络,Coordinated fan networks
+C03_DESCRIPTION,韩国网络原型。高连接度社群；协作和翻译接力加快跨语境传播。,Korea-inspired networks. Highly connected communities; collaboration and translation relays cross language boundaries.
+C03_TOPICS,娱乐身份、审美、群体归属,Entertainment identity; aesthetics; belonging
+C03_EVENTS,应援接力、同步活动、解释分裂,Fan relays; coordinated events; divided interpretations
+C03_COMPETITORS,应援口号、反应图、圈内暗语,Fan slogans; reaction images; insider language
+C04_SHORT,阿尔登,Alden
+C04_NAME,阿尔登合众国,United States of Alden
+C04_PROTOTYPE,英语趋势市场,English-language trend markets
+C04_DESCRIPTION,美国网络原型。大型商业平台与跨国英语受众；热榜竞争激烈。,US-inspired networks. Large commercial platforms and international English audiences; intense trend competition.
+C04_TOPICS,工作关系、消费、技术、公共议题,Work and relationships; consumption; technology; public issues
+C04_EVENTS,热榜助推、品牌借用、争议循环,Trending boosts; brand appropriation; controversy cycles
+C04_COMPETITORS,通用模板、愤怒诱饵、名人反应图,Generic templates; outrage bait; celebrity reactions
+C05_SHORT,韦列斯克,Veresk
+C05_NAME,韦列斯克联邦,Federation of Veresk
+C05_PROTOTYPE,反讽再诠释网络,Ironic reinterpretation networks
+C05_DESCRIPTION,俄罗斯及东欧参考圈。中欧成员已单列；反讽再诠释是现有设计起点，不表示所有成员共享偏好。,"Russia and Eastern Europe reference. Central European members are separate; ironic reinterpretation is a starting point, not a uniform preference."
+C05_TOPICS,日常挫折、荒诞错位、语言游戏,Everyday setbacks; absurd juxtapositions; wordplay
+C05_EVENTS,旧梗复兴、反讽直译、集体改名,Old meme revival; literalized irony; collective renaming
+C05_COMPETITORS,旧图新字、荒诞台词、本地双关,Recaptioned images; absurd dialogue; local puns
+C06_SHORT,林达尔,Lindal
+C06_NAME,林达尔王国,Kingdom of Lindal
+C06_PROTOTYPE,小型双语公共网络,Small bilingual public networks
+C06_DESCRIPTION,北欧网络原型。连接度高、人口较少；国际内容易进入，但本地议题仍需解释。,"Nordic-inspired networks. High access and smaller populations; global material enters readily, while local issues need explanation."
+C06_TOPICS,公共服务、工作生活、地方日常,Public services; work-life balance; local life
+C06_EVENTS,地方议题、语境解释、机构借用,Local issues; contextual explanation; institutional appropriation
+C06_COMPETITORS,日常自嘲、公共服务图、双语笑话,Everyday self-irony; public-service images; bilingual jokes
+C07_SHORT,马拉苏,Marasu
+C07_NAME,马拉苏联邦,Federation of Marasu
+C07_PROTOTYPE,多语种桥接网络,Multilingual bridge networks
+C07_DESCRIPTION,马来及东南亚网络原型。多语种和跨境联系并存，内部接入条件不均。,Malay and Southeast Asia-inspired networks. Multilingual cross-border ties coexist with uneven domestic access.
+C07_TOPICS,生活成本、家庭、城市、旅行,Living costs; family; cities; travel
+C07_EVENTS,语码混用、翻译漂移、节庆热点,Code-switching; translation drift; festival trends
+C07_COMPETITORS,多语双关、家庭反应图、城市段子,Multilingual puns; family reactions; city jokes
+C08_SHORT,塞拉诺瓦,Serranova
+C08_NAME,塞拉诺瓦联邦共和国,Federative Republic of Serranova
+C08_PROTOTYPE,南美参考圈 · 聊天转发网络,South America reference · chat relays
+C08_DESCRIPTION,面积参考南美 12 国；当前文化机制仍以巴西聊天转发为设计起点，不代表所有成员同质。,Area references 12 South American countries. The current chat-relay prototype starts from Brazil; members are not treated as culturally identical.
+C08_TOPICS,体育、影视、家庭、消费,Sports; film and television; family; consumption
+C08_EVENTS,群聊接力、贴图截取、赛事热点,Group-chat relays; sticker extraction; sporting trends
+C08_COMPETITORS,体育口号、连续剧反应图、聊天贴图,Sports slogans; television reactions; chat stickers
+C09_SHORT,奥鲁维亚,Oruvia
+C09_NAME,奥鲁维亚联邦共和国,Federal Republic of Oruvia
+C09_PROTOTYPE,撒哈拉以南非洲 · 多语创作网络,Sub-Saharan Africa · multilingual creation
+C09_DESCRIPTION,面积参考撒哈拉以南非洲 48 国；当前机制以尼日利亚城市创作为起点，内部差异留待后续建模。,Area references 48 Sub-Saharan African countries. Nigeria-inspired urban creation is a starting point; internal differences are not yet simulated.
+C09_TOPICS,交通服务、物价、工作、家庭、影视,Transport and services; prices; work; family; film
+C09_EVENTS,接入改善、本地对白、跨区域改写,Improved access; local dialogue; cross-regional rewriting
+C09_COMPETITORS,城市日常对白、影视截帧、物价段子,Urban dialogue; film stills; price jokes
+MAP_POPULATION_PENDING,人口：待配置,Population: not configured
+MAP_WORLD_PENDING,%d 国 · 人口数据待补全,%d countries · population data incomplete
+MAP_AREA,参考陆地面积：%.2f 百万 km²,Reference land: %.2f million km²
+MAP_ZOOM,缩放 %.1f× · %s,Zoom %.1f× · %s
+MAP_LOD0,国家,Countries
+MAP_LOD1,首都与河流,Capitals and rivers
+MAP_LOD2,城市与地理细节,Cities and geography
+C10_SHORT,纳希尔,Nashir
+C10_NAME,纳希尔联邦共和国,Federal Republic of Nashir
+C10_PROTOTYPE,北非参考圈 · 机制待访谈,North Africa reference · mechanisms pending review
+C10_DESCRIPTION,面积参考北非六国；中东—西亚已单列。主题、传播环境与事件机制待访谈，成员不被视为同质。,"Area references six North African countries; Middle East–West Asia is separate. Topics, networks and events await review; members are not treated as identical."
+C10_TOPICS,待访谈,Pending review
+C10_EVENTS,待访谈,Pending review
+C10_COMPETITORS,待访谈,Pending review
+C01_SITE0,承宁,Chengning
+C01_SITE1,岚浦,Lanpu
+C01_SITE2,松川,Songchuan
+C01_SITE3,江汀,Jiangting
+C01_GEO,青岚丘陵,Qinglan Hills
+C02_SITE0,潮宫,Shiomiya
+C02_SITE1,月滨,Tsukihama
+C02_SITE2,森濑,Morise
+C02_SITE3,青崎,Aosaki
+C02_GEO,白峰山地,Shiramine Highlands
+C03_SITE0,瑞京,Seogyeong
+C03_SITE1,海原,Haewon
+C03_SITE2,云津,Unjin
+C03_SITE3,松港,Songhang
+C03_GEO,云岭,Unryeong Ridge
+C04_SITE0,阿尔登城,Alden City
+C04_SITE1,韦斯特港,Westhaven
+C04_SITE2,格伦福德,Glenford
+C04_SITE3,莱克顿,Laketon
+C04_GEO,银松高地,Silverpine Uplands
+C05_SITE0,诺沃列斯克,Novolesk
+C05_SITE1,别洛瓦,Belova
+C05_SITE2,奥泽尔斯克,Ozersk
+C05_SITE3,米尔诺,Mirno
+C05_GEO,北风丘陵,Northwind Hills
+C06_SITE0,林堡,Lindborg
+C06_SITE1,索尔维克,Solvik
+C06_SITE2,诺尔达尔,Nordal
+C06_SITE3,埃尔夫港,Elvhavn
+C06_GEO,松湾高地,Pinebay Highlands
+C07_SITE0,马拉城,Kota Mara
+C07_SITE1,丹绒湾,Tanjung Bay
+C07_SITE2,斯里港,Sri Port
+C07_SITE3,卢马河,Luma River
+C07_GEO,雨林丘陵,Rainforest Hills
+C08_SITE0,新塞拉城,Nova Serra
+C08_SITE1,贝拉维斯塔,Bela Vista
+C08_SITE2,里奥克拉罗,Rio Claro
+C08_SITE3,波尔托韦尔德,Porto Verde
+C08_GEO,绿岭,Green Ridge
+C09_SITE0,奥鲁城,Oru City
+C09_SITE1,伊莱港,Ile Port
+C09_SITE2,阿沃河,Awo River
+C09_SITE3,恩达拉,Ndala
+C09_GEO,赤土高原,Redearth Plateau
+C10_SITE0,纳希尔城,Nashir City
+C10_SITE1,萨法港,Safa Port
+C10_SITE2,扎赫兰,Zahran
+C10_SITE3,瓦迪努尔,Wadi Nur
+C10_GEO,晨光高原,Dawn Plateau
+C11_SHORT,索莱里亚,Soleria
+C11_NAME,索莱里亚共和国,Republic of Soleria
+C11_PROTOTYPE,南欧参考圈 · 机制待访谈,Southern Europe reference · mechanisms pending review
+C11_DESCRIPTION,南欧面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。,"Southern Europe area reference. Topics, networks and events await review. Members are not treated as identical."
+C11_TOPICS,待访谈,Pending review
+C11_EVENTS,待访谈,Pending review
+C11_COMPETITORS,待访谈,Pending review
+C11_SITE0,索莱城,Solea
+C11_SITE1,蒙特罗港,Porto Montero
+C11_SITE2,贝拉河,Rio Bela
+C11_SITE3,圣洛拉,San Lora
+C11_GEO,金橄榄丘陵,Golden Olive Hills
+C12_SHORT,阿文顿,Avendon
+C12_NAME,阿文顿联合王国,United Kingdom of Avendon
+C12_PROTOTYPE,西欧及英爱参考圈 · 机制待访谈,Western Europe and Britain–Ireland reference · mechanisms pending review
+C12_DESCRIPTION,西欧及英爱面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。,"Western Europe and Britain–Ireland area reference. Topics, networks and events await review. Members are not treated as identical."
+C12_TOPICS,待访谈,Pending review
+C12_EVENTS,待访谈,Pending review
+C12_COMPETITORS,待访谈,Pending review
+C12_SITE0,阿文顿城,Avendon
+C12_SITE1,贝尔蒙港,Belmont Harbour
+C12_SITE2,格雷福德,Greyford
+C12_SITE3,新维尔,Neuville
+C12_GEO,灰石高地,Greystone Uplands
+C13_SHORT,莱茵维亚,Rhenivia
+C13_NAME,莱茵维亚联邦共和国,Federal Republic of Rhenivia
+C13_PROTOTYPE,中欧参考圈 · 机制待访谈,Central Europe reference · mechanisms pending review
+C13_DESCRIPTION,中欧面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。,"Central Europe area reference. Topics, networks and events await review. Members are not treated as identical."
+C13_TOPICS,待访谈,Pending review
+C13_EVENTS,待访谈,Pending review
+C13_COMPETITORS,待访谈,Pending review
+C13_SITE0,莱茵堡,Rheinburg
+C13_SITE1,施泰瑙,Steinau
+C13_SITE2,瓦尔登,Walden
+C13_SITE3,布林诺瓦,Brinnova
+C13_GEO,杉岭山地,Fircrest Highlands
+C14_SHORT,米赫兰,Mehran
+C14_NAME,米赫兰共和国,Republic of Mehran
+C14_PROTOTYPE,中东—西亚参考圈 · 机制待访谈,Middle East–West Asia reference · mechanisms pending review
+C14_DESCRIPTION,中东—西亚面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。,"Middle East–West Asia area reference. Topics, networks and events await review. Members are not treated as identical."
+C14_TOPICS,待访谈,Pending review
+C14_EVENTS,待访谈,Pending review
+C14_COMPETITORS,待访谈,Pending review
+C14_SITE0,米赫兰城,Mehran City
+C14_SITE1,努拉巴德,Nurabad
+C14_SITE2,达里亚港,Darya Port
+C14_SITE3,萨拉姆,Saram
+C14_GEO,赭石山地,Ochre Highlands
+C15_SHORT,坎塔利亚,Cantalia
+C15_NAME,坎塔利亚联邦,Commonwealth of Cantalia
+C15_PROTOTYPE,澳洲及新西兰参考圈 · 机制待访谈,Australia and New Zealand reference · mechanisms pending review
+C15_DESCRIPTION,澳洲及新西兰面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。,"Australia and New Zealand area reference. Topics, networks and events await review. Members are not treated as identical."
+C15_TOPICS,待访谈,Pending review
+C15_EVENTS,待访谈,Pending review
+C15_COMPETITORS,待访谈,Pending review
+C15_SITE0,坎塔城,Canta
+C15_SITE1,南十字港,Southcross Harbour
+C15_SITE2,赤原镇,Redplain
+C15_SITE3,蕨湾,Fern Bay
+C15_GEO,赤岩高地,Redrock Uplands
+C16_SHORT,维沙拉,Vishara
+C16_NAME,维沙拉共和国,Republic of Vishara
+C16_PROTOTYPE,南亚参考圈 · 机制待访谈,South Asia reference · mechanisms pending review
+C16_DESCRIPTION,南亚面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。,"South Asia area reference. Topics, networks and events await review. Members are not treated as identical."
+C16_TOPICS,待访谈,Pending review
+C16_EVENTS,待访谈,Pending review
+C16_COMPETITORS,待访谈,Pending review
+C16_SITE0,维沙拉城,Vishara City
+C16_SITE1,苏拉浦,Surapur
+C16_SITE2,纳瓦港,Nava Port
+C16_SITE3,吉里纳,Girina
+C16_GEO,季风丘陵,Monsoon Hills
+PRINT_DATE_PLACEHOLDER,2000年1月1日,1 Jan 2000
+PRINT_SPEED_PAUSE,暂停 · F1,Pause · F1
+PRINT_SPEED_NORMAL,常速 · F2 · 5秒/天,Normal · F2 · 5s/day
+PRINT_SPEED_FAST,加速 · F3 · 2秒/天,Fast · F3 · 2s/day
+PRINT_WORKBENCH_OPEN,打开模因工作台,Open meme workbench
+PRINT_ARCHIVE_LABEL,地下印刷厂 · 国家档案,UNDERGROUND PRESS / COUNTRY FILE
+PRINT_CLOSE,关闭,Close
+PRINT_STUDIO_PICK,点击一个国家，选定工作室所在地。,Click a country to locate your studio.
+PRINT_STUDIO_UNSELECTED,尚未选择国家,No country selected
+PRINT_STUDIO_CONFIRM,设立工作室,Establish studio
+PRINT_WORKBENCH_TITLE,模因工作台,Meme workbench
+PRINT_WORKBENCH_PLACEHOLDER,独立地图页不提供模因编辑，Meme点数与收入也未接入。请从游戏主界面使用工作台。,"This standalone map page does not provide meme editing, meme points or income. Use the workbench in the main game."
+PRINT_DATE_FORMAT,%d年%d月%d日,%04d-%02d-%02d
+PRINT_SEASON_SPRING,春季,Spring
+PRINT_SEASON_SUMMER,夏季,Summer
+PRINT_SEASON_AUTUMN,秋季,Autumn
+PRINT_SEASON_WINTER,冬季,Winter
+MAP_LATITUDE_ARCTIC,北极圈 · 66.56°N,Arctic Circle · 66.56°N
+MAP_LATITUDE_NORTH_TEMPERATE,北温带中线 · 45°N,North temperate midline · 45°N
+MAP_LATITUDE_CANCER,北回归线 · 23.44°N,Tropic of Cancer · 23.44°N
+MAP_LATITUDE_EQUATOR,赤道 · 0°,Equator · 0°
+MAP_LATITUDE_CAPRICORN,南回归线 · 23.44°S,Tropic of Capricorn · 23.44°S
+MAP_LATITUDE_SOUTH_TEMPERATE,南温带中线 · 45°S,South temperate midline · 45°S
+MAP_LATITUDE_ANTARCTIC,南极圈 · 66.56°S,Antarctic Circle · 66.56°S

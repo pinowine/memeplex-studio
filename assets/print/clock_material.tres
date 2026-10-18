@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3]
+[ext_resource type="Shader" path="res://assets/print/clock_face.gdshader" id="1"]
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/day_phase = 0.0
+shader_parameter/year_phase = 0.0
+shader_parameter/daylight_fraction = 0.5
+shader_parameter/paper_color = Color(0.941, 0.925, 0.875, 1)
+shader_parameter/ink_color = Color(0.157, 0.192, 0.180, 1)

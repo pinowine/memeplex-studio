@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 42.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 48.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"revival"
+amount = 0.055
+duration_hours = 0.0
+group_ids = PackedStringArray("students")
+
+[resource]
+script = ExtResource("1_event")
+id = &"environment_archive_echo"
+title = "学生回看旧梗，翻出早先回应"
+narrative = "学生读书群回看一则旧梗时，有人翻出了早先收藏的回应截图。几名原本觉得这个话题已经说尽的成员重新读完了全文，聊天也从敷衍表情转回具体经历。"
+mentor_comment = "旧截图比新口号更耐放，补一句具体处境就够了，不必再刷防腐漆。"
+origin = &"environment_meme"
+topic_ids = PackedStringArray("archive", "education")
+operation_ids = PackedStringArray("revive")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 42.0
+weight = 0.9
+occurrence_chance = 0.035
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 0.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("shared_world")
+evidence_status = &"design"
+external_preset_id = &""

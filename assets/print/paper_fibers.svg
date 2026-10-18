@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="512" viewBox="0 0 384 512">
+<path d="M2 3L381 1 383 509 0 512z" fill="#eeeadf"/>
+<g stroke="#6d624c" stroke-opacity=".045" stroke-width=".7" fill="none">
+<path d="M15 19l51-1 M118 36l67 1 M251 14l111 2 M21 75l148-1 M218 93l143 1 M40 126l72 2 M189 137l146-1 M14 183l84-2 M142 211l71 1 M259 190l96 1 M28 261l147-1 M216 285l143-2 M58 321l93 1 M177 341l98-1 M295 358l59 1 M22 411l92-1 M164 443l103 2 M262 477l98-1 M13 491l161-2"/>
+</g><g fill="#554731" fill-opacity=".035">
+<circle cx="73" cy="34" r=".6"/><circle cx="308" cy="72" r=".6"/><circle cx="166" cy="89" r=".5"/>
+<circle cx="39" cy="168" r=".6"/><circle cx="341" cy="154" r=".8"/><circle cx="214" cy="251" r=".7"/>
+<circle cx="121" cy="297" r=".6"/><circle cx="348" cy="316" r=".5"/><circle cx="71" cy="402" r=".7"/>
+<circle cx="184" cy="474" r=".8"/><circle cx="301" cy="453" r=".5"/>
+</g><path d="M8 8H376V504H8z" fill="none" stroke="#7f7258" stroke-opacity=".14" stroke-width="1"/>
+</svg>

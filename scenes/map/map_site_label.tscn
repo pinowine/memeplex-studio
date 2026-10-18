@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Theme" path="res://assets/themes/map_theme.tres" id="1"]
+[node name="Site" type="Node2D"]
+[node name="Marker" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-3, 0, 0, -3, 3, 0, 0, 3)
+color = Color(0.157, 0.192, 0.180, 1)
+antialiased = true
+[node name="Name" type="Label" parent="."]
+offset_left = 7.0
+offset_top = -10.0
+offset_right = 145.0
+offset_bottom = 14.0
+mouse_filter = 2
+theme = ExtResource("1")
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.157, 0.192, 0.180, 1)
+theme_override_colors/font_outline_color = Color(0.941, 0.925, 0.875, 1)
+theme_override_constants/outline_size = 1

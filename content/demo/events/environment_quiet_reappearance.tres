@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 45.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 48.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"revival"
+amount = 0.04
+duration_hours = 0.0
+group_ids = PackedStringArray("commuters")
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.1
+duration_hours = 3.0
+group_ids = PackedStringArray("commuters")
+
+[resource]
+script = ExtResource("1_event")
+id = &"environment_quiet_reappearance"
+title = "职员重新提起一则沉寂旧话题"
+narrative = "一则安静了一阵的旧话题被职员带回交班聊天，有人顺手贴出了当年的回应。几名读者说这次读来没有先前那么厌烦，工作与档案相关的讨论又有了短暂交集。"
+mentor_comment = "旧话题回来坐了坐，不是来给你的成果表签字，先听它这次被用在哪里。"
+origin = &"environment_meme"
+topic_ids = PackedStringArray("archive", "work")
+operation_ids = PackedStringArray("revive", "attention_shift")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
+trigger_mode = &"random"
+start_hour = 45.0
+weight = 1.05
+occurrence_chance = 0.04
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 3.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("relation")
+evidence_status = &"design"
+external_preset_id = &""

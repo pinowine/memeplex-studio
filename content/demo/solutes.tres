@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MemeDesignSolutes" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_design_solutes.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entries = Array[Dictionary]([{
+"id":"observation", "retention_order":2, "title":"观察溶质", "context_hint":"保留现场证据，作者主动应用后提高表达可识别性。", "effects":[{"field":"recognizability","amount":0.1}]
+}, {
+"id":"response", "retention_order":3, "title":"回应溶质", "context_hint":"保留回应关系，作者主动应用后降低再创作操作成本。", "effects":[{"field":"remix_cost","amount":-0.1}]
+}, {
+"id":"recontext", "retention_order":4, "title":"异境溶质", "context_hint":"重新组织可携带语境，作者主动应用后降低语境依赖。", "effects":[{"field":"context_dependency","amount":-0.1}]
+}, {
+"id":"authority", "retention_order":6, "title":"威权溶质", "context_hint":"把秩序与服从作为作者明确选择的表达框架；y=-1威权、+1自由。不是从人口标签推断政治。", "effects":[{"field":"political_position","axis":"y","amount":-0.2},{"field":"context_dependency","amount":0.1}]
+}, {
+"id":"deliberation", "retention_order":5, "title":"协商溶质", "context_hint":"把协商与自主作为作者明确选择的表达框架。", "effects":[{"field":"political_position","axis":"y","amount":0.2}]
+}, {
+"id":"translation", "retention_order":1, "title":"转译溶质", "context_hint":"作者主动改写并提高语言可达性。所有0.1/0.2均为可调游戏启发式，不是实测研究系数。", "effects":[{"field":"language_access","amount":0.1}]
+}])

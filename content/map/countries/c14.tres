@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MapCountryDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/map/country_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"C14"
+population_configured = false
+short_name_key = &"C14_SHORT"
+official_name_key = &"C14_NAME"
+prototype_key = &"C14_PROTOTYPE"
+description_key = &"C14_DESCRIPTION"
+topics_key = &"C14_TOPICS"
+events_key = &"C14_EVENTS"
+competitors_key = &"C14_COMPETITORS"
+reference_area_km2 = 6414448.44
+reference_members = PackedStringArray("BHR", "IRN", "IRQ", "ISR", "JOR", "KWT", "LBN", "OMN", "PSE", "QAT", "SAU", "SYR", "TUR", "ARE", "YEM", "ARM", "AZE", "GEO", "CYP")
+site_name_keys = PackedStringArray("C14_SITE0", "C14_SITE1", "C14_SITE2", "C14_SITE3")
+geography_name_key = &"C14_GEO"

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_s05"
+kernel_id = &"stance"
+title = "S05 · 栓Q／我真的会谢"
+required_slots = PackedStringArray("speaker", "visible_situation", "claim")
+slot_prompts = PackedStringArray("发声者（可改写）", "可见情境（可改写）", "表态框架（可改写）")
+default_values = PackedStringArray("感到无奈的人", "尴尬、倒霉或被迫感恩的事件", "“thank you/谢谢”的反说")
+family_anchor = "识别与变异约束：可独立作语气词、与“听我说谢谢你”等音频拼接；稳定部分是礼貌外壳和负面语境。"
+context_hint = "语义：表面致谢，实际表达无语、烦躁或轻度拒绝。\n语用：用于降低抱怨的攻击性；在评论区既能共情，也能对事件作嘲讽收尾。\n跨语境：跨语音双关让英语礼貌公式在中文平台变成反礼貌资源，显示声音比词典义更可复制。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "S05"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\S05.png"
+source_sha256 = "db8d880cc66399ec6a2ab0554b8ca47f951e353e82e8fba9140743c865e95907"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\01-立场基模.md"
+source_document_sha256 = "28bc3e74a5fdcca50a278f3bc74dbf33de7f3c422179f61814e9335442115e9f"
+source_url = "https://www.bilibili.com/video/BV11u4m1w75X/"
+evidence_status = &"design_abstraction"

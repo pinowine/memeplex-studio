@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_r12"
+kernel_id = &"relation"
+title = "R12 · NPC／NPC Wojak"
+required_slots = PackedStringArray("role_a", "role_b", "relation")
+slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
+default_values = PackedStringArray("自认有主体性/看穿系统的圈内人", "被称为 NPC 的他者", "A 否认 B 的独立思考")
+family_anchor = "识别与变异约束：换帽、换口号、换阵营即可反向指认；空白脸和重复对白是稳定迹线。"
+context_hint = "语义：借游戏中的非玩家角色隐喻机械重复意见的人。\n语用：能快速画出内外群体，但也把复杂立场扁平化；后来又被 NPC 直播表演重新解释。\n跨语境：圈内识别与外部误读不是噪声，而是它维持身份价值的条件；跨语种使用常直接保留 NPC。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "R12"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R12.png"
+source_sha256 = "0017a12dce1ce91e91454e95abaf9da9a571f7ca2c9b46a34f5efc6d74deec17"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\02-关系模板基模.md"
+source_document_sha256 = "3d2290cf6f58d53badf7cf35f40a7cca5dfda7b692195a7fef58689cde2558ee"
+source_url = "https://bsky.app/profile/jtp.bsky.social/post/3mhb333bk6k27"
+evidence_status = &"design_abstraction"

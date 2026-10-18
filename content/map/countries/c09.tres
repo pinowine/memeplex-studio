@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MapCountryDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/map/country_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"C09"
+population = 100000000
+short_name_key = &"C09_SHORT"
+official_name_key = &"C09_NAME"
+prototype_key = &"C09_PROTOTYPE"
+description_key = &"C09_DESCRIPTION"
+topics_key = &"C09_TOPICS"
+events_key = &"C09_EVENTS"
+competitors_key = &"C09_COMPETITORS"
+reference_area_km2 = 22057844.3
+reference_members = PackedStringArray("AGO", "BEN", "BWA", "BFA", "BDI", "CPV", "CMR", "CAF", "TCD", "COM", "COD", "COG", "CIV", "DJI", "GNQ", "ERI", "SWZ", "ETH", "GAB", "GMB", "GHA", "GIN", "GNB", "KEN", "LSO", "LBR", "MDG", "MWI", "MLI", "MRT", "MUS", "MOZ", "NAM", "NER", "NGA", "RWA", "STP", "SEN", "SYC", "SLE", "SOM", "ZAF", "SSD", "TZA", "TGO", "UGA", "ZMB", "ZWE")
+site_name_keys = PackedStringArray("C09_SITE0", "C09_SITE1", "C09_SITE2", "C09_SITE3")
+geography_name_key = &"C09_GEO"

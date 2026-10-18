@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_r08"
+kernel_id = &"relation"
+title = "R08 · i人／e人"
+required_slots = PackedStringArray("role_a", "role_b", "relation")
+slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
+default_values = PackedStringArray("i（内向）类型", "e（外向）类型", "在同一社交处境中的反应对照")
+family_anchor = "识别与变异约束：可构造“i人被迫营业/e人突然沉默”等反转；i/e 对位最稳定。"
+context_hint = "语义：把 MBTI 维度压缩成可快速套用的社交角色。\n语用：用作自我介绍、解释行为和制造反差；过度使用会把情境差异本质化。\n跨语境：心理测评语言变为轻量身份游戏，学术效度与社交可用性在传播中分离。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "R08"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R08.png"
+source_sha256 = "cd18b245edf0effd40c714c6b1894cff9d78883d524d8e858481d29e1240fb75"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\02-关系模板基模.md"
+source_document_sha256 = "3d2290cf6f58d53badf7cf35f40a7cca5dfda7b692195a7fef58689cde2558ee"
+source_url = "https://bsky.app/profile/evpaaalien.bsky.social/post/3mspcmztxx22l"
+evidence_status = &"design_abstraction"

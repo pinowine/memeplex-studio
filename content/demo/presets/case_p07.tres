@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_p07"
+kernel_id = &"ritual"
+title = "P07 · Grimace Shake"
+required_slots = PackedStringArray("trigger", "action", "response_and_exit")
+slot_prompts = PackedStringArray("触发时刻（可改写）", "参与动作（可改写）", "回应与退出（可改写）")
+default_values = PackedStringArray("购买/展示紫色奶昔并祝 Grimace 生日", "饮用", "切到昏迷、紫色液体或恐怖现场；接续／退出：其他创作者升级死法或跳出叙事")
+family_anchor = "识别与变异约束：替换死亡场景、液体用途和幸存者；固定顺序是庆祝—饮用—灾变。"
+context_hint = "语义：儿童品牌庆生活动被重写成喝下诅咒物的恐怖因果。\n语用：参与者通过复刻转折证明懂梗；品牌既获曝光又失去对叙事的控制。\n跨语境：企业角色、用户恐怖创作和算法挑战融合，形成品牌模因不可控的典型。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "P07"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\P07.png"
+source_sha256 = "339f4f17cf9837d5a572cde79bb7691e9e83d24bf53e9b5edd078161906b1034"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\03-参与仪式基模.md"
+source_document_sha256 = "27daa108893057364d60926990d64cc57192445d7ea32bd9d7b705d1cbc87438"
+source_url = "https://bsky.app/profile/furryends.bsky.social/post/3lawlji66lc2h"
+evidence_status = &"design_abstraction"

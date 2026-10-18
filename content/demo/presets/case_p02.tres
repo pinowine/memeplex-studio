@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_p02"
+kernel_id = &"ritual"
+title = "P02 · 疯狂星期四文学／V我50"
+required_slots = PackedStringArray("trigger", "action", "response_and_exit")
+slot_prompts = PackedStringArray("触发时刻（可改写）", "参与动作（可改写）", "回应与退出（可改写）")
+default_values = PackedStringArray("星期四或任意热点", "讲离奇故事并在末尾转入“KFC疯狂星期四/V我50”", "识破、转发或续写；接续／退出：下周再发/读者拉黑")
+family_anchor = "识别与变异约束：前文题材无限替换，结尾“今天疯狂星期四，V我50”保持；反模因会提前预警。"
+context_hint = "语义：前文承诺情绪或新闻价值，结尾突然揭示广告式讨钱目的。\n语用：参与者以被骗为乐，并竞争谁能写出最可信的铺垫；品牌名称成为共享节拍而非单向广告。\n跨语境：它模糊用户创作、品牌免费曝光和群聊仪式，且可寄生在每个新热点上。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "P02"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\P02.png"
+source_sha256 = "3ee91878b1d075708de4de23c94eacd377a69b49cefdfa6dcad83c21b2a49fed"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\03-参与仪式基模.md"
+source_document_sha256 = "27daa108893057364d60926990d64cc57192445d7ea32bd9d7b705d1cbc87438"
+source_url = "https://bsky.app/profile/lisidexianyu.bsky.social/post/3mm7sz3nyks24"
+evidence_status = &"design_abstraction"

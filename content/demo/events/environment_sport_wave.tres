@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 34.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 40.0
+
+[sub_resource type="Resource" id="Condition_3"]
+script = ExtResource("2_condition")
+field = &"families"
+operator = &"ge"
+value = 2.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.14
+duration_hours = 5.0
+group_ids = PackedStringArray("students", "culture_fans")
+
+[resource]
+script = ExtResource("1_event")
+id = &"environment_sport_wave"
+title = "看台短句走出球场，进入学生群"
+narrative = "看台上流行的体育短句被观众带到场外，又进入了几个学生群。文化爱好者把它改配到赛后片段上，体育与娱乐话题吸引了新的围观讨论。"
+mentor_comment = "看台短句离场后还在走，先检查它是不是只靠比分续命。"
+origin = &"environment_meme"
+topic_ids = PackedStringArray("sport", "entertainment")
+operation_ids = PackedStringArray("amplify", "attention_shift")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 34.0
+weight = 1.2
+occurrence_chance = 0.04
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 5.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("shared_world")
+evidence_status = &"design"
+external_preset_id = &""

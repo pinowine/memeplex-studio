@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MemeDemoChannel" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_channel.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"open_feed"
+title = "公开推荐流"
+reach_factor = 1.4
+remix_factor = 0.85
+description = "虚构的公开推荐流。更容易接触新受众，也面临注意力竞争；放大与改写因子仅用于设计实验。"
+evidence_status = &"design"

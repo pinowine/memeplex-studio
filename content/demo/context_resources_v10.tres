@@ -1,0 +1,232 @@
+[gd_resource type="Resource" script_class="MemeContextDefinitions" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_context_definitions.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entries = Array[Dictionary]([
+ {
+  "id": "language_zh",
+  "kind": "language",
+  "title": "中文",
+  "value": "zh",
+  "description": "把表达送进中文语境。",
+  "initial_count": 1
+ },
+ {
+  "id": "language_en",
+  "kind": "language",
+  "title": "英文",
+  "value": "en",
+  "description": "把表达送进英文语境。",
+  "initial_count": 1
+ },
+ {
+  "id": "language_mixed",
+  "kind": "language",
+  "title": "中英混合",
+  "value": "mixed",
+  "description": "把表达送进中英混合语境。",
+  "initial_count": 1
+ },
+ {
+  "id": "group_commuters",
+  "kind": "group",
+  "title": "通勤职员",
+  "value": "commuters",
+  "description": "让表达面向通勤职员。",
+  "initial_count": 1
+ },
+ {
+  "id": "group_students",
+  "kind": "group",
+  "title": "学生",
+  "value": "students",
+  "description": "让表达面向学生。",
+  "initial_count": 1
+ },
+ {
+  "id": "group_culture_fans",
+  "kind": "group",
+  "title": "城市文化爱好者",
+  "value": "culture_fans",
+  "description": "让表达面向城市文化爱好者。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_policy",
+  "kind": "topic",
+  "title": "政治",
+  "value": "policy",
+  "description": "把表达接入政治话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_cost_of_living",
+  "kind": "topic",
+  "title": "生活成本",
+  "value": "cost_of_living",
+  "description": "把表达接入生活成本话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_work",
+  "kind": "topic",
+  "title": "劳动",
+  "value": "work",
+  "description": "把表达接入劳动话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_platform_tools",
+  "kind": "topic",
+  "title": "平台工具",
+  "value": "platform_tools",
+  "description": "把表达接入平台工具话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_sport",
+  "kind": "topic",
+  "title": "体育",
+  "value": "sport",
+  "description": "把表达接入体育话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_education",
+  "kind": "topic",
+  "title": "教育",
+  "value": "education",
+  "description": "把表达接入教育话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_identity",
+  "kind": "topic",
+  "title": "身份",
+  "value": "identity",
+  "description": "把表达接入身份话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_language",
+  "kind": "topic",
+  "title": "语言",
+  "value": "language",
+  "description": "把表达接入语言话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_entertainment",
+  "kind": "topic",
+  "title": "文化活动",
+  "value": "entertainment",
+  "description": "把表达接入文化活动话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_archive",
+  "kind": "topic",
+  "title": "档案",
+  "value": "archive",
+  "description": "把表达接入档案话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_trust",
+  "kind": "topic",
+  "title": "信任",
+  "value": "trust",
+  "description": "把表达接入信任话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "topic_community",
+  "kind": "topic",
+  "title": "社群",
+  "value": "community",
+  "description": "把表达接入社群话题。",
+  "initial_count": 1
+ },
+ {
+  "id": "freedom",
+  "kind": "stance_token",
+  "title": "自由",
+  "value": "freedom",
+  "description": "把表达往自由的一端推动。",
+  "axis": "x",
+  "direction": -1,
+  "initial_count": 5
+ },
+ {
+  "id": "authority",
+  "kind": "stance_token",
+  "title": "威权",
+  "value": "authority",
+  "description": "把表达往威权的一端推动。",
+  "axis": "x",
+  "direction": 1,
+  "initial_count": 5
+ },
+ {
+  "id": "equality",
+  "kind": "stance_token",
+  "title": "平等",
+  "value": "equality",
+  "description": "把表达往平等的一端推动。",
+  "axis": "y",
+  "direction": -1,
+  "initial_count": 5
+ },
+ {
+  "id": "hierarchy",
+  "kind": "stance_token",
+  "title": "等级",
+  "value": "hierarchy",
+  "description": "把表达往等级的一端推动。",
+  "axis": "y",
+  "direction": 1,
+  "initial_count": 5
+ },
+ {
+  "id": "sincere",
+  "kind": "pragmatic_token",
+  "title": "真诚",
+  "value": "sincere",
+  "description": "把表达往真诚的一端推动。",
+  "axis": "x",
+  "direction": -1,
+  "initial_count": 5
+ },
+ {
+  "id": "ironic",
+  "kind": "pragmatic_token",
+  "title": "反讽",
+  "value": "ironic",
+  "description": "把表达往反讽的一端推动。",
+  "axis": "x",
+  "direction": 1,
+  "initial_count": 5
+ },
+ {
+  "id": "support",
+  "kind": "pragmatic_token",
+  "title": "支持",
+  "value": "support",
+  "description": "把表达往支持的一端推动。",
+  "axis": "y",
+  "direction": -1,
+  "initial_count": 5
+ },
+ {
+  "id": "opposition",
+  "kind": "pragmatic_token",
+  "title": "反对",
+  "value": "opposition",
+  "description": "把表达往反对的一端推动。",
+  "axis": "y",
+  "direction": 1,
+  "initial_count": 5
+ }
+])

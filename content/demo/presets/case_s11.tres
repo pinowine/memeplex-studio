@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/demo/resources/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_s11"
+kernel_id = &"stance"
+title = "S11 · Kevin James Smirking"
+required_slots = PackedStringArray("speaker", "visible_situation", "claim")
+slot_prompts = PackedStringArray("发声者（可改写）", "可见情境（可改写）", "表态框架（可改写）")
+default_values = PackedStringArray("双手插兜、侧身窃笑的 Kevin James", "配文所述的小得意或尴尬", "“我知道但装无辜”")
+family_anchor = "识别与变异约束：以“me after…”配文、抠图、合成或角色替换扩散；姿势比脸部身份更稳定。"
+context_hint = "语义：照片的羞涩笑容被重读为心虚、暗喜或笨拙自信。\n语用：用于第一人称情境句，承认轻微越界同时争取亲和感。\n跨语境：旧媒体档案被平台重新索引后获得与原作品无关的第二生命。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "S11"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\S11.png"
+source_sha256 = "e238f3acb51c76d6c97f1098a0600bcf5e84029085e0525be4703e8b8c990373"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\01-立场基模.md"
+source_document_sha256 = "28bc3e74a5fdcca50a278f3bc74dbf33de7f3c422179f61814e9335442115e9f"
+source_url = "https://bsky.app/profile/silly.bsky.social/post/3kf73hx2kg62g"
+evidence_status = &"design_abstraction"
