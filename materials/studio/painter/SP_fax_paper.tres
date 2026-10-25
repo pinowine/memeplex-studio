@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_paper_BaseColor.png" id="1_eu2tv"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_paper_Metallic.png" id="2_c73be"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_paper_Normal.png" id="3_ueljl"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_paper_Roughness.png" id="4_0p85d"]
+
+[resource]
+resource_name = "Painter__SP_fax_paper"
+albedo_texture = ExtResource("1_eu2tv")
+metallic = 1.0
+metallic_texture = ExtResource("2_c73be")
+roughness_texture = ExtResource("4_0p85d")
+normal_enabled = true
+normal_texture = ExtResource("3_ueljl")
+metadata/painter_set = "SP_fax_paper"

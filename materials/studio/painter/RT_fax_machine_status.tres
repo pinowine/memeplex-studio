@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_fax_machine_status_BaseColor.png" id="1_tc1qo"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_fax_machine_status_Emission.png" id="2_4iwll"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_fax_machine_status_Metallic.png" id="3_ed66e"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_fax_machine_status_Normal.png" id="4_by0nf"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_fax_machine_status_Roughness.png" id="5_0tap1"]
+
+[resource]
+resource_name = "Painter__RT_fax_machine_status"
+albedo_texture = ExtResource("1_tc1qo")
+metallic = 1.0
+metallic_texture = ExtResource("3_ed66e")
+roughness_texture = ExtResource("5_0tap1")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_operator = 1
+emission_texture = ExtResource("2_4iwll")
+normal_enabled = true
+normal_texture = ExtResource("4_by0nf")
+metadata/painter_set = "RT_fax_machine_status"

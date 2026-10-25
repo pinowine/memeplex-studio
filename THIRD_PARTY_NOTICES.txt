@@ -21,3 +21,11 @@ Other assets include adapted third-party icons and procedural graphics.
 
 Godot Engine: MIT license. Engine and bundled-component notices for executable
 distribution are available at https://godotengine.org/license/
+
+LXGW WenKai Regular: Copyright 2021-2026 LXGW;
+Copyright 2020 The Klee Project Authors.
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/lxgw/LxgwWenKai
+Bundled font: assets/image/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf
+The font is redistributed unchanged. Full copyright notices, Reserved Font Names,
+additional permission and licence: assets/image/fonts/lxgw-wenkai/OFL.txt

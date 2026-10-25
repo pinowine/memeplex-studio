@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_edit_BaseColor.png" id="1_0lcyl"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_edit_Metallic.png" id="2_h6yws"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_edit_Normal.png" id="3_r68xi"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_edit_Roughness.png" id="4_8h66e"]
+
+[resource]
+resource_name = "Painter__SP_workpaper_edit"
+albedo_texture = ExtResource("1_0lcyl")
+metallic = 1.0
+metallic_texture = ExtResource("2_h6yws")
+roughness_texture = ExtResource("4_8h66e")
+normal_enabled = true
+normal_texture = ExtResource("3_r68xi")
+metadata/painter_set = "SP_workpaper_edit"

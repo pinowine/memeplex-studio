@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_map_BaseColor.png" id="1_ojqwq"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_map_Metallic.png" id="2_i2vv8"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_map_Normal.png" id="3_shlf8"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_map_Roughness.png" id="4_8nl2c"]
+
+[resource]
+resource_name = "Painter__SP_workpaper_map"
+albedo_texture = ExtResource("1_ojqwq")
+metallic = 1.0
+metallic_texture = ExtResource("2_i2vv8")
+roughness_texture = ExtResource("4_8nl2c")
+normal_enabled = true
+normal_texture = ExtResource("3_shlf8")
+metadata/painter_set = "SP_workpaper_map"

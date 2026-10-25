@@ -1,5 +1,5 @@
 [gd_scene load_steps=2 format=3]
-[ext_resource type="Theme" path="res://assets/themes/map_theme.tres" id="1"]
+[ext_resource type="Theme" path="res://data/presentation/ui/map_theme.tres" id="1"]
 [node name="Site" type="Node2D"]
 [node name="Marker" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-3, 0, 0, -3, 3, 0, 0, 3)

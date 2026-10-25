@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_paperclip_BaseColor.png" id="1_5dtyb"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_paperclip_Metallic.png" id="2_5rp3d"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_paperclip_Normal.png" id="3_o31ou"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_paperclip_Roughness.png" id="4_bnide"]
+
+[resource]
+resource_name = "Painter__SP_paperclip"
+albedo_texture = ExtResource("1_5dtyb")
+metallic = 1.0
+metallic_texture = ExtResource("2_5rp3d")
+roughness_texture = ExtResource("4_bnide")
+normal_enabled = true
+normal_texture = ExtResource("3_o31ou")
+metadata/painter_set = "SP_paperclip"

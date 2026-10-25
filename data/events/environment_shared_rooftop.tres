@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 17.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 23.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = -0.12
+duration_hours = 6.0
+group_ids = PackedStringArray("students", "culture_fans")
+
+[resource]
+script = ExtResource("1_event")
+id = &"environment_shared_rooftop"
+title = "球场观众接写赛间小故事"
+narrative = "屋顶球场的观众开始在比赛间隙接写小故事，为看台上的人物补充各自的遭遇。故事被转进体育和娱乐群，观众在比分讨论之外又找到了一个共同话题。"
+mentor_comment = "他们把比赛间隙写成连续剧，你的口号别急着插播广告。"
+origin = &"environment_meme"
+topic_ids = PackedStringArray("sport", "entertainment")
+operation_ids = PackedStringArray("emerge", "attention_shift")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 17.0
+weight = 1.15
+occurrence_chance = 0.035
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 6.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("shared_world")
+evidence_status = &"design"
+external_preset_id = &"case_w06"

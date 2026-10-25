@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_contact_book_BaseColor.png" id="1_du3uv"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_contact_book_Metallic.png" id="2_qbi15"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_contact_book_Normal.png" id="3_sptc7"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_contact_book_Roughness.png" id="4_57v0c"]
+
+[resource]
+resource_name = "Painter__SP_contact_book"
+albedo_texture = ExtResource("1_du3uv")
+metallic = 1.0
+metallic_texture = ExtResource("2_qbi15")
+roughness_texture = ExtResource("4_57v0c")
+normal_enabled = true
+normal_texture = ExtResource("3_sptc7")
+metadata/painter_set = "SP_contact_book"

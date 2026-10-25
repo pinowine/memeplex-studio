@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_desk_BaseColor.png" id="1_4b23x"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_desk_Metallic.png" id="2_v8gl8"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_desk_Normal.png" id="3_ew77k"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_desk_Roughness.png" id="4_kv02y"]
+
+[resource]
+resource_name = "Painter__SP_desk"
+albedo_texture = ExtResource("1_4b23x")
+metallic = 1.0
+metallic_texture = ExtResource("2_v8gl8")
+roughness_texture = ExtResource("4_kv02y")
+normal_enabled = true
+normal_texture = ExtResource("3_ew77k")
+metadata/painter_set = "SP_desk"

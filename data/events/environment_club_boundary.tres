@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 12.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 18.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = -0.1
+duration_hours = 5.0
+group_ids = PackedStringArray("culture_fans")
+
+[resource]
+script = ExtResource("1_event")
+id = &"environment_club_boundary"
+title = "文化社团推出自己的入圈暗号"
+narrative = "一支文化社团推出了自己的入圈暗号，并给新成员列出使用场景。其他社群开始围绕这套暗号辨认同伴，本地身份话题不再只围着原先几种说法展开。"
+mentor_comment = "社团给暗号配了使用说明，你不能把每一扇新门都登记成自己的入口。"
+origin = &"environment_meme"
+topic_ids = PackedStringArray("identity", "community")
+operation_ids = PackedStringArray("emerge", "attention_shift")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 12.0
+weight = 1.0
+occurrence_chance = 0.035
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 5.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("boundary")
+evidence_status = &"design"
+external_preset_id = &"case_b04"

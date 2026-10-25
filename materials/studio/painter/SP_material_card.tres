@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_material_card_BaseColor.png" id="1_xyfwy"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_material_card_Metallic.png" id="2_wgnyu"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_material_card_Normal.png" id="3_grrqe"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_material_card_Roughness.png" id="4_5f3v8"]
+
+[resource]
+resource_name = "Painter__SP_material_card"
+albedo_texture = ExtResource("1_xyfwy")
+metallic = 1.0
+metallic_texture = ExtResource("2_wgnyu")
+roughness_texture = ExtResource("4_5f3v8")
+normal_enabled = true
+normal_texture = ExtResource("3_grrqe")
+metadata/painter_set = "SP_material_card"

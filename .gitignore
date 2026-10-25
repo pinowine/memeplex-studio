@@ -1,0 +1,63 @@
+# 根目录只收游戏目录、必要配置和版权说明；其他本地文件不入库。
+/*
+!/.editorconfig
+!/.gitattributes
+!/.gitignore
+!/project.godot
+!/export_presets.cfg
+!/LICENSE
+!/godot-ai-LICENSE.txt
+!/THIRD_PARTY_NOTICES.txt
+!/assets/
+!/data/
+!/localization/
+!/materials/
+!/scenes/
+!/scripts/
+!/shaders/
+
+# 编辑工具和来源记录不参与游戏运行，版权归属见根目录说明。
+/scripts/tools/
+/scenes/tools/
+/data/manifests/icon_manifest.json
+/data/map/references/area_reference.json
+/data/memes/presets/provenance.json
+/data/catalogs/catalog.edited.tres
+
+# 单独导出的设备模型和旁图未被游戏引用，GLB 的运行贴图已内嵌。
+/assets/model/studio/devices/
+/assets/model/studio/environment/storage_furniture*
+/assets/model/studio/environment/studio_environment*
+/assets/model/studio/environment/*.png*
+/assets/model/studio/environment/*.jpg*
+/assets/model/studio/paper/*.png*
+/assets/model/studio/paper/*.jpg*
+/assets/model/studio/paper/paperclip.glb*
+/assets/image/textures/studio/models/
+
+# FBX 仍引用这四张源贴图，不能随其他导出副产物一起忽略。
+/assets/image/textures/studio/source_materials/*
+!/assets/image/textures/studio/source_materials/clock_plain.png*
+!/assets/image/textures/studio/source_materials/day_ring_natural.png*
+!/assets/image/textures/studio/source_materials/paper_fibres_albedo.png*
+!/assets/image/textures/studio/source_materials/season_ring_natural.png*
+
+# 未进入游戏依赖图的旧界面资源与实现。
+/assets/image/textures/studio/desk/heating_stand.png*
+/assets/image/textures/studio/desk/lab_components.png*
+/assets/image/textures/studio/desk/lab_components_front.png*
+/assets/image/textures/studio/desk/module_clip_board.png*
+/assets/image/textures/studio/desk/wall_reagent_rack.png*
+/scripts/presentation/studio/workbench/desk_culture_layout.gd*
+/shaders/ui/studio_pop_hover.gdshader*
+
+# 工程源文件、缓存和备份只留本地。
+**/__pycache__/
+*.pyc
+*.blend
+*.blend1
+*.blend2
+*.spp
+*.psd
+*.bak
+*.tmp

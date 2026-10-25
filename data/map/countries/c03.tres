@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MapCountryDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/map/country_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"C03"
+population = 30000000
+short_name_key = &"C03_SHORT"
+official_name_key = &"C03_NAME"
+prototype_key = &"C03_PROTOTYPE"
+description_key = &"C03_DESCRIPTION"
+topics_key = &"C03_TOPICS"
+events_key = &"C03_EVENTS"
+competitors_key = &"C03_COMPETITORS"
+reference_area_km2 = 97600
+reference_members = PackedStringArray("KOR")
+site_name_keys = PackedStringArray("C03_SITE0", "C03_SITE1", "C03_SITE2", "C03_SITE3")
+geography_name_key = &"C03_GEO"

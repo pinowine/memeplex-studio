@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_r10"
+kernel_id = &"relation"
+title = "R10 · Red／Green／Beige Flag"
+required_slots = PackedStringArray("role_a", "role_b", "relation")
+slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
+default_values = PackedStringArray("被观察的约会对象", "评估者", "特征被映射为危险、适配或无害古怪")
+family_anchor = "识别与变异约束：可继续增加 pink/black 等颜色；稳定机制是“可见习惯→关系风险等级”。"
+context_hint = "语义：颜色把复杂人格信号变成快速风险分类；beige flag 填补“不坏但很怪”的中间层。\n语用：用于讲述约会经验和征求判断，也可能把私人习惯过度诊断化。\n跨语境：交通信号隐喻跨语言迁移顺畅，并形成关系平台的民间审核词汇。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "R10"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R10.png"
+source_sha256 = "1a0e2db34fe2b14fde1a6c1916b1103d170f3991207e3b95ffe24fdd65989301"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\02-关系模板基模.md"
+source_document_sha256 = "3d2290cf6f58d53badf7cf35f40a7cca5dfda7b692195a7fef58689cde2558ee"
+source_url = "https://bsky.app/profile/smcgov.bsky.social/post/3lwjktysgzc2d"
+evidence_status = &"design_abstraction"

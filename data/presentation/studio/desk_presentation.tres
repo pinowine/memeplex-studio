@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="DeskPresentation" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/presentation/desk_presentation.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+shadows_enabled = true
+shadow_offset = Vector2(9, 12)
+shadow_blur = 9.0
+shadow_opacity = 0.34
+ao_radius = 4.0
+ao_strength = 0.35
+shadow_color = Color(0.12, 0.1, 0.08, 1)
+event_feed_duration = 0.85
+log_chars_per_second = 48.0
+log_feed_speed = 150.0
+dot_pitch = 14.0
+ink_strength = 0.28
+ink_color = Color(0.16, 0.2, 0.17, 1)
+tint_mix = 0.08
+posterize_levels = 0.0

@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 34.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 40.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"channel_reach"
+amount = 0.16
+duration_hours = 6.0
+group_ids = PackedStringArray("students")
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("3_effect")
+effect_id = &"trust"
+amount = 0.04
+duration_hours = 0.0
+group_ids = PackedStringArray("students")
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_language_help_desk"
+title = "社区服务中心开设双语说明窗口"
+narrative = "社区服务中心开设双语说明窗口，由志愿者轮班翻译公共通知。窗口保留原文供读者对照，并单独标明解释与引用内容，学生开始把完整说明转给各自的语言群。"
+mentor_comment = "原文还在，别借第二种语言给第一种意思办失踪手续。"
+origin = &"world"
+topic_ids = PackedStringArray("language", "education", "trust")
+operation_ids = PackedStringArray("platform_change", "contest")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
+trigger_mode = &"random"
+start_hour = 34.0
+weight = 0.85
+occurrence_chance = 0.03
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 6.0
+attention_duration_hours = 6.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("relation")
+evidence_status = &"design"
+external_preset_id = &""
+design_rewards = Array[Dictionary]([{"kind": "language", "id": "language_zh", "count": 1}])

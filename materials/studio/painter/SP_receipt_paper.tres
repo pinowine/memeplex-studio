@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_paper_BaseColor.png" id="1_hlaq4"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_paper_Metallic.png" id="2_05ohd"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_paper_Normal.png" id="3_5al1x"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_paper_Roughness.png" id="4_sy2dr"]
+
+[resource]
+resource_name = "Painter__SP_receipt_paper"
+albedo_texture = ExtResource("1_hlaq4")
+metallic = 1.0
+metallic_texture = ExtResource("2_05ohd")
+roughness_texture = ExtResource("4_sy2dr")
+normal_enabled = true
+normal_texture = ExtResource("3_5al1x")
+metadata/painter_set = "SP_receipt_paper"
