@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_studio_cabling_BaseColor.png" id="1_fohnc"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_studio_cabling_Metallic.png" id="2_4plby"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_studio_cabling_Normal.png" id="3_ywmst"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_studio_cabling_Roughness.png" id="4_q841v"]
+
+[resource]
+resource_name = "Painter__SP_studio_cabling"
+albedo_texture = ExtResource("1_fohnc")
+metallic = 1.0
+metallic_texture = ExtResource("2_4plby")
+roughness_texture = ExtResource("4_q841v")
+normal_enabled = true
+normal_texture = ExtResource("3_ywmst")
+metadata/painter_set = "SP_studio_cabling"

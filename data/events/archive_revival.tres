@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 44.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"revival"
+amount = 0.35
+duration_hours = 0.0
+group_ids = PackedStringArray()
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.2
+duration_hours = 8.0
+group_ids = PackedStringArray()
+
+[resource]
+script = ExtResource("1_event")
+id = &"archive_revival"
+title = "档案社展出旧版短图，旧话题重返讨论"
+narrative = "城市档案社展出了早先收藏的一组短图，并附上当年的转发记录。参观者把图中的说法与眼下的处境联系起来，原本被搁置的回应重新出现在聊天里。"
+mentor_comment = "旧句子还能被翻出来，先看它这次解决什么，别忙着给复兴剪彩。"
+origin = &"environment_meme"
+topic_ids = PackedStringArray("archive", "community")
+operation_ids = PackedStringArray("revive")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
+trigger_mode = &"scheduled"
+start_hour = 44.0
+weight = 1.0
+occurrence_chance = 1.0
+cooldown_hours = 0.0
+max_occurrences = 1
+physical_duration_hours = 3.0
+attention_duration_hours = 8.0
+attention_decay = &"exponential"
+decay_parameter_hours = 4.0
+discovery_ids = PackedStringArray("relation")
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind": "topic", "id": "topic_archive", "count": 1}])

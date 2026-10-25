@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_printer_BaseColor.png" id="1_x3ikh"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_printer_Emission.png" id="2_lharu"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_printer_Metallic.png" id="3_t85dn"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_printer_Normal.png" id="4_krpiw"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_receipt_printer_Roughness.png" id="5_1ltiy"]
+
+[resource]
+resource_name = "Painter__SP_receipt_printer"
+albedo_texture = ExtResource("1_x3ikh")
+metallic = 1.0
+metallic_texture = ExtResource("3_t85dn")
+roughness_texture = ExtResource("5_1ltiy")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_operator = 1
+emission_texture = ExtResource("2_lharu")
+normal_enabled = true
+normal_texture = ExtResource("4_krpiw")
+metadata/painter_set = "SP_receipt_printer"

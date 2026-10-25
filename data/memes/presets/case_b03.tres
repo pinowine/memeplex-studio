@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_b03"
+kernel_id = &"boundary"
+title = "B03 · 绝绝子"
+required_slots = PackedStringArray("invariant_trace", "insider_context", "recognition_rule")
+slot_prompts = PackedStringArray("稳定痕迹（可改写）", "圈内语境（可改写）", "识别门槛（可改写）")
+default_values = PackedStringArray("“绝”的极端评价", "中文饭圈/社交平台；失真路径：叠词+名词化后缀“子”", "从语气判断赞美或反讽；圈外读法：只见非规范构词")
+family_anchor = "识别与变异约束：替换词根形成无语子、震惊子等；叠音与“子”是识别门。"
+context_hint = "语义：以幼态、节奏化构词表达“太绝了”，正负极性可翻转。\n语用：可称赞美食和表演，也可讽刺糟糕行为；缺少共文时极性故意模糊。\n跨语境：“X X 子”体现圈层构词法如何短期生产系列词，同时也引发对过度使用的反感。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "B03"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\B03.png"
+source_sha256 = "58ef3632f7c2e63468ec6e99ba36605a5b1fdaefac128fa7ff27115993317e10"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\05-边界信号基模.md"
+source_document_sha256 = "2c6e19be4c55df30a0491d4e74b6edeb4ca8dbf9f37d9d1db1ced2cbeb4c45e9"
+source_url = "https://bsky.app/profile/cryptoknightai.bsky.social/post/3lvsdrrtxxs26"
+evidence_status = &"design_abstraction"

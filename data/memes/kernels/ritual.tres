@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MemeDemoKernel" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_kernel.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"ritual"
+title = "参与仪式"
+description = "用触发、动作、回应及退出构成接龙。回应和退出合并在第三个槽位，避免宣称三个槽位覆盖完整仪式拓扑。"
+required_slots = PackedStringArray("trigger", "action", "response_and_exit")
+slot_prompts = PackedStringArray("谁在什么时刻发起？", "参与者重复什么动作？", "别人如何接续，什么时候退出？")
+default_values = PackedStringArray("有人发出今晚又晚点的站牌", "每人补一站自己的小故事", "下一位接一句并署站名；说到终点就结束")
+family_anchor = "参与者以可接续的同一动作表达共同经验"
+split_threshold = 0.6
+evidence_status = &"design"

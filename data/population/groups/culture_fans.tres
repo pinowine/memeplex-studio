@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MemeDemoGroup" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/population/meme_demo_group.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"culture_fans"
+title = "城市文化爱好者 · 独立合成样本"
+tag_ids = PackedStringArray("interest.city_culture", "interest.archive", "sample.disjoint_culture")
+topic_ids = PackedStringArray("community", "entertainment", "archive", "language", "sport", "identity")
+topic_affinities = PackedFloat32Array(0.9, 0.86, 0.95, 0.8, 0.55, 0.78)
+sample_size = 2000
+language_id = &"en"
+political_position = Vector2(-0.08, -0.12)
+evidence_status = &"design"
+language_access = 0.68
+recognizability = 0.72
+attention_fraction = 0.12

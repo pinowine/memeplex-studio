@@ -1,0 +1,107 @@
+[gd_resource type="Theme" format=3 uid="uid://c2ckoq3sb42ka"]
+
+[ext_resource type="SystemFont" path="res://assets/image/fonts/development_font.tres" id="1"]
+[ext_resource type="SystemFont" path="res://assets/image/fonts/print_heading_font.tres" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="Button"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.76, 0.7, 0.56, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.34, 0.31, 0.24, 1)
+
+[sub_resource type="StyleBoxFlat" id="Transparent"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.88, 0.81, 0.64, 1)
+border_width_bottom = 2
+border_color = Color(0.53, 0.25, 0.18, 1)
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.6, 0.29, 0.2, 1)
+border_width_bottom = 2
+border_color = Color(0.3, 0.18, 0.13, 1)
+
+[sub_resource type="StyleBoxFlat" id="Paper"]
+content_margin_left = 20.0
+content_margin_top = 18.0
+content_margin_right = 20.0
+content_margin_bottom = 18.0
+bg_color = Color(0.85, 0.81, 0.7, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.58, 0.53, 0.42, 1)
+shadow_color = Color(0.06, 0.08, 0.08, 0.35)
+shadow_size = 7
+shadow_offset = Vector2(3, 4)
+
+[sub_resource type="StyleBoxFlat" id="Drawer"]
+content_margin_left = 22.0
+content_margin_top = 26.0
+content_margin_right = 22.0
+content_margin_bottom = 26.0
+bg_color = Color(0.2, 0.22, 0.2, 1)
+border_width_left = 4
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.39, 0.36, 0.28, 1)
+shadow_color = Color(0.03, 0.04, 0.04, 0.4)
+shadow_size = 10
+shadow_offset = Vector2(-6, 5)
+
+[sub_resource type="StyleBoxFlat" id="Progress"]
+bg_color = Color(0.32, 0.34, 0.29, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="ProgressFill"]
+bg_color = Color(0.66, 0.31, 0.21, 1)
+
+[resource]
+default_font = ExtResource("1")
+default_font_size = 16
+Button/colors/font_color = Color(0.19, 0.18, 0.15, 1)
+Button/colors/font_disabled_color = Color(0.46, 0.43, 0.34, 1)
+Button/colors/font_hover_color = Color(0.19, 0.18, 0.15, 1)
+Button/colors/font_pressed_color = Color(0.93, 0.87, 0.73, 1)
+Button/styles/disabled = SubResource("Button")
+Button/styles/focus = SubResource("Transparent")
+Button/styles/hover = SubResource("Hover")
+Button/styles/normal = SubResource("Button")
+Button/styles/pressed = SubResource("Pressed")
+Label/colors/font_color = Color(0.19, 0.18, 0.15, 1)
+PanelContainer/styles/panel = SubResource("Paper")
+PrintCaption/base_type = &"Label"
+PrintCaption/colors/font_color = Color(0.38, 0.33, 0.26, 1)
+PrintCaption/font_sizes/font_size = 13
+PrintDrawer/base_type = &"PanelContainer"
+PrintDrawer/styles/panel = SubResource("Drawer")
+PrintHeading/base_type = &"Label"
+PrintHeading/font_sizes/font_size = 24
+PrintHeading/fonts/font = ExtResource("2")
+PrintIconButton/base_type = &"Button"
+PrintIconButton/colors/font_color = Color(0.88, 0.81, 0.64, 1)
+PrintIconButton/colors/font_disabled_color = Color(0.43, 0.45, 0.39, 1)
+PrintIconButton/colors/font_hover_color = Color(1, 0.92, 0.74, 1)
+PrintIconButton/colors/font_pressed_color = Color(0.69, 0.38, 0.26, 1)
+PrintIconButton/styles/disabled = SubResource("Transparent")
+PrintIconButton/styles/hover = SubResource("Transparent")
+PrintIconButton/styles/normal = SubResource("Transparent")
+PrintIconButton/styles/pressed = SubResource("Transparent")
+ProgressBar/styles/background = SubResource("Progress")
+ProgressBar/styles/fill = SubResource("ProgressFill")

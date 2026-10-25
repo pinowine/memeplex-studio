@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_DayRing_BaseColor.png" id="1_rydtg"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_DayRing_Metallic.png" id="2_l61o0"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_DayRing_Normal.png" id="3_stqa0"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_DayRing_Roughness.png" id="4_f26va"]
+
+[resource]
+resource_name = "Painter__Print_DayRing"
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("1_rydtg")
+metallic = 1.0
+metallic_texture = ExtResource("2_l61o0")
+roughness_texture = ExtResource("4_f26va")
+normal_enabled = true
+normal_texture = ExtResource("3_stqa0")
+metadata/painter_set = "Print_DayRing"

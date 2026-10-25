@@ -1,8 +1,8 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Theme" path="res://assets/themes/map_theme.tres" id="1"]
+[ext_resource type="Theme" path="res://data/presentation/ui/map_theme.tres" id="1"]
 
-[ext_resource type="Script" path="res://scripts/map/country_label.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/presentation/map/country_label.gd" id="2"]
 
 [node name="CountryLabel" type="Node2D"]
 z_index = 2

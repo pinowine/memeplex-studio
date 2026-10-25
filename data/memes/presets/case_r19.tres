@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_r19"
+kernel_id = &"relation"
+title = "R19 · Women in Male-Dominated Fields"
+required_slots = PackedStringArray("role_a", "role_b", "relation")
+slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
+default_values = PackedStringArray("采用被认为“男性化”坏行为的女性", "遭遇 ghosting/gaslighting 的男性", "角色互换")
+family_anchor = "识别与变异约束：替换行为和性别位置；“原先由群体B垄断的行为被A执行”是不变量。"
+context_hint = "语义：把职场多元话语挪到亲密关系，用“进入领域”描述女性复制男性坏习惯。\n语用：可揭露性别化约会脚本，也会把复杂伤害重新固化为“男女天性”。\n跨语境：反向版本 Men in Women’s Fields 很快出现，显示关系模板会自动要求对称报复。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "R19"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R19.png"
+source_sha256 = "0ad8a550fc5e7cbb34d5f75f958f693b7a592cd0b57e72261d8a3e2d4102ffd1"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\02-关系模板基模.md"
+source_document_sha256 = "3d2290cf6f58d53badf7cf35f40a7cca5dfda7b692195a7fef58689cde2558ee"
+source_url = "https://bsky.app/profile/bikwin5.bsky.social/post/3mbi27rtzik26"
+evidence_status = &"design_abstraction"

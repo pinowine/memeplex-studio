@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 24.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 30.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.2
+duration_hours = 6.0
+group_ids = PackedStringArray("culture_fans", "students")
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_courtyard_market"
+title = "共享庭院雨后开放手作展"
+narrative = "社区事务处在雨后重新开放共享庭院，邀请居民摆出手作和小型展品。学生与城市文化爱好者沿展位交流，现场的作品照片和展摊短句陆续传入社区群聊。"
+mentor_comment = "展位已经摆满，先让人看懂你那一件，热闹不会代签说明书。"
+origin = &"world"
+topic_ids = PackedStringArray("entertainment", "community")
+operation_ids = PackedStringArray("attention_shift", "amplify")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 24.0
+weight = 0.9
+occurrence_chance = 0.035
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 6.0
+attention_duration_hours = 6.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("shared_world")
+evidence_status = &"design"
+external_preset_id = &""

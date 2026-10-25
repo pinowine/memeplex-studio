@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 4.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 10.0
+
+[sub_resource type="Resource" id="Condition_3"]
+script = ExtResource("2_condition")
+field = &"exposed"
+operator = &"ge"
+value = 100.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"trust"
+amount = -0.05
+duration_hours = 0.0
+group_ids = PackedStringArray("commuters")
+
+[resource]
+script = ExtResource("1_event")
+id = &"transmission_source_question"
+title = "职员追问转发截图的原句来源"
+narrative = "职员将原句与转发截图并排，追问最早的出处和被省略的说明。几处链接仍未补齐，这一批读者开始对转发中的判断保持怀疑。"
+mentor_comment = "出处栏还空着，气势倒已填满，先补上那条能点开的链接。"
+origin = &"transmission"
+topic_ids = PackedStringArray("trust", "work")
+operation_ids = PackedStringArray("contest")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 4.0
+weight = 1.3
+occurrence_chance = 0.04
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 0.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("stance")
+evidence_status = &"design"
+external_preset_id = &""

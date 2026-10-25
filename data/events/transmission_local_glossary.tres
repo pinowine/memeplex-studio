@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 14.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 20.0
+
+[sub_resource type="Resource" id="Condition_3"]
+script = ExtResource("2_condition")
+field = &"exposed"
+operator = &"ge"
+value = 500.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"trust"
+amount = 0.04
+duration_hours = 0.0
+group_ids = PackedStringArray("students")
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("3_effect")
+effect_id = &"channel_reach"
+amount = 0.12
+duration_hours = 5.0
+group_ids = PackedStringArray("students")
+
+[resource]
+script = ExtResource("1_event")
+id = &"transmission_local_glossary"
+title = "读者为原帖补写简短词表"
+narrative = "读者将原帖中两个容易误会的词写成小词表，并在旁边保留原句链接。学生把词表贴回群聊，几处重复追问有了可核对的解释，相关短句也更容易被接着讨论。"
+mentor_comment = "两个词终于有了说明，大家都懂这块招牌可以暂时摘了。"
+origin = &"transmission"
+topic_ids = PackedStringArray("language", "trust")
+operation_ids = PackedStringArray("contest", "amplify")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
+trigger_mode = &"random"
+start_hour = 14.0
+weight = 0.9
+occurrence_chance = 0.03
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 5.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("relation")
+evidence_status = &"design"
+external_preset_id = &""

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_w04"
+kernel_id = &"shared_world"
+title = "W04 · Harry Potter by Balenciaga"
+required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
+slot_prompts = PackedStringArray("世界前提（可改写）", "共享规则（可改写）", "补写空缺（可改写）")
+default_values = PackedStringArray("Harry Potter 世界被高定品牌审美接管", "共享锚点：熟悉角色、Balenciaga 重复台词、阴郁时装；规则：每人被重制为走秀式肖像", "其他作品/角色可继续品牌化")
+family_anchor = "共享锚点：熟悉角色、Balenciaga 重复台词、阴郁时装；识别与变异约束：固定“X by Balenciaga”前提，替换作品、角色、品牌与台词；审美一致性是锚。"
+context_hint = "语义：跨 IP 与品牌风格的高拟真融合让识别和陌生化同时发生。\n语用：观众比较角色保真度、复述品牌台词，并把公式迁移到 Star Wars 等作品。\n跨语境：项目论文将它作为 AI 模因新类型：变化单位不再只是字幕，而是整个视听世界。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "W04"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\W04.png"
+source_sha256 = "3268dbde250956c84a4ca5f827ab8ab1f8d3c75f334397b62798388ece0f9b7a"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\04-共同世界基模.md"
+source_document_sha256 = "ee888a488d3578258054a7923621fbc9a18f9f8e49bf96ab506f41e9808a9b3e"
+source_url = "https://bsky.app/profile/swiftonsecurity.com/post/3mha2f2z2l22x"
+evidence_status = &"design_abstraction"

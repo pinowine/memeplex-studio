@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 19.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 25.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = -0.08
+duration_hours = 6.0
+group_ids = PackedStringArray("culture_fans")
+
+[resource]
+script = ExtResource("1_event")
+id = &"environment_archive_ritual"
+title = "档案爱好者约定回看与告别方式"
+narrative = "档案爱好者公布了一套回看旧资料的接句约定，参与者既可以补充记忆，也可以用约定短句结束回应。几个收藏群按这一节奏轮流贴出旧材料，档案讨论出现了自己的聚集时刻。"
+mentor_comment = "旧档案有了告别方式，至少不会把礼貌回应续成无期限合同。"
+origin = &"environment_meme"
+topic_ids = PackedStringArray("archive", "community")
+operation_ids = PackedStringArray("emerge", "attention_shift")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 19.0
+weight = 0.7
+occurrence_chance = 0.025
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 6.0
+attention_decay = &"periodic"
+decay_parameter_hours = 3.0
+discovery_ids = PackedStringArray("ritual")
+evidence_status = &"design"
+external_preset_id = &"case_p07"

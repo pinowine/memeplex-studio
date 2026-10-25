@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_b20"
+kernel_id = &"boundary"
+title = "B20 · IJBOL"
+required_slots = PackedStringArray("invariant_trace", "insider_context", "recognition_rule")
+slot_prompts = PackedStringArray("稳定痕迹（可改写）", "圈内语境（可改写）", "识别门槛（可改写）")
+default_values = PackedStringArray("“I just burst out laughing”", "K-pop stan Twitter与 Gen Z 用户；失真路径：五词首字母化并常被读作 /ˈiːdʒbɒl/", "知道展开；圈外读法：误以为韩语词或团名")
+family_anchor = "识别与变异约束：大小写、读音和附加哭笑表情可变；五字母与爆笑展开是不变量。"
+context_hint = "语义：提供比 LOL 更像“真的笑出声”的高强度反应标记。\n语用：用于即时回复，也因外形像韩语罗马字而成为对圈外误认的二级笑话。\n跨语境：英语缩写在韩流粉圈获得新发音和身份，再回流主流英语媒体，呈现社群再授权。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "B20"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\B20.png"
+source_sha256 = "6f4c116e73701b1d0e7b8b247906cd82f1dc362863e0839ff5e63129908fcb35"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\05-边界信号基模.md"
+source_document_sha256 = "2c6e19be4c55df30a0491d4e74b6edeb4ca8dbf9f37d9d1db1ced2cbeb4c45e9"
+source_url = "https://bsky.app/profile/gbbranstetter.bsky.social/post/3kqy47fskzj2z"
+evidence_status = &"design_abstraction"

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MapCountryDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/map/country_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"C06"
+population = 18000000
+short_name_key = &"C06_SHORT"
+official_name_key = &"C06_NAME"
+prototype_key = &"C06_PROTOTYPE"
+description_key = &"C06_DESCRIPTION"
+topics_key = &"C06_TOPICS"
+events_key = &"C06_EVENTS"
+competitors_key = &"C06_COMPETITORS"
+reference_area_km2 = 1216330
+reference_members = PackedStringArray("SWE", "NOR", "FIN", "DNK", "ISL")
+site_name_keys = PackedStringArray("C06_SITE0", "C06_SITE1", "C06_SITE2", "C06_SITE3")
+geography_name_key = &"C06_GEO"

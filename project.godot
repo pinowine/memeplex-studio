@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="Memeplex Studio"
-run/main_scene="res://scenes/demo/demo_page.tscn"
+run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
+
 
 [display]
 
@@ -23,9 +24,6 @@ window/size/window_height_override=1000
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
-[editor_plugins]
-
-enabled=PackedStringArray()
 
 [input]
 
@@ -92,7 +90,7 @@ simulation_speed_3={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://localization/interface.zh_CN.translation", "res://localization/interface.en.translation")
+locale/translations=PackedStringArray("res://localization/ui/interface.zh_CN.translation", "res://localization/ui/interface.en.translation")
 locale/test="zh_CN"
 locale/fallback="zh_CN"
 

@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_storage_furniture_BaseColor.png" id="1_2nnir"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_storage_furniture_Metallic.png" id="2_xn3d7"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_storage_furniture_Normal.png" id="3_i171s"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_storage_furniture_Roughness.png" id="4_j5ekx"]
+
+[resource]
+resource_name = "Painter__SP_storage_furniture"
+albedo_texture = ExtResource("1_2nnir")
+metallic = 1.0
+metallic_texture = ExtResource("2_xn3d7")
+roughness_texture = ExtResource("4_j5ekx")
+normal_enabled = true
+normal_texture = ExtResource("3_i171s")
+metadata/painter_set = "SP_storage_furniture"
