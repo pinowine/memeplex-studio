@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MemeDemoChannel" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_channel.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"local_board"
+title = "街区留言板"
+reach_factor = 0.8
+remix_factor = 0.55
+description = "虚构的熟人型留言板。触达较慢、语境保存较多；0.8与0.55是Demo设计值，不是实测平台参数。"
+evidence_status = &"design"

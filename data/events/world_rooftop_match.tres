@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 32.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 38.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.25
+duration_hours = 6.0
+group_ids = PackedStringArray("students", "culture_fans")
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_rooftop_match"
+title = "屋顶球场开放临时友谊赛"
+narrative = "社区球场批准一场临时友谊赛，屋顶场地向附近学院和居民开放。比分播报带动看台上的短句应援，学生和城市文化爱好者在几轮攻防之间反复交换比赛片段。"
+mentor_comment = "比分翻盘有录像，改说法时也留份记录，免得只剩事后说明。"
+origin = &"world"
+topic_ids = PackedStringArray("sport", "community")
+operation_ids = PackedStringArray("attention_shift")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 32.0
+weight = 1.15
+occurrence_chance = 0.035
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 5.0
+attention_duration_hours = 6.0
+attention_decay = &"periodic"
+decay_parameter_hours = 3.0
+discovery_ids = PackedStringArray("ritual")
+evidence_status = &"design"
+external_preset_id = &""

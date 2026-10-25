@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_SeasonRing_BaseColor.png" id="1_mqn8p"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_SeasonRing_Metallic.png" id="2_bhdhe"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_SeasonRing_Normal.png" id="3_fixjx"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Print_SeasonRing_Roughness.png" id="4_xinpr"]
+
+[resource]
+resource_name = "Painter__Print_SeasonRing"
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("1_mqn8p")
+metallic = 1.0
+metallic_texture = ExtResource("2_bhdhe")
+roughness_texture = ExtResource("4_xinpr")
+normal_enabled = true
+normal_texture = ExtResource("3_fixjx")
+metadata/painter_set = "Print_SeasonRing"

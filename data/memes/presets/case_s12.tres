@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_s12"
+kernel_id = &"stance"
+title = "S12 · Pope in a Puffer Jacket"
+required_slots = PackedStringArray("speaker", "visible_situation", "claim")
+slot_prompts = PackedStringArray("发声者（可改写）", "可见情境（可改写）", "表态框架（可改写）")
+default_values = PackedStringArray("穿白色羽绒服的教皇形象", "权威身份与街头时尚并置", "“这看似真实且很有型”")
+family_anchor = "识别与变异约束：替换人物、服饰品牌或场景；“权威人物+不合常规潮服+拟真摄影”是生成语法。"
+context_hint = "语义：把宗教权威重构为潮流名人，同时利用照片真实性预期制造惊奇。\n语用：常用于赞叹“drip”，也成为生成式图像误认和来源核验的示例。\n跨语境：其传播标志 AI 视觉从明显怪图转向可短暂骗过观看者的日常平台内容。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "S12"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\S12.png"
+source_sha256 = "25d08368caaa2d75656952464633b81e06f9de34d9a48160436d0cb429d15605"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\01-立场基模.md"
+source_document_sha256 = "28bc3e74a5fdcca50a278f3bc74dbf33de7f3c422179f61814e9335442115e9f"
+source_url = "https://bsky.app/profile/swansonian.bsky.social/post/3lncwfghy5c2q"
+evidence_status = &"design_abstraction"

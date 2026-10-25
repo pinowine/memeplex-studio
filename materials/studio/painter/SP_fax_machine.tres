@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_machine_BaseColor.png" id="1_yotci"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_machine_Metallic.png" id="2_vy0sw"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_machine_Normal.png" id="3_m65gd"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_fax_machine_Roughness.png" id="4_0erf3"]
+
+[resource]
+resource_name = "Painter__SP_fax_machine"
+albedo_texture = ExtResource("1_yotci")
+metallic = 1.0
+metallic_texture = ExtResource("2_vy0sw")
+roughness_texture = ExtResource("4_0erf3")
+normal_enabled = true
+normal_texture = ExtResource("3_m65gd")
+metadata/painter_set = "SP_fax_machine"

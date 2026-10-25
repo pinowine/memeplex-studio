@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MemeDemoKernel" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_kernel.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"shared_world"
+title = "共同世界"
+description = "围绕前提、共享规则和可补写空缺建立虚构世界。三个槽位只用于可玩性验证，不是文献确定的普遍分类。"
+required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
+slot_prompts = PackedStringArray("这个共同世界的前提是什么？", "大家必须保持的规则是什么？", "还留给别人什么空缺？")
+default_values = PackedStringArray("纸灯港的所有钟都各慢一分钟", "每个居民解释自己丢掉的一分钟", "尚未确定港口最后一只钟属于谁")
+family_anchor = "共享的纸灯港与丢失一分钟规则仍能被后续贡献者识别"
+split_threshold = 0.6
+evidence_status = &"design"

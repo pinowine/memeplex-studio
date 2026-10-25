@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 4.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 10.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.22
+duration_hours = 5.0
+group_ids = PackedStringArray("commuters")
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_shift_roster"
+title = "港口调度室公布错峰排班表"
+narrative = "港口调度室公布新的错峰排班表，两批工人的交班时间不再重合。候车站台出现新的等待间隔，职员开始比较班次与通勤安排，并在交班群里询问由此增加的等待时间。"
+mentor_comment = "错峰把人错开了，等待时间仍整齐地留给同一批人，先把那一段单列出来。"
+origin = &"world"
+topic_ids = PackedStringArray("work", "cost_of_living")
+operation_ids = PackedStringArray("attention_shift")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 4.0
+weight = 1.2
+occurrence_chance = 0.04
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 8.0
+attention_duration_hours = 5.0
+attention_decay = &"linear"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("relation")
+evidence_status = &"design"
+external_preset_id = &""

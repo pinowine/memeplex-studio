@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 40.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 46.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"channel_reach"
+amount = 0.18
+duration_hours = 5.0
+group_ids = PackedStringArray()
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_platform_order_trial"
+title = "社区信息流试行按时间排序"
+narrative = "社区信息流宣布在部分街区试行按发布时间排序，近期帖子将依次进入展示栏。使用者开始比较新旧页面，刚发布的工具说明与社区消息获得了更靠前的位置。"
+mentor_comment = "排序终于一视同仁，废话也能按时上班，发布前自己筛一遍。"
+origin = &"world"
+topic_ids = PackedStringArray("platform_tools", "community")
+operation_ids = PackedStringArray("platform_change")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 40.0
+weight = 1.0
+occurrence_chance = 0.035
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 5.0
+attention_duration_hours = 5.0
+attention_decay = &"constant"
+decay_parameter_hours = 0.0
+discovery_ids = PackedStringArray("relation")
+evidence_status = &"design"
+external_preset_id = &""

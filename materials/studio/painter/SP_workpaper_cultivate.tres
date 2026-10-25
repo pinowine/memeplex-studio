@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_cultivate_BaseColor.png" id="1_tttst"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_cultivate_Metallic.png" id="2_cwlro"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_cultivate_Normal.png" id="3_3rs2n"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_workpaper_cultivate_Roughness.png" id="4_lkmfl"]
+
+[resource]
+resource_name = "Painter__SP_workpaper_cultivate"
+albedo_texture = ExtResource("1_tttst")
+metallic = 1.0
+metallic_texture = ExtResource("2_cwlro")
+roughness_texture = ExtResource("4_lkmfl")
+normal_enabled = true
+normal_texture = ExtResource("3_3rs2n")
+metadata/painter_set = "SP_workpaper_cultivate"

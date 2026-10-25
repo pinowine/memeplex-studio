@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_w14"
+kernel_id = &"shared_world"
+title = "W14 · 酸黄瓜和通哥／酸黄瓜跳舞"
+required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
+slot_prompts = PackedStringArray("世界前提（可改写）", "共享规则（可改写）", "补写空缺（可改写）")
+default_values = PackedStringArray("会跳舞的酸黄瓜与“通哥/通通哥”等角色持续生活、造房", "共享锚点：细长绿色身体、魔性舞步、固定账号名；规则：低解释的角色行为不断续集化", "下一次建造/冲突")
+family_anchor = "共享锚点：细长绿色身体、魔性舞步、固定账号名；识别与变异约束：可替换舞曲、角色比例和任务；酸黄瓜轮廓、通哥配对及连续日更承诺构成世界锚。"
+context_hint = "语义：视觉先于叙事：观众从反复共现中把怪形象识别为角色，并自行补足关系。\n语用：用于制造猎奇笑点、记忆污染和“还是没躲开”的被动观看感，评论又给角色追加设定。\n跨语境：它代表中文 2026 AI/低成本 3D 抽象角色链，也与更早木棍人、Italian Brainrot 的形态谱系互文。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "W14"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\W14.png"
+source_sha256 = "0aaf6656b6816606c06e50eeb69d42302255a6cdc4720a33768af99d2105b172"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\04-共同世界基模.md"
+source_document_sha256 = "ee888a488d3578258054a7923621fbc9a18f9f8e49bf96ab506f41e9808a9b3e"
+source_url = "https://www.bilibili.com/video/BV1NEj161EEz/"
+evidence_status = &"design_abstraction"

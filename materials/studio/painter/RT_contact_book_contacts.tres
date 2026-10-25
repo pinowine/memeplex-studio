@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_contact_book_contacts_BaseColor.png" id="1_njjqa"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_contact_book_contacts_Metallic.png" id="2_7ik1g"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_contact_book_contacts_Normal.png" id="3_rvuk8"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_contact_book_contacts_Roughness.png" id="4_q0tyq"]
+
+[resource]
+resource_name = "Painter__RT_contact_book_contacts"
+albedo_texture = ExtResource("1_njjqa")
+metallic = 1.0
+metallic_texture = ExtResource("2_7ik1g")
+roughness_texture = ExtResource("4_q0tyq")
+normal_enabled = true
+normal_texture = ExtResource("3_rvuk8")
+metadata/painter_set = "RT_contact_book_contacts"

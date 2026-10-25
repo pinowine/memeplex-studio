@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"case_p10"
+kernel_id = &"ritual"
+title = "P10 · We Listen, We Don’t Judge"
+required_slots = PackedStringArray("trigger", "action", "response_and_exit")
+slot_prompts = PackedStringArray("触发时刻（可改写）", "参与动作（可改写）", "回应与退出（可改写）")
+default_values = PackedStringArray("双方说出固定承诺", "轮流坦白小秘密", "重复“we don’t judge”但显露反应；接续／退出：继续升级或因破防中止")
+family_anchor = "识别与变异约束：替换秘密与参与关系；固定合诵、轮流披露、压制反应构成循环。"
+context_hint = "语义：规则承诺无评判，画面中的惊讶却持续泄露评判，形成话语/身体反差。\n语用：用于伴侣、朋友和家庭的关系测试；坦白深度会从玩笑滑向真实冲突。\n跨语境：它把心理安全变成可观看的娱乐契约，观众的评论又构成外部审判。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+source_case_id = "P10"
+source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\P10.png"
+source_sha256 = "32800c42969b90cd556c5a7e9b64173e2d661839bfeb97fa0ad0aebe2ac89046"
+source_document_path = "E:\\UAL\\Thesis-BLF\\memes\\categories\\03-参与仪式基模.md"
+source_document_sha256 = "27daa108893057364d60926990d64cc57192445d7ea32bd9d7b705d1cbc87438"
+source_url = "https://bsky.app/profile/jaebenear.bsky.social/post/3lcbadupeck26"
+evidence_status = &"design_abstraction"

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AtlasLatitudeStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/map/latitude_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+latitudes = PackedFloat32Array(66.56, 23.44, 0, -23.44, -66.56)
+line_color = Color(0.24, 0.30, 0.28, 0.28)
+equator_color = Color(0.38, 0.24, 0.18, 0.40)
+paper_color = Color(0.95, 0.93, 0.86, 0.16)
+line_width = 0.72
+equator_width = 0.85
+paper_width = 1.8
+dash_length = 9.0
+gap_length = 7.0

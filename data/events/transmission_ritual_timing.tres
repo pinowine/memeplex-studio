@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+
+[sub_resource type="Resource" id="Condition_1"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"ge"
+value = 27.0
+
+[sub_resource type="Resource" id="Condition_2"]
+script = ExtResource("2_condition")
+field = &"hour"
+operator = &"le"
+value = 33.0
+
+[sub_resource type="Resource" id="Condition_3"]
+script = ExtResource("2_condition")
+field = &"adopted"
+operator = &"ge"
+value = 80.0
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("3_effect")
+effect_id = &"attention"
+amount = 0.18
+duration_hours = 6.0
+group_ids = PackedStringArray("culture_fans")
+
+[resource]
+script = ExtResource("1_event")
+id = &"transmission_ritual_timing"
+title = "使用者约定散场时再回应一次"
+narrative = "一批文化爱好者约定在散场时用原来的开头再回应一次。短句随着散场时刻集中出现，随后又安静下来，娱乐与社区群聊呈现出自己的接写节奏。"
+mentor_comment = "散场时的齐声回应很准时，别把一次点名记成终身出勤。"
+origin = &"transmission"
+topic_ids = PackedStringArray("entertainment", "community")
+operation_ids = PackedStringArray("amplify")
+conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
+effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
+trigger_mode = &"random"
+start_hour = 27.0
+weight = 0.95
+occurrence_chance = 0.03
+cooldown_hours = 18.0
+max_occurrences = 1
+physical_duration_hours = 2.0
+attention_duration_hours = 6.0
+attention_decay = &"periodic"
+decay_parameter_hours = 3.0
+discovery_ids = PackedStringArray("ritual")
+evidence_status = &"design"
+external_preset_id = &""

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MapCountryDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/map/country_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"C13"
+population_configured = false
+short_name_key = &"C13_SHORT"
+official_name_key = &"C13_NAME"
+prototype_key = &"C13_PROTOTYPE"
+description_key = &"C13_DESCRIPTION"
+topics_key = &"C13_TOPICS"
+events_key = &"C13_EVENTS"
+competitors_key = &"C13_COMPETITORS"
+reference_area_km2 = 1014531.44
+reference_members = PackedStringArray("DEU", "AUT", "CHE", "LIE", "POL", "CZE", "SVK", "HUN", "SVN")
+site_name_keys = PackedStringArray("C13_SITE0", "C13_SITE1", "C13_SITE2", "C13_SITE3")
+geography_name_key = &"C13_GEO"

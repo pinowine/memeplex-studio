@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_crt_terminal_screen_BaseColor.png" id="1_5kk7w"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_crt_terminal_screen_Emission.png" id="2_kntt5"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_crt_terminal_screen_Metallic.png" id="3_yg8oe"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_crt_terminal_screen_Normal.png" id="4_i645m"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/RT_crt_terminal_screen_Roughness.png" id="5_thy5s"]
+
+[resource]
+resource_name = "Painter__RT_crt_terminal_screen"
+albedo_texture = ExtResource("1_5kk7w")
+metallic = 1.0
+metallic_texture = ExtResource("3_yg8oe")
+roughness_texture = ExtResource("5_thy5s")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_operator = 1
+emission_texture = ExtResource("2_kntt5")
+normal_enabled = true
+normal_texture = ExtResource("4_i645m")
+metadata/painter_set = "RT_crt_terminal_screen"

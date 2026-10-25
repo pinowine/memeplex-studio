@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_CableConnections_BaseColor.png" id="1_o1v1a"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_CableConnections_Metallic.png" id="2_svm2x"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_CableConnections_Normal.png" id="3_stjw0"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/SP_CableConnections_Roughness.png" id="4_6pax0"]
+
+[resource]
+resource_name = "Painter__SP_CableConnections"
+albedo_texture = ExtResource("1_o1v1a")
+metallic = 1.0
+metallic_texture = ExtResource("2_svm2x")
+roughness_texture = ExtResource("4_6pax0")
+normal_enabled = true
+normal_texture = ExtResource("3_stjw0")
+metadata/painter_set = "SP_CableConnections"

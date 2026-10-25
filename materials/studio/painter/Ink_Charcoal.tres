@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Ink_Charcoal_BaseColor.png" id="1_ik880"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Ink_Charcoal_Metallic.png" id="2_pbobp"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Ink_Charcoal_Normal.png" id="3_77js3"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/painter/Ink_Charcoal_Roughness.png" id="4_85crl"]
+
+[resource]
+resource_name = "Painter__Ink_Charcoal"
+albedo_texture = ExtResource("1_ik880")
+metallic = 1.0
+metallic_texture = ExtResource("2_pbobp")
+roughness_texture = ExtResource("4_85crl")
+normal_enabled = true
+normal_texture = ExtResource("3_77js3")
+metadata/painter_set = "Ink_Charcoal"
