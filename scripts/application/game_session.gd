@@ -137,7 +137,7 @@ func _process(delta: float) -> void:
 		atlas.set_speed(0)
 	else:
 		simulation.advance_active_seconds(delta)
-		atlas.clock.utc_seconds = _clock_anchor + simulation.hour * 3600.0
+		atlas.clock.utc_seconds = _clock_anchor + simulation.elapsed_hours() * 3600.0
 		atlas._update_clock()
 		atlas.set_speed(simulation.speed if simulation.phase == "running" else 0)
 	atlas.get_node("%PointsValue").text = str(simulation.economy.balance)
@@ -224,9 +224,9 @@ func _commit_draft(draft: Dictionary, index: int) -> bool:
 	if atlas.clock.studio_index != index:
 		atlas.select_country(index)
 		atlas.establish_studio()
-		atlas.clock.utc_seconds += simulation.hour * 3600.0
+		atlas.clock.utc_seconds += simulation.elapsed_hours() * 3600.0
 		atlas._update_clock()
-	_clock_anchor = atlas.clock.utc_seconds - simulation.hour * 3600.0
+	_clock_anchor = atlas.clock.utc_seconds - simulation.elapsed_hours() * 3600.0
 	hud.show_workbench(false)
 	atlas.close_drawer()
 	atlas.set_speed(simulation.speed)
@@ -274,7 +274,7 @@ func _step() -> void:
 	simulation.set_speed(0)
 	atlas.set_speed(0)
 	if simulation.step_hour():
-		atlas.clock.utc_seconds = _clock_anchor + simulation.hour * 3600.0
+		atlas.clock.utc_seconds = _clock_anchor + simulation.elapsed_hours() * 3600.0
 		atlas._update_clock()
 
 func _open_workbench() -> void:
@@ -400,7 +400,7 @@ func _load() -> bool:
 			atlas.establish_studio()
 			break
 	_clock_anchor = atlas.clock.utc_seconds
-	atlas.clock.utc_seconds += simulation.hour * 3600.0
+	atlas.clock.utc_seconds += simulation.elapsed_hours() * 3600.0
 	atlas.set_speed(simulation.speed)
 	atlas._update_clock()
 	if not simulation.latest_draft.is_empty(): hud.set_draft(simulation.latest_draft)
