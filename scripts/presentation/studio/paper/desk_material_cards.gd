@@ -19,6 +19,11 @@ const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_
 
 class CardInteraction extends DeskPropInteraction:
 	signal dropped_at(id: StringName, point: Vector2, origin: Vector2)
+	var loose_only := false
+	func _live_prop(id: StringName) -> bool:
+		if not super._live_prop(id): return false
+		return not loose_only or int(get_parent()._cards[String(id)].get("clipped_slot", -1)) < 0
+
 	func input_event(event: InputEvent) -> bool:
 		var before := inspection()
 		var release: bool = event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed and before.dragging
@@ -67,9 +72,10 @@ func configure(rules: MemeDesignRules, light: Node2D, ink: ShaderMaterial) -> vo
 	_build_storage_slots()
 	_layout_inventory()
 
-func set_enabled(value: bool) -> void:
-	if value == _enabled: return
+func set_enabled(value: bool, loose_only := false) -> void:
+	if value == _enabled and loose_only == _props.loose_only: return
 	_enabled = value
+	_props.loose_only = loose_only
 	_props.set_enabled(value)
 	if not value: _return_free_cards()
 	# Camera travel blocks dragging without removing physical paper from the desk.
