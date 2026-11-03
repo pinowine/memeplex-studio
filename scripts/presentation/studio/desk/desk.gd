@@ -1050,7 +1050,8 @@ func _process(_delta: float) -> void:
 	_update_hover_strip()
 	for box: Control in _token_boxes.values(): box.set_interaction_enabled(enabled and _revealed_focus == "sheet/cultivate" and _camera.inspection().state == "focused")
 	if _props.enabled != enabled: _props.set_enabled(enabled)
-	if _material_cards != null: _material_cards.set_enabled(enabled)
+	# Loose paper keeps its desk pose and drag behavior while inspecting the fax.
+	if _material_cards != null: _material_cards.set_enabled(not blocked and not slot_details_active(), fax_focused)
 	for item: Control in _context_layer_items.values(): item.set_interaction_enabled(enabled)
 	var editor: Control = _page.hud.design_workbench()
 	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _page.simulation.phase != "event" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
