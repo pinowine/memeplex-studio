@@ -103,8 +103,8 @@ func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> v
 	var title: String = str(info.get("title",names.get(layer,layer)))
 	var body: String = str(info.get("description",info.get("text","")))
 	var instructions := {
-		"language":"语言决定表达使用的语言。默认一个槽，释义补丁可增加第二个。至少保留一个来源有效且已挂接的语言，才能推进或发布。",
-		"group":"人群决定表达面向的群体。默认一个槽，对照补丁可增加第二个。至少保留一个来源有效且已挂接的人群，才能推进或发布。",
+		"language":"语言决定表达使用的语言。默认一个槽，释义补丁可增加第二个。至少保留一个来源有效且已挂接的语言，才能发布。",
+		"group":"人群决定表达面向的群体。默认一个槽，对照补丁可增加第二个。至少保留一个来源有效且已挂接的人群，才能发布。",
 		"topics":"话题用横向纸条安装；抓取纸舌移出。空位不会凭空产生材料。",
 		"stance":"横轴：自由—威权；纵轴：平等—等级。空心点是起点，实心点是当前位置。一次沿一个轴移动，每步0.1；离开起点使用对应筹码，返回归还。",
 		"pragmatic":"横轴：真诚—反讽；纵轴：支持—反对。一次沿一个轴移动，每步0.1。对应筹码数量可在显示器的语用模式查看。"}
@@ -852,7 +852,7 @@ func _drop_material(kind: String, id: String, point: Vector2) -> void:
 
 func _fax_focus_changed(focused: bool) -> void:
 	_sync_reader_blocks()
-	_page.atlas.set_speed(0 if focused or _page.hud.get_node("%Workbench").visible else _page.simulation.speed)
+	_page.atlas.set_speed(_page.clock_speed())
 	if not focused:
 		_component_target = ""
 		if _slot_reader != null: _slot_reader.hide_details()
@@ -918,7 +918,6 @@ func sheet_changed(id: String) -> void:
 
 
 func _sheet_started(_id: String) -> void:
-	_page.atlas.set_speed(0)
 	if _props != null: _props.cancel_drag()
 
 
@@ -932,7 +931,7 @@ func _sheet_settled(id: String) -> void:
 	_set_sheet_content_visible(true)
 	_page.atlas.fit_map()
 	_page._sync_setup()
-	_page.atlas.set_speed(0 if _active_sheet != "map" or _page._interface_paused() else _page.simulation.speed)
+	_page.atlas.set_speed(_page.clock_speed())
 	_open_pending_material_details()
 
 
@@ -1060,8 +1059,8 @@ func _process(_delta: float) -> void:
 	_country_layer.visible = _active_sheet == "map" and enabled
 	_page.atlas.drawer.hide()
 	_page.atlas.hover_note.hide()
-	_page.atlas.get_node("%SpeedControl").disabled = blocked or interaction_paused() or _active_sheet != "map" or _page.simulation.phase != "running"
-	_speed_strip.sync(_page.simulation.speed, enabled and _active_sheet == "map" and _page.simulation.phase == "running")
+	_page.atlas.get_node("%SpeedControl").disabled = blocked or interaction_paused() or _page._clock_paused() or _page.simulation.phase != "running"
+	_speed_strip.sync(_page.clock_speed(), enabled and not _page._clock_paused() and _page.simulation.phase == "running")
 
 
 func inspection() -> Dictionary:
@@ -1174,7 +1173,7 @@ func _component_details() -> Dictionary:
 		"crt":{"title":"点数显示器","body":"下方三个键切换 Meme、政治立场和语用点数。Meme页保留变化曲线；其余两页显示四个方向已有的筹码。抓取方向格中的筹码，可拖到培养纸的对应坐标轴。"},
 		"printer":{"title":"日志打印机","body":"点数流水和事件摘要会继续打印。单击纸上的事件记录，可查看对应的原始事件。"},
 		"clock":{"title":"时间罗盘","body":"罗盘显示当前日期、季节与天气。时间推进遵守当前播放速度；查看说明不会改变模因与材料。"},
-		"speed":{"title":"播放速度","body":"三个实体键控制暂停、正常播放和加速。只有世界页运行时可以推进时间。"}}
+		"speed":{"title":"播放速度","body":"三个实体键控制暂停、正常播放和加速。翻页与普通传真打印不会暂停；附带物资的传真会等待你取出纸片。"}}
 	return descriptions.get(_component_target,{"title":"工作台","body":"单击空白处或按 Esc，回到桌面。"}).duplicate(true)
 
 func _show_component_details(hover: Dictionary = {}) -> void:

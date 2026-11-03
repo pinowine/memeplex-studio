@@ -68,10 +68,11 @@ func configure(rules: MemeDesignRules, light: Node2D, ink: ShaderMaterial) -> vo
 	_layout_inventory()
 
 func set_enabled(value: bool) -> void:
+	if value == _enabled: return
 	_enabled = value
 	_props.set_enabled(value)
 	if not value: _return_free_cards()
-	for card in _cards.values(): card.node.visible = value
+	# Camera travel blocks dragging without removing physical paper from the desk.
 	queue_redraw()
 
 func set_event_output_mode(value: bool) -> void:
@@ -513,7 +514,6 @@ func request_item(kind: String, id: String, installed: bool=false) -> bool:
 	count.hide()
 	shadow.hide()
 	_cards[key] = {"face":face,"node":node,"paper":paper,"shadow":shadow,"hover":rim,"count":count,"title":title,"kind":kind,"id":id,"clipped_slot":-1,"graphic":graphic,"inventory_docked":true,"inventory_position":node.position,"inventory_index":siblings,"event_placed":false,"card_style":{"language":"ruled_language_card","group":"ochre_group_card","module":"graph_patch_card","topic":"horizontal_topic_card"}.get(kind,"material_card")}
-	node.visible = _enabled
 	node.tooltip_text = ""
 	count.text = "×%d" % _available(kind,id)
 	_props.register_prop(key,node,Rect2(Vector2.ZERO,node.size),false,true)
