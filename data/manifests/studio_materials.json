@@ -763,11 +763,11 @@
       "width": 1024.0
     },
     "SP_speed_controls_BaseColor.png": {
-      "bytes": 208603.0,
+      "bytes": 203453.0,
       "height": 1024.0,
       "path": "res://assets/image/textures/studio/painter/SP_speed_controls_BaseColor.png",
       "png_color_type": 2.0,
-      "sha256": "f41a9bba6085a2f4bb6f01dfb1f1fd7ec67d639a0740f32714248e8332de6166",
+      "sha256": "b3bca82563725158e502ac338be617e83e878352d8d838294333d766782f3cbb",
       "width": 1024.0
     },
     "SP_speed_controls_Metallic.png": {
@@ -787,11 +787,11 @@
       "width": 1024.0
     },
     "SP_speed_controls_Roughness.png": {
-      "bytes": 146032.0,
+      "bytes": 143219.0,
       "height": 1024.0,
       "path": "res://assets/image/textures/studio/painter/SP_speed_controls_Roughness.png",
       "png_color_type": 0.0,
-      "sha256": "ff7350a786c523a6448c43fdf90dc9b0df50f0d2970cc854974a1ba10d8937bf",
+      "sha256": "33689f6fd36c6d99b4a938a6d352e13cbe4cd7ecb49a3ab8ee4685ba22a79c40",
       "width": 1024.0
     },
     "SP_storage_furniture_BaseColor.png": {

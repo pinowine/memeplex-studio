@@ -597,9 +597,15 @@ func _strip_effects(draft: Dictionary, effects: Array) -> void:
 func revision_base(base: Dictionary) -> Dictionary:
 	var draft: Dictionary = _canonical(base)
 	if not author_marks_valid(draft): return {}
+	var current_marks: Array = []
 	for mark: Dictionary in draft.get("skill_effects", []):
-		_strip_effects(draft, mark.get("effects", []))
-	draft.erase("skill_effects")
+		# Skills bought while browsing already belong to this pending publication.
+		if int(mark.get("publish_index", -1)) == int(_state.current_publish_index):
+			current_marks.append(mark)
+		else:
+			_strip_effects(draft, mark.get("effects", []))
+	if current_marks.is_empty(): draft.erase("skill_effects")
+	else: draft.skill_effects = current_marks
 	return draft
 
 func apply_unlocked(base: Dictionary, new_round: bool = false) -> PackedStringArray:

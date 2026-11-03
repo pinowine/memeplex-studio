@@ -110,7 +110,7 @@ func elapsed_hours() -> float:
 
 func advance_active_seconds(delta: float) -> int:
 	if phase != "running" or speed == 0 or not is_finite(delta) or delta <= 0.0: return 0
-	if not _required_context_errors().is_empty(): return 0
+	# Published profiles keep circulating while the next draft is being edited.
 	var remaining_seconds := delta
 	var advanced_hours := 0
 	while remaining_seconds > 0.0 and phase == "running" and speed > 0:
@@ -439,7 +439,6 @@ func set_speed(value: int) -> void:
 func step_hour() -> bool:
 	if phase != "running":
 		return false
-	if not _required_context_errors().is_empty(): return false
 	hour += 1
 	_expire_modifiers()
 	_spread_world()

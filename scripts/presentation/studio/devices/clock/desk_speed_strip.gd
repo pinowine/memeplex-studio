@@ -101,6 +101,7 @@ func _ready() -> void:
 		var feedback := KeyFeedback.new()
 		feedback.name = "KeyFeedback"
 		feedback.key = button
+		feedback.show_behind_parent = true
 		button.add_child(feedback)
 		_feedback.append(feedback)
 		button.button_down.connect(func() -> void: feedback.held = true)
@@ -133,6 +134,10 @@ func sync(value: int, enabled: bool) -> void:
 	for index in _buttons.size():
 		_buttons[index].set_pressed_no_signal(index == _speed)
 		_buttons[index].disabled = not enabled
+		var ink := Color("f2f2f2") if index == _speed else Color("717171")
+		if _buttons[index].get_theme_color("icon_normal_color") != ink:
+			for state in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
+				_buttons[index].add_theme_color_override("icon_" + state + "_color", ink)
 
 
 func background_node() -> TextureRect:
