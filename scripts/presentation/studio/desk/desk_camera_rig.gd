@@ -5,6 +5,9 @@ signal focus_arrived(id: String)
 signal overview_arrived
 signal view_restored
 
+const FOCUS_DURATION := 0.55
+const RETURN_DURATION := 0.45
+
 var _world_size := Vector2(1600, 900)
 var _target_id := ""
 var _target_center := Vector2.ZERO
@@ -16,6 +19,7 @@ var _home_zoom := 1.0
 
 func configure(world_size: Vector2) -> void:
 	_world_size = world_size
+	process_priority = 50
 	position_smoothing_enabled = false
 	ignore_rotation = false
 	enabled = true
@@ -24,6 +28,29 @@ func configure(world_size: Vector2) -> void:
 	get_window().focus_exited.connect(_on_focus_exited)
 	return_overview(false)
 
+func _process(delta: float) -> void:
+	# Advance before the 3D presenter reads the pose and canvas transform.
+	# Automatic SceneTree tweens run after _process and would split those frames.
+	if _motion != null and _motion.is_valid():
+		_motion.custom_step(delta)
+		force_update_scroll()
+
+func _projection_zoom(value: Vector2) -> Vector2:
+	if get_parent().has_meta("studio3d"):
+		return value.max(Vector2.ONE * get_parent().get_meta("studio3d").minimum_camera_zoom)
+	return value
+
+func _move_to(center: Vector2, angle: float, target_zoom: Vector2, duration: float) -> void:
+	_motion = create_tween().set_parallel(true)
+	_motion.pause()
+	_motion.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_motion.tween_property(self, "position", center, duration)
+	_motion.tween_property(self, "rotation", rotation + angle_difference(rotation, angle), duration)
+	# Bound the endpoints, then interpolate visible height without a mid-flight clamp.
+	var start := 1.0 / _projection_zoom(zoom).y
+	var finish := 1.0 / _projection_zoom(target_zoom).y
+	_motion.tween_method(func(height: float): zoom = Vector2.ONE / height, start, finish, duration)
+
 func focus_on(id: String, world_rect: Rect2, magnification := 1.15, angle := 0.0) -> bool:
 	if id.is_empty() or not world_rect.has_area() or not world_rect.position.is_finite(): return false
 	_cancel_motion()
@@ -31,11 +58,7 @@ func focus_on(id: String, world_rect: Rect2, magnification := 1.15, angle := 0.0
 	_target_center = world_rect.get_center()
 	_state = "travelling"
 	var serial := _generation
-	_motion = create_tween().set_parallel(true)
-	_motion.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	_motion.tween_property(self, "position", _target_center, 0.32)
-	_motion.tween_property(self, "rotation", angle, 0.32)
-	_motion.tween_property(self, "zoom", Vector2.ONE * _fit_zoom() * magnification, 0.32)
+	_move_to(_target_center, angle, Vector2.ONE * _fit_zoom() * magnification, FOCUS_DURATION)
 	_motion.chain().tween_callback(func() -> void:
 		if serial != _generation: return
 		_state = "focused"
@@ -51,6 +74,8 @@ func focus_equipment(id: String, center: Vector2, dimensions: Vector2, angle: fl
 	scale = clampf(scale * enlargement, _fit_zoom() * 1.35, _fit_zoom() * 3.6)
 	# Inverse-rotate the camera, leaving the actual equipment in its fixed desk pose.
 	var offset := Vector2(view.x * .18, 0) / scale
+	# Put the printer halfway above the top edge, leaving the view for its receipt.
+	if id == "printer": offset.y = view.y * .5 / scale
 	var camera_center := center + offset.rotated(angle)
 	return focus_on(id, Rect2(camera_center - Vector2.ONE, Vector2(2,2)), scale / _fit_zoom(), angle)
 
@@ -72,16 +97,12 @@ func restore_view(view: Dictionary) -> bool:
 	_target_id = str(view.get("target", ""))
 	_state = "travelling"
 	var serial := _generation
-	_motion = create_tween().set_parallel(true)
-	_motion.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	_motion.tween_property(self, "position", view.position, 0.28)
-	_motion.tween_property(self, "rotation", float(view.get("rotation",0.0)), 0.28)
-	_motion.tween_property(self, "zoom", view.zoom, 0.28)
+	_move_to(view.position, float(view.get("rotation",0.0)), view.zoom, RETURN_DURATION)
 	_motion.chain().tween_callback(func() -> void:
 		if serial != _generation: return
 		position = view.position
 		rotation = float(view.get("rotation",0.0))
-		zoom = view.zoom
+		zoom = _projection_zoom(view.zoom)
 		_state = str(view.get("state", "focused"))
 		force_update_scroll()
 		view_restored.emit())
@@ -95,18 +116,14 @@ func return_overview(animate := true) -> void:
 	if not animate:
 		position = home
 		rotation = 0.0
-		zoom = Vector2.ONE * _home_zoom
+		zoom = _projection_zoom(Vector2.ONE * _home_zoom)
 		_state = "overview"
 		force_update_scroll()
 		overview_arrived.emit()
 		return
 	_state = "returning"
 	var serial := _generation
-	_motion = create_tween().set_parallel(true)
-	_motion.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	_motion.tween_property(self, "position", home, 0.28)
-	_motion.tween_property(self, "rotation", 0.0, 0.28)
-	_motion.tween_property(self, "zoom", Vector2.ONE * _home_zoom, 0.28)
+	_move_to(home, 0.0, Vector2.ONE * _home_zoom, RETURN_DURATION)
 	_motion.chain().tween_callback(func() -> void:
 		if serial != _generation: return
 		_state = "overview"
