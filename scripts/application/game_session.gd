@@ -133,13 +133,13 @@ func _process(delta: float) -> void:
 		_tutorial_country = atlas.selected_country
 		_tutorial_observe("country_selected", {"index":atlas.selected_country})
 	if _shell != null: _shell.tutorial.set_interaction_blocked(hud.modal_visible())
-	if simulation.phase != "running" or _interface_paused() or hud.get_node("%Workbench").visible or hud.modal_visible() or (_shell != null and _shell.pauses_clock()):
+	if simulation.phase != "running" or _clock_paused():
 		atlas.set_speed(0)
 	else:
 		simulation.advance_active_seconds(delta)
 		atlas.clock.utc_seconds = _clock_anchor + simulation.elapsed_hours() * 3600.0
 		atlas._update_clock()
-		atlas.set_speed(simulation.speed if simulation.phase == "running" else 0)
+		atlas.set_speed(clock_speed())
 	atlas.get_node("%PointsValue").text = str(simulation.economy.balance)
 	atlas.get_node("%PointsIncome").text = "创作资源 · 不可购买"
 	hud.layout_for_date(desk.clock_rect())
@@ -257,20 +257,16 @@ func _sync_setup() -> void:
 	atlas.setup_note.get_node("Content/Prompt").text = "选一处地方 · 投放这份稿子并开始游戏"
 
 func _set_speed(value: int, restore_intent: bool = false) -> void:
-	if _interface_paused() or hud.modal_visible():
+	if _clock_paused():
 		if restore_intent and simulation.phase == "running": simulation.set_speed(value)
 		atlas.set_speed(0)
 		return
-	if hud.get_node("%Workbench").visible:
-		if restore_intent: simulation.set_speed(value)
-		atlas.set_speed(0)
-		return
 	simulation.set_speed(value)
-	atlas.set_speed(simulation.speed)
+	atlas.set_speed(clock_speed())
 	if simulation.phase == "running" and simulation.speed == value: _tutorial_observe("speed_changed", {"speed":value})
 
 func _step() -> void:
-	if _interface_paused() or hud.modal_visible() or hud.get_node("%Workbench").visible: return
+	if _clock_paused(): return
 	simulation.set_speed(0)
 	atlas.set_speed(0)
 	if simulation.step_hour():
@@ -287,39 +283,55 @@ func _open_workbench() -> void:
 		hud.show_event(simulation.active_event)
 		return
 	_pending_start_draft.clear()
-	var entering_revision := simulation.publish_count > 0 and simulation.phase != "draft"
-	if entering_revision: simulation.begin_revision()
-	atlas.set_speed(0)
-	if entering_revision and not simulation.latest_draft.is_empty(): hud.set_draft(simulation.latest_draft)
+	# Browsing the workbench does not start a revision; explicit publication does.
 	hud.show_workbench(true)
 	_render()
 
 func _on_event(event: Dictionary) -> void:
-	atlas.set_speed(0)
 	hud.show_event(event)
+	# Ordinary intelligence is committed on receipt; its physical printing is asynchronous.
+	if event.get("design_rewards", []).is_empty():
+		simulation.status = DeskLocalization.source_format("收到 %d 条消息。", simulation.events.size())
+		simulation.acknowledge_event()
+	else:
+		simulation.status = "传真附有物资：将纸片移出事件纸张后继续。"
+	atlas.set_speed(clock_speed())
+
+func _event_has_pending_material(instance_id: String) -> bool:
+	for record: Dictionary in simulation.event_materials():
+		if str(record.instance_id) == instance_id and not bool(record.requested): return true
+	return false
 
 func _read_intelligence(instance_id: String) -> void:
-	# Only a completed physical retraction may acknowledge this exact active event.
+	# Printing alone cannot release a material event; its physical card must be taken.
 	if simulation.phase != "event" or str(simulation.active_event.get("instance_id", "")) != instance_id: return
+	if _event_has_pending_material(instance_id): return
 	if hud.menu_mode() != "":
 		_pending_read_id = instance_id
 		return
 	_pending_read_id = ""
+	simulation.status = DeskLocalization.source_format("收到 %d 条消息。", simulation.events.size())
 	simulation.acknowledge_event()
-	atlas.set_speed(0 if _interface_paused() or hud.get_node("%Workbench").visible else simulation.speed)
+	atlas.set_speed(clock_speed())
 
 func _acknowledge() -> void:
 	if desk != null and desk.get("_fax") != null: return
 	if _interface_paused(): return
 	if simulation.phase != "event":
 		hud.dismiss_fax()
-		atlas.set_speed(0 if hud.get_node("%Workbench").visible else simulation.speed)
+		atlas.set_speed(clock_speed())
 		return
 	simulation.acknowledge_event()
 	atlas.set_speed(simulation.speed)
 
 func _interface_paused() -> bool:
 	return hud.menu_mode() != "" or desk.interaction_paused() or (_shell != null and _shell.blocks_input())
+
+func _clock_paused() -> bool:
+	return hud.modal_visible() or (_shell != null and _shell.pauses_clock()) or desk._fax.has_pending_materials()
+
+func clock_speed() -> int:
+	return simulation.speed if simulation.phase == "running" and not _clock_paused() else 0
 
 func _toggle_menu(mode: String) -> void:
 	if hud.menu_mode() == mode:
@@ -360,7 +372,7 @@ func _input(event: InputEvent) -> void:
 		_toggle_menu("developer")
 	else:
 		var focus := get_viewport().gui_get_focus_owner()
-		if focus is LineEdit or focus is TextEdit or _interface_paused() or simulation.phase == "event": return
+		if focus is LineEdit or focus is TextEdit or _clock_paused() or simulation.phase == "event": return
 		match key:
 			KEY_SPACE: _set_speed(atlas.clock.previous_speed if simulation.speed == 0 else 0)
 			KEY_COMMA, KEY_LESS: _set_speed(maxi(0, simulation.speed - 1))
@@ -389,7 +401,7 @@ func _load() -> bool:
 	desk.reset_journal()
 	_pending_start_draft.clear()
 	if hud.menu_mode() != "":
-		_menu_resume_speed = simulation.speed
+		_menu_resume_speed = simulation.resume_speed if simulation.phase == "event" else simulation.speed
 		simulation.set_speed(0)
 	atlas.clock.reset()
 	atlas.close_drawer()
@@ -407,7 +419,7 @@ func _load() -> bool:
 	_startup_complete = simulation.publish_count > 0
 	if simulation.publish_count == 0: _begin_startup()
 	else: hud.show_workbench(simulation.phase == "draft")
-	if simulation.phase == "event": hud.show_event(simulation.active_event)
+	if simulation.phase == "event": _on_event(simulation.active_event.duplicate(true))
 	if simulation.phase == "complete": _complete_run(simulation.snapshot())
 	_render()
 	return true
@@ -512,6 +524,8 @@ func _request_event_material(record: Dictionary) -> PackedStringArray:
 		return PackedStringArray(["先放下手里的工作，再取这份物资。"])
 	var errors: PackedStringArray = simulation.request_event_material(str(record.get("instance_id", "")), str(record.get("kind", "")), str(record.get("id", "")))
 	if not errors.is_empty(): hud.report_design_errors(errors)
+	elif desk._fax.event_delivered(str(record.get("instance_id", ""))):
+		_read_intelligence(str(record.instance_id))
 	return errors
 
 func _claim_design_reward(instance_id: String) -> void:

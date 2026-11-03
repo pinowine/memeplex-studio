@@ -1024,6 +1024,15 @@ func contacts_snapshot() -> Array[Dictionary]:
 func has_unread_event() -> bool:
 	return not _output.active_event.is_empty()
 
+func event_delivered(instance_id: String) -> bool:
+	return instance_id in _output.read_event_ids
+
+func has_pending_materials() -> bool:
+	for row: Dictionary in _reward_rows:
+		if not bool(row.get("requested", false)) and _page_for_event(str(row.get("instance_id", ""))) != null:
+			return true
+	return false
+
 func interaction_focused() -> bool:
 	return _focused
 
