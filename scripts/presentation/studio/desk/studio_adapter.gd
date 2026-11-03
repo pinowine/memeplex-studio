@@ -82,6 +82,17 @@ func material_faces() -> Array[Dictionary]:
 		faces.append({"source":card.face, "key":key, "owner":null, "visible":card.node.is_visible_in_tree()})
 	return faces
 
+func material_handles_viewport_point(point: Vector2) -> bool:
+	if _desk._foreground_ui_handles(point): return false
+	var cards: Control = _desk._material_cards
+	if cards.handles_viewport_point(point): return true
+	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	for slip: Control in slips:
+		if not slip.is_visible_in_tree() or slip.mouse_filter == Control.MOUSE_FILTER_IGNORE: continue
+		if Rect2(Vector2.ZERO, slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse() * point):
+			return true
+	return false
+
 func hovered_equipment(point: Vector2) -> String:
 	var controls := {"crt_terminal":_desk._art.crt, "receipt_printer":_desk._art.printer, "fax_machine":_desk._art.fax, "desk_clock":_desk._clock, "speed_controls":_desk._speed_strip}
 	for id: String in controls:

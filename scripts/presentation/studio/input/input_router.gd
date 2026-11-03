@@ -7,6 +7,7 @@ var forwarded_events := 0
 var cancel_count := 0
 var _logical_mouse_inside := false
 var _captured_key := ""
+var _material_captured := false
 var _camera: Camera3D
 var _logical: SubViewport
 var _viewport: Viewport
@@ -47,6 +48,9 @@ func desktop_point(point: Vector2) -> Vector2:
 	return Vector2(crossing.x, crossing.z) * 1000 + Vector2(800, 450)
 
 func screen_input(point: Vector2) -> Vector2:
+	var desktop_position := _logical.get_canvas_transform() * desktop_point(point)
+	if _material_captured or (_captured_key.is_empty() and _desktop.material_handles_viewport_point(desktop_position)):
+		return desktop_position
 	for renderer in _screens:
 		var mapped: Vector2 = renderer.input_from_ray(_camera.project_ray_origin(point), _camera.project_ray_normal(point))
 		if mapped.is_finite(): return mapped
@@ -63,9 +67,10 @@ func screen_input(point: Vector2) -> Vector2:
 		if Rect2(Vector2.ZERO, Vector2.ONE).has_point(uv):
 			var area: Rect2 = binding.rect
 			return binding.source.get_global_transform_with_canvas() * (area.position + uv * area.size)
-	return _logical.get_canvas_transform() * desktop_point(point)
+	return desktop_position
 
 func route_event(event: InputEvent, modal_visible: bool, input_blocked: bool) -> void:
+	if _material_captured and (modal_visible or input_blocked): cancel()
 	if input_blocked and not modal_visible: return
 	if event is InputEventMouse:
 		_route_mouse(event, modal_visible)
@@ -80,10 +85,13 @@ func _route_mouse(event: InputEventMouse, modal_visible: bool) -> void:
 		_logical.notify_mouse_entered()
 		_logical_mouse_inside = true
 	var forwarded := event.duplicate() as InputEventMouse
-	var physical_hit := {} if modal_visible else hit(event.position)
+	var desktop_position := _logical.get_canvas_transform() * desktop_point(event.position)
+	var material_input: bool = not modal_visible and (_material_captured or (_captured_key.is_empty() and _desktop.material_handles_viewport_point(desktop_position)))
+	var physical_hit := {} if modal_visible or material_input else hit(event.position)
 	var key := str(physical_hit.collider.get_meta("button_key", "")) if not physical_hit.is_empty() else ""
 	var point := modal_to_logical(event.position) if modal_visible else screen_input(event.position)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed and material_input: _material_captured = true
 		if event.pressed and not key.is_empty() and not modal_visible:
 			_captured_key = key
 		elif not event.pressed and not _captured_key.is_empty():
@@ -104,6 +112,8 @@ func _route_mouse(event: InputEventMouse, modal_visible: bool) -> void:
 	if forwarded is InputEventMouseMotion:
 		forwarded.relative = modal_to_logical(event.relative) if modal_visible else point - screen_input(event.position - event.relative)
 	_logical.push_input(forwarded, true)
+	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed) or (event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT == 0):
+		_material_captured = false
 	forwarded_events += 1
 	_viewport.set_input_as_handled()
 
@@ -120,9 +130,10 @@ func cancel() -> void:
 	for key in _buttons: _feedback.set_pressed(key, false)
 	_feedback.clear()
 	_captured_key = ""
+	_material_captured = false
 	pointer_known = false
 	_logical.gui_release_focus()
 	cancel_count += 1
 
 func inspection() -> Dictionary:
-	return {"forwarded_events":forwarded_events, "cancel_count":cancel_count, "captured_key":_captured_key}
+	return {"forwarded_events":forwarded_events, "cancel_count":cancel_count, "captured_key":_captured_key, "material_captured":_material_captured}
