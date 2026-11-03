@@ -104,6 +104,10 @@ func draft_fitness(draft: Dictionary) -> Dictionary:
 func _required_context_errors() -> PackedStringArray:
 	return design_state.required_context_errors()
 
+## Presentation includes the saved fraction between discrete simulation ticks.
+func elapsed_hours() -> float:
+	return float(hour) + float(competition._state.hour_credit)
+
 func advance_active_seconds(delta: float) -> int:
 	if phase != "running" or speed == 0 or not is_finite(delta) or delta <= 0.0: return 0
 	if not _required_context_errors().is_empty(): return 0
