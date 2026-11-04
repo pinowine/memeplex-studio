@@ -176,7 +176,7 @@ func _process(delta: float) -> void:
 	advance(delta)
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not wheel_scroll_enabled or not is_visible_in_tree() or not event is InputEventMouseButton:
 		return
 	var button := event as InputEventMouseButton
