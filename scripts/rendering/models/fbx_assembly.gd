@@ -293,10 +293,8 @@ func _project_paper_content(node: MeshInstance3D, asset_id: String) -> void:
 			for index in ids:
 				tool.set_normal(normals[index])
 				tool.set_uv2(uvs[index] if not uvs.is_empty() else Vector2.ZERO)
-				if is_front:
-					tool.set_uv(Vector2((positions[index].x - box.position.x) / box.size.x, (positions[index].z - box.position.z) / box.size.z))
-				else:
-					tool.set_uv(uvs[index] if not uvs.is_empty() else Vector2.ZERO)
+				# Both faces need the paper outline when casting shadows.
+				tool.set_uv(Vector2((positions[index].x - box.position.x) / box.size.x, (positions[index].z - box.position.z) / box.size.z))
 				tool.add_vertex(positions[index])
 			if is_front:
 				front_count += 3

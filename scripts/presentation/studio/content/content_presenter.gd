@@ -139,19 +139,15 @@ func _add_live_paper(asset_id: String, source: Control, template_size: Vector2, 
 	var material := _material()
 	material.set_shader_parameter("feed_curve",0)
 	material.set_shader_parameter("mouth_height_m",.132 if curve==1 else .077)
+	if source is TextureRect:
+		material.set_shader_parameter("paper_mask_enabled", true)
+		material.set_shader_parameter("paper_mask_texture", source.texture)
 	if not _whitebox:
 		material.set_shader_parameter("paper_stock_enabled",true)
 		material.set_shader_parameter("paper_stock_texture",_fbx_loader.painter_materials.texture_for_set("SP_"+asset_id,"BaseColor"))
 		material.set_shader_parameter("paper_stock_roughness",_fbx_loader.painter_materials.texture_for_set("SP_"+asset_id,"Roughness"))
 	for index in surface.mesh.get_surface_count():
-		var original := surface.get_active_material(index)
-		if original != null and original.resource_name.begins_with("RT_"):
-			surface.set_surface_override_material(index,material)
-		elif _whitebox:
-			var stock := StandardMaterial3D.new()
-			stock.albedo_color = Color(.90,.90,.88)
-			stock.roughness = .9
-			surface.set_surface_override_material(index,stock)
+		surface.set_surface_override_material(index, material)
 	for child in model.find_children("*","MeshInstance3D",true,false):
 		if child != surface: child.hide()
 	var binding := {"mesh":surface,"source":source,"rect":Rect2(Vector2.ZERO,source.size),"material":material,"model":model,"template":template_size,"id":id,"curve":curve}
@@ -164,10 +160,55 @@ func _add_live_paper(asset_id: String, source: Control, template_size: Vector2, 
 	paper_bindings.append(binding)
 	bindings.append(binding)
 
+func _add_paper_tab(source: Control) -> Dictionary:
+	var mesh := MeshInstance3D.new()
+	mesh.name = "LivePaperTab"
+	mesh.mesh = PlaneMesh.new()
+	mesh.mesh.subdivide_depth = 8
+	var material := _material()
+	if source is TextureRect:
+		material.set_shader_parameter("paper_mask_enabled", true)
+		material.set_shader_parameter("paper_mask_texture", source.texture)
+	mesh.material_override = material
+	add_child(mesh)
+	var binding := {"mesh":mesh, "source":source, "rect":Rect2(Vector2.ZERO, source.size), "material":material}
+	bindings.append(binding)
+	return binding
+
+func _sync_paper_tab(binding: Dictionary) -> void:
+	var tab: Control
+	if str(binding.id) in ["map", "edit", "cultivate", "spread"]:
+		tab = _desktop.sheet_tab(str(binding.id))
+	elif int(binding.curve) == 2:
+		tab = binding.source.get_node_or_null("EventHistoryTab")
+	if tab == null: return
+	if not binding.has("tab"): binding.tab = _add_paper_tab(tab)
+	var tab_binding: Dictionary = binding.tab
+	var frame := tab.get_global_transform()
+	var center := frame * (tab.size * .5)
+	var mesh: MeshInstance3D = tab_binding.mesh
+	mesh.visible = tab.is_visible_in_tree()
+	mesh.mesh.size = tab.size * frame.get_scale().abs() / 1000.0
+	mesh.position = Vector3((center.x - 800) / 1000.0, binding.model.position.y + .0004, (center.y - 450) / 1000.0)
+	mesh.rotation.y = -frame.get_rotation()
+	tab_binding.rect = Rect2(Vector2.ZERO, tab.size)
+	if int(binding.curve) == 2:
+		var feed: Dictionary = binding.feed.inspection()
+		var scale_y: float = binding.source.get_global_transform().get_scale().y
+		var material: ShaderMaterial = tab_binding.material
+		material.set_shader_parameter("feed_curve", 2)
+		material.set_shader_parameter("sheet_depth_m", tab.size.y * absf(scale_y) / 1000.0)
+		material.set_shader_parameter("mouth_height_m", feed.mouth_height_m - binding.model.position.y)
+		material.set_shader_parameter("feed_falloff_m", feed.bend_falloff_m)
+		material.set_shader_parameter("feed_distance_offset_m", (binding.source.size.y - tab.position.y - tab.size.y) * absf(scale_y) / 1000.0 - feed.lip_clearance_m)
+
 
 func _sync_live_papers(delta: float) -> void:
 	for binding in paper_bindings.duplicate():
 		if not is_instance_valid(binding.source):
+			if binding.has("tab"):
+				binding.tab.mesh.queue_free()
+				bindings.erase(binding.tab)
 			binding.model.queue_free()
 			bindings.erase(binding)
 			paper_bindings.erase(binding)
@@ -199,6 +240,9 @@ func _sync_live_papers(delta: float) -> void:
 			if index>=0:
 				var wanted := .12 if _desktop.sheets_switching() else 0.0
 				binding.mesh.set_blend_shape_value(index,move_toward(binding.mesh.get_blend_shape_value(index),wanted,delta*.6))
+		if int(binding.curve) == 2:
+			# History selection changes sibling order without changing the output list.
+			binding.model.position.y = _fax_floor_height(source)
 		if binding.get("material_card",false):
 			var owner: Control = binding.card_owner
 			var dragging := false
@@ -209,20 +253,40 @@ func _sync_live_papers(delta: float) -> void:
 			# Attached faces are already drawn on the fax paper's surface.
 			var attached := is_instance_valid(owner) and outputs.has(owner.get_parent())
 			binding.model.visible = source.is_visible_in_tree() and not attached
-			binding.model.position.y = _material_card_height(int(binding.card_rank),dragging)
+			binding.model.position.y = _material_card_height(source,int(binding.card_rank),dragging)
 		binding.material.set_shader_parameter("sheet_depth_m",source.size.y*absf(scale_2d.y)/1000)
 		if binding.has("feed") and binding.model.visible:
 			binding.feed.sync(source,paper_exit("receipt_printer" if int(binding.curve)==1 else "fax_machine"))
+		_sync_paper_tab(binding)
 
 
-func _material_card_height(rank: int, dragging: bool) -> float:
+func _material_card_height(source: Control, rank: int, dragging: bool) -> float:
+	var paper_top := _workpaper_top()
+	for binding in paper_bindings:
+		if int(binding.curve) != 2 or not binding.source.is_visible_in_tree(): continue
+		var sheet: Control = binding.source
+		var frame := sheet.get_global_transform().affine_inverse() * source.get_global_transform()
+		var overlap := (frame * Rect2(Vector2.ZERO, source.size)).intersection(Rect2(Vector2.ZERO, sheet.size))
+		if not overlap.has_area(): continue
+		var floor_y := _fax_floor_height(sheet)
+		var feed: Dictionary = binding.feed.inspection()
+		var mouth := paper_exit("fax_machine")
+		var distance := (sheet.size.y - overlap.end.y) * absf(sheet.get_global_transform().get_scale().y) / 1000.0 - float(mouth.lip_clearance_m) - float(feed.native_thickness_m)
+		var height := (float(mouth.height) - floor_y) * exp(-maxf(0.0, distance) / float(feed.bend_falloff_m))
+		paper_top = maxf(paper_top, floor_y + height)
+	return paper_top + .001 + maxi(rank,0)*.0001 + (.006 if dragging else 0.0)
+
+func _fax_floor_height(source: Control) -> float:
+	return _workpaper_top() + .001 + source.get_index() * .0007
+
+func _workpaper_top() -> float:
 	var paper_top := .0006
 	for binding in paper_bindings:
 		if not is_instance_valid(binding.mesh) or not binding.mesh.is_visible_in_tree(): continue
 		if str(binding.id) not in ["map","edit","cultivate","spread"]: continue
 		var bounds: AABB = binding.mesh.global_transform * binding.mesh.get_aabb()
 		paper_top = maxf(paper_top,bounds.end.y)
-	return paper_top + .001 + maxi(rank,0)*.0001 + (.006 if dragging else 0.0)
+	return paper_top
 
 
 func _bind_material_face(source: Control, key: String, rank: int, owner: Control = null) -> void:
