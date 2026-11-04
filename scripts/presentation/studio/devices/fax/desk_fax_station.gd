@@ -12,6 +12,7 @@ signal call_changed(record: Dictionary)
 signal starter_selected(preset_id: String)
 signal startup_finished(preset_id: String)
 signal material_requested(record: Dictionary, point: Vector2)
+signal material_collect_requested(record: Dictionary)
 signal history_selected(record: Dictionary)
 signal details_changed(record: Dictionary)
 signal event_output_started(record: Dictionary, page: Control)
@@ -198,6 +199,9 @@ func _output_at(viewport_point: Vector2) -> Control:
 
 func hover_details(viewport_point: Vector2) -> String:
 	if not viewport_point.is_finite(): return ""
+	for slip: Control in _reward_slips.values():
+		if slip.can_collect() and Rect2(Vector2.ZERO,slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse()*viewport_point):
+			return DeskLocalization.text("回车收取并归堆 · 拖拽自由摆放")
 	for control: Button in _view.keys + [_view.dial_button,_view.pickup_button,_view.hangup_button]:
 		if control.is_visible_in_tree() and Rect2(Vector2.ZERO,control.size).has_point(control.get_global_transform_with_canvas().affine_inverse()*viewport_point):
 			return _key_action_label(control)
@@ -272,6 +276,23 @@ func confirm_material_request(record: Dictionary, accepted: bool) -> void:
 			slip.hide()
 			slip.queue_free()
 			_reward_slips.erase(key)
+
+func request_collect_materials() -> int:
+	if _blocked: return 0
+	var records: Array[Dictionary] = []
+	for slip: Control in _reward_slips.values():
+		if slip.can_collect(): records.append(slip.record.duplicate(true))
+	# Awarding a material refreshes the slips, so keep records across callbacks.
+	for record: Dictionary in records:
+		_requesting_slip = _reward_slips.get(_reward_key(record))
+		material_collect_requested.emit(record)
+		_requesting_slip = null
+	return records.size()
+
+func active_drag_material() -> Dictionary:
+	for slip: Control in _reward_slips.values():
+		if slip.is_dragging(): return slip.record.duplicate(true)
+	return {}
 
 func _reward_key(row: Dictionary) -> String:
 	return "%s/%s/%s" % [str(row.get("instance_id", "")), str(row.get("kind", "")), str(row.get("id", ""))]
@@ -649,7 +670,9 @@ func inspection() -> Dictionary:
 
 
 func handle_key(event: InputEventKey) -> bool:
-	if _blocked or not _focused or not event.pressed or event.echo: return false
+	if _blocked or not event.pressed or event.echo: return false
+	if event.keycode in [KEY_ENTER,KEY_KP_ENTER] and request_collect_materials() > 0: return true
+	if not _focused: return false
 	if event.keycode == KEY_ESCAPE:
 		close_focus()
 		return true

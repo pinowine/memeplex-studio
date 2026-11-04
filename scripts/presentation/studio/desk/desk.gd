@@ -1,6 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
+const MATERIAL_STORAGE_RECT := Rect2(1236, 342, 336, 270)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
@@ -52,7 +53,8 @@ var _hover_strip: Control
 var _slot_reader: Control
 var _slot_return_state: Dictionary = {}
 var _slot_details: Dictionary = {}
-var _pending_material_details: Dictionary = {}
+var _focused_stack := ""
+var _fax_drop_preview := false
 var _slot_restoring := false
 var _material_storage_visible := false
 var _fax: DeskFaxStation
@@ -90,7 +92,7 @@ func _slot_paper_rect() -> Rect2:
 	return Rect2(view.x-width-28,48,width,maxf(210,minf(560,view.y-90)))
 
 func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> void:
-	if slot_details_active() or _camera.inspection().state != "focused" or _revealed_focus != "sheet/cultivate": return
+	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/cultivate": return
 	if _page._interface_paused() or not _page.startup_ready(): return
 	var board: Control = _page.hud.design_workbench().context_slice()
 	var layer_data: Dictionary = board._layers().get(layer,{})
@@ -99,29 +101,34 @@ func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> v
 	if index >= 0 and index < slots.size():
 		var resource_id: String = str(slots[index].get("resource_id",slots[index].get("id","")))
 		info = board._resource(resource_id)
-	var names := {"language":"语言","group":"人群","topics":"话题","stance":"政治立场","pragmatic":"语用"}
+	var names := {"language":"语言","group":"群体","topics":"话题","stance":"立场","pragmatic":"语用"}
 	var title: String = str(info.get("title",names.get(layer,layer)))
 	var body: String = str(info.get("description",info.get("text","")))
 	var instructions := {
 		"language":"语言决定表达使用的语言。默认一个槽，释义补丁可增加第二个。至少保留一个来源有效且已挂接的语言，才能发布。",
 		"group":"人群决定表达面向的群体。默认一个槽，对照补丁可增加第二个。至少保留一个来源有效且已挂接的人群，才能发布。",
-		"topics":"话题用横向纸条安装；抓取纸舌移出。空位不会凭空产生材料。",
+		"topics":"话题用横向卡片安装；长按卡片后拖出。下方库存中的卡片可拖入空槽。",
 		"stance":"横轴：自由—威权；纵轴：平等—等级。空心点是起点，实心点是当前位置。一次沿一个轴移动，每步0.1；离开起点使用对应筹码，返回归还。",
 		"pragmatic":"横轴：真诚—反讽；纵轴：支持—反对。一次沿一个轴移动，每步0.1。对应筹码数量可在显示器的语用模式查看。"}
 	if not body.is_empty(): body += "\n\n"
 	body += str(instructions.get(layer,""))
 	if layer in ["language","group"]:
-		body += DeskLocalization.source_format("\n\n当前容量：%d；本次查看第%d槽。", [_page.simulation.design_state.context_slot_capacity(layer),index+1])
+		body += DeskLocalization.source_format("\n\n当前容量：%d。长按卡片后拖出，单击下方库存卡片查看信息。", _page.simulation.design_state.context_slot_capacity(layer))
 	_slot_details = {"title":title,"body":body,"layer":layer,"slot":index}
-	_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
+	if not slot_details_active():
+		_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
+	_focused_stack = {"topics":"topic","stance":"stance_token","pragmatic":"pragmatic_token"}.get(layer,layer)
+	_component_target = ""
 	_slot_restoring = false
 	var world_rect: Rect2 = get_viewport().get_canvas_transform().affine_inverse()*viewport_rect
-	_camera.focus_slot("slot/"+layer+"/"+str(index),world_rect,1.9)
+	_camera.focus_slot("slot/"+layer,world_rect,1.9)
 	_sync_reader_blocks()
 
 func close_slot_details() -> void:
 	if not slot_details_active() or _slot_restoring: return
 	_slot_restoring = true
+	_focused_stack = ""
+	_material_cards.clear_stack_focus()
 	_slot_reader.hide_details()
 	_camera.restore_view(_slot_return_state.camera)
 
@@ -139,6 +146,8 @@ func _cancel_slot_details() -> void:
 	_slot_return_state = {}
 	_slot_details = {}
 	_slot_restoring = false
+	_focused_stack = ""
+	if _material_cards != null: _material_cards.clear_stack_focus()
 	if _slot_reader != null: _slot_reader.hide_details()
 
 func _slot_pointer_guard(event: InputEvent) -> bool:
@@ -147,6 +156,11 @@ func _slot_pointer_guard(event: InputEvent) -> bool:
 		close_slot_details()
 		return true
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _material_cards.handles_viewport_point(event.position): return false
+		var board: Control = _page.hud.design_workbench().context_slice()
+		if _revealed_focus == "sheet/cultivate" and board.is_visible_in_tree():
+			var point: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * event.position
+			if Rect2(Vector2.ZERO,board.size).has_point(point): return false
 		if not _slot_reader.handles_viewport_point(_foreground_point(event.position)):
 			close_slot_details()
 			return true
@@ -339,6 +353,7 @@ func configure(page: Node2D) -> void:
 	_fax.bind_machine(_art.fax, FAX_SLOT)
 	_fax.read_completed.connect(page._read_intelligence)
 	_fax.material_requested.connect(_request_event_material)
+	_fax.material_collect_requested.connect(_collect_event_material)
 	_fax.focus_changed.connect(_fax_focus_changed)
 	_props = PropInteraction.new()
 	_props.name = "DeskInteractions"
@@ -374,10 +389,12 @@ func configure(page: Node2D) -> void:
 	page.hud.move_child(_material_cards, 0)
 	_material_cards.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_material_cards.configure(page.simulation.design_state.rules, _light, _screen_ink(_textures.blank_print_paper))
+	_material_cards._props.viewport_exclusion = _foreground_ui_handles
 	_fax.viewport_exclusion = func(point: Vector2) -> bool:
 		return _foreground_ui_handles(point) or _material_cards.handles_viewport_point(point)
-	_material_cards.set_event_output_mode(true)
-	_material_cards.set_storage_area(Rect2(1268,342,300,270))
+	_material_cards.set_storage_area(MATERIAL_STORAGE_RECT)
+	_material_cards.stack_clicked.connect(_focus_material_stack)
+	_material_cards.configure_focus_input(_logical_material_point)
 	_material_cards.item_clicked.connect(_inspect_material)
 	_material_cards.item_dropped.connect(_drop_material)
 	_material_cards.release_module.connect(_unclip_module)
@@ -415,6 +432,7 @@ func configure(page: Node2D) -> void:
 	_slot_reader.name = "SlotExplanationPaper"
 	controls.add_child(_slot_reader)
 	_slot_reader.configure(Handwriting.FONT, _textures.paper_texture)
+	_slot_reader.stack_layout_changed.connect(_layout_focused_stack)
 	_slot_reader.option_selected.connect(func(index: int): _fax.choose_response(index))
 	_slot_reader.contact_selected.connect(func(index: int): _fax.select_contact(index))
 	_hover_strip = HoverStrip.new()
@@ -424,6 +442,7 @@ func configure(page: Node2D) -> void:
 	_hover_strip.configure(Handwriting.FONT, _textures.paper_texture)
 	_place(_hover_strip, Rect2(835,58,410,74))
 	var board: Control = editor.context_slice()
+	board.set_drag_preview_parent(_material_cards)
 	board.slot_pressed.connect(_context_slot_pressed)
 	_props.pointer_guard = _desktop_pointer_guard
 	_props.viewport_exclusion = func(point: Vector2) -> bool:
@@ -463,6 +482,7 @@ func focus_component(id: String) -> bool:
 	if _fax.inspection().focused: _fax.close_focus()
 	_restore_occluders()
 	_component_target = "" if id.begins_with("sheet/") else id
+	_layout_receipt(DESK_SIZE)
 	if _slot_reader != null: _slot_reader.hide_details()
 	_revealed_focus = ""
 	_set_sheet_content_visible(true)
@@ -477,9 +497,9 @@ func focus_component(id: String) -> bool:
 
 func _camera_arrived(id: String) -> void:
 	_sync_reader_blocks()
-	if id.begins_with("slot/"):
+	if id.begins_with("slot/") or id.begins_with("stack/"):
 		if slot_details_active() and not _slot_restoring:
-			_slot_reader.show_details(_slot_details,get_viewport().get_visible_rect())
+			_show_stack_details()
 		return
 	_revealed_focus = id
 	_focus_reveal_count += 1
@@ -495,7 +515,6 @@ func _camera_arrived(id: String) -> void:
 	elif id.begins_with("fax/"):
 		_fax.reveal_after_camera(id.trim_prefix("fax/"))
 	if not _component_target.is_empty(): _show_component_details()
-	_open_pending_material_details()
 	_fit_settings()
 
 
@@ -516,6 +535,7 @@ func _fax_camera_requested(mode: String) -> void:
 func _camera_overview_arrived() -> void:
 	_cancel_slot_details()
 	_component_target = ""
+	_layout_receipt(DESK_SIZE)
 	_revealed_focus = ""
 	_pending_sheet = ""
 	_set_sheet_content_visible(true)
@@ -524,13 +544,13 @@ func _camera_overview_arrived() -> void:
 
 
 func return_overview() -> void:
-	_pending_material_details = {}
 	if slot_details_active():
 		close_slot_details()
 		return
 	_component_target = ""
 	_revealed_focus = ""
 	_pending_sheet = ""
+	_layout_receipt(DESK_SIZE)
 	if _slot_reader != null: _slot_reader.hide_details()
 	if _fax != null and _fax.inspection().focused: _fax.close_focus()
 	_restore_occluders()
@@ -629,7 +649,7 @@ func _layout() -> void:
 	_page.atlas.fit_map()
 	_book_contacts.layout_book(Rect2(Vector2.ZERO,_art.phonebook.size))
 	_page.hud.configure_desk(_stack_rect,self)
-	if _material_cards != null: _material_cards.set_storage_area(Rect2(1268,342,300,270))
+	if _material_cards != null: _material_cards.set_storage_area(MATERIAL_STORAGE_RECT)
 	if _hover_strip != null: _place(_hover_strip,Rect2(835,58,410,74))
 	_props.set_bounds(Rect2(-80,-100,1760,1100))
 	_update_prop_dependents()
@@ -665,7 +685,9 @@ func _layout_receipt(view: Vector2) -> void:
 		var mouth: Dictionary = _page.get_meta("studio3d").paper_exit("receipt_printer")
 		_outlet = mouth.origin
 		_outlet_width = mouth.width
-	_printer.layout_area(Rect2(_outlet, Vector2(_outlet_width, view.y - _outlet.y + 24)))
+	# The short receipt leaves the card stacks clear; printer focus reveals its full length.
+	var bottom := view.y + 24 if _component_target == "printer" else MATERIAL_STORAGE_RECT.position.y - 18
+	_printer.layout_area(Rect2(_outlet, Vector2(_outlet_width, bottom - _outlet.y)))
 	_printer.pivot_offset = Vector2.ZERO
 	_printer.rotation = machine.rotation
 
@@ -809,10 +831,48 @@ func _prop_moved(id: StringName, _point: Vector2) -> void:
 
 func _inspect_material(kind: String, id: String) -> void:
 	if not _page.startup_ready(): return
-	_pending_material_details = {"kind":kind,"id":id}
-	select_sheet("edit" if kind=="module" else "cultivate")
-	var editor: Control = _page.hud.design_workbench()
-	if editor.has_method("show_material"): editor.show_material(kind, id)
+	var record := _material_cards.details_for_item(kind,id)
+	if not slot_details_active(): _focus_material_stack(kind)
+	_slot_details = _material_full_details(record)
+	if _camera.inspection().state == "focused": _show_stack_details()
+
+func _focus_material_stack(kind: String) -> void:
+	if not _page.startup_ready() or _page.hud.modal_visible(): return
+	if _camera.inspection().state in ["travelling","returning"]: return
+	if _fax.inspection().focused:
+		_fax.close_focus()
+		_camera.return_overview(false)
+	if not slot_details_active():
+		_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
+	_focused_stack = kind
+	_slot_details = _material_cards.stack_details(kind)
+	_component_target = ""
+	_slot_restoring = false
+	var rect := _material_cards.stack_viewport_rect(kind)
+	var world_rect: Rect2 = get_viewport().get_canvas_transform().affine_inverse()*rect
+	_camera.focus_slot("stack/"+kind,world_rect,1.55)
+	_sync_reader_blocks()
+
+func _show_stack_details() -> void:
+	_slot_details.stack_kind = _focused_stack
+	_slot_details.stack_title = {"group":"群体卡片","language":"语言卡片","topic":"话题卡片","module":"补丁卡片","stance_token":"立场筹码","pragmatic_token":"语用筹码"}.get(_focused_stack,"库存卡片")
+	_slot_reader.show_details(_slot_details,_slot_reader.get_viewport().get_visible_rect())
+	_layout_focused_stack()
+
+func _layout_focused_stack() -> void:
+	if not _focused_stack.is_empty() and _slot_reader.is_visible_in_tree():
+		_material_cards.focus_stack(_focused_stack,_slot_reader.stack_host(),_slot_reader.stack_rect())
+
+func _logical_material_point(point: Vector2) -> Vector2:
+	if _page.has_meta("studio3d"): return _page.get_meta("studio3d").logical_pointer_from_root(point)
+	return point
+
+func _collect_event_material(record: Dictionary) -> void:
+	var errors: PackedStringArray = _page._request_event_material(record)
+	if errors.is_empty():
+		_material_cards.sync_state(_page.simulation.snapshot())
+		_material_cards.store_item(str(record.kind),str(record.id))
+	_fax.confirm_material_request(record,errors.is_empty())
 
 
 func _request_event_material(record: Dictionary, point: Vector2) -> void:
@@ -822,6 +882,7 @@ func _request_event_material(record: Dictionary, point: Vector2) -> void:
 	_material_cards.remember_event_position(record, point)
 	var errors: PackedStringArray = _page._request_event_material(record)
 	if not errors.is_empty(): _material_cards.discard_event_position(record)
+	else: _material_cards.sync_state(_page.simulation.snapshot())
 	_fax.confirm_material_request(record, errors.is_empty())
 	if errors.is_empty(): _drop_material(str(record.get("kind","")),str(record.get("id","")),point)
 
@@ -841,6 +902,12 @@ func _sync_module_papers() -> void:
 
 
 func _drop_material(kind: String, id: String, point: Vector2) -> void:
+	if kind in ["group","language","topic","module"] and _material_cards.stack_viewport_rect(kind).has_point(point):
+		_material_cards.store_item(kind,id)
+		return
+	if kind in ["stance_token","pragmatic_token"]:
+		_drop_token(id,point)
+		return
 	if _active_sheet == "map" or not _page.startup_ready() or _revealed_focus != "sheet/"+_active_sheet or _camera.inspection().state != "focused": return
 	var editor: Control = _page.hud.design_workbench()
 	if editor.accept_tabletop_item(kind, id, point):
@@ -889,12 +956,11 @@ func clock_rect() -> Rect2:
 
 
 func interaction_paused() -> bool:
-	if slot_details_active(): return true
 	return _stack != null and (_stack.is_switching() or (_fax != null and _fax.interaction_focused()))
 
 
 func _sync_reader_blocks() -> void:
-	var blocked: bool = slot_details_active() or (_camera != null and _camera.inspection().state in ["travelling","returning"]) or _page.hud.modal_visible() or _stack.is_switching() or (_page._shell != null and _page._shell.blocks_input())
+	var blocked: bool = (_camera != null and _camera.inspection().state in ["travelling","returning"]) or _page.hud.modal_visible() or _stack.is_switching() or (_page._shell != null and _page._shell.blocks_input())
 	_fax.set_interaction_blocked(blocked)
 
 
@@ -930,7 +996,6 @@ func _sheet_settled(id: String) -> void:
 	_page.atlas.fit_map()
 	_page._sync_setup()
 	_page.atlas.set_speed(_page.clock_speed())
-	_open_pending_material_details()
 
 
 func receive_event(event: Dictionary) -> void:
@@ -1041,7 +1106,7 @@ func _process(_delta: float) -> void:
 	_art.folder.visible = false
 	var blocked: bool = (_camera != null and _camera.inspection().state in ["travelling","returning"]) or _page.hud.modal_visible() or _stack.is_switching() or (_page._shell != null and _page._shell.blocks_input())
 	_sync_reader_blocks()
-	var enabled := not blocked and not fax_focused and not slot_details_active()
+	var enabled := not blocked and not fax_focused
 	_monitor.set_interaction_enabled(enabled)
 	_monitor.set_token_interaction_enabled(enabled and _revealed_focus == "sheet/cultivate" and _camera.inspection().state == "focused")
 	_update_material_storage(enabled)
@@ -1049,7 +1114,15 @@ func _process(_delta: float) -> void:
 	for box: Control in _token_boxes.values(): box.set_interaction_enabled(enabled and _revealed_focus == "sheet/cultivate" and _camera.inspection().state == "focused")
 	if _props.enabled != enabled: _props.set_enabled(enabled)
 	# Loose paper keeps its desk pose and drag behavior while inspecting the fax.
-	if _material_cards != null: _material_cards.set_enabled(not blocked and not slot_details_active(), fax_focused)
+	if _material_cards != null:
+		_material_cards.set_enabled(not blocked, fax_focused)
+		var fax_drag := _fax.active_drag_material()
+		if not fax_drag.is_empty():
+			_material_cards.preview_drop(str(fax_drag.kind),get_viewport().get_mouse_position())
+			_fax_drop_preview = true
+		elif _fax_drop_preview:
+			_material_cards.clear_drop_preview()
+			_fax_drop_preview = false
 	for item: Control in _context_layer_items.values(): item.set_interaction_enabled(enabled)
 	var editor: Control = _page.hud.design_workbench()
 	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _page.simulation.phase != "event" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
@@ -1250,14 +1323,3 @@ func _material_full_details(info: Dictionary) -> Dictionary:
 	var source := str(info.get("source_label",""))
 	if not source.is_empty(): parts.append(DeskLocalization.source_format("来源：%s",source))
 	return {"title":str(info.get("title","")),"body":"\n\n".join(parts),"source_records":info.get("source_records",[]).duplicate(true)}
-
-func _open_pending_material_details() -> void:
-	if _pending_material_details.is_empty() or _stack.is_switching() or _camera.inspection().state != "focused": return
-	var record := _material_cards.details_for_item(str(_pending_material_details.kind),str(_pending_material_details.id))
-	_pending_material_details = {}
-	if record.is_empty(): return
-	_slot_details = _material_full_details(record)
-	_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
-	_slot_restoring = false
-	_slot_reader.show_details(_slot_details,get_viewport().get_visible_rect())
-	_sync_reader_blocks()

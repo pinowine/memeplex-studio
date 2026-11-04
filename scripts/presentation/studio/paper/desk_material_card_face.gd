@@ -172,7 +172,7 @@ func _build_layout() -> Dictionary:
 	return {"body":body, "sections":sections, "text":text, "size":dimensions, "thickness":3.6 if _kind == "module" else (2.8 if _kind == "language" else 3.2)}
 
 
-func _rounded_shape(rect: Rect2, radius: float) -> PackedVector2Array:
+static func _rounded_shape(rect: Rect2, radius: float) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	var centres := [rect.position + Vector2(radius, radius), Vector2(rect.end.x - radius, rect.position.y + radius), rect.end - Vector2.ONE * radius, Vector2(rect.position.x + radius, rect.end.y - radius)]
 	for corner in 4:
@@ -183,9 +183,13 @@ func _rounded_shape(rect: Rect2, radius: float) -> PackedVector2Array:
 
 
 func _shape(rect: Rect2) -> PackedVector2Array:
+	return outline_for(_kind, rect)
+
+
+static func outline_for(kind: String, rect: Rect2) -> PackedVector2Array:
 	var p := rect.position
 	var e := rect.end
-	match _kind:
+	match kind:
 		"group":
 			return PackedVector2Array([p, Vector2(e.x - 14, p.y), Vector2(e.x, p.y + 14), e, Vector2(p.x + 7, e.y), Vector2(p.x, e.y - 7)])
 		"module":

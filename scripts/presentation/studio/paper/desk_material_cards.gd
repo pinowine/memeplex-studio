@@ -1,10 +1,11 @@
-## 桌面材料只呈现权威库存，拖放成功后由模拟层决定安装和数量变化。
+## The simulation owns inventory; these cards only present and place it.
 class_name DeskMaterialCards
 extends Control
 
 signal item_clicked(kind: String, id: String)
 signal item_dropped(kind: String, id: String, point: Vector2)
 signal release_module(slot: int, id: String)
+signal stack_clicked(kind: String)
 
 const CardFace := preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
 const Interaction = preload("res://scripts/presentation/studio/desk/desk_prop_interaction.gd")
@@ -14,7 +15,8 @@ const Hover = preload("res://shaders/ui/desk_torn_hover.gdshader")
 const INVENTORIES := {"module":"module_inventory","language":"context_resource_inventory","group":"context_resource_inventory","topic":"context_resource_inventory","stance_token":"context_resource_inventory","pragmatic_token":"context_resource_inventory"}
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const NeuronGraphic := preload("res://scripts/presentation/studio/design/desk_neuron_graphic.gd")
-const CARD_LIMIT := 36
+const STACK_KINDS := ["group", "language", "module", "topic"]
+const STACK_TITLES := {"group":"群体", "language":"语言", "module":"补丁", "topic":"话题"}
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 
 class CardInteraction extends DeskPropInteraction:
@@ -22,6 +24,7 @@ class CardInteraction extends DeskPropInteraction:
 	var loose_only := false
 	func _live_prop(id: StringName) -> bool:
 		if not super._live_prop(id): return false
+		if String(id).begins_with("stack/"): return true
 		return not loose_only or int(get_parent()._cards[String(id)].get("clipped_slot", -1)) < 0
 
 	func input_event(event: InputEvent) -> bool:
@@ -33,6 +36,111 @@ class CardInteraction extends DeskPropInteraction:
 		if release and handled and inspection().input_diagnostic.last_transition == "drag_released":
 			dropped_at.emit(id,event.position,origin)
 		return handled
+
+class StackSurface extends Control:
+	var kind := "group"
+	var title := ""
+	var quantity := 0
+	var highlighted := false
+	var hovered := false
+	var selected := false
+
+	func _ready() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		resized.connect(queue_redraw)
+
+	func _draw() -> void:
+		var palette: Dictionary = CardFace.PALETTES[kind]
+		var frame := Rect2(Vector2(3, 3), size - Vector2(7, 7))
+		var style := StyleBoxFlat.new()
+		style.bg_color = palette.edge.darkened(.16)
+		style.border_color = palette.light if highlighted or hovered or selected else palette.body
+		style.set_border_width_all(3 if highlighted else (2 if hovered or selected else 1))
+		style.set_corner_radius_all(4)
+		style.shadow_color = Color(0.06, 0.05, 0.03, .25)
+		style.shadow_size = 3
+		style.shadow_offset = Vector2(1, 3)
+		draw_style_box(style, frame)
+		var font := get_theme_default_font()
+		draw_string(font, Vector2(11, 20), DeskLocalization.text(title), HORIZONTAL_ALIGNMENT_LEFT, size.x - 55, 15, palette.light)
+		draw_string(font, Vector2(size.x - 40, 20), str(quantity), HORIZONTAL_ALIGNMENT_RIGHT, 27, 13, palette.light)
+		if quantity == 0:
+			var empty := Rect2(Vector2(12, 32), size - Vector2(24, 47))
+			draw_rect(empty, Color(palette.light, .28), false, 1)
+			draw_string(font, Vector2(14, size.y * .64), DeskLocalization.text("空卡摞"), HORIZONTAL_ALIGNMENT_CENTER, size.x - 28, 13, palette.light)
+		if highlighted and hovered:
+			draw_string(font, Vector2(10, size.y - 8), DeskLocalization.text("松开收纳"), HORIZONTAL_ALIGNMENT_CENTER, size.x - 20, 11, palette.light)
+
+class StackCard extends Control:
+	signal chosen
+	signal dragged(point: Vector2)
+	signal dropped(point: Vector2)
+	signal drag_cancelled
+	var face: Control
+	var overlay: Control
+	var record: Dictionary
+	var font: Font
+	var token := false
+	var _pressed := false
+	var _dragging := false
+	var _origin := Vector2.ZERO
+	var _ghost: Control
+
+	func _ready() -> void:
+		mouse_filter = Control.MOUSE_FILTER_STOP
+		mouse_entered.connect(func():
+			if not token: face.set_hovered(true))
+		mouse_exited.connect(func():
+			if not token: face.set_hovered(false))
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_pressed = true
+			_origin = get_viewport().get_mouse_position()
+			accept_event()
+
+	func _input(event: InputEvent) -> void:
+		if not _pressed: return
+		if event is InputEventMouseMotion:
+			if event.button_mask & MOUSE_BUTTON_MASK_LEFT == 0:
+				cancel_drag()
+				return
+			if not _dragging and event.position.distance_to(_origin) >= 6:
+				_dragging = true
+				_ghost = ResourceGraphic.new() if token else CardFace.new()
+				overlay.add_child(_ghost)
+				_ghost.z_index = 100
+				if token: _ghost.configure(record)
+				else: _ghost.configure(record, font)
+				_ghost.size = size
+				face.modulate.a = .35
+			if _dragging:
+				_ghost.global_position = event.position - size * .5
+				dragged.emit(event.position)
+			get_viewport().set_input_as_handled()
+		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			get_viewport().set_input_as_handled()
+			_pressed = false
+			face.modulate.a = 1.0
+			if _dragging:
+				_ghost.queue_free()
+				_ghost = null
+				_dragging = false
+				dropped.emit(event.position)
+			elif Rect2(Vector2.ZERO, size).has_point(get_global_transform_with_canvas().affine_inverse() * event.position):
+				chosen.emit()
+
+	func cancel_drag() -> void:
+		var was_active := _pressed or _dragging
+		_pressed = false
+		_dragging = false
+		face.modulate.a = 1.0
+		if is_instance_valid(_ghost): _ghost.queue_free()
+		_ghost = null
+		if was_active: drag_cancelled.emit()
+
+	func _exit_tree() -> void:
+		cancel_drag()
 
 var _rules: MemeDesignRules
 var _props: CardInteraction
@@ -50,6 +158,17 @@ var _event_positions: Dictionary = {}
 var _storage_sections: Dictionary = {}
 var _storage_slots: Dictionary = {}
 var _event_output_mode := false
+var _stack_surfaces: Dictionary = {}
+var _focus_kind := ""
+var _focus_host: Control
+var _focus_scroll: ScrollContainer
+var _focus_grid: GridContainer
+var _focus_rect := Rect2()
+var _focus_signature := ""
+var _focus_point_mapper: Callable
+var _drop_kind := ""
+var _drop_stack := ""
+var _selected_key := ""
 
 func _ready() -> void:
 	mouse_filter = MOUSE_FILTER_IGNORE
@@ -122,27 +241,223 @@ func _storage_ids(kind: String) -> Array[String]:
 func _build_storage_slots() -> void:
 	_storage_sections.clear()
 	_storage_slots.clear()
-	var area := _spawn_area.grow(-8)
-	var gap := 8.0
-	var top := minf(108.0, area.size.y * 0.24)
-	var middle := area.size.y * 0.43
-	var half := (area.size.x - gap) * 0.5
-	_storage_sections.language = Rect2(area.position,Vector2(half,top))
-	_storage_sections.group = Rect2(area.position+Vector2(half+gap,0),Vector2(half,top))
-	_storage_sections.topic = Rect2(area.position+Vector2(0,top+gap),Vector2(area.size.x,middle))
-	var bottom := maxf(44,area.size.y-top-middle-gap*2)
-	var pending_height := minf(64,bottom*0.4)
-	_storage_sections.module = Rect2(area.position+Vector2(0,top+middle+gap*2),Vector2(area.size.x,bottom-pending_height))
-	_storage_sections.pending = Rect2(Vector2(area.position.x,area.end.y-pending_height),Vector2(area.size.x,pending_height))
-	for kind: String in ["language","group","topic","module"]:
-		var ids := _storage_ids(kind)
-		var columns := 6 if kind == "topic" else (5 if kind == "module" else 3)
-		var rows := maxi(1,ceili(float(ids.size())/columns))
-		var section: Rect2 = _storage_sections[kind]
-		var cell := Vector2(section.size.x/columns,maxf(16,section.size.y-25)/rows)
-		for index in ids.size():
-			var slot := Rect2(section.position+Vector2((index%columns)*cell.x,23+floori(float(index)/columns)*cell.y),cell)
-			_storage_slots[kind+"/"+ids[index]] = slot.grow(-3)
+	var gap := 12.0
+	var cell := (_spawn_area.size - Vector2.ONE * gap) * .5
+	for index in STACK_KINDS.size():
+		var kind: String = STACK_KINDS[index]
+		var section := Rect2(_spawn_area.position + Vector2(index % 2, floori(float(index) / 2.0)) * (cell + Vector2.ONE * gap), cell)
+		_storage_sections[kind] = section
+		if not _stack_surfaces.has(kind):
+			var surface := StackSurface.new()
+			surface.name = "CardStack" + kind.capitalize()
+			surface.kind = kind
+			surface.title = STACK_TITLES[kind]
+			add_child(surface)
+			move_child(surface, 0)
+			_stack_surfaces[kind] = surface
+		var surface: Control = _stack_surfaces[kind]
+		surface.position = section.position
+		surface.size = section.size
+		_props.register_prop("stack/" + kind, surface, Rect2(Vector2.ZERO, section.size), false, false)
+		for id: String in _storage_ids(kind):
+			_storage_slots[kind + "/" + id] = Rect2(section.position + Vector2(9, 29), section.size - Vector2(18, 41))
+	_refresh_stack_surfaces()
+
+func _refresh_stack_surfaces() -> void:
+	for kind: String in _stack_surfaces:
+		var count := 0
+		for card: Dictionary in _cards.values():
+			if str(card.kind) == kind and bool(card.inventory_docked) and int(card.clipped_slot) < 0:
+				count += _available(kind, str(card.id))
+		var surface: Control = _stack_surfaces[kind]
+		surface.quantity = count
+		surface.highlighted = kind == _drop_kind
+		surface.hovered = kind == _drop_stack
+		surface.selected = kind == _focus_kind
+		surface.queue_redraw()
+
+func stack_faces() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for kind: String in STACK_KINDS:
+		if _stack_surfaces.has(kind):
+			var surface: Control = _stack_surfaces[kind]
+			result.append({"source":surface, "key":"stack/" + kind, "owner":null, "visible":is_visible_in_tree()})
+	return result
+
+func stack_viewport_rect(kind: String) -> Rect2:
+	return get_global_transform_with_canvas() * (_storage_sections.get(kind, Rect2()) as Rect2)
+
+func stack_details(kind: String) -> Dictionary:
+	var quantity := 0
+	var types := 0
+	for card: Dictionary in _cards.values():
+		if str(card.kind) == kind and bool(card.inventory_docked) and int(card.clipped_slot) < 0:
+			types += 1
+			quantity += _available(kind, str(card.id))
+	return {"kind":kind, "title":DeskLocalization.source_format("%s卡摞", [str(STACK_TITLES.get(kind, kind))], [0]), "body":DeskLocalization.source_format("单击下方卡片查看详情，拖到纸张槽位安装。\n共 %d 类，%d 张。", [types, quantity]), "count":quantity, "types":types}
+
+func _stack_at(point: Vector2) -> String:
+	var local := get_global_transform_with_canvas().affine_inverse() * point
+	for kind: String in _storage_sections:
+		if (_storage_sections[kind] as Rect2).has_point(local): return kind
+	return ""
+
+func preview_drop(kind: String, point: Vector2) -> void:
+	_drop_kind = kind if kind in STACK_KINDS else ""
+	_drop_stack = kind if _stack_at(point) == kind else ""
+	_refresh_stack_surfaces()
+
+func clear_drop_preview() -> void:
+	_drop_kind = ""
+	_drop_stack = ""
+	_refresh_stack_surfaces()
+
+func configure_focus_input(to_desktop: Callable) -> void:
+	_focus_point_mapper = to_desktop
+
+func focus_stack(kind: String, host: Control, rect: Rect2) -> void:
+	if _focus_host != host:
+		clear_stack_focus()
+		_focus_host = host
+		_focus_scroll = ScrollContainer.new()
+		_focus_scroll.name = "ExpandedMaterialStack"
+		_focus_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		_focus_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		_focus_scroll.mouse_filter = Control.MOUSE_FILTER_STOP
+		host.add_child(_focus_scroll)
+		_focus_grid = GridContainer.new()
+		_focus_grid.add_theme_constant_override("h_separation", 8)
+		_focus_grid.add_theme_constant_override("v_separation", 10)
+		_focus_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_focus_scroll.add_child(_focus_grid)
+	_focus_kind = kind
+	_focus_rect = rect
+	_focus_scroll.position = rect.position
+	_focus_scroll.size = rect.size
+	_focus_scroll.show()
+	_refresh_stack_surfaces()
+	_refresh_focus_list()
+
+func clear_stack_focus() -> void:
+	if is_instance_valid(_focus_scroll): _focus_scroll.queue_free()
+	_focus_scroll = null
+	_focus_grid = null
+	_focus_host = null
+	_focus_kind = ""
+	_focus_signature = ""
+	_selected_key = ""
+	clear_drop_preview()
+
+func focus_dragging() -> bool:
+	if _focus_grid == null: return false
+	for row: Node in _focus_grid.get_children():
+		if row is StackCard and row._pressed: return true
+	return false
+
+func _focus_records() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	if _focus_kind in ["stance_token", "pragmatic_token"]:
+		for resource: Dictionary in _design.get("resources", []):
+			if str(resource.kind) != _focus_kind or int(resource.get("available", 0)) <= 0: continue
+			var record: Dictionary = _rules.context_resource(str(resource.id)).duplicate(true)
+			record.count = int(resource.available)
+			result.append(record)
+	else:
+		for card: Dictionary in _cards.values():
+			if str(card.kind) == _focus_kind and bool(card.inventory_docked) and int(card.clipped_slot) < 0:
+				result.append(_physical_face_record(card))
+	return result
+
+func _refresh_focus_list() -> void:
+	if _focus_grid == null: return
+	var records := _focus_records()
+	var signature := _focus_kind + str(_focus_rect.size)
+	for record: Dictionary in records: signature += str(record.id) + ":" + str(record.count) + ";"
+	if signature == _focus_signature: return
+	_focus_signature = signature
+	for child: Node in _focus_grid.get_children():
+		_focus_grid.remove_child(child)
+		child.queue_free()
+	var token := _focus_kind in ["stance_token", "pragmatic_token"]
+	var dimensions := Vector2(112, 100) if token else CardFace.minimum_card_size(_focus_kind)
+	_focus_grid.columns = maxi(1, floori((_focus_rect.size.x - 12) / (dimensions.x + 8)))
+	if records.is_empty():
+		var empty := Label.new()
+		empty.text = DeskLocalization.text("暂无可用材料\n收取传真后会放入对应卡摞。")
+		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		empty.custom_minimum_size = Vector2(maxf(100, _focus_rect.size.x - 18), 72)
+		empty.add_theme_font_size_override("font_size", 15)
+		empty.add_theme_color_override("font_color", Color("60664f"))
+		_focus_grid.add_child(empty)
+		return
+	for record: Dictionary in records:
+		var row := StackCard.new()
+		row.name = "StackItem" + str(record.id).to_pascal_case()
+		row.custom_minimum_size = dimensions
+		row.size = dimensions
+		row.record = record
+		row.font = get_theme_font("font", "Label")
+		row.overlay = _focus_host
+		row.token = token
+		row.face = ResourceGraphic.new() if token else CardFace.new()
+		row.face.size = dimensions
+		row.add_child(row.face)
+		if token:
+			row.face.configure(record)
+			var count := Label.new()
+			count.text = "×%d" % int(record.count)
+			count.position = Vector2(dimensions.x - 30, 3)
+			count.add_theme_color_override("font_color", Color("373d33"))
+			count.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(count)
+		else:
+			row.face.configure(record, row.font)
+			row.face.set_selected(_selected_key == str(record.kind) + "/" + str(record.id))
+		row.chosen.connect(_select_expanded.bind(str(record.kind), str(record.id)))
+		row.dragged.connect(func(point: Vector2): preview_drop(str(record.kind), _map_focus_point(point)))
+		row.dropped.connect(_drop_expanded.bind(str(record.kind), str(record.id)))
+		row.drag_cancelled.connect(clear_drop_preview)
+		_focus_grid.add_child(row)
+
+func _map_focus_point(point: Vector2) -> Vector2:
+	return _focus_point_mapper.call(point) if _focus_point_mapper.is_valid() else point
+
+func _select_expanded(kind: String, id: String) -> void:
+	_selected_key = kind + "/" + id
+	for row: Node in _focus_grid.get_children():
+		if row is StackCard and not row.token:
+			row.face.set_selected(str(row.record.kind) + "/" + str(row.record.id) == _selected_key)
+	item_clicked.emit(kind, id)
+
+func _drop_expanded(point: Vector2, kind: String, id: String) -> void:
+	var desktop_point := _map_focus_point(point)
+	clear_drop_preview()
+	if kind in ["stance_token", "pragmatic_token"]:
+		item_dropped.emit(kind, id, desktop_point)
+		return
+	if _stack_at(desktop_point) == kind:
+		store_item(kind, id)
+		return
+	var key := _free_key(kind, id)
+	var origin: Vector2 = _cards[key].node.global_position
+	place_existing_item(kind, id, desktop_point)
+	_cards[key].return_position = origin
+	_cards[key].return_docked = true
+	item_dropped.emit(kind, id, desktop_point)
+	if _cards.has(key):
+		_cards[key].erase("return_position")
+		_cards[key].erase("return_docked")
+	_layout_inventory()
+
+func store_item(kind: String, id: String) -> bool:
+	if kind in ["stance_token", "pragmatic_token"]: return _available(kind, id) > 0
+	if not request_item(kind, id): return false
+	var key := _free_key(kind, id)
+	_cards[key].inventory_docked = true
+	_cards[key].erase("return_position")
+	_cards[key].erase("return_docked")
+	_layout_inventory()
+	return true
 
 func _inventory_position(kind: String, index: int, item_size: Vector2) -> Vector2:
 	var ids := _storage_ids(kind)
@@ -174,21 +489,30 @@ func _resize_card(card: Dictionary, target: Vector2) -> void:
 func _park_card(key: String) -> void:
 	if not _cards.has(key): return
 	var card: Dictionary = _cards[key]
-	if int(card.get("clipped_slot",-1)) >= 0: return
-	if _event_output_mode:
-		_park_event_card(key, card)
-		return
-	var slot: Rect2 = _storage_slots.get(str(card.kind)+"/"+str(card.id),Rect2(_spawn_area.position,Vector2(54,76)))
-	var desired := Vector2(56,104) if card.kind == "module" else (Vector2(42,104) if card.kind == "topic" else Vector2(62,62))
-	var target := Vector2(maxf(12,minf(desired.x,slot.size.x)),maxf(16,minf(desired.y,slot.size.y)))
-	if card.kind in ["language","group"]: target = Vector2.ONE*minf(target.x,target.y)
-	_resize_card(card,target)
-	card.node.rotation = 0
-	card.node.position = slot.get_center()-target*0.5
+	if int(card.get("clipped_slot", -1)) >= 0: return
+	var target := CardFace.minimum_card_size(str(card.kind))
+	_resize_card(card, target)
+	for row: Dictionary in _design.get("event_materials", []):
+		var event_key := _event_key(row)
+		if str(row.get("kind", "")) == str(card.kind) and str(row.get("id", "")) == str(card.id) and bool(row.get("claimed", false)) and _event_positions.has(event_key):
+			var point: Vector2 = _event_positions[event_key]
+			card.node.position = point - target * .5
+			card.inventory_docked = (_storage_sections.get(str(card.kind), Rect2()) as Rect2).has_point(point)
+			_event_positions.erase(event_key)
+	if bool(card.inventory_docked):
+		var slot: Rect2 = _storage_slots.get(str(card.kind) + "/" + str(card.id), Rect2(_spawn_area.position, target))
+		var index := 0
+		for other: String in _cards:
+			if other == key: break
+			if str(_cards[other].kind) == str(card.kind) and bool(_cards[other].inventory_docked) and int(_cards[other].clipped_slot) < 0: index += 1
+		card.node.position = slot.get_center() - target * .5 + Vector2(mini(index, 2) * 2, mini(index, 2) * 3)
+		card.node.rotation = 0
+		card.node.visible = index < 3
+	else:
+		card.node.show()
 	card.inventory_position = card.node.position
-	card.inventory_docked = true
-	_props.register_prop(key,card.node,Rect2(Vector2.ZERO,target),false,true)
-	_moved(key,card.node.global_position)
+	_props.register_prop(key, card.node, Rect2(Vector2.ZERO, target), false, true)
+	_moved(key, card.node.global_position)
 
 func _physical_face_record(card: Dictionary) -> Dictionary:
 	var sources: Array = []
@@ -205,50 +529,22 @@ func _physical_face_record(card: Dictionary) -> Dictionary:
 	var quantity := 1 if int(card.get("clipped_slot",-1)) >= 0 else _available(str(card.kind),str(card.id))
 	return {"kind":str(card.kind),"id":str(card.id),"title":_title(str(card.kind),str(card.id)),"count":quantity,"source_label":" · ".join(labels),"source_records":sources.duplicate(true)}
 
-func _park_event_card(key: String, card: Dictionary) -> void:
-	var target := Vector2(144,78) if card.kind == "topic" else Vector2(112,82)
-	_resize_card(card, target)
-	if not bool(card.get("event_placed", false)):
-		var index := int(card.get("inventory_index", 0))
-		var kind_index := maxi(0, ["language", "group", "module", "topic"].find(str(card.kind)))
-		card.node.position = _spawn_area.position + Vector2(kind_index * 24 + index * 9, index * 18)
-		card.node.rotation = deg_to_rad(float((index + kind_index) % 5 - 2) * 3.0)
-		card.event_placed = true
-	for row: Dictionary in _design.get("event_materials", []):
-		var event_key := _event_key(row)
-		if str(row.get("kind", "")) == str(card.kind) and str(row.get("id", "")) == str(card.id) and bool(row.get("claimed", false)) and _event_positions.has(event_key):
-			card.node.position = (_event_positions[event_key] as Vector2) - target * .5
-			_event_positions.erase(event_key)
-	card.inventory_position = card.node.position
-	card.inventory_docked = false
-	_props.register_prop(key, card.node, Rect2(Vector2.ZERO, target), false, true)
-	_moved(key, card.node.global_position)
-
 func _layout_inventory() -> void:
-	# Held cards keep their drag transform; resting cards retain their emitted or placed pose.
+	# Inventory refreshes must not interrupt a card already under the pointer.
 	var held := str(_props.inspection().pressed) if _props != null else ""
 	for key: String in _cards:
 		if key != held: _park_card(key)
+	_refresh_stack_surfaces()
+	_refresh_focus_list()
 
 func _return_free_cards() -> void:
 	if _props == null: return
 	_props.cancel_drag(&"return_to_storage")
+	if _focus_grid != null:
+		for row: Node in _focus_grid.get_children():
+			if row is StackCard: row.cancel_drag()
+	clear_drop_preview()
 	_layout_inventory()
-
-func _draw() -> void:
-	if not _enabled or _event_output_mode: return
-	var titles := {"language":"语言盘","group":"群体盘","topic":"话题纸条","module":"表达补丁","pending":"待收录"}
-	for kind: String in _storage_sections:
-		var rect: Rect2 = _storage_sections[kind]
-		draw_rect(Rect2(rect.position+Vector2(2,3),rect.size),Color(0.10,0.08,0.04,0.20))
-		# The texture has transparent margins; opaque card stock blocks what lies below.
-		draw_rect(rect,Color("c7b99a"))
-		draw_texture_rect(Paper,rect,false,Color("d8cdb3"))
-		draw_rect(rect,Color(0.25,0.23,0.17,0.55),false,1.0)
-		draw_string(get_theme_default_font(),rect.position+Vector2(7,16),DeskLocalization.text(titles[kind]),HORIZONTAL_ALIGNMENT_LEFT,rect.size.x-14,12,Color("3d4032"))
-	for key: String in _storage_slots:
-		var rect: Rect2 = _storage_slots[key]
-		draw_rect(rect,Color(0.30,0.31,0.24,0.13),false,0.8)
 
 func return_to_inventory(kind: String, id: String) -> void:
 	# The design editor owns an accepted item; its desktop proxy must not cover it.
@@ -264,9 +560,9 @@ func _return_remaining(key: String, count: int) -> void:
 	var card: Dictionary = _cards[key]
 	card.count.text = "×%d" % count
 	# The accepted unit belongs to the slot; remaining stock stays at the drag origin.
-	if _event_output_mode and card.get("return_position") is Vector2:
+	if card.get("return_position") is Vector2:
 		card.node.global_position = card.return_position
-		card.event_placed = true
+		card.inventory_docked = bool(card.get("return_docked", false))
 	_park_card(key)
 
 func _available(kind: String, id: String) -> int:
@@ -428,7 +724,6 @@ func request_item(kind: String, id: String, installed: bool=false) -> bool:
 	if not key.is_empty():
 		_raise(key)
 		return true
-	if _cards.size() >= CARD_LIMIT: return false
 	key=kind+"/"+id
 	while _cards.has(key): key+="/copy"
 	_seen[kind+"/"+id]=true
@@ -529,10 +824,11 @@ func request_item(kind: String, id: String, installed: bool=false) -> bool:
 func place_existing_item(kind: String, id: String, point: Vector2) -> bool:
 	if not point.is_finite() or not request_item(kind,id): return false
 	var key := _free_key(kind,id)
-	if _event_output_mode and _cards.has(key):
-		_cards[key].node.position = get_global_transform_with_canvas().affine_inverse() * point - _cards[key].node.size * .5
-		_cards[key].event_placed = true
+	_cards[key].node.position = get_global_transform_with_canvas().affine_inverse() * point - _cards[key].node.size * .5
+	_cards[key].inventory_docked = _stack_at(point) == kind
 	_park_card(key)
+	_refresh_stack_surfaces()
+	_refresh_focus_list()
 	return true
 
 func _title(kind: String, id: String) -> String:
@@ -540,10 +836,16 @@ func _title(kind: String, id: String) -> String:
 	return str(entry.get("title",id))
 
 func _clicked(key: StringName) -> void:
+	if String(key).begins_with("stack/"):
+		stack_clicked.emit(String(key).trim_prefix("stack/"))
+		return
 	if _cards.has(String(key)):
-		_raise(String(key))
 		var card: Dictionary = _cards[String(key)]
-		item_clicked.emit(card.kind,card.id)
+		if bool(card.inventory_docked):
+			stack_clicked.emit(str(card.kind))
+		else:
+			_raise(String(key))
+			item_clicked.emit(card.kind,card.id)
 
 func _raise(key: String) -> void:
 	var node: Control = _cards[key].node
@@ -552,7 +854,11 @@ func _raise(key: String) -> void:
 	_props.register_prop(key,node,Rect2(Vector2.ZERO,node.size),false,true)
 
 func _card_moved(key: StringName, point: Vector2) -> void:
-	if _cards.has(String(key)): _cards[String(key)].inventory_docked = false
+	if _cards.has(String(key)):
+		if not _cards[String(key)].has("return_docked"):
+			_cards[String(key)].return_docked = bool(_cards[String(key)].inventory_docked)
+		_cards[String(key)].inventory_docked = false
+		preview_drop(str(_cards[String(key)].kind), _props._input_diagnostic.last_point)
 	_moved(key, point)
 
 func _moved(key: StringName, _point: Vector2) -> void:
@@ -575,6 +881,9 @@ func _hovered(key: StringName) -> void:
 	for id in _cards:
 		_cards[id].hover.hide()
 		if _cards[id].has("face"): _cards[id].face.set_hovered(id == String(key) and _enabled)
+	for kind: String in _stack_surfaces:
+		_stack_surfaces[kind].hovered = String(key) == "stack/" + kind
+		_stack_surfaces[kind].queue_redraw()
 
 func _remove(key: String) -> void:
 	_props.unregister_prop(key)
@@ -582,6 +891,7 @@ func _remove(key: String) -> void:
 	_cards.erase(key)
 
 func clear_cards() -> void:
+	clear_stack_focus()
 	for key in _cards.keys(): _remove(key)
 	_seen.clear()
 	for slip in _pending_cards.values(): slip.queue_free()
@@ -589,13 +899,19 @@ func clear_cards() -> void:
 	_event_positions.clear()
 
 func _released(key: StringName, point: Vector2, origin: Vector2) -> void:
+	clear_drop_preview()
 	if _cards.has(String(key)):
 		var card: Dictionary = _cards[String(key)]
+		if _stack_at(point) == str(card.kind):
+			store_item(str(card.kind), str(card.id))
+			return
 		card.return_position = origin
 		item_dropped.emit(card.kind,card.id,point)
 		# The authority callback may remove or clip the item before it returns.
-		if _cards.has(String(key)): _cards[String(key)].erase("return_position")
-		_park_card(String(key))
+		if _cards.has(String(key)):
+			_cards[String(key)].erase("return_position")
+			_cards[String(key)].erase("return_docked")
+		_layout_inventory()
 
 func _process(_delta: float) -> void:
 	if _light != null and not _light.global_position.is_equal_approx(_last_light):
@@ -608,6 +924,10 @@ func handles_viewport_point(viewport_point: Vector2) -> bool:
 func hover_info(viewport_point: Vector2) -> Dictionary:
 	if not _enabled or not is_visible_in_tree(): return {}
 	var key := String(_props._hit_prop(viewport_point))
+	if key.begins_with("stack/"):
+		var details := stack_details(key.trim_prefix("stack/"))
+		details.gesture = "单击展开卡摞"
+		return details
 	if not _cards.has(key): return {}
 	return details_for_item(str(_cards[key].kind),str(_cards[key].id))
 
@@ -617,6 +937,7 @@ func tutorial_drag_cards(kinds: Array[String], preferred := "", preferred_anchor
 	var held := String(_props._pressed)
 	for index in range(_props._order.size() - 1, -1, -1):
 		var key := String(_props._order[index])
+		if not _cards.has(key): continue
 		# A held card owns the guide until the player releases it.
 		if not held.is_empty() and key != held: continue
 		var card: Dictionary = _cards[key]
@@ -642,26 +963,26 @@ func tutorial_drag_cards(kinds: Array[String], preferred := "", preferred_anchor
 
 func details_for_item(kind: String,id: String) -> Dictionary:
 	var key := kind+"/"+id
-	if not _cards.has(key): return {}
-	var card: Dictionary = _cards[key]
+	var card: Dictionary = _cards.get(key, {"kind":kind, "id":id, "clipped_slot":-1, "inventory_docked":true})
 	var definition: Dictionary = _rules.find("modules",card.id) if card.kind == "module" else _rules.context_resource(card.id)
 	var installed: bool = int(card.get("clipped_slot",-1)) >= 0
 	var details := {"kind":card.kind,"id":card.id,"title":str(definition.get("title",card.id)),
 		"count":_available(card.kind,card.id),"description":str(definition.get("description","")),
-		"status":"已安装" if installed else ("桌面卡牌" if _event_output_mode else "收纳中"),
+		"status":"已安装" if installed else ("收纳中" if bool(card.inventory_docked) else "桌面卡牌"),
 		"gesture":"拖到回形针安装；拖出回形针移除" if card.kind == "module" else "拖到对应空槽安装"}
 	var face_record := _physical_face_record(card)
 	details.source_label = str(face_record.get("source_label",""))
 	details.source_records = face_record.get("source_records",[]).duplicate(true)
 	if str(card.id) == "module_boundary": details.unlock_hint = "安装后增加一个语言槽"
 	elif str(card.id) == "module_relation": details.unlock_hint = "安装后增加一个人群槽"
+	if kind in ["stance_token", "pragmatic_token"]: details.gesture = "拖到对应坐标轴使用"
 	return details
 
 func inspection() -> Dictionary:
 	var items := []
 	for card in _cards.values():
 		items.append({"kind":card.kind,"id":card.id,"rect":card.node.get_global_rect(),"count":card.count.text,"visible":card.node.is_visible_in_tree(),"instance_id":card.node.get_instance_id(),"clipped_slot":int(card.get("clipped_slot",-1)),"parent":str(card.node.get_parent().get_path()),"graphic":card.graphic.inspection(),"global_scale":card.node.get_global_transform_with_canvas().get_scale(),"size":card.node.size,"inventory_docked":bool(card.get("inventory_docked",false)),"inventory_position":card.get("inventory_position",Vector2.ZERO),"card_style":str(card.face.inspection().shape) if card.has("face") else card.get("card_style", "material_card"),"face":card.face.inspection() if card.has("face") else {}})
-	return {"items":items,"spawn_area":_spawn_area,"storage_area":_spawn_area,"storage_mode":"event_output_cards" if _event_output_mode else "fixed_typed_slots","storage_sections":_storage_sections.duplicate(),"storage_slots":_storage_slots.duplicate(),"returns_failed_drop":true,"free_placement":_event_output_mode,"pending":_pending_cards.values().map(func(slip): return slip.inspection()),"limit":CARD_LIMIT,"grants_inventory":false,"writes_layout":false,"interaction":_props.inspection()}
+	return {"items":items,"spawn_area":_spawn_area,"storage_area":_spawn_area,"storage_mode":"fixed_typed_stacks","storage_sections":_storage_sections.duplicate(),"storage_slots":_storage_slots.duplicate(),"returns_failed_drop":false,"free_placement":true,"pending":_pending_cards.values().map(func(slip): return slip.inspection()),"focused_stack":_focus_kind,"expanded_count":_focus_records().size(),"drop_kind":_drop_kind,"hovered_drop_stack":_drop_stack,"grants_inventory":false,"writes_layout":false,"interaction":_props.inspection()}
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
