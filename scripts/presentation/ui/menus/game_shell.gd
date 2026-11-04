@@ -13,6 +13,8 @@ var _tutorial_anchor: Control
 var _tutorial_drag_source_key := ""
 var _tutorial_drag_anchor: Control
 var _tutorial_drag_anchor_uv := Vector2(0.5, 0.5)
+var _tutorial_dragged_card: Control
+var _tutorial_drag_origin := Vector2.ZERO
 
 func configure(owner_page: Node2D) -> void:
 	page = owner_page
@@ -34,6 +36,9 @@ func configure(owner_page: Node2D) -> void:
 	tutorial.step_changed.connect(_reconcile_startup_step)
 	tutorial.configure(steps, _target, _tutorial_reserved_areas, _tutorial_requires_overview)
 	tutorial.set_drag_target_provider(_tutorial_drag_targets)
+	tutorial.set_input_target_provider(_tutorial_input_targets, _tutorial_input_contains)
+	tutorial.overview_requested.connect(page.desk.return_overview)
+	tutorial.drag_cancelled.connect(_cancel_tutorial_drag)
 	ending = Summary.new()
 	ending.name = "Ending67"
 	add_child(ending)
@@ -187,13 +192,60 @@ func _tutorial_drag_targets(step_id: String) -> Dictionary:
 		_tutorial_drag_anchor.size = Vector2.ONE
 		_tutorial_drag_anchor.position = card.node.size * card.anchor - Vector2.ONE * 0.5
 		var source_point := _tutorial_project_rect(_tutorial_drag_anchor).get_center()
-		return {"source":source_rect, "source_point":source_point, "target":target_rect, "dragging":card.dragging, "kind":card.kind, "id":card.id}
+		return {"source":source_rect, "source_point":source_point, "target":target_rect, "dragging":card.dragging, "kind":card.kind, "id":card.id, "accepts_point":_tutorial_drag_contains.bind(card.key)}
 	return {}
+
+func _tutorial_drag_contains(point: Vector2, key: String) -> bool:
+	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
+	var cards: Control = page.desk._material_cards
+	if String(cards._props._hit_prop(point)) != key: return false
+	_tutorial_dragged_card = cards._cards[key].node
+	_tutorial_drag_origin = _tutorial_dragged_card.global_position
+	return true
 
 func _tutorial_project_rect(control: Control) -> Rect2:
 	var projected: Variant = page.get_meta("studio3d").project_target(control) if page.has_meta("studio3d") else control
 	if projected is Rect2: return projected
 	return projected.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, projected.size)
+
+func _cancel_tutorial_drag() -> void:
+	# Keep a rejected drop on the desk so the same card remains available to retry.
+	_tutorial_dragged_card.global_position = _tutorial_drag_origin
+
+func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
+	var areas: Array[Rect2] = []
+	var id := str(step.get("target", ""))
+	var editor: Control = page.hud.design_workbench()
+	if id == "map/country" and page.atlas.map_input.is_visible_in_tree():
+		areas.append(_tutorial_project_rect(page.atlas.map_input))
+	elif id == "speed":
+		for button: Button in page.desk._speed_strip._buttons:
+			if not button.disabled: areas.append(_tutorial_project_rect(button))
+	elif id == "spread/skill" and editor._spread_tree.is_visible_in_tree():
+		var tree: Control = editor._spread_tree
+		var unlocked: Array = editor._design.get("unlocked_skills", ["text"])
+		var balance := int(editor._state.get("meme_points", 0))
+		for skill: Dictionary in editor._rules.skills:
+			var skill_id := str(skill.get("id", ""))
+			if skill_id in unlocked or int(skill.get("cost", 0)) > balance: continue
+			var available := true
+			for dependency: Variant in skill.get("requires", []):
+				if str(dependency) not in unlocked: available = false
+			if available and tree._points.has(skill_id):
+				areas.append(_tutorial_project_rect(_area_target(tree, Rect2(tree._points[skill_id] - Vector2(22, 22), Vector2(44, 44)))))
+		if editor._buy.is_visible_in_tree() and not editor._buy.disabled:
+			areas.append(_tutorial_project_rect(editor._buy))
+	else:
+		var target: Variant = _target(id)
+		if target is Rect2: areas.append(target)
+		elif target is Control: areas.append(_tutorial_project_rect(target))
+	return areas
+
+func _tutorial_input_contains(step: Dictionary, point: Vector2) -> bool:
+	if str(step.get("target", "")) != "map/country": return true
+	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
+	var desk: Control = page.desk
+	return desk._props._hit_prop(point) == &"" and not desk._material_cards.handles_viewport_point(point)
 
 func _skill_target(editor: Control) -> Control:
 	var tree: Control = editor._spread_tree

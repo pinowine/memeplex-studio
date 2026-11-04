@@ -4,6 +4,9 @@ extends Control
 signal step_changed(id: String, step: Dictionary)
 signal finished(skipped: bool)
 signal focus_changed(active: bool)
+signal pointer_cancelled
+signal drag_cancelled
+signal overview_requested
 
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
@@ -32,11 +35,17 @@ var _provider := Callable()
 var _avoid_provider := Callable()
 var _overview_provider := Callable()
 var _drag_provider := Callable()
+var _input_provider := Callable()
+var _input_point_test := Callable()
+var _pointer_mode := ""
+var _press_point := Vector2.ZERO
+var _press_rect := Rect2()
 var _return_overview := false
 var _avoid_rects: Array[Rect2] = []
 var _target := Rect2()
 var _drag_source := Rect2()
 var _drag_source_point := Vector2.ZERO
+var _drag_source_test := Callable()
 var _ui: Control
 var _history: Array[Dictionary] = []
 var _display_index := 0
@@ -74,6 +83,8 @@ func _ready() -> void:
 	PaperStyle.apply_buttons(_ui)
 	if _steps.is_empty(): _steps = default_steps()
 	resized.connect(_refresh)
+	resized.connect(_cancel_pointer)
+	get_window().focus_exited.connect(_cancel_pointer)
 	hide()
 
 func configure(steps: Array[Dictionary] = [], target_provider: Callable = Callable(), avoid_provider: Callable = Callable(), overview_provider: Callable = Callable()) -> void:
@@ -91,6 +102,83 @@ func set_target_provider(provider: Callable) -> void:
 func set_drag_target_provider(provider: Callable) -> void:
 	_drag_provider = provider
 	_refresh()
+
+func set_input_target_provider(provider: Callable, point_test := Callable()) -> void:
+	_input_provider = provider
+	_input_point_test = point_test
+
+func _input(event: InputEvent) -> void:
+	if not allows_input(event): get_viewport().set_input_as_handled()
+
+func allows_input(event: InputEvent) -> bool:
+	if not _active or _hint_only: return true
+	if _pointer_mode == "guide" and event is InputEventMouse:
+		if event is InputEventMouseMotion: return true
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if not event.pressed: _pointer_mode = ""
+			return true
+	if event is InputEventMouse and handles_viewport_point(event.position) and _pointer_mode.is_empty():
+		if event is InputEventMouseMotion: return true
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed: _pointer_mode = "guide"
+			return true
+	if _blocked or _transitioning: return false
+	if event is InputEventKey:
+		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+		if _return_overview and key == KEY_ESCAPE:
+			if event.pressed and not event.echo: overview_requested.emit()
+			return false
+		if _return_overview: return false
+		return str(_steps[_index].get("action", "")) == "speed_changed" and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and key in [KEY_SPACE, KEY_COMMA, KEY_LESS, KEY_PERIOD, KEY_GREATER]
+	if not event is InputEventMouse: return false
+	var point: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+	var areas := _input_areas()
+	if event is InputEventMouseMotion:
+		if not _pointer_mode.is_empty(): return true
+		return _contains_input_point(areas, point) or _drag_source.has_point(point)
+	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return false
+	if event.pressed:
+		if _return_overview:
+			overview_requested.emit()
+			return false
+		_press_point = point
+		if _drag_source.has_area() and _drag_source.has_point(point) and (not _drag_source_test.is_valid() or _drag_source_test.call(event.position)):
+			_pointer_mode = "drag"
+			return true
+		for area: Rect2 in areas:
+			if area.has_point(point):
+				if _input_point_test.is_valid() and not _input_point_test.call(_steps[_index], event.position): return false
+				_pointer_mode = "click"
+				_press_rect = area
+				return true
+		return false
+	if _pointer_mode.is_empty(): return false
+	var allowed: bool = _target.has_point(point) and point.distance_to(_press_point) >= 8.0 if _pointer_mode == "drag" else _press_rect.has_point(point)
+	if not allowed and _pointer_mode == "drag": drag_cancelled.emit()
+	_pointer_mode = ""
+	# A short click on a drag source must not open its details and leave the lesson.
+	if not allowed: pointer_cancelled.emit()
+	return allowed
+
+func _input_areas() -> Array[Rect2]:
+	var areas: Array[Rect2] = []
+	if str(_steps[_index].get("action", "continue")) in ["continue", "module_installed", "context_installed"]: return areas
+	if _input_provider.is_valid():
+		var inverse := get_global_transform_with_canvas().affine_inverse()
+		for area: Rect2 in _input_provider.call(_steps[_index]):
+			if area.has_area(): areas.append(inverse * area)
+	elif _target.has_area(): areas.append(_target)
+	return areas
+
+func _contains_input_point(areas: Array[Rect2], point: Vector2) -> bool:
+	for area: Rect2 in areas:
+		if area.has_point(point): return true
+	return false
+
+func _cancel_pointer() -> void:
+	if _pointer_mode == "drag": drag_cancelled.emit()
+	_pointer_mode = ""
+	pointer_cancelled.emit()
 
 func begin() -> void:
 	_index = 0
@@ -139,9 +227,11 @@ func reenter_hint() -> void:
 func set_interaction_blocked(blocked: bool) -> void:
 	if _blocked == blocked: return
 	_blocked = blocked
+	if blocked: _cancel_pointer()
 	_refresh()
 
 func _open() -> void:
+	_cancel_pointer()
 	_active = true
 	show()
 	_present_step()
@@ -149,6 +239,7 @@ func _open() -> void:
 	step_changed.emit(str(_steps[_index].id), _steps[_index].duplicate(true))
 
 func _advance() -> void:
+	_cancel_pointer()
 	if _index == _steps.size() - 1:
 		_completed = true
 		_close(false)
@@ -158,6 +249,7 @@ func _advance() -> void:
 	step_changed.emit(str(_steps[_index].id), _steps[_index].duplicate(true))
 
 func _close(skipped: bool) -> void:
+	_cancel_pointer()
 	_active = false
 	_stop_transition()
 	_transitioning = true
@@ -243,12 +335,14 @@ func _refresh() -> void:
 			_target = transform * Rect2(Vector2.ZERO, target.size)
 		elif target is Rect2: _target = get_global_transform_with_canvas().affine_inverse() * target
 	_drag_source = Rect2()
+	_drag_source_test = Callable()
 	if _drag_provider.is_valid() and _display_index == _index:
 		var drag_targets: Dictionary = _drag_provider.call(str(step.id))
 		if not drag_targets.is_empty():
 			var inverse := get_global_transform_with_canvas().affine_inverse()
 			_drag_source = inverse * drag_targets.source
 			_drag_source_point = inverse * drag_targets.source_point
+			_drag_source_test = drag_targets.get("accepts_point", Callable())
 			_target = inverse * drag_targets.target
 	# Offscreen or missing targets never receive a speculative pointer.
 	_target = _target.intersection(Rect2(Vector2.ZERO, size))
@@ -403,7 +497,7 @@ func handles_viewport_point(point: Vector2) -> bool:
 	return false
 
 func inspection() -> Dictionary:
-	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": false, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index}
+	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index}
 
 func default_steps() -> Array[Dictionary]:
 	return [
