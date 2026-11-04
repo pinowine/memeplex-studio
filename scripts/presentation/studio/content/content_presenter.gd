@@ -188,11 +188,11 @@ func _sync_paper_tab(binding: Dictionary) -> void:
 	var center := frame * (tab.size * .5)
 	var mesh: MeshInstance3D = tab_binding.mesh
 	mesh.visible = tab.is_visible_in_tree()
-	mesh.mesh.size = tab.size * frame.get_scale().abs() / 1000.0
 	mesh.position = Vector3((center.x - 800) / 1000.0, binding.model.position.y + .0004, (center.y - 450) / 1000.0)
 	mesh.rotation.y = -frame.get_rotation()
 	tab_binding.rect = Rect2(Vector2.ZERO, tab.size)
 	if int(binding.curve) == 2:
+		mesh.mesh.size = tab.size * frame.get_scale().abs() / 1000.0
 		var feed: Dictionary = binding.feed.inspection()
 		var scale_y: float = binding.source.get_global_transform().get_scale().y
 		var material: ShaderMaterial = tab_binding.material
@@ -201,6 +201,50 @@ func _sync_paper_tab(binding: Dictionary) -> void:
 		material.set_shader_parameter("mouth_height_m", feed.mouth_height_m - binding.model.position.y)
 		material.set_shader_parameter("feed_falloff_m", feed.bend_falloff_m)
 		material.set_shader_parameter("feed_distance_offset_m", (binding.source.size.y - tab.position.y - tab.size.y) * absf(scale_y) / 1000.0 - feed.lip_clearance_m)
+	else:
+		_conform_workpaper_tab(binding, tab, frame.get_scale().abs())
+
+func _conform_workpaper_tab(binding: Dictionary, tab: Control, tab_scale: Vector2) -> void:
+	var source: Control = binding.source
+	var tab_binding: Dictionary = binding.tab
+	var relative: Transform2D = source.get_transform().affine_inverse() * tab.get_parent().get_transform() * tab.get_transform()
+	var signature: Array = [relative, source.size, tab.size, tab_scale]
+	if tab_binding.has("shape_signature"):
+		var previous: Array = tab_binding.shape_signature
+		if relative.is_equal_approx(previous[0]) and source.size.is_equal_approx(previous[1]) and tab.size.is_equal_approx(previous[2]) and tab_scale.is_equal_approx(previous[3]): return
+	var mesh: MeshInstance3D = tab_binding.mesh
+	var surface: MeshInstance3D = binding.mesh
+	var front := surface.mesh.surface_get_arrays(surface.mesh.get_surface_count() - 1)
+	var triangles: PackedVector3Array = front[Mesh.ARRAY_VERTEX]
+	var plane := PlaneMesh.new()
+	plane.size = tab.size * tab_scale / 1000.0
+	plane.subdivide_depth = 8
+	var arrays := plane.get_mesh_arrays()
+	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	var uvs: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
+	var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+	var heights := PackedFloat32Array()
+	# Follow the attachment edge; a distant curled corner must not lift the tab.
+	for row in 10:
+		var point := Vector3((tab.size.x * .5 - 1.0) * tab_scale.x / 1000.0, 0.0, (float(row) / 9.0 - .5) * plane.size.y)
+		var origin := surface.to_local(mesh.to_global(point))
+		origin.y = surface.get_aabb().end.y + .01
+		var hit: Variant = null
+		for index in range(0, triangles.size(), 3):
+			hit = Geometry3D.ray_intersects_triangle(origin, Vector3.DOWN, triangles[index], triangles[index + 1], triangles[index + 2])
+			if hit != null: break
+		assert(hit != null, "Workpaper tab attachment must lie on its sheet surface.")
+		heights.append(mesh.to_local(surface.to_global(hit)).y + .0001)
+	for index in vertices.size():
+		vertices[index].y = heights[roundi(uvs[index].y * 9.0)]
+	var tool := SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for index in indices:
+		tool.set_uv(uvs[index])
+		tool.add_vertex(vertices[index])
+	tool.generate_normals()
+	mesh.mesh = tool.commit()
+	tab_binding.shape_signature = signature
 
 
 func _sync_live_papers(delta: float) -> void:
