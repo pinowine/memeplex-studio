@@ -8,6 +8,7 @@ signal focus_changed(active: bool)
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
+const DragArrow = preload("res://scripts/presentation/ui/tutorial/tutorial_drag_arrow.gd")
 const CARD_MARGIN := 20.0
 const TARGET_GAP := 52.0
 const MAX_ARROW_LENGTH := 72.0
@@ -30,9 +31,12 @@ var _hint_only := false
 var _provider := Callable()
 var _avoid_provider := Callable()
 var _overview_provider := Callable()
+var _drag_provider := Callable()
 var _return_overview := false
 var _avoid_rects: Array[Rect2] = []
 var _target := Rect2()
+var _drag_source := Rect2()
+var _drag_source_point := Vector2.ZERO
 var _ui: Control
 var _history: Array[Dictionary] = []
 var _display_index := 0
@@ -44,11 +48,14 @@ var _arrow_from := Vector2.ZERO
 var _arrow_to := Vector2.ZERO
 var _arrow_visible := false
 var _arrow: Node2D
+var _drag_arrow: Node2D
 var _typewriter := TypewriterEffect.new()
 var _body_text := ""
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Read the card projection after the studio updates its camera and paper meshes.
+	process_priority = 101
 	if theme == null: theme = load("res://data/presentation/ui/demo_theme.tres")
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
@@ -57,6 +64,11 @@ func _ready() -> void:
 	_arrow.name = "GuideArrow"
 	add_child(_arrow)
 	_arrow.hide()
+	_drag_arrow = DragArrow.new()
+	_drag_arrow.name = "DragGuideArrow"
+	add_child(_drag_arrow)
+	move_child(_drag_arrow, 0)
+	_drag_arrow.hide()
 	_ui.get_node("Card/Content/Actions/Continue").pressed.connect(advance)
 	_ui.get_node("Card/Content/Actions/Skip").pressed.connect(skip)
 	PaperStyle.apply_buttons(_ui)
@@ -74,6 +86,10 @@ func configure(steps: Array[Dictionary] = [], target_provider: Callable = Callab
 
 func set_target_provider(provider: Callable) -> void:
 	_provider = provider
+	_refresh()
+
+func set_drag_target_provider(provider: Callable) -> void:
+	_drag_provider = provider
 	_refresh()
 
 func begin() -> void:
@@ -226,8 +242,18 @@ func _refresh() -> void:
 			var transform: Transform2D = get_global_transform_with_canvas().affine_inverse() * target.get_global_transform_with_canvas()
 			_target = transform * Rect2(Vector2.ZERO, target.size)
 		elif target is Rect2: _target = get_global_transform_with_canvas().affine_inverse() * target
+	_drag_source = Rect2()
+	if _drag_provider.is_valid() and _display_index == _index:
+		var drag_targets: Dictionary = _drag_provider.call(str(step.id))
+		if not drag_targets.is_empty():
+			var inverse := get_global_transform_with_canvas().affine_inverse()
+			_drag_source = inverse * drag_targets.source
+			_drag_source_point = inverse * drag_targets.source_point
+			_target = inverse * drag_targets.target
 	# Offscreen or missing targets never receive a speculative pointer.
 	_target = _target.intersection(Rect2(Vector2.ZERO, size))
+	if _drag_source.has_area():
+		_drag_arrow.connect_points(_drag_source_point, _target.get_center())
 	_avoid_rects.clear()
 	if _avoid_provider.is_valid():
 		var reserved: Variant = _avoid_provider.call()
@@ -236,6 +262,7 @@ func _refresh() -> void:
 			for rectangle: Variant in reserved:
 				if rectangle is Rect2 and rectangle.has_area():
 					_avoid_rects.append(inverse * rectangle)
+	if _drag_source.has_area(): _avoid_rects.append(_drag_source)
 	var card: Control = _ui.get_node("Card")
 	var compact := size.x < 900 or size.y < 560
 	var width := minf(600 if compact else 500, size.x - CARD_MARGIN * 2.0)
@@ -308,6 +335,8 @@ func _place_card(dimensions: Vector2) -> Vector2:
 			score += absf(endpoints[0].distance_to(endpoints[1]) - TARGET_GAP) * 6.0
 		for reserved: Rect2 in _avoid_rects:
 			score += rectangle.intersection(reserved.grow(12)).get_area() * 100.0
+		if _drag_source.has_area() and _drag_arrow.intersects_rect(rectangle.grow(10)):
+			score += 50000.0
 		# Small stability bias prevents flipping sides while the camera settles.
 		score += point.distance_to(_card_position) * 0.01 if _target.has_area() else float(candidates.find(candidate))
 		if score < best_score:
@@ -341,7 +370,16 @@ func _nearest_edges(card: Rect2, target: Rect2) -> PackedVector2Array:
 func _update_arrow(card: Rect2) -> void:
 	_arrow_visible = false
 	_arrow.visible = false
-	if not _target.has_area() or card.intersects(_target) or _blocked: return
+	_drag_arrow.hide()
+	if not _target.has_area() or _blocked: return
+	if _drag_source.has_area():
+		_arrow_from = _drag_source_point
+		_arrow_to = _target.get_center()
+		_drag_arrow.modulate.a = 1.0 if _active else _appearance
+		_drag_arrow.show()
+		_arrow_visible = true
+		return
+	if card.intersects(_target): return
 	var endpoints := _nearest_edges(card, _target)
 	var direction := (endpoints[1] - endpoints[0]).normalized()
 	_arrow_to = endpoints[1] - direction * 7.0
