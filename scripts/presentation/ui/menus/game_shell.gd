@@ -29,7 +29,7 @@ func configure(owner_page: Node2D) -> void:
 		if str(steps[index].id) == "speed": speed = steps.pop_at(index)
 	steps.append(speed)
 	tutorial.step_changed.connect(_reconcile_startup_step)
-	tutorial.configure(steps, _target, _tutorial_reserved_areas)
+	tutorial.configure(steps, _target, _tutorial_reserved_areas, _tutorial_requires_overview)
 	ending = Summary.new()
 	ending.name = "Ending67"
 	add_child(ending)
@@ -203,6 +203,12 @@ func _tutorial_reserved_areas() -> Array:
 	if reader != null and reader.is_visible_in_tree():
 		rectangles.append(reader.inspection().target_rect)
 	return rectangles
+
+func _tutorial_requires_overview(target_id: String) -> bool:
+	if not target_id.begins_with("desktop/") and target_id != "speed": return false
+	var camera: Dictionary = page.desk._camera.inspection()
+	if target_id == "speed" and str(camera.target) == "speed": return false
+	return str(camera.state) in ["focused", "travelling"]
 
 func inspection() -> Dictionary:
 	return {"main_mode":main_mode,"main_menu":main_menu.inspection(),"tutorial":tutorial.inspection(),"ending":ending.inspection(),"clock_paused":pauses_clock()}
