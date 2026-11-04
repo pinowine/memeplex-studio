@@ -147,11 +147,12 @@ func _sync_tabs(can_interact: bool) -> void:
 		var title := tab.get_node("Title") as Label
 		var key := "sheet/" + str(id)
 		var is_pressed := key == pressed
-		# The label stays outside the sheet; only its pressed offset changes.
+		# The full note includes the strip glued over its own sheet's edge.
 		note.position = Vector2(0, 1.5 if is_pressed else 0.0)
-		note.size = Vector2(116, 60)
+		note.size = tab.size
 		title.position.y = 9.5 if is_pressed else 8.0
-		note.self_modulate = Color(1.0, .78, .42) if is_pressed else (Color(1.0, .94, .75) if key == hovered else Color.WHITE)
+		var tint: Color = _desk._stack.TAB_PROFILES[id].tint
+		note.self_modulate = tint.darkened(.08) if is_pressed else (tint.lightened(.08) if key == hovered else tint)
 		if _desk._hover.has(key):
 			_desk._update_hover_item(_desk._hover[key])
 			_desk._hover[key].node.visible = key == hovered or is_pressed

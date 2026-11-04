@@ -4,7 +4,7 @@ render_mode unshaded;
 uniform vec2 paper_size = vec2(1140.0, 740.0);
 uniform sampler2D macro_map : source_color, filter_linear_mipmap, repeat_disable;
 uniform float fiber_seed = 0.0;
-uniform float detail_density : hint_range(3.0, 6.0) = 3.2;
+uniform float detail_density : hint_range(0.5, 6.0) = 3.2;
 uniform float fiber_strength : hint_range(0.0, 0.1) = 0.022;
 uniform float grain_strength : hint_range(0.0, 0.1) = 0.012;
 uniform bool sharpen_alpha = false;

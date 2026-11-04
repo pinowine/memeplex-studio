@@ -13,6 +13,12 @@ const TAB_SIZE := Vector2(136.0, 60.0)
 const PaperSurface := preload("res://scripts/presentation/studio/paper/desk_paper_surface.gd")
 const TextFlow := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const TAB_EDGE_OVERLAP := 20.0
+const TAB_PROFILES := {
+	"map": {"tint": Color("afc6ce"), "fiber_strength": 0.025, "grain_strength": 0.010, "detail_density": 1.8},
+	"edit": {"tint": Color("ddbd8c"), "fiber_strength": 0.045, "grain_strength": 0.025, "detail_density": 0.9},
+	"cultivate": {"tint": Color("b6c59c"), "fiber_strength": 0.075, "grain_strength": 0.035, "detail_density": 0.65},
+	"spread": {"tint": Color("c8aec5"), "fiber_strength": 0.035, "grain_strength": 0.015, "detail_density": 1.4}
+}
 const PAPER_PROFILES := {
 	"map": {"name": "冷白地图纸", "tint": Color(0.966, 0.979, 0.969), "fiber_strength": 0.018, "grain_strength": 0.010},
 	"edit": {"name": "暖白稿纸", "tint": Color(0.999, 0.980, 0.946), "fiber_strength": 0.024, "grain_strength": 0.012},
@@ -234,6 +240,11 @@ func _make_sheet(id: String, ancestor: Node, textures: Dictionary) -> void:
 	note.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tab.add_child(note)
 	note.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var tab_profile: Dictionary = TAB_PROFILES[id]
+	note.self_modulate = tab_profile.tint
+	var tab_material := PaperSurface.apply_to(note, float(SHEET_IDS.find(id)) * 19.0)
+	for parameter in ["fiber_strength", "grain_strength", "detail_density"]:
+		tab_material.set_shader_parameter(parameter, tab_profile[parameter])
 	var icon := NoteIcon.new()
 	icon.name = "Icon"
 	icon.kind = id
