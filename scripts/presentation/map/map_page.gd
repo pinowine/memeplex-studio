@@ -123,7 +123,6 @@ func _process(delta: float) -> void:
 func refresh_localization() -> void:
 	_clock_presentation_signature.clear()
 	_marker_projection_signature.clear()
-	launch_marker.tooltip_text = "Confirm publication" if TranslationServer.get_locale().begins_with("en") else "确认投放"
 	for country in settings.countries:
 		markers.get_node("%s/Name" % country.id).text = tr(country.short_name_key)
 		for j in 4:
