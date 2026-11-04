@@ -11,6 +11,15 @@ const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd"
 const CARD_MARGIN := 20.0
 const TARGET_GAP := 52.0
 const MAX_ARROW_LENGTH := 72.0
+const TYPE_SPEED := 32.0
+
+class TypewriterEffect extends RichTextEffect:
+	var bbcode := "typewriter"
+	var progress := 0.0
+
+	func _process_custom_fx(character: CharFXTransform) -> bool:
+		character.color.a *= smoothstep(0.0, 3.0, progress - character.relative_index)
+		return true
 
 var _steps: Array[Dictionary] = []
 var _index := 0
@@ -35,12 +44,15 @@ var _arrow_from := Vector2.ZERO
 var _arrow_to := Vector2.ZERO
 var _arrow_visible := false
 var _arrow: Node2D
+var _typewriter := TypewriterEffect.new()
+var _body_text := ""
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if theme == null: theme = load("res://data/presentation/ui/demo_theme.tres")
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
+	_ui.get_node("Card/Content/Body").install_effect(_typewriter)
 	_arrow = Arrow.new()
 	_arrow.name = "GuideArrow"
 	add_child(_arrow)
@@ -92,6 +104,9 @@ func observe_action(id: String, payload: Dictionary = {}) -> bool:
 
 func advance() -> void:
 	if not _active or _blocked or _transitioning: return
+	if _typewriter.progress < _body_text.length() + 3.0:
+		_typewriter.progress = _body_text.length() + 3.0
+		return
 	if _hint_only:
 		_close(false)
 		return
@@ -131,7 +146,7 @@ func _close(skipped: bool) -> void:
 	_stop_transition()
 	_transitioning = true
 	_transition = create_tween()
-	_transition.tween_method(_set_appearance, _appearance, 0.0, 0.14).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	_transition.tween_method(_set_appearance, _appearance, 0.0, 0.20).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	_transition.tween_callback(func():
 		_transitioning = false
 		hide())
@@ -143,14 +158,30 @@ func _stop_transition() -> void:
 
 func _present_step() -> void:
 	_stop_transition()
+	var previous_index := _display_index
+	var previous_position := _card_position
+	var previous_progress := _typewriter.progress
+	_display_index = _index
+	_refresh()
+	# A card that stays in place only needs new ink.
+	if _appearance >= 0.99 and previous_position.distance_to(_card_position) < 2.0:
+		_transitioning = false
+		_typewriter.progress = 0.0
+		_refresh()
+		return
+	_display_index = previous_index
+	_card_position = previous_position
+	_refresh()
+	_typewriter.progress = previous_progress
 	_transitioning = true
 	_transition = create_tween()
 	if _appearance > 0.01:
-		_transition.tween_method(_set_appearance, _appearance, 0.0, 0.10).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		_transition.tween_method(_set_appearance, _appearance, 0.0, 0.18).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	_transition.tween_callback(func():
 		_display_index = _index
+		_typewriter.progress = 0.0
 		_set_appearance(0.0))
-	_transition.tween_method(_set_appearance, 0.0, 1.0, 0.24).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_transition.tween_method(_set_appearance, 0.0, 1.0, 0.30).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_transition.tween_callback(func():
 		_transitioning = false
 		_refresh())
@@ -159,8 +190,12 @@ func _set_appearance(value: float) -> void:
 	_appearance = value
 	_refresh()
 
-func _process(_delta: float) -> void:
-	if visible: _refresh()
+func _process(delta: float) -> void:
+	if not visible: return
+	_refresh()
+	if _active and not _transitioning:
+		var speed := TYPE_SPEED * (1.8 if TranslationServer.get_locale().begins_with("en") else 1.0)
+		_typewriter.progress = minf(_typewriter.progress + delta * speed, _body_text.length() + 3.0)
 
 func _refresh() -> void:
 	if not is_instance_valid(_ui) or _steps.is_empty(): return
@@ -169,7 +204,15 @@ func _refresh() -> void:
 	var step := _steps[_display_index]
 	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
 	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title_en", step.get("title", "")))) if english else str(step.get("title", ""))
-	_ui.get_node("Card/Content/Body").text = DeskLocalization.text(str(step.get("text_en", step.get("text", "")))) if english else str(step.get("text", ""))
+	var text := DeskLocalization.text(str(step.get("text_en", step.get("text", "")))) if english else str(step.get("text", ""))
+	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
+	if text != _body_text:
+		_body_text = text
+		_typewriter.progress = 0.0
+		body.clear()
+		body.push_customfx(_typewriter, {})
+		body.add_text(text)
+		body.pop()
 	var next: Button = _ui.get_node("Card/Content/Actions/Continue")
 	next.text = ("Close hint" if english else "收起提示") if _hint_only else ("Continue" if english else "继续")
 	var requires_action := not _hint_only and str(step.get("action", "continue")) != "continue"
@@ -204,11 +247,10 @@ func _refresh() -> void:
 	card.get_node("Portrait67").visible = not compact
 	card.get_node("Speaker").visible = not compact
 	var title: Label = card.get_node("Content/Title")
-	var body: Label = card.get_node("Content/Body")
 	var title_size := 18 if compact else 21
 	var body_size := 14 if compact else 17
 	if title.get_theme_font_size("font_size") != title_size: title.add_theme_font_size_override("font_size", title_size)
-	if body.get_theme_font_size("font_size") != body_size: body.add_theme_font_size_override("font_size", body_size)
+	if body.get_theme_font_size("normal_font_size") != body_size: body.add_theme_font_size_override("normal_font_size", body_size)
 	var waiting: Label = _ui.get_node("Card/Content/Waiting")
 	waiting.visible = not _blocked and (_return_overview or (requires_action and not compact))
 	if _return_overview:
@@ -228,11 +270,12 @@ func _refresh() -> void:
 	card.size.y = maxf(minimum_height, content.get_combined_minimum_size().y + padding.y)
 	content.size = card.size - padding
 	_card_position = _place_card(card.size)
-	card.pivot_offset = card.size * 0.5
-	card.scale = Vector2.ONE * lerpf(0.94, 1.0, _appearance)
-	card.position = _card_position + Vector2(0, (1.0 - _appearance) * 12.0)
-	_ui.modulate.a = _appearance
-	_update_arrow(Rect2(card.position + card.pivot_offset * (Vector2.ONE - card.scale), card.size * card.scale))
+	card.pivot_offset = Vector2(0, card.size.y * 0.5)
+	card.scale = Vector2(lerpf(0.04, 1.0, _appearance), lerpf(0.82, 1.0, _appearance))
+	card.position = _card_position
+	_ui.modulate.a = smoothstep(0.0, 0.25, _appearance)
+	# The pointer follows the settled card edges while the paper unfolds.
+	_update_arrow(Rect2(_card_position, card.size))
 	queue_redraw()
 
 func _place_card(dimensions: Vector2) -> Vector2:
@@ -308,7 +351,9 @@ func _update_arrow(card: Rect2) -> void:
 	_arrow.visible = _arrow_visible
 	# The pointer stays visible while the dialogue card changes targets.
 	_arrow.modulate.a = 1.0 if _active else _appearance
-	if _arrow_visible: _arrow.point_to(_arrow_to, direction.angle(), length)
+	if _arrow_visible:
+		var requires_action := not _hint_only and str(_steps[_display_index].get("action", "continue")) != "continue"
+		_arrow.point_to(_arrow_to, direction.angle(), length, requires_action)
 
 func handles_viewport_point(point: Vector2) -> bool:
 	if not _active or not is_visible_in_tree() or not point.is_finite(): return false
