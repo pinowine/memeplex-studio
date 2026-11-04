@@ -611,6 +611,35 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	if not _cards.has(key): return {}
 	return details_for_item(str(_cards[key].kind),str(_cards[key].id))
 
+func tutorial_drag_cards(kinds: Array[String], preferred := "", preferred_anchor := Vector2(0.5, 0.5)) -> Array[Dictionary]:
+	var candidates: Array[Dictionary] = []
+	if not _enabled or not is_visible_in_tree(): return candidates
+	var held := String(_props._pressed)
+	for index in range(_props._order.size() - 1, -1, -1):
+		var key := String(_props._order[index])
+		# A held card owns the guide until the player releases it.
+		if not held.is_empty() and key != held: continue
+		var card: Dictionary = _cards[key]
+		if card.kind not in kinds or int(card.get("clipped_slot", -1)) >= 0: continue
+		if not card.node.is_visible_in_tree() or _available(card.kind, card.id) <= 0: continue
+		var anchor := preferred_anchor if key == preferred else Vector2(0.5, 0.5)
+		if held.is_empty():
+			var exposed := false
+			var probes := [anchor, Vector2(0.5, 0.5)]
+			for y in [0.05, 0.5, 0.95]:
+				for x in [0.05, 0.5, 0.95]: probes.append(Vector2(x, y))
+			for uv: Vector2 in probes:
+				var point: Vector2 = card.node.get_global_transform_with_canvas() * (card.node.size * uv)
+				if String(_props._hit_prop(point)) == key:
+					anchor = uv
+					exposed = true
+					break
+			if not exposed: continue
+		var candidate := {"key":key, "node":card.node, "kind":card.kind, "id":card.id, "anchor":anchor, "dragging":_props._dragging}
+		if key == preferred: candidates.push_front(candidate)
+		else: candidates.append(candidate)
+	return candidates
+
 func details_for_item(kind: String,id: String) -> Dictionary:
 	var key := kind+"/"+id
 	if not _cards.has(key): return {}

@@ -10,6 +10,9 @@ var tutorial: Control
 var ending: Control
 var main_mode := true
 var _tutorial_anchor: Control
+var _tutorial_drag_source_key := ""
+var _tutorial_drag_anchor: Control
+var _tutorial_drag_anchor_uv := Vector2(0.5, 0.5)
 
 func configure(owner_page: Node2D) -> void:
 	page = owner_page
@@ -30,6 +33,7 @@ func configure(owner_page: Node2D) -> void:
 	steps.append(speed)
 	tutorial.step_changed.connect(_reconcile_startup_step)
 	tutorial.configure(steps, _target, _tutorial_reserved_areas, _tutorial_requires_overview)
+	tutorial.set_drag_target_provider(_tutorial_drag_targets)
 	ending = Summary.new()
 	ending.name = "Ending67"
 	add_child(ending)
@@ -141,24 +145,55 @@ func _area_target(source: Control, area: Rect2) -> Control:
 func _context_target(editor: Control) -> Control:
 	var board: Control = editor.context_slice()
 	if not board.is_visible_in_tree(): return page.desk._stack.tab_control("cultivate")
-	var state: Dictionary = editor._design
-	var resources: Array = state.get("resources", [])
-	for layer: String in ["language", "group", "topics"]:
-		var data: Dictionary = state.get("context_layers", {}).get(layer, {})
-		if not bool(data.get("attached", true)): continue
-		var kind := "topic" if layer == "topics" else layer
-		var available := false
-		for resource: Dictionary in resources:
-			if layer == "topics" and int(resource.get("installed", 0)) > 0: continue
-			if str(resource.get("kind", "")) == kind and int(resource.get("available", 0)) > 0:
-				available = true
-				break
-		if not available: continue
-		var slots: Array = data.get("slots", [])
-		var rectangles: Array = board._layout_layers.get(layer, {}).get("slot_rects", [])
-		for index in mini(slots.size(), rectangles.size()):
-			if slots[index].is_empty(): return _area_target(board, rectangles[index])
+	for resource: Dictionary in editor._design.get("resources", []):
+		var target := _context_slot_target(board, str(resource.kind), str(resource.id))
+		if target != null: return target
 	return null
+
+func _context_slot_target(board: Control, kind: String, id: String) -> Control:
+	if kind == "topic" and int(board._resource(id).get("installed", 0)) > 0: return null
+	var packet := {"type":"context_resource", "kind":kind, "resource_id":id}
+	var layer_id := "topics" if kind == "topic" else kind
+	for rectangle: Rect2 in board._layout_layers.get(layer_id, {}).get("slot_rects", []):
+		if board._can_drop_data(rectangle.get_center(), packet):
+			return _area_target(board, rectangle)
+	return null
+
+func _tutorial_drag_targets(step_id: String) -> Dictionary:
+	if step_id not in ["module", "context_item"]: return {}
+	var editor: Control = page.hud.design_workbench()
+	if not editor._interaction_enabled: return {}
+	var sheet := "edit" if step_id == "module" else "cultivate"
+	if not editor._pages[sheet].is_visible_in_tree() or editor._tab != sheet: return {}
+	var kinds: Array[String] = ["module"]
+	if step_id == "context_item": kinds.assign(["language", "group", "topic"])
+	for card: Dictionary in page.desk._material_cards.tutorial_drag_cards(kinds, _tutorial_drag_source_key, _tutorial_drag_anchor_uv):
+		var target: Control = _logical_target("editor/clips") if step_id == "module" else _context_slot_target(editor.context_slice(), card.kind, card.id)
+		if target == null: continue
+		var source_rect := _tutorial_project_rect(card.node)
+		var target_rect := _tutorial_project_rect(target)
+		var viewport := get_viewport().get_visible_rect()
+		if not source_rect.has_area() or not target_rect.has_area(): continue
+		if not viewport.intersects(source_rect) or not viewport.intersects(target_rect): continue
+		_tutorial_drag_source_key = card.key
+		_tutorial_drag_anchor_uv = card.anchor
+		if not is_instance_valid(_tutorial_drag_anchor):
+			_tutorial_drag_anchor = Control.new()
+			_tutorial_drag_anchor.name = "TutorialDragSourceAnchor"
+			_tutorial_drag_anchor.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			card.node.add_child(_tutorial_drag_anchor)
+		elif _tutorial_drag_anchor.get_parent() != card.node:
+			_tutorial_drag_anchor.reparent(card.node, false)
+		_tutorial_drag_anchor.size = Vector2.ONE
+		_tutorial_drag_anchor.position = card.node.size * card.anchor - Vector2.ONE * 0.5
+		var source_point := _tutorial_project_rect(_tutorial_drag_anchor).get_center()
+		return {"source":source_rect, "source_point":source_point, "target":target_rect, "dragging":card.dragging, "kind":card.kind, "id":card.id}
+	return {}
+
+func _tutorial_project_rect(control: Control) -> Rect2:
+	var projected: Variant = page.get_meta("studio3d").project_target(control) if page.has_meta("studio3d") else control
+	if projected is Rect2: return projected
+	return projected.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, projected.size)
 
 func _skill_target(editor: Control) -> Control:
 	var tree: Control = editor._spread_tree
