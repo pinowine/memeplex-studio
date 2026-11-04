@@ -1,4 +1,4 @@
-## 工作纸上的五层语境视图；交互命令与拆下的切片共享同一控制器。
+## The five context blocks share commands with detached context slices.
 class_name DeskContextBoard
 extends Control
 
@@ -14,9 +14,12 @@ const LAYERS := ContextController.LAYERS
 const TITLES := {"language":"语言", "group":"群体", "topics":"话题", "stance":"立场", "pragmatic":"语用"}
 const DEPTHS := ContextController.DEPTHS
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
+const CardFace := preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
 const INK := Color("384238")
 const MUTED := Color("737968")
 const DRAG_THRESHOLD := 6.0
+const PICKUP_HOLD_MS := 320
+const CARD_GAP := 12.0
 
 var _rules: MemeDesignRules
 var _state: Dictionary = {}
@@ -34,6 +37,10 @@ var _held_slot := -1
 var _press_point := Vector2.ZERO
 var _last_point := Vector2.ZERO
 var _held_moved := false
+var _press_time := 0
+var _resource_dragging := false
+var _drag_preview: Control
+var _drag_preview_parent: Control
 var _axis_drag := false
 var _axis := -1
 var _commands := ContextController.new("board")
@@ -47,6 +54,8 @@ func _ready() -> void:
 	custom_minimum_size = Vector2(440, 240)
 	resized.connect(_refresh)
 	get_window().focus_exited.connect(_cancel_input)
+	_drag_preview_parent = self
+	set_process(false)
 	_refresh()
 
 func _notification(what: int) -> void:
@@ -82,6 +91,9 @@ func set_resource_factory(factory: Callable) -> void:
 	_resource_graphics.clear()
 	_refresh()
 
+func set_drag_preview_parent(parent: Control) -> void:
+	_drag_preview_parent = parent
+
 func perform(action: String, params: Dictionary) -> void:
 	if not _enabled: return
 	_action_count += 1
@@ -100,6 +112,7 @@ func select_layer(id: String) -> void:
 	_selected_slot = -1
 	_depth = float(_layers().get(id, {}).get("depth", DEPTHS[LAYERS.find(id)]))
 	selected_info_changed.emit(selected_info())
+	_sync_graphics()
 	queue_redraw()
 
 func set_depth(value: float) -> void:
@@ -110,7 +123,7 @@ func depth_control() -> VSlider:
 
 func selected_info() -> Dictionary:
 	var data: Dictionary = _layers().get(_layer, {})
-	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "depth":_depth, "slot":_selected_slot, "attached":_attached(_layer), "instructions":DeskLocalization.text("单击查看说明；从纸舌取卡。")}
+	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "depth":_depth, "slot":_selected_slot, "attached":_attached(_layer), "instructions":DeskLocalization.text("单击聚焦区块；长按卡片后拖出。")}
 	if _layer in ["stance", "pragmatic"]:
 		result.merge(data.duplicate(true), true)
 		result.instructions = DeskLocalization.text("从标记拖动，单次只沿一个轴，每格 0.1；离开起点用筹码，返回起点归还。")
@@ -146,11 +159,11 @@ func _region_points(id: String) -> PackedVector2Array:
 
 func _build_layout() -> void:
 	_layout_layers.clear()
-	# 左侧放置立场与语用坐标，右侧上方为语言和群体，下方为话题。
+	# The stance heading sits below the CRT; card rows keep their physical proportions.
 	var areas := {
-		"stance":Rect2(.06,.055,.32,.40), "pragmatic":Rect2(.06,.535,.32,.40),
-		"language":Rect2(.42,.055,.22,.40), "group":Rect2(.68,.055,.25,.40),
-		"topics":Rect2(.42,.535,.51,.40)}
+		"stance":Rect2(.055,.19,.30,.30), "pragmatic":Rect2(.055,.555,.30,.37),
+		"language":Rect2(.405,.075,.22,.39), "group":Rect2(.665,.075,.28,.39),
+		"topics":Rect2(.405,.555,.54,.37)}
 	for id: String in LAYERS:
 		var area: Rect2 = areas[id]
 		var rect := Rect2(area.position*size,area.size*size)
@@ -171,18 +184,22 @@ func _build_layout() -> void:
 		else:
 			var count: int = (_layers().get(id, {}).get("slots", []) as Array).size()
 			if count == 0: count = 3 if id == "topics" else 1
+			var kind := "topic" if id == "topics" else id
+			var card_size := CardFace.minimum_card_size(kind)
+			var columns := mini(count, 2)
+			var rows := ceili(float(count) / columns)
+			var content := Rect2(rect.position + Vector2(4, 48), rect.size - Vector2(8, 64))
+			var cell_size := Vector2((content.size.x - CARD_GAP * (columns - 1)) / columns, (content.size.y - CARD_GAP * (rows - 1)) / rows)
+			var card_scale := minf(1.5, minf(cell_size.x / card_size.x, cell_size.y / card_size.y))
+			var graphic_size := card_size * card_scale
+			var row_width := graphic_size.x * columns + CARD_GAP * (columns - 1)
+			var rows_height := graphic_size.y * rows + CARD_GAP * (rows - 1)
+			var origin := content.position + Vector2((content.size.x - row_width) * .5, maxf(0, (content.size.y - rows_height) * .5))
 			for index in count:
-				var columns := 2 if id == "topics" else count
-				var cell_width := (rect.size.x-14)/float(columns)
-				var graphic_size := Vector2(maxf(40,cell_width-18),maxf(25,rect.size.y*.17)) if id == "topics" else Vector2.ONE*minf(84,cell_width-15)
-				var center := rect.position+Vector2(7+cell_width*(float(index%columns)+.5),rect.size.y*(.37 if id == "topics" else .55)+float(index/columns)*rect.size.y*.26)
-				if id == "topics" and rect.size.y < 140:
-					var row_height := maxf(1,(rect.size.y-38)/ceilf(float(count)/columns))
-					graphic_size.y = minf(graphic_size.y,maxf(18,row_height-6))
-					center.y = rect.position.y+38+row_height*(floorf(float(index)/columns)+.5)
+				var center := origin + Vector2((index % columns) * (graphic_size.x + CARD_GAP), floori(float(index) / columns) * (graphic_size.y + CARD_GAP)) + graphic_size * .5
 				data.slot_centres.append(center)
 				data.slot_rects.append(Rect2(center-graphic_size*.5,graphic_size))
-				data.slot_pickup_rects.append(Rect2(center.x-16,center.y+graphic_size.y*.5+3,32,15))
+				data.slot_pickup_rects.append(Rect2(center-graphic_size*.5,graphic_size))
 
 func _sync_graphics() -> void:
 	var wanted := {}
@@ -198,7 +215,7 @@ func _sync_graphics() -> void:
 			var graphic: Control = _resource_graphics.get(key)
 			if not is_instance_valid(graphic):
 				if _resource_factory.is_valid(): graphic = _resource_factory.call(resource.duplicate(true))
-				else: graphic = ResourceGraphic.new()
+				else: graphic = CardFace.new()
 				if not is_instance_valid(graphic):
 					push_error("Context board resource factory returned no Control: " + key)
 					continue
@@ -208,10 +225,19 @@ func _sync_graphics() -> void:
 				_resource_graphics[key] = graphic
 			var rect: Rect2 = rectangles[index]
 			graphic.position = rect.position
-			graphic.size = rect.size
 			if graphic.has_method("configure") and graphic.get_meta("board_definition", {}) != resource:
-				graphic.configure(resource.duplicate(true))
+				if graphic is DeskMaterialCardFace:
+					var face_record := resource.duplicate(true)
+					face_record.count = 1
+					graphic.configure(face_record, get_theme_default_font())
+				else: graphic.configure(resource.duplicate(true))
 				graphic.set_meta("board_definition", resource.duplicate(true))
+			if graphic is DeskMaterialCardFace:
+				graphic.size = CardFace.minimum_card_size(str(resource.kind))
+				graphic.scale = rect.size / graphic.size
+				graphic.set_selected(id == _layer and index == _selected_slot)
+			else: graphic.size = rect.size
+			graphic.visible = not (_resource_dragging and id == _held_layer and index == _held_slot)
 	for key: String in _resource_graphics.keys():
 		if wanted.has(key): continue
 		var graphic: Control = _resource_graphics[key]
@@ -237,35 +263,36 @@ func _draw() -> void:
 		_text(TITLES[id],rect.position+Vector2(4,20),21)
 		_draw_pencil_path(PackedVector2Array([rect.position+Vector2(1,29),rect.position+Vector2(rect.size.x*.42,28),rect.position+Vector2(rect.size.x*.75,30),Vector2(rect.end.x,rect.position.y+27)]),Color(INK,.64),1.15)
 		var handle: Rect2 = info.handle_rect
-		_text("提起" if attached else DeskLocalization.text("放回"),handle.position+Vector2(1,13),12,MUTED)
+		_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(), DeskLocalization.text("查看" if attached else "放回"), handle, 12, 10, 1), MUTED)
 		if not attached:
 			_text("待放回",rect.position+Vector2(6,rect.size.y*.57),15,MUTED,rect.size.x-12)
 			continue
 		if id in ["stance","pragmatic"]: _draw_axis(id)
 		else: _draw_slots(id)
-	if _held_moved and _held in ["layer","resource"]:
+	if _held_moved and _held == "layer":
 		var point := get_global_transform_with_canvas().affine_inverse()*_last_point
 		draw_arc(point,17,0.2,TAU-0.2,32,Color(0.20,0.32,0.25,0.65),1.5,true)
 		_text("松手取下",point+Vector2(23,5),13)
+	var hint_rect := Rect2(Vector2(size.x * .405, size.y * .945), Vector2(size.x * .54, size.y * .045))
+	_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(), DeskLocalization.text("单击区块查看 · 长按卡片拖出"), hint_rect, 12, 10, 1), MUTED)
 
 func _slot_shape(id: String) -> String:
-	return {"language":"pencil_circle", "group":"pencil_square", "topics":"horizontal_strips"}.get(id, "xy_plane")
+	return CardFace.SHAPES.get("topic" if id == "topics" else id, "xy_plane")
+
+func _socket_outline(id: String, rect: Rect2) -> PackedVector2Array:
+	var kind := "topic" if id == "topics" else id
+	var dimensions := CardFace.minimum_card_size(kind)
+	var points := CardFace.outline_for(kind, Rect2(4, 3, dimensions.x - 10, dimensions.y - 10))
+	var scaled := PackedVector2Array()
+	for point: Vector2 in points: scaled.append(rect.position + point * rect.size / dimensions)
+	return scaled
 
 func _draw_slot_socket(id: String, rect: Rect2, selected: bool, occupied: bool) -> void:
-	var centre := rect.get_center()
-	var ink := INK if selected else Color(0.27, 0.35, 0.28, 0.65)
-	var stroke := 2.0 if selected else 1.5
-	if id == "language":
-		var radius := minf(rect.size.x, rect.size.y) * 0.5 + 5.0
-		draw_arc(centre, radius, 0.23, TAU - 0.23, 56, ink, stroke, true)
-		if selected: draw_arc(centre, radius + 3.0, 0.23, TAU - 0.23, 56, Color(0.27, 0.35, 0.28, 0.30), 1.0, true)
-	elif id == "group":
-		var outline := rect.grow(4)
-		_draw_pencil_path(PackedVector2Array([outline.position+Vector2(1,0),Vector2(outline.end.x,outline.position.y+2),outline.end-Vector2(2,0),Vector2(outline.position.x,outline.end.y-2),outline.position+Vector2(1,0)]),ink,stroke)
-	else:
-		if not occupied:
-			_draw_pencil_path(PackedVector2Array([rect.position,Vector2(rect.end.x,rect.position.y+1),rect.end,Vector2(rect.position.x,rect.end.y-1),rect.position]),Color(ink,.35),.9)
-		if selected: draw_line(rect.position-Vector2(0,3),Vector2(rect.end.x,rect.position.y-3),ink,1.0,true)
+	if occupied: return
+	var outline := _socket_outline(id, rect)
+	draw_colored_polygon(outline, Color(INK, .035))
+	outline.append(outline[0])
+	draw_polyline(outline, Color(INK, .75 if selected else .38), 1.7 if selected else 1.0, true)
 
 func _draw_slots(id: String) -> void:
 	var info: Dictionary = _layout_layers[id]
@@ -275,15 +302,8 @@ func _draw_slots(id: String) -> void:
 		var occupied: bool = index < slots.size() and not slots[index].is_empty()
 		_draw_slot_socket(id, rect, id == _layer and index == _selected_slot, occupied)
 		if not occupied:
-			var label: String = DeskLocalization.format_text("话题 %d", (index + 1)) if id == "topics" else DeskLocalization.text(TITLES[id])
-			_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(),label,rect.grow(-1),12,12,1),MUTED)
-		else:
-			var tongue: Rect2 = info.slot_pickup_rects[index]
-			if id=="topics":
-				draw_rect(tongue,Color("c9c1a6"))
-				_text("取卡",tongue.position+Vector2(2,11),13)
-			else:
-				draw_line(tongue.position+Vector2(2,12),tongue.end-Vector2(2,1),Color(0.29,0.32,0.26,0.45),0.9,true)
+			var label := "%s %d" % [DeskLocalization.text(TITLES[id]), index + 1]
+			_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(),label,rect.grow(-8),12,10,1),MUTED)
 func _draw_axis(id: String) -> void:
 	var info: Dictionary = _layout_layers[id]
 	var plot: Rect2 = info.plot_rect
@@ -368,7 +388,7 @@ func _axis_position(id: String, values: Array) -> Vector2:
 	return plot.get_center() + Vector2(float(values[0]), float(values[1])) * plot.size * 0.5
 
 func _layer_at(point: Vector2) -> String:
-	# 取卡纸舌可以伸出所属纸面，命中时先于整层判断。
+	# Card hit areas take precedence over the surrounding section.
 	for id: String in LAYERS:
 		if not _layout_layers.has(id): continue
 		if (_layout_layers[id].handle_rect as Rect2).has_point(point): return id
@@ -387,7 +407,7 @@ func _layer_at(point: Vector2) -> String:
 func _slot_at(id: String, point: Vector2) -> int:
 	var rectangles: Array = _layout_layers.get(id, {}).get("slot_rects", [])
 	for index in rectangles.size():
-		if (rectangles[index] as Rect2).grow(7).has_point(point): return index
+		if (rectangles[index] as Rect2).has_point(point): return index
 	return -1
 
 func _can_drop_data(point: Vector2, data: Variant) -> bool:
@@ -446,11 +466,12 @@ func _gui_input(event: InputEvent) -> void:
 			return
 		_last_point = get_global_transform_with_canvas() * event.position
 		_held_moved = _held_moved or event.position.distance_to(_press_point) > DRAG_THRESHOLD
+		_update_resource_drag()
 		if _axis_drag:
 			var delta: Vector2 = event.position - _press_point
 			var plot: Rect2 = _layout_layers[_held_layer].plot_rect
 			var step := float(_layers().get(_held_layer, {}).get("step", 0.1))
-			# 小尺寸纸面也必须能拖动一个完整网格步长。
+			# A small plot still needs enough motion to select a single axis.
 			var threshold := minf(DRAG_THRESHOLD, minf(plot.size.x, plot.size.y) * step * 0.175)
 			if _axis < 0 and delta.length() > threshold: _axis = 0 if absf(delta.x) >= absf(delta.y) else 1
 			if _axis >= 0: _move_axis(event.position)
@@ -468,6 +489,7 @@ func _begin_pointer(point: Vector2) -> void:
 	_held_layer = id
 	_held_slot = _selected_slot
 	_held = "selection"
+	_press_time = Time.get_ticks_msec()
 	if _attached(id):
 		if (_layout_layers[id].handle_rect as Rect2).has_point(point): _held = "layer"
 		elif id in ["stance", "pragmatic"]:
@@ -484,21 +506,45 @@ func _begin_pointer(point: Vector2) -> void:
 					_held = "resource"
 					_held_slot = index
 					_selected_slot = index
+	set_process(_held == "resource")
 	selected_info_changed.emit(selected_info())
+	_sync_graphics()
 	queue_redraw()
+
+func _process(_delta: float) -> void:
+	_update_resource_drag()
+
+func _update_resource_drag() -> void:
+	if _held != "resource" or not _held_moved or Time.get_ticks_msec() - _press_time < PICKUP_HOLD_MS: return
+	if not _resource_dragging:
+		_resource_dragging = true
+		var slot: Dictionary = _layers()[_held_layer].slots[_held_slot]
+		var record := _resource(str(slot.get("resource_id", slot.get("id", "")))).duplicate(true)
+		record.count = 1
+		_drag_preview = CardFace.new()
+		_drag_preview.name = "PickedUpContextCard"
+		_drag_preview.z_index = 100
+		_drag_preview_parent.add_child(_drag_preview)
+		_drag_preview.configure(record, get_theme_default_font())
+		_drag_preview.size = CardFace.minimum_card_size(str(record.kind))
+		var host_transform := _drag_preview_parent.get_global_transform_with_canvas().affine_inverse() * get_global_transform_with_canvas()
+		_drag_preview.rotation = host_transform.get_rotation()
+		_drag_preview.scale = host_transform.get_scale() * _layout_layers[_held_layer].slot_rects[_held_slot].size / _drag_preview.size
+		_sync_graphics()
+	var center := _drag_preview_parent.get_global_transform_with_canvas().affine_inverse() * _last_point
+	_drag_preview.position = center - _drag_preview.get_transform().basis_xform(_drag_preview.size * .5)
 
 func _release_pointer(point: Vector2) -> void:
 	var held := _held
 	var id := _held_layer
 	var slot := _held_slot
 	var moved := _held_moved
+	var resource_dragged := _resource_dragging
 	_cancel_input()
 	if id.is_empty(): return
 	if not moved:
-		if held == "selection" or held == "resource" or held == "axis":
-			var index := slot if slot >= 0 else _slot_at(id,point)
-			var local_rect: Rect2 = _layout_layers[id].slot_rects[index] if index >= 0 else _layout_layers[id].get("plot_rect",_layout_layers[id].rect)
-			slot_pressed.emit(id,index,_viewport_rect(local_rect))
+		var index := slot if slot >= 0 else _slot_at(id,point)
+		slot_pressed.emit(id,index,layer_viewport_rect(id))
 		return
 	if held == "layer" and _layer_at(point) != id:
 		var record := plane_record(id)
@@ -507,7 +553,7 @@ func _release_pointer(point: Vector2) -> void:
 		if not _attached(id):
 			record.snapshot = _state.duplicate(true)
 			context_layer_detached.emit(record, _last_point)
-	elif held == "resource" and _slot_at(id, point) != slot:
+	elif held == "resource" and resource_dragged and _slot_at(id, point) != slot:
 		var slots: Array = _layers().get(id, {}).get("slots", [])
 		if slot < 0 or slot >= slots.size() or slots[slot].is_empty(): return
 		var record := _resource(str(slots[slot].get("resource_id", slots[slot].get("id", "")))).duplicate(true)
@@ -530,6 +576,12 @@ func _move_axis(point: Vector2) -> void:
 	queue_redraw()
 
 func _cancel_input() -> void:
+	set_process(false)
+	if is_instance_valid(_drag_preview):
+		_drag_preview.queue_free()
+		_drag_preview = null
+	_resource_dragging = false
+	for graphic: Control in _resource_graphics.values(): graphic.show()
 	_held = ""
 	_held_layer = ""
 	_held_slot = -1
@@ -539,7 +591,7 @@ func _cancel_input() -> void:
 	queue_redraw()
 
 func _get_drag_data(_position: Vector2) -> Variant:
-	# 手动处理取卡手势，保证一次释放只提交一次权威操作。
+	# The hold gesture commits the inventory change once, when the card is released.
 	return null
 
 func create_slice_item(record: Dictionary) -> Control:
@@ -557,7 +609,7 @@ func inspection() -> Dictionary:
 		info.plane_id = str(_layers().get(id, {}).get("plane_id", ""))
 		info.attached = _attached(id)
 		info.slot_shape = _slot_shape(id)
-		info.slot_material = "pencil_outline" if id in ["language","group"] else ("horizontal_paper_strip" if id=="topics" else "pencil_axes")
+		info.slot_material = "fitted_card_socket" if id in ["language","group","topics"] else "pencil_axes"
 		info.pin_style = ""
 		var quads: Array = []
 		for rect: Rect2 in info.get("slot_rects", []):
@@ -581,7 +633,7 @@ func inspection() -> Dictionary:
 		layers[id] = info
 		visible.append(id)
 	var selected: Dictionary = layers.get(_layer, {})
-	return {"layout_mode":"assembly_board", "layout_version":13, "layers":layers, "visible_layers":visible, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"pencil_circle / pencil_square / horizontal_strips", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":_axis, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false}
+	return {"layout_mode":"assembly_board", "layout_version":14, "layers":layers, "visible_layers":visible, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":_axis, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","pickup_hold_ms":PICKUP_HOLD_MS,"resource_dragging":_resource_dragging}
 
 func _viewport_rect(rect: Rect2) -> Rect2:
 	var transform := get_global_transform_with_canvas()
@@ -589,13 +641,16 @@ func _viewport_rect(rect: Rect2) -> Rect2:
 	for point: Vector2 in [rect.position+Vector2(rect.size.x,0),rect.end,rect.position+Vector2(0,rect.size.y)]: result = result.expand(transform*point)
 	return result
 
+func layer_viewport_rect(layer: String) -> Rect2:
+	return _viewport_rect(_layout_layers[layer].rect)
+
 func hover_info(viewport_point: Vector2) -> Dictionary:
 	var point := get_global_transform_with_canvas().affine_inverse()*viewport_point
 	var layer := _layer_at(point)
 	if layer.is_empty(): return {}
 	var index := _slot_at(layer,point)
 	var data: Dictionary = _layers().get(layer,{})
-	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":DeskLocalization.text("单击查看说明"),"attached":_attached(layer)}
+	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":DeskLocalization.text("单击聚焦区块"),"attached":_attached(layer)}
 	if layer in ["stance","pragmatic"]:
 		result.text = " / ".join(_axis_labels(layer).values())
 		result.current = data.get("current",[0,0])

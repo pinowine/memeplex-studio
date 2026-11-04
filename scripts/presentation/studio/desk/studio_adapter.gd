@@ -69,12 +69,14 @@ func sheets_switching() -> bool:
 	return _desk._stack.is_switching()
 
 func card_dragging(key: String) -> bool:
+	if key == "context/drag": return _desk._page.hud.design_workbench().context_slice()._resource_dragging
 	var interaction: Dictionary = _desk._material_cards._props.inspection()
 	return bool(interaction.dragging) and str(interaction.pressed) == key
 
 func material_faces() -> Array[Dictionary]:
 	var faces: Array[Dictionary] = []
 	var cards: Control = _desk._material_cards
+	faces.append_array(cards.stack_faces())
 	for key: String in cards._pending_cards:
 		var slip: Control = cards._pending_cards[key]
 		faces.append({"source":slip._face, "key":"pending/" + key, "owner":slip, "visible":slip.is_visible_in_tree()})
@@ -83,10 +85,17 @@ func material_faces() -> Array[Dictionary]:
 	for key: String in cards._cards:
 		var card: Dictionary = cards._cards[key]
 		faces.append({"source":card.face, "key":key, "owner":null, "visible":card.node.is_visible_in_tree()})
+	var board: Control = _desk._page.hud.design_workbench().context_slice()
+	if is_instance_valid(board._drag_preview):
+		faces.append({"source":board._drag_preview, "key":"context/drag", "owner":null, "visible":board._drag_preview.is_visible_in_tree()})
 	return faces
 
 func material_handles_viewport_point(point: Vector2) -> bool:
 	if _desk._foreground_ui_handles(point): return false
+	var board: Control = _desk._page.hud.design_workbench().context_slice()
+	if board._enabled and board.is_visible_in_tree():
+		var local: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * point
+		if not board._layer_at(local).is_empty(): return true
 	var cards: Control = _desk._material_cards
 	if cards.handles_viewport_point(point): return true
 	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
@@ -105,6 +114,7 @@ func hovered_equipment(point: Vector2) -> String:
 	return ""
 
 func cancel_interactions() -> void:
+	_desk._page.hud.design_workbench().context_slice()._cancel_input()
 	_desk._monitor.cancel_drag()
 	_desk._props.cancel_drag(&"studio_view_changed")
 	_desk._material_cards._return_free_cards()
