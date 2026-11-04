@@ -946,5 +946,7 @@
   "%s：%s": "%s: %s",
   "每个事件最多奖励一件实体物品；重复阅读不会重复发放。": "Each event awards at most one physical item. Rereading does not grant it again.",
   "立场筹码": "Stance token",
-  "语用筹码": "Pragmatics token"
+  "语用筹码": "Pragmatics token",
+  "模因已确认。点击一个国家，再点击上方的勾选气泡开始投放。": "Your meme is ready. Click a country, then click the checkmark bubble above it to publish.",
+  "确认模因后点击地图国家，再点击国家上方的勾选气泡开始游戏。": "Confirm your meme, click a country, then click its checkmark bubble to start the game."
 }

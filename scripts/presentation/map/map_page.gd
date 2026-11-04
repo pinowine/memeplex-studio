@@ -1,6 +1,7 @@
 extends Node2D
 
 signal initialization_finished(error: Error)
+signal launch_confirmed
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -27,7 +28,7 @@ var initialization_message := ""
 @onready var area_label: Label = %Area
 @onready var drawer: Control = %CountryDrawer
 @onready var hover_note: PanelContainer = %HoverNote
-@onready var setup_note: PanelContainer = %SetupNote
+@onready var launch_marker: BaseButton = %StudioConfirm
 @onready var workbench: PanelContainer = %WorkbenchOverlay
 @onready var restart_progress: ProgressBar = %RestartProgress
 
@@ -35,6 +36,7 @@ var world: AtlasWorldData
 var clock: PressStudioClock
 var selected_country: int = -1
 var hovered_country: int = -1
+var _launch_selection_active := false
 var panning: bool = false
 var detail_level: int = 0
 var target_zoom: float = 1.0
@@ -60,7 +62,7 @@ func _ready() -> void:
 	clock = PressStudioClock.new(studio_settings)
 	_drawer_offset = drawer.offset_left
 	%SpeedControl.pressed.connect(_cycle_speed)
-	%StudioConfirm.pressed.connect(establish_studio)
+	launch_marker.confirmed.connect(func(): launch_confirmed.emit())
 	%DrawerClose.pressed.connect(close_drawer)
 	%PointsButton.pressed.connect(open_workbench)
 	%WorkbenchClose.pressed.connect(close_workbench)
@@ -89,7 +91,8 @@ func regenerate(seed_value: int) -> bool:
 	drawer.visible = false
 	hover_note.visible = false
 	workbench.visible = false
-	setup_note.visible = true
+	launch_marker.reset()
+	launch_marker.hide()
 	terrain.set_highlight(-1, -1)
 	refresh_localization()
 	print("MAP_READY seed=%d countries=%d land_groups=%d geometry=vector fingerprint=%s" % [seed_value, settings.countries.size(), world.groups.size(), world.fingerprint()])
@@ -115,10 +118,12 @@ func _process(delta: float) -> void:
 		camera.force_update_scroll()
 		_update_view()
 	_update_marker_positions()
+	_update_launch_marker()
 
 func refresh_localization() -> void:
 	_clock_presentation_signature.clear()
 	_marker_projection_signature.clear()
+	launch_marker.tooltip_text = "Confirm publication" if TranslationServer.get_locale().begins_with("en") else "确认投放"
 	for country in settings.countries:
 		markers.get_node("%s/Name" % country.id).text = tr(country.short_name_key)
 		for j in 4:
@@ -130,9 +135,14 @@ func refresh_localization() -> void:
 	fit_map()
 
 func select_country(index: int) -> void:
+	if launch_marker.popping: return
 	selected_country = index
 	terrain.set_highlight(hovered_country, selected_country)
 	_update_details()
+	_update_launch_marker()
+	if _launch_selection_active:
+		drawer.hide()
+		return
 	if index < 0:
 		close_drawer()
 		return
@@ -153,14 +163,13 @@ func close_drawer() -> void:
 	selected_country = -1
 	terrain.set_highlight(hovered_country, -1)
 	_update_details()
+	_update_launch_marker()
 	if not drawer.visible:
 		return
 	_animate_drawer(0.0, -_drawer_offset)
 	_drawer_tween.chain().tween_callback(drawer.hide)
 
 func _update_details() -> void:
-	%StudioConfirm.disabled = selected_country < 0
-	%SetupCountry.text = tr("PRINT_STUDIO_UNSELECTED") if selected_country < 0 else tr(settings.countries[selected_country].short_name_key)
 	if selected_country < 0:
 		return
 	var country := settings.countries[selected_country]
@@ -174,7 +183,7 @@ func _update_details() -> void:
 	area_label.text = tr("MAP_AREA") % (country.reference_area_km2 / 1000000.0)
 
 func _update_hover() -> void:
-	hover_note.visible = hovered_country >= 0 and not workbench.visible
+	hover_note.visible = hovered_country >= 0 and not workbench.visible and not _launch_selection_active
 	if hovered_country < 0:
 		return
 	var country := settings.countries[hovered_country]
@@ -185,9 +194,25 @@ func _update_hover() -> void:
 
 func establish_studio() -> void:
 	clock.establish(selected_country, world.seed_value, settings.latitude_at(world.territories[selected_country].anchor))
-	setup_note.visible = false
+	set_launch_selection_active(false)
 	close_drawer()
 	_update_clock()
+
+func set_launch_selection_active(active: bool) -> void:
+	if _launch_selection_active == active: return
+	_launch_selection_active = active
+	launch_marker.reset()
+	if active: drawer.hide()
+	_update_launch_marker()
+	_update_hover()
+
+func _update_launch_marker() -> void:
+	var available := _launch_selection_active and selected_country >= 0
+	launch_marker.visible = available
+	if not available: return
+	var anchor: Vector2 = _local_map_view() * world.territories[selected_country].anchor
+	launch_marker.position = anchor - launch_marker.TIP
+	launch_marker.visible = Rect2(Vector2.ZERO, map_input.size).has_point(anchor)
 
 func set_speed(value: int) -> void:
 	clock.set_speed(value)
@@ -356,6 +381,9 @@ func _on_map_input(event: InputEvent) -> void:
 	# GUI input can arrive before the first frame builds the world.
 	if world == null:
 		return
+	if launch_marker.popping:
+		map_input.accept_event()
+		return
 	if event is InputEventMouseButton:
 		var screen_position: Vector2 = map_input.get_global_transform_with_canvas() * event.position
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
@@ -406,7 +434,7 @@ func inspection_state() -> Dictionary:
 	return {"marker_projection_updates":_marker_projection_updates, "marker_projection_cache_hits":_marker_projection_cache_hits, "clock_presentation_updates":_clock_presentation_updates, "seed":world.seed_value, "countries":settings.countries.size(), "groups":world.groups.size(), "fingerprint":world.fingerprint(),
 		"selected":selected_country, "hovered":hovered_country, "zoom":camera.zoom.x, "target_zoom":target_zoom, "detail_level":detail_level,
 		"camera":camera.position, "locale":TranslationServer.get_locale(), "map_rect":map_input.get_global_rect(), "details_visible":drawer.visible,
-		"clock":clock.inspection(), "setup_visible":setup_note.visible, "workbench_visible":workbench.visible, "economy":"unconnected placeholder", "water_opacity":terrain.water_opacity}
+		"clock":clock.inspection(), "launch_selection_active":_launch_selection_active, "launch_marker_visible":launch_marker.visible, "launch_marker_popping":launch_marker.popping, "workbench_visible":workbench.visible, "economy":"unconnected placeholder", "water_opacity":terrain.water_opacity}
 
 func _label_rect(label: Label) -> Rect2:
 	var font := label.get_theme_font("font")

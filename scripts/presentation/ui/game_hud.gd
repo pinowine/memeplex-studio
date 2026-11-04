@@ -268,7 +268,7 @@ func set_setup_stage(stage: String) -> void:
 	%SelectCountry.text = "确认模因后选国" if initial else "选国／收起工作台"
 	%Create.text = "返回修改模因" if stage == "country" else ("打印 / 创作" if _desk_plate.has_area() else "创建模因")
 	%WorkbenchHint.text = "把收到的模因写成自己的表达，再选一处地方投放。" if initial else "写一份新版，让这句话继续走下去。"
-	%MapHint.text = "02 / 模因已确认。点击地图选择投放国家，再点击下方“投放并进入游戏”。" if stage == "country" else "点击地图查看国家；翻开左侧稿纸继续创作。"
+	%MapHint.text = "模因已确认。点击一个国家，再点击上方的勾选气泡开始投放。" if stage == "country" else "点击地图查看国家；翻开左侧稿纸继续创作。"
 	if stage == "starter_call":
 		%Publish.disabled = true
 		%WorkbenchHint.text = "先接听 67；选一份起始表达，挂断后再动笔。"

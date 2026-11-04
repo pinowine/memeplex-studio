@@ -342,7 +342,7 @@ func default_steps() -> Array[Dictionary]:
 		{"id":"skill", "title":"买一种能力", "text":"选一个付得起的能力。购买成功会作用于稿件。价格是真价格，后悔不是退款申请。", "title_en":"Buy an ability", "text_en":"Choose an affordable ability. A successful purchase affects the manuscript. Its price is real; regret is not a refund request.", "action":"skill_purchased", "target":"spread/skill"},
 		{"id":"publish", "title":"送去印刷", "text":"回编辑纸确认稿件，再决定投放国家。第一次发布免费。免费的是印刷，不是别人一定会采用。", "title_en":"Send to print", "text_en":"Confirm the manuscript on the editing sheet, then select a country. First publication is free. Adoption is not included.", "action":"publish_requested", "target":"editor/publish"},
 		{"id":"country", "title":"选一个落点", "text":"在地图纸上选国家。不同人群与语境会影响采用；国界不是情绪的围墙。", "title_en":"Choose a location", "text_en":"Choose a country on the map. Audiences and context affect adoption. Borders are not walls around emotions.", "action":"country_selected", "target":"map/country"},
-		{"id":"confirm", "title":"开始流通", "text":"确认投放。新事件会和卡牌一起打印出来。把卡牌拖到桌面，再装进对应槽位；点纸堆露出的页签可重读事件，打印机会继续记账。", "title_en":"Into circulation", "text_en":"Confirm publication. New events and cards print together. Drag cards onto the desk, then into their matching slots. Exposed paper tabs reopen past events; the printer keeps the record.", "action":"published", "target":"map/confirm"}
+		{"id":"confirm", "title":"开始流通", "text":"点击国家上方带对勾的气泡。气泡破裂后，稿件开始流传。新事件会和卡牌一起打印出来；把卡牌拖到桌面，再装进对应槽位。", "title_en":"Into circulation", "text_en":"Click the checkmark bubble above the country. It pops and your manuscript starts circulating. New events and cards print together; drag the cards onto the desk, then into their matching slots.", "action":"published", "target":"map/confirm"}
 	]
 
 func _notification(what: int) -> void:

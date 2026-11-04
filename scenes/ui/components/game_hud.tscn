@@ -28,7 +28,7 @@ visible = false
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "确认模因后点击地图国家，再投放并进入游戏；人数仅为合成样本。"
+text = "确认模因后点击地图国家，再点击国家上方的勾选气泡开始游戏。"
 autowrap_mode = 2
 
 [node name="Workbench" type="PanelContainer" parent="."]
