@@ -201,7 +201,7 @@ func set_draft(d: Dictionary) -> void:
 	_setting_draft = true
 	_context_topic_ids=PackedStringArray(d.get("topic_ids",[]))
 	_design_metadata.clear()
-	for key in ["context_layer_record", "module_patch_record", "skill_effects", "context_layer_attachment"]:
+	for key in ["context_layer_record", "module_patch_record", "skill_effects", "context_layer_attachment", "language_ids", "group_ids"]:
 		if d.has(key) and (d[key] is Dictionary or d[key] is Array): _design_metadata[key] = d[key].duplicate(true)
 	_select_id(_kernel, str(d.get("kernel_id", "")))
 	_on_kernel_selected(maxi(0, _kernel.selected))

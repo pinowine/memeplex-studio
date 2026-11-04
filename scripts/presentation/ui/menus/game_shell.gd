@@ -59,7 +59,8 @@ func blocks_input() -> bool:
 	return main_mode or main_menu.visible or ending.visible
 
 func pauses_clock() -> bool:
-	return blocks_input() or bool(tutorial.inspection().active)
+	var guide: Dictionary = tutorial.inspection()
+	return blocks_input() or (bool(guide.active) and str(guide.step.get("action", "")) != "speed_changed")
 
 func observe(action: String, data: Dictionary = {}) -> void:
 	tutorial.observe_action(action,data)
