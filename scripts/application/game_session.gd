@@ -61,10 +61,7 @@ func _ready() -> void:
 	hud.skill_purchase_requested.connect(_buy_skill)
 	atlas.get_node("%PointsButton").hide()
 	atlas.set_process_input(false)
-	# Route studio confirmation through this page's startup flow.
-	var confirm: Button = atlas.get_node("%StudioConfirm")
-	confirm.pressed.disconnect(atlas.establish_studio)
-	confirm.pressed.connect(_studio_selected)
+	atlas.launch_confirmed.connect(_studio_selected)
 	atlas.get_node("%SpeedControl").pressed.connect(func(): _set_speed(atlas.clock.speed))
 	if not atlas.initialization_complete:
 		await atlas.initialization_finished
@@ -251,10 +248,7 @@ func _sync_setup() -> void:
 	var stage := _setup_stage()
 	hud.set_setup_stage(stage)
 	atlas.map_input.mouse_filter = Control.MOUSE_FILTER_IGNORE if stage == "starter_call" or _interface_paused() or hud.get_node("%Workbench").visible else Control.MOUSE_FILTER_STOP
-	atlas.setup_note.visible = stage == "country" and not _interface_paused() and not hud.get_node("%Workbench").visible
-	atlas.get_node("%StudioConfirm").text = "投放并进入游戏"
-	atlas.get_node("%StudioConfirm").disabled = stage != "country" or _interface_paused() or atlas.selected_country < 0
-	atlas.setup_note.get_node("Content/Prompt").text = "选一处地方 · 投放这份稿子并开始游戏"
+	atlas.set_launch_selection_active(stage == "country" and not _interface_paused() and not hud.get_node("%Workbench").visible)
 
 func _set_speed(value: int, restore_intent: bool = false) -> void:
 	if _clock_paused():
@@ -405,7 +399,6 @@ func _load() -> bool:
 		simulation.set_speed(0)
 	atlas.clock.reset()
 	atlas.close_drawer()
-	atlas.setup_note.show()
 	for index in atlas.settings.countries.size():
 		if str(atlas.settings.countries[index].id) == simulation.country_id:
 			atlas.select_country(index)
@@ -438,7 +431,6 @@ func _restart() -> void:
 	hud.configure(catalog)
 	atlas.clock.reset()
 	atlas.close_drawer()
-	atlas.setup_note.show()
 	simulation.bind_country("", "未选择投放国家")
 	_clock_anchor = atlas.clock.utc_seconds
 	_begin_startup()
