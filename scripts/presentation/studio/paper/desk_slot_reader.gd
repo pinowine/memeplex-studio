@@ -3,6 +3,7 @@ extends Control
 signal closed
 signal option_selected(index: int)
 signal contact_selected(index: int)
+signal stack_layout_changed
 
 const SLIDE_DURATION := .24
 const SOURCE_PIXELS_PER_UNIT := 3.0
@@ -49,6 +50,9 @@ var _surface: Control
 var _title_label: Label
 var _body_label: RichTextLabel
 var _rule: Control
+var _stack_host: Control
+var _stack_rule: Control
+var _stack_label: Label
 var _font: Font
 var _paper: Texture2D
 var _details := {}
@@ -128,6 +132,12 @@ func hide_details() -> bool:
 func handles_viewport_point(point: Vector2) -> bool:
 	return _built and is_visible_in_tree() and point.is_finite() and _viewport_bounds(_paper_holder).has_point(point)
 
+func stack_host() -> Control:
+	return _stack_host
+
+func stack_rect() -> Rect2:
+	return Rect2(Vector2.ZERO, _stack_host.size)
+
 func inspection() -> Dictionary:
 	return {"visible":is_visible_in_tree(), "phase":_phase, "rect":_viewport_bounds(_paper_holder) if _built else Rect2(),
 		"slide_progress":_slide_progress, "title":_title, "body":_body, "details":_details.duplicate(true),
@@ -177,6 +187,17 @@ func _build() -> void:
 	_choice_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_choice_scroll.follow_focus = true
 	_paper_holder.add_child(_choice_scroll)
+	_stack_rule = PencilRule.new()
+	_paper_holder.add_child(_stack_rule)
+	_stack_label = Label.new()
+	_stack_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stack_label.add_theme_font_size_override("font_size", 16)
+	_stack_label.add_theme_color_override("font_color", Color("4e5346"))
+	_paper_holder.add_child(_stack_label)
+	_stack_host = Control.new()
+	_stack_host.name = "ExpandedMaterialStack"
+	_stack_host.mouse_filter = Control.MOUSE_FILTER_PASS
+	_paper_holder.add_child(_stack_host)
 	_choice_box = VBoxContainer.new()
 	_choice_box.name = "OriginalChoices"
 	_choice_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -227,6 +248,24 @@ func _layout_paper() -> void:
 	_choice_box.size = Vector2(content_width,natural_height)
 	_body_label.position = Vector2(padding,body_y)
 	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(34 if choice_height>0 else 28)))
+	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
+	_stack_host.visible = has_stack
+	_stack_rule.visible = has_stack
+	_stack_label.visible = has_stack
+	if has_stack:
+		var divider_y := floorf(dimensions.y * .49)
+		_stack_rule.position = Vector2(padding, divider_y)
+		_stack_rule.size = Vector2(width, 1)
+		_stack_label.position = Vector2(padding, divider_y + 10)
+		_stack_label.size = Vector2(width, 24)
+		_stack_label.text = DeskLocalization.text(str(_details.get("stack_title", "库存卡片")))
+		_stack_label.add_theme_font_override("font", font)
+		_body_label.size.y = maxf(48, divider_y - body_y - 16)
+		var next_rect := Rect2(Vector2(padding, divider_y + 42), Vector2(width, dimensions.y - divider_y - 62))
+		var changed := _stack_host.position != next_rect.position or _stack_host.size != next_rect.size
+		_stack_host.position = next_rect.position
+		_stack_host.size = next_rect.size
+		if changed: stack_layout_changed.emit()
 
 func text_layout_inspection() -> Dictionary:
 	return {"complete_title":_title,"full_title_in_body":_full_title_in_body,"choices_scrollable":_choice_scroll != null and _choice_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_AUTO,"choice_count":_choice_buttons.size(),"rendered_body":_body_label.text if _built else ""}
