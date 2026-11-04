@@ -62,6 +62,9 @@ func output_papers() -> Array[Control]:
 func sheet_depth(id: String) -> int:
 	return _desk._stack._layers[id].layer
 
+func sheet_tab(id: String) -> TextureRect:
+	return _desk._stack.tab_control(id).get_node("Note") as TextureRect
+
 func sheets_switching() -> bool:
 	return _desk._stack.is_switching()
 

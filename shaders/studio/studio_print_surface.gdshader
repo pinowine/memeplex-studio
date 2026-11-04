@@ -1,7 +1,9 @@
 shader_type spatial;
-render_mode blend_mix, depth_prepass_alpha, cull_disabled;
+render_mode blend_mix, depth_prepass_alpha, cull_back;
 
 uniform sampler2D desktop_texture : filter_linear, repeat_disable;
+uniform bool paper_mask_enabled = false;
+uniform sampler2D paper_mask_texture : filter_linear, repeat_disable;
 uniform bool paper_stock_enabled = false;
 uniform sampler2D paper_stock_texture : source_color, filter_linear_mipmap, repeat_disable;
 uniform sampler2D paper_stock_roughness : filter_linear_mipmap, repeat_disable;
@@ -19,6 +21,8 @@ uniform bool remove_hardware = false;
 uniform int feed_curve = 0;
 uniform float sheet_depth_m = 0.33;
 uniform float mouth_height_m = 0.13;
+uniform float feed_distance_offset_m = 0.0;
+uniform float feed_falloff_m = 0.032;
 uniform vec4 equipment_rects[4];
 uniform float equipment_angles[4];
 varying vec2 logical_pixel;
@@ -26,13 +30,20 @@ varying vec2 logical_pixel;
 void vertex() {
 	if (feed_curve != 0) {
 		float distance_from_mouth = (feed_curve == 1 ? UV.y : 1.0-UV.y) * sheet_depth_m;
-		VERTEX.y += mouth_height_m * exp(-distance_from_mouth / 0.032);
+		float distance = distance_from_mouth + feed_distance_offset_m;
+		float height = mouth_height_m * exp(-max(0.0, distance) / feed_falloff_m);
+		VERTEX.y += height;
+		float slope = distance > 0.0 ? height / feed_falloff_m : 0.0;
+		NORMAL = normalize(vec3(0.0, 1.0, slope * (feed_curve == 1 ? 1.0 : -1.0)));
 	}
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	logical_pixel = world.xz * 1000.0 + vec2(800.0, 450.0);
 }
 
 void fragment() {
+	// Other desk content must not fill this sheet's torn outline.
+	float paper_alpha = paper_mask_enabled ? texture(paper_mask_texture, UV).a : 1.0;
+	if (paper_alpha < 0.01) { discard; }
 	vec2 sample_pixel = origin_px + UV.x * u_px + UV.y * v_px;
 	if (world_mapping) {
 		sample_pixel = canvas_origin + canvas_x * logical_pixel.x + canvas_y * logical_pixel.y;
@@ -66,5 +77,5 @@ void fragment() {
 		alpha *= stock.a;
 	}
 	EMISSION = ALBEDO * screen_emission;
-	ALPHA = alpha;
+	ALPHA = min(alpha, paper_alpha);
 }
