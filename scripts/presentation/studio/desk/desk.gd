@@ -264,7 +264,6 @@ func configure(page: Node2D) -> void:
 	_country_layer.layer = 31
 	page.atlas.add_child(_country_layer)
 	page.atlas.drawer.reparent(_country_layer, false)
-	page.atlas.setup_note.reparent(_country_layer, false)
 	_stack = load("res://scripts/presentation/studio/paper/desk_sheet_stack.gd").new()
 	_stack.name = "PaperStack"
 	add_child(_stack)
@@ -629,7 +628,6 @@ func _layout() -> void:
 	_layout_speed_strip()
 	_page.atlas.fit_map()
 	_book_contacts.layout_book(Rect2(Vector2.ZERO,_art.phonebook.size))
-	_place(_page.atlas.setup_note,Rect2(_stack_rect.position+Vector2(30,_stack_rect.size.y-100),Vector2((_stack_rect.size.x-60)*(.72 if _page.has_meta("studio3d") else 1.0),87)))
 	_page.hud.configure_desk(_stack_rect,self)
 	if _material_cards != null: _material_cards.set_storage_area(Rect2(1268,342,300,270))
 	if _hover_strip != null: _place(_hover_strip,Rect2(835,58,410,74))

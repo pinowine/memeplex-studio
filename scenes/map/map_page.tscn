@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://1r5g18605pq7" path="res://assets/image/ui/icons/press_mark.svg" id="press"]
 [ext_resource type="Script" uid="uid://d4f3bdqeg335f" path="res://scripts/presentation/map/map_surface.gd" id="surface"]
 [ext_resource type="Script" uid="uid://dkqqqkus7phsq" path="res://scripts/presentation/map/map_water.gd" id="water"]
+[ext_resource type="Script" path="res://scripts/presentation/map/launch_marker.gd" id="launch_marker"]
 
 [node name="MapPage" type="Node2D" unique_id=1883533078]
 script = ExtResource("1")
@@ -821,51 +822,14 @@ theme_type_variation = &"PrintCaption"
 text = "MAP_NOTICE"
 autowrap_mode = 3
 
-[node name="SetupNote" type="PanelContainer" parent="Interface/HUD" unique_id=1240468849]
+[node name="StudioConfirm" type="BaseButton" parent="Interface/HUD/MapInput"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -264.0
-offset_top = -132.0
-offset_right = 264.0
-offset_bottom = -26.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="Content" type="VBoxContainer" parent="Interface/HUD/SetupNote" unique_id=1093424862]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Prompt" type="Label" parent="Interface/HUD/SetupNote/Content" unique_id=1822782117]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "PRINT_STUDIO_PICK"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="Row" type="HBoxContainer" parent="Interface/HUD/SetupNote/Content" unique_id=817597822]
-layout_mode = 2
-theme_override_constants/separation = 18
-
-[node name="SetupCountry" type="Label" parent="Interface/HUD/SetupNote/Content/Row" unique_id=1221820800]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"PrintHeading"
-theme_override_font_sizes/font_size = 20
-text = "PRINT_STUDIO_UNSELECTED"
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="StudioConfirm" type="Button" parent="Interface/HUD/SetupNote/Content/Row" unique_id=1270078691]
-unique_name_in_owner = true
-layout_mode = 2
-disabled = true
-text = "PRINT_STUDIO_CONFIRM"
+visible = false
+z_index = 5
+offset_right = 68.0
+offset_bottom = 84.0
+tooltip_text = "确认投放"
+script = ExtResource("launch_marker")
 
 [node name="RestartProgress" type="ProgressBar" parent="Interface/HUD" unique_id=1456414758]
 unique_name_in_owner = true
