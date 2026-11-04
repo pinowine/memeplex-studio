@@ -239,10 +239,8 @@ func page_for_event(instance_id: String) -> Control:
 	return null
 
 func select_history_page(instance_id: String) -> void:
-	for page: Control in output_pages:
-		page.z_index = 1 if str(page.event.get("instance_id", "")) == instance_id else 0
 	var selected := page_for_event(instance_id)
-	# GUI input follows sibling order, so selection changes both orders together.
+	# Reorder the paper stack without raising it over loose desk cards.
 	if selected != null: _host.move_child(selected, _host.get_child_count() - 1)
 
 func refresh_page_content() -> void:

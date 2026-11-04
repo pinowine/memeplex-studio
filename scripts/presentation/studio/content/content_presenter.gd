@@ -206,19 +206,20 @@ func _sync_live_papers(delta: float) -> void:
 				dragging = owner.is_dragging()
 			else:
 				dragging = _desktop.card_dragging(str(binding.card_key))
-			binding.model.position.y = _material_card_height(int(binding.card_rank),dragging,source,owner)
+			# Attached faces are already drawn on the fax paper's surface.
+			var attached := is_instance_valid(owner) and outputs.has(owner.get_parent())
+			binding.model.visible = source.is_visible_in_tree() and not attached
+			binding.model.position.y = _material_card_height(int(binding.card_rank),dragging)
 		binding.material.set_shader_parameter("sheet_depth_m",source.size.y*absf(scale_2d.y)/1000)
 		if binding.has("feed") and binding.model.visible:
 			binding.feed.sync(source,paper_exit("receipt_printer" if int(binding.curve)==1 else "fax_machine"))
 
 
-func _material_card_height(rank: int, dragging: bool, source: Control = null, owner: Control = null) -> float:
+func _material_card_height(rank: int, dragging: bool) -> float:
 	var paper_top := .0006
 	for binding in paper_bindings:
 		if not is_instance_valid(binding.mesh) or not binding.mesh.is_visible_in_tree(): continue
-		var supporting_page: bool = source != null and binding.source != source and binding.source.is_ancestor_of(source)
-		if dragging and is_instance_valid(owner) and owner.get("_origin_parent") == binding.source: supporting_page = true
-		if str(binding.id) not in ["map","edit","cultivate","spread"] and not supporting_page: continue
+		if str(binding.id) not in ["map","edit","cultivate","spread"]: continue
 		var bounds: AABB = binding.mesh.global_transform * binding.mesh.get_aabb()
 		paper_top = maxf(paper_top,bounds.end.y)
 	return paper_top + .001 + maxi(rank,0)*.0001 + (.006 if dragging else 0.0)

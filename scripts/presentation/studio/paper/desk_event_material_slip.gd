@@ -49,7 +49,7 @@ func _ready() -> void:
 	get_window().focus_exited.connect(cancel_drag)
 	get_viewport().size_changed.connect(cancel_drag)
 
-func configure(value: Dictionary, drag_host: Control, ui_theme: Theme = null) -> void:
+func configure(value: Dictionary, drag_host: Control, ui_theme: Theme = null, shadow_enabled := true) -> void:
 	record = value.duplicate(true)
 	_drag_host = drag_host
 	_card_style = {"language":"ruled_language_card", "group":"ochre_group_card", "module":"graph_patch_card", "topic":"horizontal_topic_card"}.get(str(record.get("kind", "")),"material_card")
@@ -104,6 +104,7 @@ func configure(value: Dictionary, drag_host: Control, ui_theme: Theme = null) ->
 		var face_record := record.duplicate(true)
 		face_record.source_instance_id = str(record.get("instance_id", ""))
 		_face.configure(face_record,get_theme_font("font","Label"))
+		_face.shadow_enabled = shadow_enabled
 		_card_style = str(_face.inspection().shape)
 		custom_minimum_size = CardFace.minimum_card_size(str(record.kind))
 		_paper.hide()

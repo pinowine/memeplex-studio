@@ -342,7 +342,7 @@ func _sync_printed_cards() -> void:
 			slip = RewardSlip.new()
 			slip.name = "PrintedMaterial" + str(_reward_slips.size())
 			page.add_child(slip)
-			slip.configure(row, self, theme)
+			slip.configure(row, self, theme, false)
 			slip.dropped.connect(_request_material)
 			_reward_slips[key] = slip
 		slip.record = row.duplicate(true)
