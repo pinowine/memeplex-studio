@@ -19,6 +19,10 @@ var _hovered := false
 var _selected := false
 var _draw_count := 0
 var _layout: Dictionary = {}
+var shadow_enabled := true:
+	set(value):
+		shadow_enabled = value
+		queue_redraw()
 
 
 static func minimum_card_size(kind: String) -> Vector2:
@@ -216,8 +220,9 @@ func _draw() -> void:
 	var body: Rect2 = _layout.body
 	var palette: Dictionary = PALETTES[_kind]
 	var thickness: float = _layout.thickness
-	for offset in [Vector2(2, 6), Vector2(1, 4)]:
-		draw_colored_polygon(_shape(Rect2(body.position + offset, body.size)), Color(0.07, 0.075, 0.05, .13))
+	if shadow_enabled:
+		for offset in [Vector2(2, 6), Vector2(1, 4)]:
+			draw_colored_polygon(_shape(Rect2(body.position + offset, body.size)), Color(0.07, 0.075, 0.05, .13))
 	draw_colored_polygon(_shape(Rect2(body.position + Vector2(1.2, thickness), body.size)), palette.edge)
 	var outline := _shape(body)
 	draw_colored_polygon(outline, palette.body)
