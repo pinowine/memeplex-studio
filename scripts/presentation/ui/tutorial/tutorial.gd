@@ -7,10 +7,10 @@ signal focus_changed(active: bool)
 
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
 const CARD_MARGIN := 20.0
 const TARGET_GAP := 52.0
 const MAX_ARROW_LENGTH := 72.0
-const ARROW_WIDTH := 7.0
 
 var _steps: Array[Dictionary] = []
 var _index := 0
@@ -20,6 +20,8 @@ var _blocked := false
 var _hint_only := false
 var _provider := Callable()
 var _avoid_provider := Callable()
+var _overview_provider := Callable()
+var _return_overview := false
 var _avoid_rects: Array[Rect2] = []
 var _target := Rect2()
 var _ui: Control
@@ -32,12 +34,17 @@ var _card_position := Vector2.ZERO
 var _arrow_from := Vector2.ZERO
 var _arrow_to := Vector2.ZERO
 var _arrow_visible := false
+var _arrow: Node2D
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if theme == null: theme = load("res://data/presentation/ui/demo_theme.tres")
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
+	_arrow = Arrow.new()
+	_arrow.name = "GuideArrow"
+	add_child(_arrow)
+	_arrow.hide()
 	_ui.get_node("Card/Content/Actions/Continue").pressed.connect(advance)
 	_ui.get_node("Card/Content/Actions/Skip").pressed.connect(skip)
 	PaperStyle.apply_buttons(_ui)
@@ -45,10 +52,11 @@ func _ready() -> void:
 	resized.connect(_refresh)
 	hide()
 
-func configure(steps: Array[Dictionary] = [], target_provider: Callable = Callable(), avoid_provider: Callable = Callable()) -> void:
+func configure(steps: Array[Dictionary] = [], target_provider: Callable = Callable(), avoid_provider: Callable = Callable(), overview_provider: Callable = Callable()) -> void:
 	_steps = default_steps() if steps.is_empty() else steps.duplicate(true)
 	_provider = target_provider
 	_avoid_provider = avoid_provider
+	_overview_provider = overview_provider
 	_index = clampi(_index, 0, _steps.size() - 1)
 	_refresh()
 
@@ -159,6 +167,7 @@ func _refresh() -> void:
 	var english := TranslationServer.get_locale().begins_with("en")
 	_display_index = clampi(_display_index, 0, _steps.size() - 1)
 	var step := _steps[_display_index]
+	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
 	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title_en", step.get("title", "")))) if english else str(step.get("title", ""))
 	_ui.get_node("Card/Content/Body").text = DeskLocalization.text(str(step.get("text_en", step.get("text", "")))) if english else str(step.get("text", ""))
 	var next: Button = _ui.get_node("Card/Content/Actions/Continue")
@@ -201,8 +210,11 @@ func _refresh() -> void:
 	if title.get_theme_font_size("font_size") != title_size: title.add_theme_font_size_override("font_size", title_size)
 	if body.get_theme_font_size("font_size") != body_size: body.add_theme_font_size_override("font_size", body_size)
 	var waiting: Label = _ui.get_node("Card/Content/Waiting")
-	waiting.visible = requires_action and not _blocked and not compact
-	waiting.text = "Follow the current instruction." if english else "按当前提示完成操作。"
+	waiting.visible = not _blocked and (_return_overview or (requires_action and not compact))
+	if _return_overview:
+		waiting.text = "Press Esc or click empty space to return to the main desk." if english else "按 Esc 或单击空白处，回到主桌面。"
+	else:
+		waiting.text = "Follow the current instruction." if english else "按当前提示完成操作。"
 	var minimum_height := 128.0 if compact else 190.0
 	card.size = Vector2(width, minimum_height)
 	var content: Control = card.get_node("Content")
@@ -285,28 +297,18 @@ func _nearest_edges(card: Rect2, target: Rect2) -> PackedVector2Array:
 
 func _update_arrow(card: Rect2) -> void:
 	_arrow_visible = false
-	if not _target.has_area() or card.intersects(_target): return
+	_arrow.visible = false
+	if not _target.has_area() or card.intersects(_target) or _blocked: return
 	var endpoints := _nearest_edges(card, _target)
 	var direction := (endpoints[1] - endpoints[0]).normalized()
-	_arrow_from = endpoints[0] + direction * 5.0
 	_arrow_to = endpoints[1] - direction * 7.0
-	var length := _arrow_from.distance_to(_arrow_to)
-	_arrow_visible = length >= 18.0 and length <= MAX_ARROW_LENGTH
-
-func _draw() -> void:
-	if not _arrow_visible or _appearance <= 0.0: return
-	var ink := Color(0.32, 0.36, 0.26, 0.96 * _appearance)
-	var direction := (_arrow_to - _arrow_from).normalized()
-	var normal := direction.orthogonal()
-	var neck := _arrow_to - direction * 15.0
-	var points := PackedVector2Array([
-		_arrow_from + normal * ARROW_WIDTH * 0.5,
-		neck + normal * ARROW_WIDTH * 0.5,
-		neck + normal * 11.0, _arrow_to,
-		neck - normal * 11.0,
-		neck - normal * ARROW_WIDTH * 0.5,
-		_arrow_from - normal * ARROW_WIDTH * 0.5])
-	draw_colored_polygon(points, ink)
+	var length := minf(MAX_ARROW_LENGTH, endpoints[0].distance_to(_arrow_to) - 5.0)
+	_arrow_from = _arrow_to - direction * length
+	_arrow_visible = length >= 18.0
+	_arrow.visible = _arrow_visible
+	# The pointer stays visible while the dialogue card changes targets.
+	_arrow.modulate.a = 1.0 if _active else _appearance
+	if _arrow_visible: _arrow.point_to(_arrow_to, direction.angle(), length)
 
 func handles_viewport_point(point: Vector2) -> bool:
 	if not _active or not is_visible_in_tree() or not point.is_finite(): return false
@@ -318,7 +320,7 @@ func handles_viewport_point(point: Vector2) -> bool:
 	return false
 
 func inspection() -> Dictionary:
-	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": false, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index}
+	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": false, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index}
 
 func default_steps() -> Array[Dictionary]:
 	return [
