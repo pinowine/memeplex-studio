@@ -6,24 +6,38 @@ const INK := Color(0.18, 0.20, 0.15)
 const PAPER := Color(1.0, 0.96, 0.80)
 const CENTER := Vector2(34, 31)
 const TIP := Vector2(34, 81)
+const HOVER_RESPONSE := 9.0
+const BREATH_PERIOD := 2.6
 
 var popping := false
 var _burst := 0.0
 var _animation: Tween
+var _hover_amount := 0.0
+var _breath_time := 0.0
 
 func _ready() -> void:
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	pressed.connect(pop)
-	mouse_entered.connect(queue_redraw)
-	mouse_exited.connect(queue_redraw)
-	focus_entered.connect(queue_redraw)
-	focus_exited.connect(queue_redraw)
+
+func _process(delta: float) -> void:
+	if not is_visible_in_tree(): return
+	var target := 1.0 if not disabled and (is_hovered() or has_focus()) else 0.0
+	if target == 0.0 and _hover_amount < 0.001:
+		if _hover_amount > 0.0:
+			_hover_amount = 0.0
+			queue_redraw()
+		return
+	_hover_amount = lerpf(_hover_amount, target, 1.0 - exp(-HOVER_RESPONSE * delta))
+	_breath_time += delta
+	queue_redraw()
 
 func reset() -> void:
 	if _animation != null and _animation.is_valid(): _animation.kill()
 	popping = false
 	disabled = false
 	_burst = 0.0
+	_hover_amount = 0.0
+	_breath_time = 0.0
 	queue_redraw()
 
 func pop() -> void:
@@ -42,17 +56,24 @@ func _set_burst(value: float) -> void:
 
 func _draw() -> void:
 	if _burst < 0.22:
+		var breath := sin(_breath_time * TAU / BREATH_PERIOD)
+		var hover_scale := 1.0 + _hover_amount * (0.018 + breath * 0.008)
 		var expansion := 1.0 + _burst * 0.5
-		draw_set_transform(CENTER * (1.0 - expansion), 0.0, Vector2.ONE * expansion)
+		# Keep the tail anchored as the bubble breathes.
+		var origin := TIP * (1.0 - hover_scale) + CENTER * (1.0 - expansion) * hover_scale
+		draw_set_transform(origin, 0.0, Vector2.ONE * expansion * hover_scale)
+		var warmth := _hover_amount * (0.8 + breath * 0.2)
+		var paper := PAPER.lerp(Color(1.0, 0.99, 0.90), warmth)
+		var ink := INK.lerp(Color(0.25, 0.28, 0.19), warmth)
 		var outline := PackedVector2Array([TIP])
 		for i in 49:
 			var angle := lerpf(2.55, TAU + 0.59, float(i) / 48.0)
 			outline.append(CENTER + Vector2(cos(angle), sin(angle)) * 28.0)
-		draw_colored_polygon(outline, INK)
+		draw_colored_polygon(outline, ink)
 		outline.append(TIP)
-		draw_polyline(outline, PAPER, 2.0, true)
-		draw_circle(CENTER, 21.0, PAPER)
-		if is_hovered() or has_focus(): draw_arc(CENTER, 24.0, 0.0, TAU, 48, PAPER, 2.0, true)
+		draw_polyline(outline, paper, 2.0, true)
+		draw_circle(CENTER, 21.0, paper)
+		draw_arc(CENTER, 24.0, 0.0, TAU, 48, Color(paper, _hover_amount), 2.0, true)
 		_draw_check(1.0)
 	else:
 		var progress := inverse_lerp(0.22, 1.0, _burst)

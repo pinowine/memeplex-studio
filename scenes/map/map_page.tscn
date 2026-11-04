@@ -828,7 +828,6 @@ visible = false
 z_index = 5
 offset_right = 68.0
 offset_bottom = 84.0
-tooltip_text = "确认投放"
 script = ExtResource("launch_marker")
 
 [node name="RestartProgress" type="ProgressBar" parent="Interface/HUD" unique_id=1456414758]
