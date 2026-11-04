@@ -74,6 +74,7 @@ func _ready() -> void:
 	projection.minimum_camera_zoom = 0.9 / overview_height_m
 	projection.exit_measurement = paper_exit
 	projection.pointer_projection = root_pointer_from_logical
+	projection.pointer_unprojection = logical_pointer_from_root
 	projection.target_projection = project_target
 	page.set_meta("studio3d", projection)
 	logical.add_child(page)
@@ -97,6 +98,7 @@ func _ready() -> void:
 	button_feedback.configure(buttons)
 	input_router = InputRouter.new()
 	input_router.configure(camera, logical, get_viewport(), buttons, content.screen_surfaces, content.bindings, button_feedback, desktop)
+	page._shell.tutorial.pointer_cancelled.connect(_cancel_input)
 	_node("fax_machine__HandsetCord").hide()
 	_node("fax_machine__ReceiverCordJack").reparent(_node("fax_machine__HandsetPivot"),true)
 	handset_cord = MeshInstance3D.new()
@@ -127,6 +129,9 @@ func root_pointer_from_logical(point: Vector2) -> Vector2:
 	if input_router != null: return input_router.root_pointer_from_logical(point)
 	var world := logical.get_canvas_transform().affine_inverse() * point
 	return camera.unproject_position(Vector3((world.x - 800) / 1000, .006, (world.y - 450) / 1000))
+
+func logical_pointer_from_root(point: Vector2) -> Vector2:
+	return logical.get_canvas_transform() * input_router.desktop_point(point)
 
 func paper_exit(asset_id: String) -> Dictionary:
 	return PaperFeed.measure_exit(assembly,asset_id)
@@ -372,6 +377,7 @@ class ProjectionPort extends RefCounted:
 	var minimum_camera_zoom: float
 	var exit_measurement: Callable
 	var pointer_projection: Callable
+	var pointer_unprojection: Callable
 	var target_projection: Callable
 
 	func paper_exit(asset_id: String) -> Dictionary:
@@ -379,6 +385,9 @@ class ProjectionPort extends RefCounted:
 
 	func root_pointer_from_logical(point: Vector2) -> Vector2:
 		return pointer_projection.call(point)
+
+	func logical_pointer_from_root(point: Vector2) -> Vector2:
+		return pointer_unprojection.call(point)
 
 	func project_target(target: Variant) -> Variant:
 		return target_projection.call(target)
