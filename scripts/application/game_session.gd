@@ -141,9 +141,6 @@ func _process(delta: float) -> void:
 	atlas.get_node("%PointsIncome").text = "创作资源 · 不可购买"
 	hud.layout_for_date(desk.clock_rect())
 	_queue_context_trial()
-	if atlas.selected_country >= 0:
-		atlas.events.text = DeskLocalization.format_text("收到 %d 条消息。", simulation.events.size())
-		atlas.competitors.text = "外面的新表达也在争取人们的目光。"
 
 func _studio_selected() -> void:
 	if not _ready_to_run or not startup_ready() or _interface_paused() or _pending_start_draft.is_empty() or simulation.publish_count != 0: return

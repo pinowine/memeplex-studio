@@ -216,8 +216,10 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	var areas: Array[Rect2] = []
 	var id := str(step.get("target", ""))
 	var editor: Control = page.hud.design_workbench()
-	if id == "map/country" and page.atlas.map_input.is_visible_in_tree():
+	if id.begins_with("map/") and page.atlas.map_input.is_visible_in_tree():
 		areas.append(_tutorial_project_rect(page.atlas.map_input))
+		if page.atlas.drawer.is_visible_in_tree():
+			areas.append(_tutorial_project_rect(page.atlas.drawer))
 	elif id == "speed":
 		for button: Button in page.desk._speed_strip._buttons:
 			if not button.disabled: areas.append(_tutorial_project_rect(button))
@@ -242,7 +244,8 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	return areas
 
 func _tutorial_input_contains(step: Dictionary, point: Vector2) -> bool:
-	if str(step.get("target", "")) != "map/country": return true
+	if not str(step.get("target", "")).begins_with("map/"): return true
+	if page.atlas.drawer.is_visible_in_tree() and _tutorial_project_rect(page.atlas.drawer).has_point(point): return true
 	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
 	var desk: Control = page.desk
 	return desk._props._hit_prop(point) == &"" and not desk._material_cards.handles_viewport_point(point)
@@ -286,6 +289,8 @@ func _country_target() -> Control:
 
 func _tutorial_reserved_areas() -> Array:
 	var rectangles: Array = []
+	if page.atlas.drawer.is_visible_in_tree():
+		rectangles.append(_tutorial_project_rect(page.atlas.drawer))
 	var reader: Control = page.desk._slot_reader
 	if reader != null and reader.is_visible_in_tree():
 		rectangles.append(reader.inspection().target_rect)

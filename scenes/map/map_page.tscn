@@ -673,11 +673,12 @@ anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -420.0
-offset_top = 126.0
+offset_top = 24.0
 offset_bottom = -24.0
 grow_horizontal = 0
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 0
+mouse_force_pass_scroll_events = false
 
 [node name="Shell" type="PanelContainer" parent="Interface/HUD/CountryDrawer" unique_id=1023151395]
 layout_mode = 1
@@ -700,10 +701,12 @@ text = "PRINT_ARCHIVE_LABEL"
 
 [node name="DrawerClose" type="Button" parent="Interface/HUD/CountryDrawer" unique_id=1591494568]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 356.0
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
 offset_top = 8.0
-offset_right = 403.0
+offset_right = -17.0
 offset_bottom = 43.0
 tooltip_text = "PRINT_CLOSE"
 theme_type_variation = &"PrintIconButton"
@@ -735,7 +738,8 @@ mouse_filter = 2
 texture = ExtResource("paper")
 expand_mode = 1
 
-[node name="Scroll" type="ScrollContainer" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=1058449739]
+[node name="CountryScroll" type="ScrollContainer" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=1058449739]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -748,78 +752,107 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 
-[node name="Details" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/Scroll" unique_id=1940624384]
+[node name="Details" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll" unique_id=1940624384]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="CountryName" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1215230938]
+[node name="CountryName" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details" unique_id=1215230938]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"PrintHeading"
 theme_override_font_sizes/font_size = 25
 autowrap_mode = 3
 
-[node name="Prototype" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1359171273]
+[node name="Population" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
 unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Rule" type="HSeparator" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
+layout_mode = 2
+
+[node name="Introduction" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Introduction"]
 layout_mode = 2
 theme_type_variation = &"PrintCaption"
-theme_override_colors/font_color = Color(0.58, 0.25, 0.18, 1)
-autowrap_mode = 3
+text = "MAP_INTRODUCTION"
 
-[node name="Rule" type="HSeparator" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1420225788]
-layout_mode = 2
-
-[node name="Population" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=261999546]
+[node name="Conditions" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Introduction"]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="Area" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1790516630]
+[node name="Audience" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Audience"]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_GROUPS"
+
+[node name="Groups" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Audience"]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="Conditions" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1483796345]
+[node name="Note" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Audience"]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_GROUPS_NOTE"
+autowrap_mode = 3
+
+[node name="CulturalLife" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/CulturalLife"]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_CULTURE"
+
+[node name="Culture" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/CulturalLife"]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="TopicsTitle" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1076910889]
+[node name="LanguageUse" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/LanguageUse"]
+layout_mode = 2
+theme_type_variation = &"PrintCaption"
+text = "MAP_LANGUAGES"
+
+[node name="Languages" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/LanguageUse"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="PreferredTopics" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/PreferredTopics"]
 layout_mode = 2
 theme_type_variation = &"PrintCaption"
 text = "MAP_TOPICS"
 
-[node name="Topics" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1183705004]
+[node name="Topics" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/PreferredTopics"]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="EventsTitle" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=993343410]
+[node name="Notice" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
 layout_mode = 2
 theme_type_variation = &"PrintCaption"
-text = "MAP_EVENTS"
-
-[node name="Events" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=385090295]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="CompetitorsTitle" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1831629992]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_COMPETITORS"
-
-[node name="Competitors" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1407676983]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="Notice" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/Scroll/Details" unique_id=1777889221]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_NOTICE"
+text = "MAP_PROFILE_NOTICE"
 autowrap_mode = 3
 
 [node name="StudioConfirm" type="BaseButton" parent="Interface/HUD/MapInput"]
