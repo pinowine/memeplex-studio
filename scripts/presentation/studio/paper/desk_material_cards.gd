@@ -44,32 +44,27 @@ class StackSurface extends Control:
 	var highlighted := false
 	var hovered := false
 	var selected := false
+	var _face: DeskMaterialCardFace
 
 	func _ready() -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_face = CardFace.new()
+		_face.size = CardFace.minimum_card_size(kind)
+		add_child(_face)
 		resized.connect(queue_redraw)
 
 	func _draw() -> void:
 		var palette: Dictionary = CardFace.PALETTES[kind]
-		var frame := Rect2(Vector2(3, 3), size - Vector2(7, 7))
-		var style := StyleBoxFlat.new()
-		style.bg_color = palette.edge.darkened(.16)
-		style.border_color = palette.light if highlighted or hovered or selected else palette.body
-		style.set_border_width_all(3 if highlighted else (2 if hovered or selected else 1))
-		style.set_corner_radius_all(4)
-		style.shadow_color = Color(0.06, 0.05, 0.03, .25)
-		style.shadow_size = 3
-		style.shadow_offset = Vector2(1, 3)
-		draw_style_box(style, frame)
-		var font := get_theme_default_font()
-		draw_string(font, Vector2(11, 20), DeskLocalization.text(title), HORIZONTAL_ALIGNMENT_LEFT, size.x - 55, 15, palette.light)
-		draw_string(font, Vector2(size.x - 40, 20), str(quantity), HORIZONTAL_ALIGNMENT_RIGHT, 27, 13, palette.light)
-		if quantity == 0:
-			var empty := Rect2(Vector2(12, 32), size - Vector2(24, 47))
-			draw_rect(empty, Color(palette.light, .28), false, 1)
-			draw_string(font, Vector2(14, size.y * .64), DeskLocalization.text("空卡摞"), HORIZONTAL_ALIGNMENT_CENTER, size.x - 28, 13, palette.light)
-		if highlighted and hovered:
-			draw_string(font, Vector2(10, size.y - 8), DeskLocalization.text("松开收纳"), HORIZONTAL_ALIGNMENT_CENTER, size.x - 20, 11, palette.light)
+		var dimensions := CardFace.minimum_card_size(kind)
+		for index in range(mini(quantity, 2), 0, -1):
+			var outline := CardFace.outline_for(kind, Rect2(Vector2(4, 3) + Vector2(2, 3) * index, dimensions - Vector2(10, 10)))
+			draw_colored_polygon(outline, palette.body.darkened(.10 * index))
+			outline.append(outline[0])
+			draw_polyline(outline, palette.edge, 1.1, true)
+		var caption := "松开收纳" if highlighted and hovered else ("空卡摞" if quantity == 0 else "库存卡片")
+		_face.configure({"kind":kind, "title":title, "count":quantity, "source_label":DeskLocalization.text(caption)}, get_theme_default_font())
+		_face.set_hovered(hovered)
+		_face.set_selected(selected or highlighted)
 
 class StackCard extends Control:
 	signal chosen
@@ -241,11 +236,12 @@ func _storage_ids(kind: String) -> Array[String]:
 func _build_storage_slots() -> void:
 	_storage_sections.clear()
 	_storage_slots.clear()
-	var gap := 12.0
-	var cell := (_spawn_area.size - Vector2.ONE * gap) * .5
+	var cell_width := _spawn_area.size.x / STACK_KINDS.size()
 	for index in STACK_KINDS.size():
 		var kind: String = STACK_KINDS[index]
-		var section := Rect2(_spawn_area.position + Vector2(index % 2, floori(float(index) / 2.0)) * (cell + Vector2.ONE * gap), cell)
+		var dimensions := CardFace.minimum_card_size(kind)
+		var stack_size := dimensions + Vector2(6, 8)
+		var section := Rect2(_spawn_area.position + Vector2(index * cell_width + (cell_width - stack_size.x) * .5, (_spawn_area.size.y - stack_size.y) * .5), stack_size)
 		_storage_sections[kind] = section
 		if not _stack_surfaces.has(kind):
 			var surface := StackSurface.new()
@@ -260,7 +256,7 @@ func _build_storage_slots() -> void:
 		surface.size = section.size
 		_props.register_prop("stack/" + kind, surface, Rect2(Vector2.ZERO, section.size), false, false)
 		for id: String in _storage_ids(kind):
-			_storage_slots[kind + "/" + id] = Rect2(section.position + Vector2(9, 29), section.size - Vector2(18, 41))
+			_storage_slots[kind + "/" + id] = Rect2(section.position, dimensions)
 	_refresh_stack_surfaces()
 
 func _refresh_stack_surfaces() -> void:
@@ -475,6 +471,7 @@ func _resize_card(card: Dictionary, target: Vector2) -> void:
 	if card.has("face"):
 		card.face.size = target
 		card.face.configure(_physical_face_record(card),get_theme_font("font","Label"))
+		card.face.visible = not bool(card.inventory_docked)
 	card.count.position = Vector2(maxf(0,target.x-24),1)
 	card.count.size = Vector2(24,16)
 	card.title.position = Vector2(3,2)
@@ -501,18 +498,23 @@ func _park_card(key: String) -> void:
 			_event_positions.erase(event_key)
 	if bool(card.inventory_docked):
 		var slot: Rect2 = _storage_slots.get(str(card.kind) + "/" + str(card.id), Rect2(_spawn_area.position, target))
-		var index := 0
-		for other: String in _cards:
-			if other == key: break
-			if str(_cards[other].kind) == str(card.kind) and bool(_cards[other].inventory_docked) and int(_cards[other].clipped_slot) < 0: index += 1
-		card.node.position = slot.get_center() - target * .5 + Vector2(mini(index, 2) * 2, mini(index, 2) * 3)
+		card.node.position = slot.get_center() - target * .5
 		card.node.rotation = 0
-		card.node.visible = index < 3
+		# The top inventory card supplies input beneath the shared stack face.
+		card.node.visible = key == _top_inventory_card(str(card.kind))
 	else:
 		card.node.show()
+	card.face.visible = not bool(card.inventory_docked)
 	card.inventory_position = card.node.position
 	_props.register_prop(key, card.node, Rect2(Vector2.ZERO, target), false, true)
 	_moved(key, card.node.global_position)
+
+func _top_inventory_card(kind: String) -> String:
+	for key: String in _cards:
+		var card: Dictionary = _cards[key]
+		if str(card.kind) == kind and bool(card.inventory_docked) and int(card.clipped_slot) < 0:
+			return key
+	return ""
 
 func _physical_face_record(card: Dictionary) -> Dictionary:
 	var sources: Array = []
@@ -651,6 +653,7 @@ func clamp_module(id: String, slot: int, parent: Control, anchor: Vector2) -> bo
 	card.clipped_slot=slot
 	card.inventory_docked=false
 	_resize_card(card,Vector2(112,94))
+	node.show()
 	card.anchor=anchor
 	var global_scale := node.get_global_transform_with_canvas().get_scale()
 	node.reparent(parent,true)
@@ -855,9 +858,12 @@ func _raise(key: String) -> void:
 
 func _card_moved(key: StringName, point: Vector2) -> void:
 	if _cards.has(String(key)):
+		var was_docked := bool(_cards[String(key)].inventory_docked)
 		if not _cards[String(key)].has("return_docked"):
-			_cards[String(key)].return_docked = bool(_cards[String(key)].inventory_docked)
+			_cards[String(key)].return_docked = was_docked
 		_cards[String(key)].inventory_docked = false
+		_cards[String(key)].face.show()
+		if was_docked: _layout_inventory()
 		preview_drop(str(_cards[String(key)].kind), _props._input_diagnostic.last_point)
 	_moved(key, point)
 
@@ -878,11 +884,14 @@ func _moved(key: StringName, _point: Vector2) -> void:
 	if paper.material is ShaderMaterial: paper.material.set_shader_parameter("light_position",_light.global_position)
 
 func _hovered(key: StringName) -> void:
+	var hovered_stack := String(key).trim_prefix("stack/")
+	if _cards.has(String(key)) and bool(_cards[String(key)].inventory_docked):
+		hovered_stack = str(_cards[String(key)].kind)
 	for id in _cards:
 		_cards[id].hover.hide()
 		if _cards[id].has("face"): _cards[id].face.set_hovered(id == String(key) and _enabled)
 	for kind: String in _stack_surfaces:
-		_stack_surfaces[kind].hovered = String(key) == "stack/" + kind
+		_stack_surfaces[kind].hovered = hovered_stack == kind
 		_stack_surfaces[kind].queue_redraw()
 
 func _remove(key: String) -> void:

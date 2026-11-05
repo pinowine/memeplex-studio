@@ -139,7 +139,6 @@ func allows_input(event: InputEvent) -> bool:
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return false
 	if event.pressed:
 		if _return_overview:
-			overview_requested.emit()
 			return false
 		_press_point = point
 		if _drag_source.has_area() and _drag_source.has_point(point) and (not _drag_source_test.is_valid() or _drag_source_test.call(event.position)):
@@ -375,7 +374,7 @@ func _refresh() -> void:
 	var waiting: Label = _ui.get_node("Card/Content/Waiting")
 	waiting.visible = not _blocked and (_return_overview or (requires_action and not compact))
 	if _return_overview:
-		waiting.text = "Press Esc or click empty space to return to the main desk." if english else "按 Esc 或单击空白处，回到主桌面。"
+		waiting.text = "Press Esc to return to the main desk." if english else "按 Esc，回到主桌面。"
 	else:
 		waiting.text = "Follow the current instruction." if english else "按当前提示完成操作。"
 	var minimum_height := 128.0 if compact else 190.0
