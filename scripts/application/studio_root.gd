@@ -6,6 +6,7 @@ const FbxAssembly := preload("res://scripts/rendering/models/fbx_assembly.gd")
 const ButtonFeedback := preload("res://scripts/rendering/feedback/button_feedback.gd")
 const PaperMasks := preload("res://scripts/rendering/paper/paper_masks.gd")
 const PaperFeed := preload("res://scripts/rendering/paper/paper_feed.gd")
+const HoverOutline := preload("res://scripts/rendering/feedback/hover_outline.gd")
 
 @export var whitebox := false
 @export_range(0.1, 3.0, 0.001) var overview_height_m := 0.914
@@ -19,6 +20,8 @@ var _node_cache: Dictionary = {}
 var fbx_loader := FbxAssembly.new()
 var button_feedback := ButtonFeedback.new()
 var paper_masks := PaperMasks.new()
+var hover_outline := HoverOutline.new()
+var _hover_meshes: Dictionary = {}
 var logical: SubViewport
 var page: Node2D
 var assembly: Node3D
@@ -107,6 +110,8 @@ func _ready() -> void:
 	add_child(handset_cord)
 	_update_handset(true)
 	_setup_postprocess()
+	add_child(hover_outline)
+	hover_outline.configure(camera)
 	get_window().focus_exited.connect(_cancel_input)
 	get_viewport().size_changed.connect(_resized)
 	if not startup_error.is_empty():
@@ -276,6 +281,7 @@ func _process(_delta: float) -> void:
 	modal_image.visible = showing_modal
 	_update_hover()
 	button_feedback.tick(_delta)
+	hover_outline.sync()
 
 func _update_handset(force := false) -> void:
 	var connected: bool = desktop.handset_connected()
@@ -321,18 +327,79 @@ func _update_handset(force := false) -> void:
 
 
 func _update_hover() -> void:
-	var current := ""
-	var button_key := ""
-	if get_window().has_focus() and not page.presentation_blocks_input() and not modal_image.visible:
-		var point: Vector2 = input_router.pointer_position if input_router.pointer_known else get_viewport().get_mouse_position()
-		var physical_hit: Dictionary = input_router.hit(point)
-		if not physical_hit.is_empty():
-			button_key = str(physical_hit.collider.get_meta("button_key", ""))
-			current = button_key.get_slice("/", 0)
-		else:
-			current = desktop.hovered_equipment(input_router.desktop_point(point))
-	hovered = current
-	button_feedback.update_hover(button_key)
+	hovered = ""
+	button_feedback.update_hover("")
+	if not get_window().has_focus():
+		hover_outline.clear()
+		return
+	var target: Dictionary = desktop.control_hover_target(get_viewport().gui_get_hovered_control())
+	if not target.is_empty():
+		_show_hover_target(target)
+		return
+	if desktop.foreground_ui_handles(get_viewport().get_mouse_position()):
+		hover_outline.clear()
+		return
+	if modal_image.visible:
+		target = desktop.control_hover_target(logical.gui_get_hovered_control())
+		if not target.is_empty():
+			var polygon: PackedVector2Array = target.polygon
+			for index in polygon.size(): polygon[index] *= get_viewport().get_visible_rect().size / Vector2(logical.size)
+			hover_outline.show_polygon(str(target.key), polygon)
+		else: hover_outline.clear()
+		return
+	if page.presentation_blocks_input():
+		hover_outline.clear()
+		return
+	var point := get_viewport().get_mouse_position()
+	if not page._shell.tutorial.allows_hover(point):
+		hover_outline.clear()
+		return
+	var desktop_position: Vector2 = logical.get_canvas_transform() * input_router.desktop_point(point)
+	var material_input: bool = desktop.material_handles_viewport_point(desktop_position)
+	var physical_hit: Dictionary = {} if material_input else input_router.hit(point)
+	if not physical_hit.is_empty():
+		var key := str(physical_hit.collider.get_meta("button_key", ""))
+		var button: Button = buttons[key].target
+		var enabled: bool = desktop.device_enabled(key) if button == null else not button.disabled
+		if enabled:
+			hovered = key
+			button_feedback.update_hover(key)
+			hover_outline.show_meshes(key, _meshes_for_hover(key, buttons[key].mesh))
+		else: hover_outline.clear()
+		return
+	target = desktop.hover_target_at(desktop_position if material_input else input_router.screen_input(point))
+	if not target.is_empty():
+		_show_hover_target(target)
+		return
+	hovered = desktop.hovered_equipment(input_router.desktop_point(point))
+	if hovered.is_empty(): hover_outline.clear()
+	else: hover_outline.show_meshes(hovered, _meshes_for_hover(hovered, _node(hovered)))
+
+func _meshes_for_hover(key: String, root: Node3D) -> Array[MeshInstance3D]:
+	if not _hover_meshes.has(key):
+		var meshes: Array[MeshInstance3D] = []
+		if root is MeshInstance3D: meshes.append(root)
+		for child: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false): meshes.append(child)
+		_hover_meshes[key] = meshes
+	return _hover_meshes[key]
+
+func _show_hover_target(target: Dictionary) -> void:
+	hovered = str(target.key)
+	var polygon: PackedVector2Array = target.polygon
+	var source: Control = target.source
+	if hovered.begins_with("inventory/"):
+		for screen in content.screen_surfaces:
+			if screen.contains_control(source):
+				polygon = screen.project_inventory_cell(hovered.trim_prefix("inventory/"), camera)
+				hover_outline.show_polygon(hovered, polygon)
+				return
+	if source.get_viewport() != get_viewport():
+		var projected := PackedVector2Array()
+		for point in polygon:
+			var world: Vector2 = logical.get_canvas_transform().affine_inverse() * point
+			projected.append(camera.unproject_position(Vector3((world.x - 800) / 1000, .006, (world.y - 450) / 1000)))
+		polygon = projected
+	hover_outline.show_polygon(hovered, polygon, target.get("texture"))
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not ready_3d: return
@@ -348,7 +415,9 @@ func _route_input(event: InputEvent) -> void:
 		input_router.route_event(event, modal_image.visible, page.presentation_blocks_input())
 
 func _cancel_input() -> void:
-	if ready_3d: input_router.cancel()
+	if ready_3d:
+		input_router.cancel()
+		hover_outline.clear()
 
 func _resized() -> void:
 	_cancel_input()
@@ -378,6 +447,7 @@ func interaction_inspection() -> Dictionary:
 	var report: Dictionary = content.inspection()
 	report.phonebook_removed = not _node("contact_book").is_visible_in_tree()
 	report.button_feedback = button_feedback.inspection()
+	report.hover_outline = hover_outline.inspection()
 	report.paper_masks = paper_masks.inspection()
 	return report
 

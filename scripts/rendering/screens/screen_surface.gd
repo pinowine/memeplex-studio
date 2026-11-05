@@ -198,5 +198,17 @@ func _measure_uv_frame() -> bool:
 	_physical_size = Vector2((_target.global_basis*_uv_x).length()*(_uv_max.x-_uv_min.x), (_target.global_basis*_uv_y).length()*(_uv_max.y-_uv_min.y))
 	return _physical_size.x>0.00001 and _physical_size.y>0.00001
 
+func contains_control(control: Control) -> bool:
+	return _source.is_ancestor_of(control)
+
+func project_inventory_cell(token_id: String, camera: Camera3D) -> PackedVector2Array:
+	var index: int = _inventory.IDS[_last_mode].find(token_id)
+	var rect: Rect2 = _inventory.cell_rect(index)
+	var polygon := PackedVector2Array()
+	for point: Vector2 in [rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]:
+		var uv := _uv_min + point / Vector2(_screen_size_px) * (_uv_max - _uv_min)
+		polygon.append(camera.unproject_position(_target.to_global(_uv_origin + _uv_x * uv.x + _uv_y * uv.y)))
+	return polygon
+
 func inspection() -> Dictionary:
 	return {"component":"fixed_aspect_screen_presentation", "pixel_size":_screen_size_px, "physical_size_m":_physical_size, "pixel_aspect":float(_screen_size_px.x)/maxi(1,_screen_size_px.y), "physical_aspect":_physical_size.x/maxf(_physical_size.y,0.00001), "source_rect":_source_rect, "mode":_last_mode, "independent_viewport":true, "authoritative_source_reparented":false, "input_mapping":"inventory_cell_inverse_then_source_canvas", "meme":_meme.inspection() if _meme != null else {}, "inventory":_inventory.inspection() if _inventory != null else {}, "label_text":_label.text if _label != null else "", "label_font_size":_label.get_theme_font_size("font_size") if _label != null else 0, "background_color":_background.color if _background != null else Color.TRANSPARENT, "label_font_color":_label.get_theme_color("font_color") if _label != null else Color.TRANSPARENT, "errors":_errors.duplicate()}
