@@ -17,11 +17,7 @@ const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk
 const NeuronGraphic := preload("res://scripts/presentation/studio/design/desk_neuron_graphic.gd")
 const STACK_KINDS := ["group", "language", "module", "topic"]
 const STACK_TITLES := {"group":"群体", "language":"语言", "module":"补丁", "topic":"话题"}
-const STACK_LAYOUT := {
-	"group":{"offset":Vector2(16, 27), "angle":-3.0},
-	"language":{"offset":Vector2(3, -3), "angle":2.0},
-	"module":{"offset":Vector2(-2, 6), "angle":-2.0},
-	"topic":{"offset":Vector2(0, 1), "angle":3.0}}
+const STACK_ANGLES := {"group":-3.0, "language":2.0, "module":-2.0, "topic":3.0}
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 
 class CardInteraction extends DeskPropInteraction:
@@ -269,12 +265,12 @@ func _storage_ids(kind: String) -> Array[String]:
 func _build_storage_slots() -> void:
 	_storage_sections.clear()
 	_storage_slots.clear()
-	var cell_width := _spawn_area.size.x / STACK_KINDS.size()
+	var cell_height := _spawn_area.size.y / STACK_KINDS.size()
 	for index in STACK_KINDS.size():
 		var kind: String = STACK_KINDS[index]
 		var dimensions := CardFace.minimum_card_size(kind)
 		var stack_size := dimensions + Vector2(6, 8)
-		var section := Rect2(_spawn_area.position + Vector2(index * cell_width + (cell_width - stack_size.x) * .5, (_spawn_area.size.y - stack_size.y) * .5) + STACK_LAYOUT[kind].offset, stack_size)
+		var section := Rect2(_spawn_area.position + Vector2((_spawn_area.size.x - stack_size.x) * .5, index * cell_height + (cell_height - stack_size.y) * .5), stack_size)
 		if not _stack_surfaces.has(kind):
 			var surface := StackSurface.new()
 			surface.name = "CardStack" + kind.capitalize()
@@ -287,7 +283,7 @@ func _build_storage_slots() -> void:
 		surface.position = section.position
 		surface.size = section.size
 		surface.pivot_offset = dimensions * .5
-		surface.rotation = deg_to_rad(STACK_LAYOUT[kind].angle)
+		surface.rotation = deg_to_rad(STACK_ANGLES[kind])
 		_storage_sections[kind] = surface.get_transform() * Rect2(Vector2.ZERO, surface.size)
 		_props.register_prop("stack/" + kind, surface, Rect2(Vector2.ZERO, section.size), false, false)
 		for id: String in _storage_ids(kind):

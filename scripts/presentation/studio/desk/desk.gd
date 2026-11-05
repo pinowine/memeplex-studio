@@ -1,7 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
-const MATERIAL_STORAGE_RECT := Rect2(570, 128, 570, 90)
+const MATERIAL_STORAGE_RECT := Rect2(455, 12, 160, 360)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
@@ -448,7 +448,7 @@ func configure(page: Node2D) -> void:
 	_hover_strip.z_index = 21
 	page.hud.add_child(_hover_strip)
 	_hover_strip.configure(Handwriting.FONT, _textures.paper_texture)
-	_place(_hover_strip, Rect2(835,58,410,74))
+	_place(_hover_strip, Rect2(900,58,375,74))
 	var board: Control = editor.context_slice()
 	board.set_drag_preview_parent(_material_cards)
 	board.slot_pressed.connect(_context_slot_pressed)
@@ -641,8 +641,8 @@ func _layout() -> void:
 	var view := DESK_SIZE
 	_environment.layout_area()
 	_light.position = Vector2(560,-180)
-	_prop(_art.crt,Rect2(-8,-10,365,315),-0.30)
-	_place(_clock,Rect2(395,-4,248,248))
+	_prop(_art.crt,Rect2(64,6,365,315),-0.06)
+	_place(_clock,Rect2(640,4,224,224))
 	_clock.scale = Vector2.ONE
 	_prop(_art.printer,Rect2(1335,-5,265,225),0.12)
 	_prop(_art.fax,Rect2(1288,645,312,255),-0.23)
@@ -659,7 +659,7 @@ func _layout() -> void:
 	_book_contacts.layout_book(Rect2(Vector2.ZERO,_art.phonebook.size))
 	_page.hud.configure_desk(_stack_rect,self)
 	if _material_cards != null: _material_cards.set_storage_area(MATERIAL_STORAGE_RECT)
-	if _hover_strip != null: _place(_hover_strip,Rect2(835,58,410,74))
+	if _hover_strip != null: _place(_hover_strip,Rect2(900,58,375,74))
 	_props.set_bounds(Rect2(-80,-100,1760,1100))
 	_update_prop_dependents()
 	_fit_settings()
@@ -678,9 +678,9 @@ func _prop(node: TextureRect, rect: Rect2, angle: float) -> void:
 
 
 func _layout_speed_strip() -> void:
-	_place(_speed_strip,Rect2(592,32,215,80))
+	_place(_speed_strip,Rect2(4,421,172,64))
 	_speed_strip.pivot_offset = _speed_strip.size*.5
-	_speed_strip.rotation = 0.07
+	_speed_strip.rotation = 0.0
 
 
 func _layout_receipt(view: Vector2) -> void:

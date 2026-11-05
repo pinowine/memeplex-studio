@@ -25,6 +25,7 @@ uniform float feed_distance_offset_m = 0.0;
 uniform float feed_falloff_m = 0.032;
 uniform vec4 equipment_rects[4];
 uniform float equipment_angles[4];
+uniform vec3 clock_circle;
 varying vec2 logical_pixel;
 
 void vertex() {
@@ -55,7 +56,7 @@ void fragment() {
 			vec2 local = vec2(cos(a)*delta.x + sin(a)*delta.y, -sin(a)*delta.x + cos(a)*delta.y);
 			if (all(lessThan(abs(local), equipment_rects[i].zw * 0.5))) { discard; }
 		}
-		if (distance(logical_pixel, vec2(503.0, 114.0)) < 108.0) { discard; }
+		if (distance(logical_pixel, clock_circle.xy) < clock_circle.z) { discard; }
 	}
 	vec2 uv = sample_pixel / source_size;
 	if (any(lessThan(uv, vec2(0.0))) || any(greaterThan(uv, vec2(1.0)))) { discard; }
