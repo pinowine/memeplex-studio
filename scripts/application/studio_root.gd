@@ -46,7 +46,6 @@ func _ready() -> void:
 		return
 	assembly.name = "StudioAssets"
 	add_child(assembly)
-	_node("desk_clock").position.x += 0.04
 	if whitebox: _apply_whitebox(assembly)
 	camera = Camera3D.new()
 	camera.name = "OrthographicDeskCamera"
@@ -87,6 +86,7 @@ func _ready() -> void:
 		return
 	desktop = page.create_studio_adapter()
 	desktop.prepare()
+	_layout_equipment()
 	if not paper_masks.configure(desktop.paper_masks()):
 		startup_error += "Cannot configure Painter paper masks; "
 	_node("contact_book").hide()
@@ -114,6 +114,17 @@ func _ready() -> void:
 		return
 	ready_3d = true
 	print("STUDIO_3D_READY bindings=%d controls=%d projection=orthographic renderer=%s" % [content.bindings.size(),buttons.size(),RenderingServer.get_current_rendering_method()])
+
+func _layout_equipment() -> void:
+	for item: Dictionary in desktop.equipment_layout():
+		var source: Control = item.source
+		var transform := source.get_global_transform()
+		var center := transform * (source.size * .5)
+		var factor: Vector2 = source.size * transform.get_scale() / item.template_size
+		var model := _node(item.id)
+		model.position = Vector3((center.x - 800) / 1000.0, 0, (center.y - 450) / 1000.0)
+		model.rotation.y = -transform.get_rotation()
+		model.scale = Vector3(factor.x, minf(factor.x,factor.y), factor.y)
 
 func _apply_whitebox(root: Node) -> void:
 	var white := StandardMaterial3D.new()
