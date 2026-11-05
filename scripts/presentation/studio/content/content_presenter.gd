@@ -27,8 +27,20 @@ func configure(fbx_loader: RefCounted, assembly: Node3D, logical: SubViewport, d
 	_whitebox = whitebox
 	_ink = _material(true)
 	_ink.set_shader_parameter("remove_hardware", true)
-	_ink.set_shader_parameter("equipment_rects", PackedVector4Array([Vector4(174.5,147.5,365,315),Vector4(1467.5,107.5,265,225),Vector4(1444,772.5,312,255),Vector4(699.5,72,215,80)]))
-	_ink.set_shader_parameter("equipment_angles", PackedFloat32Array([-.30,.12,-.23,.07]))
+	var equipment_rects := PackedVector4Array()
+	var equipment_angles := PackedFloat32Array()
+	for item: Dictionary in _desktop.equipment_layout():
+		var source: Control = item.source
+		var transform := source.get_global_transform()
+		var center := transform * (source.size * .5)
+		var dimensions := source.size * transform.get_scale()
+		if item.id == "desk_clock":
+			_ink.set_shader_parameter("clock_circle",Vector3(center.x,center.y,dimensions.x * .44))
+		else:
+			equipment_rects.append(Vector4(center.x,center.y,dimensions.x,dimensions.y))
+			equipment_angles.append(transform.get_rotation())
+	_ink.set_shader_parameter("equipment_rects", equipment_rects)
+	_ink.set_shader_parameter("equipment_angles", equipment_angles)
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(2.8, 1.8)
 	var printed_desk := MeshInstance3D.new()

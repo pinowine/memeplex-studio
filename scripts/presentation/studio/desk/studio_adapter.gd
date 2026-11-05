@@ -107,6 +107,14 @@ func material_handles_viewport_point(point: Vector2) -> bool:
 			return true
 	return false
 
+func equipment_layout() -> Array[Dictionary]:
+	return [
+		{"id":"crt_terminal", "source":_desk._art.crt, "template_size":Vector2(365,315)},
+		{"id":"receipt_printer", "source":_desk._art.printer, "template_size":Vector2(265,225)},
+		{"id":"fax_machine", "source":_desk._art.fax, "template_size":Vector2(312,255)},
+		{"id":"speed_controls", "source":_desk._speed_strip, "template_size":Vector2(215,80)},
+		{"id":"desk_clock", "source":_desk._clock, "template_size":Vector2(248,248)}]
+
 func hovered_equipment(point: Vector2) -> String:
 	var controls := {"crt_terminal":_desk._art.crt, "receipt_printer":_desk._art.printer, "fax_machine":_desk._art.fax, "desk_clock":_desk._clock, "speed_controls":_desk._speed_strip}
 	for id: String in controls:
