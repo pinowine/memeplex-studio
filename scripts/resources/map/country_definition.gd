@@ -6,6 +6,7 @@ extends Resource
 @export var official_name_key: StringName
 @export var prototype_key: StringName
 @export var description_key: StringName
+@export var culture_key: StringName
 @export var population: int
 @export var topics_key: StringName
 @export var events_key: StringName

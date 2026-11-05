@@ -2,6 +2,10 @@ extends Node2D
 
 signal initialization_finished(error: Error)
 signal launch_confirmed
+signal country_inspected(index: int)
+
+const COUNTRY_RULES = preload("res://data/rules/gameplay_rules.tres")
+const CONTEXT_DEFINITIONS = preload("res://data/context/context_resources.tres")
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -19,14 +23,14 @@ var initialization_message := ""
 @onready var map_input: Control = %MapInput
 @onready var markers: Node2D = %MapInput/Labels
 @onready var country_name: Label = %CountryName
-@onready var prototype: Label = %Prototype
 @onready var population: Label = %Population
 @onready var conditions: Label = %Conditions
+@onready var groups: Label = %Groups
+@onready var culture: Label = %Culture
+@onready var languages: Label = %Languages
 @onready var topics: Label = %Topics
-@onready var events: Label = %Events
-@onready var competitors: Label = %Competitors
-@onready var area_label: Label = %Area
 @onready var drawer: Control = %CountryDrawer
+@onready var country_scroll: ScrollContainer = %CountryScroll
 @onready var hover_note: PanelContainer = %HoverNote
 @onready var launch_marker: BaseButton = %StudioConfirm
 @onready var workbench: PanelContainer = %WorkbenchOverlay
@@ -46,6 +50,7 @@ var _pointer := Vector2.ZERO
 var _random := RandomNumberGenerator.new()
 var _drawer_offset: float
 var _drawer_tween: Tween
+var _focus_tween: Tween
 var _restart_held: bool = false
 var _restart_elapsed: float = 0.0
 var _restart_consumed: bool = false
@@ -63,7 +68,7 @@ func _ready() -> void:
 	_drawer_offset = drawer.offset_left
 	%SpeedControl.pressed.connect(_cycle_speed)
 	launch_marker.confirmed.connect(func(): launch_confirmed.emit())
-	%DrawerClose.pressed.connect(close_drawer)
+	%DrawerClose.pressed.connect(hide_country_details)
 	%PointsButton.pressed.connect(open_workbench)
 	%WorkbenchClose.pressed.connect(close_workbench)
 	for button: BaseButton in [%SpeedControl, %DrawerClose, %PointsButton, %WorkbenchClose]:
@@ -111,7 +116,7 @@ func _process(delta: float) -> void:
 			_restart_consumed = true
 			restart_progress.visible = false
 			regenerate(_random.randi_range(1, 2147483647))
-	if not is_equal_approx(camera.zoom.x, target_zoom):
+	if (_focus_tween == null or not _focus_tween.is_running()) and not is_equal_approx(camera.zoom.x, target_zoom):
 		var anchor := _world_position(_zoom_anchor)
 		var factor := 1.0 - exp(-zoom_response * delta)
 		var value := exp(lerpf(log(camera.zoom.x), log(target_zoom), factor))
@@ -138,21 +143,36 @@ func refresh_localization() -> void:
 
 func select_country(index: int) -> void:
 	if launch_marker.popping: return
+	var changed := selected_country != index
 	selected_country = index
 	terrain.set_highlight(hovered_country, selected_country)
 	_update_details()
 	_update_launch_marker()
-	if _launch_selection_active:
-		drawer.hide()
-		return
 	if index < 0:
 		close_drawer()
 		return
+	if changed: country_scroll.scroll_vertical = 0
 	if not drawer.visible:
 		drawer.offset_left = 0.0
 		drawer.offset_right = -_drawer_offset
 		drawer.visible = true
 	_animate_drawer(_drawer_offset, 0.0)
+	_update_hover()
+
+func focus_country(index: int) -> void:
+	_stop_country_focus()
+	target_zoom = clampf(maxf(camera.zoom.x, overview_zoom * 1.4), minimum_zoom, maximum_zoom)
+	var zoom := Vector2.ONE * target_zoom
+	var destination := world.territories[index].anchor + Vector2(map_input.size.x * 0.12, 0.0) / zoom
+	_focus_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_focus_tween.tween_property(camera, "position", destination, 0.32)
+	_focus_tween.tween_property(camera, "zoom", zoom, 0.32)
+	_focus_tween.tween_method(func(_progress: float):
+		camera.force_update_scroll()
+		_update_view(), 0.0, 1.0, 0.32)
+
+func _stop_country_focus() -> void:
+	if _focus_tween != null and _focus_tween.is_running(): _focus_tween.kill()
 
 func _animate_drawer(left: float, right: float) -> void:
 	if _drawer_tween != null and _drawer_tween.is_running():
@@ -166,6 +186,9 @@ func close_drawer() -> void:
 	terrain.set_highlight(hovered_country, -1)
 	_update_details()
 	_update_launch_marker()
+	hide_country_details()
+
+func hide_country_details() -> void:
 	if not drawer.visible:
 		return
 	_animate_drawer(0.0, -_drawer_offset)
@@ -175,22 +198,34 @@ func _update_details() -> void:
 	if selected_country < 0:
 		return
 	var country := settings.countries[selected_country]
+	var profile := COUNTRY_RULES.country(str(country.id))
 	country_name.text = tr(country.official_name_key)
-	prototype.text = tr(country.prototype_key)
-	population.text = tr("MAP_POPULATION") % (country.population / 1000000.0) if country.population_configured else tr("MAP_POPULATION_PENDING")
+	population.text = tr("MAP_POPULATION") % (int(profile.population) / 1000000.0)
 	conditions.text = tr(country.description_key)
-	topics.text = tr(country.topics_key)
-	events.text = tr(country.events_key)
-	competitors.text = tr(country.competitors_key)
-	area_label.text = tr("MAP_AREA") % (country.reference_area_km2 / 1000000.0)
+	groups.text = _profile_labels(profile.groups, "group")
+	culture.text = tr(country.culture_key)
+	languages.text = _profile_labels(profile.languages, "language")
+	topics.text = _profile_labels(profile.topics, "topic", 4)
+
+func _profile_labels(weights: Dictionary, kind: String, limit: int = 0) -> String:
+	var ids := weights.keys()
+	ids.sort_custom(func(a: String, b: String): return float(weights[a]) > float(weights[b]))
+	var labels := PackedStringArray()
+	for id: String in ids:
+		for entry: Dictionary in CONTEXT_DEFINITIONS.entries:
+			if str(entry.kind) == kind and str(entry.get("value", "")) == id:
+				labels.append(DeskLocalization.text(str(entry.title)))
+				break
+		if limit > 0 and labels.size() == limit: break
+	return (", " if TranslationServer.get_locale().begins_with("en") else "、").join(labels)
 
 func _update_hover() -> void:
-	hover_note.visible = hovered_country >= 0 and not workbench.visible and not _launch_selection_active
+	hover_note.visible = hovered_country >= 0 and not drawer.visible and not workbench.visible and not _launch_selection_active
 	if hovered_country < 0:
 		return
 	var country := settings.countries[hovered_country]
 	%HoverName.text = tr(country.short_name_key)
-	%HoverSummary.text = tr(country.prototype_key) + "\n" + (tr("MAP_POPULATION") % (country.population / 1000000.0) if country.population_configured else tr("MAP_POPULATION_PENDING"))
+	%HoverSummary.text = tr("MAP_POPULATION") % (int(COUNTRY_RULES.country(str(country.id)).population) / 1000000.0)
 	var edge := get_viewport_rect().size - hover_note.size
 	hover_note.position = (_pointer + Vector2(18.0, 18.0)).clamp(Vector2.ZERO, edge)
 
@@ -204,7 +239,6 @@ func set_launch_selection_active(active: bool) -> void:
 	if _launch_selection_active == active: return
 	_launch_selection_active = active
 	launch_marker.reset()
-	if active: drawer.hide()
 	_update_launch_marker()
 	_update_hover()
 
@@ -290,13 +324,14 @@ func _input(event: InputEvent) -> void:
 			_update_clock()
 		KEY_ESCAPE:
 			if workbench.visible: close_workbench()
-			else: close_drawer()
+			else: hide_country_details()
 		KEY_COMMA, KEY_LESS: set_speed(maxi(clock.speed - 1, 0))
 		KEY_PERIOD, KEY_GREATER: set_speed(mini(clock.speed + 1, 2))
 		_: return
 	get_viewport().set_input_as_handled()
 
 func fit_map() -> void:
+	_stop_country_focus()
 	_marker_projection_signature.clear()
 	var fitted := minf(map_input.size.x / settings.world_size.x, map_input.size.y / settings.world_size.y) * 0.98
 	overview_zoom = clampf(fitted, minimum_zoom, maximum_zoom)
@@ -390,11 +425,17 @@ func _on_map_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var screen_position: Vector2 = map_input.get_global_transform_with_canvas() * event.position
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
+			_stop_country_focus()
 			panning = event.pressed
 			target_zoom = camera.zoom.x
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			select_country(world.country_at(_world_position(screen_position)))
+			var index := world.country_at(_world_position(screen_position))
+			select_country(index)
+			if index >= 0:
+				country_inspected.emit(index)
+				focus_country(index)
 		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+			_stop_country_focus()
 			_zoom_anchor = screen_position
 			var factor := zoom_step if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / zoom_step
 			target_zoom = clampf(target_zoom * factor, minimum_zoom, maximum_zoom)
