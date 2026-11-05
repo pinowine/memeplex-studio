@@ -202,9 +202,9 @@ func _make_sheet(id: String, ancestor: Node, textures: Dictionary) -> void:
 	shadow.configure(_papers[id])
 	shadow.shadow_offset = Vector2(4.0, 5.0)
 	shadow.shadow_blur = 6.0
-	shadow.shadow_opacity = 0.27
+	shadow.shadow_opacity = 0.20
 	shadow.ao_radius = 2.0
-	shadow.ao_strength = 0.18
+	shadow.ao_strength = 0.10
 	_shadows[id] = shadow
 	var mask := PaperMask.new()
 	mask.name = "PaperMask"
