@@ -100,13 +100,23 @@ func _route_mouse(event: InputEventMouse, modal_visible: bool) -> void:
 			_captured_key = ""
 		if not key.is_empty() and point != OUTSIDE:
 			_feedback.set_pressed(key, event.pressed)
-			var target: Button = _buttons[key].target
-			if target != null:
-				point = target.get_global_transform_with_canvas() * (target.size * .5)
-			else:
-				if not event.pressed: _desktop.activate_device(key)
-				_viewport.set_input_as_handled()
-				return
+	var map_hardware: bool = not event is InputEventMouseMotion or event.button_mask == 0
+	if map_hardware and not key.is_empty() and point != OUTSIDE:
+		var target: Button = _buttons[key].target
+		if target != null:
+			point = target.get_global_transform_with_canvas() * (target.size * .5)
+		else:
+			point = OUTSIDE
+			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+				_desktop.activate_device(key)
+	elif map_hardware and key.is_empty() and not modal_visible and not material_input:
+		# Hidden hardware controls accept input only through their physical keycaps.
+		for binding: Dictionary in _buttons.values():
+			var target := binding.target as Button
+			if target == null or not target.is_visible_in_tree(): continue
+			if Rect2(Vector2.ZERO, target.size).has_point(target.get_global_transform_with_canvas().affine_inverse() * point):
+				point = OUTSIDE
+				break
 	forwarded.position = point
 	forwarded.global_position = point
 	if forwarded is InputEventMouseMotion:
