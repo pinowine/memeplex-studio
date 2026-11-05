@@ -515,7 +515,6 @@ func _camera_arrived(id: String) -> void:
 	if id.begins_with("sheet/"):
 		var sheet := id.trim_prefix("sheet/")
 		_pending_sheet = sheet
-		_page.hud.show_sheet(sheet)
 		if not _stack.is_switching():
 			_active_sheet = sheet
 			_set_sheet_content_visible(true)
@@ -978,7 +977,9 @@ func select_sheet(id: String) -> void:
 	if _page != null and _page._shell != null and _page._shell.blocks_input(): return
 	if _page == null or _page.hud.modal_visible() or _fax.inspection().focused: return
 	if _stack.is_switching(): return
-	focus_component("sheet/"+id)
+	if not focus_component("sheet/"+id): return
+	# Start moving the paper while the camera travels to it.
+	_page.hud.show_sheet(id)
 	if _active_sheet == id and not _stack.is_switching(): _page._tutorial_observe("sheet_selected", {"id":id})
 
 
