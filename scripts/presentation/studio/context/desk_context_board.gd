@@ -18,7 +18,6 @@ const CardFace := preload("res://scripts/presentation/studio/paper/desk_material
 const INK := Color("384238")
 const MUTED := Color("737968")
 const DRAG_THRESHOLD := 6.0
-const PICKUP_HOLD_MS := 320
 const CARD_GAP := 12.0
 
 var _rules: MemeDesignRules
@@ -37,7 +36,6 @@ var _held_slot := -1
 var _press_point := Vector2.ZERO
 var _last_point := Vector2.ZERO
 var _held_moved := false
-var _press_time := 0
 var _resource_dragging := false
 var _drag_preview: Control
 var _drag_preview_parent: Control
@@ -55,7 +53,6 @@ func _ready() -> void:
 	resized.connect(_refresh)
 	get_window().focus_exited.connect(_cancel_input)
 	_drag_preview_parent = self
-	set_process(false)
 	_refresh()
 
 func _notification(what: int) -> void:
@@ -123,7 +120,7 @@ func depth_control() -> VSlider:
 
 func selected_info() -> Dictionary:
 	var data: Dictionary = _layers().get(_layer, {})
-	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "depth":_depth, "slot":_selected_slot, "attached":_attached(_layer), "instructions":DeskLocalization.text("单击聚焦区块；长按卡片后拖出。")}
+	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "depth":_depth, "slot":_selected_slot, "attached":_attached(_layer), "instructions":DeskLocalization.text("单击聚焦区块；拖动卡片取下。")}
 	if _layer in ["stance", "pragmatic"]:
 		result.merge(data.duplicate(true), true)
 		result.instructions = DeskLocalization.text("从标记拖动，单次只沿一个轴，每格 0.1；离开起点用筹码，返回起点归还。")
@@ -171,8 +168,10 @@ func _build_layout() -> void:
 		_layout_layers[id] = data
 		data.region_polygon = _region_points(id)
 		if id in ["stance","pragmatic"]:
-			var plot_size := Vector2(maxf(42,rect.size.x-72),maxf(42,rect.size.y-84))
-			data.plot_rect = Rect2(rect.position+Vector2(35,44),plot_size)
+			# Reserve the upper axis label's full height below the heading rule.
+			var plot_top := 43 + get_theme_default_font().get_ascent(14)
+			var plot_size := Vector2(maxf(42,rect.size.x-72),maxf(42,rect.size.y-plot_top-26))
+			data.plot_rect = Rect2(rect.position+Vector2(35,plot_top),plot_size)
 			data.flow_axis_labels = rect.size.y < 128
 			for label: String in _axis_labels(id).values():
 				if get_theme_default_font().get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x > 34:
@@ -180,7 +179,7 @@ func _build_layout() -> void:
 			if data.flow_axis_labels:
 				var caption_height := minf(34,maxf(16,(rect.size.y-70)*.3))
 				data.axis_caption_height = caption_height
-				data.plot_rect = Rect2(rect.position+Vector2(35,35+caption_height),Vector2(maxf(42,rect.size.x-72),maxf(24,rect.size.y-39-caption_height*2)))
+				data.plot_rect = Rect2(rect.position+Vector2(35,40+caption_height),Vector2(maxf(42,rect.size.x-72),maxf(24,rect.size.y-44-caption_height*2)))
 		else:
 			var count: int = (_layers().get(id, {}).get("slots", []) as Array).size()
 			if count == 0: count = 3 if id == "topics" else 1
@@ -273,8 +272,6 @@ func _draw() -> void:
 		var point := get_global_transform_with_canvas().affine_inverse()*_last_point
 		draw_arc(point,17,0.2,TAU-0.2,32,Color(0.20,0.32,0.25,0.65),1.5,true)
 		_text("松手取下",point+Vector2(23,5),13)
-	var hint_rect := Rect2(Vector2(size.x * .405, size.y * .945), Vector2(size.x * .54, size.y * .045))
-	_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(), DeskLocalization.text("单击区块查看 · 长按卡片拖出"), hint_rect, 12, 10, 1), MUTED)
 
 func _slot_shape(id: String) -> String:
 	return CardFace.SHAPES.get("topic" if id == "topics" else id, "xy_plane")
@@ -371,7 +368,7 @@ func _axis_label_layouts(id: String) -> Dictionary:
 		areas = {
 			"x_negative":Rect2(Vector2(rect.position.x+1,center.y+6),Vector2(side_width,height)),
 			"x_positive":Rect2(Vector2(rect.end.x-side_width-1,center.y+6),Vector2(side_width,height)),
-			"y_negative":Rect2(Vector2(rect.get_center().x-middle_width*.5,rect.position.y+31),Vector2(middle_width,height)),
+			"y_negative":Rect2(Vector2(rect.get_center().x-middle_width*.5,rect.position.y+36),Vector2(middle_width,height)),
 			"y_positive":Rect2(Vector2(rect.get_center().x-middle_width*.5,rect.end.y-height-1),Vector2(middle_width,height))}
 	var result := {}
 	for key: String in areas: result[key]=ResourceGraphic.fit_text(font,str(labels[key]),areas[key],14,12,2)
@@ -489,7 +486,6 @@ func _begin_pointer(point: Vector2) -> void:
 	_held_layer = id
 	_held_slot = _selected_slot
 	_held = "selection"
-	_press_time = Time.get_ticks_msec()
 	if _attached(id):
 		if (_layout_layers[id].handle_rect as Rect2).has_point(point): _held = "layer"
 		elif id in ["stance", "pragmatic"]:
@@ -506,16 +502,12 @@ func _begin_pointer(point: Vector2) -> void:
 					_held = "resource"
 					_held_slot = index
 					_selected_slot = index
-	set_process(_held == "resource")
 	selected_info_changed.emit(selected_info())
 	_sync_graphics()
 	queue_redraw()
 
-func _process(_delta: float) -> void:
-	_update_resource_drag()
-
 func _update_resource_drag() -> void:
-	if _held != "resource" or not _held_moved or Time.get_ticks_msec() - _press_time < PICKUP_HOLD_MS: return
+	if _held != "resource" or not _held_moved: return
 	if not _resource_dragging:
 		_resource_dragging = true
 		var slot: Dictionary = _layers()[_held_layer].slots[_held_slot]
@@ -576,7 +568,6 @@ func _move_axis(point: Vector2) -> void:
 	queue_redraw()
 
 func _cancel_input() -> void:
-	set_process(false)
 	if is_instance_valid(_drag_preview):
 		_drag_preview.queue_free()
 		_drag_preview = null
@@ -591,7 +582,7 @@ func _cancel_input() -> void:
 	queue_redraw()
 
 func _get_drag_data(_position: Vector2) -> Variant:
-	# The hold gesture commits the inventory change once, when the card is released.
+	# Commit inventory changes on release after distinguishing a drag from a click.
 	return null
 
 func create_slice_item(record: Dictionary) -> Control:
@@ -633,7 +624,7 @@ func inspection() -> Dictionary:
 		layers[id] = info
 		visible.append(id)
 	var selected: Dictionary = layers.get(_layer, {})
-	return {"layout_mode":"assembly_board", "layout_version":14, "layers":layers, "visible_layers":visible, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":_axis, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","pickup_hold_ms":PICKUP_HOLD_MS,"resource_dragging":_resource_dragging}
+	return {"layout_mode":"assembly_board", "layout_version":14, "layers":layers, "visible_layers":visible, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":_axis, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","drag_threshold":DRAG_THRESHOLD,"resource_dragging":_resource_dragging}
 
 func _viewport_rect(rect: Rect2) -> Rect2:
 	var transform := get_global_transform_with_canvas()
