@@ -1,7 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
-const MATERIAL_STORAGE_RECT := Rect2(1236, 342, 336, 270)
+const MATERIAL_STORAGE_RECT := Rect2(620, 128, 640, 90)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
@@ -29,8 +29,6 @@ var _environment: Control
 var _component_target := ""
 var _occluder_positions: Dictionary = {}
 var _occluder_motion: Tween
-var _blank_pressed := false
-var _blank_press_point := Vector2.ZERO
 var _camera: Camera2D
 var _revealed_focus := ""
 var _focus_reveal_count := 0
@@ -107,13 +105,13 @@ func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> v
 	var instructions := {
 		"language":"语言决定表达使用的语言。默认一个槽，释义补丁可增加第二个。至少保留一个来源有效且已挂接的语言，才能发布。",
 		"group":"人群决定表达面向的群体。默认一个槽，对照补丁可增加第二个。至少保留一个来源有效且已挂接的人群，才能发布。",
-		"topics":"话题用横向卡片安装；长按卡片后拖出。下方库存中的卡片可拖入空槽。",
+		"topics":"话题用横向卡片安装；拖动卡片取下。下方库存中的卡片可拖入空槽。",
 		"stance":"横轴：自由—威权；纵轴：平等—等级。空心点是起点，实心点是当前位置。一次沿一个轴移动，每步0.1；离开起点使用对应筹码，返回归还。",
 		"pragmatic":"横轴：真诚—反讽；纵轴：支持—反对。一次沿一个轴移动，每步0.1。对应筹码数量可在显示器的语用模式查看。"}
 	if not body.is_empty(): body += "\n\n"
 	body += str(instructions.get(layer,""))
 	if layer in ["language","group"]:
-		body += DeskLocalization.source_format("\n\n当前容量：%d。长按卡片后拖出，单击下方库存卡片查看信息。", _page.simulation.design_state.context_slot_capacity(layer))
+		body += DeskLocalization.source_format("\n\n当前容量：%d。拖动卡片取下，单击下方库存卡片查看信息。", _page.simulation.design_state.context_slot_capacity(layer))
 	_slot_details = {"title":title,"body":body,"layer":layer,"slot":index}
 	if not slot_details_active():
 		_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
@@ -162,7 +160,6 @@ func _slot_pointer_guard(event: InputEvent) -> bool:
 			var point: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * event.position
 			if Rect2(Vector2.ZERO,board.size).has_point(point): return false
 		if not _slot_reader.handles_viewport_point(_foreground_point(event.position)):
-			close_slot_details()
 			return true
 	return false
 
@@ -685,8 +682,8 @@ func _layout_receipt(view: Vector2) -> void:
 		var mouth: Dictionary = _page.get_meta("studio3d").paper_exit("receipt_printer")
 		_outlet = mouth.origin
 		_outlet_width = mouth.width
-	# The short receipt leaves the card stacks clear; printer focus reveals its full length.
-	var bottom := view.y + 24 if _component_target == "printer" else MATERIAL_STORAGE_RECT.position.y - 18
+	# Printer focus reveals the full receipt below the compact overview.
+	var bottom := view.y + 24 if _component_target == "printer" else 324.0
 	_printer.layout_area(Rect2(_outlet, Vector2(_outlet_width, bottom - _outlet.y)))
 	_printer.pivot_offset = Vector2.ZERO
 	_printer.rotation = machine.rotation
@@ -1246,7 +1243,7 @@ func _component_details() -> Dictionary:
 		"printer":{"title":"日志打印机","body":"点数流水和事件摘要会继续打印。单击纸上的事件记录，可查看对应的原始事件。"},
 		"clock":{"title":"时间罗盘","body":"罗盘显示当前日期、季节与天气。时间推进遵守当前播放速度；查看说明不会改变模因与材料。"},
 		"speed":{"title":"播放速度","body":"三个实体键控制暂停、正常播放和加速。翻页与普通传真打印不会暂停；附带物资的传真会等待你取出纸片。"}}
-	return descriptions.get(_component_target,{"title":"工作台","body":"单击空白处或按 Esc，回到桌面。"}).duplicate(true)
+	return descriptions.get(_component_target,{"title":"工作台","body":"按 Esc，回到桌面。"}).duplicate(true)
 
 func _show_component_details(hover: Dictionary = {}) -> void:
 	if _slot_reader == null or _component_target.is_empty() or slot_details_active(): return
@@ -1282,37 +1279,9 @@ func _foreground_ui_handles(point: Vector2) -> bool:
 
 
 func _desktop_pointer_guard(event: InputEvent) -> bool:
-	# Foreground controls must reach GUI routing before blank-desk gestures.
 	if event is InputEventMouse and _foreground_ui_handles(event.position):
-		_blank_pressed = false
 		return false
-	if _slot_pointer_guard(event): return true
-	if _camera == null or _page.hud.modal_visible(): return false
-	if _page._shell != null and _page._shell.blocks_input(): return false
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			_blank_pressed = _camera.inspection().state == "focused" and _blank_viewport_point(event.position)
-			_blank_press_point = event.position
-			return _blank_pressed
-		if _blank_pressed:
-			_blank_pressed = false
-			if event.position.distance_to(_blank_press_point)<8 and _blank_viewport_point(event.position): return_overview()
-			return true
-	return false
-
-func _blank_viewport_point(point: Vector2) -> bool:
-	if _foreground_ui_handles(point): return false
-	if _slot_reader != null and _slot_reader.handles_viewport_point(_foreground_point(point)): return false
-	if _monitor.handles_viewport_point(point) or _material_cards.handles_viewport_point(point): return false
-	if not _printer.event_at(_printer.get_global_transform_with_canvas().affine_inverse()*point).is_empty(): return false
-	if _props._button_at(_fax,point) or _props._button_at(_speed_strip,point): return false
-	if not _fax.hover_details(point).is_empty(): return false
-	if _props._hit_prop(point) != &"": return false
-	# Active paper is a work surface, not an exit target. Other desk space is blank.
-	var sheet: Control = _stack.sheet_node(_active_sheet)
-	var local := sheet.get_global_transform_with_canvas().affine_inverse()*point
-	if _component_target.is_empty() and Rect2(Vector2.ZERO,sheet.size).has_point(local): return false
-	return true
+	return _slot_pointer_guard(event)
 
 func _material_full_details(info: Dictionary) -> Dictionary:
 	var parts := PackedStringArray()
