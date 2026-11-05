@@ -1,6 +1,8 @@
 extends Control
 class_name DeskModulePaperClip
 
+signal pressed
+
 class Wire extends Control:
 	func _draw() -> void:
 		var outer := PackedVector2Array()
@@ -35,6 +37,15 @@ func _ready() -> void:
 
 func bring_front() -> void:
 	if is_instance_valid(_wire): move_child(_wire,get_child_count()-1)
+
+func set_interaction_enabled(enabled: bool) -> void:
+	mouse_filter = MOUSE_FILTER_STOP if enabled else MOUSE_FILTER_IGNORE
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if not event.pressed and Rect2(Vector2.ZERO,size).has_point(event.position):
+			pressed.emit()
+		accept_event()
 
 func mouth() -> Vector2:
 	return get_global_transform_with_canvas()*Vector2(size.x-13,27)
