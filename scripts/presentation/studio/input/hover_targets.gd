@@ -7,6 +7,31 @@ var _desk: Control
 func _init(desk: Control) -> void:
 	_desk = desk
 
+func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int:
+	if control != null and point == Vector2.INF: point = control.get_viewport().get_mouse_position()
+	while control != null:
+		if not _contains(control, point) or control.get_meta("physical_hardware", false): return Input.CURSOR_ARROW
+		if control is BaseButton:
+			return Input.CURSOR_ARROW if control.disabled else _control_shape(control, Input.CURSOR_POINTING_HAND)
+		if control is LineEdit or control is TextEdit:
+			return _control_shape(control, Input.CURSOR_IBEAM) if control.editable else Input.CURSOR_ARROW
+		if control is Slider:
+			return _control_shape(control, Input.CURSOR_POINTING_HAND) if control.editable else Input.CURSOR_ARROW
+		if control is ScrollBar:
+			return _control_shape(control, Input.CURSOR_POINTING_HAND) if control.max_value - control.min_value > control.page else Input.CURSOR_ARROW
+		if control is DeskMaterialCards.StackCard: return Input.CURSOR_POINTING_HAND
+		var local := control.get_global_transform_with_canvas().affine_inverse() * point
+		if control is DeskContextBoard:
+			return Input.CURSOR_POINTING_HAND if control._enabled and not control._layer_at(local).is_empty() else Input.CURSOR_ARROW
+		if control.has_method("cursor_shape_at"): return int(control.cursor_shape_at(local))
+		if control.mouse_default_cursor_shape != Control.CURSOR_ARROW: return control.mouse_default_cursor_shape
+		if control.mouse_filter == Control.MOUSE_FILTER_STOP: return Input.CURSOR_ARROW
+		control = control.get_parent_control()
+	return Input.CURSOR_ARROW
+
+func _control_shape(control: Control, default_shape: int) -> int:
+	return default_shape if control.mouse_default_cursor_shape == Control.CURSOR_ARROW else control.mouse_default_cursor_shape
+
 func target_at(point: Vector2) -> Dictionary:
 	var cards: Control = _desk._material_cards
 	var target := control_target(_desk.get_viewport().gui_get_hovered_control(), point)
@@ -52,13 +77,13 @@ func control_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionar
 					return card
 			return {}
 		if control is BaseButton:
-			return {} if control.disabled else _rect("control/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size))
+			return {} if control.disabled else _rect("control/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size), _control_shape(control, Input.CURSOR_POINTING_HAND))
 		if control is LineEdit or control is TextEdit:
-			return _rect("editor/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size)) if control.editable else {}
+			return _rect("editor/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size), _control_shape(control, Input.CURSOR_IBEAM)) if control.editable else {}
 		if control is Slider:
-			return _rect("slider/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size)) if control.editable else {}
+			return _rect("slider/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size), _control_shape(control, Input.CURSOR_POINTING_HAND)) if control.editable else {}
 		if control is ScrollBar:
-			return _rect("scroll/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size)) if control.max_value - control.min_value > control.page else {}
+			return _rect("scroll/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size), _control_shape(control, Input.CURSOR_POINTING_HAND)) if control.max_value - control.min_value > control.page else {}
 		if control.mouse_filter == Control.MOUSE_FILTER_STOP: return {}
 		control = control.get_parent_control()
 	return {}
@@ -90,19 +115,19 @@ func _fax_target(point: Vector2) -> Dictionary:
 	if paper == null: return {}
 	var local := paper.get_global_transform_with_canvas().affine_inverse() * point
 	var tab: Rect2 = paper.history_tab_rect()
-	return _rect("fax_paper/" + str(paper.get_instance_id()), paper, tab if tab.has_point(local) else Rect2(Vector2.ZERO, paper.size))
+	return _rect("fax_paper/" + str(paper.get_instance_id()), paper, tab if tab.has_point(local) else Rect2(Vector2.ZERO, paper.size), Input.CURSOR_HELP)
 
 func _card(face: Control, key: String = "") -> Dictionary:
 	if key.is_empty(): key = "card/" + str(face.get_instance_id())
 	return _target(key, face, CardFace.outline_for(face._kind, face._layout.body))
 
-func _rect(key: String, source: Control, rect: Rect2) -> Dictionary:
-	return _target(key, source, PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]))
+func _rect(key: String, source: Control, rect: Rect2, cursor_shape: int = Input.CURSOR_POINTING_HAND) -> Dictionary:
+	return _target(key, source, PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]), cursor_shape)
 
-func _target(key: String, source: Control, polygon: PackedVector2Array) -> Dictionary:
+func _target(key: String, source: Control, polygon: PackedVector2Array, cursor_shape: int = Input.CURSOR_POINTING_HAND) -> Dictionary:
 	for mask: Control in _desk._stack._masks.values():
 		if mask == source or mask.is_ancestor_of(source): return {}
-	return {"key":key, "polygon":source.get_global_transform_with_canvas() * polygon, "source":source}
+	return {"key":key, "polygon":source.get_global_transform_with_canvas() * polygon, "source":source, "cursor_shape":cursor_shape}
 
 func _contains(control: Control, point: Vector2) -> bool:
 	return control.is_visible_in_tree() and Rect2(Vector2.ZERO, control.size).has_point(control.get_global_transform_with_canvas().affine_inverse() * point)

@@ -66,6 +66,9 @@ func _ready() -> void:
 	%DrawerClose.pressed.connect(close_drawer)
 	%PointsButton.pressed.connect(open_workbench)
 	%WorkbenchClose.pressed.connect(close_workbench)
+	for button: BaseButton in [%SpeedControl, %DrawerClose, %PointsButton, %WorkbenchClose]:
+		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	map_input.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	map_input.gui_input.connect(_on_map_input)
 	map_input.mouse_exited.connect(_on_map_exited)
 	get_viewport().size_changed.connect(_on_viewport_resized)
@@ -231,6 +234,7 @@ func _update_clock() -> void:
 	var speed_icons: Array = %SpeedControl.get_meta("speed_icons")
 	var speed_keys: PackedStringArray = %SpeedControl.get_meta("speed_keys")
 	%SpeedControl.disabled = clock.studio_index < 0
+	%SpeedControl.mouse_default_cursor_shape = Control.CURSOR_ARROW if %SpeedControl.disabled else Control.CURSOR_POINTING_HAND
 	%SpeedControl.icon = speed_icons[clock.speed]
 	%SpeedControl.tooltip_text = tr(speed_keys[clock.speed])
 	%ClockFace.material.set_shader_parameter("day_phase", clock.day_phase())

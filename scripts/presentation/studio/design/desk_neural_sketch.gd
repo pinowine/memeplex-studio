@@ -75,6 +75,7 @@ func set_interaction_enabled(value: bool) -> void:
 	_interaction_enabled = value
 	_feedback.set_enabled(value)
 	if not value: cancel_module_drag("disabled")
+	mouse_default_cursor_shape = cursor_shape_at(get_local_mouse_position())
 	queue_redraw()
 
 
@@ -130,6 +131,15 @@ func _hit_id(at: Vector2) -> String:
 
 func _on_mouse_exited() -> void:
 	_feedback.set_hover("")
+	mouse_default_cursor_shape = CURSOR_ARROW
+
+
+func cursor_shape_at(point: Vector2) -> int:
+	if not _interaction_enabled: return CURSOR_ARROW
+	if _pressed_module >= 0 or not _hit_id(point).is_empty(): return CURSOR_POINTING_HAND
+	for index in mini(_lineage.size(),12):
+		if point.distance_to(_lineage_point(index)) <= 11: return CURSOR_POINTING_HAND
+	return CURSOR_ARROW
 
 
 func _on_resized() -> void:
@@ -408,6 +418,7 @@ func _gui_input(event: InputEvent) -> void:
 			cancel_module_drag("nonfinite")
 			return
 		_feedback.set_hover(_hit_id(event.position))
+		mouse_default_cursor_shape = cursor_shape_at(event.position)
 		if _pressed_module < 0: return
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT == 0:
 			cancel_module_drag("left_not_held")
