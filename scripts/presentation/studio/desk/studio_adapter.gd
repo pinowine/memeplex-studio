@@ -1,10 +1,23 @@
 extends RefCounted
 
+const HoverTargets := preload("res://scripts/presentation/studio/input/hover_targets.gd")
+
 # This adapter translates desk presentation details, never gameplay commands.
 var _desk: Control
+var _hover_targets: RefCounted
 
 func _init(desk: Control) -> void:
 	_desk = desk
+	_hover_targets = HoverTargets.new(desk)
+
+func hover_target_at(point: Vector2) -> Dictionary:
+	return _hover_targets.target_at(point)
+
+func control_hover_target(control: Control) -> Dictionary:
+	return _hover_targets.control_target(control)
+
+func foreground_ui_handles(point: Vector2) -> bool:
+	return _desk._slot_reader.handles_viewport_point(point) or _desk._page._shell.tutorial.handles_viewport_point(point)
 
 func prepare() -> void:
 	_desk._art.phonebook.hide()
@@ -45,6 +58,11 @@ func activate_device(key: String) -> void:
 	match key:
 		"receipt_printer/feed": _desk._printer.advance(.35)
 		"fax_machine/clear": _desk._fax.keypad_key("clear")
+
+func device_enabled(key: String) -> bool:
+	if key == "fax_machine/clear":
+		return _desk._fax._can_phone() and not _desk._fax.call_connected()
+	return key == "receipt_printer/feed"
 
 func camera_pose() -> Dictionary:
 	_desk._camera.force_update_scroll()
@@ -116,12 +134,9 @@ func equipment_layout() -> Array[Dictionary]:
 		{"id":"desk_clock", "source":_desk._clock, "template_size":Vector2(248,248)}]
 
 func hovered_equipment(point: Vector2) -> String:
-	var controls := {"crt_terminal":_desk._art.crt, "receipt_printer":_desk._art.printer, "fax_machine":_desk._art.fax, "desk_clock":_desk._clock, "speed_controls":_desk._speed_strip}
-	for id: String in controls:
-		var control: Control = controls[id]
-		if Rect2(Vector2.ZERO, control.size).has_point(control.get_global_transform().affine_inverse() * point):
-			return id
-	return ""
+	if not _desk._props.enabled: return ""
+	var id := String(_desk._props._hit_prop(_desk.get_viewport().get_canvas_transform() * point))
+	return {"crt":"crt_terminal", "printer":"receipt_printer", "fax":"fax_machine", "clock":"desk_clock", "speed":"speed_controls"}.get(id, "")
 
 func cancel_interactions() -> void:
 	_desk._page.hud.design_workbench().context_slice()._cancel_input()
@@ -144,7 +159,6 @@ func sync_raster_presentation(viewport_rect: Rect2, can_interact: bool) -> void:
 	for shadow in _desk._shadows.values(): shadow.hide()
 	for wire in _desk._wires.values(): wire.hide()
 	for hover_id in _desk._hover:
-		if str(hover_id).begins_with("sheet/"): continue
 		var item: Variant = _desk._hover[hover_id]
 		if item is Dictionary:
 			for value in item.values():
@@ -174,4 +188,4 @@ func _sync_tabs(can_interact: bool) -> void:
 		note.self_modulate = tint.darkened(.08) if is_pressed else (tint.lightened(.08) if key == hovered else tint)
 		if _desk._hover.has(key):
 			_desk._update_hover_item(_desk._hover[key])
-			_desk._hover[key].node.visible = key == hovered or is_pressed
+			_desk._hover[key].node.hide()

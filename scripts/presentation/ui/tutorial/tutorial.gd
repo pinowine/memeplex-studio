@@ -110,6 +110,14 @@ func set_input_target_provider(provider: Callable, point_test := Callable()) -> 
 func _input(event: InputEvent) -> void:
 	if not allows_input(event): get_viewport().set_input_as_handled()
 
+func allows_hover(viewport_point: Vector2) -> bool:
+	if not _active or _hint_only: return true
+	if _blocked or _transitioning or _return_overview: return false
+	var point := get_global_transform_with_canvas().affine_inverse() * viewport_point
+	if _drag_source.has_area() and _drag_source.has_point(point):
+		return not _drag_source_test.is_valid() or _drag_source_test.call(viewport_point)
+	return _contains_input_point(_input_areas(), point) and (not _input_point_test.is_valid() or _input_point_test.call(_steps[_index], viewport_point))
+
 func allows_input(event: InputEvent) -> bool:
 	if not _active or _hint_only: return true
 	if _pointer_mode == "guide" and event is InputEventMouse:
