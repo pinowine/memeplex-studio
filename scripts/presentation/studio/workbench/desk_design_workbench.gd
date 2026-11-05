@@ -9,6 +9,7 @@ signal material_tabletop_requested(kind: String, id: String)
 signal sheet_requested(id: String)
 signal context_resource_detached(record: Dictionary, global_point: Vector2)
 signal context_layer_detached(record: Dictionary, global_point: Vector2)
+signal module_slots_pressed(viewport_rect: Rect2)
 
 const Sketch = preload("res://scripts/presentation/studio/design/desk_neural_sketch.gd")
 const DendriteTree = preload("res://scripts/presentation/studio/design/desk_dendrite_tree.gd")
@@ -299,6 +300,7 @@ func _build_edit() -> void:
 		clip.name = "PaperClip%d" % index
 		page.add_child(clip)
 		_physical_clips.append(clip)
+		clip.pressed.connect(func(): module_slots_pressed.emit(module_clips_viewport_rect()))
 	_part_title=_label(page,"表达模块","PartTitle",17)
 	_part_note=_label(page,"点击细胞核、轴突或树突上的表达；将真实获得的补丁拖入图中。","PartDescription",12)
 	_part_content=TextEdit.new()
@@ -637,6 +639,7 @@ func _layout_spread_sheet(w: float,h: float) -> void:
 func set_interaction_enabled(enabled: bool) -> void:
 	_interaction_enabled = enabled
 	_neuron.set_interaction_enabled(enabled and _tab == "edit")
+	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
 
@@ -727,28 +730,34 @@ func module_clip_parent(slot: int) -> Control:
 
 
 func module_clip_at(point: Vector2) -> int:
-	for slot in _physical_clips.size():
+	for slot in range(_physical_clips.size()-1,-1,-1):
 		if _physical_clips[slot].accepts(point): return slot
 	return -1
 
 
+func module_clips_viewport_rect() -> Rect2:
+	var rect := Rect2()
+	for clip: Control in _physical_clips:
+		var bounds: Rect2 = clip.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,clip.size)
+		rect = rect.merge(bounds) if rect.has_area() else bounds
+	return rect
+
+
 func accept_tabletop_item(kind: String,id: String,global_position: Vector2) -> bool:
-	if not is_visible_in_tree() or id.is_empty(): return false
+	if not _interaction_enabled or not is_visible_in_tree() or id.is_empty(): return false
 	if kind=="module" and _tab=="edit":
 		var free:=int((_design.get("available_module_inventory",_design.get("module_inventory",{})) as Dictionary).get(id,0))
 		for placed in _design.get("module_slots",[]):
 			if str(placed)==id: free-=1
 		if free<=0: return false
-		for index in _physical_clips.size():
-			if not _physical_clips[index].accepts(global_position): continue
-			var slots: Array=_design.get("module_slots",[])
-			if index>=slots.size() or not str(slots[index]).is_empty(): return false
-			_request("install_module",{"slot":index,"module_id":id})
-			var current: Array=_design.get("module_slots",[])
-			if index>=current.size() or str(current[index])!=id: return false
-			_request("move_module",{"slot":index,"position":_neuron.suggested_module_position(index)})
-			return true
-		return false
+		var index := module_clip_at(global_position)
+		var slots: Array=_design.get("module_slots",[])
+		if index<0 or index>=slots.size() or not str(slots[index]).is_empty(): return false
+		_request("install_module",{"slot":index,"module_id":id})
+		var current: Array=_design.get("module_slots",[])
+		if index>=current.size() or str(current[index])!=id: return false
+		_request("move_module",{"slot":index,"position":_neuron.suggested_module_position(index)})
+		return true
 	if _tab != "cultivate": return false
 	return _context_slice.accept_tabletop_item(kind,id,global_position)
 

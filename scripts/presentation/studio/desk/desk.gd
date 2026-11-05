@@ -113,6 +113,15 @@ func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> v
 	if layer in ["language","group"]:
 		body += DeskLocalization.source_format("\n\n当前容量：%d。拖动卡片取下，单击下方库存卡片查看信息。", _page.simulation.design_state.context_slot_capacity(layer))
 	_slot_details = {"title":title,"body":body,"layer":layer,"slot":index}
+	_focus_slot(layer,viewport_rect)
+
+func _module_slots_pressed(viewport_rect: Rect2) -> void:
+	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/edit": return
+	if _page._interface_paused() or not _page.startup_ready(): return
+	_slot_details = {"title":"补丁回形针","body":"将下方库存或桌面上的补丁拖到空回形针上安装。拖出已安装的补丁可将它取下。","layer":"module"}
+	_focus_slot("module",viewport_rect)
+
+func _focus_slot(layer: String, viewport_rect: Rect2) -> void:
 	if not slot_details_active():
 		_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
 	_focused_stack = {"topics":"topic","stance":"stance_token","pragmatic":"pragmatic_token"}.get(layer,layer)
@@ -159,6 +168,8 @@ func _slot_pointer_guard(event: InputEvent) -> bool:
 		if _revealed_focus == "sheet/cultivate" and board.is_visible_in_tree():
 			var point: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * event.position
 			if Rect2(Vector2.ZERO,board.size).has_point(point): return false
+		if _revealed_focus == "sheet/edit" and _page.hud.design_workbench().module_clip_at(event.position) >= 0:
+			return false
 		if not _slot_reader.handles_viewport_point(_foreground_point(event.position)):
 			return true
 	return false
@@ -441,6 +452,7 @@ func configure(page: Node2D) -> void:
 	var board: Control = editor.context_slice()
 	board.set_drag_preview_parent(_material_cards)
 	board.slot_pressed.connect(_context_slot_pressed)
+	editor.module_slots_pressed.connect(_module_slots_pressed)
 	_props.pointer_guard = _desktop_pointer_guard
 	_props.viewport_exclusion = func(point: Vector2) -> bool:
 		return _foreground_ui_handles(point) or _monitor.handles_viewport_point(point) or _material_cards.handles_viewport_point(point)

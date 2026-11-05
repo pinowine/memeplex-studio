@@ -92,7 +92,9 @@ func material_faces() -> Array[Dictionary]:
 
 func material_handles_viewport_point(point: Vector2) -> bool:
 	if _desk._foreground_ui_handles(point): return false
-	var board: Control = _desk._page.hud.design_workbench().context_slice()
+	var editor: Control = _desk._page.hud.design_workbench()
+	if editor._interaction_enabled and editor._tab == "edit" and editor.module_clip_at(point) >= 0: return true
+	var board: Control = editor.context_slice()
 	if board._enabled and board.is_visible_in_tree():
 		var local: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * point
 		if not board._layer_at(local).is_empty(): return true
