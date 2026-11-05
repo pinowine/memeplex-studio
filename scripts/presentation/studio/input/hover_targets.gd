@@ -24,8 +24,6 @@ func target_at(point: Vector2) -> Dictionary:
 	target = _inventory_target(point)
 	if not target.is_empty(): return target
 	if _desk._props.enabled and String(_desk._props._hit_prop(point)) in ["crt", "printer", "fax", "clock", "speed"]: return {}
-	target = _workbench_target(point)
-	if not target.is_empty(): return target
 	for item: Control in _desk._context_layer_items.values():
 		if item._enabled and _contains(item, point):
 			return _target("layer/" + str(item.record.layer), item._view, item._view._quad)
@@ -36,9 +34,7 @@ func target_at(point: Vector2) -> Dictionary:
 			var tab_target := _rect(key, note, Rect2(Vector2.ZERO, note.size))
 			tab_target.texture = note.texture
 			return tab_target
-	target = _fax_target(point)
-	if not target.is_empty(): return target
-	return _map_target(point)
+	return _fax_target(point)
 
 func control_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionary:
 	if control != null and point == Vector2.INF: point = control.get_viewport().get_mouse_position()
@@ -54,8 +50,6 @@ func control_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionar
 					card.polygon = polygon
 					return card
 			return {}
-		if control == _desk._page.atlas.launch_marker:
-			return _launch_target(control) if not control.disabled else {}
 		if control is BaseButton:
 			return {} if control.disabled else _rect("control/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size))
 		if control is LineEdit or control is TextEdit:
@@ -67,58 +61,6 @@ func control_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionar
 		if control.mouse_filter == Control.MOUSE_FILTER_STOP: return {}
 		control = control.get_parent_control()
 	return {}
-
-func _workbench_target(point: Vector2) -> Dictionary:
-	var editor: Control = _desk._page.hud.design_workbench()
-	if not editor._interaction_enabled: return {}
-	if editor._tab == "edit":
-		var slot: int = editor.module_clip_at(point)
-		if slot >= 0:
-			var clip: Control = editor.module_clip_parent(slot)
-			return _rect("module_clip/" + str(slot), clip, Rect2(Vector2.ZERO, clip.size))
-		var neuron: Control = editor._neuron
-		if _contains(neuron, point):
-			var local := neuron.get_global_transform_with_canvas().affine_inverse() * point
-			var id: String = neuron._hit_id(local)
-			if id.begins_with("module:"):
-				return _circle(id, neuron, neuron._module_point(int(id.trim_prefix("module:"))), 23.0)
-			if id.begins_with("part:"):
-				for index in neuron._nodes.size():
-					if str(neuron._nodes[index].id) == id.trim_prefix("part:"):
-						return _circle(id, neuron, neuron._point(index), 29.0)
-			for index in mini(neuron._lineage.size(), 12):
-				var center: Vector2 = neuron._lineage_point(index)
-				if local.distance_to(center) <= 11.0: return _circle("variant/" + str(index), neuron, center, 11.0)
-	elif editor._tab == "cultivate":
-		return _context_target(editor.context_slice(), point)
-	elif editor._tab == "spread":
-		var tree: Control = editor._spread_tree
-		if _contains(tree, point):
-			var id: String = tree._hit_id(tree.get_global_transform_with_canvas().affine_inverse() * point)
-			if not id.is_empty(): return _circle("skill/" + id, tree, tree._points[id], 27.0)
-	return {}
-
-func _context_target(board: Control, point: Vector2) -> Dictionary:
-	if not board._enabled or not _contains(board, point): return {}
-	var local := board.get_global_transform_with_canvas().affine_inverse() * point
-	var layer: String = board._layer_at(local)
-	if layer.is_empty(): return {}
-	var layout: Dictionary = board._layout_layers[layer]
-	var key := "context/" + layer
-	if (layout.handle_rect as Rect2).has_point(local): return _rect(key + "/handle", board, layout.handle_rect)
-	if board._attached(layer):
-		if layer in ["stance", "pragmatic"]:
-			var anchor: Vector2 = board._axis_point(layer)
-			if layer == "stance" and not bool(board._layers()[layer].get("known", false)): anchor = board._axis_origin(layer)
-			if local.distance_to(anchor) <= 13.0: return _circle(key + "/axis", board, anchor, 7.0)
-		else:
-			var slots: Array = board._layers()[layer].get("slots", [])
-			for index in layout.slot_pickup_rects.size():
-				if index < slots.size() and not slots[index].is_empty() and (layout.slot_pickup_rects[index] as Rect2).has_point(local):
-					return _target(key + "/card/" + str(index), board, board._socket_outline(layer, layout.slot_rects[index]))
-			var slot: int = board._slot_at(layer, local)
-			if slot >= 0: return _target(key + "/slot/" + str(slot), board, board._socket_outline(layer, layout.slot_rects[slot]))
-	return _target(key, board, layout.region_polygon)
 
 func _inventory_target(point: Vector2) -> Dictionary:
 	var monitor: Control = _desk._monitor
@@ -149,31 +91,6 @@ func _fax_target(point: Vector2) -> Dictionary:
 	var tab: Rect2 = paper.history_tab_rect()
 	return _rect("fax_paper/" + str(paper.get_instance_id()), paper, tab if tab.has_point(local) else Rect2(Vector2.ZERO, paper.size))
 
-func _map_target(point: Vector2) -> Dictionary:
-	var map: Node2D = _desk._page.atlas
-	if _desk._active_sheet != "map" or not _desk._props.enabled or not _contains(map.map_input, point): return {}
-	var local: Vector2 = map._world_position(point)
-	var country: int = map.world.country_at(local)
-	if country < 0: return {}
-	for ring: PackedVector2Array in map.world.territories[country].outlines:
-		if Geometry2D.is_point_in_polygon(local, ring):
-			var target := _rect("country/" + str(country), map.map_input, Rect2(Vector2.ZERO, map.map_input.size))
-			for clipped: PackedVector2Array in Geometry2D.intersect_polygons(map.map_view_transform() * ring, target.polygon):
-				if Geometry2D.is_point_in_polygon(point, clipped):
-					target.polygon = clipped
-					return target
-	return {}
-
-func _launch_target(marker: BaseButton) -> Dictionary:
-	var breath: float = sin(marker._breath_time * TAU / marker.BREATH_PERIOD)
-	var scale: float = 1.0 + marker._hover_amount * (0.018 + breath * 0.008)
-	var origin: Vector2 = marker.TIP * (1.0 - scale)
-	var points := PackedVector2Array([marker.TIP])
-	for index in 49:
-		var angle := lerpf(2.55, TAU + 0.59, float(index) / 48.0)
-		points.append(origin + (marker.CENTER + Vector2.from_angle(angle) * 28.0) * scale)
-	return _target("launch_confirmation", marker, points)
-
 func _card(face: Control, key: String = "") -> Dictionary:
 	if key.is_empty(): key = "card/" + str(face.get_instance_id())
 	return _target(key, face, CardFace.outline_for(face._kind, face._layout.body))
@@ -181,12 +98,9 @@ func _card(face: Control, key: String = "") -> Dictionary:
 func _rect(key: String, source: Control, rect: Rect2) -> Dictionary:
 	return _target(key, source, PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]))
 
-func _circle(key: String, source: Control, center: Vector2, radius: float) -> Dictionary:
-	var points := PackedVector2Array()
-	for index in 40: points.append(center + Vector2.from_angle(float(index) * TAU / 40.0) * radius)
-	return _target(key, source, points)
-
 func _target(key: String, source: Control, polygon: PackedVector2Array) -> Dictionary:
+	for mask: Control in _desk._stack._masks.values():
+		if mask == source or mask.is_ancestor_of(source): return {}
 	return {"key":key, "polygon":source.get_global_transform_with_canvas() * polygon, "source":source}
 
 func _contains(control: Control, point: Vector2) -> bool:
