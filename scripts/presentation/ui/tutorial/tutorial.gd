@@ -133,6 +133,9 @@ func allows_input(event: InputEvent) -> bool:
 	if _blocked or _transitioning: return false
 	if event is InputEventKey:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+		if key == KEY_ESCAPE and str(_steps[_index].get("target", "")).begins_with("map/"):
+			if event.pressed and not event.echo: overview_requested.emit()
+			return false
 		if _return_overview and key == KEY_ESCAPE:
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
@@ -144,6 +147,8 @@ func allows_input(event: InputEvent) -> bool:
 	if event is InputEventMouseMotion:
 		if not _pointer_mode.is_empty(): return true
 		return _contains_input_point(areas, point) or _drag_source.has_point(point)
+	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+		return not _return_overview and str(_steps[_index].get("target", "")).begins_with("map/") and _contains_input_point(areas, point)
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return false
 	if event.pressed:
 		if _return_overview:
