@@ -142,6 +142,9 @@ func _add_live_paper(asset_id: String, source: Control, template_size: Vector2, 
 	if source is TextureRect:
 		material.set_shader_parameter("paper_mask_enabled", true)
 		material.set_shader_parameter("paper_mask_texture", source.texture)
+	elif source.has_method("print_mask"):
+		material.set_shader_parameter("paper_mask_enabled", true)
+		material.set_shader_parameter("paper_mask_texture", source.print_mask())
 	if not _whitebox:
 		material.set_shader_parameter("paper_stock_enabled",true)
 		material.set_shader_parameter("paper_stock_texture",_fbx_loader.painter_materials.texture_for_set("SP_"+asset_id,"BaseColor"))
@@ -288,6 +291,8 @@ func _sync_live_papers(delta: float) -> void:
 			# History selection changes sibling order without changing the output list.
 			binding.model.position.y = _fax_floor_height(source)
 		if binding.get("material_card",false):
+			if source.has_method("print_mask"):
+				binding.material.set_shader_parameter("paper_mask_texture", source.print_mask())
 			var owner: Control = binding.card_owner
 			var dragging := false
 			if is_instance_valid(owner):
@@ -354,7 +359,5 @@ func _bind_material_face(source: Control, key: String, rank: int, owner: Control
 func _sync_material_cards() -> void:
 	var rank := 0
 	for face: Dictionary in _desktop.material_faces():
-		# Lifting a whole stack rectangle also lifts the paper visible around its cards.
-		if str(face.key).begins_with("stack/"): continue
 		_bind_material_face(face.source, face.key, rank, face.owner)
 		if face.visible: rank += 1
