@@ -50,6 +50,9 @@ class StackSurface extends Control:
 	var hovered := false
 	var selected := false
 	var _face: DeskMaterialCardFace
+	var _print_mask: ImageTexture
+	var _mask_layers := -1
+	var _mask_size := Vector2.ZERO
 
 	func _ready() -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -70,6 +73,31 @@ class StackSurface extends Control:
 		_face.configure({"kind":kind, "title":title, "count":quantity, "source_label":DeskLocalization.text(caption)}, get_theme_default_font())
 		_face.set_hovered(hovered)
 		_face.set_selected(selected or highlighted)
+
+	func print_mask() -> Texture2D:
+		var layers := mini(quantity, 2)
+		if _print_mask != null and layers == _mask_layers and size == _mask_size: return _print_mask
+		var dimensions := CardFace.minimum_card_size(kind)
+		var body := Rect2(4, 3, dimensions.x - 10, dimensions.y - 10)
+		var outlines: Array[PackedVector2Array] = []
+		for index in range(layers, 0, -1):
+			outlines.append(CardFace.outline_for(kind, Rect2(body.position + Vector2(2, 3) * index, body.size)))
+		var thickness: float = _face.inspection().thickness
+		outlines.append(CardFace.outline_for(kind, Rect2(body.position + Vector2(1.2, thickness), body.size)))
+		outlines.append(CardFace.outline_for(kind, body))
+		# Keep the surrounding workpaper off the raised stack.
+		var svg := '<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s">' % [size.x, size.y]
+		for outline: PackedVector2Array in outlines:
+			var points := PackedStringArray()
+			for point: Vector2 in outline: points.append("%s,%s" % [point.x, point.y])
+			svg += '<polygon points="%s" fill="white" stroke="white" stroke-width="1.1"/>' % " ".join(points)
+		svg += "</svg>"
+		var mask := Image.new()
+		mask.load_svg_from_string(svg, 2.0)
+		_print_mask = ImageTexture.create_from_image(mask)
+		_mask_layers = layers
+		_mask_size = size
+		return _print_mask
 
 class StackCard extends Control:
 	signal chosen
