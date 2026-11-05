@@ -17,6 +17,11 @@ const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk
 const NeuronGraphic := preload("res://scripts/presentation/studio/design/desk_neuron_graphic.gd")
 const STACK_KINDS := ["group", "language", "module", "topic"]
 const STACK_TITLES := {"group":"群体", "language":"语言", "module":"补丁", "topic":"话题"}
+const STACK_LAYOUT := {
+	"group":{"offset":Vector2(16, 27), "angle":-3.0},
+	"language":{"offset":Vector2(3, -3), "angle":2.0},
+	"module":{"offset":Vector2(-2, 6), "angle":-2.0},
+	"topic":{"offset":Vector2(0, 1), "angle":3.0}}
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 
 class CardInteraction extends DeskPropInteraction:
@@ -241,8 +246,7 @@ func _build_storage_slots() -> void:
 		var kind: String = STACK_KINDS[index]
 		var dimensions := CardFace.minimum_card_size(kind)
 		var stack_size := dimensions + Vector2(6, 8)
-		var section := Rect2(_spawn_area.position + Vector2(index * cell_width + (cell_width - stack_size.x) * .5, (_spawn_area.size.y - stack_size.y) * .5), stack_size)
-		_storage_sections[kind] = section
+		var section := Rect2(_spawn_area.position + Vector2(index * cell_width + (cell_width - stack_size.x) * .5, (_spawn_area.size.y - stack_size.y) * .5) + STACK_LAYOUT[kind].offset, stack_size)
 		if not _stack_surfaces.has(kind):
 			var surface := StackSurface.new()
 			surface.name = "CardStack" + kind.capitalize()
@@ -254,6 +258,9 @@ func _build_storage_slots() -> void:
 		var surface: Control = _stack_surfaces[kind]
 		surface.position = section.position
 		surface.size = section.size
+		surface.pivot_offset = dimensions * .5
+		surface.rotation = deg_to_rad(STACK_LAYOUT[kind].angle)
+		_storage_sections[kind] = surface.get_transform() * Rect2(Vector2.ZERO, surface.size)
 		_props.register_prop("stack/" + kind, surface, Rect2(Vector2.ZERO, section.size), false, false)
 		for id: String in _storage_ids(kind):
 			_storage_slots[kind + "/" + id] = Rect2(section.position, dimensions)
@@ -281,7 +288,8 @@ func stack_faces() -> Array[Dictionary]:
 	return result
 
 func stack_viewport_rect(kind: String) -> Rect2:
-	return get_global_transform_with_canvas() * (_storage_sections.get(kind, Rect2()) as Rect2)
+	var surface: Control = _stack_surfaces[kind]
+	return surface.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, surface.size)
 
 func stack_details(kind: String) -> Dictionary:
 	var quantity := 0
@@ -293,9 +301,10 @@ func stack_details(kind: String) -> Dictionary:
 	return {"kind":kind, "title":DeskLocalization.source_format("%s卡摞", [str(STACK_TITLES.get(kind, kind))], [0]), "body":DeskLocalization.source_format("单击下方卡片查看详情，拖到纸张槽位安装。\n共 %d 类，%d 张。", [types, quantity]), "count":quantity, "types":types}
 
 func _stack_at(point: Vector2) -> String:
-	var local := get_global_transform_with_canvas().affine_inverse() * point
-	for kind: String in _storage_sections:
-		if (_storage_sections[kind] as Rect2).has_point(local): return kind
+	for kind: String in _stack_surfaces:
+		var surface: Control = _stack_surfaces[kind]
+		var local := surface.get_global_transform_with_canvas().affine_inverse() * point
+		if Rect2(Vector2.ZERO, surface.size).has_point(local): return kind
 	return ""
 
 func preview_drop(kind: String, point: Vector2) -> void:
@@ -494,12 +503,12 @@ func _park_card(key: String) -> void:
 		if str(row.get("kind", "")) == str(card.kind) and str(row.get("id", "")) == str(card.id) and bool(row.get("claimed", false)) and _event_positions.has(event_key):
 			var point: Vector2 = _event_positions[event_key]
 			card.node.position = point - target * .5
-			card.inventory_docked = (_storage_sections.get(str(card.kind), Rect2()) as Rect2).has_point(point)
+			card.inventory_docked = _stack_at(get_global_transform_with_canvas() * point) == str(card.kind)
 			_event_positions.erase(event_key)
 	if bool(card.inventory_docked):
 		var slot: Rect2 = _storage_slots.get(str(card.kind) + "/" + str(card.id), Rect2(_spawn_area.position, target))
 		card.node.position = slot.get_center() - target * .5
-		card.node.rotation = 0
+		card.node.rotation = _stack_surfaces[str(card.kind)].rotation
 		# The top inventory card supplies input beneath the shared stack face.
 		card.node.visible = key == _top_inventory_card(str(card.kind))
 	else:

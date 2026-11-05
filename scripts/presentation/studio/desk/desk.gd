@@ -1,7 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
-const MATERIAL_STORAGE_RECT := Rect2(620, 128, 640, 90)
+const MATERIAL_STORAGE_RECT := Rect2(570, 128, 570, 90)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
@@ -630,7 +630,7 @@ func _layout() -> void:
 	_environment.layout_area()
 	_light.position = Vector2(560,-180)
 	_prop(_art.crt,Rect2(-8,-10,365,315),-0.30)
-	_place(_clock,Rect2(355,-4,248,248))
+	_place(_clock,Rect2(395,-4,248,248))
 	_clock.scale = Vector2.ONE
 	_prop(_art.printer,Rect2(1335,-5,265,225),0.12)
 	_prop(_art.fax,Rect2(1288,645,312,255),-0.23)
@@ -682,9 +682,7 @@ func _layout_receipt(view: Vector2) -> void:
 		var mouth: Dictionary = _page.get_meta("studio3d").paper_exit("receipt_printer")
 		_outlet = mouth.origin
 		_outlet_width = mouth.width
-	# Printer focus reveals the full receipt below the compact overview.
-	var bottom := view.y + 24 if _component_target == "printer" else 324.0
-	_printer.layout_area(Rect2(_outlet, Vector2(_outlet_width, bottom - _outlet.y)))
+	_printer.layout_area(Rect2(_outlet, Vector2(_outlet_width, view.y - _outlet.y + 24)))
 	_printer.pivot_offset = Vector2.ZERO
 	_printer.rotation = machine.rotation
 
@@ -899,7 +897,7 @@ func _sync_module_papers() -> void:
 
 
 func _drop_material(kind: String, id: String, point: Vector2) -> void:
-	if kind in ["group","language","topic","module"] and _material_cards.stack_viewport_rect(kind).has_point(point):
+	if kind in ["group","language","topic","module"] and _material_cards._stack_at(point) == kind:
 		_material_cards.store_item(kind,id)
 		return
 	if kind in ["stance_token","pragmatic_token"]:

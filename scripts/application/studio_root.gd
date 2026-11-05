@@ -47,6 +47,7 @@ func _ready() -> void:
 		return
 	assembly.name = "StudioAssets"
 	add_child(assembly)
+	_node("desk_clock").position.x += 0.04
 	if whitebox: _apply_whitebox(assembly)
 	camera = Camera3D.new()
 	camera.name = "OrthographicDeskCamera"

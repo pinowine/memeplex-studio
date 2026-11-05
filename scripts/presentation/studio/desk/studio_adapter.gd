@@ -132,7 +132,6 @@ func sync_raster_presentation(viewport_rect: Rect2, can_interact: bool) -> void:
 	for id in ["desk_surface", "crt", "fax", "printer", "phonebook", "clock", "speed"]:
 		_desk._art[id].self_modulate.a = 0.0
 	for shadow in _desk._shadows.values(): shadow.hide()
-	for shadow in _desk._stack._shadows.values(): shadow.hide()
 	for wire in _desk._wires.values(): wire.hide()
 	for hover_id in _desk._hover:
 		if str(hover_id).begins_with("sheet/"): continue
