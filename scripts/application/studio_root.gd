@@ -2,6 +2,7 @@ extends Node3D
 
 const ContentPresenter := preload("res://scripts/presentation/studio/content/content_presenter.gd")
 const InputRouter := preload("res://scripts/presentation/studio/input/input_router.gd")
+const GameCursors := preload("res://scripts/presentation/studio/input/game_cursors.gd")
 const FbxAssembly := preload("res://scripts/rendering/models/fbx_assembly.gd")
 const ButtonFeedback := preload("res://scripts/rendering/feedback/button_feedback.gd")
 const PaperMasks := preload("res://scripts/rendering/paper/paper_masks.gd")
@@ -29,6 +30,7 @@ var camera: Camera3D
 var buttons: Dictionary = {}
 var areas: Array[Area3D] = []
 var hovered := ""
+var cursor_shape := Input.CURSOR_ARROW
 var ready_3d := false
 var half_tone: ColorRect
 var modal_image: TextureRect
@@ -39,6 +41,7 @@ var handset_connected := false
 var cord_endpoints: Dictionary = {}
 
 func _ready() -> void:
+	GameCursors.install()
 	DeskLocalization.ensure_loaded()
 	process_priority = 100
 	_setup_lighting()
@@ -280,7 +283,10 @@ func _process(_delta: float) -> void:
 		_cancel_input()
 		get_viewport().gui_release_focus()
 	modal_image.visible = showing_modal
-	_update_hover()
+	cursor_shape = _update_hover()
+	if get_window().has_focus() and not showing_modal and not page.presentation_blocks_input() and desktop.pointer_dragging():
+		cursor_shape = Input.CURSOR_POINTING_HAND
+	GameCursors.apply(cursor_shape)
 	button_feedback.tick(_delta)
 	hover_outline.sync()
 
@@ -327,19 +333,19 @@ func _update_handset(force := false) -> void:
 	cord_endpoints={"receiver":start,"jack":end,"receiver_gap_m":path[0].distance_to(start),"jack_gap_m":path[-1].distance_to(end)}
 
 
-func _update_hover() -> void:
+func _update_hover() -> int:
 	hovered = ""
 	button_feedback.update_hover("")
 	if not get_window().has_focus():
 		hover_outline.clear()
-		return
+		return Input.CURSOR_ARROW
 	var target: Dictionary = desktop.control_hover_target(get_viewport().gui_get_hovered_control())
 	if not target.is_empty():
 		_show_hover_target(target)
-		return
+		return target.cursor_shape
 	if desktop.foreground_ui_handles(get_viewport().get_mouse_position()):
 		hover_outline.clear()
-		return
+		return desktop.control_cursor_shape(get_viewport().gui_get_hovered_control())
 	if modal_image.visible:
 		target = desktop.control_hover_target(logical.gui_get_hovered_control())
 		if not target.is_empty():
@@ -347,14 +353,14 @@ func _update_hover() -> void:
 			for index in polygon.size(): polygon[index] *= get_viewport().get_visible_rect().size / Vector2(logical.size)
 			hover_outline.show_polygon(str(target.key), polygon)
 		else: hover_outline.clear()
-		return
+		return target.cursor_shape if not target.is_empty() else desktop.control_cursor_shape(logical.gui_get_hovered_control())
 	if page.presentation_blocks_input():
 		hover_outline.clear()
-		return
+		return Input.CURSOR_ARROW
 	var point := get_viewport().get_mouse_position()
 	if not page._shell.tutorial.allows_hover(point):
 		hover_outline.clear()
-		return
+		return Input.CURSOR_ARROW
 	var desktop_position: Vector2 = logical.get_canvas_transform() * input_router.desktop_point(point)
 	var material_input: bool = desktop.material_handles_viewport_point(desktop_position)
 	var physical_hit: Dictionary = {} if material_input else input_router.hit(point)
@@ -367,14 +373,16 @@ func _update_hover() -> void:
 			button_feedback.update_hover(key)
 			hover_outline.show_meshes(key, _meshes_for_hover(key, buttons[key].mesh))
 		else: hover_outline.clear()
-		return
+		return Input.CURSOR_POINTING_HAND if enabled else Input.CURSOR_ARROW
 	target = desktop.hover_target_at(desktop_position if material_input else input_router.screen_input(point))
 	if not target.is_empty():
 		_show_hover_target(target)
-		return
+		return target.cursor_shape
 	hovered = desktop.hovered_equipment(input_router.desktop_point(point))
 	if hovered.is_empty(): hover_outline.clear()
 	else: hover_outline.show_meshes(hovered, _meshes_for_hover(hovered, _node(hovered)))
+	if not hovered.is_empty(): return Input.CURSOR_HELP
+	return desktop.control_cursor_shape(logical.gui_get_hovered_control(), desktop_position if material_input else input_router.screen_input(point))
 
 func _meshes_for_hover(key: String, root: Node3D) -> Array[MeshInstance3D]:
 	if not _hover_meshes.has(key):
@@ -416,6 +424,8 @@ func _route_input(event: InputEvent) -> void:
 		input_router.route_event(event, modal_image.visible, page.presentation_blocks_input())
 
 func _cancel_input() -> void:
+	cursor_shape = Input.CURSOR_ARROW
+	GameCursors.apply(cursor_shape)
 	if ready_3d:
 		input_router.cancel()
 		hover_outline.clear()
@@ -449,6 +459,7 @@ func interaction_inspection() -> Dictionary:
 	report.phonebook_removed = not _node("contact_book").is_visible_in_tree()
 	report.button_feedback = button_feedback.inspection()
 	report.hover_outline = hover_outline.inspection()
+	report.cursor_shape = cursor_shape
 	report.paper_masks = paper_masks.inspection()
 	return report
 

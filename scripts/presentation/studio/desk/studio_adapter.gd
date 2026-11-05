@@ -16,6 +16,23 @@ func hover_target_at(point: Vector2) -> Dictionary:
 func control_hover_target(control: Control) -> Dictionary:
 	return _hover_targets.control_target(control)
 
+func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int:
+	return _hover_targets.control_cursor_shape(control, point)
+
+func pointer_dragging() -> bool:
+	var cards: Control = _desk._material_cards
+	if cards._props._dragging or cards.focus_dragging() or _desk._monitor._dragging or _desk._page.atlas.panning or _desk.get_viewport().gui_is_dragging(): return true
+	var editor: Control = _desk._page.hud.design_workbench()
+	if editor._neuron._dragging: return true
+	var board: Control = editor.context_slice()
+	if board._resource_dragging or board._axis_drag or (board._held == "layer" and board._held_moved): return true
+	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	for slip: Control in slips:
+		if slip.is_dragging(): return true
+	for item: Control in _desk._context_layer_items.values():
+		if item._dragging or item._native_drag: return true
+	return false
+
 func foreground_ui_handles(point: Vector2) -> bool:
 	return _desk._slot_reader.handles_viewport_point(point) or _desk._page._shell.tutorial.handles_viewport_point(point)
 

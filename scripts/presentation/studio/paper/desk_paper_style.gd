@@ -24,6 +24,7 @@ class PaperFeedback extends Control:
 
 	func _process(delta: float) -> void:
 		if not is_instance_valid(button): return
+		button.mouse_default_cursor_shape = Control.CURSOR_ARROW if button.disabled else Control.CURSOR_POINTING_HAND
 		var before := Vector4(hover,press,disabled,_pulse)
 		var blend := 1.0 - exp(-maxf(delta,0.0) * 17.0)
 		hover = lerpf(hover,1.0 if button.is_hovered() and not button.disabled else 0.0,blend)
@@ -49,6 +50,7 @@ class PaperFeedback extends Control:
 
 static func apply_button(button: Button, allow_tooltip: bool = false) -> Control:
 	if button == null: return null
+	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if button.disabled else Control.CURSOR_POINTING_HAND
 	var existing := button.get_node_or_null("HanddrawFeedback")
 	if existing is PaperFeedback:
 		existing.allow_tooltip = allow_tooltip

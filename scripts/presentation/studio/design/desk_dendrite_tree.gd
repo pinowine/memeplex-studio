@@ -38,6 +38,7 @@ func set_interaction_enabled(value: bool) -> void:
 	_interaction_enabled = value
 	_feedback.set_enabled(value)
 	if not value: _feedback.set_pressed("")
+	mouse_default_cursor_shape = cursor_shape_at(get_local_mouse_position())
 	queue_redraw()
 
 
@@ -49,6 +50,11 @@ func select_node(id: String) -> void:
 
 func _on_mouse_exited() -> void:
 	_feedback.set_hover("")
+	mouse_default_cursor_shape = CURSOR_ARROW
+
+
+func cursor_shape_at(point: Vector2) -> int:
+	return CURSOR_POINTING_HAND if _interaction_enabled and not _hit_id(point).is_empty() else CURSOR_ARROW
 
 
 func _hit_id(at: Vector2) -> String:
@@ -351,6 +357,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not _interaction_enabled: return
 	if event is InputEventMouseMotion:
 		_feedback.set_hover(_hit_id(event.position))
+		mouse_default_cursor_shape = cursor_shape_at(event.position)
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if not event.pressed:

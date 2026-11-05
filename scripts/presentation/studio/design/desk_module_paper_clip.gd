@@ -40,6 +40,7 @@ func bring_front() -> void:
 
 func set_interaction_enabled(enabled: bool) -> void:
 	mouse_filter = MOUSE_FILTER_STOP if enabled else MOUSE_FILTER_IGNORE
+	mouse_default_cursor_shape = CURSOR_POINTING_HAND if enabled else CURSOR_ARROW
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
