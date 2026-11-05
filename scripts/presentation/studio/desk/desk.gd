@@ -749,9 +749,9 @@ func _register_props() -> void:
 	if _registered: return
 	_registered = true
 	# Paper may overlap machines; only solid desk equipment blocks other machines.
-	for id in ["phonebook", "crt", "clock", "speed", "printer", "fax"]:
+	for id in ["phonebook", "crt", "clock", "printer", "fax"]:
 		if id == "phonebook" and _page.has_meta("studio3d"): continue
-		var node: Control = _clock if id == "clock" else (_speed_strip if id == "speed" else _art[id])
+		var node: Control = _clock if id == "clock" else _art[id]
 		var hit := Rect2(Vector2.ZERO, node.size)
 		if id == "fax": hit = Rect2(7,17,298,235)
 		if id == "printer": hit = Rect2(7,9,250,207)
@@ -760,7 +760,7 @@ func _register_props() -> void:
 		var cores := {"clock":Rect2(38,41,140,146),"folder":Rect2(23,24,208,137),"crt":Rect2(30,30,174,130),
 			"printer":Rect2(25,30,240,185),"fax":Rect2(25,36,265,168)}
 		if cores.has(id): _props.set_collision_rect(id, cores[id])
-		if id != "speed": _create_hover(id, _art[id])
+		_create_hover(id, _art[id])
 	for layer in _token_boxes:
 		var box: Control = _token_boxes[layer]
 		# Fixed token trays own their input; the desk must not swallow token pickup.

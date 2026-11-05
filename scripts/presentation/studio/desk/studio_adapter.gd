@@ -136,7 +136,7 @@ func equipment_layout() -> Array[Dictionary]:
 func hovered_equipment(point: Vector2) -> String:
 	if not _desk._props.enabled: return ""
 	var id := String(_desk._props._hit_prop(_desk.get_viewport().get_canvas_transform() * point))
-	return {"crt":"crt_terminal", "printer":"receipt_printer", "fax":"fax_machine", "clock":"desk_clock", "speed":"speed_controls"}.get(id, "")
+	return {"crt":"crt_terminal", "printer":"receipt_printer", "fax":"fax_machine", "clock":"desk_clock"}.get(id, "")
 
 func cancel_interactions() -> void:
 	_desk._page.hud.design_workbench().context_slice()._cancel_input()
