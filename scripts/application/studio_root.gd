@@ -228,6 +228,7 @@ func _bind_controls() -> void:
 		areas.append(area)
 		buttons[key] = {"mesh":node,"area":area,"target":target,"rest":node.position,"travel":float(extra.get("press_travel_m",0.0015)),"action":action}
 		if target != null:
+			target.set_meta("physical_hardware", true)
 			target.button_down.connect(_press_visual.bind(key,true))
 			target.button_up.connect(_press_visual.bind(key,false))
 

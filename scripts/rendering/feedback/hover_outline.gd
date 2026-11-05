@@ -67,7 +67,11 @@ func show_meshes(key: String, meshes: Array[MeshInstance3D]) -> void:
 			var copy := MeshInstance3D.new()
 			copy.name = "Silhouette_" + str(source.name)
 			copy.mesh = source.mesh
-			copy.material_override = _white
+			for surface in source.mesh.get_surface_count():
+				var material := source.get_active_material(surface)
+				# Printed overlays need their alpha cutouts in the silhouette too.
+				var opaque: bool = material is BaseMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED
+				copy.set_surface_override_material(surface, _white if opaque else material)
 			copy.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			_mask.add_child(copy)
 			_meshes[id] = {"source":source, "copy":copy}

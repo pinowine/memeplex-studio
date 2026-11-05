@@ -40,6 +40,7 @@ func control_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionar
 	if control != null and point == Vector2.INF: point = control.get_viewport().get_mouse_position()
 	while control != null:
 		if not _contains(control, point): return {}
+		if control.get_meta("physical_hardware", false): return {}
 		if control is DeskMaterialCards.StackCard:
 			var scroll := control.get_parent().get_parent() as ScrollContainer
 			if scroll.is_queued_for_deletion(): return {}
