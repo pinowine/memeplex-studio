@@ -1,7 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
-const MATERIAL_STORAGE_RECT := Rect2(455, 12, 160, 360)
+const MATERIAL_STORAGE_RECT := Rect2(400, 20, 256, 172)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
@@ -641,8 +641,8 @@ func _layout() -> void:
 	var view := DESK_SIZE
 	_environment.layout_area()
 	_light.position = Vector2(560,-180)
-	_prop(_art.crt,Rect2(64,6,365,315),-0.06)
-	_place(_clock,Rect2(640,4,224,224))
+	_prop(_art.crt,Rect2(24,-24,365,315),-0.06)
+	_place(_clock,Rect2(664,4,224,224))
 	_clock.scale = Vector2.ONE
 	_prop(_art.printer,Rect2(1335,-5,265,225),0.12)
 	_prop(_art.fax,Rect2(1288,645,312,255),-0.23)
@@ -678,7 +678,7 @@ func _prop(node: TextureRect, rect: Rect2, angle: float) -> void:
 
 
 func _layout_speed_strip() -> void:
-	_place(_speed_strip,Rect2(4,421,172,64))
+	_place(_speed_strip,Rect2(4,330,172,64))
 	_speed_strip.pivot_offset = _speed_strip.size*.5
 	_speed_strip.rotation = 0.0
 
