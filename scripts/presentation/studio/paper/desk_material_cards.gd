@@ -265,12 +265,13 @@ func _storage_ids(kind: String) -> Array[String]:
 func _build_storage_slots() -> void:
 	_storage_sections.clear()
 	_storage_slots.clear()
-	var cell_height := _spawn_area.size.y / STACK_KINDS.size()
+	var cell_size := _spawn_area.size / Vector2(2,2)
 	for index in STACK_KINDS.size():
 		var kind: String = STACK_KINDS[index]
 		var dimensions := CardFace.minimum_card_size(kind)
 		var stack_size := dimensions + Vector2(6, 8)
-		var section := Rect2(_spawn_area.position + Vector2((_spawn_area.size.x - stack_size.x) * .5, index * cell_height + (cell_height - stack_size.y) * .5), stack_size)
+		var cell := Vector2(floori(index / 2.0), index % 2)
+		var section := Rect2(_spawn_area.position + cell * cell_size + (cell_size - stack_size) * .5, stack_size)
 		if not _stack_surfaces.has(kind):
 			var surface := StackSurface.new()
 			surface.name = "CardStack" + kind.capitalize()
