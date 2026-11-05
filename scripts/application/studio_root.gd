@@ -38,7 +38,6 @@ var cord_endpoints: Dictionary = {}
 func _ready() -> void:
 	DeskLocalization.ensure_loaded()
 	process_priority = 100
-	get_viewport().msaa_3d = Viewport.MSAA_4X
 	_setup_lighting()
 	assembly = fbx_loader.build()
 	if assembly == null:
@@ -61,6 +60,7 @@ func _ready() -> void:
 	logical.name = "Authoritative2DContent"
 	logical.size = LOGICAL_SIZE
 	logical.disable_3d = true
+	logical.msaa_2d = Viewport.MSAA_4X
 	logical.transparent_bg = true
 	logical.handle_input_locally = true
 	logical.render_target_update_mode = SubViewport.UPDATE_ALWAYS

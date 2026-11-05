@@ -107,4 +107,6 @@ locale/fallback="zh_CN"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-antialiasing/quality/msaa_2d=2
+anti_aliasing/quality/msaa_2d=2
+anti_aliasing/quality/msaa_3d=3
+textures/default_filters/anisotropic_filtering_level=3

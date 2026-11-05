@@ -142,6 +142,7 @@ func _load_material(set_name: String, path: String, channels: Dictionary) -> Sta
 		elif texture != null:
 			_fail("Painter material has an undeclared texture channel: " + set_name + "/" + channel)
 			return null
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
 	return material
 
 func _load_texture(path: String) -> Texture2D:

@@ -43,6 +43,7 @@ func configure(target: MeshInstance3D, source: Control, source_rect: Rect2, _log
 	_viewport.name = "FixedAspectScreenContent"
 	_viewport.size = _screen_size_px
 	_viewport.disable_3d = true
+	_viewport.msaa_2d = Viewport.MSAA_4X
 	_viewport.world_2d = World2D.new()
 	_viewport.gui_disable_input = true
 	_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
