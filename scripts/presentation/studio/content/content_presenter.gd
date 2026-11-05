@@ -354,5 +354,7 @@ func _bind_material_face(source: Control, key: String, rank: int, owner: Control
 func _sync_material_cards() -> void:
 	var rank := 0
 	for face: Dictionary in _desktop.material_faces():
+		# Lifting a whole stack rectangle also lifts the paper visible around its cards.
+		if str(face.key).begins_with("stack/"): continue
 		_bind_material_face(face.source, face.key, rank, face.owner)
 		if face.visible: rank += 1
