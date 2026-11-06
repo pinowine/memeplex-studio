@@ -17,11 +17,13 @@
 [ext_resource type="Texture2D" uid="uid://3lscyer3yjel" path="res://assets/image/ui/icons/speed_normal.svg" id="icon_speed_normal"]
 [ext_resource type="Texture2D" uid="uid://c3agp6boy0yfy" path="res://assets/image/ui/icons/speed_pause.svg" id="icon_speed_pause"]
 [ext_resource type="Script" path="res://scripts/presentation/map/map_latitude_grid.gd" id="latitude_grid"]
-[ext_resource type="Texture2D" uid="uid://c6wqwu48n6irk" path="res://assets/image/ui/icons/paper_fibers.svg" id="paper"]
 [ext_resource type="Texture2D" uid="uid://1r5g18605pq7" path="res://assets/image/ui/icons/press_mark.svg" id="press"]
 [ext_resource type="Script" uid="uid://d4f3bdqeg335f" path="res://scripts/presentation/map/map_surface.gd" id="surface"]
 [ext_resource type="Script" uid="uid://dkqqqkus7phsq" path="res://scripts/presentation/map/map_water.gd" id="water"]
 [ext_resource type="Script" path="res://scripts/presentation/map/launch_marker.gd" id="launch_marker"]
+
+[ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_popup_paper.gd" id="popup_paper"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/paper_texture.png" id="popup_fibers"]
 
 [node name="MapPage" type="Node2D" unique_id=1883533078]
 script = ExtResource("1")
@@ -680,54 +682,16 @@ grow_vertical = 2
 mouse_filter = 0
 mouse_force_pass_scroll_events = false
 
-[node name="Shell" type="PanelContainer" parent="Interface/HUD/CountryDrawer" unique_id=1023151395]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"PrintDrawer"
-
-[node name="CabinetCaption" type="Label" parent="Interface/HUD/CountryDrawer" unique_id=776272433]
-layout_mode = 0
-offset_left = 28.0
-offset_top = 15.0
-offset_right = 330.0
-offset_bottom = 37.0
-theme_type_variation = &"PrintCaption"
-theme_override_colors/font_color = Color(0.65, 0.62, 0.5, 1)
-text = "PRINT_ARCHIVE_LABEL"
-
-[node name="DrawerClose" type="Button" parent="Interface/HUD/CountryDrawer" unique_id=1591494568]
-unique_name_in_owner = true
-layout_mode = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -64.0
-offset_top = 8.0
-offset_right = -17.0
-offset_bottom = 43.0
-tooltip_text = "PRINT_CLOSE"
-theme_type_variation = &"PrintIconButton"
-text = "×"
-
 [node name="FileCard" type="Control" parent="Interface/HUD/CountryDrawer" unique_id=299550282]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 26.0
-offset_top = 58.0
-offset_right = -24.0
-offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
-rotation = -0.024
-pivot_offset = Vector2(180, 235)
 mouse_filter = 1
 
-[node name="Paper" type="TextureRect" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=458760729]
+[node name="Paper" type="Control" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=458760729]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -735,8 +699,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("paper")
-expand_mode = 1
+script = ExtResource("popup_paper")
+paper = ExtResource("popup_fibers")
 
 [node name="CountryScroll" type="ScrollContainer" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=1058449739]
 unique_name_in_owner = true
@@ -744,10 +708,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 22.0
-offset_top = 21.0
-offset_right = -22.0
-offset_bottom = -21.0
+offset_left = 30.0
+offset_top = 48.0
+offset_right = -30.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
@@ -801,12 +765,6 @@ unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="Note" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Audience"]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_GROUPS_NOTE"
-autowrap_mode = 3
-
 [node name="CulturalLife" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
 layout_mode = 2
 theme_override_constants/separation = 4
@@ -849,11 +807,20 @@ unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="Notice" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_PROFILE_NOTICE"
-autowrap_mode = 3
+[node name="DrawerClose" type="Button" parent="Interface/HUD/CountryDrawer" unique_id=1591494568]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_top = 8.0
+offset_right = -17.0
+offset_bottom = 43.0
+tooltip_text = "PRINT_CLOSE"
+theme_type_variation = &"PrintIconButton"
+theme_override_colors/font_color = Color(0.216, 0.239, 0.2, 1)
+theme_override_colors/font_hover_color = Color(0.616, 0.314, 0.235, 1)
+text = "×"
 
 [node name="StudioConfirm" type="BaseButton" parent="Interface/HUD/MapInput"]
 unique_name_in_owner = true
