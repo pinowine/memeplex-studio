@@ -78,7 +78,7 @@ func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 	if bool(step.get("auto_overview", false)): page._return_to_desktop()
 	if _id == "starter": page.desk._show_component_details()
 	if _id == "starter_confirm": _reveal_starter_confirmation()
-	if _id == "editor_context": _reveal_editor_context()
+	if _id in ["editor_context", "expression", "module_result"]: _reveal_editor_readout(_id)
 	var action := str(step.get("action", ""))
 	if action == "country_selected" and page.atlas.selected_country >= 0:
 		tutorial.observe_action("country_selected", {"index":page.atlas.selected_country})
@@ -104,11 +104,12 @@ func _reveal_starter_confirmation() -> void:
 	if reader.is_visible_in_tree() and reader._choice_buttons.size() > 3:
 		reader._choice_scroll.ensure_control_visible(reader._choice_buttons[3])
 
-func _reveal_editor_context() -> void:
+func _reveal_editor_readout(step_id: String) -> void:
 	await get_tree().process_frame
-	if not tutorial._active or str(tutorial.inspection().step.get("id", "")) != "editor_context": return
+	if not tutorial._active or str(tutorial.inspection().step.get("id", "")) != step_id: return
 	var editor: Control = page.hud.design_workbench()
-	editor._detail_scroll.ensure_control_visible(editor._overview_data)
+	var target: Control = editor._overview_data if step_id == "editor_context" else editor._final_expression
+	editor._detail_scroll.ensure_control_visible(target)
 
 func _target(id: String) -> Variant:
 	var target: Variant = _logical_target(id)
@@ -120,7 +121,7 @@ func _target(id: String) -> Variant:
 	if id.begins_with("fax/option/") or id == "fax/confirm":
 		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
 		return area.intersection(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
-	if id in ["editor/context", "editor/details"]:
+	if id in ["editor/context", "editor/details", "editor/expression"]:
 		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
 		return area.intersection(_tutorial_project_rect(page.hud.design_workbench()._detail_scroll))
 	return target
@@ -298,7 +299,7 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	if id in ["fax/options", "fax/confirm"]:
 		if page.desk._slot_reader.is_visible_in_tree():
 			areas.append(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
-	elif bool(step.get("scroll", false)) and id == "editor/context":
+	elif bool(step.get("scroll", false)) and id in ["editor/context", "editor/details", "editor/expression"]:
 		areas.append(_tutorial_project_rect(editor._detail_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
