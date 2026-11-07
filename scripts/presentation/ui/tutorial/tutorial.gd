@@ -181,16 +181,25 @@ func allows_input(event: InputEvent) -> bool:
 		if _return_overview: return false
 		return str(_steps[_index].get("action", "")) == "speed_changed" and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and key in [KEY_SPACE, KEY_COMMA, KEY_LESS, KEY_PERIOD, KEY_GREATER]
 	if not event is InputEventMouse: return false
+	var map_navigation := bool(_steps[_index].get("map_navigation", false))
 	var point: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
 	var areas := _input_areas()
 	if event is InputEventMouseMotion:
 		if not _pointer_mode.is_empty(): return true
 		return _contains_input_point(areas, point) or _drag_source.has_point(point)
 	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-		return not _return_overview and (bool(_steps[_index].get("scroll", false)) or str(_steps[_index].get("target", "")).begins_with("map/")) and _contains_input_point(areas, point)
+		return not _return_overview and (bool(_steps[_index].get("scroll", false)) or map_navigation or str(_steps[_index].get("target", "")).begins_with("map/")) and _contains_input_point(areas, point)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE and map_navigation:
+		if event.pressed:
+			if _return_overview or not _contains_input_point(areas, point): return false
+			_pointer_mode = "pan"
+			return true
+		var captured := _pointer_mode == "pan"
+		_pointer_mode = ""
+		return captured
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return false
 	# Inspection steps expose hover and scrolling without activating desk controls.
-	if str(_steps[_index].get("action", "continue")) == "continue": return false
+	if str(_steps[_index].get("action", "continue")) == "continue" and not map_navigation: return false
 	if event.pressed:
 		if _return_overview:
 			return false
@@ -207,6 +216,7 @@ func allows_input(event: InputEvent) -> bool:
 		return false
 	if _pointer_mode.is_empty(): return false
 	var allowed: bool = _target.has_point(point) and point.distance_to(_press_point) >= 8.0 if _pointer_mode == "drag" else _press_rect.has_point(point)
+	if allowed and map_navigation and _input_point_test.is_valid(): allowed = _input_point_test.call(_steps[_index], event.position)
 	if not allowed and _pointer_mode == "drag": drag_cancelled.emit()
 	_pointer_mode = ""
 	# A short click on a drag source must not open its details and leave the lesson.
@@ -217,7 +227,7 @@ func _input_areas() -> Array[Rect2]:
 	var areas: Array[Rect2] = []
 	var step := _steps[_index]
 	if str(step.get("action", "continue")) in ["module_installed", "context_installed"]: return areas
-	if str(step.get("action", "continue")) == "continue" and not bool(step.get("hover", false)) and not bool(step.get("scroll", false)): return areas
+	if str(step.get("action", "continue")) == "continue" and not bool(step.get("hover", false)) and not bool(step.get("scroll", false)) and not bool(step.get("map_navigation", false)): return areas
 	if _input_provider.is_valid():
 		var inverse := get_global_transform_with_canvas().affine_inverse()
 		for area: Rect2 in _input_provider.call(_steps[_index]):

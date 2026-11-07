@@ -261,9 +261,9 @@ func set_setup_stage(stage: String) -> void:
 	%Publish.disabled = stage == "starter_call" or _kernels.is_empty() or _group.item_count == 0 or _channel.item_count == 0
 	var initial := stage in ["meme", "country"]
 	%Publish.text = DeskLocalization.source("LOC_CONFIRM_MEME_AND_SELECT_DEPLOYMENT_COUNTRY_FECB7AC1") if initial else DeskLocalization.source("LOC_CONFIRM_EXPRESSION_AND_PUBLISH_A07B12C0")
-	%SelectCountry.text = DeskLocalization.source("LOC_CONFIRM_MEME_THEN_SELECT_COUNTRY_2C212C12") if initial else DeskLocalization.source("LOC_CHOOSE_COUNTRY_CLOSE_WORKBENCH_864F802C")
+	%SelectCountry.text = DeskLocalization.source("LOC_OPENING_DIRECT_MAP_BUTTON") if initial else DeskLocalization.source("LOC_CHOOSE_COUNTRY_CLOSE_WORKBENCH_864F802C")
 	%Create.text = DeskLocalization.source("LOC_RETURN_TO_EDIT_MEME_9394F754") if stage == "country" else (DeskLocalization.source("LOC_PRINT_CREATE_7249B1FC") if _desk_plate.has_area() else DeskLocalization.source("LOC_CREATE_MEME_F3931F0A"))
-	%WorkbenchHint.text = DeskLocalization.source("LOC_MAKE_THE_RECEIVED_MEME_YOUR_OWN_THEN_3D6A7BC5") if initial else DeskLocalization.source("LOC_WRITE_A_NEW_VERSION_AND_LET_THIS_C19BFF00")
+	%WorkbenchHint.text = DeskLocalization.source("LOC_OPENING_DIRECT_MAP_HINT") if initial else DeskLocalization.source("LOC_WRITE_A_NEW_VERSION_AND_LET_THIS_C19BFF00")
 	%MapHint.text = DeskLocalization.source("LOC_YOUR_MEME_IS_READY_CLICK_A_COUNTRY_086F32BB") if stage == "country" else DeskLocalization.source("LOC_CLICK_THE_MAP_TO_INSPECT_COUNTRIES_OPEN_9876DE16")
 	if stage == "starter_call":
 		%Publish.disabled = true

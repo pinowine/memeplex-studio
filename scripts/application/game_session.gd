@@ -19,7 +19,6 @@ var _clock_anchor: float = 0.0
 var _map_seed: int = 0
 var _menu_resume_speed: int = 0
 var _ready_to_run := false
-var _pending_start_draft: Dictionary = {}
 var _pending_read_id: String = ""
 var _startup_complete: bool = false
 var _shell: CanvasLayer
@@ -120,7 +119,6 @@ func _process(delta: float) -> void:
 	atlas.workbench.hide()
 	if atlas.world.seed_value != _map_seed:
 		_map_seed = atlas.world.seed_value
-		_pending_start_draft.clear()
 		simulation.reset(simulation.seed_value + 1)
 		if not _bind_world(): return
 		simulation.bind_country("", DeskLocalization.source("LOC_NO_DEPLOYMENT_COUNTRY_SELECTED_989E9AAC"))
@@ -144,20 +142,29 @@ func _process(delta: float) -> void:
 	_queue_context_trial()
 
 func _studio_selected() -> void:
-	if not _ready_to_run or not startup_ready() or _interface_paused() or _pending_start_draft.is_empty() or simulation.publish_count != 0: return
+	if not _ready_to_run: return
+	if not startup_ready() or _interface_paused() or simulation.publish_count != 0:
+		atlas.reset_launch_confirmation()
+		return
+	if _shell.tutorial._active and str(_shell.tutorial.inspection().step.get("action", "")) != "published":
+		atlas.reset_launch_confirmation()
+		return
 	var index: int = atlas.selected_country
 	if index < 0 or index >= atlas.settings.countries.size():
 		simulation.status = DeskLocalization.source("LOC_SELECT_A_DEPLOYMENT_COUNTRY_ON_THE_MAP_18ADCDE2")
+		atlas.reset_launch_confirmation()
 		_render()
 		return
-	var errors := _draft_errors(_pending_start_draft)
+	# The bubble commits the current editor state, never an earlier confirmation copy.
+	var draft: Dictionary = hud.get_draft()
+	var errors := _draft_errors(draft)
 	if not errors.is_empty():
 		simulation.status = DeskLocalization.source_join("；",errors)
+		atlas.reset_launch_confirmation()
 		_render()
 		return
-	if _commit_draft(_pending_start_draft, index):
-		_pending_start_draft.clear()
-		_render()
+	if not _commit_draft(draft, index): atlas.reset_launch_confirmation()
+	_render()
 
 func _bind_country(index: int) -> void:
 	var country: Resource = atlas.settings.countries[index]
@@ -168,6 +175,9 @@ func _publish(draft: Dictionary) -> void:
 	if not startup_ready():
 		simulation.status = DeskLocalization.source("LOC_ANSWER_S_CALL_SELECT_A_STARTING_MEME_9CFFACED")
 		_render()
+		return
+	if simulation.publish_count == 0:
+		_choose_country()
 		return
 	# Turning a page is presentation only; a new version starts at explicit publish.
 	var revision_view: bool = simulation.publish_count > 0 and simulation.phase in ["running", "complete"] and hud.get_node("%Workbench").visible
@@ -183,17 +193,6 @@ func _publish(draft: Dictionary) -> void:
 			return
 		draft = simulation.latest_draft.duplicate(true)
 		hud.set_draft(draft)
-	if simulation.publish_count == 0:
-		# Freeze the expression before asking for its deployment location.
-		_pending_start_draft = draft.duplicate(true)
-		_tutorial_country = -1
-		_tutorial_observe("publish_requested")
-		atlas.close_drawer()
-		simulation.bind_country("", DeskLocalization.source("LOC_NO_DEPLOYMENT_COUNTRY_SELECTED_989E9AAC"))
-		simulation.status = DeskLocalization.source("LOC_YOUR_DRAFT_IS_READY_CHOOSE_SOMEWHERE_TO_BF7D7A29")
-		hud.show_workbench(false)
-		_render()
-		return
 	var index: int = atlas.selected_country if atlas.selected_country >= 0 else atlas.clock.studio_index
 	_commit_draft(draft, index)
 
@@ -231,14 +230,11 @@ func _commit_draft(draft: Dictionary, index: int) -> bool:
 
 func _choose_country() -> void:
 	if not _ready_to_run or _interface_paused(): return
-	if simulation.publish_count == 0:
-		_publish(hud.get_draft())
-	else:
-		hud.show_workbench(false)
+	desk.select_sheet("map")
 
 func _setup_stage() -> String:
 	if not startup_ready(): return "starter_call"
-	if simulation.publish_count == 0: return "meme" if _pending_start_draft.is_empty() else "country"
+	if simulation.publish_count == 0: return "country"
 	if simulation.phase == "draft": return "revision"
 	return "playing" if simulation.phase == "running" else simulation.phase
 
@@ -274,7 +270,6 @@ func _open_workbench() -> void:
 	if simulation.phase == "event":
 		hud.show_event(simulation.active_event)
 		return
-	_pending_start_draft.clear()
 	# Browsing the workbench does not start a revision; explicit publication does.
 	hud.show_workbench(true)
 	_render()
@@ -391,7 +386,6 @@ func _load() -> bool:
 	atlas.set_meta("demo_external_clock", true)
 	_pending_read_id = ""
 	desk.reset_journal()
-	_pending_start_draft.clear()
 	if hud.menu_mode() != "":
 		_menu_resume_speed = simulation.resume_speed if simulation.phase == "event" else simulation.speed
 		simulation.set_speed(0)
@@ -419,7 +413,6 @@ func _restart() -> void:
 	if not _load_catalog(): return
 	_pending_read_id = ""
 	get_node("DeskLayer/Desk").reset_journal()
-	_pending_start_draft.clear()
 	hud.set_menu("")
 	_menu_resume_speed = 0
 	simulation.catalog = catalog
@@ -443,7 +436,7 @@ func open_startup_call() -> void:
 
 func _begin_startup() -> void:
 	_startup_complete = false
-	_pending_start_draft.clear()
+	_tutorial_country = -1
 	atlas.set_speed(0)
 	hud.show_workbench(false)
 	var chosen := str(simulation.snapshot().get("design_state", {}).get("starter_preset_id", ""))

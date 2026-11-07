@@ -79,6 +79,8 @@ func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 	if _id == "starter": page.desk._show_component_details()
 	if _id == "starter_confirm": _reveal_starter_confirmation()
 	var action := str(step.get("action", ""))
+	if action == "country_selected" and page.atlas.selected_country >= 0:
+		tutorial.observe_action("country_selected", {"index":page.atlas.selected_country})
 	if action not in ["phone_pickup", "starter_chosen", "startup_finished"]: return
 	# These steps can be completed while the introductory notes are still open.
 	# Read committed game state; completing a hint never selects or grants a draft.
@@ -285,10 +287,12 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 			areas.append(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
-	elif id.begins_with("map/") and page.atlas.map_input.is_visible_in_tree():
+	elif bool(step.get("map_navigation", false)) and page.atlas.map_input.is_visible_in_tree():
 		areas.append(_tutorial_project_rect(page.atlas.map_input))
-		if page.atlas.drawer.is_visible_in_tree():
-			areas.append(_tutorial_project_rect(page.atlas.drawer))
+		if bool(step.get("allow_launch", false)) and page.atlas.launch_marker.is_visible_in_tree():
+			areas.append(_tutorial_project_rect(page.atlas.launch_marker))
+		if page.atlas.drawer.is_visible_in_tree(): areas.append(_tutorial_project_rect(page.atlas.drawer))
+		if page.desk._revealed_focus != "sheet/map": areas.append(_tutorial_project_rect(page.desk._stack.tab_control("map")))
 	elif id == "speed":
 		for button: Button in page.desk._speed_strip._buttons:
 			if not button.disabled: areas.append(_tutorial_project_rect(button))
@@ -313,8 +317,12 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	return areas
 
 func _tutorial_input_contains(step: Dictionary, point: Vector2) -> bool:
-	if not str(step.get("target", "")).begins_with("map/"): return true
+	if not bool(step.get("map_navigation", false)): return true
+	var marker: Control = page.atlas.launch_marker
+	if marker.is_visible_in_tree() and _tutorial_project_rect(marker).has_point(point):
+		return bool(step.get("allow_launch", false))
 	if page.atlas.drawer.is_visible_in_tree() and _tutorial_project_rect(page.atlas.drawer).has_point(point): return true
+	if page.desk._revealed_focus != "sheet/map" and _tutorial_project_rect(page.desk._stack.tab_control("map")).has_point(point): return true
 	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
 	var desk: Control = page.desk
 	return desk._props._hit_prop(point) == &"" and not desk._material_cards.handles_viewport_point(point)
@@ -338,23 +346,11 @@ func _skill_target(editor: Control) -> Control:
 
 func _country_target() -> Control:
 	var atlas: Node2D = page.atlas
-	var map: Control = atlas.map_input
-	if not map.is_visible_in_tree(): return page.desk._stack.tab_control("map")
-	var bounds := Rect2(Vector2.ZERO, map.size).grow(-24)
-	var point := Vector2.ZERO
-	var best_score := INF
-	for index in atlas.settings.countries.size():
-		var marker: Node2D = atlas.markers.get_node(str(atlas.settings.countries[index].id))
-		if not bounds.has_point(marker.position): continue
-		if not atlas.world.territories[index].contains(marker.anchor): continue
-		var score := marker.position.distance_squared_to(bounds.get_center())
-		if index == atlas.selected_country: score = -1.0
-		if score < best_score:
-			best_score = score
-			point = marker.position
-	# An interior land anchor illustrates the map interaction without selecting
-	# a country or suggesting that the entire sheet must remain unobscured.
-	return null if is_inf(best_score) else _area_target(map, Rect2(point - Vector2(20, 20), Vector2(40, 40)))
+	if not atlas.map_input.is_visible_in_tree(): return page.desk._stack.tab_control("map")
+	if atlas.selected_country < 0: return null
+	# Point only at the player's current choice; navigation never chooses a country.
+	var point: Vector2 = atlas._local_map_view() * atlas.world.territories[atlas.selected_country].anchor
+	return _area_target(atlas.map_input, Rect2(point - Vector2(20, 20), Vector2(40, 40)))
 
 func _tutorial_reserved_areas() -> Array:
 	var rectangles: Array = []

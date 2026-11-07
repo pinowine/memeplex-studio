@@ -165,7 +165,7 @@ func bind_publish(button: Button, cost: Label) -> void:
 	button.clip_text = false
 	if not button.minimum_size_changed.is_connected(_queue_text_layout): button.minimum_size_changed.connect(_queue_text_layout)
 	cost.hide()
-	button.show()
+	button.visible = int(_state.get("publish_count", 0)) > 0
 	_layout()
 
 
@@ -192,9 +192,10 @@ func get_draft() -> Dictionary:
 
 func sync_state(snapshot: Dictionary) -> void:
 	var design: Dictionary=snapshot.get("design_state",{})
-	var relevant := {"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[])}
+	var relevant := {"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0)}
 	if _state == relevant: return
 	_state=relevant.duplicate(true)
+	if _publish != null: _publish.visible = _tab == "edit" and int(_state.get("publish_count", 0)) > 0
 	_design=design.duplicate(true)
 	var slots: Array=_design.get("module_slots",[])
 	if _selected_installed_slot>=0 and (_selected_installed_slot>=slots.size() or str(slots[_selected_installed_slot]).is_empty()): _selected_installed_slot=-1
@@ -218,7 +219,7 @@ func set_active_sheet(id: String) -> void:
 	set_interaction_enabled(_interaction_enabled)
 	for key in _pages:
 		if not _sheet_hosts.has(key): _pages[key].visible=key==id
-	if _publish!=null: _publish.visible=id=="edit"
+	if _publish!=null: _publish.visible=id=="edit" and int(_state.get("publish_count", 0)) > 0
 	if _cost!=null: _cost.hide()
 	_layout()
 

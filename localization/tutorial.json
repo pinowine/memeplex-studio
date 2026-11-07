@@ -420,9 +420,9 @@
     "en": "Map sheet"
   },
   "LOC_OPENING_MAP_INTRO_TEXT": {
-    "source": "这是你将要面对的世界。地图可以缩放和拖动，每个国家的语言、群体和环境都不一样。世界很大，预算很小，先挑一个地方。",
-    "zh_CN": "这是你将要面对的世界。地图可以缩放和拖动，每个国家的语言、群体和环境都不一样。世界很大，预算很小，先挑一个地方。",
-    "en": "This is the world you’ll be dealing with. You can zoom and pan the map. Countries differ in language, groups and environment. A big world, a small budget: start with one place."
+    "source": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选址由你决定，我不替你做这份工作。",
+    "zh_CN": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选址由你决定，我不替你做这份工作。",
+    "en": "Here is the launch map. Click a country to inspect it, hold the middle mouse button to pan, and use the wheel to zoom. The location is your decision. I will not do that part for you."
   },
   "LOC_OPENING_COUNTRY_TITLE": {
     "source": "工作室选址",
@@ -430,9 +430,9 @@
     "en": "Studio location"
   },
   "LOC_OPENING_COUNTRY_TEXT": {
-    "source": "点击地图上的一个国家。选址会决定你的第一批观众，也会让桌上的时钟终于知道自己该几点下班……我是说，该显示几点。",
-    "zh_CN": "点击地图上的一个国家。选址会决定你的第一批观众，也会让桌上的时钟终于知道自己该几点下班……我是说，该显示几点。",
-    "en": "Click a country on the map. Your location sets your first audience and lets the desk clock know when to clock off… I mean, what time to show."
+    "source": "随便看看，选个你认为合适的国家。点击只会选中、查看，不会投放；选错了，再点另一个就是了。",
+    "zh_CN": "随便看看，选个你认为合适的国家。点击只会选中、查看，不会投放；选错了，再点另一个就是了。",
+    "en": "Look around and choose a country that seems suitable. Clicking only selects it and opens its details; it does not launch anything. Changed your mind? Click another one."
   },
   "LOC_OPENING_COUNTRY_DETAILS_TITLE": {
     "source": "国家详情",
@@ -440,9 +440,9 @@
     "en": "Country details"
   },
   "LOC_OPENING_COUNTRY_DETAILS_TEXT": {
-    "source": "这里是选中国家的详情：语言、群体和环境。看看你的模因能不能接上当地的话茬，确认以后再投放。",
-    "zh_CN": "这里是选中国家的详情：语言、群体和环境。看看你的模因能不能接上当地的话茬，确认以后再投放。",
-    "en": "Here are the selected country’s languages, groups and environment. See whether your meme can join the local conversation before deploying it."
+    "source": "这张纸写着当地的受众、语言和文化偏好。你可以继续查看其他国家，箭头会跟着你当前的选择。看完再决定，至少能少写一页检讨。",
+    "zh_CN": "这张纸写着当地的受众、语言和文化偏好。你可以继续查看其他国家，箭头会跟着你当前的选择。看完再决定，至少能少写一页检讨。",
+    "en": "This paper describes the local audiences, languages and cultural preferences. Keep inspecting other countries if you like; the pointer follows your current choice. Read first, decide later. It might save you a page of explanations."
   },
   "LOC_OPENING_CONFIRM_TITLE": {
     "source": "投放你的第一个模因",
@@ -450,9 +450,9 @@
     "en": "Deploy your first meme"
   },
   "LOC_OPENING_CONFIRM_TEXT": {
-    "source": "准备好了？点破国家上方带勾的投放气泡。之后时间就开始流动了——欢迎正式上班，产品经理。",
-    "zh_CN": "准备好了？点破国家上方带勾的投放气泡。之后时间就开始流动了——欢迎正式上班，产品经理。",
-    "en": "Ready? Pop the checked deployment bubble above the country. Time will start moving after that. Welcome to your first day, product manager."
+    "source": "选好了？点破当前国家上方的投放气泡，才算正式开工。还可以换国家；看资料、拖地图、滚滚轮，都不会投放。我们会用你此刻的最新稿件。",
+    "zh_CN": "选好了？点破当前国家上方的投放气泡，才算正式开工。还可以换国家；看资料、拖地图、滚滚轮，都不会投放。我们会用你此刻的最新稿件。",
+    "en": "Chosen? Pop the launch bubble above the current country to start work. You can still change countries. Reading details, panning and zooming will not launch anything. We will use your latest draft."
   },
   "LOC_OPENING_HOVER_FINE": {
     "source": "火都烧起来了，还能说一句“问题不大”。很好，情绪稳定也是一种生产力。",
@@ -508,5 +508,25 @@
     "source": "选好了？按Esc可以回到桌面。",
     "zh_CN": "选好了？按Esc可以回到桌面。",
     "en": "Chosen? Press Esc to return to the desk."
+  },
+  "LOC_OPENING_DIRECT_MAP_HINT": {
+    "source": "修改你的开局模因，然后去地图选国家；点破投放气泡才会开始。",
+    "zh_CN": "修改你的开局模因，然后去地图选国家；点破投放气泡才会开始。",
+    "en": "Edit your starting meme, then choose a country on the map. Pop its launch bubble when you are ready."
+  },
+  "LOC_OPENING_DIRECT_MAP_BUTTON": {
+    "source": "去地图选择国家",
+    "zh_CN": "去地图选择国家",
+    "en": "Choose a country on the map"
+  },
+  "LOC_OPENING_MAP_OPEN_TITLE": {
+    "source": "去看看地图",
+    "zh_CN": "去看看地图",
+    "en": "Take a look at the map"
+  },
+  "LOC_OPENING_MAP_OPEN_TEXT": {
+    "source": "好了，改好的还是你的那个模因。直接去地图页选个国家吧，不需要再签一张确认单……纸张也是有成本的。",
+    "zh_CN": "好了，改好的还是你的那个模因。直接去地图页选个国家吧，不需要再签一张确认单……纸张也是有成本的。",
+    "en": "Good. It is still your meme, just edited. Go straight to the map and choose a country. No extra approval form… paper costs money too."
   }
 }

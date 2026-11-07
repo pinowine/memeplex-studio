@@ -242,6 +242,10 @@ func set_launch_selection_active(active: bool) -> void:
 	_update_launch_marker()
 	_update_hover()
 
+func reset_launch_confirmation() -> void:
+	launch_marker.reset()
+	_update_launch_marker()
+
 func _update_launch_marker() -> void:
 	var available := _launch_selection_active and selected_country >= 0
 	launch_marker.visible = available
