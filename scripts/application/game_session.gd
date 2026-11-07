@@ -390,6 +390,7 @@ func _load() -> bool:
 		return false
 	atlas.set_meta("demo_external_clock", true)
 	_pending_read_id = ""
+	if _shell != null: _shell.context_guidance.close()
 	desk.reset_journal()
 	if hud.menu_mode() != "":
 		_menu_resume_speed = simulation.resume_speed if simulation.phase == "event" else simulation.speed
@@ -417,6 +418,7 @@ func _load() -> bool:
 	return true
 
 func _restart() -> void:
+	if _shell != null: _shell.context_guidance.close()
 	if not _load_catalog(): return
 	_pending_read_id = ""
 	get_node("DeskLayer/Desk").reset_journal()
@@ -584,6 +586,7 @@ func _render() -> void:
 	if _ready_to_run:
 		_sync_setup()
 		spread.update_simulation(simulation)
+		if _shell != null: _shell.context_guidance.observe_world(snapshot.world_competition)
 		hud.set_legend(spread.legend_rows())
 		_queue_context_trial()
 
@@ -656,6 +659,7 @@ func _complete_run(state: Dictionary) -> void:
 	if _shell != null and _shell.ending.show_result(state):
 		_shell.main_menu.hide_menu()
 		_shell.tutorial.skip()
+		_shell.context_guidance.close()
 	else:
 		hud.show_result(state)
 

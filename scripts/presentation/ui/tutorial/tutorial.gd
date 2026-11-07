@@ -172,6 +172,11 @@ func allows_input(event: InputEvent) -> bool:
 	if _blocked or _transitioning: return false
 	if event is InputEventKey:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+		if key == KEY_ESCAPE and bool(_steps[_index].get("contextual", false)):
+			if event.pressed and not event.echo: skip()
+			return false
+		if key in [KEY_ENTER, KEY_KP_ENTER] and bool(_steps[_index].get("contextual_drag", false)):
+			return not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed
 		if key == KEY_ESCAPE and (str(_steps[_index].get("action", "")) == "overview_returned" or str(_steps[_index].get("target", "")).begins_with("map/")):
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
@@ -199,7 +204,7 @@ func allows_input(event: InputEvent) -> bool:
 		return captured
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return false
 	# Inspection steps expose hover and scrolling without activating desk controls.
-	if str(_steps[_index].get("action", "continue")) == "continue" and not map_navigation: return false
+	if str(_steps[_index].get("action", "continue")) == "continue" and not map_navigation and not bool(_steps[_index].get("contextual_drag", false)): return false
 	if event.pressed:
 		if _return_overview:
 			return false
@@ -390,11 +395,12 @@ func _refresh() -> void:
 		body.add_text(text)
 		body.pop()
 	var next: Button = _ui.get_node("Card/Content/Actions/Continue")
-	next.text = (DeskLocalization.text("LOC_HIDE_HINT_FC06733C")) if _hint_only else (DeskLocalization.text("LOC_CONTINUE_7C969119"))
+	next.text = DeskLocalization.text("LOC_GUIDANCE_GOT_IT") if bool(step.get("contextual", false)) else ((DeskLocalization.text("LOC_HIDE_HINT_FC06733C")) if _hint_only else (DeskLocalization.text("LOC_CONTINUE_7C969119")))
 	var requires_action := not _hint_only and str(step.get("action", "continue")) != "continue"
 	next.disabled = not _active or _blocked or _transitioning or requires_action
 	_ui.get_node("Card/Content/Actions/Skip").text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
 	_ui.get_node("Card/Content/Actions/Skip").disabled = not _active or _blocked
+	_ui.get_node("Card/Content/Actions/Skip").visible = not bool(step.get("contextual", false))
 	var silent := bool(step.get("silent", false))
 	_ui.get_node("Card").visible = not silent
 	var silent_skip: Button = _ui.get_node("SilentSkip")
@@ -490,7 +496,7 @@ func _refresh() -> void:
 
 func _update_focus() -> void:
 	var map_navigation := not _steps.is_empty() and bool(_steps[_index].get("map_navigation", false))
-	_focus.visible = _active and not _hint_only and not _blocked and _target.has_area() and not map_navigation
+	_focus.visible = _active and not _hint_only and not _blocked and _target.has_area() and not map_navigation and not bool(_steps[_index].get("no_blur", false))
 	if not _focus.visible: return
 	_focus_material.set_shader_parameter("viewport_size", size)
 	_focus_material.set_shader_parameter("focus_rect", Vector4(_target.position.x, _target.position.y, _target.size.x, _target.size.y))

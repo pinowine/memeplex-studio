@@ -2,11 +2,13 @@ extends CanvasLayer
 
 const MainMenu = preload("res://scripts/presentation/ui/menus/main_menu.gd")
 const Tutorial = preload("res://scripts/presentation/ui/tutorial/tutorial.gd")
+const ContextGuidance = preload("res://scripts/presentation/ui/tutorial/context_guidance.gd")
 const Summary = preload("res://scripts/presentation/ui/summary/ending_summary.gd")
 
 var page: Node2D
 var main_menu: Control
 var tutorial: Control
+var context_guidance: Node
 var ending: Control
 var main_mode := true
 var _tutorial_anchor: Control
@@ -43,6 +45,10 @@ func configure(owner_page: Node2D) -> void:
 	ending.name = "Ending67"
 	add_child(ending)
 	ending.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	context_guidance = ContextGuidance.new()
+	context_guidance.name = "ContextGuidance"
+	add_child(context_guidance)
+	context_guidance.configure(self)
 	main_menu.settings_changed.connect(_sync_guide_settings)
 	page.hud.guide_enabled_requested.connect(_set_guide_enabled)
 	_sync_guide_settings({})
@@ -56,6 +62,7 @@ func configure(owner_page: Node2D) -> void:
 func show_main() -> void:
 	main_mode = true
 	tutorial.skip()
+	if context_guidance != null: context_guidance.close()
 	ending.hide()
 	main_menu.set_load_available(FileAccess.file_exists(page.SAVE_PATH))
 	main_menu.show_menu()
@@ -76,16 +83,21 @@ func _set_guide_enabled(value: bool) -> void:
 	if error != OK:
 		_sync_guide_settings({})
 		page.hud.report_design_errors(PackedStringArray([DeskLocalization.format_text("LOC_GUIDANCE_SETTING_SAVE_ERROR", [error_string(error)])]))
+
 func _sync_guide_settings(_settings: Dictionary) -> void:
 	var enabled: bool = main_menu.guide_enabled()
 	page.hud.set_guide_enabled(enabled)
+	context_guidance.set_enabled(enabled)
 	if not enabled:
 		tutorial.skip()
 		if not main_mode and not page.startup_ready(): page._show_direct_starters()
 
 func pauses_clock() -> bool:
 	var guide: Dictionary = tutorial.inspection()
-	return blocks_input() or (bool(guide.active) and str(guide.step.get("action", "")) != "speed_changed")
+	return blocks_input() or (context_guidance != null and context_guidance.mentor._active) or (bool(guide.active) and str(guide.step.get("action", "")) != "speed_changed")
+
+func guidance_handles_point(point: Vector2) -> bool:
+	return tutorial.handles_viewport_point(point) or (context_guidance != null and context_guidance.mentor.handles_viewport_point(point))
 
 func observe(action: String, data: Dictionary = {}) -> void:
 	tutorial.observe_action(action,data)
@@ -422,4 +434,4 @@ func _process(_delta: float) -> void:
 	tutorial.clear_hover()
 
 func inspection() -> Dictionary:
-	return {"main_mode":main_mode,"main_menu":main_menu.inspection(),"tutorial":tutorial.inspection(),"ending":ending.inspection(),"clock_paused":pauses_clock()}
+	return {"main_mode":main_mode,"main_menu":main_menu.inspection(),"tutorial":tutorial.inspection(),"mentor":context_guidance.mentor.inspection(),"mentor_visible":context_guidance.mentor.is_visible_in_tree() and context_guidance.mentor._active,"ending":ending.inspection(),"clock_paused":pauses_clock()}
