@@ -66,6 +66,8 @@ func _ready() -> void:
 	logical.size = LOGICAL_SIZE
 	logical.disable_3d = true
 	logical.msaa_2d = Viewport.MSAA_4X
+	# Oversampled bitmap glyphs need mip filtering when the desk is reduced.
+	logical.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	logical.transparent_bg = true
 	logical.handle_input_locally = true
 	logical.render_target_update_mode = SubViewport.UPDATE_ALWAYS
