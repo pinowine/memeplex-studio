@@ -1,6 +1,7 @@
 extends Control
 
 signal interface_language_requested(locale: String)
+signal guide_enabled_requested(enabled: bool)
 
 signal draft_publish_requested(draft: Dictionary)
 signal country_selection_requested
@@ -59,6 +60,7 @@ var _active_design_sheet := "edit"
 
 func _ready() -> void:
 	_install_interface_language()
+	%GuideEnabled.toggled.connect(func(enabled: bool): guide_enabled_requested.emit(enabled))
 	%SelectCountry.pressed.connect(func() -> void: country_selection_requested.emit())
 	%Create.pressed.connect(func() -> void: workbench_requested.emit())
 	%Tools.pressed.connect(func() -> void: tools_requested.emit())
@@ -363,6 +365,7 @@ func show_result(result: Dictionary) -> void:
 
 func inspection() -> Dictionary:
 	return {
+		"guide_enabled": %GuideEnabled.button_pressed,
 		"workbench_visible": _workbench.visible, "active_design_sheet":_active_design_sheet, "fullscreen": _fullscreen,
 		"setup_stage": _setup_stage,
 		"menu_mode": _menu_mode, "modal_visible": modal_visible(),
@@ -413,6 +416,9 @@ func set_menu(mode: String) -> void:
 
 func menu_mode() -> String:
 	return _menu_mode
+
+func set_guide_enabled(enabled: bool) -> void:
+	%GuideEnabled.set_pressed_no_signal(enabled)
 
 
 func modal_visible() -> bool:

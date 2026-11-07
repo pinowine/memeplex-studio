@@ -21,6 +21,8 @@ var _menu_resume_speed: int = 0
 var _ready_to_run := false
 var _pending_read_id: String = ""
 var _startup_complete: bool = false
+var _direct_starter_selection := false
+var _direct_starter_index := -1
 var _shell: CanvasLayer
 var _tutorial_country := -1
 var _context_trial_queued := false
@@ -74,6 +76,8 @@ func _ready() -> void:
 	hud.layout_for_date(desk.clock_rect())
 	desk._fax.starter_selected.connect(_select_starter)
 	desk._fax.startup_finished.connect(_finish_startup)
+	desk._camera.overview_arrived.connect(func():
+		if _direct_starter_selection and _shell != null and not _shell.main_mode: _show_direct_starters())
 	if not _bind_world(): return
 	_shell = preload("res://scripts/presentation/ui/menus/game_shell.gd").new()
 	_shell.name = "GameShell"
@@ -332,6 +336,7 @@ func _toggle_menu(mode: String) -> void:
 
 func _close_menu() -> void:
 	hud.set_menu("")
+	if _direct_starter_selection: _show_direct_starters()
 	desk._sync_reader_blocks()
 	if _shell != null and _shell.main_mode:
 		_shell.show_main()
@@ -402,6 +407,8 @@ func _load() -> bool:
 	atlas._update_clock()
 	if not simulation.latest_draft.is_empty(): hud.set_draft(simulation.latest_draft)
 	_startup_complete = simulation.publish_count > 0
+	_direct_starter_selection = false
+	_direct_starter_index = -1
 	if simulation.publish_count == 0: _begin_startup()
 	else: hud.show_workbench(simulation.phase == "draft")
 	if simulation.phase == "event": _on_event(simulation.active_event.duplicate(true))
@@ -432,13 +439,23 @@ func startup_ready() -> bool:
 
 func open_startup_call() -> void:
 	if not _ready_to_run or startup_ready() or hud.menu_mode() != "": return
+	if _direct_starter_selection:
+		_show_direct_starters()
+		return
 	desk._fax.focus()
 
 func _begin_startup() -> void:
 	_startup_complete = false
+	_direct_starter_selection = _shell != null and not _shell.main_menu.guide_enabled()
+	_direct_starter_index = -1
 	_tutorial_country = -1
 	atlas.set_speed(0)
 	hud.show_workbench(false)
+	if _direct_starter_selection:
+		desk._fax.clear_starter_offer()
+		simulation.status = DeskLocalization.source("LOC_GUIDANCE_CHOOSE_STARTER")
+		if _shell != null and not _shell.main_mode: _show_direct_starters()
+		return
 	var chosen := str(simulation.snapshot().get("design_state", {}).get("starter_preset_id", ""))
 	if not desk._fax.offer_starters(simulation.starter_options(), chosen):
 		simulation.status = DeskLocalization.source("LOC_COULD_NOT_ESTABLISH_THE_STARTING_MEME_CALL_BBAAE077")
@@ -458,9 +475,52 @@ func _select_starter(preset_id: String) -> void:
 		return
 	hud.set_draft(draft)
 	hud.design_workbench().mark_catalog_defaults(preset_id)
-	desk._fax.confirm_starter(preset_id)
+	if not _direct_starter_selection: desk._fax.confirm_starter(preset_id)
 	_tutorial_observe("starter_chosen", {"id":preset_id})
 	_render()
+	if _direct_starter_selection:
+		_finish_startup(preset_id)
+		_direct_starter_selection = false
+		desk._slot_reader.hide_details()
+		desk.return_overview()
+
+func _show_direct_starters() -> void:
+	if startup_ready(): return
+	_direct_starter_selection = true
+	if _shell != null: _shell.tutorial.skip()
+	var chosen := str(simulation.design_state.snapshot().get("starter_preset_id", ""))
+	if not chosen.is_empty():
+		_finish_startup(chosen)
+		if startup_ready():
+			if str(desk._fax.inspection().call_state) == "connected":
+				desk._fax._call_session.hangup(true, true)
+				desk._fax._refresh_call_view()
+			_direct_starter_selection = false
+			desk._slot_reader.hide_details()
+			desk.return_overview()
+		return
+	if str(desk._camera.inspection().state) != "overview":
+		desk.return_overview()
+		return
+	desk._fax.reset_station()
+	var labels := {"case_s01":["LOC_STARTER_NAME_FINE", "LOC_GUIDE_MEANING_FINE"], "case_s16":["LOC_STARTER_NAME_PEAK", "LOC_GUIDE_MEANING_PEAK"], "case_p11":["LOC_STARTER_NAME_67", "LOC_GUIDE_MEANING_67"]}
+	var options: Array[Dictionary] = []
+	var starters: Array = simulation.starter_options()
+	for index in starters.size():
+		var option: Dictionary = starters[index]
+		var display: Array = labels.get(str(option.id), [str(option.title), ""])
+		options.append({"id":option.id, "title":display[0], "description":display[1], "default_context":option.default_context, "action":"starter_preview", "index":index, "selected":index == _direct_starter_index, "disabled":false})
+	options.append({"title":"LOC_GUIDE_CONFIRM_CHOICE", "action":"starter_confirm", "disabled":_direct_starter_index < 0})
+	desk._slot_reader.show_details({"title":"LOC_GUIDE_STARTER_PAPER", "body":"", "options":options, "reply_enabled":true, "starter_pending":true, "preview_starter_index":_direct_starter_index}, get_viewport().get_visible_rect())
+
+func _direct_starter_choice(index: int) -> void:
+	if not _direct_starter_selection or startup_ready() or hud.menu_mode() != "" or (_shell != null and _shell.blocks_input()): return
+	var options: Array = simulation.starter_options()
+	if index >= 0 and index < options.size():
+		_direct_starter_index = index
+		_show_direct_starters()
+	elif index == options.size() and _direct_starter_index >= 0:
+		_select_starter(str(options[_direct_starter_index].id))
 
 func _finish_startup(preset_id: String) -> void:
 	if hud.menu_mode() != "" or simulation.publish_count > 0 or _startup_complete: return
