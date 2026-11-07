@@ -662,6 +662,7 @@ func _finish() -> void:
 func snapshot() -> Dictionary:
 	var state := totals_state()
 	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "families":families.size(), "variants":variants.size(), "events":events.duplicate(true), "lineage":variants.duplicate(true), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
+	state.current_variant_id = current_variant_id
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}
 	state.world_competition = competition.snapshot(variants)
 	state.design_state = design_state.snapshot(variants)
