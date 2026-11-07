@@ -54,9 +54,9 @@ countries = Array[Dictionary]([
   "population": 150000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.95,
-   "en": 0.35,
-   "mixed": 0.7
+   "ninghua": 0.95,
+   "shiohara": 0.35,
+   "seowon": 0.7
   },
   "groups": {
    "commuters": 0.9,
@@ -91,9 +91,9 @@ countries = Array[Dictionary]([
   "population": 45000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.4,
-   "en": 0.95,
-   "mixed": 0.75
+   "ninghua": 0.4,
+   "shiohara": 0.95,
+   "seowon": 0.75
   },
   "groups": {
    "commuters": 0.5,
@@ -128,9 +128,9 @@ countries = Array[Dictionary]([
   "population": 30000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.6,
-   "en": 0.7,
-   "mixed": 0.95
+   "ninghua": 0.6,
+   "shiohara": 0.7,
+   "seowon": 0.95
   },
   "groups": {
    "commuters": 0.5,
@@ -165,9 +165,9 @@ countries = Array[Dictionary]([
   "population": 130000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.95,
-   "en": 0.35,
-   "mixed": 0.7
+   "ninghua": 0.95,
+   "shiohara": 0.35,
+   "seowon": 0.7
   },
   "groups": {
    "commuters": 0.9,
@@ -202,9 +202,9 @@ countries = Array[Dictionary]([
   "population": 22000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.4,
-   "en": 0.95,
-   "mixed": 0.75
+   "ninghua": 0.4,
+   "shiohara": 0.95,
+   "seowon": 0.75
   },
   "groups": {
    "commuters": 0.5,
@@ -239,9 +239,9 @@ countries = Array[Dictionary]([
   "population": 18000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.6,
-   "en": 0.7,
-   "mixed": 0.95
+   "ninghua": 0.6,
+   "shiohara": 0.7,
+   "seowon": 0.95
   },
   "groups": {
    "commuters": 0.5,
@@ -276,9 +276,9 @@ countries = Array[Dictionary]([
   "population": 90000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.95,
-   "en": 0.35,
-   "mixed": 0.7
+   "ninghua": 0.95,
+   "shiohara": 0.35,
+   "seowon": 0.7
   },
   "groups": {
    "commuters": 0.9,
@@ -313,9 +313,9 @@ countries = Array[Dictionary]([
   "population": 80000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.4,
-   "en": 0.95,
-   "mixed": 0.75
+   "ninghua": 0.4,
+   "shiohara": 0.95,
+   "seowon": 0.75
   },
   "groups": {
    "commuters": 0.5,
@@ -350,9 +350,9 @@ countries = Array[Dictionary]([
   "population": 100000000,
   "population_source": "existing_country_definition",
   "languages": {
-   "zh": 0.6,
-   "en": 0.7,
-   "mixed": 0.95
+   "ninghua": 0.6,
+   "shiohara": 0.7,
+   "seowon": 0.95
   },
   "groups": {
    "commuters": 0.5,
@@ -387,9 +387,9 @@ countries = Array[Dictionary]([
   "population": 55000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.95,
-   "en": 0.35,
-   "mixed": 0.7
+   "ninghua": 0.95,
+   "shiohara": 0.35,
+   "seowon": 0.7
   },
   "groups": {
    "commuters": 0.9,
@@ -424,9 +424,9 @@ countries = Array[Dictionary]([
   "population": 40000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.4,
-   "en": 0.95,
-   "mixed": 0.75
+   "ninghua": 0.4,
+   "shiohara": 0.95,
+   "seowon": 0.75
   },
   "groups": {
    "commuters": 0.5,
@@ -461,9 +461,9 @@ countries = Array[Dictionary]([
   "population": 35000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.6,
-   "en": 0.7,
-   "mixed": 0.95
+   "ninghua": 0.6,
+   "shiohara": 0.7,
+   "seowon": 0.95
   },
   "groups": {
    "commuters": 0.5,
@@ -498,9 +498,9 @@ countries = Array[Dictionary]([
   "population": 25000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.95,
-   "en": 0.35,
-   "mixed": 0.7
+   "ninghua": 0.95,
+   "shiohara": 0.35,
+   "seowon": 0.7
   },
   "groups": {
    "commuters": 0.9,
@@ -535,9 +535,9 @@ countries = Array[Dictionary]([
   "population": 30000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.4,
-   "en": 0.95,
-   "mixed": 0.75
+   "ninghua": 0.4,
+   "shiohara": 0.95,
+   "seowon": 0.75
   },
   "groups": {
    "commuters": 0.5,
@@ -572,9 +572,9 @@ countries = Array[Dictionary]([
   "population": 20000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.6,
-   "en": 0.7,
-   "mixed": 0.95
+   "ninghua": 0.6,
+   "shiohara": 0.7,
+   "seowon": 0.95
   },
   "groups": {
    "commuters": 0.5,
@@ -609,9 +609,9 @@ countries = Array[Dictionary]([
   "population": 15000000,
   "population_source": "v11_game_policy_unconfigured_country",
   "languages": {
-   "zh": 0.95,
-   "en": 0.35,
-   "mixed": 0.7
+   "ninghua": 0.95,
+   "shiohara": 0.35,
+   "seowon": 0.7
   },
   "groups": {
    "commuters": 0.9,

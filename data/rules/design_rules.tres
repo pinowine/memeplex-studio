@@ -8,9 +8,9 @@ script = ExtResource("1")
 definition_version = 8
 starter_presets = PackedStringArray("case_s01", "case_s16", "case_p11")
 starter_contexts = {
-"case_s01": {"language_id":"en", "group_id":"commuters", "topic_ids":["work", "cost_of_living"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.8, 0.2]},
-"case_s16": {"language_id":"en", "group_id":"culture_fans", "topic_ids":["entertainment"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[-0.7, -0.8]},
-"case_p11": {"language_id":"mixed", "group_id":"students", "topic_ids":["community", "entertainment"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.6, -0.4]}
+"case_s01": {"language_id":"shiohara", "group_id":"commuters", "topic_ids":["work", "cost_of_living"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.8, 0.2]},
+"case_s16": {"language_id":"shiohara", "group_id":"culture_fans", "topic_ids":["entertainment"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[-0.7, -0.8]},
+"case_p11": {"language_id":"seowon", "group_id":"students", "topic_ids":["community", "entertainment"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.6, -0.4]}
 }
 expression_routes = {
 "case_s01": {
