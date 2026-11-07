@@ -40,7 +40,6 @@ var _resource_dragging := false
 var _drag_preview: Control
 var _drag_preview_parent: Control
 var _axis_drag := false
-var _axis := -1
 var _commands := ContextController.new("board")
 var _action_count := 0
 var _slot_rejections := 0
@@ -468,10 +467,10 @@ func _gui_input(event: InputEvent) -> void:
 			var delta: Vector2 = event.position - _press_point
 			var plot: Rect2 = _layout_layers[_held_layer].plot_rect
 			var step := float(_layers().get(_held_layer, {}).get("step", 0.1))
-			# A small plot still needs enough motion to select a single axis.
+			# Start after a small movement, then track both coordinates through the origin.
 			var threshold := minf(DRAG_THRESHOLD, minf(plot.size.x, plot.size.y) * step * 0.175)
-			if _axis < 0 and delta.length() > threshold: _axis = 0 if absf(delta.x) >= absf(delta.y) else 1
-			if _axis >= 0: _move_axis(event.position)
+			_held_moved = _held_moved or delta.length() > threshold
+			if _held_moved: _move_axis(event.position)
 		queue_redraw()
 		accept_event()
 
@@ -560,10 +559,11 @@ func _move_axis(point: Vector2) -> void:
 	var plot: Rect2 = _layout_layers[id].plot_rect
 	var step := float(data.get("step", 0.1))
 	if step <= 0.0: return
-	var value := clampf((point[_axis] - plot.get_center()[_axis]) / (plot.size[_axis] * 0.5), -1.0, 1.0)
 	var origin: Array = data.get("origin", [0.0, 0.0])
-	var target := roundi((value - float(origin[_axis])) / step)
-	_commands.move_axis(_layers, perform, id, _axis, target)
+	for axis in 2:
+		var value := clampf((point[axis] - plot.get_center()[axis]) / (plot.size[axis] * 0.5), -1.0, 1.0)
+		var target := roundi((value - float(origin[axis])) / step)
+		_commands.move_axis(_layers, perform, id, axis, target)
 	selected_info_changed.emit(selected_info())
 	queue_redraw()
 
@@ -578,7 +578,6 @@ func _cancel_input() -> void:
 	_held_slot = -1
 	_held_moved = false
 	_axis_drag = false
-	_axis = -1
 	queue_redraw()
 
 func _get_drag_data(_position: Vector2) -> Variant:
@@ -624,7 +623,7 @@ func inspection() -> Dictionary:
 		layers[id] = info
 		visible.append(id)
 	var selected: Dictionary = layers.get(_layer, {})
-	return {"layout_mode":"assembly_board", "layout_version":14, "layers":layers, "visible_layers":visible, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":_axis, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","drag_threshold":DRAG_THRESHOLD,"resource_dragging":_resource_dragging}
+	return {"layout_mode":"assembly_board", "layout_version":14, "layers":layers, "visible_layers":visible, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":-1, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","drag_threshold":DRAG_THRESHOLD,"resource_dragging":_resource_dragging}
 
 func _viewport_rect(rect: Rect2) -> Rect2:
 	var transform := get_global_transform_with_canvas()

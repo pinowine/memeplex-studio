@@ -2141,8 +2141,8 @@
   },
   "LOC_DRAG_THE_MARKER_ALONG_ONE_AXIS_AT_291BFA50": {
     "source": "从标记拖动，单次只沿一个轴，每格 0.1；离开起点用筹码，返回起点归还。",
-    "zh_CN": "从标记拖动，单次只沿一个轴，每格 0.1；离开起点用筹码，返回起点归还。",
-    "en": "Drag the marker along one axis at a time, 0.1 per step. Moving away from the start spends tokens; returning refunds them."
+    "zh_CN": "拖动标记可同时调整两个方向，每格 0.1。离开起点花对应方向筹码，返回时归还。",
+    "en": "Drag the marker freely along both axes in 0.1 steps. Moving away from the origin uses direction tokens; moving back returns them."
   },
   "LOC_UNSPECIFIED_STANCE_DOES_NOT_MEAN_NEUTRAL_DRAG_57E53949": {
     "source": "立场未登记，不等于中立；从空心起点拖动才登记。",
