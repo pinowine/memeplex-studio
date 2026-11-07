@@ -2,7 +2,7 @@ class_name MemeDemoDesignState
 extends RefCounted
 
 const DEFAULT_RULES = preload("res://data/rules/design_rules.tres")
-const DESIGN_VERSION := 7
+const DESIGN_VERSION := 8
 const RECORD_LIMIT := 65536
 var catalog: MemeDemoCatalog
 var rules: MemeDesignRules
@@ -398,6 +398,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 				if index != slot and _state.module_slots[index] == module_id: used += 1
 			if used >= _available_module_count(module_id): return PackedStringArray([DeskLocalization.source("LOC_NOT_ENOUGH_MODULES_HAVE_BEEN_TAKEN_OUT_F84E3A66")])
 			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_AN_EXPRESSION_PATCH_REQUIRES_YOUR_OWN_DRAFT_984A1272")])
+			if not rules.module_compatible(str(params.base.get("preset_id","")), module_id): return PackedStringArray([DeskLocalization.source("LOC_PATCH_INCOMPATIBLE_MEME")])
 			var content: Variant = params.get("content", rules.find("modules", module_id).content)
 			if not content is String or content.strip_edges().is_empty() or content.length() > 2048: return PackedStringArray([DeskLocalization.source("LOC_PATCH_CONTENT_MUST_BE_BOUNDED_NON_EMPTY_F87EF1F2")])
 			var next_modules: Array = _state.module_slots.duplicate()
@@ -657,6 +658,7 @@ func _apply_modules(base: Dictionary) -> PackedStringArray:
 		var module_id: String = str(_state.module_slots[module_slot])
 		if str(module_id).is_empty(): continue
 		var module: Dictionary = rules.find("modules", str(module_id))
+		if not rules.module_compatible(str(draft.get("preset_id","")), module_id): return PackedStringArray([DeskLocalization.source("LOC_PATCH_INCOMPATIBLE_MEME")])
 		var amended := _effect_draft(draft, module.draft_effects)
 		if amended.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_EXPRESSION_PATCH_FIELDS_C6043637")])
 		record.effects.append_array(_deltas(draft, amended, module.draft_effects))
