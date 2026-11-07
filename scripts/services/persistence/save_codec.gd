@@ -26,6 +26,7 @@ func payload() -> Dictionary:
 	if draft.has("topic_ids"): draft.topic_ids = Array(draft.topic_ids)
 	var data := {"save_version":SAVE_VERSION, "content_version":catalog.content_version, "content_signature":content_signature(), "seed":simulation.seed_value, "rng_state":str(simulation._rng.state), "hour":simulation.hour, "run_end_hour":simulation.run_end_hour, "phase":simulation.phase, "speed":simulation.speed, "resume_speed":simulation.resume_speed, "country_id":simulation.country_id, "country_title":simulation.country_title, "status":simulation.status, "latest_draft":draft, "families":simulation.families.duplicate(true), "variants":simulation.variants.duplicate(true), "deployments":simulation.deployments.duplicate(true), "group_state":simulation.group_state.duplicate(true), "events":simulation.events.duplicate(true), "discoveries":simulation.discoveries.duplicate(), "modifiers":simulation.modifiers.duplicate(true), "event_counts":simulation.event_counts.duplicate(), "last_event_hours":simulation.last_event_hours.duplicate(), "pending_events":simulation.pending_events.duplicate(true), "active_event":simulation.active_event.duplicate(true), "attention":simulation.attention.duplicate(), "current_variant_id":simulation.current_variant_id, "draft_distance":simulation.draft_distance, "publish_count":simulation.publish_count, "serial":simulation._serial, "economy":economy.payload()}
 	data.design_state = design_state.payload()
+	data.guide_progress = simulation.guidance_progress()
 	data.gameplay_mode = "world_competition"
 	data.competition_state = competition.payload()
 	var precision: Dictionary = {}
@@ -41,6 +42,8 @@ func validate_payload(data: Dictionary) -> PackedStringArray:
 func _decode(data: Dictionary, errors: PackedStringArray) -> Dictionary:
 	var decoded := _decode_precision(data, errors)
 	if not errors.is_empty(): return {}
+	# Guidance progress is optional in version-3 saves.
+	if not decoded.has("guide_progress"): decoded.guide_progress = {}
 	errors.append_array(_validate_current(decoded))
 	if not errors.is_empty(): return {}
 	return decoded
@@ -253,6 +256,7 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 	for value in data.last_event_hours.values():
 		if not _number(value): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_EVENT_TIME_61D60A84"))
 	if errors.is_empty() and not design_state.author_marks_valid(data.latest_draft, data.design_state): errors.append(DeskLocalization.source("LOC_CURRENT_DRAFT_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_F36FC5F9"))
+	if errors.is_empty(): errors.append_array(_validate_guidance_progress(data))
 	if errors.is_empty(): data.latest_draft = restored_draft
 	return errors
 
@@ -332,6 +336,17 @@ func _validate_event_history(data: Dictionary, errors: PackedStringArray) -> voi
 	if competition._canonical(data.event_counts) != observed_counts or competition._canonical(data.last_event_hours) != observed_hours:
 		errors.append(DeskLocalization.source("LOC_SAVED_EVENT_SCHEDULING_COUNTS_OR_TIMES_DO_F90F1850"))
 
+func _validate_guidance_progress(data: Dictionary) -> PackedStringArray:
+	var progress: Variant = data.guide_progress
+	var invalid := PackedStringArray([DeskLocalization.source("LOC_INVALID_GUIDANCE_PROGRESS")])
+	if not progress is Dictionary or progress.size() > 3: return invalid
+	for id: Variant in progress:
+		if id not in ["fax","competition","mutation"]: return invalid
+		var entry: Variant = progress[id]
+		if not entry is Dictionary or entry.size() != 2 or not entry.get("source_id") is String or not entry.get("shown") is bool: return invalid
+		if not simulation.guidance_source_valid(id,entry.source_id,data.events,data.variants): return invalid
+	return PackedStringArray()
+
 func restore(data: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	var decoded := _decode(data, errors)
@@ -362,6 +377,7 @@ func restore(data: Dictionary) -> PackedStringArray:
 	simulation.country_title = decoded.country_title
 	simulation.status = decoded.status
 	simulation.current_variant_id = decoded.current_variant_id
+	simulation.guide_progress = decoded.guide_progress.duplicate(true)
 	simulation.latest_draft = decoded.latest_draft
 	simulation.families = decoded.families.duplicate(true)
 	simulation.group_state = decoded.group_state.duplicate(true)

@@ -43,6 +43,7 @@ var _serial: int = 0
 var _rng := RandomNumberGenerator.new()
 var _event_clock_arrivals: Dictionary = {}
 var competition: RefCounted
+var guide_progress: Dictionary = {}
 
 func _init(content: MemeDemoCatalog = null) -> void:
 	catalog = content
@@ -63,6 +64,7 @@ func reset(run_seed: int) -> void:
 	publish_count = 0
 	current_variant_id = ""
 	draft_distance = 0.0
+	guide_progress.clear()
 	latest_draft.clear()
 	families.clear()
 	variants.clear()
@@ -88,6 +90,33 @@ func reset(run_seed: int) -> void:
 
 func gameplay_mode() -> String:
 	return "world_competition"
+
+func queue_guidance(id: String, source_id: String) -> bool:
+	if guide_progress.has(id) or not guidance_source_valid(id,source_id,events,variants): return false
+	guide_progress[id] = {"source_id":source_id,"shown":false}
+	return true
+
+func mark_guidance_shown(id: String) -> bool:
+	if not guide_progress.has(id) or bool(guide_progress[id].shown): return false
+	# Consumed guidance includes a real presentation or an explicit settings opt-out.
+	guide_progress[id].shown = true
+	return true
+
+func guidance_progress() -> Dictionary:
+	return guide_progress.duplicate(true)
+
+static func guidance_source_valid(id: String, source_id: String, event_rows: Array, variant_rows: Array) -> bool:
+	if id == "fax":
+		for event: Dictionary in event_rows:
+			if str(event.get("instance_id","")) == source_id: return true
+		return false
+	if id not in ["competition","mutation"]: return false
+	for variant: Dictionary in variant_rows:
+		if str(variant.get("id","")) != source_id: continue
+		if str(variant.get("creator","")) == "player" or bool(variant.get("controlled",false)): return false
+		if id == "competition": return variant.get("origin_ids",[]).is_empty()
+		return not variant.get("origin_ids",[]).is_empty() and not variant.get("parent_ids",[]).is_empty() and not str(variant.get("source_event","")).is_empty()
+	return false
 
 func bind_world(world: RefCounted, settings: Resource) -> PackedStringArray:
 	if publish_count > 0: return PackedStringArray([DeskLocalization.source("LOC_THE_WORLD_CANNOT_BE_REPLACED_AFTER_FIRST_58DB6321")])
@@ -663,6 +692,7 @@ func snapshot() -> Dictionary:
 	var state := totals_state()
 	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "families":families.size(), "variants":variants.size(), "events":events.duplicate(true), "lineage":variants.duplicate(true), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
 	state.current_variant_id = current_variant_id
+	state.guide_progress = guidance_progress()
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}
 	state.world_competition = competition.snapshot(variants)
 	state.design_state = design_state.snapshot(variants)
