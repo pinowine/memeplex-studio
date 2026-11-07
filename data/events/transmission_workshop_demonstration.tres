@@ -38,9 +38,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_workshop_demonstration"
-title = "文化爱好者演示怎样重填原图"
-narrative = "一名文化爱好者用自己的内容演示怎样重填原图，将空位和填写步骤逐一展示。几名此前只看过成品的读者开始照着使用，演示帖下面也出现了他们自己的例子。"
-mentor_comment = "演示把空位亮了出来，比把作者履历填满整张图更方便别人动手。"
+title = "LOC_A_CULTURE_ENTHUSIAST_DEMONSTRATES_HOW_TO_REFILL_8366F155"
+narrative = "LOC_A_CULTURE_ENTHUSIAST_USES_PERSONAL_CONTENT_TO_3AB9175B"
+mentor_comment = "LOC_SHOWING_THE_EMPTY_SPACES_MAKES_IT_EASIER_C4821EBC"
 origin = &"transmission"
 topic_ids = PackedStringArray("platform_tools", "community")
 operation_ids = PackedStringArray("amplify")

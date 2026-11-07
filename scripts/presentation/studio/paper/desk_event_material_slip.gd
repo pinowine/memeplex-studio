@@ -112,7 +112,7 @@ func configure(value: Dictionary, drag_host: Control, ui_theme: Theme = null, sh
 		_label.hide()
 		var marks := get_node_or_null("HanddrawnCardMarks")
 		if marks != null: marks.hide()
-	_label.text = "%s\n×%d%s" % [DeskLocalization.text(str(record.get("title", record.get("id", "物资")))), int(record.get("count", 1)), "\n待收录" if record.get("pending", false) else ""]
+	_label.text = "%s\n×%d%s" % [DeskLocalization.text(str(record.get("title", record.get("id", DeskLocalization.source("LOC_SUPPLIES_08E441A9"))))), int(record.get("count", 1)), DeskLocalization.text("LOC_NOT_YET_COLLECTED_46C47B8A") if record.get("pending", false) else ""]
 	_layout()
 
 func _layout() -> void:

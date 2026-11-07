@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_s18"
 kernel_id = &"stance"
-title = "S18 · Nah, I’d Win"
+title = "LOC_S18_NAH_I_D_WIN_15EEB259"
 required_slots = PackedStringArray("speaker", "visible_situation", "claim")
-slot_prompts = PackedStringArray("发声者（可改写）", "可见情境（可改写）", "表态框架（可改写）")
-default_values = PackedStringArray("自信宣告者", "对手或结局显示胜算可疑", "“Nah, I’d win”")
-family_anchor = "识别与变异约束：换脸、换角色、改成“Nah, I’d X”；侧脸/正脸漫画构图和简短否定开头最稳定。"
-context_hint = "语义：极短自信回答因观众预知失败而获得悲剧性反讽。\n语用：粉丝用于赛前站队、角色强度争论，也把任意失败前的豪言套进同一框架。\n跨语境：翻译版本本身成为模因史的一部分；剧情休刊和剧透知识强化圈内阅读门槛。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_SPEAKER_EDITABLE_EB80468E", "LOC_VISIBLE_SITUATION_EDITABLE_9F24D9C9", "LOC_STANCE_FRAME_EDITABLE_F49E761B")
+default_values = PackedStringArray("LOC_A_CONFIDENT_SPEAKER_DC2EF54D", "LOC_THE_OPPONENT_OR_OUTCOME_MAKES_VICTORY_LOOK_20985321", "LOC_NAH_I_D_WIN_166BDF0A")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_SWAP_FACES_OR_7A3D1419"
+context_hint = "LOC_SEMANTICS_A_VERY_SHORT_CONFIDENT_ANSWER_ACQUIRES_786FB439"
 source_case_id = "S18"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\S18.png"
 source_sha256 = "7c2f86ad78c62f149e90cfc055c91069c7a8a510ac02200fba979a60b912a128"

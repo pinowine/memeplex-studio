@@ -33,9 +33,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"world_exam_calendar"
-title = "学院将两场测验排在同一天"
-narrative = "学院教务处调整测验日程，将两场测验安排在同一天。学生转而集中备考，群聊中的闲谈减少，留下的消息多为题目提示与临考求助。"
-mentor_comment = "两场测验已经把一天排满，第三份长篇感想可以先不参加考试。"
+title = "LOC_THE_COLLEGE_SCHEDULES_TWO_TESTS_ON_THE_27DC5239"
+narrative = "LOC_THE_COLLEGE_ADJUSTS_ITS_TEST_CALENDAR_PLACING_D42FDCBA"
+mentor_comment = "LOC_TWO_TESTS_ALREADY_FILLED_THE_DAY_A_E9765166"
 origin = &"world"
 topic_ids = PackedStringArray("education", "work")
 operation_ids = PackedStringArray("fatigue", "attention_shift")

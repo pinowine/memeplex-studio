@@ -27,8 +27,8 @@ static func reuse_factor(permission: String, replaceable_slot_count: int, requir
 
 static func remix_text(event_definition_id: String, parent_text: String) -> String:
 	match event_definition_id:
-		"cross_language": return "Not a privilege, just a daily trip. / 日常通勤不是特权。"
-		"platform_tool": return "用我的日常账单重填这张模板：" + parent_text
-		"semantic_split": return "涨价才是公平：谁用得多，谁就该付得多。"
-		"critical_quote": return "反讽引用：你说这是公平，我看到的是谁被留在站外。"
-	return "群体重写：" + parent_text
+		"cross_language": return DeskLocalization.source("LOC_NOT_A_PRIVILEGE_JUST_A_DAILY_TRIP_2AD74700")
+		"platform_tool": return DeskLocalization.source_format("%s%s", ["LOC_REFILLING_THIS_TEMPLATE_WITH_MY_DAILY_BILLS_1E146C57", parent_text], [0])
+		"semantic_split": return DeskLocalization.source("LOC_HIGHER_FARES_ARE_FAIR_THOSE_WHO_USE_C60A8DAE")
+		"critical_quote": return DeskLocalization.source("LOC_IRONIC_QUOTATION_YOU_CALL_THIS_FAIR_I_3FDE3BB4")
+	return DeskLocalization.source_format("%s%s", ["LOC_AUDIENCE_REWRITE_FD322DDD", parent_text], [0])

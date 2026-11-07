@@ -317,7 +317,7 @@ func hover_info(viewport_point: Vector2 = Vector2.INF) -> Dictionary:
 		var button := _buttons[index]
 		var local := button.get_global_transform_with_canvas().affine_inverse() * viewport_point
 		if Rect2(Vector2.ZERO, button.size).has_point(local):
-			return {"kind":"monitor_mode", "id":MODES[index], "title":["Meme 点数", "政治点数", "语用点数"][index], "description":["查看余额与快照变化", "查看四个政治方向的可用点数", "查看四个语用方向的可用点数"][index]}
+			return {"kind":"monitor_mode", "id":MODES[index], "title":[DeskLocalization.source("LOC_MEME_C7960593"), DeskLocalization.source("LOC_STANCE_TOKENS_01585B02"), DeskLocalization.source("LOC_PRAGMATIC_TOKENS_E79A8B72")][index], "description":[DeskLocalization.source("LOC_VIEW_BALANCE_AND_SNAPSHOT_CHANGES_47665A67"), DeskLocalization.source("LOC_VIEW_AVAILABLE_TOKENS_IN_FOUR_STANCE_DIRECTIONS_B1B44E1F"), DeskLocalization.source("LOC_VIEW_AVAILABLE_TOKENS_IN_FOUR_PRAGMATIC_DIRECTIONS_69AF6777")][index]}
 	if _mode == "meme" and _meme != null:
 		return _meme.title_hover_info(viewport_point)
 	if _mode != "meme" and _inventory != null:
@@ -326,7 +326,7 @@ func hover_info(viewport_point: Vector2 = Vector2.INF) -> Dictionary:
 			if _inventory.cell_rect(index).has_point(local):
 				var id: String = TOKEN_IDS[_mode][index]
 				var definition: Dictionary = _rules.context_resource(id) if _rules != null else {}
-				return {"kind":"context_token", "id":id, "layer":_mode, "title":DeskLocalization.text(str(definition.get("title", id))), "count":int(_balances.get(id, 0)), "description":DeskLocalization.format_text("可用 %d；拖到对应坐标轴使用", int(_balances.get(id, 0)))}
+				return {"kind":"context_token", "id":id, "layer":_mode, "title":DeskLocalization.text(str(definition.get("title", id))), "count":int(_balances.get(id, 0)), "description":DeskLocalization.format_text("LOC_AVAILABLE_D_DRAG_ONTO_THE_MATCHING_AXIS_083E1CBD", int(_balances.get(id, 0)))}
 	return {}
 
 func inspection() -> Dictionary:

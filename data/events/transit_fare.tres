@@ -27,9 +27,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transit_fare"
-title = "纸灯港试行新的夜间票价"
-narrative = "纸灯港交通局宣布试行新的夜间票价，夜班乘客的通勤账单随之调整。各站台公开新旧价目对照，乘客开始交换实际支出，并追问调价依据及账单来源。"
-mentor_comment = "账单不会因为你的修辞少一行，先把多出来的那行找出来。"
+title = "LOC_PAPER_LANTERN_HARBOR_TRIALS_NEW_NIGHT_FARES_429AE0C8"
+narrative = "LOC_PAPER_LANTERN_HARBOR_S_TRANSPORT_BUREAU_ANNOUNCES_8EA0C5EC"
+mentor_comment = "LOC_YOUR_RHETORIC_WILL_NOT_REMOVE_A_LINE_42DAE3E6"
 origin = &"world"
 topic_ids = PackedStringArray("policy", "cost_of_living", "work")
 operation_ids = PackedStringArray("attention_shift")

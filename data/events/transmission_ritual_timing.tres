@@ -32,9 +32,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_ritual_timing"
-title = "使用者约定散场时再回应一次"
-narrative = "一批文化爱好者约定在散场时用原来的开头再回应一次。短句随着散场时刻集中出现，随后又安静下来，娱乐与社区群聊呈现出自己的接写节奏。"
-mentor_comment = "散场时的齐声回应很准时，别把一次点名记成终身出勤。"
+title = "LOC_USERS_AGREE_TO_RESPOND_ONCE_MORE_AT_3D3FD016"
+narrative = "LOC_CULTURE_ENTHUSIASTS_AGREE_TO_USE_THE_ORIGINAL_466D29D8"
+mentor_comment = "LOC_THAT_CLOSING_CHORUS_WAS_PUNCTUAL_DO_NOT_67123D99"
 origin = &"transmission"
 topic_ids = PackedStringArray("entertainment", "community")
 operation_ids = PackedStringArray("amplify")

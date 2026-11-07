@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_p14"
 kernel_id = &"ritual"
-title = "P14 · 会员制餐厅"
+title = "LOC_P14_MEMBERS_ONLY_RESTAURANT_4A423BC7"
 required_slots = PackedStringArray("trigger", "action", "response_and_exit")
-slot_prompts = PackedStringArray("触发时刻（可改写）", "参与动作（可改写）", "回应与退出（可改写）")
-default_values = PackedStringArray("说出“本餐厅是会员制”或展示特殊料理", "服务者按身份上菜", "客人勉强评价/拒绝；接续／退出：继续上菜与惩罚脚本或切出")
-family_anchor = "识别与变异约束：替换服务员、客人和菜品；“会员制宣告—定制料理—难以下咽—惩罚”是仪式顺序。"
-context_hint = "语义：普通高端餐饮词被圈内语重写为对猎奇“料理”和强制用餐流程的暗号。\n语用：用于把游戏、动漫角色配进固定餐厅流程，也会作为隐晦链接诱导；不了解来源者只看到普通餐饮词。\n跨语境：这是强门槛亚文化：原素材含成人与恶心内容，研究时应区分纯句式二创、来源知情程度与平台规避写法。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_TRIGGER_MOMENT_EDITABLE_906AD9C1", "LOC_PARTICIPATION_EDITABLE_18BF6AE2", "LOC_RESPONSE_AND_EXIT_EDITABLE_D2B4ADBD")
+default_values = PackedStringArray("LOC_DECLARE_THAT_THE_RESTAURANT_IS_MEMBERS_ONLY_FB41FAD1", "LOC_THE_SERVER_PRESENTS_DISHES_ACCORDING_TO_IDENTITY_2E27AAE4", "LOC_THE_GUEST_RELUCTANTLY_EVALUATES_OR_REFUSES_CONTINUATION_6BC062B6")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_REPLACE_THE_SERVER_1A01E6EE"
+context_hint = "LOC_SEMANTICS_AN_ORDINARY_FINE_DINING_TERM_BECOMES_0AF80C2D"
 source_case_id = "P14"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\P14.png"
 source_sha256 = "ac17a329c1e42ede5bae786be71549f160c244200f45c157028e6f7a6b7b6571"

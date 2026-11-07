@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_w10"
 kernel_id = &"shared_world"
-title = "W10 · Main Character Energy"
+title = "LOC_W10_MAIN_CHARACTER_ENERGY_F1915D3C"
 required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
-slot_prompts = PackedStringArray("世界前提（可改写）", "共享规则（可改写）", "补写空缺（可改写）")
-default_values = PackedStringArray("日常生活可按个人电影来体验", "共享锚点：main character、电影配乐、慢动作；规则：把普通行动构图为叙事中心", "下一幕/配角")
-family_anchor = "共享锚点：main character、电影配乐、慢动作；识别与变异约束：替换场景、配乐、主配角；镜头语言而非固定台词维持前提。"
-context_hint = "语义：将主体感与电影叙事词汇结合，为自我关注赋予积极或讽刺框架。\n语用：可鼓励主动生活，也可批评把他人降为背景；二者围绕同一世界模型争论。\n跨语境：疫情时期的孤立生活被重新拍成电影片段；平台同时产生反标签纠偏自我中心。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_WORLD_PREMISE_EDITABLE_5557353A", "LOC_SHARED_RULES_EDITABLE_31A5A13D", "LOC_GAP_TO_FILL_EDITABLE_BB4FE38B")
+default_values = PackedStringArray("LOC_EVERYDAY_LIFE_CAN_BE_EXPERIENCED_AS_A_2C54A480", "LOC_SHARED_ANCHOR_MAIN_CHARACTER_FILM_SCORES_AND_A1E9D3CC", "LOC_THE_NEXT_SCENE_OR_SUPPORTING_CHARACTER_8BE7D528")
+family_anchor = "LOC_SHARED_ANCHOR_MAIN_CHARACTER_FILM_SCORES_AND_84ADFC35"
+context_hint = "LOC_SEMANTICS_A_SENSE_OF_AGENCY_MEETS_CINEMATIC_8FF1F34C"
 source_case_id = "W10"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\W10.png"
 source_sha256 = "c95447803885f0da9c24916a2a8168d3ffc3c0afcbe18a748a15e26b76bc4d53"

@@ -27,9 +27,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"semantic_split"
-title = "外部工坊提出相反规则的改写"
-narrative = "外部工坊提出了一份沿用原图轮廓的改写方案，把核心关系改成相反的规则。提案附上原帖链接，并明确表示新结论由工坊负责；发布前的再利用确认仍在进行。"
-mentor_comment = "他们保留原链接，像退货时保留小票，不代表还打算照原说明使用。"
+title = "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_A_REWRITE_WITH_ACC80A3F"
+narrative = "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_KEEPING_THE_ORIGINAL_388B93C4"
+mentor_comment = "LOC_THEY_KEPT_THE_ORIGINAL_LINK_LIKE_A_298ED39C"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("identity", "language")
 operation_ids = PackedStringArray("split", "remix")

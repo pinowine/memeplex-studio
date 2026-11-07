@@ -39,9 +39,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_local_glossary"
-title = "读者为原帖补写简短词表"
-narrative = "读者将原帖中两个容易误会的词写成小词表，并在旁边保留原句链接。学生把词表贴回群聊，几处重复追问有了可核对的解释，相关短句也更容易被接着讨论。"
-mentor_comment = "两个词终于有了说明，大家都懂这块招牌可以暂时摘了。"
+title = "LOC_READERS_ADD_A_SHORT_GLOSSARY_TO_THE_8F4E8935"
+narrative = "LOC_READERS_EXPLAIN_TWO_EASILY_MISUNDERSTOOD_WORDS_IN_FF7C9288"
+mentor_comment = "LOC_TWO_WORDS_FINALLY_HAVE_EXPLANATIONS_YOU_CAN_26AD30BD"
 origin = &"transmission"
 topic_ids = PackedStringArray("language", "trust")
 operation_ids = PackedStringArray("contest", "amplify")

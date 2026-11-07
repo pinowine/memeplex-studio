@@ -2,12 +2,22 @@ class_name MemeDemoKernel
 extends Resource
 
 @export var id: StringName
-@export var title: String = ""
-@export_multiline var description: String = ""
+@export var title: String = "":
+	set(value):
+		title = DeskLocalization.source(value)
+@export_multiline var description: String = "":
+	set(value):
+		description = DeskLocalization.source(value)
 @export var required_slots: PackedStringArray = PackedStringArray()
-@export var slot_prompts: PackedStringArray = PackedStringArray()
-@export var default_values: PackedStringArray = PackedStringArray()
-@export var family_anchor: String = ""
+@export var slot_prompts: PackedStringArray = PackedStringArray():
+	set(value):
+		slot_prompts = DeskLocalization.source_value(value)
+@export var default_values: PackedStringArray = PackedStringArray():
+	set(value):
+		default_values = DeskLocalization.source_value(value)
+@export var family_anchor: String = "":
+	set(value):
+		family_anchor = DeskLocalization.source(value)
 @export var split_threshold: float = 0.6
 @export var evidence_status: StringName = &"design"
 

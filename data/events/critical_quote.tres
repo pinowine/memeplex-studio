@@ -34,9 +34,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"critical_quote"
-title = "文化评论者引用原帖，质疑其结论"
-narrative = "一位文化评论者把原帖放进批评文章，指出其中的公平说法忽略了被排除的人。读者沿着引用链接展开争论，原句开始以反讽的语气出现在转发中。"
-mentor_comment = "转发量里也住着反对票，先把那段批评读完再庆祝。"
+title = "LOC_A_CULTURE_CRITIC_QUOTES_THE_ORIGINAL_POST_A19457AF"
+narrative = "LOC_A_CULTURE_CRITIC_QUOTES_THE_ORIGINAL_POST_A32BD99C"
+mentor_comment = "LOC_OPPOSITION_LIVES_IN_THOSE_SHARE_COUNTS_TOO_1C965444"
 origin = &"transmission"
 topic_ids = PackedStringArray("trust", "identity", "language")
 operation_ids = PackedStringArray("contest", "remix")

@@ -32,9 +32,9 @@ group_ids = PackedStringArray("students", "culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_sport_wave"
-title = "看台短句走出球场，进入学生群"
-narrative = "看台上流行的体育短句被观众带到场外，又进入了几个学生群。文化爱好者把它改配到赛后片段上，体育与娱乐话题吸引了新的围观讨论。"
-mentor_comment = "看台短句离场后还在走，先检查它是不是只靠比分续命。"
+title = "LOC_A_PHRASE_FROM_THE_STANDS_REACHES_STUDENT_9ADE2DB7"
+narrative = "LOC_SPECTATORS_CARRY_A_POPULAR_SPORTS_PHRASE_BEYOND_5E2836A9"
+mentor_comment = "LOC_THE_PHRASE_IS_STILL_MOVING_AFTER_LEAVING_9D5F056C"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("sport", "entertainment")
 operation_ids = PackedStringArray("amplify", "attention_shift")

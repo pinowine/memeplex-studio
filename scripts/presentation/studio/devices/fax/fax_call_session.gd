@@ -4,7 +4,7 @@ signal call_changed(record: Dictionary)
 signal starter_selected(preset_id: String)
 signal startup_finished(preset_id: String)
 
-const REPLIES := ["请指出这份消息漏掉的条件。", "先记录，不替我下结论。"]
+static var REPLIES := [DeskLocalization.source("LOC_POINT_OUT_THE_CONDITIONS_THIS_MESSAGE_LEAVES_F3A0979C"), DeskLocalization.source("LOC_RECORD_IT_FIRST_DON_T_DRAW_MY_D888BD63")]
 var contacts: Array[Dictionary] = []
 var call_log: Array[Dictionary] = []
 var state := "idle"
@@ -15,7 +15,7 @@ var starter_options: Array[Dictionary] = []
 var starter_id := ""
 var pending_starter_id := ""
 var startup_done := false
-var diagnostic := "仅本地接线，不拨打真实电话。"
+var diagnostic := DeskLocalization.source("LOC_LOCAL_CONNECTIONS_ONLY_NO_REAL_PHONE_CALLS_854E21C9")
 var _context_event: Dictionary = {}
 
 func _init() -> void:
@@ -26,7 +26,7 @@ func set_context(event: Dictionary) -> void:
 
 func set_contacts(values: Array) -> void:
 	contacts.clear()
-	contacts.append({"number":"67#", "name":"67", "identity":"你的助手 / 情报收集与传播观察", "greeting":"线路是通的。消息是否值得转发，是另一笔账。"})
+	contacts.append({"number":"67#", "name":"67", "identity":DeskLocalization.source("LOC_YOUR_ASSISTANT_INTELLIGENCE_COLLECTION_AND_TRANSMISSION_OBSERVAT_7FF267F2"), "greeting":DeskLocalization.source("LOC_THE_LINE_WORKS_WHETHER_THE_MESSAGE_DESERVES_CE70DE5C")})
 	for contact: Variant in values:
 		if contact is Dictionary: add_contact(contact)
 
@@ -35,7 +35,7 @@ func add_contact(contact: Dictionary) -> bool:
 	if not _valid_number(number) or str(contact.get("name", "")).strip_edges().is_empty(): return false
 	for known: Dictionary in contacts:
 		if str(known.number) == number: return false
-	contacts.append({"number":number, "name":str(contact.name), "identity":str(contact.get("identity", "已收录联系人")), "greeting":str(contact.get("greeting", "线路接通。对方没有补充消息。"))})
+	contacts.append({"number":number, "name":str(contact.name), "identity":str(contact.get("identity", DeskLocalization.source("LOC_COLLECTED_CONTACT_FE5E6233"))), "greeting":str(contact.get("greeting", DeskLocalization.source("LOC_CONNECTED_THE_OTHER_PARTY_HAS_NO_FURTHER_574C388B")))})
 	return true
 
 func select_contact(index: int, enabled: bool) -> bool:
@@ -43,7 +43,7 @@ func select_contact(index: int, enabled: bool) -> bool:
 	dialed_number = str(contacts[index].number)
 	state = "idle"
 	selected_contact = {}
-	diagnostic = "已抄入电话簿号码；拨号后才能拿起听筒。"
+	diagnostic = DeskLocalization.source("LOC_NUMBER_COPIED_FROM_THE_PHONE_BOOK_DIAL_4C584176")
 	return true
 
 func offer_starters(options: Array, selected_id: String) -> bool:
@@ -65,7 +65,7 @@ func offer_starters(options: Array, selected_id: String) -> bool:
 	dialed_number = "67#"
 	selected_contact = contacts[0].duplicate(true)
 	state = "incoming"
-	diagnostic = "67 来电。拿起听筒，听完三份起始模因再作选择。"
+	diagnostic = DeskLocalization.source("LOC_IS_CALLING_PICK_UP_AND_HEAR_ALL_27A63F88")
 	return true
 
 func starter_call(enabled: bool) -> bool:
@@ -76,8 +76,8 @@ func confirm_starter(preset_id: String, enabled: bool) -> bool:
 	starter_id = preset_id
 	pending_starter_id = ""
 	for option: Dictionary in starter_options:
-		if str(option.id) == preset_id: selected_reply = "选择：" + str(option.title)
-	_append_call("starter_confirmed", "选好了。放回听筒后，到稿纸上编辑、培养，再决定怎样传播。")
+		if str(option.id) == preset_id: selected_reply = DeskLocalization.source("LOC_SELECTED_AB41B55D") + str(option.title)
+	_append_call("starter_confirmed", DeskLocalization.source("LOC_CHOSEN_PUT_DOWN_THE_RECEIVER_THEN_EDIT_9B078A9D"))
 	return true
 
 func reject_starter(message: String) -> void:
@@ -103,7 +103,7 @@ func keypad_key(key: String, enabled: bool) -> bool:
 		return false
 	state = "idle"
 	selected_contact = {}
-	diagnostic = "号码只在本地电话簿中匹配。"
+	diagnostic = DeskLocalization.source("LOC_NUMBERS_ARE_MATCHED_AGAINST_THE_LOCAL_PHONE_32C3D8DB")
 	return true
 
 func dial(enabled: bool) -> bool:
@@ -114,11 +114,11 @@ func dial(enabled: bool) -> bool:
 			if str(contact.number) == dialed_number: selected_contact = contact.duplicate(true)
 	if selected_contact.is_empty():
 		state = "invalid"
-		diagnostic = "无人应答：号码未收录或格式无效。"
-		_append_call("no_answer", "电话簿没有这个号码。空号不会因为你多拨一次就升职。")
+		diagnostic = DeskLocalization.source("LOC_NO_ANSWER_UNLISTED_NUMBER_OR_INVALID_FORMAT_F9B2A597")
+		_append_call("no_answer", DeskLocalization.source("LOC_THAT_NUMBER_ISN_T_IN_THE_PHONE_7C770EF9"))
 		return false
 	state = "dial_ready"
-	diagnostic = DeskLocalization.source_format("已找到 %s；拿起听筒接线。", str(selected_contact.name))
+	diagnostic = DeskLocalization.source_format("LOC_FOUND_S_PICK_UP_THE_RECEIVER_TO_A1F554ED", str(selected_contact.name))
 	return true
 
 func pickup(enabled: bool) -> bool:
@@ -127,17 +127,17 @@ func pickup(enabled: bool) -> bool:
 	var line := str(selected_contact.greeting)
 	if dialed_number == "67#" and not DeskLocalization.text(str(_context_event.get("mentor_comment", ""))).strip_edges().is_empty():
 		line = str(_context_event.mentor_comment)
-	diagnostic = DeskLocalization.source_format("本地接线 / %s", str(selected_contact.name))
+	diagnostic = DeskLocalization.source_format("LOC_LOCAL_CONNECTION_S_DE115FAE", str(selected_contact.name))
 	_append_call("connected", line)
 	return true
 
 func hangup(enabled: bool, can_choose_starter: bool) -> bool:
 	if not enabled or state not in ["connected", "dial_ready", "incoming"]: return false
 	var finish_startup := starter_call(can_choose_starter) and not starter_id.is_empty()
-	_append_call("hangup", "接线结束。事实留在纸上，不占用听筒。")
+	_append_call("hangup", DeskLocalization.source("LOC_CALL_ENDED_THE_FACTS_STAY_ON_PAPER_58CCE8D4"))
 	state = "idle"
 	selected_contact = {}
-	diagnostic = "听筒已放回。"
+	diagnostic = DeskLocalization.source("LOC_RECEIVER_REPLACED_8F848FA7")
 	if finish_startup:
 		startup_done = true
 		startup_finished.emit(starter_id)
@@ -173,6 +173,6 @@ func _valid_number(number: String) -> bool:
 
 func _append_call(kind: String, text: String) -> void:
 	var event_id := str(_context_event.get("instance_id", ""))
-	var record := {"index":call_log.size(), "number":dialed_number, "name":str(selected_contact.get("name", "未收录")), "kind":kind, "text":text, "event_id":event_id if dialed_number == "67#" and kind == "connected" else "", "context_event_id":event_id, "local_only":true}
+	var record := {"index":call_log.size(), "number":dialed_number, "name":str(selected_contact.get("name", DeskLocalization.source("LOC_NOT_COLLECTED_01C47B74"))), "kind":kind, "text":text, "event_id":event_id if dialed_number == "67#" and kind == "connected" else "", "context_event_id":event_id, "local_only":true}
 	call_log.append(record)
 	call_changed.emit(record.duplicate(true))

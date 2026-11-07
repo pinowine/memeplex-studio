@@ -26,9 +26,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_language_pair"
-title = "双语读书组发布关系对照短句"
-narrative = "双语读书组发布了一套对照短句，说明两种语言中相似关系的不同说法。成员将它带进课程群与读书群，语言话题的讨论开始围绕这套新表达聚集。"
-mentor_comment = "两种语言把同一关系摆了两次，含糊的话不会自动获得双倍解释。"
+title = "LOC_A_BILINGUAL_READING_GROUP_PUBLISHES_CONTRASTING_RELATIONSHIP_2032171A"
+narrative = "LOC_A_BILINGUAL_READING_GROUP_PUBLISHES_PAIRED_PHRASES_7F9C3F58"
+mentor_comment = "LOC_TWO_LANGUAGES_SET_OUT_THE_SAME_RELATIONSHIP_7ADB7222"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("language", "education")
 operation_ids = PackedStringArray("emerge", "attention_shift")

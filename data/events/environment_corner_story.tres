@@ -26,9 +26,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_corner_story"
-title = "街角故事小组连载日常片段"
-narrative = "街角故事小组开始连载一组日常片段，邀请读者为同一个街区补写人物经历。几家社区群聊接过连载继续讲述，晚间讨论逐渐围着这个小世界展开。"
-mentor_comment = "一个街区肯让别人续写，就比贴满作者简介的空房间更像个世界。"
+title = "LOC_A_STREET_CORNER_STORY_GROUP_SERIALIZES_EVERYDAY_D9B18680"
+narrative = "LOC_A_STREET_CORNER_STORY_GROUP_BEGINS_SERIALIZING_036B4B80"
+mentor_comment = "LOC_A_NEIGHBORHOOD_THAT_LETS_OTHERS_WRITE_THE_AFD0820B"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("community", "entertainment")
 operation_ids = PackedStringArray("emerge", "attention_shift")

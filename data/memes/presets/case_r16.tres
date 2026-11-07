@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_r16"
 kernel_id = &"relation"
-title = "R16 · 100 Men vs. 1 Gorilla"
+title = "LOC_R16_MEN_VS_GORILLA_ADA72DE7"
 required_slots = PackedStringArray("role_a", "role_b", "relation")
-slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
-default_values = PackedStringArray("100名普通男性", "一只成年大猩猩", "数量对力量的生死对抗")
-family_anchor = "识别与变异约束：替换人数、动物和装备；两个可量化阵营与“who wins”保持关系骨架。"
-context_hint = "语义：极简不可能实验把 masculinity、动物力量和集体协调变成可无限争辩的比例题。\n语用：用户站队、制作物理模拟、安排“前排兄弟”；没有可执行验证反而保证讨论持续。\n跨语境：它从酒桌式假设升级为品牌、球队和官方账号都参与的公共阵营游戏。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_CHARACTER_A_EDITABLE_F753F7A7", "LOC_CHARACTER_B_EDITABLE_BC066A33", "LOC_RELATIONSHIP_DIRECTION_EDITABLE_4F2C3521")
+default_values = PackedStringArray("LOC_ORDINARY_MEN_E3A489E3", "LOC_ONE_ADULT_GORILLA_5DD448EC", "LOC_A_LETHAL_CONTEST_OF_NUMBERS_AGAINST_STRENGTH_F077F8B5")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_REPLACE_THE_NUMBER_D731157E"
+context_hint = "LOC_SEMANTICS_A_MINIMAL_IMPOSSIBLE_EXPERIMENT_TURNS_MASCULINITY_144AEBB0"
 source_case_id = "R16"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R16.png"
 source_sha256 = "fa9daaddfeedc85e7e524151a74882db1fac584a4d389dfd2907907227728289"

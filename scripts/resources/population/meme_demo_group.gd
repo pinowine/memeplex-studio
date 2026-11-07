@@ -2,7 +2,9 @@ class_name MemeDemoGroup
 extends Resource
 
 @export var id: StringName
-@export var title: String = ""
+@export var title: String = "":
+	set(value):
+		title = DeskLocalization.source(value)
 @export var tag_ids: PackedStringArray = PackedStringArray()
 @export var topic_ids: PackedStringArray = PackedStringArray()
 @export var topic_affinities: PackedFloat32Array = PackedFloat32Array()

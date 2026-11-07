@@ -32,9 +32,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_source_debate"
-title = "两名创作者公开争论来源边界"
-narrative = "两名创作者在文化群里公开争论，一处相似轮廓究竟该怎样标注来源。双方贴出了各自的材料和改写记录，旁观者却对现有来源说明提出了更多疑问。"
-mentor_comment = "双方都带了材料，先读附件，来源声明通常不包售后。"
+title = "LOC_TWO_CREATORS_PUBLICLY_DEBATE_THE_BOUNDARIES_OF_3BD88189"
+narrative = "LOC_TWO_CREATORS_PUBLICLY_DEBATE_HOW_TO_ATTRIBUTE_74B58F7B"
+mentor_comment = "LOC_BOTH_SIDES_BROUGHT_DOCUMENTS_READ_THE_ATTACHMENTS_5A656B6B"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("trust", "archive", "identity")
 operation_ids = PackedStringArray("contest")

@@ -26,9 +26,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_club_boundary"
-title = "文化社团推出自己的入圈暗号"
-narrative = "一支文化社团推出了自己的入圈暗号，并给新成员列出使用场景。其他社群开始围绕这套暗号辨认同伴，本地身份话题不再只围着原先几种说法展开。"
-mentor_comment = "社团给暗号配了使用说明，你不能把每一扇新门都登记成自己的入口。"
+title = "LOC_A_CULTURAL_CLUB_INTRODUCES_ITS_OWN_INSIDER_15790447"
+narrative = "LOC_A_CULTURAL_CLUB_INTRODUCES_ITS_OWN_INSIDER_7872A6ED"
+mentor_comment = "LOC_THE_CLUB_GAVE_ITS_SIGNAL_INSTRUCTIONS_YOU_F0877526"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("identity", "community")
 operation_ids = PackedStringArray("emerge", "attention_shift")

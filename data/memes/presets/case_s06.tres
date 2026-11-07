@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_s06"
 kernel_id = &"stance"
-title = "S06 · Let Him Cook"
+title = "LOC_S06_LET_HIM_COOK_FD506E8B"
 required_slots = PackedStringArray("speaker", "visible_situation", "claim")
-slot_prompts = PackedStringArray("发声者（可改写）", "可见情境（可改写）", "表态框架（可改写）")
-default_values = PackedStringArray("要求暂缓干预的观察者", "某人正在实施看似古怪的方案", "让他继续")
-family_anchor = "识别与变异约束：替换 him/人物、锅中内容与结果；核心动词 cook 可派生 cooked、cooking。"
-context_hint = "语义：把创作或行动比作烹饪，主张在结果出现前给予空间。\n语用：可真诚表达信任，也可反讽地观看失败；回应“Who let him cook?”会撤销支持。\n跨语境：它把平台观看者组织成临时评审团，突出“先放任—后裁决”的注意力节奏。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_SPEAKER_EDITABLE_EB80468E", "LOC_VISIBLE_SITUATION_EDITABLE_9F24D9C9", "LOC_STANCE_FRAME_EDITABLE_F49E761B")
+default_values = PackedStringArray("LOC_AN_OBSERVER_ASKING_OTHERS_TO_DELAY_INTERVENTION_FADEB6C1", "LOC_SOMEONE_IS_PURSUING_AN_APPARENTLY_STRANGE_PLAN_74C03F38", "LOC_LET_HIM_CONTINUE_266D83A8")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_REPLACE_HIM_THE_D95642DA"
+context_hint = "LOC_SEMANTICS_CREATION_OR_ACTION_IS_LIKENED_TO_2DE24248"
 source_case_id = "S06"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\S06.png"
 source_sha256 = "e51f9186bcd41202499a744e7dbdb89c045f230739d3d51fb411416a510ad36f"

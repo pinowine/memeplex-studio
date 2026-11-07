@@ -32,24 +32,24 @@ func validate() -> PackedStringArray:
 	return errors
 
 func describe() -> String:
-	var scope := "全部合成群体" if group_ids.is_empty() else ", ".join(group_ids)
-	var duration := "即时" if duration_hours == 0.0 else DeskLocalization.source_format("%.2f小时", duration_hours)
-	var action := DeskLocalization.source_format("未知效果 %s", effect_id)
+	var scope := DeskLocalization.source("LOC_ALL_SYNTHETIC_AUDIENCES_BED572F8") if group_ids.is_empty() else ", ".join(group_ids)
+	var duration := DeskLocalization.source("LOC_INSTANT_2DA85532") if duration_hours == 0.0 else DeskLocalization.source_format("LOC_F_HOURS_1DFE9CBC", duration_hours)
+	var action := DeskLocalization.source_format("LOC_UNKNOWN_EFFECT_S_279E93F2", effect_id)
 	match effect_id:
 		&"attention":
-			action = DeskLocalization.source_format("注意力 ×%.2f", (1.0 + amount))
+			action = DeskLocalization.source_format("LOC_ATTENTION_F_DC27F3AC", (1.0 + amount))
 		&"channel_reach":
-			action = DeskLocalization.source_format("渠道触达 ×%.2f", (1.0 + amount))
+			action = DeskLocalization.source_format("LOC_CHANNEL_REACH_F_D46B732B", (1.0 + amount))
 		&"adoption":
-			action = DeskLocalization.source_format("未采纳曝光者中 %.2f%% 开始使用", (amount * 100.0))
+			action = DeskLocalization.source_format("LOC_F_OF_EXPOSED_NON_ADOPTERS_BEGIN_USING_39F9BA83", (amount * 100.0))
 		&"trust":
-			action = DeskLocalization.source_format("信任 %+.2f", amount)
+			action = DeskLocalization.source_format("LOC_TRUST_F_23001F95", amount)
 		&"fatigue":
-			action = DeskLocalization.source_format("疲劳 %+.2f", amount)
+			action = DeskLocalization.source_format("LOC_FATIGUE_F_E0745408", amount)
 		&"remix":
-			action = "生成1个外部改写版本" if amount > 0.0 else "不生成改写版本"
+			action = DeskLocalization.source("LOC_CREATES_EXTERNAL_REWRITE_VERSION_9DB53E62") if amount > 0.0 else DeskLocalization.source("LOC_NO_REWRITE_VERSION_CREATED_86CDC935")
 		&"semantic_shift":
-			action = DeskLocalization.source_format("版本的家族锚点偏移设为 %.2f", amount)
+			action = DeskLocalization.source_format("LOC_VERSION_DRIFT_FROM_ITS_FAMILY_ANCHOR_IS_BFEE84C2", amount)
 		&"revival":
-			action = DeskLocalization.source_format("疲劳 −%.2f，并恢复注意力", amount)
+			action = DeskLocalization.source_format("LOC_FATIGUE_F_AND_ATTENTION_RECOVERS_33879600", amount)
 	return DeskLocalization.source_format("%s · %s · %s",[action,duration,scope],[0,1,2])

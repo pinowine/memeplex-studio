@@ -52,22 +52,22 @@ func _draft_from_json(draft: Dictionary, errors: PackedStringArray) -> Dictionar
 	for key in ["political_position", "pragmatic_position"]:
 		var point: Variant = draft.get(key)
 		if not point is Array or point.size() != 2 or not _number(point[0]) or not _number(point[1]):
-			errors.append("存档草稿坐标必须是两个有限数值：" + key)
+			errors.append(DeskLocalization.source("LOC_SAVED_DRAFT_COORDINATES_MUST_CONTAIN_TWO_FINITE_6899D7DB") + key)
 		else: decoded[key] = Vector2(point[0], point[1])
 	if not draft.get("slots") is Dictionary or not draft.get("topic_ids") is Array or not draft.get("replaceable_slots") is Array or not draft.get("political_known") is bool:
-		errors.append("存档草稿字段类型错误。")
+		errors.append(DeskLocalization.source("LOC_A_SAVED_DRAFT_FIELD_HAS_THE_WRONG_E73A9EFF"))
 	for key in ["kernel_id", "preset_id", "channel_id", "group_id", "language_id", "target", "reuse_permission"]:
-		if not (draft.get(key) is String or draft.get(key) is StringName): errors.append("存档草稿文本类型错误：" + key)
+		if not (draft.get(key) is String or draft.get(key) is StringName): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_DRAFT_TEXT_TYPE_A0FF1018") + key)
 		else: decoded[key] = str(draft[key])
 	for key in ["remix_cost", "context_dependency", "language_access", "recognizability"]:
-		if not _number(draft.get(key)): errors.append("存档草稿数值类型错误：" + key)
+		if not _number(draft.get(key)): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_DRAFT_NUMERIC_TYPE_3B317995") + key)
 	for key in ["topic_ids", "replaceable_slots"]:
 		if not draft.get(key) is Array: continue
 		for value: Variant in draft[key]:
-			if not value is String: errors.append("存档草稿列表只能包含文本：" + key)
+			if not value is String: errors.append(DeskLocalization.source("LOC_SAVED_DRAFT_LISTS_MAY_ONLY_CONTAIN_TEXT_3474D194") + key)
 	if draft.get("slots") is Dictionary:
 		for key: Variant in draft.slots:
-			if not key is String or not draft.slots[key] is String: errors.append("存档语义槽位必须使用文本键和值。")
+			if not key is String or not draft.slots[key] is String: errors.append(DeskLocalization.source("LOC_SAVED_SEMANTIC_SLOTS_MUST_USE_STRING_KEYS_46CCFD3C"))
 	if not errors.is_empty(): return {}
 	decoded.topic_ids = PackedStringArray(draft.topic_ids)
 	decoded.replaceable_slots = PackedStringArray(draft.replaceable_slots)
@@ -76,34 +76,34 @@ func _draft_from_json(draft: Dictionary, errors: PackedStringArray) -> Dictionar
 func _validate_current(data: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	if data.get("save_version") != SAVE_VERSION or not _integer(data.get("content_version")) or int(data.content_version) != catalog.content_version or data.get("content_signature") != content_signature() or data.get("gameplay_mode") != "world_competition":
-		return PackedStringArray(["存档版本、内容或玩法格式不匹配；只接受当前格式。"])
+		return PackedStringArray([DeskLocalization.source("LOC_THE_SAVE_VERSION_CONTENT_OR_GAMEPLAY_FORMAT_7D8AC708")])
 	var numeric := ["seed", "hour", "run_end_hour", "speed", "resume_speed", "draft_distance", "publish_count", "serial"]
 	var strings := ["rng_state", "phase", "country_id", "country_title", "status", "current_variant_id"]
 	var dictionaries := ["latest_draft", "families", "group_state", "event_counts", "last_event_hours", "active_event", "attention", "economy", "design_state", "competition_state"]
 	var arrays := ["variants", "deployments", "events", "discoveries", "modifiers", "pending_events"]
 	for key in numeric:
-		if not data.has(key) or not _number(data[key]): errors.append("存档数值类型错误：" + key)
+		if not data.has(key) or not _number(data[key]): errors.append(DeskLocalization.source("LOC_WRONG_NUMERIC_TYPE_IN_SAVE_8A2D94B8") + key)
 	for key in strings:
-		if not data.get(key) is String: errors.append("存档文本类型错误：" + key)
+		if not data.get(key) is String: errors.append(DeskLocalization.source("LOC_WRONG_TEXT_TYPE_IN_SAVE_2227F90E") + key)
 	for key in dictionaries:
-		if not data.get(key) is Dictionary: errors.append("存档对象类型错误：" + key)
+		if not data.get(key) is Dictionary: errors.append(DeskLocalization.source("LOC_WRONG_OBJECT_TYPE_IN_SAVE_8B841260") + key)
 	for key in arrays:
-		if not data.get(key) is Array: errors.append("存档数组类型错误：" + key)
+		if not data.get(key) is Array: errors.append(DeskLocalization.source("LOC_WRONG_ARRAY_TYPE_IN_SAVE_8EB741D8") + key)
 	if not errors.is_empty(): return errors
 	for key in ["seed", "hour", "run_end_hour", "speed", "resume_speed", "publish_count", "serial"]:
-		if not _integer(data[key]): errors.append("存档整数非法：" + key)
+		if not _integer(data[key]): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_INTEGER_25F32879") + key)
 	if not str(data.rng_state).is_valid_int() or data.phase not in ["draft", "running", "event", "complete"] or data.hour < 0 or data.hour > data.run_end_hour or data.run_end_hour < catalog.run_hours or data.speed < 0 or data.speed > 2 or data.resume_speed < 0 or data.resume_speed > 2 or data.publish_count < 0 or data.serial < 0 or data.draft_distance < 0 or data.draft_distance > 1:
-		errors.append("存档阶段、随机状态、计数或时间非法。")
+		errors.append(DeskLocalization.source("LOC_THE_SAVED_PHASE_RANDOM_STATE_COUNT_OR_244F19E2"))
 	if not errors.is_empty(): return errors
 	errors.append_array(competition.validate_payload(data.competition_state, data.variants, int(data.hour)))
 	if data.phase in ["event", "draft", "complete"] and data.speed != 0:
-		errors.append("非运行阶段必须暂停。")
+		errors.append(DeskLocalization.source("LOC_NON_RUNNING_PHASES_MUST_BE_PAUSED_03C4597B"))
 	errors.append_array(economy.validate_payload(data.economy))
 	for key in ["variants", "deployments", "events", "modifiers", "pending_events"]:
 		for entry in data[key]:
-			if not entry is Dictionary: errors.append("存档记录类型错误：" + key)
+			if not entry is Dictionary: errors.append(DeskLocalization.source("LOC_WRONG_SAVED_RECORD_TYPE_879E5C19") + key)
 	for item in data.discoveries:
-		if not item is String: errors.append("存档发现类型错误。")
+		if not item is String: errors.append(DeskLocalization.source("LOC_WRONG_SAVED_DISCOVERY_TYPE_C3CA7454"))
 	if not errors.is_empty(): return errors
 	for key in ["events", "pending_events"]:
 		for event in data[key]:
@@ -111,86 +111,86 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 	if not data.active_event.is_empty(): _validate_event_copy(data.active_event, errors)
 	if errors.is_empty(): _validate_event_history(data, errors)
 	for deployment in data.deployments:
-		if not deployment.has_all(["id", "variant_id", "country_id", "group_id", "channel_id", "hour"]): errors.append("存档投放记录字段错误。")
+		if not deployment.has_all(["id", "variant_id", "country_id", "group_id", "channel_id", "hour"]): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_DEPLOYMENT_RECORD_FIELDS_5ADCB11F"))
 	if not errors.is_empty(): return errors
 	var variant_ids: Dictionary = {}
 	var variant_order := {}
 	# 先确认来源字段类型，再比较谱系关系。
 	for family in data.families.values():
-		if family is Dictionary: _validate_preset_sources(family, "家族", errors)
+		if family is Dictionary: _validate_preset_sources(family, DeskLocalization.source("LOC_FAMILY_3C659F55"), errors)
 	for variant in data.variants:
-		_validate_preset_sources(variant, "版本", errors)
+		_validate_preset_sources(variant, DeskLocalization.source("LOC_VERSION_5F76B2BF"), errors)
 	if not errors.is_empty(): return errors
 	for family in data.families.values():
 		if not family is Dictionary or not family.has_all(["id", "owner", "anchor", "split_threshold", "derived_from"]) or not _number(family.get("split_threshold")) or not family.get("derived_from") is Array:
-			errors.append("存档家族字段错误。")
+			errors.append(DeskLocalization.source("LOC_INVALID_SAVED_FAMILY_FIELDS_0773D71C"))
 			continue
 		var family_preset := catalog.find_preset(str(family.get("preset_id", "")))
 		if family_preset != null and family.derived_from.is_empty() and str(family.anchor) != family_preset.family_anchor:
-			errors.append("存档预设家族锚点不匹配。")
+			errors.append(DeskLocalization.source("LOC_SAVED_PRESET_FAMILY_ANCHOR_MISMATCH_D5D6F4D8"))
 		for previous in family.derived_from:
 			if not data.families.has(previous) or not data.families[previous] is Dictionary:
-				errors.append("存档派生家族来源丢失。")
+				errors.append(DeskLocalization.source("LOC_SAVED_DERIVED_FAMILY_SOURCE_IS_MISSING_41B5B7C4"))
 			elif family.get("source_presets", []) != data.families[previous].get("source_presets", []) or str(family.get("preset_id", "")) != str(data.families[previous].get("preset_id", "")):
-				errors.append("存档分家未保留原案例来源。")
+				errors.append(DeskLocalization.source("LOC_SAVED_FAMILY_SPLIT_DID_NOT_RETAIN_THE_83F8D7DB"))
 	for variant in data.variants:
 		if not variant.has_all(["id", "family_id", "parent_ids", "origin_ids", "creator", "owned", "controlled", "text", "kernel_id", "semantic_distance", "language_id"]) or not variant.parent_ids is Array or not variant.origin_ids is Array:
-			errors.append("存档版本字段错误。")
+			errors.append(DeskLocalization.source("LOC_INVALID_SAVED_VERSION_FIELDS_4AC19955"))
 			continue
-		if variant_ids.has(variant.id) or not data.families.has(variant.family_id): errors.append("存档版本身份或家族引用错误。")
+		if variant_ids.has(variant.id) or not data.families.has(variant.family_id): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_VERSION_IDENTITY_OR_FAMILY_REFERENCE_7061AAAB"))
 		variant_order[variant.id] = variant_ids.size()
 		variant_ids[variant.id] = variant
 		var variant_preset := catalog.find_preset(str(variant.get("preset_id", "")))
-		if variant_preset != null and str(variant.kernel_id) != str(variant_preset.kernel_id): errors.append("存档版本预设与基模不匹配。")
+		if variant_preset != null and str(variant.kernel_id) != str(variant_preset.kernel_id): errors.append(DeskLocalization.source("LOC_SAVED_VERSION_PRESET_DOES_NOT_MATCH_ITS_B085B9F8"))
 		if data.families.get(variant.family_id) is Dictionary:
 			var family: Dictionary = data.families[variant.family_id]
 			if variant.get("source_presets", []) != family.get("source_presets", []) or str(variant.get("preset_id", "")) != str(family.get("preset_id", "")):
-				errors.append("存档版本与家族案例来源不一致。")
-	if not str(data.current_variant_id).is_empty() and not variant_ids.has(data.current_variant_id): errors.append("存档当前版本丢失。")
+				errors.append(DeskLocalization.source("LOC_SAVED_VERSION_AND_FAMILY_HAVE_INCONSISTENT_CASE_E3CA2999"))
+	if not str(data.current_variant_id).is_empty() and not variant_ids.has(data.current_variant_id): errors.append(DeskLocalization.source("LOC_CURRENT_SAVED_VERSION_IS_MISSING_EA4E2869"))
 	if not errors.is_empty(): return errors
 	errors.append_array(design_state.validate_payload(data.design_state, data.events, data.variants, data.economy))
 	if not errors.is_empty(): return errors
 	for variant in data.variants:
 		for parent in variant.get("parent_ids", []):
 			if not variant_ids.has(parent):
-				errors.append("存档来源版本丢失。")
+				errors.append(DeskLocalization.source("LOC_SAVED_SOURCE_VERSION_IS_MISSING_385BFC5A"))
 			elif int(variant_order[parent]) >= int(variant_order[variant.id]):
-				errors.append("竞争版本只能引用先前存在的父版本。")
+				errors.append(DeskLocalization.source("LOC_COMPETITION_VERSIONS_MAY_REFERENCE_ONLY_PREVIOUSLY_EXISTING_8B80AED8"))
 			elif variant.get("source_presets", []) != variant_ids[parent].get("source_presets", []) or str(variant.get("preset_id", "")) != str(variant_ids[parent].get("preset_id", "")):
-				errors.append("存档派生版本未保留原案例来源。")
+				errors.append(DeskLocalization.source("LOC_SAVED_DERIVED_VERSION_DID_NOT_RETAIN_ITS_605360FB"))
 		for origin in variant.get("origin_ids", []):
-			if not variant_ids.has(origin): errors.append("存档原始版本来源丢失。")
-			elif (not variant_ids[origin].parent_ids.is_empty() or str(variant_ids[origin].creator) != "player"): errors.append("竞争谱系原始来源必须是作者的真实初始版本。")
+			if not variant_ids.has(origin): errors.append(DeskLocalization.source("LOC_SAVED_ORIGINAL_VERSION_SOURCE_IS_MISSING_84500A57"))
+			elif (not variant_ids[origin].parent_ids.is_empty() or str(variant_ids[origin].creator) != "player"): errors.append(DeskLocalization.source("LOC_A_COMPETITION_LINEAGE_MUST_ORIGINATE_FROM_THE_76CFFF89"))
 	if errors.is_empty():
 		var source_checker: RefCounted = CompetitionState.new(catalog)
 		source_checker._state = data.competition_state.duplicate(true)
-		if competition._canonical(data.attention) != competition._canonical(source_checker.snapshot(data.variants,false).attention): errors.append("显示注意力与国家实际分配不一致。")
+		if competition._canonical(data.attention) != competition._canonical(source_checker.snapshot(data.variants,false).attention): errors.append(DeskLocalization.source("LOC_DISPLAYED_ATTENTION_DOES_NOT_MATCH_ACTUAL_COUNTRY_A023EA74"))
 		for variant: Dictionary in data.variants:
 			if not variant.get("owned") is bool or not variant.get("controlled") is bool:
-				errors.append("竞争归属与控制权必须分别为布尔值。")
+				errors.append(DeskLocalization.source("LOC_COMPETITION_OWNERSHIP_AND_CONTROL_MUST_EACH_BE_61837AA4"))
 				continue
-			if str(variant.creator) == "player" and (not variant.owned or not variant.controlled): errors.append("玩家原始版本不能伪装为外部失控变异。")
-			if str(variant.creator) != "player" and variant.controlled: errors.append("外部版本不能伪造玩家控制权。")
+			if str(variant.creator) == "player" and (not variant.owned or not variant.controlled): errors.append(DeskLocalization.source("LOC_THE_PLAYER_S_ORIGINAL_VERSION_CANNOT_IMPERSONATE_118E38C2"))
+			if str(variant.creator) != "player" and variant.controlled: errors.append(DeskLocalization.source("LOC_AN_EXTERNAL_VERSION_CANNOT_CLAIM_PLAYER_CONTROL_0B60A355"))
 			var family: Dictionary = data.families[variant.family_id]
-			if not family.owner is String or variant.owned != (str(family.owner) == "player"): errors.append("作者归属与实际家族不一致。")
-			if not _number(variant.semantic_distance) or float(variant.semantic_distance) < 0.0 or float(variant.semantic_distance) > 1.0: errors.append("竞争语义偏移非法。")
+			if not family.owner is String or variant.owned != (str(family.owner) == "player"): errors.append(DeskLocalization.source("LOC_AUTHOR_OWNERSHIP_DOES_NOT_MATCH_THE_ACTUAL_4ADFAFF9"))
+			if not _number(variant.semantic_distance) or float(variant.semantic_distance) < 0.0 or float(variant.semantic_distance) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SEMANTIC_DRIFT_8C39ABE4"))
 			if str(variant.creator) != "player":
 				if variant.parent_ids.is_empty():
-					if not variant.origin_ids.is_empty() or variant.owned: errors.append("独立外部版本不能伪造玩家来源。")
+					if not variant.origin_ids.is_empty() or variant.owned: errors.append(DeskLocalization.source("LOC_AN_INDEPENDENT_EXTERNAL_VERSION_CANNOT_CLAIM_PLAYER_CB14A8E0"))
 				else:
 					var parent: Dictionary = variant_ids[variant.parent_ids[0]]
-					if competition._canonical(variant.origin_ids) != competition._canonical(parent.origin_ids): errors.append("变异必须保留真实原始投放来源。")
+					if competition._canonical(variant.origin_ids) != competition._canonical(parent.origin_ids): errors.append(DeskLocalization.source("LOC_MUTATIONS_MUST_RETAIN_THE_ACTUAL_ORIGINAL_DEPLOYMENT_DD642E47"))
 					var split: bool = float(variant.semantic_distance) >= float(data.families[parent.family_id].split_threshold)
-					if split != (str(variant.family_id) != str(parent.family_id)) or variant.owned == split: errors.append("变异归属与固定家族分家规则不一致。")
+					if split != (str(variant.family_id) != str(parent.family_id)) or variant.owned == split: errors.append(DeskLocalization.source("LOC_MUTATION_OWNERSHIP_CONFLICTS_WITH_THE_FIXED_FAMILY_6809C659"))
 			var entry: Dictionary = data.competition_state.registry[str(variant.id)]
-			if not variant.get("flow_profile") is Dictionary or competition._canonical(variant.flow_profile) != competition._canonical(entry.profile): errors.append("竞争表达配置与版本不匹配。")
+			if not variant.get("flow_profile") is Dictionary or competition._canonical(variant.flow_profile) != competition._canonical(entry.profile): errors.append(DeskLocalization.source("LOC_COMPETITION_EXPRESSION_CONFIGURATION_DOES_NOT_MATCH_ITS_FCCA1944"))
 			if variant.controlled:
 				if not variant.get("flow_draft") is Dictionary:
-					errors.append("作者传播配置缺少原始草稿。")
+					errors.append(DeskLocalization.source("LOC_AUTHOR_TRANSMISSION_CONFIGURATION_LACKS_ITS_ORIGINAL_DRAFT_ACD1228C"))
 					continue
 				var flow_draft: Dictionary = variant.flow_draft
 				if not flow_draft.get("slots") is Dictionary or not flow_draft.get("flow_skill_ids") is Array:
-					errors.append("作者传播草稿结构非法。")
+					errors.append(DeskLocalization.source("LOC_INVALID_AUTHOR_TRANSMISSION_DRAFT_STRUCTURE_0E4B1BED"))
 					continue
 				var flow_errors := PackedStringArray()
 				var flow_input := _draft_from_json(flow_draft, flow_errors)
@@ -199,101 +199,101 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 					continue
 				errors.append_array(simulation.validate_draft(flow_input))
 				for skill_id: Variant in flow_draft.flow_skill_ids:
-					if skill_id not in data.get("design_state",{}).get("unlocked_skills",[]): errors.append("传播能力没有合法解锁记录。")
-				if competition._canonical(competition.profile(flow_draft)) != competition._canonical(entry.profile) or not design_state.author_marks_valid(flow_draft,data.design_state): errors.append("传播配置与作者操作不一致。")
-				if str(flow_draft.get("kernel_id","")) != str(variant.kernel_id) or str(flow_draft.get("preset_id","")) != str(variant.get("preset_id","")): errors.append("传播配置不能更换基模或来源。")
+					if skill_id not in data.get("design_state",{}).get("unlocked_skills",[]): errors.append(DeskLocalization.source("LOC_SPREAD_ABILITY_LACKS_A_VALID_UNLOCK_RECORD_237BB394"))
+				if competition._canonical(competition.profile(flow_draft)) != competition._canonical(entry.profile) or not design_state.author_marks_valid(flow_draft,data.design_state): errors.append(DeskLocalization.source("LOC_TRANSMISSION_CONFIGURATION_DOES_NOT_MATCH_AUTHOR_ACTIONS_3FEFBD17"))
+				if str(flow_draft.get("kernel_id","")) != str(variant.kernel_id) or str(flow_draft.get("preset_id","")) != str(variant.get("preset_id","")): errors.append(DeskLocalization.source("LOC_TRANSMISSION_CONFIGURATION_CANNOT_REPLACE_THE_BASE_FORM_EA8990C3"))
 			else:
 				var parent_id: String = str(variant.parent_ids[0]) if not variant.parent_ids.is_empty() else ""
-				if competition._canonical(source_checker.inherited_profile(variant,parent_id)) != competition._canonical(entry.profile): errors.append("外部传播表达与实际来源不一致。")
+				if competition._canonical(source_checker.inherited_profile(variant,parent_id)) != competition._canonical(entry.profile): errors.append(DeskLocalization.source("LOC_EXTERNAL_TRANSMISSION_EXPRESSION_DOES_NOT_MATCH_ITS_121705CA"))
 			if str(variant.get("source_event","")) != "":
 				var found := false
 				for event: Dictionary in data.events:
 					if str(event.instance_id) == str(variant.source_event) and str(variant.id) in event.get("competition_variant_ids",[]): found = true
-				if not found: errors.append("竞争出生事件来源丢失。")
+				if not found: errors.append(DeskLocalization.source("LOC_COMPETITION_EMERGENCE_EVENT_SOURCE_IS_MISSING_98B83A6B"))
 		for event: Dictionary in data.events:
 			for id in event.get("competition_variant_ids",[]):
-				if not variant_ids.has(id) or str(variant_ids[id].get("source_event","")) != str(event.instance_id): errors.append("事件竞争版本引用非法。")
+				if not variant_ids.has(id) or str(variant_ids[id].get("source_event","")) != str(event.instance_id): errors.append(DeskLocalization.source("LOC_INVALID_EVENT_COMPETITION_VERSION_REFERENCE_D6AAF201"))
 	var restored_draft := _draft_from_json(data.latest_draft, errors)
-	if data.publish_count > 0 and restored_draft.is_empty(): errors.append("已发布存档缺少当前草稿。")
+	if data.publish_count > 0 and restored_draft.is_empty(): errors.append(DeskLocalization.source("LOC_THE_PUBLISHED_SAVE_HAS_NO_CURRENT_DRAFT_D36B7865"))
 	if not restored_draft.is_empty() and errors.is_empty(): errors.append_array(simulation.validate_draft(restored_draft))
 	if variant_ids.has(data.current_variant_id) and restored_draft.get("preset_id", "") != variant_ids[data.current_variant_id].get("preset_id", ""):
-		errors.append("存档当前草稿与版本预设不一致。")
+		errors.append(DeskLocalization.source("LOC_CURRENT_SAVED_DRAFT_DOES_NOT_MATCH_THE_8DDF6CAD"))
 	for group in catalog.groups:
 		var id := str(group.id)
 		if not data.group_state.has(id) or not data.group_state[id] is Dictionary or not data.group_state[id].has_all(["exposed", "owned", "external", "fatigue", "trust"]):
-			errors.append("存档缺少群体 " + id)
+			errors.append(DeskLocalization.source("LOC_SAVE_IS_MISSING_AUDIENCE_5FBDC01C") + id)
 			continue
 		var state: Dictionary = data.group_state[id]
 		var valid := true
 		for key in ["exposed", "owned", "external", "fatigue", "trust"]:
 			valid = valid and _number(state[key])
 		if not valid:
-			errors.append("存档群体数值错误。")
+			errors.append(DeskLocalization.source("LOC_INVALID_SAVED_AUDIENCE_NUMERIC_VALUES_34F8BFA2"))
 			continue
 		if state.exposed < 0 or state.exposed > group.sample_size or state.owned < 0 or state.external < 0 or state.owned + state.external > state.exposed + 0.001 or state.fatigue < 0 or state.fatigue > 1 or state.trust < 0 or state.trust > 1:
-			errors.append("存档人口状态不守恒。")
+			errors.append(DeskLocalization.source("LOC_SAVED_POPULATION_STATE_IS_NOT_CONSERVED_1B6C89E6"))
 	if not data.attention.has_all(["budget", "player", "external", "background"]):
-		errors.append("存档缺少注意力预算。")
+		errors.append(DeskLocalization.source("LOC_SAVE_LACKS_AN_ATTENTION_BUDGET_B68A9938"))
 	else:
 		var valid := true
 		for key in ["budget", "player", "external", "background"]:
 			valid = valid and _number(data.attention[key]) and data.attention[key] >= 0
-		if not valid or data.attention.player + data.attention.external + data.attention.background != data.attention.budget: errors.append("存档注意力不守恒。")
+		if not valid or data.attention.player + data.attention.external + data.attention.background != data.attention.budget: errors.append(DeskLocalization.source("LOC_SAVED_ATTENTION_IS_NOT_CONSERVED_1243FF3C"))
 	if data.phase == "event" and (data.active_event.is_empty() or not data.active_event.has_all(["instance_id", "discoveries", "title", "narrative", "effect_text"])):
-		errors.append("事件暂停缺少当前事件。")
+		errors.append(DeskLocalization.source("LOC_EVENT_PAUSE_LACKS_A_CURRENT_EVENT_A9409913"))
 	for modifier: Dictionary in data.modifiers:
 		if not modifier.get("source") is String or not _number(modifier.get("amount")) or not _number(modifier.get("expires")) or not _integer(modifier.get("starts")) or not _number(modifier.get("decay_parameter")) or modifier.get("decay") not in ["constant", "linear", "exponential", "periodic"] or not modifier.get("groups") is Array or not modifier.get("topics") is Array:
-			errors.append("存档作用记录字段或类型错误。")
+			errors.append(DeskLocalization.source("LOC_A_SAVED_EFFECT_RECORD_HAS_AN_INVALID_B9CEC168"))
 			continue
 		for key in ["groups", "topics"]:
 			for identity: Variant in modifier[key]:
-				if not identity is String: errors.append("存档作用对象必须是文本身份。")
+				if not identity is String: errors.append(DeskLocalization.source("LOC_SAVED_EFFECT_TARGETS_MUST_BE_STRING_IDENTIFIERS_DD145605"))
 	for value in data.event_counts.values():
-		if not _number(value) or value < 0: errors.append("存档事件计数错误。")
+		if not _number(value) or value < 0: errors.append(DeskLocalization.source("LOC_INVALID_SAVED_EVENT_COUNT_2C1B6BFB"))
 	for value in data.last_event_hours.values():
-		if not _number(value): errors.append("存档事件时间错误。")
-	if errors.is_empty() and not design_state.author_marks_valid(data.latest_draft, data.design_state): errors.append("当前草稿表达补丁或能力来源与记录不符。")
+		if not _number(value): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_EVENT_TIME_61D60A84"))
+	if errors.is_empty() and not design_state.author_marks_valid(data.latest_draft, data.design_state): errors.append(DeskLocalization.source("LOC_CURRENT_DRAFT_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_F36FC5F9"))
 	if errors.is_empty(): data.latest_draft = restored_draft
 	return errors
 
 func _validate_preset_sources(entry: Dictionary, label: String, errors: PackedStringArray) -> void:
 	if not entry.get("preset_id", "") is String or not entry.get("source_presets") is Array:
-		errors.append(DeskLocalization.source_format("存档%s预设来源字段类型错误。", label))
+		errors.append(DeskLocalization.source_format("LOC_WRONG_PRESET_SOURCE_FIELD_TYPE_IN_SAVED_449A9157", label))
 		return
 	var preset_id: String = entry.get("preset_id", "")
 	var sources: Array = entry.source_presets
 	if preset_id.is_empty():
-		if not sources.is_empty(): errors.append(DeskLocalization.source_format("存档%s无预设却声明案例来源。", label))
+		if not sources.is_empty(): errors.append(DeskLocalization.source_format("LOC_SAVED_S_CLAIMS_A_CASE_SOURCE_WITHOUT_9000550F", label))
 		return
 	var preset := catalog.find_preset(preset_id)
 	if preset == null:
-		errors.append(DeskLocalization.source_format("存档%s引用未知预设。", label))
+		errors.append(DeskLocalization.source_format("LOC_SAVED_S_REFERENCES_AN_UNKNOWN_PRESET_35BD6358", label))
 	elif sources.size() != 1 or not sources[0] is Dictionary or sources[0] != preset.source_record():
-		errors.append(DeskLocalization.source_format("存档%s案例来源与内容目录不匹配。", label))
+		errors.append(DeskLocalization.source_format("LOC_SAVED_S_CASE_SOURCE_DOES_NOT_MATCH_78BD2135", label))
 
 func _validate_event_copy(event: Dictionary, errors: PackedStringArray) -> void:
 	for key in ["instance_id", "definition_id", "title", "narrative", "effect_text", "origin", "impact_text", "mentor_comment", "design_source_preset_id", "reward_text"]:
-		if not event.get(key) is String: errors.append("存档事件文本类型错误：" + key)
+		if not event.get(key) is String: errors.append(DeskLocalization.source("LOC_WRONG_SAVED_EVENT_TEXT_TYPE_5170C9D1") + key)
 	if not _integer(event.get("hour")) or not event.get("discoveries") is Array or not event.get("acknowledged") is bool or not event.get("design_rewards") is Array or not event.get("competition_variant_ids") is Array:
-		errors.append("存档事件记录字段错误。")
+		errors.append(DeskLocalization.source("LOC_INVALID_SAVED_EVENT_RECORD_FIELDS_F4888510"))
 	if not errors.is_empty(): return
 	for key in ["discoveries", "competition_variant_ids"]:
 		for identity: Variant in event[key]:
-			if not identity is String: errors.append("存档事件引用必须使用文本身份。")
+			if not identity is String: errors.append(DeskLocalization.source("LOC_SAVED_EVENT_REFERENCES_MUST_USE_STRING_IDENTIFIERS_03E3072F"))
 	var definition: MemeDemoEvent = null
 	for candidate: MemeDemoEvent in catalog.events:
 		if str(candidate.id) == event.definition_id: definition = candidate
 	if definition == null:
-		errors.append("事件定义不在当前内容目录中。")
+		errors.append(DeskLocalization.source("LOC_THE_EVENT_DEFINITION_IS_NOT_IN_THE_8062767A"))
 		return
 	var actual := JSON.stringify(JSON.parse_string(JSON.stringify(event.design_rewards)), "", true, true)
 	var expected := JSON.stringify(JSON.parse_string(JSON.stringify(definition.design_rewards)), "", true, true)
-	if actual != expected or event.design_source_preset_id != str(definition.external_preset_id): errors.append("事件物资或预设来源与开发定义不符。")
-	var expected_text: String = (("已领取：" if event.acknowledged else "收录后领取：") + simulation._reward_summary(definition.design_rewards)) if not definition.design_rewards.is_empty() else ""
-	if event.reward_text != expected_text: errors.append("事件物资文案与真实领取状态不符。")
+	if actual != expected or event.design_source_preset_id != str(definition.external_preset_id): errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_OR_PRESET_SOURCE_CONFLICTS_WITH_2FE2F3F5"))
+	var expected_text: String = ((DeskLocalization.source("LOC_CLAIMED_9C9021A0") if event.acknowledged else DeskLocalization.source("LOC_CLAIM_AFTER_COLLECTING_008ABC0C")) + simulation._reward_summary(definition.design_rewards)) if not definition.design_rewards.is_empty() else ""
+	if event.reward_text != expected_text: errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_TEXT_DOES_NOT_MATCH_ITS_038EBF27"))
 	for field in ["impact_text", "mentor_comment"]:
-		if str(event[field]).strip_edges().is_empty(): errors.append("存档事件文本为空：" + field)
-	if "\n" in event.mentor_comment or "\r" in event.mentor_comment: errors.append("存档67评价不是单行。")
+		if str(event[field]).strip_edges().is_empty(): errors.append(DeskLocalization.source("LOC_SAVED_EVENT_TEXT_IS_EMPTY_BD4C7C07") + field)
+	if "\n" in event.mentor_comment or "\r" in event.mentor_comment: errors.append(DeskLocalization.source("LOC_S_SAVED_COMMENT_IS_NOT_A_SINGLE_0A288143"))
 
 ## 调度计数必须来自真实事件历史，内部据此直接读取最后触发时间。
 func _validate_event_history(data: Dictionary, errors: PackedStringArray) -> void:
@@ -301,13 +301,13 @@ func _validate_event_history(data: Dictionary, errors: PackedStringArray) -> voi
 	var observed_counts := {}
 	var observed_hours := {}
 	for event: Dictionary in data.events:
-		if event.instance_id.is_empty() or instance_ids.has(event.instance_id): errors.append("存档事件实例身份为空或重复。")
-		if event.hour < 0 or event.hour > data.hour: errors.append("存档事件时间超出当前局。")
+		if event.instance_id.is_empty() or instance_ids.has(event.instance_id): errors.append(DeskLocalization.source("LOC_A_SAVED_EVENT_INSTANCE_HAS_AN_EMPTY_3FC63291"))
+		if event.hour < 0 or event.hour > data.hour: errors.append(DeskLocalization.source("LOC_A_SAVED_EVENT_TIME_IS_OUTSIDE_THE_09D4A40A"))
 		instance_ids[event.instance_id] = true
 		observed_counts[event.definition_id] = int(observed_counts.get(event.definition_id, 0)) + 1
 		observed_hours[event.definition_id] = int(event.hour)
 	if competition._canonical(data.event_counts) != observed_counts or competition._canonical(data.last_event_hours) != observed_hours:
-		errors.append("存档事件调度计数或时间与历史记录不一致。")
+		errors.append(DeskLocalization.source("LOC_SAVED_EVENT_SCHEDULING_COUNTS_OR_TIMES_DO_F90F1850"))
 
 func restore(data: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
@@ -375,16 +375,16 @@ func _collect_precision(value: Variant, path: String, precision: Dictionary) -> 
 
 func _decode_precision(data: Dictionary, errors: PackedStringArray) -> Dictionary:
 	if not data.get("numeric_precision") is Dictionary:
-		errors.append("存档缺少浮点精度记录。")
+		errors.append(DeskLocalization.source("LOC_SAVE_LACKS_FLOATING_POINT_PRECISION_RECORDS_F4BF3B09"))
 		return data
 	var required: Dictionary = {}
 	_collect_precision(data, "", required)
 	for path in required:
-		if not data.numeric_precision.has(path): errors.append("存档精度记录缺少字段：" + path)
+		if not data.numeric_precision.has(path): errors.append(DeskLocalization.source("LOC_PRECISION_RECORD_IS_MISSING_FIELD_879629B4") + path)
 	var seen: Dictionary = {}
 	var decoded: Dictionary = _precise_value(data, "", data.numeric_precision, seen, errors)
 	for path in data.numeric_precision:
-		if not seen.has(path): errors.append("存档精度记录引用未知字段。")
+		if not seen.has(path): errors.append(DeskLocalization.source("LOC_PRECISION_RECORD_REFERENCES_AN_UNKNOWN_FIELD_33743897"))
 	return decoded
 
 func _precise_value(value: Variant, path: String, precision: Dictionary, seen: Dictionary, errors: PackedStringArray) -> Variant:
@@ -392,11 +392,11 @@ func _precise_value(value: Variant, path: String, precision: Dictionary, seen: D
 		seen[path] = true
 		var hex: Variant = precision[path]
 		if not _number(value) or not hex is String or hex.length() != 16 or not hex.is_valid_hex_number(false):
-			errors.append("存档浮点精度格式非法：" + path)
+			errors.append(DeskLocalization.source("LOC_INVALID_SAVED_FLOATING_POINT_PRECISION_FORMAT_035B22B2") + path)
 			return value
 		var exact: float = hex.hex_decode().decode_double(0)
 		if not is_finite(exact) or absf(float(value) - exact) > maxf(0.000000001, absf(exact) * 0.00000000000001):
-			errors.append("存档浮点精度与数值不一致：" + path)
+			errors.append(DeskLocalization.source("LOC_SAVED_FLOATING_POINT_PRECISION_DOES_NOT_MATCH_5EB2DD02") + path)
 			return value
 		return exact
 	if value is Dictionary:

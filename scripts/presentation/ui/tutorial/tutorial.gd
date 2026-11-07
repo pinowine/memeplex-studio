@@ -319,12 +319,11 @@ func _process(delta: float) -> void:
 
 func _refresh() -> void:
 	if not is_instance_valid(_ui) or _steps.is_empty(): return
-	var english := TranslationServer.get_locale().begins_with("en")
 	_display_index = clampi(_display_index, 0, _steps.size() - 1)
 	var step := _steps[_display_index]
 	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
-	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title_en", step.get("title", "")))) if english else str(step.get("title", ""))
-	var text := DeskLocalization.text(str(step.get("text_en", step.get("text", "")))) if english else str(step.get("text", ""))
+	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title", "")))
+	var text := DeskLocalization.text(str(step.get("text", "")))
 	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
 	if text != _body_text:
 		_body_text = text
@@ -334,10 +333,10 @@ func _refresh() -> void:
 		body.add_text(text)
 		body.pop()
 	var next: Button = _ui.get_node("Card/Content/Actions/Continue")
-	next.text = ("Close hint" if english else "收起提示") if _hint_only else ("Continue" if english else "继续")
+	next.text = (DeskLocalization.text("LOC_HIDE_HINT_FC06733C")) if _hint_only else (DeskLocalization.text("LOC_CONTINUE_7C969119"))
 	var requires_action := not _hint_only and str(step.get("action", "continue")) != "continue"
 	next.disabled = not _active or _blocked or _transitioning or requires_action
-	_ui.get_node("Card/Content/Actions/Skip").text = "Skip guide" if english else "跳过讲解"
+	_ui.get_node("Card/Content/Actions/Skip").text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
 	_ui.get_node("Card/Content/Actions/Skip").disabled = not _active or _blocked
 	_target = Rect2()
 	if _provider.is_valid() and not str(step.get("target", "")).is_empty():
@@ -387,9 +386,9 @@ func _refresh() -> void:
 	var waiting: Label = _ui.get_node("Card/Content/Waiting")
 	waiting.visible = not _blocked and (_return_overview or (requires_action and not compact))
 	if _return_overview:
-		waiting.text = "Press Esc to return to the main desk." if english else "按 Esc，回到主桌面。"
+		waiting.text = DeskLocalization.text("LOC_PRESS_ESC_TO_RETURN_TO_THE_MAIN_445EA13C")
 	else:
-		waiting.text = "Follow the current instruction." if english else "按当前提示完成操作。"
+		waiting.text = DeskLocalization.text("LOC_FOLLOW_THE_CURRENT_PROMPT_TO_FINISH_THE_40A63035")
 	var minimum_height := 128.0 if compact else 190.0
 	card.size = Vector2(width, minimum_height)
 	var content: Control = card.get_node("Content")
@@ -513,25 +512,25 @@ func inspection() -> Dictionary:
 
 func default_steps() -> Array[Dictionary]:
 	return [
-		{"id":"identity", "title":"一份工作", "text":"你是工作室的印刷编辑。能改稿，不能替别人理解它。后者的工资也没人发。", "title_en":"A job", "text_en":"You are the print editor. You can revise a message, not understand it for other people. Nobody pays for the latter.", "action":"continue"},
-		{"id":"work", "title":"你的稿件", "text":"把表达装进模因，调整它说给谁、说什么、怎样说。投放之后，读者和竞争者会替你继续改。通常不先征求意见。", "title_en":"Your copy", "text_en":"Build an expression, decide whom it addresses and how it speaks. Readers and competitors will revise it after publication. Usually without asking.", "action":"continue"},
-		{"id":"goals", "title":"四种收工方式", "text":"占有世界；让失控谱系独自活下去；与竞争者达到均衡；或让多个版本共同扩散。任意一种成立就能收工。不是要求你同时加四班。", "title_en":"Four ways out", "text_en":"Own the world; let an autonomous lineage survive; reach equilibrium with rivals; or spread through several distinct versions. Any one ends the job. Four overtime shifts are not required.", "action":"continue"},
-		{"id":"pickup", "title":"电话响了", "text":"接起电话。三个起始稿件都已备好。先选一个，不必填一整份报表。", "title_en":"The phone", "text_en":"Pick up. Three starter manuscripts are ready. Choose one; a full report is not required.", "action":"phone_pickup", "target":"fax/pickup"},
-		{"id":"starter", "title":"领一份稿", "text":"在电话对话里选一个起始模因。选择是稿件，不是替你决定以后的一切。", "title_en":"Take a manuscript", "text_en":"Choose one starter in the call. It gives you a manuscript, not every decision for the rest of your life.", "action":"starter_chosen", "target":"fax/options"},
-		{"id":"hangup", "title":"结束通话", "text":"挂断，回到桌面。电话不会替你印东西。", "title_en":"Hang up", "text_en":"Hang up and return to the desk. The telephone will not print it for you.", "action":"startup_finished", "target":"fax/hangup"},
-		{"id":"machines", "title":"传真与情报", "text":"传真收情报与卡牌。点纸堆露出的页签，就能翻看历史事件。", "title_en":"Incoming intelligence", "text_en":"The fax receives intelligence and cards. Its exposed paper tabs reopen past events.", "action":"continue", "target":"desktop/fax"},
-		{"id":"printer", "title":"打印机", "text":"打印机留下工作记录。世界会忘事，它负责记账。", "title_en":"The printer", "text_en":"The printer keeps your work record. The world forgets; it keeps the books.", "action":"continue", "target":"desktop/printer"},
-		{"id":"monitor", "title":"显示器", "text":"显示器盯着你的模因和点数。它没有加班费，所以一直盯着。", "title_en":"The monitor", "text_en":"The monitor watches your memes and points. It has no overtime pay, so it keeps watching.", "action":"continue", "target":"desktop/monitor"},
-		{"id":"speed", "title":"时间旋钮", "text":"试一下暂停、正常或快进。情报会继续打印，不用停下来盖章。读得快也不会多发奖励。", "title_en":"Time controls", "text_en":"Try pause, normal or fast. Messages keep printing without a stamp. Reading faster does not earn an extra reward.", "action":"speed_changed", "target":"speed"},
-		{"id":"edit", "title":"编辑纸", "text":"抽出编辑纸。补丁纸夹在回形针上；拿下纸片就卸下。左边的神经元会和它一起改变。", "title_en":"Editing paper", "text_en":"Pull out the editing sheet. Patch papers clip into place; taking a paper off uninstalls it. Its neuron changes the expression on the left.", "action":"sheet_selected", "match":{"id":"edit"}, "target":"sheet/edit"},
-		{"id":"module", "title":"夹一个补丁", "text":"把自己的补丁纸夹进空夹子。纸片不是重新选基模。原稿还得由你负责。", "title_en":"Clip a patch", "text_en":"Put an owned patch paper into a free clip. A patch is not a new core. You remain responsible for the manuscript.", "action":"module_installed", "target":"editor/clips"},
-		{"id":"context", "title":"语境切片", "text":"抽出培养纸，看看各个语境分区。语言、群体、话题放卡牌；立场与语用沿坐标轴调整。离开起点花筹码，退回起点归还。", "title_en":"Context slice", "text_en":"Pull out the context sheet. Language, groups and topics take cards; stance and pragmatics move along their axes. Moving out spends tokens, returning refunds them.", "action":"sheet_selected", "match":{"id":"cultivate"}, "target":"sheet/cultivate"},
-		{"id":"context_item", "title":"给表达一个语境", "text":"把一个可用物件放进对应空位。拆装会改稿，不会替世界改口。", "title_en":"Give it context", "text_en":"Put an available object in its matching free slot. Changing the manuscript does not rewrite the world.", "action":"context_installed", "target":"context/slot"},
-		{"id":"spread", "title":"传播纸", "text":"抽出传播纸。能力沿着同一棵树长出来，不是另一份采购清单。", "title_en":"Propagation sheet", "text_en":"Pull out the propagation sheet. Abilities grow along one connected tree, not a second shopping list.", "action":"sheet_selected", "match":{"id":"spread"}, "target":"sheet/spread"},
-		{"id":"skill", "title":"买一种能力", "text":"选一个付得起的能力。购买成功会作用于稿件。价格是真价格，后悔不是退款申请。", "title_en":"Buy an ability", "text_en":"Choose an affordable ability. A successful purchase affects the manuscript. Its price is real; regret is not a refund request.", "action":"skill_purchased", "target":"spread/skill"},
-		{"id":"publish", "title":"送去印刷", "text":"回编辑纸确认稿件，再决定投放国家。第一次发布免费。免费的是印刷，不是别人一定会采用。", "title_en":"Send to print", "text_en":"Confirm the manuscript on the editing sheet, then select a country. First publication is free. Adoption is not included.", "action":"publish_requested", "target":"editor/publish"},
-		{"id":"country", "title":"选一个落点", "text":"在地图纸上选国家。不同人群与语境会影响采用；国界不是情绪的围墙。", "title_en":"Choose a location", "text_en":"Choose a country on the map. Audiences and context affect adoption. Borders are not walls around emotions.", "action":"country_selected", "target":"map/country"},
-		{"id":"confirm", "title":"开始流通", "text":"点击国家上方带对勾的气泡。气泡破裂后，稿件开始流传。新事件会和卡牌一起打印出来；把卡牌拖到桌面，再装进对应槽位。", "title_en":"Into circulation", "text_en":"Click the checkmark bubble above the country. It pops and your manuscript starts circulating. New events and cards print together; drag the cards onto the desk, then into their matching slots.", "action":"published", "target":"map/confirm"}
+		{"id":"identity", "title":"LOC_A_JOB_6E979BE1", "text":"LOC_YOU_ARE_THE_STUDIO_S_PRINT_EDITOR_FF8B8683", "action":"continue"},
+		{"id":"work", "title":"LOC_YOUR_DRAFT_B0E0C947", "text":"LOC_PUT_AN_EXPRESSION_INTO_A_MEME_ADJUST_FFBF95D7", "action":"continue"},
+		{"id":"goals", "title":"LOC_FOUR_WAYS_TO_FINISH_648EFA2D", "text":"LOC_OWN_THE_WORLD_LET_AN_UNCONTROLLED_LINEAGE_FCB2FB17", "action":"continue"},
+		{"id":"pickup", "title":"LOC_THE_PHONE_IS_RINGING_340485E6", "text":"LOC_ANSWER_THE_PHONE_THREE_STARTING_DRAFTS_ARE_B98B5B3A", "action":"phone_pickup", "target":"fax/pickup"},
+		{"id":"starter", "title":"LOC_TAKE_A_DRAFT_72393BB5", "text":"LOC_CHOOSE_A_STARTING_MEME_IN_THE_CALL_D26D5127", "action":"starter_chosen", "target":"fax/options"},
+		{"id":"hangup", "title":"LOC_END_THE_CALL_ADD703A6", "text":"LOC_HANG_UP_AND_RETURN_TO_THE_DESK_FA41627B", "action":"startup_finished", "target":"fax/hangup"},
+		{"id":"machines", "title":"LOC_FAX_AND_REPORTS_5CF0BA35", "text":"LOC_THE_FAX_RECEIVES_REPORTS_AND_CARDS_CLICK_FF09A1DF", "action":"continue", "target":"desktop/fax"},
+		{"id":"printer", "title":"LOC_PRINTER_7D6376EF", "text":"LOC_THE_PRINTER_KEEPS_YOUR_WORK_LOG_THE_5F08155E", "action":"continue", "target":"desktop/printer"},
+		{"id":"monitor", "title":"LOC_MONITOR_1A13EA59", "text":"LOC_THE_MONITOR_WATCHES_YOUR_MEMES_AND_POINTS_80B39D7D", "action":"continue", "target":"desktop/monitor"},
+		{"id":"speed", "title":"LOC_TIME_CONTROLS_4A53DBA9", "text":"LOC_TRY_PAUSE_NORMAL_SPEED_OR_FAST_FORWARD_DF69CA7C", "action":"speed_changed", "target":"speed"},
+		{"id":"edit", "title":"LOC_EDIT_SHEET_EFF562AB", "text":"LOC_PULL_OUT_THE_EDIT_SHEET_PATCHES_CLIP_C10C8769", "action":"sheet_selected", "match":{"id":"edit"}, "target":"sheet/edit"},
+		{"id":"module", "title":"LOC_CLIP_IN_A_PATCH_111ED358", "text":"LOC_CLIP_ONE_OF_YOUR_PATCH_SLIPS_INTO_E3D38B97", "action":"module_installed", "target":"editor/clips"},
+		{"id":"context", "title":"LOC_CONTEXT_SLICES_82B22623", "text":"LOC_PULL_OUT_THE_CULTIVATE_SHEET_AND_INSPECT_DAD209DF", "action":"sheet_selected", "match":{"id":"cultivate"}, "target":"sheet/cultivate"},
+		{"id":"context_item", "title":"LOC_GIVE_THE_EXPRESSION_A_CONTEXT_020970BF", "text":"LOC_PLACE_AN_AVAILABLE_ITEM_INTO_ITS_MATCHING_92ABA624", "action":"context_installed", "target":"context/slot"},
+		{"id":"spread", "title":"LOC_SPREAD_SHEET_9D66347F", "text":"LOC_PULL_OUT_THE_SPREAD_SHEET_ABILITIES_GROW_5530382E", "action":"sheet_selected", "match":{"id":"spread"}, "target":"sheet/spread"},
+		{"id":"skill", "title":"LOC_BUY_AN_ABILITY_697FC774", "text":"LOC_CHOOSE_AN_ABILITY_YOU_CAN_AFFORD_A_97E2AFCC", "action":"skill_purchased", "target":"spread/skill"},
+		{"id":"publish", "title":"LOC_SEND_TO_PRINT_832C1ECB", "text":"LOC_CONFIRM_THE_DRAFT_ON_THE_EDIT_SHEET_66DB30DA", "action":"publish_requested", "target":"editor/publish"},
+		{"id":"country", "title":"LOC_CHOOSE_A_DESTINATION_4678E011", "text":"LOC_CHOOSE_A_COUNTRY_ON_THE_MAP_SHEET_6A9D0811", "action":"country_selected", "target":"map/country"},
+		{"id":"confirm", "title":"LOC_START_CIRCULATING_4530C87E", "text":"LOC_CLICK_THE_CHECKED_BUBBLE_ABOVE_A_COUNTRY_B1C53CA4", "action":"published", "target":"map/confirm"}
 	]
 
 func _notification(what: int) -> void:

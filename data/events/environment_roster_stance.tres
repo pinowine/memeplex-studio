@@ -26,9 +26,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_roster_stance"
-title = "下班前，另一批职员发布排班立场句"
-narrative = "另一批职员在下班前发布了自己的排班立场句，用反说的致谢表达不满。几家职员群将它与现有说法并排比较，对各种来源的结论都更谨慎了。"
-mentor_comment = "这声谢谢像一张退回的工单，先看备注，别拿礼貌字面验收。"
+title = "LOC_ANOTHER_GROUP_OF_OFFICE_WORKERS_POSTS_A_A18C6F0A"
+narrative = "LOC_BEFORE_LEAVING_WORK_ANOTHER_GROUP_OF_OFFICE_BDE8CB06"
+mentor_comment = "LOC_THAT_THANK_YOU_SOUNDS_LIKE_A_RETURNED_EF0DA375"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("work", "policy", "trust")
 operation_ids = PackedStringArray("emerge", "contest")

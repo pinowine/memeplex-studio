@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("1_script")
 id = &"ritual"
-title = "参与仪式"
-description = "用触发、动作、回应及退出构成接龙。回应和退出合并在第三个槽位，避免宣称三个槽位覆盖完整仪式拓扑。"
+title = "LOC_PARTICIPATORY_RITUAL_A2DFCA90"
+description = "LOC_BUILDS_A_RESPONSE_CHAIN_FROM_A_TRIGGER_FD58FFDB"
 required_slots = PackedStringArray("trigger", "action", "response_and_exit")
-slot_prompts = PackedStringArray("谁在什么时刻发起？", "参与者重复什么动作？", "别人如何接续，什么时候退出？")
-default_values = PackedStringArray("有人发出今晚又晚点的站牌", "每人补一站自己的小故事", "下一位接一句并署站名；说到终点就结束")
-family_anchor = "参与者以可接续的同一动作表达共同经验"
+slot_prompts = PackedStringArray("LOC_WHO_STARTS_IT_AND_WHEN_258B2065", "LOC_WHAT_ACTION_DO_PARTICIPANTS_REPEAT_BC809997", "LOC_HOW_DO_OTHERS_CONTINUE_AND_WHEN_DO_EB62506A")
+default_values = PackedStringArray("LOC_SOMEONE_POSTS_A_STATION_SIGN_SAYING_TONIGHT_C0659979", "LOC_EACH_PERSON_ADDS_ONE_STATION_S_WORTH_903B98E3", "LOC_THE_NEXT_PERSON_ADDS_A_LINE_AND_6EFBD828")
+family_anchor = "LOC_PARTICIPANTS_EXPRESS_SHARED_EXPERIENCES_THROUGH_THE_SAME_0B76002B"
 split_threshold = 0.6
 evidence_status = &"design"

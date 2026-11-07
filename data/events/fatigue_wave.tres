@@ -27,9 +27,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"fatigue_wave"
-title = "推荐流反复推送同一句，转发渐少"
-narrative = "同一句表达连续出现在公开推荐流和几个本地群聊里。部分使用者开始跳过熟悉的开头，仍认得这套说法，却不愿再为每次重复写一条回应。"
-mentor_comment = "熟悉的开头已经够像闹钟，先别给它安排下一次响铃。"
+title = "LOC_REPEATED_RECOMMENDATIONS_OF_THE_SAME_PHRASE_LEAD_DD21F52D"
+narrative = "LOC_THE_SAME_EXPRESSION_APPEARS_REPEATEDLY_IN_THE_020B983A"
+mentor_comment = "LOC_THAT_FAMILIAR_OPENING_ALREADY_SOUNDS_LIKE_AN_43F3C26E"
 origin = &"transmission"
 topic_ids = PackedStringArray("platform_tools", "entertainment")
 operation_ids = PackedStringArray("fatigue", "attention_shift")

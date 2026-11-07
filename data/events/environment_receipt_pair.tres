@@ -26,9 +26,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_receipt_pair"
-title = "职员圈流行两张账单的对照说法"
-narrative = "一个职员小圈把两张日常账单并排，配上自己的对照说法。其他同事开始拿各自的账单接写，通勤群里的生活成本讨论转向这套新表达。"
-mentor_comment = "两张账单比两页态度更会说话，至少前者写清了谁在付钱。"
+title = "LOC_A_TWO_BILL_COMPARISON_CATCHES_ON_AMONG_ECA22A93"
+narrative = "LOC_A_SMALL_CIRCLE_OF_OFFICE_WORKERS_PLACES_BDA74F82"
+mentor_comment = "LOC_TWO_BILLS_SAY_MORE_THAN_TWO_PAGES_767D6192"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("work", "cost_of_living")
 operation_ids = PackedStringArray("emerge", "attention_shift")

@@ -46,9 +46,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_context_removed"
-title = "主句截图脱离说明段落流传"
-narrative = "一张只剩主句的截图在学生群流传，原先的解释段落没有一同出现。几名读者将截图与原帖并排质疑，转发者随后提出无背景短版的改写方案。"
-mentor_comment = "截图把解释段落留在门外，先把它领回来，别指望主句独自作证。"
+title = "LOC_A_SCREENSHOT_OF_THE_MAIN_SENTENCE_CIRCULATES_D72B1BBA"
+narrative = "LOC_A_SCREENSHOT_CONTAINING_ONLY_THE_MAIN_SENTENCE_9CEF7396"
+mentor_comment = "LOC_THE_SCREENSHOT_LEFT_THE_EXPLANATION_OUTSIDE_BRING_E7853C38"
 origin = &"transmission"
 topic_ids = PackedStringArray("language", "trust")
 operation_ids = PackedStringArray("remix", "contest")

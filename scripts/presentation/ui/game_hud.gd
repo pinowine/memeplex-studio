@@ -87,7 +87,7 @@ func _ready() -> void:
 	for edit in _slot_edits:
 		edit.text_changed.connect(func(_text: String) -> void: _refresh_preview())
 	for permission_id in ["allowed", "conditional", "restricted", "unknown"]:
-		var labels := {"allowed": "允许再利用", "conditional": "有条件许可", "restricted": "限制再利用", "unknown": "许可未知"}
+		var labels := {"allowed": DeskLocalization.source("LOC_REUSE_ALLOWED_AD9E7D8B"), "conditional": DeskLocalization.source("LOC_CONDITIONAL_PERMISSION_59643F75"), "restricted": DeskLocalization.source("LOC_REUSE_RESTRICTED_0D834541"), "unknown": DeskLocalization.source("LOC_PERMISSION_UNKNOWN_58F3FF10")}
 		_permission.add_item(str(labels[permission_id]))
 		_permission.set_item_metadata(_permission.item_count - 1, StringName(permission_id))
 	%PoliticalKnown.toggled.connect(_on_political_known)
@@ -111,7 +111,7 @@ func configure(catalog: MemeDemoCatalog) -> void:
 	for preset in _presets:
 		var defaults := PackedStringArray(_field(preset,"default_values",[]))
 		var source_expression := DeskLocalization.source_join(" / ",defaults)
-		DeskLocalization.source_format("%s：%s",[str(_field(preset,"title","")),source_expression],[0,1])
+		DeskLocalization.source_format("LOC_S_S_DCCB2F9E",[str(_field(preset,"title","")),source_expression],[0,1])
 	_fill_codex()
 	_fill_options(_kernel, _kernels)
 	var groups: Array = _values(catalog, "groups")
@@ -264,30 +264,30 @@ func set_setup_stage(stage: String) -> void:
 	_setup_stage = stage
 	%Publish.disabled = stage == "starter_call" or _kernels.is_empty() or _group.item_count == 0 or _channel.item_count == 0
 	var initial := stage in ["meme", "country"]
-	%Publish.text = "确认模因，选择投放国家" if initial else "确认表达并发布"
-	%SelectCountry.text = "确认模因后选国" if initial else "选国／收起工作台"
-	%Create.text = "返回修改模因" if stage == "country" else ("打印 / 创作" if _desk_plate.has_area() else "创建模因")
-	%WorkbenchHint.text = "把收到的模因写成自己的表达，再选一处地方投放。" if initial else "写一份新版，让这句话继续走下去。"
-	%MapHint.text = "模因已确认。点击一个国家，再点击上方的勾选气泡开始投放。" if stage == "country" else "点击地图查看国家；翻开左侧稿纸继续创作。"
+	%Publish.text = DeskLocalization.source("LOC_CONFIRM_MEME_AND_SELECT_DEPLOYMENT_COUNTRY_FECB7AC1") if initial else DeskLocalization.source("LOC_CONFIRM_EXPRESSION_AND_PUBLISH_A07B12C0")
+	%SelectCountry.text = DeskLocalization.source("LOC_CONFIRM_MEME_THEN_SELECT_COUNTRY_2C212C12") if initial else DeskLocalization.source("LOC_CHOOSE_COUNTRY_CLOSE_WORKBENCH_864F802C")
+	%Create.text = DeskLocalization.source("LOC_RETURN_TO_EDIT_MEME_9394F754") if stage == "country" else (DeskLocalization.source("LOC_PRINT_CREATE_7249B1FC") if _desk_plate.has_area() else DeskLocalization.source("LOC_CREATE_MEME_F3931F0A"))
+	%WorkbenchHint.text = DeskLocalization.source("LOC_MAKE_THE_RECEIVED_MEME_YOUR_OWN_THEN_3D6A7BC5") if initial else DeskLocalization.source("LOC_WRITE_A_NEW_VERSION_AND_LET_THIS_C19BFF00")
+	%MapHint.text = DeskLocalization.source("LOC_YOUR_MEME_IS_READY_CLICK_A_COUNTRY_086F32BB") if stage == "country" else DeskLocalization.source("LOC_CLICK_THE_MAP_TO_INSPECT_COUNTRIES_OPEN_9876DE16")
 	if stage == "starter_call":
 		%Publish.disabled = true
-		%WorkbenchHint.text = "先接听 67；选一份起始表达，挂断后再动笔。"
+		%WorkbenchHint.text = DeskLocalization.source("LOC_ANSWER_FIRST_CHOOSE_A_STARTING_EXPRESSION_THEN_9208D56C")
 
 
 func render(state: Dictionary) -> void:
 	_last_state = state.duplicate(true)
 	_design_workbench.sync_state(state)
 	var phase := str(state.get("phase", "draft"))
-	var country := DeskLocalization.text(str(state.get("country_title","尚未选国")))
+	var country := DeskLocalization.text(str(state.get("country_title",DeskLocalization.source("LOC_NO_COUNTRY_SELECTED_B9A764C7"))))
 	if country.is_empty():
-		country = "尚未选国"
-	%Date.text = DeskLocalization.format_text("%s  ·  模拟第 %d 小时", [country, int(state.get("hour", 0))])
-	%Status.text = DeskLocalization.text(str(state.get("status", "创作准备")))
-	%PointBalance.text = DeskLocalization.format_text("Meme 点数：%d", int(state.get("meme_points", 0)))
+		country = DeskLocalization.source("LOC_NO_COUNTRY_SELECTED_B9A764C7")
+	%Date.text = DeskLocalization.format_text("LOC_S_SIMULATION_HOUR_D_18C41F7F", [country, int(state.get("hour", 0))])
+	%Status.text = DeskLocalization.text(str(state.get("status", DeskLocalization.source("LOC_PREPARING_TO_CREATE_1BF261FE"))))
+	%PointBalance.text = DeskLocalization.format_text("LOC_MEME_D_47732400", int(state.get("meme_points", 0)))
 	%PointCost.hide()
-	%Attention.text = DeskLocalization.format_text("注意力预算 %d  ·  玩家 %d / 外部 %d / 背景 %d", [int(state.get("attention_budget", 0)), int(state.get("attention_player", 0)), int(state.get("attention_external", 0)), int(state.get("attention_background", 0))])
+	%Attention.text = DeskLocalization.format_text("LOC_ATTENTION_BUDGET_D_PLAYER_D_EXTERNAL_D_03A2A134", [int(state.get("attention_budget", 0)), int(state.get("attention_player", 0)), int(state.get("attention_external", 0)), int(state.get("attention_background", 0))])
 	%MapHintCard.visible = phase == "draft" and not _workbench.visible
-	%Metrics.text = DeskLocalization.format_text("曝光 %d  ·  采用 %d\n作者归属 %d  ·  来源影响 %d\n家族 %d  ·  版本 %d  ·  疲劳 %.2f", [
+	%Metrics.text = DeskLocalization.format_text("LOC_EXPOSURE_D_ADOPTION_D_AUTHOR_OWNERSHIP_D_95F22674", [
 		int(state.get("exposed", 0)), int(state.get("adopted", 0)),
 		int(state.get("owned_adopted", 0)), int(state.get("lineage_adopted", 0)),
 		int(state.get("families", 0)), int(state.get("variants", 0)), float(state.get("fatigue", 0.0))])
@@ -305,18 +305,18 @@ func render(state: Dictionary) -> void:
 		%ResultCard.hide()
 	%EventLog.clear()
 	for event in state.get("events", []):
-		var item_index: int = %EventLog.add_item(DeskLocalization.text(str(event.get("title", "事件"))))
-		%EventLog.set_item_tooltip(item_index, DeskLocalization.format_text("%s\n%s\n67：%s\n执行详情：%s", [DeskLocalization.text(str(event.get("narrative", ""))), DeskLocalization.text(str(event.get("impact_text", ""))), DeskLocalization.text(str(event.get("mentor_comment", ""))), str(event.get("effect_text", "未提供作用记录"))]))
+		var item_index: int = %EventLog.add_item(DeskLocalization.text(str(event.get("title", DeskLocalization.source("LOC_EVENT_C560201B")))))
+		%EventLog.set_item_tooltip(item_index, DeskLocalization.format_text("LOC_S_S_S_EXECUTION_DETAILS_S_AAB2EB9E", [DeskLocalization.text(str(event.get("narrative", ""))), DeskLocalization.text(str(event.get("impact_text", ""))), DeskLocalization.text(str(event.get("mentor_comment", ""))), str(event.get("effect_text", DeskLocalization.source("LOC_NO_EFFECT_RECORD_PROVIDED_6C2C0DE7")))]))
 		PaperStyle.suppress_item_tooltip(%EventLog, item_index)
 	%Lineage.clear()
 	for variant in state.get("lineage", []):
-		var ownership := DeskLocalization.text("玩家家族" if bool(variant.get("owned",false)) else "外部家族")
-		var line := DeskLocalization.format_text("%s · %s · 偏移 %.2f", [str(variant.get("id", "")), ownership, float(variant.get("semantic_distance", 0.0))])
+		var ownership := DeskLocalization.text("LOC_PLAYER_FAMILY_4C35ED8C" if bool(variant.get("owned",false)) else DeskLocalization.source("LOC_EXTERNAL_FAMILY_4A76EB88"))
+		var line := DeskLocalization.format_text("LOC_S_S_DRIFT_F_5E4194C7", [str(variant.get("id", "")), ownership, float(variant.get("semantic_distance", 0.0))])
 		var item_index: int = %Lineage.add_item(line)
-		%Lineage.set_item_tooltip(item_index, DeskLocalization.format_text("家族：%s\n直接创作者：%s\n父版本：%s\n表达：%s\n源头：%s", [str(variant.get("family_id", "")), str(variant.get("creator", "")), str(variant.get("parent_ids", [])), str(variant.get("text", "")), str(variant.get("text", ""))]))
+		%Lineage.set_item_tooltip(item_index, DeskLocalization.format_text("LOC_FAMILY_S_DIRECT_CREATOR_S_PARENT_VERSION_A445BF1F", [str(variant.get("family_id", "")), str(variant.get("creator", "")), str(variant.get("parent_ids", [])), str(variant.get("text", "")), str(variant.get("text", ""))]))
 		PaperStyle.suppress_item_tooltip(%Lineage, item_index)
 	var discoveries: Array = state.get("discoveries", [])
-	%Discoveries.text = DeskLocalization.format_text("已收录：%s", (", ".join(PackedStringArray(discoveries)) if not discoveries.is_empty() else DeskLocalization.text("暂无")))
+	%Discoveries.text = DeskLocalization.format_text("LOC_COLLECTED_S_9534F75E", (", ".join(PackedStringArray(discoveries)) if not discoveries.is_empty() else DeskLocalization.text("LOC_NONE_YET_B336A174")))
 	%EconomyLog.clear()
 	for entry in state.get("economy_log", []):
 		%EconomyLog.add_item(str(entry))
@@ -327,12 +327,12 @@ func render(state: Dictionary) -> void:
 
 
 func show_event(event: Dictionary) -> void:
-	%EventTitle.text = DeskLocalization.text(str(event.get("title", "传播事件")))
+	%EventTitle.text = DeskLocalization.text(str(event.get("title", DeskLocalization.source("LOC_TRANSMISSION_EVENT_286300D4"))))
 	%EventOrigin.text = "%s / %s" % [str(event.get("origin", "")), str(event.get("definition_id", ""))]
-	%Narrative.text = DeskLocalization.text(str(event.get("narrative", "没有提供叙事文本。")))
+	%Narrative.text = DeskLocalization.text(str(event.get("narrative", DeskLocalization.source("LOC_NO_NARRATIVE_TEXT_PROVIDED_983CDF7F"))))
 	%ImpactSummary.text = DeskLocalization.text(str(event.get("impact_text", "")))
-	%MentorComment.text = "67：" + DeskLocalization.text(str(event.get("mentor_comment", DeskLocalization.text("先看清消息的出处，再决定要不要发声。"))))
-	%ActualEffect.text = "\n".join(DeskLocalization.lines(Array(str(event.get("effect_text","没有提供实际作用记录。")).split("\n"))))
+	%MentorComment.text = "67：" + DeskLocalization.text(str(event.get("mentor_comment", DeskLocalization.text("LOC_CHECK_WHERE_THE_MESSAGE_CAME_FROM_BEFORE_5E5A9B91"))))
+	%ActualEffect.text = "\n".join(DeskLocalization.lines(Array(str(event.get("effect_text",DeskLocalization.source("LOC_NO_ACTUAL_EFFECT_RECORD_PROVIDED_B7B90294"))).split("\n"))))
 	%ActualEffect.hide()
 	%EffectDetails.button_pressed = false
 	%EventCard.visible = _desk_controller == null
@@ -347,10 +347,10 @@ func dismiss_fax() -> void:
 
 
 func show_result(result: Dictionary) -> void:
-	%ResultTitle.text = DeskLocalization.text(str(result.get("title", "本轮观察完成")))
+	%ResultTitle.text = DeskLocalization.text(str(result.get("title", DeskLocalization.source("LOC_OBSERVATION_COMPLETE_25B11800"))))
 	var final_state: Dictionary = _last_state.duplicate(true)
 	final_state.merge(result, true)
-	%ResultSummary.text = DeskLocalization.format_text("观察至第 %d 游戏小时 · 合成样本\n曝光 %d · 采用 %d\n作者归属 %d · 来源影响 %d\n家族 %d · 版本 %d\nMeme 点数余额 %d\n注意力预算 %d = 玩家 %d + 外部 %d + 背景 %d", [
+	%ResultSummary.text = DeskLocalization.format_text("LOC_OBSERVED_THROUGH_GAME_HOUR_D_SYNTHETIC_SAMPLE_72EC36A4", [
 		int(final_state.get("hour", 0)), int(final_state.get("exposed", 0)), int(final_state.get("adopted", 0)),
 		int(final_state.get("owned_adopted", 0)), int(final_state.get("lineage_adopted", 0)),
 		int(final_state.get("families", 0)), int(final_state.get("variants", 0)), int(final_state.get("meme_points", 0)),
@@ -403,7 +403,7 @@ func set_menu(mode: String) -> void:
 	%SettingsMenu.visible = mode == "settings"
 	%DeveloperMenu.visible = mode == "developer"
 	%CodexPanel.visible = mode == "codex"
-	%DeveloperStatus.text = DeskLocalization.format_text("当前内容：%d 个案例预设；事件工具仅修改开发内容副本。", _presets.size())
+	%DeveloperStatus.text = DeskLocalization.format_text("LOC_CURRENT_CONTENT_D_CASE_PRESETS_THE_EVENT_922995D7", _presets.size())
 	_refresh_modal()
 	if mode == "settings":
 		%Save.grab_focus()
@@ -448,12 +448,12 @@ func set_legend(rows: Array[Dictionary]) -> void:
 	for row in rows:
 		var kind := str(row.get("kind", "appearance"))
 		var marker := "●" if kind == "adoption" else "○"
-		var index: int = %Legend.add_item("%s %s" % [marker, DeskLocalization.text(str(row.get("title", row.get("id", "模因"))))])
+		var index: int = %Legend.add_item("%s %s" % [marker, DeskLocalization.text(str(row.get("title", row.get("id", DeskLocalization.source("LOC_MEME_B54CDAD8")))))])
 		%Legend.set_item_metadata(index, row.duplicate(true))
 		var color: Variant = row.get("color", Color(0.28, 0.25, 0.2))
 		if color is Color:
 			%Legend.set_item_custom_fg_color(index, color)
-		%Legend.set_item_tooltip(index, DeskLocalization.format_text("ID：%s\n标记：%s\n范围：%s\n%s", [str(row.get("id", "")), kind, str(row.get("scope", "")), %LegendNote.text]))
+		%Legend.set_item_tooltip(index, DeskLocalization.format_text("LOC_ID_S_TAGS_S_SCOPE_S_S_DA9A04F9", [str(row.get("id", "")), kind, str(row.get("scope", "")), %LegendNote.text]))
 		PaperStyle.suppress_item_tooltip(%Legend, index)
 	%LegendEmpty.visible = rows.is_empty()
 
@@ -551,11 +551,11 @@ func layout_screen_modals() -> void:
 func _fill_codex() -> void:
 	%CodexList.clear()
 	for preset in _presets:
-		var index: int = %CodexList.add_item(DeskLocalization.text(str(_field(preset, "title", _field(preset, "id", "表达")))))
+		var index: int = %CodexList.add_item(DeskLocalization.text(str(_field(preset, "title", _field(preset, "id", DeskLocalization.source("LOC_EXPRESSION_0476B565"))))))
 		%CodexList.set_item_metadata(index, preset)
-		%CodexList.set_item_tooltip(index, "%s / %s" % [DeskLocalization.text(str(_field(preset, "title", ""))), DeskLocalization.text("收录的表达")])
+		%CodexList.set_item_tooltip(index, "%s / %s" % [DeskLocalization.text(str(_field(preset, "title", ""))), DeskLocalization.text("LOC_COLLECTED_EXPRESSION_F1ECA4D4")])
 		PaperStyle.suppress_item_tooltip(%CodexList, index)
-	%CodexDetails.text = "这里收着一些曾经流传的表达。"
+	%CodexDetails.text = DeskLocalization.source("LOC_AN_ARCHIVE_OF_EXPRESSIONS_THAT_HAVE_CIRCULATED_2B501899")
 	if %CodexList.item_count > 0:
 		%CodexList.select(0)
 		_show_codex_entry(0)
@@ -596,13 +596,13 @@ func _on_kernel_selected(index: int) -> void:
 	%KernelDescription.text = str(_field(kernel, "description", ""))
 	%Replaceable.text = ", ".join(_slot_ids)
 	_fill_preset_options(str(_field(kernel, "id", "")))
-	%PresetSource.text = "自定义结构：未选择案例来源。来源不等于素材许可；参数仍由玩家设定。"
+	%PresetSource.text = DeskLocalization.source("LOC_CUSTOM_STRUCTURE_NO_CASE_SOURCE_SELECTED_A_4D09B8F4")
 	_refresh_preview()
 
 
 func _fill_preset_options(kernel_id: String) -> void:
 	_preset.clear()
-	_preset.add_item("自定义 · 基模默认结构")
+	_preset.add_item(DeskLocalization.source("LOC_CUSTOM_DEFAULT_BASE_FORM_STRUCTURE_EA40F945"))
 	_preset.set_item_metadata(0, "")
 	for preset in _presets:
 		if str(_field(preset, "kernel_id", "")) != kernel_id:
@@ -632,7 +632,7 @@ func _on_preset_selected(index: int) -> void:
 			DeskLocalization.bind_edit(_slot_edits[slot_index],defaults[slot_index],true)
 			_slot_labels[slot_index].text = prompts[slot_index]
 		%Replaceable.text = ", ".join(_slot_ids)
-		%PresetSource.text = DeskLocalization.format_text("%s\n来源：%s\nSHA-256：%s\n文档：%s\n家族锚点：%s\n%s", [str(_field(preset, "source_case_id", "")), str(_field(preset, "source_path", "")), str(_field(preset, "source_sha256", "")), str(_field(preset, "source_document_path", "")), str(_field(preset, "family_anchor", "")), str(_field(preset, "context_hint", ""))])
+		%PresetSource.text = DeskLocalization.format_text("LOC_S_SOURCE_S_SHA_S_DOCUMENT_S_0C3C75BB", [str(_field(preset, "source_case_id", "")), str(_field(preset, "source_path", "")), str(_field(preset, "source_sha256", "")), str(_field(preset, "source_document_path", "")), str(_field(preset, "family_anchor", "")), str(_field(preset, "context_hint", ""))])
 		_refresh_preview()
 		return
 
@@ -654,7 +654,7 @@ func _on_political_known(known: bool) -> void:
 
 func _toggle_fullscreen() -> void:
 	_fullscreen = not _fullscreen
-	%Fullscreen.text = "还原半页" if _fullscreen else "展开纸页"
+	%Fullscreen.text = DeskLocalization.source("LOC_RESTORE_HALF_PAGE_A0F9F1A2") if _fullscreen else DeskLocalization.source("LOC_OPEN_FULL_PAGE_8C20D5BC")
 	_layout_panels()
 
 
@@ -664,7 +664,7 @@ func _refresh_preview() -> void:
 	var parts := PackedStringArray()
 	for index in _slot_ids.size():
 		parts.append(_slot_edits[index].text.strip_edges())
-	%Preview.text = "。".join(parts) if not parts.is_empty() else "选择基模，填写槽位，形成具体表达。"
+	%Preview.text = "。".join(parts) if not parts.is_empty() else DeskLocalization.text("LOC_CHOOSE_A_BASE_FORM_AND_FILL_ITS_5F9850B8")
 	if _design_workbench != null and not _design_syncing: _design_workbench.set_draft(get_draft())
 
 
@@ -717,7 +717,7 @@ func _install_interface_language() -> void:
 	var row := HBoxContainer.new()
 	row.name = "InterfaceLanguageRow"
 	var caption := Label.new()
-	caption.text = "界面语言"
+	caption.text = DeskLocalization.source("LOC_INTERFACE_LANGUAGE_3D138685")
 	caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(caption)
 	_interface_language = CheckButton.new()

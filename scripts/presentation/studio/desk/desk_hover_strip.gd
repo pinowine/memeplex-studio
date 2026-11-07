@@ -102,10 +102,10 @@ func _qualifiers() -> Array[String]:
 	for key in ["count", "available", "quantity"]:
 		var value: Variant = _hover.get(key)
 		if value is int and value >= 0:
-			result.append(DeskLocalization.format_text("可用 %d", value))
+			result.append(DeskLocalization.format_text("LOC_AVAILABLE_D_7E88E6AF", value))
 			break
 		if value is float and is_finite(value) and value >= 0.0 and value == floor(value) and value < 9223372036854775807.0:
-			result.append(DeskLocalization.format_text("可用 %d", int(value)))
+			result.append(DeskLocalization.format_text("LOC_AVAILABLE_D_7E88E6AF", int(value)))
 			break
 	var status := _first_text(["status"])
 	if not status.is_empty(): result.append(status)
