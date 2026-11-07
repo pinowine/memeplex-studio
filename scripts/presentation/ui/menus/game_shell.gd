@@ -78,6 +78,7 @@ func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 	if bool(step.get("auto_overview", false)): page._return_to_desktop()
 	if _id == "starter": page.desk._show_component_details()
 	if _id == "starter_confirm": _reveal_starter_confirmation()
+	if _id == "editor_context": _reveal_editor_context()
 	var action := str(step.get("action", ""))
 	if action == "country_selected" and page.atlas.selected_country >= 0:
 		tutorial.observe_action("country_selected", {"index":page.atlas.selected_country})
@@ -103,6 +104,12 @@ func _reveal_starter_confirmation() -> void:
 	if reader.is_visible_in_tree() and reader._choice_buttons.size() > 3:
 		reader._choice_scroll.ensure_control_visible(reader._choice_buttons[3])
 
+func _reveal_editor_context() -> void:
+	await get_tree().process_frame
+	if not tutorial._active or str(tutorial.inspection().step.get("id", "")) != "editor_context": return
+	var editor: Control = page.hud.design_workbench()
+	editor._detail_scroll.ensure_control_visible(editor._overview_data)
+
 func _target(id: String) -> Variant:
 	var target: Variant = _logical_target(id)
 	# Physical controls keep their logical nodes visible but make their ink
@@ -113,6 +120,9 @@ func _target(id: String) -> Variant:
 	if id.begins_with("fax/option/") or id == "fax/confirm":
 		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
 		return area.intersection(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
+	if id in ["editor/context", "editor/details"]:
+		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
+		return area.intersection(_tutorial_project_rect(page.hud.design_workbench()._detail_scroll))
 	return target
 
 func _logical_target(id: String) -> Variant:
@@ -149,7 +159,10 @@ func _logical_target(id: String) -> Variant:
 		"monitor/points": return _area_target(page.desk._monitor, page.desk._monitor._screen_rect)
 		"monitor/ideology", "monitor/pragmatics": return page.desk._monitor._inventory
 		"sheet/tabs": return _targets_bounds(["sheet/map", "sheet/edit", "sheet/cultivate", "sheet/spread"])
-		"editor/expression": return editor._part_content
+		"editor/name": return editor._overview_name
+		"editor/expression": return editor._final_expression
+		"editor/context": return editor._overview_data
+		"editor/details": return editor._part_content
 		"editor/preview": return editor._neuron
 		"context/axes": return _context_regions_target(editor.context_slice(), ["stance", "pragmatic"])
 		"context/layers": return _context_regions_target(editor.context_slice(), ["language", "group", "topics"])
@@ -162,7 +175,7 @@ func _logical_target(id: String) -> Variant:
 			for index in slots.size():
 				if not str(slots[index]).is_empty(): continue
 				var clip: Control = editor.module_clip_parent(index)
-				if clip != null: return _area_target(clip, Rect2(clip.size.x - 28, 0, 28, 48))
+				if clip != null: return clip
 			return null
 		"editor/publish":
 			var publish: Control = page.hud.get_node("%Publish")
@@ -285,6 +298,8 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	if id in ["fax/options", "fax/confirm"]:
 		if page.desk._slot_reader.is_visible_in_tree():
 			areas.append(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
+	elif bool(step.get("scroll", false)) and id == "editor/context":
+		areas.append(_tutorial_project_rect(editor._detail_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
 	elif bool(step.get("map_navigation", false)) and page.atlas.map_input.is_visible_in_tree():
