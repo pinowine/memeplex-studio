@@ -146,7 +146,6 @@ func starter_draft(preset_id: String, base: Dictionary = {}) -> Dictionary:
 	return preset.to_draft(defaults)
 
 func design_action(action: String, params: Dictionary = {}) -> PackedStringArray:
-	if phase == "event": return PackedStringArray([DeskLocalization.source("LOC_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_F983CFC2")])
 	if action == "choose_starter" and (publish_count > 0 or phase != "draft"):
 		return PackedStringArray([DeskLocalization.source("LOC_A_DEPLOYED_RUN_CANNOT_SELECT_A_DIFFERENT_1172A7D4")])
 	if action == "choose_starter":
@@ -239,7 +238,6 @@ func _encoded_draft(draft: Dictionary) -> Dictionary:
 	return encoded
 
 func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringArray:
-	if phase == "event": return PackedStringArray([DeskLocalization.source("LOC_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_F983CFC2")])
 	var errors: PackedStringArray = design_state.skill_errors(id)
 	if not errors.is_empty(): return errors
 	var cost: int = int(design_state.rules.find("skills", id).cost)
