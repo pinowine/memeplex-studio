@@ -5,16 +5,40 @@
 
 [resource]
 script = ExtResource("1")
-definition_version = 7
+definition_version = 8
 starter_presets = PackedStringArray("case_s01", "case_s16", "case_p11")
 starter_contexts = {
 "case_s01": {"language_id":"en", "group_id":"commuters", "topic_ids":["work", "cost_of_living"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.8, 0.2]},
 "case_s16": {"language_id":"en", "group_id":"culture_fans", "topic_ids":["entertainment"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[-0.7, -0.8]},
 "case_p11": {"language_id":"mixed", "group_id":"students", "topic_ids":["community", "entertainment"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.6, -0.4]}
 }
+expression_routes = {
+"case_s01": {
+"": "LOC_ROUTE_FINE_BASE",
+"module_stance": "LOC_ROUTE_FINE_QUESTION",
+"module_boundary": "LOC_ROUTE_FINE_EXPLANATION",
+"module_boundary+module_stance": "LOC_ROUTE_FINE_EXPLANATION_QUESTION"
+},
+"case_s16": {
+"": "LOC_ROUTE_PEAK_BASE",
+"module_stance": "LOC_ROUTE_PEAK_QUESTION",
+"module_relation": "LOC_ROUTE_PEAK_COMPARISON",
+"module_boundary": "LOC_ROUTE_PEAK_EXPLANATION",
+"module_relation+module_stance": "LOC_ROUTE_PEAK_COMPARISON_QUESTION",
+"module_boundary+module_stance": "LOC_ROUTE_PEAK_EXPLANATION_QUESTION",
+"module_boundary+module_relation": "LOC_ROUTE_PEAK_EXPLANATION_COMPARISON",
+"module_boundary+module_relation+module_stance": "LOC_ROUTE_PEAK_ALL"
+},
+"case_p11": {
+"": "LOC_ROUTE_67_BASE",
+"module_ritual": "LOC_ROUTE_67_EXIT",
+"module_shared_world": "LOC_ROUTE_67_CONTINUATION",
+"module_ritual+module_shared_world": "LOC_ROUTE_67_EXIT_CONTINUATION"
+}
+}
 modules = Array[Dictionary]([{
-"content": "LOC_YOU_CALL_THIS_NORMAL_B5E0EEB3",
-"description": "LOC_TURN_A_PLAIN_STATEMENT_INTO_A_QUESTION_156032AE",
+"content": "LOC_PATCH_QUESTION_CONTENT",
+"description": "LOC_PATCH_QUESTION_DESCRIPTION",
 "draft_effects": [{
 "amount": 0.08,
 "field": "recognizability"
@@ -22,6 +46,7 @@ modules = Array[Dictionary]([{
 "amount": 0.05,
 "field": "context_dependency"
 }],
+"compatible_presets": ["case_s01", "case_s16"],
 "id": "module_stance",
 "kernel_id": "stance",
 "neuron_edges": [{
@@ -46,12 +71,13 @@ modules = Array[Dictionary]([{
 }],
 "title": "LOC_RHETORICAL_QUESTION_MODULE_B73188E9"
 }, {
-"content": "LOC_PLACE_BOTH_SIDES_PROMISES_BESIDE_WHAT_THEY_4AEDB763",
-"description": "LOC_COMPARE_BOTH_SIDES_PROMISES_AND_ACTUAL_RETURNS_24ACA26F",
+"content": "LOC_PATCH_COMPARISON_CONTENT",
+"description": "LOC_PATCH_COMPARISON_DESCRIPTION",
 "draft_effects": [{
 "amount": 0.06,
 "field": "recognizability"
 }],
+"compatible_presets": ["case_s16"],
 "id": "module_relation",
 "kernel_id": "relation",
 "neuron_edges": [{
@@ -76,12 +102,13 @@ modules = Array[Dictionary]([{
 }],
 "title": "LOC_COMPARISON_MODULE_1A68D50B"
 }, {
-"content": "LOC_ALLOW_PEOPLE_NOT_TO_JOIN_IN_WHILE_E26A9825",
-"description": "LOC_ADD_AN_EXIT_TO_THE_RESPONSE_CHAIN_9BA540AF",
+"content": "LOC_PATCH_EXIT_CONTENT",
+"description": "LOC_PATCH_EXIT_DESCRIPTION",
 "draft_effects": [{
 "amount": -0.08,
 "field": "remix_cost"
 }],
+"compatible_presets": ["case_p11"],
 "id": "module_ritual",
 "kernel_id": "ritual",
 "neuron_edges": [{
@@ -106,8 +133,8 @@ modules = Array[Dictionary]([{
 }],
 "title": "LOC_EXIT_MODULE_427FF76E"
 }, {
-"content": "LOC_LEAVE_ONE_SENTENCE_OF_EXPLANATION_FOR_OUTSIDERS_30278B47",
-"description": "LOC_ADD_A_SENTENCE_FOR_OUTSIDERS_REDUCING_THE_0DE62A67",
+"content": "LOC_PATCH_EXPLANATION_CONTENT",
+"description": "LOC_PATCH_EXPLANATION_DESCRIPTION",
 "draft_effects": [{
 "amount": 0.08,
 "field": "language_access"
@@ -115,6 +142,7 @@ modules = Array[Dictionary]([{
 "amount": -0.05,
 "field": "context_dependency"
 }],
+"compatible_presets": ["case_s01", "case_s16"],
 "id": "module_boundary",
 "kernel_id": "boundary",
 "neuron_edges": [{
@@ -136,12 +164,13 @@ modules = Array[Dictionary]([{
 }],
 "title": "LOC_EXPLANATION_MODULE_17E40062"
 }, {
-"content": "LOC_LEAVE_AN_OPENING_OTHERS_CAN_EXTEND_WITHOUT_14BEA689",
-"description": "LOC_LEAVE_AN_OPENING_FOR_OTHERS_TO_CONTINUE_FD41B878",
+"content": "LOC_PATCH_CONTINUATION_CONTENT",
+"description": "LOC_PATCH_CONTINUATION_DESCRIPTION",
 "draft_effects": [{
 "amount": -0.05,
 "field": "remix_cost"
 }],
+"compatible_presets": ["case_p11"],
 "id": "module_shared_world",
 "kernel_id": "shared_world",
 "neuron_edges": [{
