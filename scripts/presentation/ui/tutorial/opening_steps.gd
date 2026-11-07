@@ -42,9 +42,9 @@ static func steps() -> Array[Dictionary]:
 		{"id":"spread_tree","title":"LOC_OPENING_SPREAD_TREE_TITLE","text":"LOC_OPENING_SPREAD_TREE_TEXT","action":"continue","target":"spread/tree"},
 		{"id":"spread_details","title":"LOC_OPENING_SPREAD_DETAILS_TITLE","text":"LOC_OPENING_SPREAD_DETAILS_TEXT","action":"continue","target":"spread/details"},
 		{"id":"skill","title":"LOC_OPENING_SKILL_TITLE","text":"LOC_OPENING_SKILL_TEXT","action":"skill_purchased","target":"spread/skill"},
-		{"id":"publish","title":"LOC_OPENING_PUBLISH_TITLE","text":"LOC_OPENING_PUBLISH_TEXT","action":"publish_requested","target":"editor/publish"},
-		{"id":"map_intro","title":"LOC_OPENING_MAP_INTRO_TITLE","text":"LOC_OPENING_MAP_INTRO_TEXT","action":"continue","target":"map/country"},
-		{"id":"country","title":"LOC_OPENING_COUNTRY_TITLE","text":"LOC_OPENING_COUNTRY_TEXT","action":"country_selected","target":"map/country"},
-		{"id":"country_details","title":"LOC_OPENING_COUNTRY_DETAILS_TITLE","text":"LOC_OPENING_COUNTRY_DETAILS_TEXT","action":"continue","target":"map/details"},
-		{"id":"confirm","title":"LOC_OPENING_CONFIRM_TITLE","text":"LOC_OPENING_CONFIRM_TEXT","action":"published","target":"map/confirm"}
+		{"id":"map_open","title":"LOC_OPENING_MAP_OPEN_TITLE","text":"LOC_OPENING_MAP_OPEN_TEXT","action":"sheet_selected","target":"sheet/map","match":{"id":"map"}},
+		{"id":"map_intro","title":"LOC_OPENING_MAP_INTRO_TITLE","text":"LOC_OPENING_MAP_INTRO_TEXT","action":"continue","target":"map/country","map_navigation":true},
+		{"id":"country","title":"LOC_OPENING_COUNTRY_TITLE","text":"LOC_OPENING_COUNTRY_TEXT","action":"country_selected","target":"map/country","map_navigation":true},
+		{"id":"country_details","title":"LOC_OPENING_COUNTRY_DETAILS_TITLE","text":"LOC_OPENING_COUNTRY_DETAILS_TEXT","action":"continue","target":"map/details","map_navigation":true},
+		{"id":"confirm","title":"LOC_OPENING_CONFIRM_TITLE","text":"LOC_OPENING_CONFIRM_TEXT","action":"published","target":"map/confirm","map_navigation":true,"allow_launch":true}
 	]
