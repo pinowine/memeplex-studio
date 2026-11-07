@@ -489,7 +489,8 @@ func _refresh() -> void:
 	queue_redraw()
 
 func _update_focus() -> void:
-	_focus.visible = _active and not _hint_only and not _blocked and _target.has_area()
+	var map_navigation := not _steps.is_empty() and bool(_steps[_index].get("map_navigation", false))
+	_focus.visible = _active and not _hint_only and not _blocked and _target.has_area() and not map_navigation
 	if not _focus.visible: return
 	_focus_material.set_shader_parameter("viewport_size", size)
 	_focus_material.set_shader_parameter("focus_rect", Vector4(_target.position.x, _target.position.y, _target.size.x, _target.size.y))
