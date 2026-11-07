@@ -25,33 +25,44 @@ texture = ExtResource("1")
 expand_mode = 1
 stretch_mode = 0
 
-[node name="Content" type="VBoxContainer" parent="Paper"]
-offset_left = 48.0
-offset_top = 42.0
-offset_right = 632.0
-offset_bottom = 522.0
+[node name="Scroll" type="ScrollContainer" parent="Paper"]
+offset_left = 32.0
+offset_top = 28.0
+offset_right = 648.0
+offset_bottom = 597.0
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Content" type="VBoxContainer" parent="Paper/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
-[node name="Title" type="Label" parent="Paper/Content"]
+[node name="Title" type="Label" parent="Paper/Scroll/Content"]
 layout_mode = 2
 text = "LOC_VICTORY_943874EC"
 theme_override_font_sizes/font_size = 32
 
-[node name="Reason" type="Label" parent="Paper/Content"]
+[node name="Reason" type="Label" parent="Paper/Scroll/Content"]
 layout_mode = 2
 text = ""
 autowrap_mode = 3
 
-[node name="Statistics" type="Label" parent="Paper/Content"]
+[node name="Metrics" type="GridContainer" parent="Paper/Scroll/Content"]
 layout_mode = 2
-text = ""
-autowrap_mode = 3
+columns = 4
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 10
 
-[node name="Verdict" type="HBoxContainer" parent="Paper/Content"]
+[node name="Shares" type="VBoxContainer" parent="Paper/Scroll/Content"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Verdict" type="HBoxContainer" parent="Paper/Scroll/Content"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Portrait67" type="TextureRect" parent="Paper/Content/Verdict"]
+[node name="Portrait67" type="TextureRect" parent="Paper/Scroll/Content/Verdict"]
 layout_mode = 2
 custom_minimum_size = Vector2(108,108)
 mouse_filter = 2
@@ -59,13 +70,13 @@ texture = ExtResource("2")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Comment" type="Label" parent="Paper/Content/Verdict"]
+[node name="Comment" type="Label" parent="Paper/Scroll/Content/Verdict"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = ""
 autowrap_mode = 3
 
-[node name="ReturnMenu" type="Button" parent="Paper/Content"]
+[node name="ReturnMenu" type="Button" parent="Paper/Scroll/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,44)
 text = "LOC_RETURN_TO_MAIN_MENU_E34E61A2"
