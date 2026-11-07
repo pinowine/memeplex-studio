@@ -76,6 +76,7 @@ var _context_details: RichTextLabel
 var _context_trial: Control
 var _overview_name: Label
 var _overview_data: RichTextLabel
+var _patch_summary: RichTextLabel
 var _text_layout_queued := false
 var _part_edit_identity := ""
 var _catalog_default_slots: Dictionary = {}
@@ -195,7 +196,7 @@ func get_draft() -> Dictionary:
 
 func sync_state(snapshot: Dictionary) -> void:
 	var design: Dictionary=snapshot.get("design_state",{})
-	var relevant := {"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0)}
+	var relevant := {"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0),"current_variant_id":snapshot.get("current_variant_id","")}
 	if _state == relevant: return
 	_state=relevant.duplicate(true)
 	if _publish != null: _publish.visible = _tab == "edit" and int(_state.get("publish_count", 0)) > 0
@@ -319,18 +320,34 @@ func _build_edit() -> void:
 	_detail_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_detail_stack.add_theme_constant_override("separation", 10)
 	_detail_scroll.add_child(_detail_stack)
+	_final_title = _label(_detail_stack, DeskLocalization.source("LOC_EDIT_FINAL_EXPRESSION"), "FinalExpressionTitle", 14)
+	_final_title.set_meta("paper_emphasis", true)
+	_final_expression = _readout(_detail_stack, "FinalExpression", 23)
+	_information_rule("ExpressionContextRule")
 	_overview_data = _readout(_detail_stack, "MemeOverviewData", 16)
 	_overview_data.bbcode_enabled = true
+	_information_rule("ContextPatchesRule")
+	_patch_summary = _readout(_detail_stack, "PatchSummary", 16)
+	_patch_summary.bbcode_enabled = true
+	_information_rule("PatchDetailsRule")
 	_part_title = _label(_detail_stack, "", "PartTitle", 19)
 	_part_note = _label(_detail_stack, "", "PartDescription", 14)
 	_part_content = _readout(_detail_stack, "PartContent", 16)
 	_source = _readout(_detail_stack, "SourceAndMutation", 13)
 	_overview_name = _label(page, "", "MemeOverviewName", 24)
 	_overview_name.set_meta("paper_emphasis", true)
-	_final_title = _label(page, DeskLocalization.source("LOC_EDIT_FINAL_EXPRESSION"), "FinalExpressionTitle", 14)
-	_final_expression = _readout(page, "FinalExpression", 23)
-	_final_expression.fit_content = false
-	_final_expression.scroll_active = true
+
+
+func _information_rule(node_name: String) -> void:
+	var rule := HSeparator.new()
+	rule.name = node_name
+	rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	rule.custom_minimum_size.y = 10
+	var pencil := StyleBoxLine.new()
+	pencil.color = Color("858571", .55)
+	pencil.thickness = 1
+	rule.add_theme_stylebox_override("separator", pencil)
+	_detail_stack.add_child(rule)
 
 
 func _readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
@@ -428,7 +445,7 @@ func _refresh_neuron() -> void:
 	var edges: Array=module.get("neuron_edges",[])
 	if nodes.is_empty():
 		for slot in (_draft.get("slots",{}) as Dictionary): nodes.append({"id":slot,"title":slot})
-	var source_slots: Dictionary = _draft.get("slots",{})
+	var source_slots: Dictionary = ExpressionText.base_slots(_draft)
 	_neuron.configure(id,nodes,edges,source_slots)
 	var displayed_slots := {}
 	for key: String in source_slots:
@@ -436,6 +453,7 @@ func _refresh_neuron() -> void:
 		displayed_slots[key] = DeskLocalization.text(value) if _authored_slot_default(key,value) else value
 	_neuron.set_display_slots(displayed_slots)
 	_neuron.set_family_texture(_module_texture(id))
+	_neuron.set_core_variant(str(_state.get("current_variant_id", "")))
 	_neuron.sync_design(_design.get("module_slots",[]),_design.get("connections",[]),_design.get("lineage_view",_state.get("lineage",[])))
 	_neuron.set_module_positions(_design.get("module_positions",[]))
 	var current_exists := false
@@ -468,7 +486,7 @@ func _refresh_part() -> void:
 		if str(node.get("id",""))==_selected_part: title=DeskLocalization.text(str(node.get("title",_selected_part)))
 	_part_title.text=title
 	_part_note.text=DeskLocalization.text("LOC_EDIT_READ_ONLY_PART")
-	var content := str((_draft.get("slots",{}) as Dictionary).get(_selected_part,""))
+	var content := str(ExpressionText.base_slots(_draft).get(_selected_part,""))
 	_bind_part_content(content,"slot:"+str(_draft.get("preset_id",""))+":"+_selected_part,_authored_slot_default(_selected_part,content))
 	_source.text=""
 	_setting=false
@@ -489,7 +507,9 @@ func show_module(id: String,slot: int=-1) -> void:
 			if _selected_installed_slot<contents.size(): content=str(contents[_selected_installed_slot])
 		var from_definition: bool = not _module_edits.has(id) and content == str(entry.get("content","")) and (_selected_installed_slot < 0 or _catalog_default_modules.get(id) == content)
 		_bind_part_content(content,"module:"+id+":"+str(_selected_installed_slot),from_definition)
-		_source.text=""
+		var compatible := _rules.module_compatible(str(_draft.get("preset_id", "")), id)
+		_source.text = "" if compatible else DeskLocalization.text("LOC_PATCH_INCOMPATIBLE_MEME")
+		if not compatible: _detail_scroll.ensure_control_visible.call_deferred(_source)
 		_setting=false
 		return
 
@@ -598,10 +618,7 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 	# Keep the title below the clips and clear of the physical monitor.
 	_place(_overview_name, Rect2(right, 148, span, 38))
 	var graph_y := 54.0
-	var expression_y := maxf(graph_y + 110, h - 154)
-	_place(_neuron, Rect2(0, graph_y, right - 18, maxf(100, expression_y - graph_y - 14)))
-	_place(_final_title, Rect2(8, expression_y, right - 24, 24))
-	_place(_final_expression, Rect2(8, expression_y + 30, right - 28, maxf(60, h - expression_y - 78)))
+	_place(_neuron, Rect2(0, graph_y, right - 18, maxf(100, h - graph_y - 54)))
 	for index in _physical_clips.size():
 		var x := right + float(index) * (span - 96) / 4.0
 		_place(_physical_clips[index], Rect2(x, 6, 96, 128))
@@ -713,7 +730,7 @@ func inspection() -> Dictionary:
 	return {"tab":_tab,"tabs":TABS,"draft":get_draft(),"neuron":_neuron.inspection(),"design_state":_design.duplicate(true),"sync_count":_sync_count,
 		"module_slots":_physical_clips.size(),"skill_count":_skill_buttons.size(),
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
-		"content_editable":false,"final_expression":_final_expression.text,"final_expression_rect":_final_expression.get_global_rect(),"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
+		"content_editable":false,"final_expression":_final_expression.text,"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"patch_summary":_patch_summary.text,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
 		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
 		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
@@ -753,6 +770,9 @@ func module_clips_viewport_rect() -> Rect2:
 func accept_tabletop_item(kind: String,id: String,global_position: Vector2) -> bool:
 	if not _interaction_enabled or not is_visible_in_tree() or id.is_empty(): return false
 	if kind=="module" and _tab=="edit":
+		if not _rules.module_compatible(str(_draft.get("preset_id", "")), id):
+			if module_clip_at(global_position) >= 0 and not _rules.find("modules", id).is_empty(): show_module(id)
+			return false
 		var free:=int((_design.get("available_module_inventory",_design.get("module_inventory",{})) as Dictionary).get(id,0))
 		for placed in _design.get("module_slots",[]):
 			if str(placed)==id: free-=1
@@ -815,7 +835,7 @@ func _refresh_overview() -> void:
 	var count := 0
 	for id: String in _design.get("module_slots", []):
 		if not id.is_empty(): count += 1
-	rows.append("[b]%s[/b]  [font_size=22]%d[/font_size] / %d" % [DeskLocalization.text("LOC_EDIT_PATCHES"), count, _physical_clips.size()])
+	_patch_summary.text = "[b]%s[/b]  [font_size=22]%d[/font_size] / %d" % [DeskLocalization.text("LOC_EDIT_PATCHES"), count, _physical_clips.size()]
 	_overview_data.text = "\n".join(rows)
 	_final_expression.text = ExpressionText.render(_catalog, _draft) if _catalog != null else ""
 	_final_title.text = DeskLocalization.text("LOC_EDIT_FINAL_EXPRESSION")

@@ -11099,10 +11099,10 @@
     "zh_CN": "六七——接一轮，或者这次不参加。",
     "en": "Six seven—take a turn or sit this one out."
   },
-  "LOC_EVENT_QUEUE_STATE_MISMATCH": {
-    "source": "存档中的事件队列与未确认事件记录不一致。",
-    "zh_CN": "存档中的事件队列与未确认事件记录不一致。",
-    "en": "The saved event queue does not match the unacknowledged event records."
+  "LOC_EDIT_EXTERNAL_EXPRESSION": {
+    "source": "外部表达",
+    "zh_CN": "外部表达",
+    "en": "External expressions"
   },
   "LOC_LANGUAGE_NINGHUA": {
     "source": "宁华语",
@@ -11133,5 +11133,10 @@
     "source": "虚构国家瑞原的语言；表示传播语境，不翻译模因原句。",
     "zh_CN": "虚构国家瑞原的语言；表示传播语境，不翻译模因原句。",
     "en": "The fictional language of Seowon. Defines the audience context, not a translation of the original meme."
+  },
+  "LOC_EVENT_QUEUE_STATE_MISMATCH": {
+    "source": "存档中的事件队列与未确认事件记录不一致。",
+    "zh_CN": "存档中的事件队列与未确认事件记录不一致。",
+    "en": "The saved event queue does not match the unacknowledged event records."
   }
 }

@@ -99,16 +99,20 @@ static func triangulate(polygon: PackedVector2Array) -> PackedInt32Array:
 	for point in polygon:local.append(point-origin)
 	return Geometry2D.triangulate_polygon(local)
 
-static func mask_mesh(polygons: Array[PackedVector2Array]) -> ArrayMesh:
+static func mask_mesh(polygons: Array[PackedVector2Array], polygon_colors: PackedColorArray = PackedColorArray()) -> ArrayMesh:
 	var vertices := PackedVector3Array()
 	var indices := PackedInt32Array()
-	for polygon in polygons:
+	var colors := PackedColorArray()
+	for polygon_index in polygons.size():
+		var polygon: PackedVector2Array = polygons[polygon_index]
 		var triangles := triangulate(polygon)
 		if triangles.is_empty():
 			push_error("Invalid neuron polygon after local triangulation")
 			continue
 		var offset := vertices.size()
-		for point in polygon:vertices.append(Vector3(point.x,point.y,0))
+		for point in polygon:
+			vertices.append(Vector3(point.x,point.y,0))
+			if not polygon_colors.is_empty(): colors.append(polygon_colors[polygon_index])
 		for index in triangles:indices.append(offset+index)
 	var mesh := ArrayMesh.new()
 	if not vertices.is_empty():
@@ -116,6 +120,7 @@ static func mask_mesh(polygons: Array[PackedVector2Array]) -> ArrayMesh:
 		arrays.resize(Mesh.ARRAY_MAX)
 		arrays[Mesh.ARRAY_VERTEX]=vertices
 		arrays[Mesh.ARRAY_INDEX]=indices
+		if not colors.is_empty(): arrays[Mesh.ARRAY_COLOR]=colors
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	return mesh
 
