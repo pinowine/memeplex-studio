@@ -16,6 +16,8 @@ const NeuronGeometry=preload("res://scripts/presentation/studio/design/desk_neur
 const Metaball = preload("res://shaders/studio/desk_neuron_cells.gdshader")
 const BlobFeedback = preload("res://scripts/presentation/studio/desk/desk_blob_feedback.gd")
 const INK := Color("485046")
+const OWN_INK := Color(.18, .21, .17)
+const EXTERNAL_INK := Color("a25b38")
 const CORE_RADIUS := 22.0
 const PATCH_RADIUS := 14.0
 const MEMBRANE_BLEND := 14.0
@@ -34,6 +36,10 @@ var _display_slots: Dictionary = {}
 var _installed: Array = []
 var _connections: Array = []
 var _lineage: Array = []
+var _visible_lineage: Array = []
+var _core_variant_id := ""
+var _lineage_positions: Dictionary = {}
+var _lineage_layout_stamp := ""
 var _selected := ""
 var _connect_from := -1
 var _field: ColorRect
@@ -137,8 +143,8 @@ func _on_mouse_exited() -> void:
 func cursor_shape_at(point: Vector2) -> int:
 	if not _interaction_enabled: return CURSOR_ARROW
 	if _pressed_module >= 0 or not _hit_id(point).is_empty(): return CURSOR_POINTING_HAND
-	for index in mini(_lineage.size(),12):
-		if point.distance_to(_lineage_point(index)) <= 11: return CURSOR_POINTING_HAND
+	for index in _visible_lineage.size():
+		if point.distance_to(_lineage_point(index)) <= 18: return CURSOR_POINTING_HAND
 	return CURSOR_ARROW
 
 
@@ -218,9 +224,55 @@ func sync_design(installed: Array, connections: Array, lineage: Array) -> void:
 	_installed = installed.duplicate(true)
 	_connections = connections.duplicate(true)
 	_lineage = lineage.duplicate(true)
+	_rebuild_visible_lineage()
 	if _selected_module >= 0 and (_selected_module >= installed.size() or str(installed[_selected_module]).is_empty()): select_part(_selected)
 	_update_field()
 	queue_redraw()
+
+
+func set_core_variant(id: String) -> void:
+	if _core_variant_id == id: return
+	_core_variant_id = id
+	_rebuild_visible_lineage()
+	_update_field()
+	queue_redraw()
+
+func _core_lineage_id() -> String:
+	for record: Dictionary in _lineage:
+		if str(record.get("id", "")) == _core_variant_id and str(record.get("kernel_id", "")) == _kernel_id and str(record.get("creator", "")) == "player":
+			return _core_variant_id
+	return ""
+
+func _rebuild_visible_lineage() -> void:
+	_visible_lineage.clear()
+	_lineage_layout_stamp = ""
+	var core_id := _core_lineage_id()
+	var by_id := {}
+	for record: Dictionary in _lineage: by_id[str(record.id)] = record
+	var seen := {}
+	var pending: Array[String] = []
+	if not core_id.is_empty():
+		seen[core_id] = true
+		pending.append(core_id)
+	var cursor := 0
+	# Breadth-first ancestry keeps each visible relative connected through a recorded edge.
+	while cursor < pending.size() and _visible_lineage.size() < 12:
+		var id := pending[cursor]
+		cursor += 1
+		var parents: Array = by_id[id].get("parent_ids", [])
+		for record: Dictionary in _lineage:
+			var other := str(record.id)
+			if seen.has(other): continue
+			if id not in record.get("parent_ids", []) and other not in parents: continue
+			seen[other] = true
+			pending.append(other)
+			_visible_lineage.append(record)
+			if _visible_lineage.size() == 12: break
+	# The specimen contains only its recorded relatives; independent expressions remain in the ledger.
+	_layout_attached_lineage()
+
+func _lineage_ink(record: Dictionary) -> Color:
+	return EXTERNAL_INK if str(record.get("creator", "player")) != "player" else OWN_INK
 
 
 func select_part(id: String) -> void:
@@ -314,12 +366,15 @@ func _draw() -> void:
 		var from:=int(edge.get("from",-1))
 		var to:=int(edge.get("to",-1))
 		if from>=0 and to>=0 and from<_installed.size() and to<_installed.size(): _sketch_line(_module_point(from),_module_point(to),Color("9d503c",.45))
-	for index in mini(_lineage.size(),12):
+	for index in _visible_lineage.size():
 		var point:=_lineage_point(index)
-		_tracking_frame(point,Vector2(12,12),Color(INK,.45))
-		for parent in _lineage[index].get("parent_ids",[]):
-			for other in mini(_lineage.size(),12):
-				if str(_lineage[other].get("id",""))==str(parent): _sketch_line(_lineage_point(other),point,Color(INK,.24))
+		_tracking_frame(point,Vector2(12,12),Color(_lineage_ink(_visible_lineage[index]),.65))
+	if not _visible_lineage.is_empty():
+		draw_circle(Vector2(10,size.y-10),3,OWN_INK)
+		draw_string(font,Vector2(18,size.y-6),DeskLocalization.text("LOC_YOUR_OWN_EXPRESSION_0A35E8E2"),HORIZONTAL_ALIGNMENT_LEFT,-1,11,INK)
+		var marker_x := minf(size.x*.48,150.0)
+		draw_circle(Vector2(marker_x,size.y-10),3,EXTERNAL_INK)
+		draw_string(font,Vector2(marker_x+8,size.y-6),DeskLocalization.text("LOC_EDIT_EXTERNAL_EXPRESSION"),HORIZONTAL_ALIGNMENT_LEFT,-1,11,EXTERNAL_INK)
 
 
 func _tracking_frame(point: Vector2,extent: Vector2,color: Color) -> void:
@@ -360,7 +415,7 @@ func _draw_fused_patch(_index: int, _point_value: Vector2) -> void:
 func _cell_record(point: Vector2,radius: float,identity: String,kernel: String,growth_key: String="") -> Dictionary:
 	var key := identity if growth_key.is_empty() else growth_key
 	if not _cell_growth.has(key):_cell_growth[key]=0.0
-	return {"center":point,"radius":radius,"identity":identity,"kernel_id":kernel,"growth":_cell_growth[key]}
+	return {"center":point,"radius":radius,"identity":identity,"kernel_id":kernel,"growth":_cell_growth[key],"ink":OWN_INK}
 
 func module_graphic_config(slot: int) -> Dictionary:
 	if slot<0 or slot>=_installed.size() or str(_installed[slot]).is_empty():return {}
@@ -391,21 +446,83 @@ func _update_neuronal_network() -> void:
 		var to := int(edge.get("to",-1))
 		if from>=0 and to>=0 and from<_installed.size() and to<_installed.size():
 			links.append({"points":_fusion_curve(_module_point(from),_module_point(to),from),"width":.7,"growth":1.0})
+	_layout_attached_lineage()
 	var variant_points: Dictionary={}
-	for index in mini(_lineage.size(),12):
-		var record: Dictionary=_lineage[index]
+	var linked_records := _visible_lineage.duplicate()
+	var core_id := _core_lineage_id()
+	if not core_id.is_empty():
+		variant_points[core_id] = _core_point()
+		for record: Dictionary in _lineage:
+			if str(record.id) == core_id: linked_records.append(record)
+	for index in _visible_lineage.size():
+		var record: Dictionary=_visible_lineage[index]
+		var id := str(record.id)
 		var point := _lineage_point(index)
-		variant_points[str(record.get("id",index))]=point
-		cells.append(_cell_record(point,5.0,"variant:"+str(record.get("id",index)),str(record.get("kernel_id",_kernel_id))))
-	for index in mini(_lineage.size(),12):
-		var record: Dictionary=_lineage[index]
+		variant_points[id]=point
+		var cell := _cell_record(point,8.3,"variant:"+id,str(record.get("kernel_id",_kernel_id)))
+		cell.ink = _lineage_ink(record)
+		cell.external = str(record.get("creator", "player")) != "player"
+		cells.append(cell)
+	for record: Dictionary in linked_records:
+		var id := str(record.id)
 		for parent: Variant in record.get("parent_ids",[]):
 			if variant_points.has(str(parent)):
-				links.append({"points":_fusion_curve(variant_points[str(parent)],_lineage_point(index),index),"width":.7,"growth":_cell_growth.get("variant:"+str(record.get("id",index)),0.0)})
+				var growth: float = _cell_growth.get("core:"+_kernel_id if id == core_id else "variant:"+id,0.0)
+				links.append({"points":_fusion_curve(variant_points[str(parent)],variant_points[id],links.size()),"width":1.05,"growth":growth,"ink":_lineage_ink(record),"role":"lineage","from_variant":str(parent),"to_variant":id})
 	_neuron_surface.set_network(cells,links)
 
 func _lineage_point(index: int) -> Vector2:
-	return Vector2(22+posmod(index,6)*31,size.y-18-(index/6)*34)
+	return _lineage_positions.get(str(_visible_lineage[index].id), _core_point())
+
+func _layout_attached_lineage() -> void:
+	var stamp := str(size) + str(_core_point()) + _kernel_id + JSON.stringify([_installed, _positions])
+	if stamp == _lineage_layout_stamp: return
+	_lineage_layout_stamp = stamp
+	_lineage_positions.clear()
+	if _visible_lineage.is_empty(): return
+	var core_id := _core_lineage_id()
+	var occupied: Array[Vector2] = []
+	for index in _nodes.size(): occupied.append(_point(index))
+	for index in mini(_installed.size(),5):
+		if not str(_installed[index]).is_empty(): occupied.append(_module_point(index))
+	var labels: Array[Rect2] = []
+	for index in _nodes.size():
+		var point := _point(index)
+		var offset := Vector2(-56,-47) if index == int(NUCLEUS_INDEX.get(_kernel_id,0)) and _has_nearby_patch() else Vector2(-56,31)
+		labels.append(Rect2(point + offset - Vector2(0,12), Vector2(112,20)).grow(18))
+	for index in mini(_installed.size(),5):
+		if str(_installed[index]).is_empty(): continue
+		var point := _module_point(index)
+		var offset := Vector2(-25,24)
+		if point.distance_to(_core_point()) < 50.0: offset = (point-_core_point()).normalized()*32.0+Vector2(-25,5)
+		labels.append(Rect2(point+offset-Vector2(0,10),Vector2(50,18)).grow(14))
+	var bounds := Rect2(Vector2(30,30), (size-Vector2(60,60)).max(Vector2.ONE))
+	for index in _visible_lineage.size():
+		var record: Dictionary = _visible_lineage[index]
+		var anchor := _core_point()
+		for parent: Variant in record.get("parent_ids",[]):
+			if str(parent) == core_id: break
+			if _lineage_positions.has(str(parent)):
+				anchor = _lineage_positions[str(parent)]
+				break
+		var best := anchor
+		var best_score := INF
+		for ring in 3:
+			var radius := 42.0 + ring * 18.0
+			for direction in 24:
+				var angle := -PI * .5 + direction * TAU / 24.0
+				var candidate := anchor + Vector2.from_angle(angle) * radius
+				if not bounds.has_point(candidate): continue
+				var score := radius + candidate.distance_to(_core_point()) * .65
+				for point: Vector2 in occupied:
+					score += maxf(0,34.0-candidate.distance_to(point)) * 100.0
+				for label: Rect2 in labels:
+					if label.has_point(candidate): score += 10000.0
+				if score < best_score:
+					best = candidate
+					best_score = score
+		_lineage_positions[str(record.id)] = best
+		occupied.append(best)
 
 func neuron_renderer() -> Control:
 	return _neuron_surface
@@ -470,9 +587,9 @@ func _gui_input(event: InputEvent) -> void:
 		part_selected.emit(_selected)
 		accept_event()
 		return
-	for index in mini(_lineage.size(),12):
-		if event.position.distance_to(_lineage_point(index))<=11:
-			variant_selected.emit(str(_lineage[index].get("id","")))
+	for index in _visible_lineage.size():
+		if event.position.distance_to(_lineage_point(index))<=18:
+			variant_selected.emit(str(_visible_lineage[index].get("id","")))
 			accept_event()
 			return
 
@@ -521,6 +638,6 @@ func inspection() -> Dictionary:
 		"feedback":_feedback.inspection(),"selected_module":_selected_module,"interaction_enabled":_interaction_enabled,
 		"dragging_slot":_pressed_module if _dragging else -1,"drag_count":_drag_count,"cancel_count":_cancel_count,"last_drag":_last_drag.duplicate(true),"tooltip":tooltip_text,
 		"last_drop":_last_drop.duplicate(),
-		"connections":_connections.duplicate(true),"lineage":_lineage.duplicate(true),
+		"connections":_connections.duplicate(true),"lineage":_lineage.duplicate(true),"visible_lineage":_visible_lineage.duplicate(true),"core_variant_id":_core_lineage_id(),"lineage_relation_source":"recorded parent_ids","lineage_layout":"attached_parent_branches","lineage_positions":_lineage_positions.duplicate(),"hidden_lineage_count":_lineage.size()-_visible_lineage.size()-(0 if _core_lineage_id().is_empty() else 1),
 		"topology_signature":JSON.stringify([_kernel_id,SHAPES.get(_kernel_id,[]),_edges]),
 		"metaball_shader":Metaball.resource_path,"relation_evidence":"design visualization only", "mouse_filter":mouse_filter,"tracking_style":"corner_wireframe","solid_covers":false,"edge_width":.65,"edge_dashed":true,"base_alpha":_family_art.modulate.a if _family_art!=null else 0}

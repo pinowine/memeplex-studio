@@ -33,6 +33,7 @@ func _ready() -> void:
 	_display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR
 	var pencil := ShaderMaterial.new()
 	pencil.shader=InkShader
+	pencil.set_shader_parameter("colored_mask", true)
 	_display.material=pencil
 	_display.show_behind_parent=true
 	add_child(_display)
@@ -54,15 +55,21 @@ func _redraw_mask() -> void:
 	if signature==_stamp:return
 	_stamp=signature
 	var polygons: Array[PackedVector2Array]=[]
+	var colors := PackedColorArray()
 	for record: Dictionary in _cells:
-		polygons.append_array(Geometry.cell(record.center,float(record.radius),str(record.identity),str(record.kernel_id),float(record.get("growth",1.0))))
+		var shapes := Geometry.cell(record.center,float(record.radius),str(record.identity),str(record.kernel_id),float(record.get("growth",1.0)))
+		polygons.append_array(shapes)
+		for polygon in shapes: colors.append(record.get("ink", Color(.18,.21,.17)))
 	for link: Dictionary in _links:
+		var shapes: Array[PackedVector2Array] = []
 		if link.get("arbor",false):
-			polygons.append_array(Geometry.arbor(link.points,float(link.get("growth",1.0)),float(link.get("width",.7)),str(link.get("identity","extension"))))
-		else:polygons.append_array(Geometry.stroke(link.points,float(link.get("growth",1.0)),float(link.get("width",.7))))
+			shapes = Geometry.arbor(link.points,float(link.get("growth",1.0)),float(link.get("width",.7)),str(link.get("identity","extension")))
+		else: shapes = Geometry.stroke(link.points,float(link.get("growth",1.0)),float(link.get("width",.7)))
+		polygons.append_array(shapes)
+		for polygon in shapes: colors.append(link.get("ink", Color(.18,.21,.17)))
 	_viewport.size=Vector2i(maxi(1,ceili(size.x*PIXEL_SCALE)),maxi(1,ceili(size.y*PIXEL_SCALE)))
 	_painter.scale=Vector2.ONE*PIXEL_SCALE
-	_painter.mesh=Geometry.mask_mesh(polygons)
+	_painter.mesh=Geometry.mask_mesh(polygons,colors)
 	_painter.queue_redraw()
 	_display.size=size
 	_viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
@@ -76,8 +83,8 @@ func _draw() -> void:
 		var centre: Vector2=record.center
 		var radius := float(record.radius)*.34*minf(growth*4.0,1.0)
 		draw_circle(centre,radius+1.0,Color("e4e0cf"))
-		draw_arc(centre,radius,0,TAU,20,Color("41483d"),.65,true)
-		draw_circle(centre+Vector2(-.4,.2),radius*.43,Color("485046"))
+		draw_arc(centre,radius,0,TAU,20,record.get("ink",Color("41483d")),.65,true)
+		draw_circle(centre+Vector2(-.4,.2),radius*.43,record.get("ink",Color("485046")))
 
 func mask_image() -> Image:
 	return _viewport.get_texture().get_image() if _viewport!=null else null
