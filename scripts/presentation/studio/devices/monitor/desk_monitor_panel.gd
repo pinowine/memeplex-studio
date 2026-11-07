@@ -11,6 +11,8 @@ const BUTTON_ART := "res://assets/image/textures/studio/desk/monitor_keys_inset.
 const BUTTON_ART_REGION := Rect2(320, 215, 1345, 400)
 const KEY_FACES := [Rect2(18, 15, 395, 370), Rect2(480, 15, 395, 370), Rect2(940, 15, 395, 370)]
 const MODES := ["meme", "stance", "pragmatic"]
+const MENTOR_COMMENTS := {"freedom":"LOC_MENTOR_FREEDOM", "authority":"LOC_MENTOR_AUTHORITY", "equality":"LOC_MENTOR_EQUALITY", "hierarchy":"LOC_MENTOR_HIERARCHY",
+	"sincere":"LOC_MENTOR_SINCERE", "ironic":"LOC_MENTOR_IRONIC", "support":"LOC_MENTOR_SUPPORT", "opposition":"LOC_MENTOR_OPPOSITION"}
 const TOKEN_IDS := {
 	"stance": ["freedom", "authority", "equality", "hierarchy"],
 	"pragmatic": ["sincere", "ironic", "support", "opposition"]
@@ -214,6 +216,10 @@ func set_mode(id: String) -> bool:
 	_refresh()
 	mode_changed.emit(_mode)
 	return true
+
+func mentor_comment_key(index: int) -> String:
+	if _mode == "meme" or index < 0 or index >= 4: return ""
+	return str(MENTOR_COMMENTS[TOKEN_IDS[_mode][index]])
 
 func mode() -> String:
 	return _mode

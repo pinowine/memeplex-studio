@@ -105,7 +105,8 @@ func _logical_target(id: String) -> Variant:
 	var fax: Control = page.desk._fax
 	var editor: Control = page.hud.design_workbench()
 	match id:
-		"fax/pickup": return fax.action_target("pickup")
+		"fax/pickup":
+			return {"hardware_key":"fax_machine/pickup"} if page.has_meta("studio3d") else fax.action_target("pickup")
 		"fax/options":
 			var reader: Control = page.desk._slot_reader
 			if reader != null and reader.is_visible_in_tree() and not reader._choice_buttons.is_empty():
@@ -376,7 +377,7 @@ func _process(_delta: float) -> void:
 		var value: Variant = _target("monitor/value/%d" % index)
 		var rect: Rect2 = value if value is Rect2 else (_tutorial_project_rect(value) if value is Control else Rect2())
 		if rect.has_point(point):
-			tutorial.set_hover("monitor/value/%d" % index)
+			tutorial.set_hover("monitor/value/%d" % index, page.desk._monitor.mentor_comment_key(index))
 			return
 	tutorial.clear_hover()
 
