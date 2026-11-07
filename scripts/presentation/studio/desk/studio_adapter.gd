@@ -39,7 +39,6 @@ func foreground_ui_handles(point: Vector2) -> bool:
 func prepare() -> void:
 	_desk._art.phonebook.hide()
 	_desk._props.unregister_prop(&"phonebook")
-	_desk._props.unregister_prop(&"fax")
 	_desk._fax.set_handset_only(true)
 
 func paper_masks() -> Dictionary:
