@@ -10963,5 +10963,140 @@
     "source": "外部分家",
     "zh_CN": "外部分家",
     "en": "Escaped"
+  },
+  "LOC_PATCH_INCOMPATIBLE_MEME": {
+    "source": "这张补丁不能安装到当前模因。",
+    "zh_CN": "这张补丁不能安装到当前模因。",
+    "en": "This patch is not compatible with the current meme."
+  },
+  "LOC_PATCH_QUESTION_CONTENT": {
+    "source": "把笃定或赞叹改成反问。",
+    "zh_CN": "把笃定或赞叹改成反问。",
+    "en": "Turn reassurance or praise into a question."
+  },
+  "LOC_PATCH_QUESTION_DESCRIPTION": {
+    "source": "适用于 This is Fine 和 Why is this so PEAK，让原本笃定的表达产生疑问。",
+    "zh_CN": "适用于 This is Fine 和 Why is this so PEAK，让原本笃定的表达产生疑问。",
+    "en": "For This is Fine and Why is this so PEAK. Question what the original expression takes for granted."
+  },
+  "LOC_PATCH_COMPARISON_CONTENT": {
+    "source": "把预期与实际放在一起对照。",
+    "zh_CN": "把预期与实际放在一起对照。",
+    "en": "Contrast expectations with what actually happened."
+  },
+  "LOC_PATCH_COMPARISON_DESCRIPTION": {
+    "source": "仅适用于 Why is this so PEAK，用预期与实际的落差构成评价。",
+    "zh_CN": "仅适用于 Why is this so PEAK，用预期与实际的落差构成评价。",
+    "en": "For Why is this so PEAK only. Make the contrast between expectations and the result part of the judgment."
+  },
+  "LOC_PATCH_EXIT_CONTENT": {
+    "source": "允许参与者退出这轮接梗。",
+    "zh_CN": "允许参与者退出这轮接梗。",
+    "en": "Let participants sit this round out."
+  },
+  "LOC_PATCH_EXIT_DESCRIPTION": {
+    "source": "仅适用于 67，保留不参与或结束接梗的选择，不给数字附加含义。",
+    "zh_CN": "仅适用于 67，保留不参与或结束接梗的选择，不给数字附加含义。",
+    "en": "For 67 only. Leave room to opt out or stop the exchange without assigning a meaning to the numbers."
+  },
+  "LOC_PATCH_EXPLANATION_CONTENT": {
+    "source": "补充画面或评价依据。",
+    "zh_CN": "补充画面或评价依据。",
+    "en": "Make the situation or the reason for the judgment explicit."
+  },
+  "LOC_PATCH_EXPLANATION_DESCRIPTION": {
+    "source": "适用于 This is Fine 和 Why is this so PEAK，补足读者理解句子所需的情境。",
+    "zh_CN": "适用于 This is Fine 和 Why is this so PEAK，补足读者理解句子所需的情境。",
+    "en": "For This is Fine and Why is this so PEAK. Supply the context needed to understand the expression."
+  },
+  "LOC_PATCH_CONTINUATION_CONTENT": {
+    "source": "把下一轮接梗留给别人。",
+    "zh_CN": "把下一轮接梗留给别人。",
+    "en": "Leave the next turn to someone else."
+  },
+  "LOC_PATCH_CONTINUATION_DESCRIPTION": {
+    "source": "仅适用于 67，用轮流接梗延续参与，不把它改造成观点或口号。",
+    "zh_CN": "仅适用于 67，用轮流接梗延续参与，不把它改造成观点或口号。",
+    "en": "For 67 only. Keep the exchange going by handing over the next turn, not by turning it into a statement or slogan."
+  },
+  "LOC_ROUTE_FINE_BASE": {
+    "source": "This is Fine",
+    "zh_CN": "This is Fine",
+    "en": "This is Fine"
+  },
+  "LOC_ROUTE_FINE_QUESTION": {
+    "source": "This is Fine?",
+    "zh_CN": "This is Fine?",
+    "en": "This is Fine?"
+  },
+  "LOC_ROUTE_FINE_EXPLANATION": {
+    "source": "The room is on fire, but this is fine.",
+    "zh_CN": "房间都着火了，不过一切都好。",
+    "en": "The room is on fire, but this is fine."
+  },
+  "LOC_ROUTE_FINE_EXPLANATION_QUESTION": {
+    "source": "The room is on fire. Is this really fine?",
+    "zh_CN": "房间都着火了。这真的没问题吗？",
+    "en": "The room is on fire. Is this really fine?"
+  },
+  "LOC_ROUTE_PEAK_BASE": {
+    "source": "Why is this so PEAK",
+    "zh_CN": "Why is this so PEAK",
+    "en": "Why is this so PEAK"
+  },
+  "LOC_ROUTE_PEAK_QUESTION": {
+    "source": "Is this really PEAK?",
+    "zh_CN": "这真的算巅峰吗？",
+    "en": "Is this really PEAK?"
+  },
+  "LOC_ROUTE_PEAK_COMPARISON": {
+    "source": "I expected good. Why is this so PEAK?",
+    "zh_CN": "我只期待它不错，怎么会这么神？",
+    "en": "I expected good. Why is this so PEAK?"
+  },
+  "LOC_ROUTE_PEAK_EXPLANATION": {
+    "source": "Why is this so PEAK? It is better than I ever expected.",
+    "zh_CN": "怎么会这么神？它比我期待的好太多了。",
+    "en": "Why is this so PEAK? It is better than I ever expected."
+  },
+  "LOC_ROUTE_PEAK_COMPARISON_QUESTION": {
+    "source": "They called this PEAK. Is it really?",
+    "zh_CN": "他们说这是巅峰。真的是吗？",
+    "en": "They called this PEAK. Is it really?"
+  },
+  "LOC_ROUTE_PEAK_EXPLANATION_QUESTION": {
+    "source": "Is this really PEAK, or am I just caught up in the excitement?",
+    "zh_CN": "这真的是巅峰，还是我只是一时上头？",
+    "en": "Is this really PEAK, or am I just caught up in the excitement?"
+  },
+  "LOC_ROUTE_PEAK_EXPLANATION_COMPARISON": {
+    "source": "I expected something good, but this is the best thing I have seen.",
+    "zh_CN": "我只期待它不错，结果它是我见过最棒的。",
+    "en": "I expected something good, but this is the best thing I have seen."
+  },
+  "LOC_ROUTE_PEAK_ALL": {
+    "source": "They called this the best thing ever. Is it really PEAK, or just better than we expected?",
+    "zh_CN": "他们说这是史上最佳。它真是巅峰，还是只比我们预期的好？",
+    "en": "They called this the best thing ever. Is it really PEAK, or just better than we expected?"
+  },
+  "LOC_ROUTE_67_BASE": {
+    "source": "67",
+    "zh_CN": "67",
+    "en": "67"
+  },
+  "LOC_ROUTE_67_EXIT": {
+    "source": "Six seven. Or sit this one out.",
+    "zh_CN": "六七。不想接也可以。",
+    "en": "Six seven. Or sit this one out."
+  },
+  "LOC_ROUTE_67_CONTINUATION": {
+    "source": "Six seven—your turn.",
+    "zh_CN": "六七——到你了。",
+    "en": "Six seven—your turn."
+  },
+  "LOC_ROUTE_67_EXIT_CONTINUATION": {
+    "source": "Six seven—take a turn or sit this one out.",
+    "zh_CN": "六七——接一轮，或者这次不参加。",
+    "en": "Six seven—take a turn or sit this one out."
   }
 }

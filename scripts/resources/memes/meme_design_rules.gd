@@ -2,7 +2,7 @@
 class_name MemeDesignRules
 extends Resource
 
-const DEFINITION_VERSION := 7
+const DEFINITION_VERSION := 8
 const EVENT_REWARD_KINDS := ["module", "language", "group", "topic", "stance_token", "pragmatic_token"]
 const EVENT_REWARD_LIMIT := 1
 const EVENT_REWARD_COUNT := 1
@@ -11,6 +11,9 @@ const EVENT_REWARD_COUNT := 1
 @export var module_slots: int = 5
 @export var starter_presets: PackedStringArray = PackedStringArray()
 @export var starter_contexts: Dictionary = {}
+@export var expression_routes: Dictionary = {}:
+	set(value):
+		expression_routes = DeskLocalization.source_value(value)
 @export var modules: Array[Dictionary] = []:
 	set(value):
 		modules = DeskLocalization.source_value(value)
@@ -75,12 +78,24 @@ func find(kind: String, id: String) -> Dictionary:
 			return entry
 	return {}
 
+func module_compatible(preset_id: String, module_id: String) -> bool:
+	var presets: Variant = find("modules", module_id).get("compatible_presets", [])
+	return presets is Array and preset_id in presets
+
+func expression_route(preset_id: String, module_ids: Array) -> String:
+	var ids := PackedStringArray()
+	for module_id: String in module_ids:
+		if not module_id.is_empty(): ids.append(module_id)
+	ids.sort()
+	return str(expression_routes.get(preset_id, {}).get("+".join(ids), ""))
+
 func signature() -> String:
 	var data := {
 		"version": definition_version,
 		"module_slots": module_slots,
 		"starters": Array(starter_presets),
 		"starter_contexts": starter_contexts,
+		"expression_routes": expression_routes,
 		"modules": modules,
 		"skills": skills,
 		"contexts": context_definitions.entries if context_definitions != null else [],
@@ -148,6 +163,7 @@ func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
 		if starter_seen.has(id) or catalog.find_preset(id) == null: errors.append("Invalid opening preset")
 		starter_seen[id] = true
 		errors.append_array(_starter_context_errors(id))
+	errors.append_array(_expression_route_errors())
 	var skill_ids := {}
 	for skill in skills: skill_ids[str(skill.get("id", ""))] = true
 	for skill in skills:
@@ -176,6 +192,42 @@ func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
 		if _cycle(str(skill.id), {}, {}): errors.append("Cyclic skill dependency")
 	var root := find("skills", "text")
 	if root.is_empty() or root.get("cost", -1) != 0 or root.get("requires", ["invalid"]) != []: errors.append("Text skill must be a free root")
+	return errors
+
+func _expression_route_errors() -> PackedStringArray:
+	var errors := PackedStringArray()
+	for module: Dictionary in modules:
+		var compatible: Variant = module.get("compatible_presets")
+		if not compatible is Array or compatible.is_empty() or compatible.size() >= starter_presets.size():
+			errors.append("A patch must target a nonempty subset of opening memes")
+			continue
+		var seen := {}
+		for preset: Variant in compatible:
+			if not preset is String or preset not in starter_presets or seen.has(preset):
+				errors.append("Invalid or repeated patch compatibility target")
+			seen[preset] = true
+	if expression_routes.size() != starter_presets.size():
+		errors.append("Every opening meme requires a finite expression route table")
+	for preset: String in starter_presets:
+		var compatible: Array[String] = []
+		for module: Dictionary in modules:
+			if module_compatible(preset, str(module.id)): compatible.append(str(module.id))
+		if compatible.size() > mini(module_slots, 12):
+			errors.append("Compatible patches exceed the finite physical slot capacity")
+			continue
+		var routes: Variant = expression_routes.get(preset)
+		if not routes is Dictionary or routes.size() != (1 << compatible.size()):
+			errors.append("Expression routes must cover every compatible patch subset: " + preset)
+			continue
+		for text: Variant in routes.values():
+			if not text is String: errors.append("Expression route text must be a string: " + preset)
+		for mask in (1 << compatible.size()):
+			var selected: Array[String] = []
+			for index in compatible.size():
+				if mask & (1 << index): selected.append(compatible[index])
+			var text := expression_route(preset, selected)
+			if text.strip_edges().is_empty() or text.length() > 2048 or text.begins_with("LOC_"):
+				errors.append("Expression routes require complete bounded source text: " + preset)
 	return errors
 
 func _cycle(id: String, visiting: Dictionary, done: Dictionary) -> bool:
