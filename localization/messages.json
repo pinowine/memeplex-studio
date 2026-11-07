@@ -10898,5 +10898,30 @@
     "source": "delusional",
     "zh_CN": "delusional",
     "en": "delusional"
+  },
+  "LOC_EDIT_FINAL_EXPRESSION": {
+    "source": "最终表达",
+    "zh_CN": "最终表达",
+    "en": "Final expression"
+  },
+  "LOC_EDIT_READ_ONLY_PART": {
+    "source": "基模节点只读；安装或取下补丁可改变最终表达。",
+    "zh_CN": "基模节点只读；安装或取下补丁可改变最终表达。",
+    "en": "Base nodes are read-only. Install or remove patches to change the final expression."
+  },
+  "LOC_EDIT_AUDIENCE": {
+    "source": "人群",
+    "zh_CN": "人群",
+    "en": "Audience"
+  },
+  "LOC_EDIT_TOPICS": {
+    "source": "话题",
+    "zh_CN": "话题",
+    "en": "Topics"
+  },
+  "LOC_EDIT_PATCHES": {
+    "source": "已安装补丁",
+    "zh_CN": "已安装补丁",
+    "en": "Installed patches"
   }
 }
