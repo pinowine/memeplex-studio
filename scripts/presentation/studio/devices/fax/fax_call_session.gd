@@ -77,7 +77,7 @@ func confirm_starter(preset_id: String, enabled: bool) -> bool:
 	pending_starter_id = ""
 	for option: Dictionary in starter_options:
 		if str(option.id) == preset_id: selected_reply = DeskLocalization.source("LOC_SELECTED_AB41B55D") + str(option.title)
-	_append_call("starter_confirmed", DeskLocalization.source("LOC_CHOSEN_PUT_DOWN_THE_RECEIVER_THEN_EDIT_9B078A9D"))
+	_append_call("starter_confirmed", DeskLocalization.source("LOC_GUIDE_STARTER_CONFIRMED"))
 	return true
 
 func reject_starter(message: String) -> void:
@@ -145,7 +145,7 @@ func hangup(enabled: bool, can_choose_starter: bool) -> bool:
 
 func choose_response(index: int, enabled: bool) -> bool:
 	if starter_call(enabled):
-		if index < 0 or index >= starter_options.size() or not pending_starter_id.is_empty(): return false
+		if index < 0 or index >= starter_options.size() or not pending_starter_id.is_empty() or not starter_id.is_empty(): return false
 		pending_starter_id = str(starter_options[index].id)
 		# The simulation must confirm the choice before this session commits it.
 		starter_selected.emit(pending_starter_id)

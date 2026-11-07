@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1")
 definition_version = 7
-starter_presets = PackedStringArray("case_s01", "case_r01", "case_p01")
+starter_presets = PackedStringArray("case_s01", "case_s16", "case_p11")
 modules = Array[Dictionary]([{
 "content": "LOC_YOU_CALL_THIS_NORMAL_B5E0EEB3",
 "description": "LOC_TURN_A_PLAIN_STATEMENT_INTO_A_QUESTION_156032AE",

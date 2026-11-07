@@ -440,6 +440,15 @@ func _resized() -> void:
 	if ready_3d: desktop.return_overview()
 
 func project_target(target: Variant) -> Variant:
+	if target is Dictionary and target.has("equipment_part"):
+		var mesh := _node(str(target.equipment_part)) as MeshInstance3D
+		var bounds := mesh.get_aabb()
+		var result := Rect2()
+		for corner in 8:
+			var offset := Vector3(bounds.size.x if (corner & 1) != 0 else 0.0, bounds.size.y if (corner & 2) != 0 else 0.0, bounds.size.z if (corner & 4) != 0 else 0.0)
+			var point := camera.unproject_position(mesh.to_global(bounds.position + offset))
+			result = Rect2(point, Vector2.ZERO) if corner == 0 else result.expand(point)
+		return result.grow(6.0)
 	if target is Control:
 		if target.get_viewport() == get_viewport(): return target
 		for binding in buttons.values():
@@ -448,6 +457,9 @@ func project_target(target: Variant) -> Variant:
 				var a := camera.unproject_position(binding.mesh.to_global(aabb.position))
 				var b := camera.unproject_position(binding.mesh.to_global(aabb.end))
 				return Rect2(a.min(b),a.max(b)-a.min(b)).grow(6)
+		for surface: Node in content.screen_surfaces:
+			var screen_rect: Rect2 = surface.project_control_rect(target, camera)
+			if screen_rect.has_area(): return screen_rect
 		var transform: Transform2D = target.get_global_transform()
 		var corners := [Vector2.ZERO,Vector2(target.size.x,0),target.size,Vector2(0,target.size.y)]
 		var result := Rect2()
