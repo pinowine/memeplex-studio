@@ -12,7 +12,7 @@ const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_s
 const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_PRINTING_DOES_NOT_GUARANTEE_UNDERSTANDING_C623F385", "LOC_START_D2BB025A", "LOC_LOAD_534CB3FA", "LOC_MEME_CODEX_2F7C7F0C", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
-var _settings := {"language": "zh_CN", "music": 1.0, "effects": 1.0}
+var _settings := {"language": "zh_CN", "music": 1.0, "effects": 1.0, "guide_enabled": true}
 var _music_bus := "BGM"
 var _effect_buses := PackedStringArray(["SFX", "BGS", "MFX"])
 var _ui: Control
@@ -33,6 +33,7 @@ func _ready() -> void:
 	_ui.get_node("MenuPanel/Content/Settings").pressed.connect(open_settings)
 	_ui.get_node("SettingsPanel/Content/Back").pressed.connect(close_settings)
 	_ui.get_node("SettingsPanel/Content/Language").item_selected.connect(func(index: int): change_language("zh_CN" if index == 0 else "en"))
+	_ui.get_node("SettingsPanel/Content/GuideEnabled").toggled.connect(set_guide_enabled)
 	for entry: Array in [["Music", "music"], ["Effects", "effects"]]:
 		var slider: HSlider = _ui.get_node("SettingsPanel/Content/" + entry[0])
 		slider.value_changed.connect(func(value: float): set_volume(entry[1], value))
@@ -85,12 +86,28 @@ func set_volume(kind: String, value: float, persist: bool = true) -> Error:
 	_refresh_labels()
 	return save_settings() if persist else OK
 
+func guide_enabled() -> bool:
+	return bool(_settings.guide_enabled)
+
+func set_guide_enabled(enabled: bool) -> Error:
+	var previous := guide_enabled()
+	_settings.guide_enabled = enabled
+	var error := save_settings()
+	if error != OK:
+		_settings.guide_enabled = previous
+		_refresh_labels()
+	return error
+
 func load_settings() -> Error:
 	var config := ConfigFile.new()
 	var error := config.load(settings_path)
 	if error != OK and error != ERR_FILE_NOT_FOUND:
 		_last_error = error
+		_refresh_labels()
 		return error
+	var guide: Variant = config.get_value("interface", "guide_enabled", true)
+	_settings.guide_enabled = guide if guide is bool else true
+	_last_error = OK if guide is bool else ERR_INVALID_DATA
 	if error == OK:
 		var locale := str(config.get_value("interface", "language", "zh_CN"))
 		if locale in ["zh_CN", "en"]: _settings.language = locale
@@ -100,11 +117,12 @@ func load_settings() -> Error:
 	TranslationServer.set_locale(_settings.language)
 	_apply_audio()
 	_refresh_labels()
-	return error
+	return error if _last_error == OK else _last_error
 
 func save_settings() -> Error:
 	var config := ConfigFile.new()
 	config.set_value("interface", "language", _settings.language)
+	config.set_value("interface", "guide_enabled", _settings.guide_enabled)
 	for kind: String in ["music", "effects"]: config.set_value("audio", kind, _settings[kind])
 	var absolute := ProjectSettings.globalize_path(settings_path)
 	var error := DirAccess.make_dir_recursive_absolute(absolute.get_base_dir())
@@ -139,6 +157,7 @@ func _refresh_labels() -> void:
 		_ui.get_node("SettingsPanel/Content/" + pair[0]).text = words[pair[1]]
 	if _last_error != OK: _ui.get_node("SettingsPanel/Content/Notice").text = error_string(_last_error)
 	_ui.get_node("SettingsPanel/Content/Language").select(0 if _settings.language == "zh_CN" else 1)
+	_ui.get_node("SettingsPanel/Content/GuideEnabled").set_pressed_no_signal(_settings.guide_enabled)
 	for pair: Array in [["Music", "music"], ["Effects", "effects"]]:
 		_ui.get_node("SettingsPanel/Content/" + pair[0]).set_value_no_signal(_settings[pair[1]])
 		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Value").text = "%d%%" % roundi(float(_settings[pair[1]]) * 100)

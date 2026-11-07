@@ -11138,5 +11138,20 @@
     "source": "存档中的事件队列与未确认事件记录不一致。",
     "zh_CN": "存档中的事件队列与未确认事件记录不一致。",
     "en": "The saved event queue does not match the unacknowledged event records."
+  },
+  "LOC_GUIDE_67_ENABLED": {
+    "source": "67 的全部指导",
+    "zh_CN": "67 的全部指导",
+    "en": "All guidance from 67"
+  },
+  "LOC_GUIDANCE_CHOOSE_STARTER": {
+    "source": "请选择一份起始模因，预览后确认。",
+    "zh_CN": "请选择一份起始模因，预览后确认。",
+    "en": "Choose a starting meme, then confirm your preview."
+  },
+  "LOC_GUIDANCE_SETTING_SAVE_ERROR": {
+    "source": "引导设置保存失败：%s",
+    "zh_CN": "引导设置保存失败：%s",
+    "en": "Could not save guidance setting: %s"
   }
 }
