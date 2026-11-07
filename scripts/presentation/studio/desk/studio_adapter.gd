@@ -39,6 +39,8 @@ func foreground_ui_handles(point: Vector2) -> bool:
 func prepare() -> void:
 	_desk._art.phonebook.hide()
 	_desk._props.unregister_prop(&"phonebook")
+	_desk._props.unregister_prop(&"fax")
+	_desk._fax.set_handset_only(true)
 
 func paper_masks() -> Dictionary:
 	return _desk._stack._masks
@@ -68,17 +70,17 @@ func button_target(asset_id: String, action: String) -> Button:
 		"speed_controls":
 			return _desk._speed_strip._buttons[int(action)] if action.is_valid_int() and int(action) in [0, 1, 2] else null
 		"fax_machine":
-			return _desk._fax.action_target(action)
+			return null
 	return null
 
 func activate_device(key: String) -> void:
 	match key:
 		"receipt_printer/feed": _desk._printer.advance(.35)
-		"fax_machine/clear": _desk._fax.keypad_key("clear")
+		"fax_machine/pickup": _desk._fax.activate_handset()
 
 func device_enabled(key: String) -> bool:
-	if key == "fax_machine/clear":
-		return _desk._fax._can_phone() and not _desk._fax.call_connected()
+	if key == "fax_machine/pickup":
+		return _desk._fax.handset_available()
 	return key == "receipt_printer/feed"
 
 func camera_pose() -> Dictionary:

@@ -217,6 +217,7 @@ func _bind_controls() -> void:
 		var asset_id := str(node.name).get_slice("__",0)
 		if role not in ["button","handset"]: continue
 		var action := str(extra.get("binding_id",""))
+		if asset_id == "fax_machine" and action != "pickup": continue
 		var key := asset_id+"/"+action
 		var target: Button = desktop.button_target(asset_id, action)
 		var area := Area3D.new()
@@ -440,6 +441,16 @@ func _resized() -> void:
 	if ready_3d: desktop.return_overview()
 
 func project_target(target: Variant) -> Variant:
+	if target is Dictionary and target.has("hardware_key"):
+		if not ready_3d: return Rect2()
+		var binding: Dictionary = buttons[str(target.hardware_key)]
+		var bounds: AABB = binding.mesh.get_aabb() if binding.mesh is MeshInstance3D else AABB(Vector3(-.03,0,-.115),Vector3(.06,.04,.23))
+		var result := Rect2()
+		for corner in 8:
+			var offset := Vector3(bounds.size.x if (corner & 1) != 0 else 0.0, bounds.size.y if (corner & 2) != 0 else 0.0, bounds.size.z if (corner & 4) != 0 else 0.0)
+			var point := camera.unproject_position(binding.mesh.to_global(bounds.position + offset))
+			result = Rect2(point, Vector2.ZERO) if corner == 0 else result.expand(point)
+		return result.grow(6.0)
 	if target is Dictionary and target.has("equipment_part"):
 		var mesh := _node(str(target.equipment_part)) as MeshInstance3D
 		var bounds := mesh.get_aabb()
