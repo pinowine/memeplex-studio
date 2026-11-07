@@ -3,6 +3,7 @@ extends Control
 
 signal camera_focus_requested(mode: String)
 var _fixed_desktop_mode := false
+var _handset_only := false
 var _camera_reveal_allowed := false
 var _camera_pending_archive: Dictionary = {}
 
@@ -127,6 +128,21 @@ func bind_machine(machine: TextureRect, source_mouth: Rect2 = Rect2()) -> void:
 	_layout_scene()
 
 
+func set_handset_only(value: bool) -> void:
+	_handset_only = value
+	_refresh()
+
+func handset_available() -> bool:
+	return not _blocked and not _output.busy() and (_call_session.state in ["incoming", "dial_ready", "connected"] or (not _call_session.startup_done and not _call_session.starter_options.is_empty()))
+
+func activate_handset() -> bool:
+	if not handset_available(): return false
+	if not _focused or _focus_mode != "phone": return focus()
+	if call_connected(): return hangup()
+	if _call_session.state not in ["incoming", "dial_ready"]:
+		offer_starters(_call_session.starter_options, _call_session.starter_id)
+	return pickup()
+
 func set_fixed_desktop_mode(value: bool) -> void:
 	_fixed_desktop_mode = value
 	if value: _restore_machine()
@@ -155,6 +171,10 @@ func component_details(mode: String = "phone") -> Dictionary:
 	if mode == "phone" and _starter_call():
 		return {"title":"LOC_GUIDE_STARTER_PAPER", "body":"", "options":starter_paper_options(),
 			"reply_enabled":true, "starter_pending":true, "preview_starter_index":_preview_starter_index}
+	if _handset_only and mode == "phone":
+		return {"title":"LOC_FAX_MACHINE_347AFBA3", "description":"LOC_HANDSET_HINT", "status":_diagnostic,
+			"call_state":_call_session.state, "npc_text":_npc_source_text(),
+			"options":Array(REPLIES) if call_connected() else [], "reply_enabled":_can_phone() and call_connected()}
 	var log_lines := PackedStringArray()
 	for record: Dictionary in _call_session.call_log: log_lines.append(str(record.get("text","")))
 	return {"title":DeskLocalization.source("LOC_PHONE_BOOK_53C96D19") if mode == "phonebook" else DeskLocalization.source("LOC_FAX_MACHINE_347AFBA3"), "description":_physical_key_legend(),
@@ -186,6 +206,7 @@ func browse_history(direction: int) -> bool:
 	return select_history(str(_output.output_pages[next].event.get("instance_id", "")))
 
 func select_contact(index: int) -> bool:
+	if _handset_only: return false
 	var selected: bool = _call_session.select_contact(index, _can_phone())
 	if selected: _refresh_call_view()
 	return selected
@@ -207,7 +228,7 @@ func hover_details(viewport_point: Vector2) -> String:
 	for slip: Control in _reward_slips.values():
 		if slip.can_collect() and Rect2(Vector2.ZERO,slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse()*viewport_point):
 			return DeskLocalization.text("LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D")
-	for control: Button in _view.keys + [_view.dial_button,_view.pickup_button,_view.hangup_button]:
+	for control: Button in ([] if _handset_only else _view.keys + [_view.dial_button,_view.pickup_button,_view.hangup_button]):
 		if control.is_visible_in_tree() and Rect2(Vector2.ZERO,control.size).has_point(control.get_global_transform_with_canvas().affine_inverse()*viewport_point):
 			return _key_action_label(control)
 	var page := _output_at(viewport_point)
@@ -581,6 +602,7 @@ func add_contact(contact: Dictionary) -> bool:
 
 
 func keypad_key(key: String) -> bool:
+	if _handset_only: return false
 	if key in ["call", "dial"]: return dial()
 	if key == "pickup": return pickup()
 	if key == "hangup": return hangup()
@@ -590,6 +612,7 @@ func keypad_key(key: String) -> bool:
 
 
 func dial() -> bool:
+	if _handset_only: return false
 	_call_session.set_context(_output.last_read)
 	var accepted: bool = _call_session.dial(_can_phone())
 	_refresh_call_view()
@@ -687,7 +710,7 @@ func inspection() -> Dictionary:
 		"stack_pages":_output.inspection(_output_stack_area),"feeding_page":_output.feeding_page.inspection() if is_instance_valid(_output.feeding_page) else {},"launch":_output.output_geometry.duplicate(),"continuous_physical_page":true,"post_delivery_reposition":false,"history_tabs":true,"external_details":_external_details,"mouth_local":mouth,"mouth_viewport":get_global_transform_with_canvas() * mouth.get("origin",Vector2.ZERO),
 		"paper_source_pixels_per_world_unit":OutputPage.SOURCE_PIXELS_PER_UNIT,"handwritten_font_bound":_handwritten_font != null,
 		"event_state":_output.event_state,"active_event":_output.active_event.duplicate(true),"queue":_output.pending_events.duplicate(true),"completed":_output.read_event_ids.duplicate(),
-		"fixed_desktop_mode":_fixed_desktop_mode,"device_moves_on_focus":not _fixed_desktop_mode,"feed_progress":_output.feed_progress,"focused":_focused,"focus_mode":_focus_mode,"focus_progress":_focus_progress,"blocked":_blocked,
+		"handset_only":_handset_only,"fixed_desktop_mode":_fixed_desktop_mode,"device_moves_on_focus":not _fixed_desktop_mode,"feed_progress":_output.feed_progress,"focused":_focused,"focus_mode":_focus_mode,"focus_progress":_focus_progress,"blocked":_blocked,
 		"stamp_armed":_stamp_armed,"busy":_output.event_state in ["feeding","retracting"],
 		"paper_rect":_output.feeding_page.get_global_rect() if is_instance_valid(_output.feeding_page) else (_view.sheet.get_global_rect() if _built else Rect2()),"paper_full_size":_output.output_geometry.get("size",Vector2.ZERO) if is_instance_valid(_output.feeding_page) else (Vector2(_view.sheet.size.x,_paper_height) if _built else Vector2.ZERO),
 		"paper_visible":(_output.feeding_page.visible and _output.feed_progress > 0.0) if is_instance_valid(_output.feeding_page) else (_view.sheet.visible if _built else false),"paper_polygon":StationView.global_polygon(_output.feeding_page,Rect2(Vector2.ZERO,_output.feeding_page.size)) if is_instance_valid(_output.feeding_page) else _paper_polygon.duplicate(),"paper_rotation":_output.feeding_page.rotation if is_instance_valid(_output.feeding_page) else (_view.sheet.rotation if _built else 0.0),
@@ -707,6 +730,7 @@ func inspection() -> Dictionary:
 func handle_key(event: InputEventKey) -> bool:
 	if _blocked or not event.pressed or event.echo: return false
 	if event.keycode in [KEY_ENTER,KEY_KP_ENTER] and request_collect_materials() > 0: return true
+	if _handset_only: return false
 	if not _focused: return false
 	if event.keycode == KEY_ESCAPE:
 		close_focus()
@@ -740,7 +764,7 @@ func _input(event: InputEvent) -> void:
 			if page != null:
 				if view_archived_event(page.event): get_viewport().set_input_as_handled()
 				return
-		if _can_phone() and _view.book.visible:
+		if not _handset_only and _can_phone() and _view.book.visible:
 			var point: Vector2 = _view.ruled_contacts.get_global_transform_with_canvas().affine_inverse()*event.position
 			for row: Dictionary in _view.ruled_contacts.inspection().rows:
 				var area := Rect2(row.name_baseline-Vector2(4,12),Vector2(_view.ruled_contacts.size.x*.7,14))
@@ -753,7 +777,7 @@ func _input(event: InputEvent) -> void:
 			return
 		if not _focused and _output.event_state == "ready" and Geometry2D.is_point_in_polygon(event.position,_paper_polygon):
 			if focus_paper(): get_viewport().set_input_as_handled()
-		elif not _focused and Geometry2D.is_point_in_polygon(event.position, _machine_polygon()):
+		elif not _handset_only and not _focused and Geometry2D.is_point_in_polygon(event.position, _machine_polygon()):
 			if focus(): get_viewport().set_input_as_handled()
 
 
@@ -905,6 +929,7 @@ func _refresh() -> void:
 	_view.player_line.text = _reply_display_text()
 	_view.conversation.text = _npc_display_text()
 	_layout_scene()
+	if _handset_only: _disable_unused_hardware()
 	details_changed.emit(component_details(_focus_mode))
 
 
@@ -1036,6 +1061,7 @@ func screen_source() -> Control:
 	return _view.number_label
 
 func action_target(action: String) -> Button:
+	if _handset_only: return null
 	match action:
 		"pickup": return _view.pickup_button
 		"dial": return _view.dial_button
@@ -1060,7 +1086,14 @@ func material_faces() -> Array[Dictionary]:
 func cancel_material_drag() -> void:
 	for slip in _reward_slips.values(): slip.cancel_drag()
 
+func _disable_unused_hardware() -> void:
+	_view.book.hide()
+	for button: Button in _view.keys + [_view.dial_button, _view.pickup_button, _view.hangup_button]:
+		button.disabled = true
+		button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 func use_physical_hardware() -> void:
+	if _handset_only: _disable_unused_hardware()
 	_view.display.self_modulate.a = 0.0
 	_view.phone.modulate.a = 1.0
 	_view.number_label.add_theme_color_override("font_color", Color("14271d"))
