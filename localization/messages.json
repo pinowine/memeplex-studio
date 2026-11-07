@@ -11139,25 +11139,185 @@
     "zh_CN": "存档中的事件队列与未确认事件记录不一致。",
     "en": "The saved event queue does not match the unacknowledged event records."
   },
+  "LOC_INVALID_GUIDANCE_PROGRESS": {
+    "source": "存档中的67指导记录无效。",
+    "zh_CN": "存档中的67指导记录无效。",
+    "en": "The saved 67 guidance progress is invalid."
+  },
   "LOC_GUIDE_67_ENABLED": {
     "source": "67 的全部指导",
     "zh_CN": "67 的全部指导",
     "en": "All guidance from 67"
   },
-  "LOC_GUIDANCE_CHOOSE_STARTER": {
-    "source": "请选择一份起始模因，预览后确认。",
-    "zh_CN": "请选择一份起始模因，预览后确认。",
-    "en": "Choose a starting meme, then confirm your preview."
+  "LOC_CARD_LANGUAGE_NINGHUA_DESCRIPTION": {
+    "source": "宁华的官方语言，一种历史悠久的象形文字，目前已逐渐转变成分析语",
+    "zh_CN": "宁华的官方语言，一种历史悠久的象形文字，目前已逐渐转变成分析语",
+    "en": "The official language of Ninghua: an ancient pictographic language that has gradually become analytic."
   },
-  "LOC_GUIDANCE_SETTING_SAVE_ERROR": {
-    "source": "引导设置保存失败：%s",
-    "zh_CN": "引导设置保存失败：%s",
-    "en": "Could not save guidance setting: %s"
+  "LOC_CARD_LANGUAGE_NINGHUA_COMMENTARY": {
+    "source": "“高屋建瓴，短径殊途，平生只求术。”──若朝诗人，王留。",
+    "zh_CN": "“高屋建瓴，短径殊途，平生只求术。”──若朝诗人，王留。",
+    "en": "“From a lofty roof the waters fall; short paths diverge. All my life, I seek only the art.” — Wang Liu, poet of the Ruo dynasty."
   },
-  "LOC_INVALID_GUIDANCE_PROGRESS": {
-    "source": "存档中的67指导记录无效。",
-    "zh_CN": "存档中的67指导记录无效。",
-    "en": "The saved 67 guidance progress is invalid."
+  "LOC_CARD_LANGUAGE_SHIOHARA_DESCRIPTION": {
+    "source": "汐原的通行语言，街头传闻与日常寒暄在这里交汇。",
+    "zh_CN": "汐原的通行语言，街头传闻与日常寒暄在这里交汇。",
+    "en": "The common language of Shiohara, where street rumours meet everyday conversation."
+  },
+  "LOC_CARD_LANGUAGE_SHIOHARA_COMMENTARY": {
+    "source": "潮声带走半句话，另一半留给听的人。",
+    "zh_CN": "潮声带走半句话，另一半留给听的人。",
+    "en": "The tide takes half a sentence; the listener keeps the rest."
+  },
+  "LOC_CARD_LANGUAGE_SEOWON_DESCRIPTION": {
+    "source": "瑞原的通行语言，连接城市里的讲述者与听众。",
+    "zh_CN": "瑞原的通行语言，连接城市里的讲述者与听众。",
+    "en": "The common language of Seowon, connecting the city’s storytellers and listeners."
+  },
+  "LOC_CARD_LANGUAGE_SEOWON_COMMENTARY": {
+    "source": "同一句话，走过不同街区，就有了不同的回声。",
+    "zh_CN": "同一句话，走过不同街区，就有了不同的回声。",
+    "en": "The same words gather different echoes in every neighbourhood."
+  },
+  "LOC_CARD_GROUP_COMMUTERS_COMMENTARY": {
+    "source": "人们在通勤路上交换消息，也交换一天的疲惫。",
+    "zh_CN": "人们在通勤路上交换消息，也交换一天的疲惫。",
+    "en": "On the commute, people exchange news—and the weariness of the day."
+  },
+  "LOC_CARD_GROUP_STUDENTS_COMMENTARY": {
+    "source": "课堂之外，总有另一套解释世界的说法。",
+    "zh_CN": "课堂之外，总有另一套解释世界的说法。",
+    "en": "Beyond the classroom, another explanation of the world is always taking shape."
+  },
+  "LOC_CARD_GROUP_CULTURE_FANS_COMMENTARY": {
+    "source": "一张海报、一场演出，都可能成为下一段共同记忆。",
+    "zh_CN": "一张海报、一场演出，都可能成为下一段共同记忆。",
+    "en": "A poster or a performance may become the next shared memory."
+  },
+  "LOC_CARD_TOPIC_POLICY_COMMENTARY": {
+    "source": "公告贴上墙后，讨论才刚开始。",
+    "zh_CN": "公告贴上墙后，讨论才刚开始。",
+    "en": "The discussion begins when the notice goes up."
+  },
+  "LOC_CARD_TOPIC_COST_OF_LIVING_COMMENTARY": {
+    "source": "账单上的数字，也是餐桌上的话题。",
+    "zh_CN": "账单上的数字，也是餐桌上的话题。",
+    "en": "The figures on a bill become conversation at the table."
+  },
+  "LOC_CARD_TOPIC_WORK_COMMENTARY": {
+    "source": "工作结束了，关于工作的故事还没有。",
+    "zh_CN": "工作结束了，关于工作的故事还没有。",
+    "en": "The workday ends; the stories about work do not."
+  },
+  "LOC_CARD_TOPIC_PLATFORM_TOOLS_COMMENTARY": {
+    "source": "工具改变消息的去向，也改变说话的习惯。",
+    "zh_CN": "工具改变消息的去向，也改变说话的习惯。",
+    "en": "Tools change where messages travel, and how people speak."
+  },
+  "LOC_CARD_TOPIC_SPORT_COMMENTARY": {
+    "source": "终场哨响之后，争论仍在继续。",
+    "zh_CN": "终场哨响之后，争论仍在继续。",
+    "en": "The argument continues after the final whistle."
+  },
+  "LOC_CARD_TOPIC_EDUCATION_COMMENTARY": {
+    "source": "每一代人都在重新回答：什么值得学习？",
+    "zh_CN": "每一代人都在重新回答：什么值得学习？",
+    "en": "Each generation asks anew: what is worth learning?"
+  },
+  "LOC_CARD_TOPIC_IDENTITY_COMMENTARY": {
+    "source": "人们用一个称呼，寻找彼此的位置。",
+    "zh_CN": "人们用一个称呼，寻找彼此的位置。",
+    "en": "With a name, people find their place among one another."
+  },
+  "LOC_CARD_TOPIC_LANGUAGE_COMMENTARY": {
+    "source": "表达抵达他人之前，总要经过语言。",
+    "zh_CN": "表达抵达他人之前，总要经过语言。",
+    "en": "Every expression passes through language before it reaches another person."
+  },
+  "LOC_CARD_TOPIC_ENTERTAINMENT_COMMENTARY": {
+    "source": "掌声散去后，总有一句台词留下。",
+    "zh_CN": "掌声散去后，总有一句台词留下。",
+    "en": "When the applause fades, a line still lingers."
+  },
+  "LOC_CARD_TOPIC_ARCHIVE_COMMENTARY": {
+    "source": "被保存的不只是纸，还有当时的目光。",
+    "zh_CN": "被保存的不只是纸，还有当时的目光。",
+    "en": "The archive keeps not only paper, but the gaze of its time."
+  },
+  "LOC_CARD_TOPIC_TRUST_COMMENTARY": {
+    "source": "一句话能走多远，有时取决于是谁说的。",
+    "zh_CN": "一句话能走多远，有时取决于是谁说的。",
+    "en": "How far words travel sometimes depends on who speaks them."
+  },
+  "LOC_CARD_TOPIC_COMMUNITY_COMMENTARY": {
+    "source": "熟悉的街角，让陌生的消息有了落脚处。",
+    "zh_CN": "熟悉的街角，让陌生的消息有了落脚处。",
+    "en": "A familiar street corner gives unfamiliar news a place to land."
+  },
+  "LOC_CARD_FREEDOM_COMMENTARY": {
+    "source": "让表达留出自行选择的余地。",
+    "zh_CN": "让表达留出自行选择的余地。",
+    "en": "Leave room for a choice of one’s own."
+  },
+  "LOC_CARD_AUTHORITY_COMMENTARY": {
+    "source": "秩序的声音，要求一个明确的方向。",
+    "zh_CN": "秩序的声音，要求一个明确的方向。",
+    "en": "The voice of order asks for a clear direction."
+  },
+  "LOC_CARD_EQUALITY_COMMENTARY": {
+    "source": "同一张桌旁，不该只有一种声音。",
+    "zh_CN": "同一张桌旁，不该只有一种声音。",
+    "en": "There should be more than one voice at the table."
+  },
+  "LOC_CARD_HIERARCHY_COMMENTARY": {
+    "source": "位置不同，听见的话也不同。",
+    "zh_CN": "位置不同，听见的话也不同。",
+    "en": "From different positions, different words are heard."
+  },
+  "LOC_CARD_SINCERE_COMMENTARY": {
+    "source": "有时，一句话就只是它字面的意思。",
+    "zh_CN": "有时，一句话就只是它字面的意思。",
+    "en": "Sometimes a sentence means exactly what it says."
+  },
+  "LOC_CARD_IRONIC_COMMENTARY": {
+    "source": "话说到一半，另一半藏在语气里。",
+    "zh_CN": "话说到一半，另一半藏在语气里。",
+    "en": "Half the meaning is spoken; the rest hides in the tone."
+  },
+  "LOC_CARD_SUPPORT_COMMENTARY": {
+    "source": "点头也会让一种说法继续流传。",
+    "zh_CN": "点头也会让一种说法继续流传。",
+    "en": "A nod can keep an expression moving."
+  },
+  "LOC_CARD_OPPOSITION_COMMENTARY": {
+    "source": "不赞同，也是加入对话的一种方式。",
+    "zh_CN": "不赞同，也是加入对话的一种方式。",
+    "en": "Disagreement is another way to enter the conversation."
+  },
+  "LOC_CARD_MODULE_STANCE_COMMENTARY": {
+    "source": "问号一落下，熟悉的话就变了声调。",
+    "zh_CN": "问号一落下，熟悉的话就变了声调。",
+    "en": "A question mark changes the tone of familiar words."
+  },
+  "LOC_CARD_MODULE_RELATION_COMMENTARY": {
+    "source": "多一个听众，旧话也可能有了新意。",
+    "zh_CN": "多一个听众，旧话也可能有了新意。",
+    "en": "With another listener, old words may take on new meaning."
+  },
+  "LOC_CARD_MODULE_RITUAL_COMMENTARY": {
+    "source": "重复让一句话变成大家都认得的暗号。",
+    "zh_CN": "重复让一句话变成大家都认得的暗号。",
+    "en": "Repetition turns a phrase into a signal everyone recognises."
+  },
+  "LOC_CARD_MODULE_BOUNDARY_COMMENTARY": {
+    "source": "语言的边界，有时也是新故事的入口。",
+    "zh_CN": "语言的边界，有时也是新故事的入口。",
+    "en": "The edge of a language can be the entrance to a new story."
+  },
+  "LOC_CARD_MODULE_SHARED_WORLD_COMMENTARY": {
+    "source": "当细节被共同记住，世界就有了轮廓。",
+    "zh_CN": "当细节被共同记住，世界就有了轮廓。",
+    "en": "When details are remembered together, a world takes shape."
   },
   "LOC_GUIDANCE_FIRST_FAX": {
     "source": "纸出来了。带来的材料有两种收法：按 Enter 快捷收取，或把纸上的卡片拖到卡片摞／工作纸。只读传真不会取走材料；先拿好，再继续传播。",
@@ -11178,5 +11338,15 @@
     "source": "知道了",
     "zh_CN": "知道了",
     "en": "Got it"
+  },
+  "LOC_GUIDANCE_CHOOSE_STARTER": {
+    "source": "请选择一份起始模因，预览后确认。",
+    "zh_CN": "请选择一份起始模因，预览后确认。",
+    "en": "Choose a starting meme, then confirm your preview."
+  },
+  "LOC_GUIDANCE_SETTING_SAVE_ERROR": {
+    "source": "引导设置保存失败：%s",
+    "zh_CN": "引导设置保存失败：%s",
+    "en": "Could not save guidance setting: %s"
   }
 }
