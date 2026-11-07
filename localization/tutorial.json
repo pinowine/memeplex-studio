@@ -291,38 +291,38 @@
   },
   "LOC_OPENING_EDIT_TEXT": {
     "source": "先点开编辑页。一个模因总得有点自己的表达，照抄主管的话可不算创作。",
-    "zh_CN": "先点开编辑页。一个模因总得有点自己的表达，照抄主管的话可不算创作。",
-    "en": "Open the Edit sheet first. A meme needs an expression of its own. Copying your supervisor doesn’t count as creative work."
+    "zh_CN": "先点开编辑页。这里查看基模、装配补丁，看看最后会说出什么。",
+    "en": "Open the Edit sheet. Here you can inspect the base meme, fit patches and see the resulting expression."
   },
   "LOC_OPENING_EXPRESSION_TITLE": {
     "source": "表达区",
-    "zh_CN": "表达区",
-    "en": "Expression"
+    "zh_CN": "最终表达",
+    "en": "Final expression"
   },
   "LOC_OPENING_EXPRESSION_TEXT": {
     "source": "这里写的是你的模因要说什么。旁边的形态和预览告诉你，它会以什么样子出现。别只顾好看，别人还得看得懂。",
-    "zh_CN": "这里写的是你的模因要说什么。旁边的形态和预览告诉你，它会以什么样子出现。别只顾好看，别人还得看得懂。",
-    "en": "This is what your meme says. The form and preview beside it show how it will appear. Looking good helps, but people still need to understand it."
+    "zh_CN": "这里显示装配后的最终表达。文字自动生成，不能直接输入；要改变表达，就去装配补丁。",
+    "en": "This is the final expression. It updates automatically and cannot be typed over. Fit patches to change what the meme says."
   },
   "LOC_OPENING_PREVIEW_TITLE": {
     "source": "预览与指纹",
-    "zh_CN": "预览与指纹",
-    "en": "Preview and fingerprint"
+    "zh_CN": "图形化基模",
+    "en": "Base meme diagram"
   },
   "LOC_OPENING_PREVIEW_TEXT": {
     "source": "这里可以查看表达的预览和特征。改了内容再看看，别等投放以后才发现自己说错了话。",
-    "zh_CN": "这里可以查看表达的预览和特征。改了内容再看看，别等投放以后才发现自己说错了话。",
-    "en": "Check the preview and characteristics here. Look again after editing; don’t wait until deployment to discover you said the wrong thing."
+    "zh_CN": "神经元图展示基模的结构。点击节点查看内容，补丁装上去以后也会出现在图里。",
+    "en": "The neuron diagram shows the base meme structure. Click a node to inspect its content. Installed patches also appear in the diagram."
   },
   "LOC_OPENING_MODULE_TITLE": {
     "source": "给它装个模组",
-    "zh_CN": "给它装个模组",
-    "en": "Fit a module"
+    "zh_CN": "夹入补丁",
+    "en": "Fit a patch"
   },
   "LOC_OPENING_MODULE_TEXT": {
     "source": "把桌上的一张模组卡拖到空夹子里。夹子不是装饰，装好以后模因才会真正得到它的效果。",
-    "zh_CN": "把桌上的一张模组卡拖到空夹子里。夹子不是装饰，装好以后模因才会真正得到它的效果。",
-    "en": "Drag a module card from the desk into an empty clip. The clips aren’t decoration: fitting the card is what applies its effect."
+    "zh_CN": "把补丁卡拖到一个空的安装栏，松手就能夹好，不必对准细小的金属夹。拖出已安装的纸片可取下补丁。",
+    "en": "Drop a patch card anywhere in an empty installation lane; there is no need to hit the thin wire. Drag an installed slip out to remove it."
   },
   "LOC_OPENING_CONTEXT_TITLE": {
     "source": "培养页",
@@ -528,5 +528,35 @@
     "source": "好了，改好的还是你的那个模因。直接去地图页选个国家吧，不需要再签一张确认单……纸张也是有成本的。",
     "zh_CN": "好了，改好的还是你的那个模因。直接去地图页选个国家吧，不需要再签一张确认单……纸张也是有成本的。",
     "en": "Good. It is still your meme, just edited. Go straight to the map and choose a country. No extra approval form… paper costs money too."
+  },
+  "LOC_OPENING_MEME_NAME_TITLE": {
+    "source": "模因名称",
+    "zh_CN": "模因名称",
+    "en": "Meme name"
+  },
+  "LOC_OPENING_MEME_NAME_TEXT": {
+    "source": "上方是这份模因的名称。名称和最终表达分开显示，装上补丁不会让你认错项目。",
+    "zh_CN": "上方是这份模因的名称。名称和最终表达分开显示，装上补丁不会让你认错项目。",
+    "en": "The meme name is shown above. It stays separate from the final expression so you can identify the project after fitting patches."
+  },
+  "LOC_OPENING_MODULE_RESULT_TITLE": {
+    "source": "补丁后的表达",
+    "zh_CN": "补丁后的表达",
+    "en": "Patched expression"
+  },
+  "LOC_OPENING_MODULE_RESULT_TEXT": {
+    "source": "装好了，再看看最终表达。比如 This is Fine 装上反问补丁，会变成 This is Fine?补丁的内容可以点开查看，不能手写替换。",
+    "zh_CN": "装好了，再看看最终表达。比如 This is Fine 装上反问补丁，会变成 This is Fine?补丁的内容可以点开查看，不能手写替换。",
+    "en": "Now check the final expression again. For example, This is Fine with a question patch becomes This is Fine? Click a patch to inspect its content; it cannot be overwritten by typing."
+  },
+  "LOC_OPENING_EDITOR_CONTEXT_TITLE": {
+    "source": "当前语境",
+    "zh_CN": "当前语境",
+    "en": "Current context"
+  },
+  "LOC_OPENING_EDITOR_CONTEXT_TEXT": {
+    "source": "语言、群体和话题集中显示在这里。想调整这些模块，接下来到培养页装卸卡片。",
+    "zh_CN": "语言、群体和话题集中显示在这里。想调整这些模块，接下来到培养页装卸卡片。",
+    "en": "Language, group and topic modules are summarized here. To change them, install or remove cards on the Cultivate sheet next."
   }
 }
