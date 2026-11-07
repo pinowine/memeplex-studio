@@ -47,15 +47,54 @@ func _production_settings() -> Dictionary:
 	var result := {"main_scene": "res://scenes/main.tscn", "viewport": str(viewport.get_path()),
 		"viewport_filter": viewport.canvas_item_default_texture_filter,
 		"viewport_size": [viewport.size.x, viewport.size.y],
+		"logical_size": [viewport.get_visible_rect().size.x, viewport.get_visible_rect().size.y],
 		"settings_path": studio.page._shell.main_menu.settings_path}
 	_check(result.settings_path == output.path_join("isolated_interface.cfg"), "production_settings_isolated")
-	_check(viewport.size == Vector2i(1600, 900), "logical_dimensions_unchanged")
+	_check(viewport.get_visible_rect().size == Vector2(1600, 900), "logical_dimensions_unchanged")
+	_check(viewport.size.x >= 3200 and viewport.size.y >= 1800, "desktop_backing_preserves_overview_glyph_detail")
+	_check(viewport.size_2d_override == Vector2i(1600, 900), "desktop_virtual_size_explicit")
+	_check(viewport.size_2d_override_stretch, "desktop_backing_stretch_enabled")
+	_check(viewport.get_final_transform().get_scale().is_equal_approx(Vector2(viewport.size) / viewport.get_visible_rect().size),
+		"desktop_backing_transform_matches_density")
+	await _input_checks(studio)
 	studio.queue_free()
 	await process_frame
 	var after_hash := FileAccess.get_sha256("user://meme_interface.cfg") if FileAccess.file_exists("user://meme_interface.cfg") else "absent"
 	_check(settings_hash == after_hash, "player_settings_unchanged")
 	result["player_settings_unchanged"] = settings_hash == after_hash
 	return result
+
+func _input_checks(studio: Node) -> void:
+	var viewport: SubViewport = studio.logical
+	var router: RefCounted = studio.input_router
+	var screen: Vector2 = root.get_visible_rect().size
+	var logical_size := viewport.get_visible_rect().size
+	for fraction in [Vector2.ZERO, Vector2(.5, .5), Vector2.ONE, Vector2(-.1, .2)]:
+		_check(router.modal_to_logical(screen * fraction).is_equal_approx(logical_size * fraction),
+			"modal_pointer_uses_logical_coordinates_" + str(fraction))
+	# Events forwarded with in_local_coords=true use logical, not backing pixels.
+	var layer := CanvasLayer.new()
+	layer.layer = 999
+	viewport.add_child(layer)
+	var button := Button.new()
+	button.position = logical_size * .5 - Vector2(60, 25)
+	button.size = Vector2(120, 50)
+	button.text = "Raster input probe"
+	layer.add_child(button)
+	var received := [0]
+	button.pressed.connect(func() -> void: received[0] += 1)
+	await process_frame
+	for pressed in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.position = screen * .5
+		event.global_position = event.position
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = pressed
+		router.route_event(event, true, false)
+	await process_frame
+	_check(received[0] == 1, "modal_button_receives_single_logical_click")
+	layer.queue_free()
+	await process_frame
 
 func _initialize() -> void:
 	call_deferred("_run")

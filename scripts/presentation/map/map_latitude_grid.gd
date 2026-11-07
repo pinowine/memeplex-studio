@@ -10,7 +10,13 @@ func set_zoom_ratio(ratio: float) -> void:
 
 func _draw() -> void:
 	# The authored stroke dimensions stay in screen pixels as the atlas scales.
-	var screen_transform := get_viewport().get_final_transform() * get_global_transform_with_canvas()
+	var viewport := get_viewport()
+	var screen_transform := viewport.get_final_transform() * get_global_transform_with_canvas()
+	# A supersampled desk texture still measures strokes in virtual desktop pixels.
+	if viewport is SubViewport and viewport.size_2d_override_stretch \
+			and viewport.size_2d_override.x > 0 and viewport.size_2d_override.y > 0:
+		var raster_to_logical := Vector2(viewport.size_2d_override) / Vector2(viewport.size)
+		screen_transform = Transform2D.IDENTITY.scaled(raster_to_logical) * screen_transform
 	var scale_value := screen_transform.x.length()
 	draw_set_transform_matrix(screen_transform.affine_inverse())
 	var dash := style.dash_length / scale_value
