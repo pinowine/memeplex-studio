@@ -38,9 +38,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_in_group_shorthand"
-title = "熟人群把原句缩成一个暗号"
-narrative = "文化爱好者在熟人群里把原句缩成一个暗号，发出时不再附上完整解释。看过早先讨论的成员开始跟用，外来读者则仍在询问它指的是哪件事。"
-mentor_comment = "暗号省下了熟人的解释，也替陌生人加了一道安检，别把两边算成同一种顺畅。"
+title = "LOC_A_FAMILIAR_GROUP_SHORTENS_THE_ORIGINAL_PHRASE_75F3C8D0"
+narrative = "LOC_CULTURE_ENTHUSIASTS_IN_A_FAMILIAR_GROUP_SHORTEN_F95005F4"
+mentor_comment = "LOC_THE_SIGNAL_SAVES_EXPLANATION_FOR_FRIENDS_AND_955D7866"
 origin = &"transmission"
 topic_ids = PackedStringArray("identity", "community")
 operation_ids = PackedStringArray("amplify")

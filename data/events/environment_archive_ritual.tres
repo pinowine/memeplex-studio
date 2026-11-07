@@ -26,9 +26,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_archive_ritual"
-title = "档案爱好者约定回看与告别方式"
-narrative = "档案爱好者公布了一套回看旧资料的接句约定，参与者既可以补充记忆，也可以用约定短句结束回应。几个收藏群按这一节奏轮流贴出旧材料，档案讨论出现了自己的聚集时刻。"
-mentor_comment = "旧档案有了告别方式，至少不会把礼貌回应续成无期限合同。"
+title = "LOC_ARCHIVE_ENTHUSIASTS_AGREE_ON_WAYS_TO_REVISIT_224B42B3"
+narrative = "LOC_ARCHIVE_ENTHUSIASTS_PUBLISH_A_RESPONSE_CHAIN_CONVENTION_CB04143A"
+mentor_comment = "LOC_OLD_ARCHIVES_NOW_HAVE_A_WAY_TO_D86BAE41"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("archive", "community")
 operation_ids = PackedStringArray("emerge", "attention_shift")

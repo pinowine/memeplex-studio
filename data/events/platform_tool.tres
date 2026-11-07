@@ -27,9 +27,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"platform_tool"
-title = "公开流上线署名拼贴工具"
-narrative = "公开流上线署名拼贴工具，用户可以把引用文字与新图片编排在同一张卡片上。平台保留原帖链接并开放作品转发，使用者可据此把旧句子改写成新的配文。"
-mentor_comment = "剪贴工具已把借用做得很体面，缺的那点判断仍要自己补上。"
+title = "LOC_THE_PUBLIC_FEED_LAUNCHES_AN_ATTRIBUTED_COLLAGE_7CCA2DA7"
+narrative = "LOC_THE_PUBLIC_FEED_LAUNCHES_A_COLLAGE_TOOL_B6031507"
+mentor_comment = "LOC_THE_COLLAGE_TOOL_MADE_BORROWING_LOOK_RESPECTABLE_1A3CD1A0"
 origin = &"world"
 topic_ids = PackedStringArray("platform_tools", "entertainment")
 operation_ids = PackedStringArray("platform_change", "remix")

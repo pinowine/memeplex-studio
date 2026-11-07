@@ -18,12 +18,12 @@ func reset() -> void:
 	_set_world(_reference_world(int(rules.reference_geometry_seed)))
 
 func bind_world(world: RefCounted, settings: Resource) -> PackedStringArray:
-	if not _state.registry.is_empty(): return PackedStringArray(["已开始传播，不能替换世界地理。"])
-	if world == null or settings == null or settings.countries.size() != rules.countries.size() or world.territories.size() != rules.countries.size(): return PackedStringArray(["世界国家与人口规则不匹配。"])
+	if not _state.registry.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_TRANSMISSION_HAS_STARTED_WORLD_GEOGRAPHY_CANNOT_BE_D0B074A3")])
+	if world == null or settings == null or settings.countries.size() != rules.countries.size() or world.territories.size() != rules.countries.size(): return PackedStringArray([DeskLocalization.source("LOC_WORLD_COUNTRIES_DO_NOT_MATCH_THE_POPULATION_6EB8B327")])
 	for index in settings.countries.size():
-		if str(settings.countries[index].id) != str(rules.countries[index].id): return PackedStringArray(["国家顺序不匹配。"])
+		if str(settings.countries[index].id) != str(rules.countries[index].id): return PackedStringArray([DeskLocalization.source("LOC_COUNTRY_ORDER_MISMATCH_F1FBCDD0")])
 	var rows := _world_rows(world)
-	if _canonical(rows) != _canonical(_reference_world(int(world.seed_value))): return PackedStringArray(["世界地理与当前传播规则不一致。"])
+	if _canonical(rows) != _canonical(_reference_world(int(world.seed_value))): return PackedStringArray([DeskLocalization.source("LOC_WORLD_GEOGRAPHY_CONFLICTS_WITH_CURRENT_TRANSMISSION_RULES_55095F93")])
 	_state.world_seed = int(world.seed_value)
 	_geography_cache[rules.signature()+":"+str(world.seed_value)] = rows.duplicate(true)
 	_set_world(rows)
@@ -349,7 +349,7 @@ func snapshot(variants: Array, details: bool = true) -> Dictionary:
 		family_rows[family_id].adopted += int(counts.adopted)
 		family_rows[family_id].share = float(family_rows[family_id].adopted)/maxf(1.0,world_population)
 		family_rows[family_id].variant_ids.append(id)
-	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"families_by_id":family_rows,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"victory":_state.victory.duplicate(true),"population_evidence":"configured_game_population","metric_explanation":"不同版本的曝光不重复，采用是对应曝光的子集；未采用人口不计为竞争模因。","autonomy_explanation":"失控比例只统计真实事件产生的变异后代，排除原始投放与玩家再创作；作者归属与控制权分别记录。"}
+	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"families_by_id":family_rows,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"victory":_state.victory.duplicate(true),"population_evidence":"configured_game_population","metric_explanation":DeskLocalization.source("LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087"),"autonomy_explanation":DeskLocalization.source("LOC_THE_UNCONTROLLED_SHARE_COUNTS_ONLY_MUTANT_DESCENDANTS_A4F94F3A")}
 
 func payload() -> Dictionary:
 	return _state.duplicate(true)
@@ -366,101 +366,101 @@ func restore(data: Dictionary, variants: Array, hour: int) -> PackedStringArray:
 func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStringArray:
 	var errors := PackedStringArray()
 	for variant: Variant in variants:
-		if not variant is Dictionary or not variant.has_all(["id","family_id","parent_ids","origin_ids","creator","controlled","owned","text"]) or not variant.id is String or not variant.family_id is String or not variant.creator is String or not variant.text is String or not variant.parent_ids is Array or not variant.origin_ids is Array or not variant.controlled is bool or not variant.owned is bool: errors.append("竞争版本字段或类型非法。")
-		elif not _number(variant.get("semantic_distance")) or float(variant.semantic_distance) < 0.0 or float(variant.semantic_distance) > 1.0: errors.append("竞争语义偏移非法。")
+		if not variant is Dictionary or not variant.has_all(["id","family_id","parent_ids","origin_ids","creator","controlled","owned","text"]) or not variant.id is String or not variant.family_id is String or not variant.creator is String or not variant.text is String or not variant.parent_ids is Array or not variant.origin_ids is Array or not variant.controlled is bool or not variant.owned is bool: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_VERSION_FIELDS_OR_TYPES_976AE41C"))
+		elif not _number(variant.get("semantic_distance")) or float(variant.semantic_distance) < 0.0 or float(variant.semantic_distance) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SEMANTIC_DRIFT_8C39ABE4"))
 	if not errors.is_empty(): return errors
-	if not data.has_all(["competition_version","policy_signature","world_seed","world","countries","registry","hour","active_seconds","hour_credit","equilibrium_hours","equilibrium_candidate_hour","equilibrium_ranges","autonomous_hours","previous_shares","victory"]) or data.get("competition_version") != 1 or data.get("policy_signature") != rules.signature(): return PackedStringArray(["竞争存档规则不匹配。"])
+	if not data.has_all(["competition_version","policy_signature","world_seed","world","countries","registry","hour","active_seconds","hour_credit","equilibrium_hours","equilibrium_candidate_hour","equilibrium_ranges","autonomous_hours","previous_shares","victory"]) or data.get("competition_version") != 1 or data.get("policy_signature") != rules.signature(): return PackedStringArray([DeskLocalization.source("LOC_COMPETITION_SAVE_RULES_MISMATCH_E5C4836F")])
 	for key in ["world_seed","hour","equilibrium_hours","autonomous_hours"]:
-		if not _integer(data[key]) or int(data[key]) < 0: errors.append("竞争存档整数非法："+key)
-	if not _integer(data.equilibrium_candidate_hour) or int(data.equilibrium_candidate_hour) < -1: errors.append("均衡窗口起点类型或范围非法。")
+		if not _integer(data[key]) or int(data[key]) < 0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SAVE_INTEGER_572FEC0C")+key)
+	if not _integer(data.equilibrium_candidate_hour) or int(data.equilibrium_candidate_hour) < -1: errors.append(DeskLocalization.source("LOC_INVALID_EQUILIBRIUM_WINDOW_START_TYPE_OR_RANGE_CECBB7B5"))
 	for key in ["active_seconds","hour_credit"]:
-		if not _number(data[key]) or float(data[key]) < 0.0: errors.append("竞争时间非法。")
-	if _number(data.hour_credit) and float(data.hour_credit) >= 1.0: errors.append("竞争时间余额非法。")
+		if not _number(data[key]) or float(data[key]) < 0.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_TIME_4A384748"))
+	if _number(data.hour_credit) and float(data.hour_credit) >= 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_TIME_REMAINDER_C095A207"))
 	for key in ["countries","registry","previous_shares","equilibrium_ranges","victory"]:
-		if not data[key] is Dictionary: errors.append("竞争存档对象非法："+key)
-	if not data.world is Array or int(data.get("hour",-1)) != hour: errors.append("竞争时钟或国家类型非法。")
+		if not data[key] is Dictionary: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SAVE_OBJECT_9BF60091")+key)
+	if not data.world is Array or int(data.get("hour",-1)) != hour: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_CLOCK_OR_COUNTRY_TYPES_37C5A372"))
 	if not errors.is_empty(): return errors
-	if int(data.equilibrium_hours) > hour or int(data.autonomous_hours) > hour: errors.append("竞争持续时间不能超过运行时间。")
-	if _canonical(data.world) != _canonical(_reference_world(int(data.world_seed))): errors.append("竞争国家人口或地理已被修改。")
+	if int(data.equilibrium_hours) > hour or int(data.autonomous_hours) > hour: errors.append(DeskLocalization.source("LOC_COMPETITION_DURATION_CANNOT_EXCEED_RUNTIME_C26AEA8F"))
+	if _canonical(data.world) != _canonical(_reference_world(int(data.world_seed))): errors.append(DeskLocalization.source("LOC_COMPETITION_COUNTRY_POPULATION_OR_GEOGRAPHY_HAS_BEEN_806CDA1E"))
 	var ids := {}
 	for variant: Dictionary in variants:
-		if ids.has(variant.id) or str(variant.id).is_empty(): errors.append("竞争版本身份重复或为空。")
+		if ids.has(variant.id) or str(variant.id).is_empty(): errors.append(DeskLocalization.source("LOC_COMPETITION_VERSION_IDENTITY_IS_EMPTY_OR_DUPLICATED_3448340A"))
 		ids[str(variant.id)] = variant
 	if not _integer(data.equilibrium_candidate_hour) or int(data.equilibrium_candidate_hour) < -1 or int(data.equilibrium_candidate_hour) > hour:
-		errors.append("均衡窗口起点非法。")
+		errors.append(DeskLocalization.source("LOC_INVALID_EQUILIBRIUM_WINDOW_START_A44215B1"))
 	elif int(data.equilibrium_candidate_hour) == -1:
-		if int(data.equilibrium_hours) != 0: errors.append("未启动的均衡窗口不能累计时间。")
-	elif hour-int(data.equilibrium_candidate_hour) != int(data.equilibrium_hours): errors.append("均衡累计时间与实际窗口不一致。")
+		if int(data.equilibrium_hours) != 0: errors.append(DeskLocalization.source("LOC_AN_INACTIVE_EQUILIBRIUM_WINDOW_CANNOT_ACCUMULATE_TIME_46053AEC"))
+	elif hour-int(data.equilibrium_candidate_hour) != int(data.equilibrium_hours): errors.append(DeskLocalization.source("LOC_ACCUMULATED_EQUILIBRIUM_TIME_DOES_NOT_MATCH_THE_4FCBB4A2"))
 	for id in data.equilibrium_ranges:
 		var bounds: Variant = data.equilibrium_ranges[id]
-		if id not in ["@lineage","@competitors"] and not ids.has(id): errors.append("均衡窗口包含未知版本。")
-		if not bounds is Dictionary or not _number(bounds.get("min")) or not _number(bounds.get("max")) or float(bounds.min) < 0.0 or float(bounds.max) > 1.0 or float(bounds.min) > float(bounds.max): errors.append("均衡范围非法。")
-		elif float(bounds.max)-float(bounds.min) > rules.equilibrium_tolerance+0.000000000001: errors.append("均衡范围超过当前规则。")
-	if int(data.equilibrium_candidate_hour) >= 0 and not data.equilibrium_ranges.has_all(["@lineage","@competitors"]): errors.append("均衡双方累计范围缺失。")
+		if id not in ["@lineage","@competitors"] and not ids.has(id): errors.append(DeskLocalization.source("LOC_EQUILIBRIUM_WINDOW_CONTAINS_AN_UNKNOWN_VERSION_F61D082A"))
+		if not bounds is Dictionary or not _number(bounds.get("min")) or not _number(bounds.get("max")) or float(bounds.min) < 0.0 or float(bounds.max) > 1.0 or float(bounds.min) > float(bounds.max): errors.append(DeskLocalization.source("LOC_INVALID_EQUILIBRIUM_RANGE_553961BF"))
+		elif float(bounds.max)-float(bounds.min) > rules.equilibrium_tolerance+0.000000000001: errors.append(DeskLocalization.source("LOC_EQUILIBRIUM_RANGE_EXCEEDS_CURRENT_RULES_F9133081"))
+	if int(data.equilibrium_candidate_hour) >= 0 and not data.equilibrium_ranges.has_all(["@lineage","@competitors"]): errors.append(DeskLocalization.source("LOC_ACCUMULATED_RANGES_FOR_BOTH_EQUILIBRIUM_SIDES_ARE_8DA0898F"))
 	var previous_total := 0.0
 	for id in data.previous_shares:
 		var share: Variant = data.previous_shares[id]
-		if not ids.has(id) or not _number(share) or float(share) < 0.0 or float(share) > 1.0: errors.append("竞争历史占比非法。")
+		if not ids.has(id) or not _number(share) or float(share) < 0.0 or float(share) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_HISTORICAL_COMPETITION_SHARES_47A0DDB2"))
 		else: previous_total += float(share)
-	if previous_total > 1.000000000001: errors.append("竞争历史占比不守恒。")
-	if data.registry.size() != ids.size() or data.countries.size() != rules.countries.size(): errors.append("竞争版本或国家数量错误。")
+	if previous_total > 1.000000000001: errors.append(DeskLocalization.source("LOC_HISTORICAL_COMPETITION_SHARES_ARE_NOT_CONSERVED_AFF62254"))
+	if data.registry.size() != ids.size() or data.countries.size() != rules.countries.size(): errors.append(DeskLocalization.source("LOC_INCORRECT_COMPETITION_VERSION_OR_COUNTRY_COUNT_1EB4B504"))
 	for id in data.registry:
 		var entry: Variant = data.registry[id]
 		if not ids.has(id) or not entry is Dictionary or not entry.get("profile") is Dictionary or not entry.get("parent_ids") is Array or not _integer(entry.get("birth_hour")) or int(entry.get("birth_hour",-1)) < 0 or int(entry.get("birth_hour",hour+1)) > hour or rules.country(str(entry.get("origin_country",""))).is_empty():
-			errors.append("竞争版本来源非法。")
+			errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_VERSION_SOURCE_B3378E3E"))
 			continue
 		var p: Dictionary = entry.profile
-		if _canonical(entry.parent_ids) != _canonical(ids[id].get("parent_ids",[])): errors.append("竞争父版本与谱系不一致。")
+		if _canonical(entry.parent_ids) != _canonical(ids[id].get("parent_ids",[])): errors.append(DeskLocalization.source("LOC_COMPETITION_PARENT_VERSION_CONFLICTS_WITH_ITS_LINEAGE_E744B567"))
 		for key in ["language_access","recognizability","context_dependency","remix_cost","expression"]:
-			if not _number(p.get(key)) or float(p.get(key,-1)) < 0.0 or float(p.get(key,2)) > 1.0: errors.append("竞争适配数值非法。")
-		if not _number(p.get("reach")) or float(p.get("reach",0)) <= 0.0 or not p.get("topic_ids") is Array or not p.get("skill_ids") is Array or not p.get("political_known") is bool: errors.append("竞争表达字段非法。")
+			if not _number(p.get(key)) or float(p.get(key,-1)) < 0.0 or float(p.get(key,2)) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_FIT_NUMERIC_VALUE_C134EA06"))
+		if not _number(p.get("reach")) or float(p.get("reach",0)) <= 0.0 or not p.get("topic_ids") is Array or not p.get("skill_ids") is Array or not p.get("political_known") is bool: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_EXPRESSION_FIELDS_01708789"))
 		for key in ["language_id","group_id","channel_id","text"]:
-			if not p.get(key) is String: errors.append("竞争表达文本类型非法。")
+			if not p.get(key) is String: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_EXPRESSION_TEXT_TYPE_A6F4C14D"))
 		if p.get("topic_ids") is Array:
 			for topic in p.topic_ids:
-				if topic not in catalog.topics: errors.append("竞争话题未登记。")
+				if topic not in catalog.topics: errors.append(DeskLocalization.source("LOC_UNREGISTERED_COMPETITION_TOPIC_A728B9AB"))
 		if p.get("skill_ids") is Array:
 			for skill in p.skill_ids:
-				if skill not in rules.skill_reach: errors.append("竞争能力未登记。")
-		if not p.get("context_layer_attachment") is Dictionary or p.context_layer_attachment.size() != 5: errors.append("竞争脑切片绑定字段非法。")
+				if skill not in rules.skill_reach: errors.append(DeskLocalization.source("LOC_UNREGISTERED_COMPETITION_ABILITY_3F326216"))
+		if not p.get("context_layer_attachment") is Dictionary or p.context_layer_attachment.size() != 5: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_BRAIN_SLICE_ATTACHMENT_FIELDS_82C89361"))
 		else:
 			for layer in ["language","group","topics","stance","pragmatic"]:
-				if not p.context_layer_attachment.get(layer) is bool: errors.append("竞争脑切片绑定必须为布尔值。")
+				if not p.context_layer_attachment.get(layer) is bool: errors.append(DeskLocalization.source("LOC_COMPETITION_BRAIN_SLICE_ATTACHMENTS_MUST_BE_BOOLEAN_E91BE184"))
 		for key in ["political_position","pragmatic_position"]:
-			if not p.get(key) is Array or p[key].size() != 2: errors.append("竞争坐标非法。")
+			if not p.get(key) is Array or p[key].size() != 2: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_COORDINATES_C8C82B36"))
 			else:
 				for value in p[key]:
-					if not _number(value) or absf(float(value)) > 1.0: errors.append("竞争坐标非法。")
+					if not _number(value) or absf(float(value)) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_COORDINATES_C8C82B36"))
 	for row: Dictionary in rules.countries:
 		var c: Variant = data.countries.get(str(row.id))
-		if not c is Dictionary: errors.append("竞争国家缺失。"); continue
+		if not c is Dictionary: errors.append(DeskLocalization.source("LOC_COMPETITION_COUNTRY_IS_MISSING_6701764F")); continue
 		var valid := true
 		for field in ["adopted","exposed","attention"]:
 			if not c.get(field) is Dictionary or c[field].size() != ids.size(): valid = false; continue
 			for id in c[field]:
 				if not ids.has(id) or not _integer(c[field][id]) or int(c[field][id]) < 0: valid = false
-		if not valid: errors.append("竞争分配类型或引用非法。"); continue
-		if _sum(c.adopted) > int(row.population) or _sum(c.exposed) > int(row.population) or _sum(c.attention) > floori(int(row.population)*rules.attention_fraction): errors.append("竞争人口或注意力不守恒。")
+		if not valid: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_ALLOCATION_TYPE_OR_REFERENCE_CB369AD0")); continue
+		if _sum(c.adopted) > int(row.population) or _sum(c.exposed) > int(row.population) or _sum(c.attention) > floori(int(row.population)*rules.attention_fraction): errors.append(DeskLocalization.source("LOC_COMPETITION_POPULATION_OR_ATTENTION_IS_NOT_CONSERVED_4A83A0A6"))
 		for id in c.adopted:
-			if int(c.adopted[id]) > int(c.exposed[id]): errors.append("采用超过曝光。")
+			if int(c.adopted[id]) > int(c.exposed[id]): errors.append(DeskLocalization.source("LOC_ADOPTION_EXCEEDS_EXPOSURE_0A1A8E38"))
 	if not errors.is_empty(): return errors
 	if not data.victory.is_empty():
 		var v: Dictionary = data.victory
-		if not v.has_all(["id","eligible_ids","hour","owned_share","lineage_share","escaped_share","mutant_share","mutation_control_ratio","distinct_variants","equilibrium_hours","autonomous_hours"]) or not v.id is String or not v.eligible_ids is Array: return PackedStringArray(["胜利记录字段非法。"])
+		if not v.has_all(["id","eligible_ids","hour","owned_share","lineage_share","escaped_share","mutant_share","mutation_control_ratio","distinct_variants","equilibrium_hours","autonomous_hours"]) or not v.id is String or not v.eligible_ids is Array: return PackedStringArray([DeskLocalization.source("LOC_INVALID_VICTORY_RECORD_FIELDS_24269A0D")])
 		for key in ["hour","distinct_variants","equilibrium_hours","autonomous_hours"]:
-			if not _integer(v[key]) or int(v[key]) < 0: errors.append("胜利记录整数非法。")
+			if not _integer(v[key]) or int(v[key]) < 0: errors.append(DeskLocalization.source("LOC_INVALID_VICTORY_RECORD_INTEGER_F78EABDD"))
 		for key in ["owned_share","lineage_share","escaped_share","mutant_share","mutation_control_ratio"]:
-			if not _number(v[key]) or float(v[key]) < 0.0 or float(v[key]) > 1.0: errors.append("胜利记录占比非法。")
+			if not _number(v[key]) or float(v[key]) < 0.0 or float(v[key]) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_VICTORY_RECORD_SHARE_CA8D53A4"))
 		if not errors.is_empty(): return errors
-		if int(v.hour) != hour or int(v.equilibrium_hours) != int(data.equilibrium_hours) or int(v.autonomous_hours) != int(data.autonomous_hours): errors.append("胜利记录时钟不一致。")
+		if int(v.hour) != hour or int(v.equilibrium_hours) != int(data.equilibrium_hours) or int(v.autonomous_hours) != int(data.autonomous_hours): errors.append(DeskLocalization.source("LOC_VICTORY_RECORD_CLOCK_MISMATCH_796E3FFC"))
 		var verifier: RefCounted = get_script().new(catalog)
 		verifier._state = data.duplicate(true)
 		var view: Dictionary = verifier.snapshot(variants,false)
 		var actual: Dictionary = _eligibility(view,hour,int(data.autonomous_hours),int(data.equilibrium_hours))
-		if v.eligible_ids.is_empty() or v.id != v.eligible_ids[0] or int(v.distinct_variants) != int(actual.distinct): errors.append("胜利条件与真实版本不一致。")
+		if v.eligible_ids.is_empty() or v.id != v.eligible_ids[0] or int(v.distinct_variants) != int(actual.distinct): errors.append(DeskLocalization.source("LOC_VICTORY_CONDITIONS_CONFLICT_WITH_ACTUAL_VERSIONS_7109142A"))
 		var seen := {}
 		for id: Variant in v.eligible_ids:
-			if not id is String or id not in actual.ids or seen.has(id): errors.append("胜利条件未由真实传播达成。")
+			if not id is String or id not in actual.ids or seen.has(id): errors.append(DeskLocalization.source("LOC_VICTORY_CONDITIONS_WERE_NOT_ACHIEVED_THROUGH_ACTUAL_8AE0D6C4"))
 			seen[id] = true
 	return errors
 

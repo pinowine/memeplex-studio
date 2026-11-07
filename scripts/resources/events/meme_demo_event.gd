@@ -7,9 +7,15 @@ const DECAY_MODES := [&"constant", &"linear", &"exponential", &"periodic"]
 const DESIGN_RULES = preload("res://data/rules/design_rules.tres")
 
 @export var id: StringName
-@export var title: String = ""
-@export_multiline var narrative: String = ""
-@export_multiline var mentor_comment: String = ""
+@export var title: String = "":
+	set(value):
+		title = DeskLocalization.source(value)
+@export_multiline var narrative: String = "":
+	set(value):
+		narrative = DeskLocalization.source(value)
+@export_multiline var mentor_comment: String = "":
+	set(value):
+		mentor_comment = DeskLocalization.source(value)
 @export var origin: StringName = &"world"
 @export var topic_ids: PackedStringArray = PackedStringArray()
 @export var operation_ids: PackedStringArray = PackedStringArray()
@@ -88,7 +94,7 @@ func effect_summary() -> String:
 		if effect != null:
 			descriptions.append(effect.describe())
 	if not external_preset_id.is_empty():
-		descriptions.append(DeskLocalization.source_format("生成独立环境家族（预设 %s），非玩家归属与控制；争夺现有注意力预算", external_preset_id))
+		descriptions.append(DeskLocalization.source_format("LOC_CREATES_AN_INDEPENDENT_ENVIRONMENTAL_FAMILY_PRESET_S_65E572E8", external_preset_id))
 	return DeskLocalization.source_join("；",descriptions)
 
 func design_reward_summary() -> String:
@@ -99,7 +105,7 @@ func design_reward_summary() -> String:
 	return DeskLocalization.source_join("、",parts)
 
 func impact_summary(remix_allowed: bool = true) -> String:
-	var labels := {"policy":"政治", "cost_of_living":"生活成本", "work":"劳动", "platform_tools":"平台工具", "sport":"体育", "education":"教育", "identity":"身份", "language":"语言", "entertainment":"文化活动", "archive":"档案", "trust":"信任话题", "community":"社群"}
+	var labels := {"policy":DeskLocalization.source("LOC_POLITICS_50ECCBD0"), "cost_of_living":DeskLocalization.source("LOC_COST_OF_LIVING_2A2CD785"), "work":DeskLocalization.source("LOC_LABOUR_E82F854C"), "platform_tools":DeskLocalization.source("LOC_PLATFORM_TOOLS_8C108BA1"), "sport":DeskLocalization.source("LOC_SPORTS_EF7BE5BE"), "education":DeskLocalization.source("LOC_EDUCATION_C883995F"), "identity":DeskLocalization.source("LOC_IDENTITY_2A9C9E99"), "language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), "entertainment":DeskLocalization.source("LOC_CULTURAL_ACTIVITIES_2995B8F6"), "archive":DeskLocalization.source("LOC_ARCHIVE_B03D2FBD"), "trust":DeskLocalization.source("LOC_TRUST_TOPICS_63F5BD9E"), "community":DeskLocalization.source("LOC_COMMUNITY_ED6613C5")}
 	var parts := PackedStringArray()
 	for effect in effects:
 		if effect == null: continue
@@ -110,13 +116,13 @@ func impact_summary(remix_allowed: bool = true) -> String:
 				for topic in topic_ids:
 					var text := DeskLocalization.source_format("%s%s",[str(labels.get(topic,topic)),arrow],[0])
 					if not parts.has(text): parts.append(text)
-			"trust": parts.append(DeskLocalization.source_format("%s%s",["信任",arrow],[0]))
-			"fatigue": parts.append(DeskLocalization.source_format("%s%s",["疲劳",arrow],[0]))
-			"adoption": parts.append(DeskLocalization.source_format("%s%s",["采用",arrow],[0]))
-			"remix": parts.append("重混↑" if effect.amount > 0.0 and remix_allowed else "重混—")
-			"semantic_shift": parts.append(DeskLocalization.source_format("语义偏移→%d%%", roundi(effect.amount * 100.0)))
-			"revival": parts.append("疲劳↓" if effect.amount > 0.0 else "疲劳—")
-	if not external_preset_id.is_empty() or str(id) == "competitor_birth": parts.append("环境模因↑")
+			"trust": parts.append(DeskLocalization.source_format("%s%s",[DeskLocalization.source("LOC_TRUST_D1CD931B"),arrow],[0]))
+			"fatigue": parts.append(DeskLocalization.source_format("%s%s",[DeskLocalization.source("LOC_FATIGUE_9211F063"),arrow],[0]))
+			"adoption": parts.append(DeskLocalization.source_format("%s%s",[DeskLocalization.source("LOC_ADOPTION_6F600407"),arrow],[0]))
+			"remix": parts.append(DeskLocalization.source("LOC_REMIX_9E352B3A") if effect.amount > 0.0 and remix_allowed else DeskLocalization.source("LOC_REMIX_DB08EC52"))
+			"semantic_shift": parts.append(DeskLocalization.source_format("LOC_SEMANTIC_DRIFT_D_BACBCE1B", roundi(effect.amount * 100.0)))
+			"revival": parts.append(DeskLocalization.source("LOC_FATIGUE_03339114") if effect.amount > 0.0 else DeskLocalization.source("LOC_FATIGUE_0C9990F0"))
+	if not external_preset_id.is_empty() or str(id) == "competitor_birth": parts.append(DeskLocalization.source("LOC_ENVIRONMENTAL_MEME_BBC7EABC"))
 	return DeskLocalization.source_join("  ",parts)
 
 func _validate_ids(values: PackedStringArray, label: String, errors: PackedStringArray) -> void:

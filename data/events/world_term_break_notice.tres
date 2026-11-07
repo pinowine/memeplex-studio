@@ -26,9 +26,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"world_term_break_notice"
-title = "学院发布短休整日通知"
-narrative = "学院按原定安排发布短休整日通知，暂缓部分课程与例行活动。学生开始减少群聊提醒，把时间留给补眠和整理笔记，社群中的讨论也随之放缓。"
-mentor_comment = "通知终于允许休息，别让你的下一条消息加班巡查。"
+title = "LOC_THE_COLLEGE_ANNOUNCES_A_SHORT_BREAK_FB710962"
+narrative = "LOC_THE_COLLEGE_ANNOUNCES_A_SCHEDULED_SHORT_BREAK_8FADFFA9"
+mentor_comment = "LOC_THE_NOTICE_FINALLY_ALLOWS_A_REST_DO_42C0F56F"
 origin = &"world"
 topic_ids = PackedStringArray("education", "community")
 operation_ids = PackedStringArray("revive")

@@ -8,8 +8,8 @@ script = ExtResource("1")
 definition_version = 7
 starter_presets = PackedStringArray("case_s01", "case_r01", "case_p01")
 modules = Array[Dictionary]([{
-"content": "这也能叫正常？",
-"description": "把平直陈述转成质疑，让读者注意情境与表态的落差。",
+"content": "LOC_YOU_CALL_THIS_NORMAL_B5E0EEB3",
+"description": "LOC_TURN_A_PLAIN_STATEMENT_INTO_A_QUESTION_156032AE",
 "draft_effects": [{
 "amount": 0.08,
 "field": "recognizability"
@@ -39,10 +39,10 @@ modules = Array[Dictionary]([{
 "id": "claim",
 "title": "表态"
 }],
-"title": "反问补丁"
+"title": "LOC_RHETORICAL_QUESTION_MODULE_B73188E9"
 }, {
-"content": "把双方承诺与实际所得并置",
-"description": "并置双方承诺与实际所得，修正表达的比较方向而非更换核心关系。",
+"content": "LOC_PLACE_BOTH_SIDES_PROMISES_BESIDE_WHAT_THEY_4AEDB763",
+"description": "LOC_COMPARE_BOTH_SIDES_PROMISES_AND_ACTUAL_RETURNS_24ACA26F",
 "draft_effects": [{
 "amount": 0.06,
 "field": "recognizability"
@@ -69,10 +69,10 @@ modules = Array[Dictionary]([{
 "id": "relation",
 "title": "关系"
 }],
-"title": "对照补丁"
+"title": "LOC_COMPARISON_MODULE_1A68D50B"
 }, {
-"content": "允许不跟做，也保留回应位置",
-"description": "在接续表达中加入退出入口，让跟做不再成为唯一回应。",
+"content": "LOC_ALLOW_PEOPLE_NOT_TO_JOIN_IN_WHILE_E26A9825",
+"description": "LOC_ADD_AN_EXIT_TO_THE_RESPONSE_CHAIN_9BA540AF",
 "draft_effects": [{
 "amount": -0.08,
 "field": "remix_cost"
@@ -99,10 +99,10 @@ modules = Array[Dictionary]([{
 "id": "response_and_exit",
 "title": "回应与退出"
 }],
-"title": "退出补丁"
+"title": "LOC_EXIT_MODULE_427FF76E"
 }, {
-"content": "给圈外读者留下一句解释",
-"description": "为圈外读者增加一句说明，降低携带语境的负担；不取消识别边界。",
+"content": "LOC_LEAVE_ONE_SENTENCE_OF_EXPLANATION_FOR_OUTSIDERS_30278B47",
+"description": "LOC_ADD_A_SENTENCE_FOR_OUTSIDERS_REDUCING_THE_0DE62A67",
 "draft_effects": [{
 "amount": 0.08,
 "field": "language_access"
@@ -129,10 +129,10 @@ modules = Array[Dictionary]([{
 "id": "recognition_rule",
 "title": "识别规则"
 }],
-"title": "释义补丁"
+"title": "LOC_EXPLANATION_MODULE_17E40062"
 }, {
-"content": "留下可接续但不替人定论的空白",
-"description": "留下可接续的表达缺口，不替后来者预设结论，也不恢复外部版本控制。",
+"content": "LOC_LEAVE_AN_OPENING_OTHERS_CAN_EXTEND_WITHOUT_14BEA689",
+"description": "LOC_LEAVE_AN_OPENING_FOR_OTHERS_TO_CONTINUE_FD41B878",
 "draft_effects": [{
 "amount": -0.05,
 "field": "remix_cost"
@@ -159,61 +159,61 @@ modules = Array[Dictionary]([{
 "id": "open_gap",
 "title": "开放缺口"
 }],
-"title": "续写补丁"
+"title": "LOC_CONTINUATION_MODULE_0FCD9CEF"
 }])
 skills = Array[Dictionary]([{
 "cost": 0,
-"description": "把表达贴进街区留言板。",
-"effect_text": "街区留言板渠道已解锁。",
+"description": "LOC_POST_THE_EXPRESSION_ON_THE_NEIGHBORHOOD_BOARD_CBD7BF79",
+"effect_text": "LOC_NEIGHBORHOOD_BOARD_CHANNEL_UNLOCKED_64B49366",
 "id": "text",
 "kind": "root",
 "requires": [],
 "target_ids": ["local_board"],
-"title": "文本"
+"title": "LOC_TEXT_DD818618"
 }, {
 "cost": 8,
-"description": "让图像进入公开推荐流。",
-"effect_text": "公开推荐流渠道已解锁。",
+"description": "LOC_BRING_IMAGES_INTO_THE_PUBLIC_RECOMMENDATION_FEED_2E4CFFD6",
+"effect_text": "LOC_PUBLIC_RECOMMENDATION_FEED_CHANNEL_UNLOCKED_7C60B262",
 "id": "image",
 "kind": "medium",
 "requires": ["text"],
 "target_ids": ["open_feed"],
-"title": "图像媒介"
+"title": "LOC_IMAGE_MEDIUM_74F473C4"
 }, {
 "cost": 10,
-"description": "给不同语言的读者搭一座桥。",
+"description": "LOC_BUILD_A_BRIDGE_BETWEEN_READERS_OF_DIFFERENT_A7CA0150",
 "draft_effects": [{
 "amount": 0.1,
 "field": "language_access"
 }],
-"effect_text": "语言可达性 +0.1。",
+"effect_text": "LOC_LANGUAGE_ACCESS_5317F083",
 "id": "translation",
 "kind": "medium",
 "requires": ["text"],
 "target_ids": ["open_feed"],
-"title": "语言媒介"
+"title": "LOC_LANGUAGE_MEDIUM_524BC5EF"
 }, {
 "cost": 12,
-"description": "把表达送进开放改写工坊。",
-"effect_text": "开放改写工坊渠道已解锁。",
+"description": "LOC_SEND_THE_EXPRESSION_TO_THE_OPEN_REMIX_29B5AC84",
+"effect_text": "LOC_OPEN_REMIX_WORKSHOP_CHANNEL_UNLOCKED_D45AD777",
 "id": "remix",
 "kind": "carrier",
 "requires": ["image"],
 "target_ids": ["remix_workshop"],
-"title": "模板载体"
+"title": "LOC_TEMPLATE_CARRIER_515C52BE"
 }, {
 "cost": 14,
-"description": "让一句话在新的场合也能接上回应。",
+"description": "LOC_LET_A_PHRASE_INVITE_A_RESPONSE_IN_0444E668",
 "draft_effects": [{
 "amount": -0.1,
 "field": "context_dependency"
 }],
-"effect_text": "语境依赖 −0.1。",
+"effect_text": "LOC_CONTEXT_DEPENDENCY_A5CCA14B",
 "id": "network",
 "kind": "instance",
 "requires": ["translation", "remix"],
 "target_ids": ["open_feed", "remix_workshop"],
-"title": "响应实例"
+"title": "LOC_RESPONSE_INSTANCE_EF1C7315"
 }])
 context_definitions = ExtResource("contexts")
 context_depths = PackedFloat32Array(0.1, 0.3, 0.5, 0.7, 0.9)

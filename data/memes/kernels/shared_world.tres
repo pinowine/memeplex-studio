@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("1_script")
 id = &"shared_world"
-title = "共同世界"
-description = "围绕前提、共享规则和可补写空缺建立虚构世界。三个槽位只用于可玩性验证，不是文献确定的普遍分类。"
+title = "LOC_SHARED_WORLD_B7F03907"
+description = "LOC_BUILDS_A_FICTIONAL_WORLD_AROUND_A_PREMISE_42A2BE5E"
 required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
-slot_prompts = PackedStringArray("这个共同世界的前提是什么？", "大家必须保持的规则是什么？", "还留给别人什么空缺？")
-default_values = PackedStringArray("纸灯港的所有钟都各慢一分钟", "每个居民解释自己丢掉的一分钟", "尚未确定港口最后一只钟属于谁")
-family_anchor = "共享的纸灯港与丢失一分钟规则仍能被后续贡献者识别"
+slot_prompts = PackedStringArray("LOC_WHAT_IS_THE_PREMISE_OF_THIS_SHARED_DE7777CB", "LOC_WHAT_RULE_MUST_EVERYONE_PRESERVE_495AB574", "LOC_WHAT_GAP_REMAINS_FOR_OTHERS_TO_FILL_C07BDFBB")
+default_values = PackedStringArray("LOC_EVERY_CLOCK_IN_PAPER_LANTERN_HARBOR_RUNS_B2EADD1B", "LOC_EACH_RESIDENT_EXPLAINS_THE_MINUTE_THEY_LOST_FFF98D1E", "LOC_WHO_OWNS_THE_HARBOR_S_LAST_CLOCK_5FAE5CE4")
+family_anchor = "LOC_LATER_CONTRIBUTORS_CAN_STILL_RECOGNIZE_THE_SHARED_20D172C7"
 split_threshold = 0.6
 evidence_status = &"design"

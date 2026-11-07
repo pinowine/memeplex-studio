@@ -27,9 +27,9 @@ group_ids = PackedStringArray("students", "culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"city_tournament"
-title = "港口接力赛开幕，队伍应援栏开放"
-narrative = "纸灯港体育会宣布港口接力赛开幕，码头与学院代表队陆续入场。现场开放队伍应援栏，学生和居民开始套用熟悉的短句为各队造势，赛场之外也出现了应援帖。"
-mentor_comment = "应援栏不查论据，别因此把嗓门当成证据。"
+title = "LOC_THE_HARBOR_RELAY_OPENS_ITS_TEAM_SUPPORT_F9175C41"
+narrative = "LOC_PAPER_LANTERN_HARBOR_S_SPORTS_ASSOCIATION_OPENS_5B986208"
+mentor_comment = "LOC_THE_CHEERING_BOARD_DOES_NOT_CHECK_ARGUMENTS_30955C02"
 origin = &"world"
 topic_ids = PackedStringArray("sport", "education", "community")
 operation_ids = PackedStringArray("amplify")

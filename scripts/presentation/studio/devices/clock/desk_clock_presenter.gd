@@ -11,7 +11,7 @@ const SEASON_SOURCE_CENTER := Vector2(626.5,625)
 const DAY_SOURCE_CENTER := Vector2(627,616.5)
 const SEASON_SCALE: float = 166.0/1005.0
 const DAY_SCALE: float = 128.0/771.0
-const SEASONS := ["春", "夏", "秋", "冬"]
+static var SEASONS := [DeskLocalization.source("LOC_SPRING_B3C33B7A"), DeskLocalization.source("LOC_SUMMER_8482432C"), DeskLocalization.source("LOC_AUTUMN_5A2E5E4B"), DeskLocalization.source("LOC_WINTER_0868FBC8")]
 
 var _atlas: Node2D
 var _hud: Control
@@ -113,7 +113,7 @@ func tick() -> void:
 	var daylit := absf(day_phase - 0.5) <= daylight * 0.5 and daylight > 0.0
 	_date.text = "%04d.%02d.%02d" % [int(date.year), int(date.month), int(date.day)]
 	_season_label.text = DeskLocalization.text(SEASONS[season_index])
-	_weather.text = "%s · %s" % [DeskLocalization.text("昼") if daylit else DeskLocalization.text("夜"), _weather_word(weather)]
+	_weather.text = "%s · %s" % [DeskLocalization.text("LOC_DAY_0201C422") if daylit else DeskLocalization.text("LOC_NIGHT_A519542A"), _weather_word(weather)]
 	_speed.hide()
 	_season.rotation = -TAU * year_phase
 	_day.rotation = PI - TAU * day_phase
@@ -135,12 +135,12 @@ func inspection() -> Dictionary:
 
 
 func _weather_word(symbol: String) -> String:
-	if "☀" in symbol: return DeskLocalization.text("晴")
-	if "☁" in symbol: return DeskLocalization.text("多云")
-	if "🌧" in symbol: return DeskLocalization.text("雨")
-	if "❄" in symbol: return DeskLocalization.text("雪")
-	if "🌬" in symbol: return DeskLocalization.text("风")
-	return DeskLocalization.text("未设站")
+	if "☀" in symbol: return DeskLocalization.text("LOC_CLEAR_6379EDE5")
+	if "☁" in symbol: return DeskLocalization.text("LOC_CLOUDY_30C37977")
+	if "🌧" in symbol: return DeskLocalization.text("LOC_RAIN_124D6058")
+	if "❄" in symbol: return DeskLocalization.text("LOC_SNOW_53058FE2")
+	if "🌬" in symbol: return DeskLocalization.text("LOC_WIND_BE65BD55")
+	return DeskLocalization.text("LOC_NO_STATION_0EBEB720")
 
 
 func _format_label(label: Label, rect: Rect2, font_size: int) -> void:

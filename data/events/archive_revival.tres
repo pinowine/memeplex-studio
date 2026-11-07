@@ -27,9 +27,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"archive_revival"
-title = "档案社展出旧版短图，旧话题重返讨论"
-narrative = "城市档案社展出了早先收藏的一组短图，并附上当年的转发记录。参观者把图中的说法与眼下的处境联系起来，原本被搁置的回应重新出现在聊天里。"
-mentor_comment = "旧句子还能被翻出来，先看它这次解决什么，别忙着给复兴剪彩。"
+title = "LOC_AN_ARCHIVE_EXHIBITION_BRINGS_AN_OLD_TOPIC_71AF401B"
+narrative = "LOC_THE_CITY_ARCHIVE_SOCIETY_EXHIBITS_A_COLLECTION_8DB4DF6C"
+mentor_comment = "LOC_AN_OLD_PHRASE_CAN_STILL_BE_DUG_3CA6F83C"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("archive", "community")
 operation_ids = PackedStringArray("revive")

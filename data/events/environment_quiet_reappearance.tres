@@ -33,9 +33,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_quiet_reappearance"
-title = "职员重新提起一则沉寂旧话题"
-narrative = "一则安静了一阵的旧话题被职员带回交班聊天，有人顺手贴出了当年的回应。几名读者说这次读来没有先前那么厌烦，工作与档案相关的讨论又有了短暂交集。"
-mentor_comment = "旧话题回来坐了坐，不是来给你的成果表签字，先听它这次被用在哪里。"
+title = "LOC_OFFICE_WORKERS_BRING_A_DORMANT_TOPIC_BACK_7D55E540"
+narrative = "LOC_OFFICE_WORKERS_BRING_A_LONG_QUIET_TOPIC_F078DEF9"
+mentor_comment = "LOC_AN_OLD_TOPIC_CAME_BACK_FOR_A_A1916444"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("archive", "work")
 operation_ids = PackedStringArray("revive", "attention_shift")

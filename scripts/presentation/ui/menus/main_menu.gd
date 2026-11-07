@@ -9,10 +9,7 @@ signal settings_changed(settings: Dictionary)
 
 const TEMPLATE = preload("res://scenes/ui/menus/main_menu.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
-const LABELS := {
-	"zh_CN": ["模因工作室", "印刷不保证理解。", "开始", "读取", "模因图鉴", "设置", "退出", "语言", "音乐", "音效", "返回", "界面及现有内容均可切换中英文。"],
-	"en": ["Memeplex Studio", "Printing does not guarantee understanding.", "Start", "Load", "Codex", "Settings", "Quit", "Language", "Music", "Effects", "Back", "Switch the interface and authored content between Chinese and English."]
-}
+const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_PRINTING_DOES_NOT_GUARANTEE_UNDERSTANDING_C623F385", "LOC_START_D2BB025A", "LOC_LOAD_534CB3FA", "LOC_MEME_CODEX_2F7C7F0C", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
 var _settings := {"language": "zh_CN", "music": 1.0, "effects": 1.0}
@@ -135,7 +132,7 @@ func _apply_audio() -> void:
 
 func _refresh_labels() -> void:
 	if not is_instance_valid(_ui): return
-	var words: Array = LABELS[_settings.language]
+	var words: Array = LABELS
 	var keys := ["Title", "Subtitle", "Start", "Load", "Codex", "Settings", "Quit"]
 	for index in keys.size(): _ui.get_node("MenuPanel/Content/" + keys[index]).text = words[index]
 	for pair: Array in [["Title", 5], ["LanguageLabel", 7], ["MusicLabel", 8], ["EffectsLabel", 9], ["Back", 10], ["Notice", 11]]:

@@ -45,9 +45,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_ritual_escape"
-title = "外部参与者提议把回应改成离场宣言"
-narrative = "几名外部参与者提出改写原来的回应结构，将接句改成离场宣言。提案保留来源链接，强调参与者可以结束讨论；他们正在确认改写范围后再发布正式版本。"
-mentor_comment = "回应被改成离场宣言，说明仪式还能派上用场，只是不一定替你留人。"
+title = "LOC_OUTSIDE_PARTICIPANTS_PROPOSE_TURNING_A_RESPONSE_INTO_FA417605"
+narrative = "LOC_OUTSIDE_PARTICIPANTS_PROPOSE_REPLACING_THE_ORIGINAL_RESPONSE_19F44864"
+mentor_comment = "LOC_A_RESPONSE_BECAME_AN_EXIT_STATEMENT_THE_3835D32F"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("community", "language")
 operation_ids = PackedStringArray("split", "remix")

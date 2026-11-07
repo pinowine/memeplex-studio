@@ -39,9 +39,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_caption_shortening"
-title = "学生提议把长说明压成一行"
-narrative = "一名学生提出将原帖的长说明压成一行，把一段背景挪出主图。短版方案保留原链接，准备在确认再利用范围后用于群聊转发。"
-mentor_comment = "压成一行可以，别顺手把前提注销，误读本来就不缺捷径。"
+title = "LOC_A_STUDENT_PROPOSES_REDUCING_THE_EXPLANATION_TO_60D9D2ED"
+narrative = "LOC_A_STUDENT_PROPOSES_REDUCING_THE_ORIGINAL_POST_BF5869DE"
+mentor_comment = "LOC_ONE_LINE_IS_FINE_DO_NOT_CANCEL_DD8CF0AC"
 origin = &"transmission"
 topic_ids = PackedStringArray("language", "education")
 operation_ids = PackedStringArray("remix")

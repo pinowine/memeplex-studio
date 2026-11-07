@@ -33,9 +33,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"world_bridge_detour"
-title = "河桥检修，公交启用临时站台"
-narrative = "河桥管理处开始检修主桥，过桥公交临时改走绕行线。交通部门启用临时站台并公布换乘指引，通勤者反复确认上车地点，原站点附近的交流随之减少。"
-mentor_comment = "路线已经绕了一圈，说明别再绕一圈，先把站台写清。"
+title = "LOC_BRIDGE_REPAIRS_MOVE_BUSES_TO_TEMPORARY_STOPS_9FF529DD"
+narrative = "LOC_THE_BRIDGE_AUTHORITY_BEGINS_REPAIRS_ON_THE_A2C34F3E"
+mentor_comment = "LOC_THE_ROUTE_ALREADY_TAKES_A_DETOUR_THE_E4B95E89"
 origin = &"world"
 topic_ids = PackedStringArray("policy", "cost_of_living", "work")
 operation_ids = PackedStringArray("attention_shift", "fatigue")

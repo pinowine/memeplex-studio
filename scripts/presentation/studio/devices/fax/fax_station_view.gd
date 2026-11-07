@@ -12,7 +12,7 @@ signal close_requested
 const A4_RATIO: float = 297.0 / 210.0
 const KEY_ZONES := [Rect2(800,536,52,50),Rect2(871,536,52,50),Rect2(943,536,52,50),Rect2(800,600,52,50),Rect2(871,600,52,50),Rect2(943,600,52,50),Rect2(800,665,52,50),Rect2(871,665,52,50),Rect2(943,665,52,50),Rect2(800,729,52,52),Rect2(871,729,52,52),Rect2(943,729,52,52)]
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
-const REPLIES = preload("res://scripts/presentation/studio/devices/fax/fax_call_session.gd").REPLIES
+static var REPLIES = preload("res://scripts/presentation/studio/devices/fax/fax_call_session.gd").REPLIES
 
 var shade: ColorRect
 var display: TextureRect
@@ -64,7 +64,7 @@ class SealGuide extends Control:
 			draw_line(centre+Vector2(cos(a),sin(a))*radius,centre+Vector2(cos(b),sin(b))*radius,Color("8b8878"),1.2,true)
 		var font := get_theme_font("font","Label")
 		var fs := 10 if radius < 22 else 12
-		var text := DeskLocalization.text("收阅")
+		var text := DeskLocalization.text("LOC_ACKNOWLEDGE_8FDB8F49")
 		var width := font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs).x
 		draw_string(font,centre+Vector2(-width*0.5,font.get_ascent(fs)*0.35),text,HORIZONTAL_ALIGNMENT_LEFT,-1,fs,Color("696b5b"))
 
@@ -171,14 +171,14 @@ func build() -> void:
 	reward_tray.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(reward_tray)
 	seal = _image("ReceivedSeal",sheet)
-	seal_text = _label("ReceivedSealFallback","已收阅",sheet,18)
+	seal_text = _label("ReceivedSealFallback",DeskLocalization.source("LOC_ACKNOWLEDGED_836134F7"),sheet,18)
 	seal_text.add_theme_color_override("font_color",Color("8c3029"))
 	book = _panel("TelephoneBook",self,Color("c4bda8"))
 	book_art = _image("BookAsset",book)
 	ruled_contacts = preload("res://scripts/presentation/studio/paper/desk_ruled_contacts.gd").new()
 	ruled_contacts.name = "RuledContacts"
 	book.add_child(ruled_contacts)
-	book_heading = _label("BookHeading","电话簿 / 已收录",book,14)
+	book_heading = _label("BookHeading",DeskLocalization.source("LOC_PHONE_BOOK_COLLECTED_D784C924"),book,14)
 	contact_list = ItemList.new()
 	contact_list.name = "Contacts"
 	contact_list.item_selected.connect(contact_selected.emit)
@@ -191,22 +191,22 @@ func build() -> void:
 	number_label.add_theme_color_override("font_color",Color("bcdf9e"))
 	for index in 12:
 		var key: String = ["1","2","3","4","5","6","7","8","9","#","0","backspace"][index]
-		var button := _button("Key"+str(index),"退" if key == "backspace" else key,phone)
+		var button := _button("Key"+str(index),DeskLocalization.source("LOC_DEL_ABC3DA5E") if key == "backspace" else key,phone)
 		_flat_key(button)
 		button.pressed.connect(func() -> void: keypad_requested.emit(key))
 		keys.append(button)
-	dial_button = _button("Dial","拨",phone)
+	dial_button = _button("Dial",DeskLocalization.source("LOC_DIAL_0526B4CB"),phone)
 	_flat_key(dial_button)
 	dial_button.pressed.connect(dial_requested.emit)
-	pickup_button = _button("Pickup","接",phone)
+	pickup_button = _button("Pickup",DeskLocalization.source("LOC_PICK_UP_B62FEEE3"),phone)
 	_flat_key(pickup_button)
 	pickup_button.pressed.connect(pickup_requested.emit)
-	hangup_button = _button("Hangup","挂断",phone)
+	hangup_button = _button("Hangup",DeskLocalization.source("LOC_HANG_UP_225253BF"),phone)
 	_flat_key(hangup_button)
 	hangup_button.pressed.connect(hangup_requested.emit)
 	identity = _panel("CallIdentity",self,Color("14271d"))
 	portrait = _image("Portrait67",identity)
-	identity_label = _label("Identity","67 / 助手",identity,13)
+	identity_label = _label("Identity",DeskLocalization.source("LOC_ASSISTANT_9977EA85"),identity,13)
 	identity_label.add_theme_color_override("font_color",Color("a4c79e"))
 	conversation = RichTextLabel.new()
 	conversation.name = "CallLog"
@@ -220,9 +220,9 @@ func build() -> void:
 	player_fallback.name = "AnonymousAuthor"
 	player_fallback.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	identity.add_child(player_fallback)
-	player_title = _label("PlayerIdentity","作者 / 你",identity,13)
+	player_title = _label("PlayerIdentity",DeskLocalization.source("LOC_AUTHOR_YOU_869F9F1A"),identity,13)
 	player_title.add_theme_color_override("font_color",Color("a4c79e"))
-	player_line = _label("SelectedResponse","尚未选择回应。",identity,13)
+	player_line = _label("SelectedResponse",DeskLocalization.source("LOC_NO_RESPONSE_SELECTED_YET_428401DB"),identity,13)
 	player_line.add_theme_color_override("font_color",Color("b8d9ac"))
 	player_line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for index in 3:
@@ -233,7 +233,7 @@ func build() -> void:
 	status = _label("Diagnostic","",self,12)
 	status.add_theme_color_override("font_color",Color("e5ddc8"))
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	stamp_button = _button("Stamp","拿取印章",self)
+	stamp_button = _button("Stamp",DeskLocalization.source("LOC_PICK_UP_STAMP_E80D9697"),self)
 	stamp_button.pressed.connect(stamp_requested.emit)
 	stamp_art = _image("StampToolAsset",self)
 	close_button = _button("CloseFocus","",self)

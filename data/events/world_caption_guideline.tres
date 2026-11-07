@@ -26,9 +26,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"world_caption_guideline"
-title = "公共频道发布新版字幕指引"
-narrative = "公共频道发布新版字幕制作指引，示例同时展示清晰字号与双语注释。创作者开始按指引补全字幕，原本难以辨读的配文获得了更清楚的展示。"
-mentor_comment = "字幕能救回看不清的字，救不了一句绕到下班的解释。"
+title = "LOC_A_PUBLIC_CHANNEL_ISSUES_NEW_SUBTITLE_GUIDELINES_9D5230C6"
+narrative = "LOC_A_PUBLIC_CHANNEL_ISSUES_NEW_SUBTITLE_PRODUCTION_F201AFE6"
+mentor_comment = "LOC_SUBTITLES_CAN_RESCUE_ILLEGIBLE_WORDS_NOT_AN_FF6CB050"
 origin = &"world"
 topic_ids = PackedStringArray("platform_tools", "language")
 operation_ids = PackedStringArray("platform_change")

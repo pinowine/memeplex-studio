@@ -1,118 +1,248 @@
 class_name DeskLocalization
 extends RefCounted
 
-const DEFAULT_TABLES := ["res://localization/ui/desk_ui.en.json", "res://localization/content/desk_content.en.json"]
+const DEFAULT_TABLES := ["res://localization/messages.json"]
 const EDIT_META := &"desk_localization_edit"
 const EDIT_CONNECTED_META := &"desk_localization_edit_connected"
 
 static var _initialized := false
 static var _translation: Translation
+static var _chinese_translation: Translation
+static var _records: Dictionary = {}
 static var _messages: Dictionary = {}
+static var _chinese_messages: Dictionary = {}
+static var _aliases: Dictionary = {}
 static var _dynamic_messages: Dictionary = {}
+static var _dynamic_chinese: Dictionary = {}
+static var _dynamic_specs: Dictionary = {}
 static var _missing: Dictionary = {}
 static var _table_paths: Array[String] = []
 static var _load_errors: Array[String] = []
+static var _last_reload_errors: Array[String] = []
 static var _load_error: Error = OK
 
 static func ensure_loaded(paths: Array = DEFAULT_TABLES) -> Error:
 	if _initialized: return _load_error
+	var error := reload_tables(paths)
+	if error != OK:
+		_initialized = true
+		_load_error = error
+		_load_errors.assign(_last_reload_errors)
+	return error
+
+static func reload_tables(paths: Array = DEFAULT_TABLES) -> Error:
 	var combined: Dictionary = {}
+	var loaded_paths: Array[String] = []
+	var errors: Array[String] = []
+	var result: Error = OK
+	if paths.is_empty():
+		errors.append("At least one translation table is required.")
+		result = ERR_INVALID_PARAMETER
 	for value: Variant in paths:
 		if not value is String:
-			_record_load_error("Translation table path must be a string.", ERR_INVALID_PARAMETER)
+			errors.append("Translation table path must be a string.")
+			result = ERR_INVALID_PARAMETER
 			continue
 		var path := str(value)
-		_table_paths.append(path)
+		loaded_paths.append(path)
 		var file := FileAccess.open(path, FileAccess.READ)
 		if file == null:
-			_record_load_error("Cannot open translation table: " + path, FileAccess.get_open_error())
+			errors.append("Cannot open translation table: " + path)
+			result = FileAccess.get_open_error()
 			continue
 		var parser := JSON.new()
 		var error := parser.parse(file.get_as_text())
 		file.close()
 		if error != OK or not parser.data is Dictionary:
-			_record_load_error("Translation table must contain a JSON object: " + path, ERR_PARSE_ERROR)
+			errors.append("Translation table must contain a JSON object: " + path)
+			result = ERR_PARSE_ERROR
 			continue
 		var table: Dictionary = parser.data
-		var invalid := validate_messages(table)
+		var flat := not table.is_empty() and table.values()[0] is String and path not in DEFAULT_TABLES
+		var invalid := validate_messages(table) if flat else validate_keyed_messages(table)
 		if not invalid.is_empty():
-			for message: String in invalid: _record_load_error(path + ": " + message, ERR_INVALID_DATA)
+			for message: String in invalid: errors.append(path + ": " + message)
+			result = ERR_INVALID_DATA
 			continue
-		for source: String in table:
-			if combined.has(source) and combined[source] != table[source]:
-				_record_load_error("Conflicting translation for exact source: " + source, ERR_INVALID_DATA)
+		for key: String in table:
+			var entry: Dictionary = {"source":key, "zh_CN":key, "en":table[key]} if flat else table[key].duplicate(true)
+			if combined.has(key) and combined[key] != entry:
+				errors.append("Conflicting translation key: " + key)
+				result = ERR_INVALID_DATA
 			else:
-				combined[source] = table[source]
-	_messages = combined
+				combined[key] = entry
+	var aliases: Dictionary = {}
+	for key: String in combined:
+		var canonical := str(combined[key].source)
+		if _records.has(key) and str(_records[key].source) != canonical:
+			errors.append("Canonical source is immutable for translation key: " + key)
+			result = ERR_INVALID_DATA
+		if combined.has(canonical) and canonical != key:
+			errors.append("Canonical source conflicts with a translation key: " + key)
+			result = ERR_INVALID_DATA
+		if aliases.has(canonical) and combined[aliases[canonical]] != combined[key]:
+			errors.append("Conflicting translations for canonical source: " + canonical)
+			result = ERR_INVALID_DATA
+		aliases[canonical] = key
+	_last_reload_errors = errors
+	if result != OK:
+		for message: String in errors: push_error(message)
+		return result
+	var old_english := _translation
+	var old_chinese := _chinese_translation
+	_records = combined
+	_aliases = aliases
+	_messages = {}
+	_chinese_messages = {}
 	_translation = Translation.new()
 	_translation.locale = "en"
-	for source: String in _messages:
-		_translation.add_message(StringName(source), StringName(_messages[source]))
-	# Registration may notify ready presenters, so the service is initialized first.
+	_chinese_translation = Translation.new()
+	_chinese_translation.locale = "zh_CN"
+	for key: String in _records:
+		var entry: Dictionary = _records[key]
+		for alias: String in [key, str(entry.source)]:
+			_messages[alias] = entry.en
+			_chinese_messages[alias] = entry.zh_CN
+			_translation.add_message(StringName(alias), StringName(entry.en))
+			_chinese_translation.add_message(StringName(alias), StringName(entry.zh_CN))
+	_table_paths = loaded_paths
+	_load_errors.clear()
+	_load_error = OK
+	_missing.clear()
 	_initialized = true
+	_dynamic_messages.clear()
+	_dynamic_chinese.clear()
+	for canonical: String in _dynamic_specs:
+		_rebuild_dynamic(canonical, _dynamic_specs[canonical])
+	# Presenters observe only a validated table with both locales available.
+	if old_english != null: TranslationServer.remove_translation(old_english)
+	if old_chinese != null: TranslationServer.remove_translation(old_chinese)
 	TranslationServer.add_translation(_translation)
-	return _load_error
+	TranslationServer.add_translation(_chinese_translation)
+	return OK
 
-static func text(source: String) -> String:
+static func source(key: String) -> String:
 	ensure_loaded()
-	var translated := str(TranslationServer.translate(StringName(source)))
-	if TranslationServer.get_locale().begins_with("en") and translated == source and not _messages.has(source) and not (_dynamic_messages.has(source) and _dynamic_messages[source] != source) and _contains_han(source):
-		_missing[source] = true
+	return str(_records[key].source) if _records.has(key) else key
+
+static func source_value(value: Variant) -> Variant:
+	if value is String: return source(value)
+	if value is StringName: return StringName(source(str(value)))
+	if value is PackedStringArray:
+		var strings := PackedStringArray()
+		for item: String in value: strings.append(source(item))
+		return strings
+	if value is Array:
+		var items: Array = value.duplicate()
+		for index in items.size(): items[index] = source_value(items[index])
+		return items
+	if value is Dictionary:
+		var result: Dictionary = value.duplicate()
+		for key: Variant in result: result[key] = source_value(result[key])
+		return result
+	return value
+
+static func text(key: String) -> String:
+	ensure_loaded()
+	var translated := str(TranslationServer.translate(StringName(key)))
+	if TranslationServer.get_locale().begins_with("en") and translated == key and not _messages.has(key) and not (_dynamic_messages.has(key) and _dynamic_messages[key] != key) and (_contains_han(key) or key.begins_with("LOC_")):
+		_missing[key] = true
 	else:
-		_missing.erase(source)
+		_missing.erase(key)
 	return translated
 
-static func format_text(source: String, values: Variant) -> String:
-	return text(source) % values
+static func format_text(key: String, values: Variant) -> String:
+	return text(key) % values
 
-static func english_text(source: String) -> String:
+static func english_text(key: String) -> String:
 	ensure_loaded()
-	if _dynamic_messages.has(source):
-		var translated := str(_dynamic_messages[source])
-		if translated == source and not _messages.has(source) and _contains_han(source): _missing[source] = true
+	return _locale_text(key, "en")
+
+static func chinese_text(key: String) -> String:
+	ensure_loaded()
+	return _locale_text(key, "zh_CN")
+
+static func _locale_text(key: String, locale: String) -> String:
+	var dynamic: Dictionary = _dynamic_messages if locale == "en" else _dynamic_chinese
+	var messages: Dictionary = _messages if locale == "en" else _chinese_messages
+	if dynamic.has(key):
+		var translated := str(dynamic[key])
+		if locale == "en" and translated == key and not messages.has(key) and _contains_han(key): _missing[key] = true
 		return translated
-	if _messages.has(source): return str(_messages[source])
-	if _contains_han(source): _missing[source] = true
-	return source
+	if messages.has(key): return str(messages[key])
+	if locale == "en" and (_contains_han(key) or key.begins_with("LOC_")): _missing[key] = true
+	return key
 
-static func source_format(source: String, values: Variant, localize_arguments: Array = []) -> String:
-	var canonical := source % values
+static func _format_arguments(values: Variant, positions: Array, locale: String) -> Variant:
+	var result: Variant = values.duplicate() if values is Array else values
+	for position: int in positions:
+		var argument: Variant = result[position] if result is Array else result
+		if argument is String or argument is StringName:
+			var displayed := source(str(argument)) if locale.is_empty() else _locale_text(str(argument), locale)
+			if result is Array: result[position] = displayed
+			else: result = displayed
+	return result
+
+static func source_format(key: String, values: Variant, localize_arguments: Array = []) -> String:
 	ensure_loaded()
-	if _messages.has(source) or not localize_arguments.is_empty():
-		var english_values: Variant = values.duplicate() if values is Array else values
-		for position: Variant in localize_arguments:
-			var count: int = english_values.size() if english_values is Array else 1
-			if not position is int or position < 0 or position >= count:
-				push_error("Source-format localization index is outside its explicit arguments.")
-				return canonical
-			var argument: Variant = english_values[position] if english_values is Array else english_values
-			if argument is String or argument is StringName:
-				if english_values is Array: english_values[position] = english_text(str(argument))
-				else: english_values = english_text(str(argument))
-		var displayed := english_text(source) % english_values
-		if _dynamic_messages.get(canonical) != displayed:
-			if displayed != canonical: _missing.erase(canonical)
-			_dynamic_messages[canonical] = displayed
-			_translation.add_message(StringName(canonical), StringName(displayed))
+	var count: int = values.size() if values is Array else 1
+	for position: Variant in localize_arguments:
+		if not position is int or position < 0 or position >= count:
+			push_error("Source-format localization index is outside its explicit arguments.")
+			return source(key) % values
+	var canonical_values: Variant = _format_arguments(values, localize_arguments, "")
+	var canonical := source(key) % canonical_values
+	if _messages.has(key) or not localize_arguments.is_empty():
+		var spec := {"kind":"format", "template":source(key), "arguments":canonical_values.duplicate(true) if canonical_values is Array else canonical_values, "positions":localize_arguments.duplicate()}
+		_dynamic_specs[canonical] = spec
+		_rebuild_dynamic(canonical, spec)
 	return canonical
 
 static func source_join(separator: String, values: Variant) -> String:
-	var canonical := separator.join(values)
 	ensure_loaded()
-	var parts := PackedStringArray()
-	for value: Variant in values: parts.append(english_text(str(value)))
-	var displayed := english_text(separator).join(parts)
-	if _dynamic_messages.get(canonical) != displayed:
-		if displayed != canonical: _missing.erase(canonical)
-		_dynamic_messages[canonical] = displayed
-		_translation.add_message(StringName(canonical),StringName(displayed))
+	var canonical_parts := PackedStringArray()
+	for value: Variant in values: canonical_parts.append(source(str(value)))
+	var canonical := source(separator).join(canonical_parts)
+	var spec := {"kind":"join", "separator":source(separator), "arguments":Array(canonical_parts)}
+	_dynamic_specs[canonical] = spec
+	_rebuild_dynamic(canonical, spec)
 	return canonical
 
-static func register_display(source: String, displayed: String) -> void:
+static func _rebuild_dynamic(canonical: String, spec: Dictionary) -> void:
+	var displays: Dictionary = {}
+	for locale: String in ["zh_CN", "en"]:
+		if spec.kind == "format":
+			displays[locale] = _locale_text(spec.template, locale) % _format_arguments(spec.arguments, spec.positions, locale)
+		elif spec.kind == "join":
+			var parts := PackedStringArray()
+			for value: Variant in spec.arguments: parts.append(_locale_text(str(value), locale))
+			displays[locale] = _locale_text(spec.separator, locale).join(parts)
+		elif spec.kind == "history":
+			var arguments: Array = []
+			for index in spec.arguments.size():
+				var value := str(spec.arguments[index])
+				var kind := str(spec.kinds[index])
+				if kind == "scope":
+					arguments.append(_locale_text(value, locale) if value == DeskLocalization.source("LOC_ALL_SYNTHETIC_AUDIENCES_ADD04D9F") else _locale_text("、", locale).join(value.split("、", false)))
+				elif kind in ["preset", "family_label"]: arguments.append(_locale_text(value, locale))
+				else: arguments.append(value)
+			displays[locale] = _history_fill(_locale_text(spec.template, locale), arguments)
+		else:
+			displays[locale] = spec[locale]
+	_install_display(canonical, displays.en, displays.zh_CN)
+
+static func _install_display(canonical: String, english: String, chinese: String) -> void:
+	if english != canonical: _missing.erase(canonical)
+	_dynamic_messages[canonical] = english
+	_dynamic_chinese[canonical] = chinese
+	_translation.add_message(StringName(canonical), StringName(english))
+	_chinese_translation.add_message(StringName(canonical), StringName(chinese))
+
+static func register_display(canonical: String, displayed: String, chinese: String = "") -> void:
 	ensure_loaded()
-	if displayed != source: _missing.erase(source)
-	_dynamic_messages[source] = displayed
-	_translation.add_message(StringName(source),StringName(displayed))
+	var spec := {"kind":"literal", "en":displayed, "zh_CN":canonical if chinese.is_empty() else chinese}
+	_dynamic_specs[canonical] = spec
+	_rebuild_dynamic(canonical, spec)
 
 static func prime_system_history(catalog: Resource, payload: Dictionary) -> void:
 	# Only validated system records enter this decoder. Drafts, variant text and
@@ -129,36 +259,36 @@ static func prime_system_history(catalog: Resource, payload: Dictionary) -> void
 	for record: Dictionary in records:
 		var source := str(record.get("effect_text",""))
 		if not source.is_empty():
-			var displayed_lines := PackedStringArray()
-			for line: String in source.split("\n",true): displayed_lines.append(_history_effect_line(line,domains))
-			register_display(source,"\n".join(displayed_lines))
+			var canonical_lines := source.split("\n",true)
+			for line: String in canonical_lines: _history_effect_line(line,domains)
+			source_join("\n",canonical_lines)
 		_history_rewards(record)
 	var status := str(payload.get("status",""))
 	var country_title := str(payload.get("country_title",""))
-	var deployed := "已投放到 %s；后续外部版本不能直接编辑。"
+	var deployed := DeskLocalization.source("LOC_DEPLOYED_TO_S_LATER_EXTERNAL_VERSIONS_CANNOT_CAE6EE96")
 	if not country_title.is_empty() and status == deployed % country_title:
-		register_display(status,english_text(deployed) % english_text(country_title))
+		source_format(deployed,country_title,[0])
 	else:
-		_history_known_format(status,"新局：%d Meme；模因交易不可用。",["number"],domains)
-		_history_known_format(status,"Meme 点数不足：需要 %d，当前 %d。",["number","number"],domains)
-		_history_known_format(status,"Meme 点数不足，首次投放需预留 %d 点。",["number"],domains)
+		_history_known_format(status,DeskLocalization.source("LOC_NEW_RUN_D_MEME_MEME_TRADING_IS_74CC0B27"),["number"],domains)
+		_history_known_format(status,DeskLocalization.source("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B"),["number","number"],domains)
+		_history_known_format(status,DeskLocalization.source("LOC_NOT_ENOUGH_MEME_RESERVE_D_FOR_FIRST_FE60303F"),["number"],domains)
 	for entry: Dictionary in (payload.get("economy",{}) as Dictionary).get("transactions",[]):
 		var reason := str(entry.get("reason",""))
-		_history_known_format(reason,"作者归属采用里程碑 %d",["number"],domains)
+		_history_known_format(reason,DeskLocalization.source("LOC_AUTHOR_OWNED_ADOPTION_MILESTONE_D_85F3EA92"),["number"],domains)
 		source_format("H%d  %s%d Meme  %s → %d",[entry.hour,"+" if entry.delta >= 0 else "",entry.delta,reason,entry.balance],[3])
 
 static func _history_effect_line(source: String, domains: Dictionary) -> String:
 	var templates := [
-		["%s：吸引系数 ×%.2f，持续 %.0f 游戏小时；总注意力预算不增加。",["scope","number","number"]],
-		["已曝光而未采用者新增采用 %d。",["number"]],
-		["%s：已曝光而未采用者中新增采用 %d；未凭空增加曝光。",["scope","number"]],
-		["外部改写相对固定家族锚点的语义偏移设为 %.2f；下一次改写按分家规则处理。",["number"]],
-		["%s：疲劳降低 %.2f，旧表达重新进入使用；不恢复对外部分家的控制。",["scope","number"]],
-		["%s %s；版本 %s 由 %s 制作，玩家不可编辑；来源保留。",["family_label","family","variant","creator"]],
-		["%s 正被其他人接续传播；发声者没有署名，你还无法接管它。",["preset"]]]
+		[DeskLocalization.source("LOC_S_ATTRACTION_MULTIPLIER_F_FOR_F_GAME_C6C49FBD"),["scope","number","number"]],
+		[DeskLocalization.source("LOC_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_ADOPT_6CA6F2FB"),["number"]],
+		[DeskLocalization.source("LOC_S_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_BA3D841D"),["scope","number"]],
+		[DeskLocalization.source("LOC_EXTERNAL_REWRITES_SEMANTIC_DRIFT_FROM_THE_FIXED_35C3A40D"),["number"]],
+		[DeskLocalization.source("LOC_S_FATIGUE_DECREASES_BY_F_AND_THE_40D510A3"),["scope","number"]],
+		[DeskLocalization.source("LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714"),["family_label","family","variant","creator"]],
+		[DeskLocalization.source("LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912"),["preset"]]]
 	for item: Array in templates:
 		if _history_known_format(source,item[0],item[1],domains): return english_text(source)
-	for label: String in ["信任","疲劳"]:
+	for label: String in [DeskLocalization.source("LOC_TRUST_D1CD931B"),DeskLocalization.source("LOC_FATIGUE_9211F063")]:
 		if not source.begins_with(label+"："): continue
 		var changes := source.trim_prefix(label+"：").split("；",false)
 		if changes.is_empty(): break
@@ -170,7 +300,7 @@ static func _history_effect_line(source: String, domains: Dictionary) -> String:
 				break
 			displayed.append(english_text(change))
 		if valid:
-			register_display(source,english_text("%s：%s") % [english_text(label),english_text("；").join(displayed)])
+			source_format("%s：%s",[label,source_join("；",changes)],[0,1])
 			return english_text(source)
 	return english_text(source)
 
@@ -182,29 +312,23 @@ static func _history_rewards(record: Dictionary) -> void:
 	for reward: Dictionary in record.get("design_rewards",[]):
 		var definition: Dictionary = rules.reward_resource(str(reward.get("kind","")),str(reward.get("id","")))
 		canonical_parts.append(source_format("%s ×%d",[str(definition.get("title",reward.get("id",""))),int(reward.get("count",0))],[0]))
-	var prefix := "已领取：" if bool(record.get("acknowledged",false)) else "收录后领取："
+	var prefix := DeskLocalization.source("LOC_CLAIMED_9C9021A0") if bool(record.get("acknowledged",false)) else DeskLocalization.source("LOC_CLAIM_AFTER_COLLECTING_008ABC0C")
 	var summary := source_join("、",canonical_parts)
-	if source == prefix+summary: register_display(source,english_text(prefix)+english_text(summary))
+	if source == prefix+summary: source_join("",[prefix,summary])
 	else: english_text(source)
 
-static func _history_known_format(source: String, template: String, kinds: Array, domains: Dictionary) -> bool:
-	var decoded := _history_decode(source,template)
+static func _history_known_format(canonical: String, template: String, kinds: Array, domains: Dictionary) -> bool:
+	var canonical_template := source(template)
+	var decoded := _history_decode(canonical,canonical_template)
 	if not bool(decoded.get("matched",false)): return false
 	var arguments: Array = decoded.arguments
 	var tokens: PackedStringArray = decoded.tokens
 	if arguments.size() != kinds.size(): return false
-	var displayed: Array = []
 	for index in arguments.size():
-		var value := str(arguments[index])
-		var kind := str(kinds[index])
-		if not _history_allowed(value,kind,str(tokens[index]),domains): return false
-		if kind == "scope":
-			displayed.append(english_text(value) if value == "全部合成人群" else english_text("、").join(value.split("、",false)))
-		elif kind in ["preset","family_label"]: displayed.append(english_text(value))
-		else: displayed.append(value)
-	var english_template := english_text(template)
-	if _percent_tokens(english_template) != tokens: return false
-	register_display(source,_history_fill(english_template,displayed))
+		if not _history_allowed(str(arguments[index]),str(kinds[index]),str(tokens[index]),domains): return false
+	var spec := {"kind":"history", "template":canonical_template, "arguments":arguments, "kinds":kinds.duplicate()}
+	_dynamic_specs[canonical] = spec
+	_rebuild_dynamic(canonical,spec)
 	return true
 
 static func _history_allowed(value: String, kind: String, token: String, domains: Dictionary) -> bool:
@@ -215,14 +339,14 @@ static func _history_allowed(value: String, kind: String, token: String, domains
 		matcher.compile(expression)
 		return matcher.search(value) != null
 	if kind == "scope":
-		if value == "全部合成人群": return true
+		if value == DeskLocalization.source("LOC_ALL_SYNTHETIC_AUDIENCES_ADD04D9F"): return true
 		var groups := value.split("、",false)
 		if groups.is_empty() or "、".join(groups) != value: return false
 		for group: String in groups:
 			if not domains.group.has(group): return false
 		return true
 	if kind == "creator": return domains.group.has(value) or value == "community"
-	if kind == "family_label": return value in ["新家族","原家族变体"]
+	if kind == "family_label": return value in [DeskLocalization.source("LOC_NEW_FAMILY_A5AC4668"),DeskLocalization.source("LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C")]
 	return domains.has(kind) and domains[kind].has(value)
 
 static func _history_decode(source: String, template: String) -> Dictionary:
@@ -264,6 +388,35 @@ static func _history_fill(template: String, arguments: Array) -> String:
 		index += 1
 	return result+template.substr(offset)
 
+static func validate_keyed_messages(messages: Dictionary) -> PackedStringArray:
+	var errors := PackedStringArray()
+	if messages.is_empty(): errors.append("Translation table must contain at least one key.")
+	var key_pattern := RegEx.new()
+	key_pattern.compile("^[A-Za-z_][A-Za-z0-9_.]*$")
+	var sources: Dictionary = {}
+	for key: Variant in messages:
+		if not key is String or key_pattern.search(str(key)) == null:
+			errors.append("Translation keys must be stable ASCII identifiers: " + str(key))
+			continue
+		if not messages[key] is Dictionary:
+			errors.append("Translation entry must contain source, zh_CN and en: " + str(key))
+			continue
+		var entry: Dictionary = messages[key]
+		var valid := true
+		for field: String in ["source", "zh_CN", "en"]:
+			if not entry.get(field) is String or str(entry.get(field, "")).is_empty():
+				errors.append("Translation " + str(key) + " requires nonempty " + field + ".")
+				valid = false
+		if not valid: continue
+		for locale: String in ["zh_CN", "en"]:
+			for error: String in validate_messages({str(entry.source):str(entry[locale])}):
+				errors.append(str(key) + " [" + locale + "]: " + error)
+		var canonical := str(entry.source)
+		if sources.has(canonical) and messages[sources[canonical]] != entry:
+			errors.append("Canonical source has conflicting translations: " + str(key))
+		sources[canonical] = key
+	return errors
+
 static func validate_messages(messages: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	for key: Variant in messages:
@@ -279,6 +432,7 @@ static func validate_messages(messages: Dictionary) -> PackedStringArray:
 	return errors
 
 static func bind_edit(edit: LineEdit, canonical: String, localize_default: bool = false) -> void:
+	if localize_default: canonical = source(canonical)
 	edit.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	edit.set_meta(EDIT_META, {"canonical":canonical, "localize_default":localize_default, "user_edited":false})
 	if not edit.has_meta(EDIT_CONNECTED_META):
@@ -293,6 +447,7 @@ static func edit_value(edit: LineEdit) -> String:
 	return edit.text
 
 static func bind_text_edit(edit: TextEdit, canonical: String, localize_default: bool = false) -> void:
+	if localize_default: canonical = source(canonical)
 	edit.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	edit.set_meta(EDIT_META, {"canonical":canonical, "localize_default":localize_default, "user_edited":false})
 	if not edit.has_meta(EDIT_CONNECTED_META):
@@ -319,7 +474,7 @@ static func refresh_edits(root: Node) -> void:
 static func coverage_report() -> Dictionary:
 	var missing: Array = _missing.keys()
 	missing.sort()
-	return {"initialized":_initialized, "locale":TranslationServer.get_locale(), "message_count":_messages.size(), "dynamic_message_count":_dynamic_messages.size(), "table_paths":_table_paths.duplicate(), "load_error":_load_error, "load_errors":_load_errors.duplicate(), "missing_sources":missing}
+	return {"initialized":_initialized, "locale":TranslationServer.get_locale(), "message_count":_records.size(), "dynamic_message_count":_dynamic_messages.size(), "table_paths":_table_paths.duplicate(), "load_error":_load_error, "load_errors":_load_errors.duplicate(), "last_reload_errors":_last_reload_errors.duplicate(), "missing_sources":missing}
 
 static func clear_missing() -> void:
 	_missing.clear()
@@ -380,8 +535,3 @@ static func _named_tokens(value: String) -> PackedStringArray:
 	for found: RegExMatch in matcher.search_all(value): tokens.append(found.get_string())
 	tokens.sort()
 	return tokens
-
-static func _record_load_error(message: String, error: Error) -> void:
-	_load_errors.append(message)
-	if _load_error == OK: _load_error = error
-	push_error(message)

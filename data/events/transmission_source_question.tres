@@ -32,9 +32,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_source_question"
-title = "职员追问转发截图的原句来源"
-narrative = "职员将原句与转发截图并排，追问最早的出处和被省略的说明。几处链接仍未补齐，这一批读者开始对转发中的判断保持怀疑。"
-mentor_comment = "出处栏还空着，气势倒已填满，先补上那条能点开的链接。"
+title = "LOC_OFFICE_WORKERS_ASK_WHERE_A_SHARED_SCREENSHOT_7761A65C"
+narrative = "LOC_OFFICE_WORKERS_PLACE_THE_ORIGINAL_PHRASE_BESIDE_ACF7083A"
+mentor_comment = "LOC_THE_SOURCE_FIELD_IS_EMPTY_THE_GRANDSTANDING_626E6374"
 origin = &"transmission"
 topic_ids = PackedStringArray("trust", "work")
 operation_ids = PackedStringArray("contest")

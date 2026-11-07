@@ -38,9 +38,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_answer_chain"
-title = "学生沿着原句开头接写回应"
-narrative = "学生群沿着原句的同一开头接写各自的回应，并将前一位的短句留在下面。几名此前只围观的读者也开始使用这种说法，接句从转发变成了参与。"
-mentor_comment = "接句总算给别人留了位置，独白少了一张继续扩建的许可证。"
+title = "LOC_STUDENTS_CONTINUE_THE_ORIGINAL_OPENING_WITH_THEIR_82719415"
+narrative = "LOC_STUDENTS_USE_THE_SAME_OPENING_AS_THE_7CD26677"
+mentor_comment = "LOC_THE_RESPONSE_CHAIN_FINALLY_LEFT_ROOM_FOR_3F87C98A"
 origin = &"transmission"
 topic_ids = PackedStringArray("language", "education", "community")
 operation_ids = PackedStringArray("amplify")

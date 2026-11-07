@@ -26,9 +26,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"world_archive_release"
-title = "港史馆公开旧街景照片"
-narrative = "港史馆公开一组完成整理的旧街景照片，并附拍摄年代与地点索引。旧招牌和街角布局引起居民讨论，有人把照片与今天的街景并置，也有人重新寻找已消失的地标。"
-mentor_comment = "照片有日期，怀旧通常没有，先用前者给后者做个校对。"
+title = "LOC_THE_HARBOR_MUSEUM_RELEASES_OLD_STREET_PHOTOGRAPHS_36E8BEAE"
+narrative = "LOC_THE_HARBOR_HISTORY_MUSEUM_RELEASES_A_CATALOGED_8BC39464"
+mentor_comment = "LOC_PHOTOGRAPHS_HAVE_DATES_NOSTALGIA_USUALLY_DOES_NOT_623AB42E"
 origin = &"world"
 topic_ids = PackedStringArray("archive", "identity")
 operation_ids = PackedStringArray("attention_shift")

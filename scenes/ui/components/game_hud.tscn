@@ -28,7 +28,7 @@ visible = false
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "确认模因后点击地图国家，再点击国家上方的勾选气泡开始游戏。"
+text = "LOC_CONFIRM_YOUR_MEME_CLICK_A_COUNTRY_THEN_B0F548A6"
 autowrap_mode = 2
 
 [node name="Workbench" type="PanelContainer" parent="."]
@@ -50,25 +50,25 @@ layout_mode = 2
 [node name="Heading" type="Label" parent="Workbench/Column/Toolbar"]
 layout_mode = 2
 mouse_filter = 2
-text = "01 / 纸张创作台"
+text = "LOC_PAPER_WORKBENCH_1C2F271C"
 theme_type_variation = "DemoHeading"
 size_flags_horizontal = 3
 
 [node name="Fullscreen" type="Button" parent="Workbench/Column/Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "展开纸页"
+text = "LOC_OPEN_FULL_PAGE_8C20D5BC"
 
 [node name="SelectCountry" type="Button" parent="Workbench/Column/Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "确认模因后选国"
+text = "LOC_CONFIRM_MEME_THEN_SELECT_COUNTRY_2C212C12"
 
 [node name="WorkbenchHint" type="Label" parent="Workbench/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "先选择模因并确认，再选择投放国家，最后进入游戏。"
+text = "LOC_CHOOSE_AND_CONFIRM_A_MEME_SELECT_A_E1B6779A"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 
@@ -84,7 +84,7 @@ size_flags_horizontal = 3
 [node name="KernelLabel" type="Label" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
 mouse_filter = 2
-text = "基模 / 创作结构"
+text = "LOC_BASE_FORM_CREATIVE_STRUCTURE_908E48F8"
 
 [node name="Kernel" type="OptionButton" parent="Workbench/Column/Scroll/Form"]
 unique_name_in_owner = true
@@ -102,7 +102,7 @@ theme_type_variation = "DemoCaption"
 [node name="PresetLabel" type="Label" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
 mouse_filter = 2
-text = "预设模因家族 / 案例结构抽象"
+text = "LOC_PRESET_MEME_FAMILY_CASE_STUDY_STRUCTURE_081DF9A1"
 
 [node name="Preset" type="OptionButton" parent="Workbench/Column/Scroll/Form"]
 unique_name_in_owner = true
@@ -116,7 +116,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_type_variation = "DemoCaption"
-text = "选择预设可查看案例路径、指纹和语境。来源记录不授予素材使用许可。"
+text = "LOC_SELECT_A_PRESET_TO_INSPECT_ITS_CASE_45207665"
 selection_enabled = true
 
 [node name="Slots" type="GridContainer" parent="Workbench/Column/Scroll/Form"]
@@ -127,7 +127,7 @@ columns = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "槽位 1"
+text = "LOC_SLOT_C7AA7AE9"
 visible = true
 custom_minimum_size = Vector2(105, 0)
 
@@ -135,14 +135,14 @@ custom_minimum_size = Vector2(105, 0)
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "填写具体表达"
+placeholder_text = "LOC_ENTER_A_SPECIFIC_EXPRESSION_C3BAEF9F"
 visible = true
 
 [node name="SlotLabel1" type="Label" parent="Workbench/Column/Scroll/Form/Slots"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "槽位 2"
+text = "LOC_SLOT_6BE0BEF7"
 visible = true
 custom_minimum_size = Vector2(105, 0)
 
@@ -150,14 +150,14 @@ custom_minimum_size = Vector2(105, 0)
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "填写具体表达"
+placeholder_text = "LOC_ENTER_A_SPECIFIC_EXPRESSION_C3BAEF9F"
 visible = true
 
 [node name="SlotLabel2" type="Label" parent="Workbench/Column/Scroll/Form/Slots"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "槽位 3"
+text = "LOC_SLOT_A6CC4BD2"
 visible = true
 custom_minimum_size = Vector2(105, 0)
 
@@ -165,14 +165,14 @@ custom_minimum_size = Vector2(105, 0)
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "填写具体表达"
+placeholder_text = "LOC_ENTER_A_SPECIFIC_EXPRESSION_C3BAEF9F"
 visible = true
 
 [node name="SlotLabel3" type="Label" parent="Workbench/Column/Scroll/Form/Slots"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "槽位 4"
+text = "LOC_SLOT_D1ED8751"
 visible = false
 custom_minimum_size = Vector2(105, 0)
 
@@ -180,14 +180,14 @@ custom_minimum_size = Vector2(105, 0)
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "填写具体表达"
+placeholder_text = "LOC_ENTER_A_SPECIFIC_EXPRESSION_C3BAEF9F"
 visible = false
 
 [node name="SlotLabel4" type="Label" parent="Workbench/Column/Scroll/Form/Slots"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "槽位 5"
+text = "LOC_SLOT_343A4D93"
 visible = false
 custom_minimum_size = Vector2(105, 0)
 
@@ -195,7 +195,7 @@ custom_minimum_size = Vector2(105, 0)
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "填写具体表达"
+placeholder_text = "LOC_ENTER_A_SPECIFIC_EXPRESSION_C3BAEF9F"
 visible = false
 
 [node name="Context" type="GridContainer" parent="Workbench/Column/Scroll/Form"]
@@ -205,7 +205,7 @@ columns = 2
 [node name="LanguageLabel" type="Label" parent="Workbench/Column/Scroll/Form/Context"]
 layout_mode = 2
 mouse_filter = 2
-text = "语言"
+text = "LOC_LANGUAGE_9F6FEE1A"
 
 [node name="Language" type="OptionButton" parent="Workbench/Column/Scroll/Form/Context"]
 unique_name_in_owner = true
@@ -215,7 +215,7 @@ size_flags_horizontal = 3
 [node name="GroupLabel" type="Label" parent="Workbench/Column/Scroll/Form/Context"]
 layout_mode = 2
 mouse_filter = 2
-text = "首批群体"
+text = "LOC_INITIAL_AUDIENCE_8671790C"
 
 [node name="Group" type="OptionButton" parent="Workbench/Column/Scroll/Form/Context"]
 unique_name_in_owner = true
@@ -225,7 +225,7 @@ size_flags_horizontal = 3
 [node name="ChannelLabel" type="Label" parent="Workbench/Column/Scroll/Form/Context"]
 layout_mode = 2
 mouse_filter = 2
-text = "传播渠道"
+text = "LOC_TRANSMISSION_CHANNEL_BCB00BF6"
 
 [node name="Channel" type="OptionButton" parent="Workbench/Column/Scroll/Form/Context"]
 unique_name_in_owner = true
@@ -235,7 +235,7 @@ size_flags_horizontal = 3
 [node name="TopicLabel" type="Label" parent="Workbench/Column/Scroll/Form/Context"]
 layout_mode = 2
 mouse_filter = 2
-text = "共享话题"
+text = "LOC_SHARED_TOPICS_E96277E5"
 
 [node name="Topic" type="OptionButton" parent="Workbench/Column/Scroll/Form/Context"]
 unique_name_in_owner = true
@@ -246,18 +246,18 @@ size_flags_horizontal = 3
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = "DemoCaption"
-text = "话题连接群体、世界事件与模因；相关性为设计映射，不代表人口属性的因果。"
+text = "LOC_TOPICS_CONNECT_AUDIENCES_WORLD_EVENTS_AND_MEMES_5543F06F"
 autowrap_mode = 2
 
 [node name="PreviewLabel" type="Label" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
 mouse_filter = 2
-text = "表达预览"
+text = "LOC_EXPRESSION_PREVIEW_32D13BBF"
 
 [node name="Preview" type="RichTextLabel" parent="Workbench/Column/Scroll/Form"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "选择基模形成表达。"
+text = "LOC_CHOOSE_A_BASE_FORM_TO_BUILD_AN_4E14D77C"
 bbcode_enabled = false
 scroll_active = true
 custom_minimum_size = Vector2(0, 95)
@@ -265,7 +265,7 @@ custom_minimum_size = Vector2(0, 95)
 [node name="PoliticalKnown" type="CheckBox" parent="Workbench/Column/Scroll/Form"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "登记政治立场（不勾选表示未知／非政治）"
+text = "LOC_SPECIFY_POLITICAL_STANCE_UNCHECKED_MEANS_UNKNOWN_OR_D2111FDA"
 
 [node name="Positions" type="GridContainer" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
@@ -274,7 +274,7 @@ columns = 2
 [node name="PoliticalXLabel" type="Label" parent="Workbench/Column/Scroll/Form/Positions"]
 layout_mode = 2
 mouse_filter = 2
-text = "左翼 -1 / 右翼 +1"
+text = "LOC_LEFT_RIGHT_CF61CC8E"
 
 [node name="PoliticalX" type="SpinBox" parent="Workbench/Column/Scroll/Form/Positions"]
 unique_name_in_owner = true
@@ -288,7 +288,7 @@ value = 0
 [node name="PoliticalYLabel" type="Label" parent="Workbench/Column/Scroll/Form/Positions"]
 layout_mode = 2
 mouse_filter = 2
-text = "威权 -1 / 自由 +1"
+text = "LOC_AUTHORITARIAN_FREE_9982CBFB"
 
 [node name="PoliticalY" type="SpinBox" parent="Workbench/Column/Scroll/Form/Positions"]
 unique_name_in_owner = true
@@ -302,7 +302,7 @@ value = 0
 [node name="PragmaticXLabel" type="Label" parent="Workbench/Column/Scroll/Form/Positions"]
 layout_mode = 2
 mouse_filter = 2
-text = "真诚 -1 / 反讽 +1"
+text = "LOC_SINCERE_IRONIC_EC3475F8"
 
 [node name="PragmaticX" type="SpinBox" parent="Workbench/Column/Scroll/Form/Positions"]
 unique_name_in_owner = true
@@ -316,7 +316,7 @@ value = -0.6
 [node name="PragmaticYLabel" type="Label" parent="Workbench/Column/Scroll/Form/Positions"]
 layout_mode = 2
 mouse_filter = 2
-text = "支持 -1 / 反对 +1"
+text = "LOC_SUPPORT_OPPOSE_91B6856A"
 
 [node name="PragmaticY" type="SpinBox" parent="Workbench/Column/Scroll/Form/Positions"]
 unique_name_in_owner = true
@@ -330,19 +330,19 @@ value = 0.5
 [node name="TargetLabel" type="Label" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
 mouse_filter = 2
-text = "语用表态对象（支持或反对什么）"
+text = "LOC_PRAGMATIC_TARGET_WHAT_IS_BEING_SUPPORTED_OR_81766BA3"
 
 [node name="Target" type="LineEdit" parent="Workbench/Column/Scroll/Form"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "事件、主张或模因的明确对象"
+placeholder_text = "LOC_A_SPECIFIC_EVENT_CLAIM_OR_MEME_A2634DB5"
 text = ""
 
 [node name="ReuseLabel" type="Label" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
 mouse_filter = 2
-text = "六维再利用条件"
+text = "LOC_SIX_REUSE_CONDITIONS_7E10DE7A"
 
 [node name="Reuse" type="GridContainer" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
@@ -351,7 +351,7 @@ columns = 2
 [node name="ReusePermissionLabel" type="Label" parent="Workbench/Column/Scroll/Form/Reuse"]
 layout_mode = 2
 mouse_filter = 2
-text = "再利用许可"
+text = "LOC_REUSE_PERMISSION_554ECD39"
 
 [node name="ReusePermission" type="OptionButton" parent="Workbench/Column/Scroll/Form/Reuse"]
 unique_name_in_owner = true
@@ -361,19 +361,19 @@ size_flags_horizontal = 3
 [node name="ReplaceableLabel" type="Label" parent="Workbench/Column/Scroll/Form/Reuse"]
 layout_mode = 2
 mouse_filter = 2
-text = "可替换槽位"
+text = "LOC_REPLACEABLE_SLOTS_EA37F9E1"
 
 [node name="Replaceable" type="LineEdit" parent="Workbench/Column/Scroll/Form/Reuse"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "槽位 ID，以逗号分隔"
+placeholder_text = "LOC_COMMA_SEPARATED_SLOT_IDS_4481AC37"
 text = ""
 
 [node name="RemixCostLabel" type="Label" parent="Workbench/Column/Scroll/Form/Reuse"]
 layout_mode = 2
 mouse_filter = 2
-text = "重混成本（0—1）"
+text = "LOC_REMIX_COST_F3423A20"
 
 [node name="RemixCost" type="SpinBox" parent="Workbench/Column/Scroll/Form/Reuse"]
 unique_name_in_owner = true
@@ -387,7 +387,7 @@ value = 0.25
 [node name="ContextDependencyLabel" type="Label" parent="Workbench/Column/Scroll/Form/Reuse"]
 layout_mode = 2
 mouse_filter = 2
-text = "语境依赖（0—1）"
+text = "LOC_CONTEXT_DEPENDENCY_F1FFD300"
 
 [node name="ContextDependency" type="SpinBox" parent="Workbench/Column/Scroll/Form/Reuse"]
 unique_name_in_owner = true
@@ -401,7 +401,7 @@ value = 0.4
 [node name="LanguageAccessLabel" type="Label" parent="Workbench/Column/Scroll/Form/Reuse"]
 layout_mode = 2
 mouse_filter = 2
-text = "语言可达性（0—1）"
+text = "LOC_LANGUAGE_ACCESSIBILITY_54E2D036"
 
 [node name="LanguageAccess" type="SpinBox" parent="Workbench/Column/Scroll/Form/Reuse"]
 unique_name_in_owner = true
@@ -415,7 +415,7 @@ value = 0.8
 [node name="RecognizabilityLabel" type="Label" parent="Workbench/Column/Scroll/Form/Reuse"]
 layout_mode = 2
 mouse_filter = 2
-text = "可识别性（0—1）"
+text = "LOC_RECOGNIZABILITY_AAC9DE3C"
 
 [node name="Recognizability" type="SpinBox" parent="Workbench/Column/Scroll/Form/Reuse"]
 unique_name_in_owner = true
@@ -429,7 +429,7 @@ value = 0.8
 [node name="ScopeNotice" type="Label" parent="Workbench/Column/Scroll/Form"]
 layout_mode = 2
 mouse_filter = 2
-text = "可编辑的是你的草稿。外部变体只能观察和收录，不能撤回。"
+text = "LOC_YOU_CAN_EDIT_YOUR_OWN_DRAFT_EXTERNAL_EF43DB1B"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 
@@ -437,19 +437,19 @@ theme_type_variation = "DemoCaption"
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "发布成本与点数余额由当前运行状态提供；不足时不扣款。"
+text = "LOC_PUBLICATION_COSTS_AND_YOUR_MEME_BALANCE_COME_7F026B09"
 theme_type_variation = "DemoCaption"
 
 [node name="Purchase" type="Button" parent="Workbench/Column"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "模因交易（不可用）"
+text = "LOC_MEME_TRADING_UNAVAILABLE_6F00CE34"
 disabled = true
 
 [node name="Publish" type="Button" parent="Workbench/Column"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "确认模因，选择投放国家"
+text = "LOC_CONFIRM_MEME_AND_SELECT_DEPLOYMENT_COUNTRY_FECB7AC1"
 
 [node name="Instruments" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -469,27 +469,27 @@ layout_mode = 2
 [node name="Heading" type="Label" parent="Instruments/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "02 / 传播观察"
+text = "LOC_TRANSMISSION_OBSERVATION_7E3F4ADE"
 theme_type_variation = "DemoHeading"
 
 [node name="SampleLabel" type="Label" parent="Instruments/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "合成样本 • 不代表真实国家人口"
+text = "LOC_SYNTHETIC_SAMPLE_NOT_REAL_NATIONAL_POPULATIONS_DEF5DDEF"
 theme_type_variation = "DemoCaption"
 
 [node name="Metrics" type="Label" parent="Instruments/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "曝光 0 · 采用 0\n作者归属 0 · 来源影响 0\n家族 0 · 版本 0 · 疲劳 0.00"
+text = "LOC_EXPOSURE_ADOPTION_AUTHOR_OWNERSHIP_SOURCE_INFLUENCE_FAMILIES_B26CEF2A"
 
 [node name="Attention" type="Label" parent="Instruments/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "注意力预算：0 / 玩家 0 / 外部 0 / 背景 0"
+text = "LOC_ATTENTION_BUDGET_PLAYER_EXTERNAL_BACKGROUND_4648B5BD"
 theme_type_variation = "DemoCaption"
 
 [node name="Playback" type="HBoxContainer" parent="Instruments/Column"]
@@ -498,7 +498,7 @@ layout_mode = 2
 [node name="Pause" type="Button" parent="Instruments/Column/Playback"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "暂停"
+text = "LOC_PAUSE_8D12FC0D"
 toggle_mode = true
 
 [node name="Speed1" type="Button" parent="Instruments/Column/Playback"]
@@ -516,20 +516,20 @@ toggle_mode = true
 [node name="Step" type="Button" parent="Instruments/Column/Playback"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "下一小时"
+text = "LOC_NEXT_HOUR_61C5B1B7"
 toggle_mode = false
 
 [node name="Return" type="Button" parent="Instruments/Column/Playback"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "返回创作"
+text = "LOC_BACK_TO_CREATION_8F0534F5"
 toggle_mode = false
 
 [node name="Discoveries" type="Label" parent="Instruments/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "已收录：暂无"
+text = "LOC_COLLECTED_NONE_7249B71D"
 text_overrun_behavior = 3
 theme_type_variation = "DemoCaption"
 
@@ -549,7 +549,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "尚未选国 · 模拟第 0 小时"
+text = "LOC_NO_COUNTRY_SELECTED_SIMULATION_HOUR_40F766D0"
 text_overrun_behavior = 3
 theme_type_variation = "DemoCaption"
 
@@ -557,7 +557,7 @@ theme_type_variation = "DemoCaption"
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "创作准备"
+text = "LOC_PREPARING_TO_CREATE_1BF261FE"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 
@@ -612,14 +612,14 @@ theme_override_constants/separation = 12
 [node name="Create" type="Button" parent="QuickActions/Row"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "创建模因"
+text = "LOC_CREATE_MEME_F3931F0A"
 
 [node name="PointBalance" type="Label" parent="QuickActions/Row"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 size_flags_horizontal = 3
-text = "Meme 点数：0"
+text = "LOC_MEME_5C58228E"
 horizontal_alignment = 2
 
 [node name="LegendPanel" type="PanelContainer" parent="."]
@@ -638,13 +638,13 @@ layout_mode = 2
 [node name="Heading" type="Label" parent="LegendPanel/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "受控模因 / 地图图例"
+text = "LOC_CONTROLLED_MEMES_MAP_LEGEND_113A7E28"
 
 [node name="LegendEmpty" type="Label" parent="LegendPanel/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "尚无受控模因；先创建并投放。"
+text = "LOC_NO_CONTROLLED_MEMES_YET_CREATE_AND_DEPLOY_AE04818D"
 theme_type_variation = "DemoCaption"
 
 [node name="Legend" type="ItemList" parent="LegendPanel/Column"]
@@ -659,7 +659,7 @@ clip_contents = true
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "实心点：已采用量的抽样；空心点：投放或出现位置。点位用于示意，不逐一对应人口。"
+text = "LOC_SOLID_DOTS_SAMPLE_ADOPTION_HOLLOW_DOTS_MARK_F3C6B1C6"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 
@@ -698,7 +698,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "传播事件"
+text = "LOC_TRANSMISSION_EVENT_286300D4"
 theme_type_variation = "DemoHeading"
 
 [node name="EventOrigin" type="Label" parent="EventCard/Column"]
@@ -711,7 +711,7 @@ theme_type_variation = "DemoCaption"
 [node name="NarrativeHeading" type="Label" parent="EventCard/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "消息"
+text = "LOC_MESSAGE_4DA199FA"
 theme_type_variation = "DemoCaption"
 
 [node name="Narrative" type="RichTextLabel" parent="EventCard/Column"]
@@ -729,7 +729,7 @@ layout_mode = 2
 mouse_filter = 2
 autowrap_mode = 3
 text = ""
-tooltip_text = "箭头表示已配置的作用方向，不表示新增注意力。话题箭头表示相关表达的吸引系数；双箭头表示乘数增量绝对值至少0.3。适用群体、时长、实际数值与许可阻止记录见执行详情。"
+tooltip_text = "LOC_ARROWS_SHOW_CONFIGURED_EFFECT_DIRECTIONS_NOT_NEW_93062346"
 
 [node name="MentorComment" type="Label" parent="EventCard/Column"]
 unique_name_in_owner = true
@@ -743,7 +743,7 @@ theme_type_variation = "DemoCaption"
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
-text = "展开 / 收起执行详情"
+text = "LOC_EXPAND_COLLAPSE_EXECUTION_DETAILS_57B235E9"
 
 [node name="ActualEffect" type="RichTextLabel" parent="EventCard/Column"]
 unique_name_in_owner = true
@@ -758,7 +758,7 @@ custom_minimum_size = Vector2(0, 75)
 [node name="EventContinue" type="Button" parent="EventCard/Column"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "已阅读，继续观察"
+text = "LOC_READ_CONTINUE_OBSERVING_8DF4776D"
 
 [node name="ResultCard" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -783,7 +783,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-text = "本轮观察完成"
+text = "LOC_OBSERVATION_COMPLETE_25B11800"
 theme_type_variation = "DemoHeading"
 
 [node name="ResultSummary" type="RichTextLabel" parent="ResultCard/Column"]
@@ -800,13 +800,13 @@ layout_mode = 2
 [node name="Recreate" type="Button" parent="ResultCard/Column/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "带着发现再创作"
+text = "LOC_CREATE_AGAIN_WITH_WHAT_YOU_LEARNED_D5522A23"
 size_flags_horizontal = 3
 
 [node name="ResultRestart" type="Button" parent="ResultCard/Column/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "重新开始"
+text = "LOC_RESTART_CC92CB4B"
 size_flags_horizontal = 3
 [node name="SettingsMenu" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -831,14 +831,14 @@ theme_override_constants/separation = 12
 [node name="Heading" type="Label" parent="SettingsMenu/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "设置"
+text = "LOC_SETTINGS_DF3D58C7"
 theme_type_variation = "DemoHeading"
 horizontal_alignment = 1
 
 [node name="Hint" type="Label" parent="SettingsMenu/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "ESC 返回；打开菜单不会确认待阅读事件。"
+text = "LOC_ESC_TO_RETURN_OPENING_THE_MENU_DOES_31A34A86"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 
@@ -851,31 +851,31 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 54)
-text = "保存"
+text = "LOC_SAVE_A3030BF8"
 
 [node name="Load" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 54)
-text = "读取"
+text = "LOC_LOAD_534CB3FA"
 
 [node name="Restart" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 54)
-text = "重开"
+text = "LOC_NEW_RUN_19518C53"
 
 [node name="Codex" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 54)
-text = "模因图鉴"
+text = "LOC_MEME_CODEX_2F7C7F0C"
 
 [node name="Quit" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 54)
-text = "退出"
+text = "LOC_QUIT_498E1D59"
 
 [node name="DeveloperMenu" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -900,13 +900,13 @@ theme_override_constants/separation = 12
 [node name="Heading" type="Label" parent="DeveloperMenu/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "开发者菜单"
+text = "LOC_DEVELOPER_MENU_632B372A"
 theme_type_variation = "DemoHeading"
 
 [node name="Hint" type="Label" parent="DeveloperMenu/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "Ctrl+D 开关；运行时内容与编辑副本相互隔离。"
+text = "LOC_CTRL_D_TO_TOGGLE_RUNTIME_CONTENT_IS_3C2C62C7"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 
@@ -915,20 +915,20 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-text = "尚未配置内容。"
+text = "LOC_NO_CONTENT_CONFIGURED_BC36B6B8"
 autowrap_mode = 2
 
 [node name="Tools" type="Button" parent="DeveloperMenu/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
-text = "事件池工具"
+text = "LOC_EVENT_POOL_TOOL_945B42FC"
 
 [node name="DeveloperClose" type="Button" parent="DeveloperMenu/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
-text = "关闭开发菜单"
+text = "LOC_CLOSE_DEVELOPER_MENU_5DA46C6E"
 
 [node name="CodexPanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -953,18 +953,18 @@ layout_mode = 2
 layout_mode = 2
 mouse_filter = 2
 size_flags_horizontal = 3
-text = "模因图鉴 / 案例结构与来源"
+text = "LOC_MEME_CODEX_CASE_STRUCTURES_AND_SOURCES_83D1CF1C"
 theme_type_variation = "DemoHeading"
 
 [node name="CodexClose" type="Button" parent="CodexPanel/Column/Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "关闭图鉴"
+text = "LOC_CLOSE_CODEX_0F11283B"
 
 [node name="Notice" type="Label" parent="CodexPanel/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "案例索引只供查阅，不支持购买或控制外部版本。"
+text = "LOC_THE_CASE_INDEX_IS_FOR_REFERENCE_ONLY_4DBAAC8A"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 

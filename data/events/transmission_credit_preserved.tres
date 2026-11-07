@@ -38,9 +38,9 @@ group_ids = PackedStringArray("students", "culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_credit_preserved"
-title = "转发者补回截图遗漏的署名"
-narrative = "一批转发者发现截图漏掉了原作者署名，开始在说明里补回原链接。学生和文化爱好者沿着链接核对早先版本，对这些转发的来源说明更愿意相信。"
-mentor_comment = "署名总算回来了，思想并没有一同归队，记账时分开两栏。"
+title = "LOC_SHARERS_RESTORE_THE_ATTRIBUTION_MISSING_FROM_A_D6760691"
+narrative = "LOC_SHARERS_NOTICE_THAT_A_SCREENSHOT_OMITTED_THE_C8EBA58A"
+mentor_comment = "LOC_THE_ATTRIBUTION_FINALLY_CAME_BACK_THE_IDEAS_9820B2B3"
 origin = &"transmission"
 topic_ids = PackedStringArray("archive", "trust", "identity")
 operation_ids = PackedStringArray("contest")

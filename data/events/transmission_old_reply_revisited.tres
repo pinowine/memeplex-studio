@@ -38,9 +38,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_old_reply_revisited"
-title = "职员翻出旧回应解释眼下经历"
-narrative = "一名职员翻出早先收藏的回应，用它解释眼下遇到的一件事。几位同事重新读完了原文，先前对重复话题的厌烦暂时退去。"
-mentor_comment = "旧句子又上岗了，先注明今天的处境，别让它冒领全勤。"
+title = "LOC_AN_OFFICE_WORKER_RETRIEVES_AN_OLD_RESPONSE_6DD12118"
+narrative = "LOC_AN_OFFICE_WORKER_RETRIEVES_A_SAVED_RESPONSE_4499600C"
+mentor_comment = "LOC_THE_OLD_PHRASE_IS_BACK_ON_DUTY_609DBFD8"
 origin = &"transmission"
 topic_ids = PackedStringArray("archive", "work")
 operation_ids = PackedStringArray("revive")

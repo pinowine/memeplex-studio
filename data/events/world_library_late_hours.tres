@@ -33,9 +33,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"world_library_late_hours"
-title = "海堤图书馆延长晚间开放"
-narrative = "海堤图书馆试行延长晚间开放，留出晚课后的学习座位。学生不必在闭馆后匆忙寻找去处，馆内的笔记交换区也为后来者提供了接续讨论的地方。"
-mentor_comment = "图书馆只是晚点关门，长篇废话还没有拿到延期许可。"
+title = "LOC_THE_SEAWALL_LIBRARY_EXTENDS_ITS_EVENING_OPENING_DA2B719C"
+narrative = "LOC_THE_SEAWALL_LIBRARY_TRIALS_LATER_EVENING_HOURS_54A191D6"
+mentor_comment = "LOC_THE_LIBRARY_IS_ONLY_CLOSING_LATER_LONG_4AFC33A3"
 origin = &"world"
 topic_ids = PackedStringArray("education", "community")
 operation_ids = PackedStringArray("attention_shift", "revive")

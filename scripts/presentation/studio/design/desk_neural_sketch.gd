@@ -309,7 +309,7 @@ func _draw() -> void:
 		_feedback.paint(self,point,Vector2(31,29),"module:" + str(index))
 		var label := point+Vector2(-25,24)
 		if point.distance_to(_core_point()) < 50.0: label = point+(point-_core_point()).normalized()*32.0+Vector2(-25,5)
-		draw_string(font,label,DeskLocalization.format_text("补丁%d", (index+1)),HORIZONTAL_ALIGNMENT_CENTER,50,10,INK)
+		draw_string(font,label,DeskLocalization.format_text("LOC_PATCH_D_3EC77C1A", (index+1)),HORIZONTAL_ALIGNMENT_CENTER,50,10,INK)
 	for edge in _connections:
 		var from:=int(edge.get("from",-1))
 		var to:=int(edge.get("to",-1))

@@ -26,9 +26,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_gate_reply"
-title = "学生社团开办接句活动"
-narrative = "学生社团发布了接句活动的开场语、回应方式和退出短句。成员在几个群里轮流接写，原本同时参与其他讨论的学生开始抱怨消息过密。"
-mentor_comment = "活动总算配了退出短句，参与者暂时不用以沉默申请辞职。"
+title = "LOC_A_STUDENT_CLUB_LAUNCHES_A_RESPONSE_CHAIN_0B9D6565"
+narrative = "LOC_A_STUDENT_CLUB_PUBLISHES_AN_OPENING_LINE_E7DC24FA"
+mentor_comment = "LOC_THE_ACTIVITY_FINALLY_HAS_AN_EXIT_PHRASE_C4224593"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("education", "community")
 operation_ids = PackedStringArray("emerge", "fatigue")

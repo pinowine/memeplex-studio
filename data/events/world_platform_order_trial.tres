@@ -26,9 +26,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"world_platform_order_trial"
-title = "社区信息流试行按时间排序"
-narrative = "社区信息流宣布在部分街区试行按发布时间排序，近期帖子将依次进入展示栏。使用者开始比较新旧页面，刚发布的工具说明与社区消息获得了更靠前的位置。"
-mentor_comment = "排序终于一视同仁，废话也能按时上班，发布前自己筛一遍。"
+title = "LOC_THE_COMMUNITY_FEED_TRIALS_CHRONOLOGICAL_ORDERING_7D5D480B"
+narrative = "LOC_THE_COMMUNITY_FEED_TRIALS_ORDERING_POSTS_BY_6146AF83"
+mentor_comment = "LOC_THE_ORDERING_IS_FINALLY_IMPARTIAL_NONSENSE_CAN_041F0151"
 origin = &"world"
 topic_ids = PackedStringArray("platform_tools", "community")
 operation_ids = PackedStringArray("platform_change")

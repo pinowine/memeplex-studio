@@ -21,8 +21,8 @@ var speed: int = 0
 var resume_speed: int = 1
 var seed_value: int = 20261003
 var country_id: String = ""
-var country_title: String = "未选择投放国家"
-var status: String = "先选择国家，再编写并投放模因。人群规模使用合成样本。"
+var country_title: String = DeskLocalization.source("LOC_NO_DEPLOYMENT_COUNTRY_SELECTED_989E9AAC")
+var status: String = DeskLocalization.source("LOC_CHOOSE_A_COUNTRY_THEN_WRITE_AND_DEPLOY_4561D35F")
 var latest_draft: Dictionary = {}
 var families: Dictionary = {}
 var variants: Array[Dictionary] = []
@@ -82,7 +82,7 @@ func reset(run_seed: int) -> void:
 	design_state.reset()
 	for group in catalog.groups:
 		group_state[str(group.id)] = {"exposed":0.0, "owned":0.0, "external":0.0, "fatigue":0.0, "trust":0.72}
-	status = DeskLocalization.source_format("新局：%d Meme；模因交易不可用。", economy.balance)
+	status = DeskLocalization.source_format("LOC_NEW_RUN_D_MEME_MEME_TRADING_IS_74CC0B27", economy.balance)
 	changed.emit()
 
 
@@ -90,7 +90,7 @@ func gameplay_mode() -> String:
 	return "world_competition"
 
 func bind_world(world: RefCounted, settings: Resource) -> PackedStringArray:
-	if publish_count > 0: return PackedStringArray(["首发后不能替换世界。"])
+	if publish_count > 0: return PackedStringArray([DeskLocalization.source("LOC_THE_WORLD_CANNOT_BE_REPLACED_AFTER_FIRST_58DB6321")])
 	return competition.bind_world(world,settings)
 
 func draft_fitness(draft: Dictionary) -> Dictionary:
@@ -143,22 +143,22 @@ func starter_draft(preset_id: String, base: Dictionary = {}) -> Dictionary:
 	return preset.to_draft(defaults)
 
 func design_action(action: String, params: Dictionary = {}) -> PackedStringArray:
-	if phase == "event": return PackedStringArray(["请先确认当前事件。"])
+	if phase == "event": return PackedStringArray([DeskLocalization.source("LOC_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_F983CFC2")])
 	if action == "choose_starter" and (publish_count > 0 or phase != "draft"):
-		return PackedStringArray(["已投放的运行不能重选开局预设。"])
+		return PackedStringArray([DeskLocalization.source("LOC_A_DEPLOYED_RUN_CANNOT_SELECT_A_DIFFERENT_1172A7D4")])
 	if action == "choose_starter":
 		params = params.duplicate(true)
 		params.base = _encoded_draft(starter_draft(str(params.get("preset_id",""))))
 	if action == "move_module":
-		if not params.get("position") is Vector2: return PackedStringArray(["补丁位置需要纸内坐标。"])
+		if not params.get("position") is Vector2: return PackedStringArray([DeskLocalization.source("LOC_PATCH_PLACEMENT_REQUIRES_PAPER_LOCAL_COORDINATES_FC1D71FE")])
 		params = params.duplicate(true)
 		params.position = _vector_array(params.position)
 	if action in ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context_axis", "detach_context_layer", "attach_context_layer"]:
 		var draft: Variant = params.get("draft")
 		if not draft is Dictionary or not draft.get("slots") is Dictionary or not draft.get("political_position") is Vector2 or not draft.get("pragmatic_position") is Vector2:
-			return PackedStringArray(["应用固体需要合法的作者草稿。"])
+			return PackedStringArray([DeskLocalization.source("LOC_APPLYING_A_SOLID_REQUIRES_A_VALID_AUTHOR_CAF24FE0")])
 		for key in ["remix_cost", "context_dependency", "language_access", "recognizability"]:
-			if not _number(draft.get(key)): return PackedStringArray(["作者草稿数值类型错误。"])
+			if not _number(draft.get(key)): return PackedStringArray([DeskLocalization.source("LOC_AN_AUTHOR_DRAFT_NUMERIC_VALUE_HAS_THE_CCD0F240")])
 		var draft_errors := PackedStringArray() if action in ["install_context","remove_context","move_context_axis"] else validate_draft(draft)
 		draft_errors.append_array(_core_errors(draft))
 		if not draft_errors.is_empty(): return draft_errors
@@ -187,16 +187,16 @@ func claim_design_reward(instance_id: String) -> PackedStringArray:
 			var errors: PackedStringArray = design_state.claim_event(event)
 			if errors.is_empty(): changed.emit()
 			return errors
-	return PackedStringArray(["事件实例未登记，不能领取纸奖励。"])
+	return PackedStringArray([DeskLocalization.source("LOC_THIS_EVENT_INSTANCE_IS_UNREGISTERED_ITS_PAPER_65A0ED66")])
 
 func request_event_material(instance_id: String, kind: String, id: String) -> PackedStringArray:
 	for event: Dictionary in events:
 		if str(event.instance_id) != instance_id: continue
-		if not bool(event.get("acknowledged",false)) and (phase != "event" or str(active_event.get("instance_id","")) != instance_id): return PackedStringArray(["只能搬出当前事件或已归档事件的物资纸片。"])
+		if not bool(event.get("acknowledged",false)) and (phase != "event" or str(active_event.get("instance_id","")) != instance_id): return PackedStringArray([DeskLocalization.source("LOC_ONLY_THE_CURRENT_EVENT_S_OR_AN_A0E6D124")])
 		var errors: PackedStringArray = design_state.request_event_material(event,kind,id)
 		if errors.is_empty(): changed.emit()
 		return errors
-	return PackedStringArray(["物资纸片没有本局事件来源。"])
+	return PackedStringArray([DeskLocalization.source("LOC_THIS_SUPPLY_SLIP_HAS_NO_EVENT_SOURCE_7B92D1B9")])
 
 func claim_event_material(instance_id: String, kind: String, id: String) -> PackedStringArray:
 	return request_event_material(instance_id,kind,id)
@@ -224,7 +224,7 @@ func event_materials(design: Dictionary = {}) -> Array[Dictionary]:
 func _core_errors(draft: Dictionary) -> PackedStringArray:
 	var state: Dictionary = design_state.snapshot()
 	if not str(state.core_kernel_id).is_empty() and (str(draft.get("kernel_id", "")) != str(state.core_kernel_id) or str(draft.get("preset_id", "")) != str(state.core_preset_id)):
-		return PackedStringArray(["已确认的基模不可重选；表达补丁只修正自己的内容。"])
+		return PackedStringArray([DeskLocalization.source("LOC_THE_CONFIRMED_BASE_FORM_CANNOT_BE_CHANGED_7215DF53")])
 	return PackedStringArray()
 
 func _encoded_draft(draft: Dictionary) -> Dictionary:
@@ -236,13 +236,13 @@ func _encoded_draft(draft: Dictionary) -> Dictionary:
 	return encoded
 
 func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringArray:
-	if phase == "event": return PackedStringArray(["请先确认当前事件。"])
+	if phase == "event": return PackedStringArray([DeskLocalization.source("LOC_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_F983CFC2")])
 	var errors: PackedStringArray = design_state.skill_errors(id)
 	if not errors.is_empty(): return errors
 	var cost: int = int(design_state.rules.find("skills", id).cost)
 	var reserve: int = catalog.first_publish_cost if publish_count == 0 else 0
 	if economy.balance - cost < reserve:
-		return PackedStringArray([DeskLocalization.source_format("Meme 点数不足，首次投放需预留 %d 点。", reserve)])
+		return PackedStringArray([DeskLocalization.source_format("LOC_NOT_ENOUGH_MEME_RESERVE_D_FOR_FIRST_FE60303F", reserve)])
 	var candidate: MemeDemoDesignState = DesignState.new(catalog)
 	candidate._state = design_state.payload()
 	errors = candidate.unlock_skill(id)
@@ -256,8 +256,8 @@ func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringAr
 		if not errors.is_empty(): return errors
 		errors = candidate.apply_unlocked(_encoded_draft(draft))
 		if not errors.is_empty(): return errors
-	elif not candidate.rules.find("skills", id).get("draft_effects", []).is_empty(): return PackedStringArray(["请先确认自己的模因草稿。"])
-	if not economy.charge(cost, "技能解锁：" + id, hour): return PackedStringArray(["Meme 点数不足。"])
+	elif not candidate.rules.find("skills", id).get("draft_effects", []).is_empty(): return PackedStringArray([DeskLocalization.source("LOC_CONFIRM_YOUR_OWN_MEME_DRAFT_FIRST_C8D61D07")])
+	if not economy.charge(cost, DeskLocalization.source_format("%s%s", ["LOC_SKILL_UNLOCKED_811EF328", id], [0]), hour): return PackedStringArray([DeskLocalization.source("LOC_NOT_ENOUGH_MEME_89E627E2")])
 	design_state = candidate
 	changed.emit()
 	return errors
@@ -287,47 +287,47 @@ func validate_draft(data: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	var kernel := find_kernel(str(data.get("kernel_id", "")))
 	if kernel == null:
-		errors.append("基模未登记。")
+		errors.append(DeskLocalization.source("LOC_UNREGISTERED_BASE_FORM_AA1FA4DA"))
 		return errors
 	var preset_id := str(data.get("preset_id", ""))
 	if not preset_id.is_empty():
 		var preset := catalog.find_preset(preset_id)
 		if preset == null:
-			errors.append("预设家族未登记。")
+			errors.append(DeskLocalization.source("LOC_UNREGISTERED_PRESET_FAMILY_FA4A166F"))
 		elif preset.kernel_id != kernel.id:
-			errors.append("预设家族与基模不匹配。")
+			errors.append(DeskLocalization.source("LOC_PRESET_FAMILY_DOES_NOT_MATCH_THE_BASE_02D496A9"))
 	var slots: Dictionary = data.get("slots", {})
 	for slot in kernel.required_slots:
 		if str(slots.get(slot, "")).strip_edges().is_empty():
-			errors.append("缺少语义槽位：" + slot)
+			errors.append(DeskLocalization.source("LOC_MISSING_SEMANTIC_SLOT_321D840F") + slot)
 	if find_channel(str(data.get("channel_id", ""))) == null:
-		errors.append("传播渠道未登记。")
+		errors.append(DeskLocalization.source("LOC_UNREGISTERED_TRANSMISSION_CHANNEL_60325BA7"))
 	var group_found := false
 	for group in catalog.groups:
 		group_found = group_found or str(group.id) == str(data.get("group_id", ""))
 	if not group_found and not (str(data.get("group_id", "")).is_empty() and not _draft_layer_attached(data,"group")):
-		errors.append("首批群体未登记。")
+		errors.append(DeskLocalization.source("LOC_UNREGISTERED_INITIAL_AUDIENCE_62693555"))
 	if str(data.get("target", "")).strip_edges().is_empty():
-		errors.append("请填写支持／反对的表态对象。")
+		errors.append(DeskLocalization.source("LOC_ENTER_THE_TARGET_YOU_SUPPORT_OR_OPPOSE_206B04DC"))
 	for key in ["remix_cost", "context_dependency", "language_access", "recognizability"]:
 		var number: float = float(data.get(key, -1.0))
 		if not is_finite(number) or number < 0.0 or number > 1.0:
-			errors.append(key + " 必须在 0—1 范围内。")
+			errors.append(key + DeskLocalization.source("LOC_MUST_BE_IN_THE_RANGE_9414D40B"))
 	for key in ["political_position", "pragmatic_position"]:
 		var position: Vector2 = data.get(key, Vector2.ZERO)
 		if not is_finite(position.x) or not is_finite(position.y) or absf(position.x) > 1.0 or absf(position.y) > 1.0:
-			errors.append(key + " 坐标超出范围。")
+			errors.append(key + DeskLocalization.source("LOC_COORDINATE_IS_OUT_OF_RANGE_5D6ACB76"))
 	var replaceable_seen: Dictionary = {}
 	for slot in PackedStringArray(data.get("replaceable_slots", [])):
-		if slot not in kernel.required_slots: errors.append("可替换槽位未登记：" + slot)
-		if replaceable_seen.has(slot): errors.append("可替换槽位重复：" + slot)
+		if slot not in kernel.required_slots: errors.append(DeskLocalization.source("LOC_UNREGISTERED_REPLACEABLE_SLOT_12819029") + slot)
+		if replaceable_seen.has(slot): errors.append(DeskLocalization.source("LOC_DUPLICATE_REPLACEABLE_SLOT_CFF77B80") + slot)
 		replaceable_seen[slot] = true
 	if str(data.get("reuse_permission", "unknown")) not in ["allowed", "conditional", "restricted", "unknown"]:
-		errors.append("再利用许可未登记。")
+		errors.append(DeskLocalization.source("LOC_UNREGISTERED_REUSE_PERMISSION_2B61EEA0"))
 	var topics := PackedStringArray(data.get("topic_ids", []))
-	if topics.is_empty() and _draft_layer_attached(data,"topics"): errors.append("请至少选择一个话题。")
+	if topics.is_empty() and _draft_layer_attached(data,"topics"): errors.append(DeskLocalization.source("LOC_SELECT_AT_LEAST_ONE_TOPIC_E653923A"))
 	for topic in topics:
-		if topic not in catalog.topics: errors.append("话题未登记：" + topic)
+		if topic not in catalog.topics: errors.append(DeskLocalization.source("LOC_UNREGISTERED_TOPIC_F5347B52") + topic)
 	return errors
 
 func _draft_layer_attached(data: Dictionary,layer: String) -> bool:
@@ -341,23 +341,23 @@ func publish(data: Dictionary) -> PackedStringArray:
 	errors.append_array(_core_errors(data))
 	errors.append_array(design_state.record_errors())
 	errors.append_array(design_state.layer_errors(_encoded_draft(data)))
-	if not design_state.author_marks_valid(data): errors.append("表达补丁与能力记录必须来自本局的作者操作。")
+	if not design_state.author_marks_valid(data): errors.append(DeskLocalization.source("LOC_EXPRESSION_PATCHES_AND_ABILITY_RECORDS_MUST_COME_2C544266"))
 	if not str(design_state.snapshot().starter_preset_id).is_empty() and str(data.get("channel_id", "")) not in design_state.supported_channels():
-		errors.append("该渠道支持能力尚未解锁。")
+		errors.append(DeskLocalization.source("LOC_THIS_CHANNEL_S_SUPPORT_ABILITY_HAS_NOT_ED9790A4"))
 	if phase != "draft":
-		errors.append("请先返回创作台，建立自己的新版本。")
-	if not competition.has_country(country_id): errors.append("投放国家不在当前世界中。")
+		errors.append(DeskLocalization.source("LOC_RETURN_TO_THE_WORKBENCH_AND_CREATE_YOUR_1A4056D3"))
+	if not competition.has_country(country_id): errors.append(DeskLocalization.source("LOC_THE_DEPLOYMENT_COUNTRY_IS_NOT_IN_THE_9557C167"))
 	if country_id.is_empty():
-		errors.append("请先在地图选择投放国家。")
+		errors.append(DeskLocalization.source("LOC_SELECT_A_DEPLOYMENT_COUNTRY_ON_THE_MAP_AA28A76D"))
 	var cost: int = catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost
 	if economy.balance < cost:
-		errors.append(DeskLocalization.source_format("Meme 点数不足：需要 %d，当前 %d。", [cost, economy.balance]))
+		errors.append(DeskLocalization.source_format("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, economy.balance]))
 	if not errors.is_empty():
 		status = DeskLocalization.source_join("；",errors)
 		changed.emit()
 		return errors
 	# 校验通过后才扣款并创建身份。
-	economy.charge(cost, "首次投放" if publish_count == 0 else "再创作投放", hour)
+	economy.charge(cost, DeskLocalization.source("LOC_FIRST_DEPLOYMENT_23FC9181") if publish_count == 0 else DeskLocalization.source("LOC_REVISED_DEPLOYMENT_AF934607"), hour)
 	var kernel := find_kernel(str(data.kernel_id))
 	var preset_id := str(data.get("preset_id", ""))
 	var preset := catalog.find_preset(preset_id)
@@ -393,14 +393,14 @@ func publish(data: Dictionary) -> PackedStringArray:
 	deployments.append({"id":_new_id("deployment"), "variant_id":id, "country_id":country_id, "group_id":str(data.group_id), "channel_id":str(data.channel_id), "hour":hour})
 	phase = "running"
 	speed = 1
-	status = DeskLocalization.source_format("已投放到 %s；后续外部版本不能直接编辑。", country_title, [0])
+	status = DeskLocalization.source_format("LOC_DEPLOYED_TO_S_LATER_EXTERNAL_VERSIONS_CANNOT_CAE6EE96", country_title, [0])
 	changed.emit()
 	return errors
 
 func begin_revision(draft: Dictionary = {}) -> PackedStringArray:
 	if phase == "draft" and draft.is_empty(): return PackedStringArray()
 	if phase == "event":
-		status = "请先收录／确认当前事件。"
+		status = DeskLocalization.source("LOC_COLLECT_OR_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_A156F2DD")
 		changed.emit()
 		return PackedStringArray([status])
 	var authored: Dictionary = latest_draft if draft.is_empty() else draft
@@ -422,7 +422,7 @@ func begin_revision(draft: Dictionary = {}) -> PackedStringArray:
 		competition._state.victory = {}
 	phase = "draft"
 	speed = 0
-	status = "创作自己的新版；已流通的外部版本保持不变。"
+	status = DeskLocalization.source("LOC_CREATE_YOUR_OWN_NEW_VERSION_CIRCULATING_EXTERNAL_00887F90")
 	changed.emit()
 	return PackedStringArray()
 
@@ -485,7 +485,7 @@ func _reward_milestones() -> void:
 	var milestone_size: int = maxi(1,floori(competition.snapshot(variants,false).world_population * catalog.gameplay_rules.milestone_population_fraction))
 	var milestone := floori(float(totals.owned_adopted) / milestone_size)
 	for index in range(1, milestone + 1):
-		economy.reward("adoption_%d" % index, catalog.milestone_reward, DeskLocalization.source_format("作者归属采用里程碑 %d", (index * milestone_size)), hour)
+		economy.reward("adoption_%d" % index, catalog.milestone_reward, DeskLocalization.source_format("LOC_AUTHOR_OWNED_ADOPTION_MILESTONE_D_85F3EA92", (index * milestone_size)), hour)
 
 func totals_state() -> Dictionary:
 	var view: Dictionary = competition.snapshot(variants,false)
@@ -533,7 +533,7 @@ func _execute_event(definition: MemeDemoEvent) -> void:
 	for index in range(first_variant,variants.size()): _register_external_world(variants[index])
 	event_counts[id] = int(event_counts.get(id, 0)) + 1
 	last_event_hours[id] = hour
-	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(latest_draft.get("reuse_permission", "unknown") != "restricted"), "mentor_comment":definition.mentor_comment, "effect_text":DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":definition.design_rewards.duplicate(true), "design_source_preset_id":str(definition.external_preset_id), "reward_text":("收录后领取：" + definition.design_reward_summary()) if not definition.design_rewards.is_empty() else ""}
+	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(latest_draft.get("reuse_permission", "unknown") != "restricted"), "mentor_comment":definition.mentor_comment, "effect_text":DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":definition.design_rewards.duplicate(true), "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", definition.design_reward_summary()])) if not definition.design_rewards.is_empty() else ""}
 	record.competition_variant_ids = []
 	for index in range(first_variant,variants.size()): record.competition_variant_ids.append(str(variants[index].id))
 	events.append(record)
@@ -547,12 +547,12 @@ func _apply_effect(effect: MemeDemoEffect, event_id: String, definition: MemeDem
 	for group in catalog.groups:
 		if effect.group_ids.is_empty() or group.id in effect.group_ids:
 			ids.append(str(group.id))
-	var scope := "全部合成人群" if effect.group_ids.is_empty() else "、".join(ids)
+	var scope := DeskLocalization.source("LOC_ALL_SYNTHETIC_AUDIENCES_ADD04D9F") if effect.group_ids.is_empty() else "、".join(ids)
 	var amount: float = effect.amount
 	match str(effect.effect_id):
 		"attention", "channel_reach":
 			modifiers.append({"source":event_id, "amount":amount, "groups":ids, "starts":hour, "expires":hour + maxf(1.0, _event_hours(effect.duration_hours)), "topics":Array(definition.topic_ids) if definition != null else [], "decay":str(definition.attention_decay) if definition != null else "constant", "decay_parameter":_event_hours(definition.decay_parameter_hours) if definition != null else 1.0})
-			return DeskLocalization.source_format("%s：吸引系数 ×%.2f，持续 %.0f 游戏小时；总注意力预算不增加。", [scope, maxf(0.05, 1.0 + amount), maxf(1.0, _event_hours(effect.duration_hours))], [0])
+			return DeskLocalization.source_format("LOC_S_ATTRACTION_MULTIPLIER_F_FOR_F_GAME_C6C49FBD", [scope, maxf(0.05, 1.0 + amount), maxf(1.0, _event_hours(effect.duration_hours))], [0])
 		"trust", "fatigue":
 			var field := str(effect.effect_id)
 			var changes := PackedStringArray()
@@ -562,58 +562,58 @@ func _apply_effect(effect: MemeDemoEffect, event_id: String, definition: MemeDem
 				state[field] = clampf(before + amount, 0.0, 1.0)
 				group_state[id] = state
 				changes.append("%s %.2f→%.2f" % [id, before, state[field]])
-			return DeskLocalization.source_format("%s：%s",[("信任" if field == "trust" else "疲劳"),DeskLocalization.source_join("；",changes)],[0,1])
+			return DeskLocalization.source_format("LOC_S_S_DCCB2F9E",[(DeskLocalization.source("LOC_TRUST_D1CD931B") if field == "trust" else DeskLocalization.source("LOC_FATIGUE_9211F063")),DeskLocalization.source_join("；",changes)],[0,1])
 		"adoption":
 			var added: int = competition.adoption_pulse(current_variant_id,amount)
 			_reward_milestones()
-			return DeskLocalization.source_format("已曝光而未采用者新增采用 %d。", added)
+			return DeskLocalization.source_format("LOC_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_ADOPT_6CA6F2FB", added)
 		"semantic_shift":
 			draft_distance = clampf(amount, 0.0, 1.0)
-			return DeskLocalization.source_format("外部改写相对固定家族锚点的语义偏移设为 %.2f；下一次改写按分家规则处理。", draft_distance)
+			return DeskLocalization.source_format("LOC_EXTERNAL_REWRITES_SEMANTIC_DRIFT_FROM_THE_FIXED_35C3A40D", draft_distance)
 		"remix":
-			if amount <= 0.0: return "改写数量为零，不生成版本。"
+			if amount <= 0.0: return DeskLocalization.source("LOC_NO_VERSIONS_CREATED_BECAUSE_THE_REWRITE_COUNT_0A2A9637")
 			if latest_draft.get("reuse_permission", "unknown") == "restricted":
-				return "再利用许可受限：这次规范内的重混未产生版本；许可不是对外部世界的强制控制。"
+				return DeskLocalization.source("LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C")
 			return _spawn_remix(event_id, ids[0] if not ids.is_empty() else "community", str(definition.id) if definition != null else "")
 		"revival":
 			for id in ids:
 				var state: Dictionary = group_state[id]
 				state.fatigue = clampf(state.fatigue - maxf(0.0, amount), 0.0, 1.0)
 				group_state[id] = state
-			return DeskLocalization.source_format("%s：疲劳降低 %.2f，旧表达重新进入使用；不恢复对外部分家的控制。", [scope, maxf(0.0, amount)], [0])
+			return DeskLocalization.source_format("LOC_S_FATIGUE_DECREASES_BY_F_AND_THE_40D510A3", [scope, maxf(0.0, amount)], [0])
 	push_error("Invalid effect reached simulation: " + str(effect.effect_id))
-	return "错误：效果未登记。"
+	return DeskLocalization.source("LOC_ERROR_UNREGISTERED_EFFECT_D26EA480")
 
 func _spawn_remix(event_id: String, creator: String, definition_id: String = "") -> String:
 	var parent := variant_by_id(current_variant_id)
 	if parent.is_empty():
-		return "没有可改写的已投放版本。"
+		return DeskLocalization.source("LOC_NO_DEPLOYED_VERSION_IS_AVAILABLE_TO_REWRITE_151CB474")
 	var family_id: String = parent.family_id
 	var split := draft_distance >= float(families[family_id].split_threshold)
 	if split:
 		var previous := family_id
 		family_id = _new_id("family")
-		families[family_id] = {"id":family_id, "owner":creator, "anchor":"外部共同体重新解释", "split_threshold":families[previous].split_threshold, "derived_from":[previous], "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true)}
+		families[family_id] = {"id":family_id, "owner":creator, "anchor":DeskLocalization.source("LOC_REINTERPRETED_BY_AN_EXTERNAL_COMMUNITY_6264171E"), "split_threshold":families[previous].split_threshold, "derived_from":[previous], "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true)}
 	var id := _new_id("variant")
 	var remix_text := EffectRules.remix_text(definition_id, parent.text)
 	var reuse_factor := EffectRules.reuse_factor(str(latest_draft.reuse_permission),
 		PackedStringArray(latest_draft.replaceable_slots).size(), find_kernel(parent.kernel_id).required_slots.size(),
 		float(latest_draft.remix_cost), float(latest_draft.context_dependency))
 	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":not split, "controlled":false, "text":remix_text, "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":draft_distance, "language_id":"mixed", "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor})
-	return DeskLocalization.source_format("%s %s；版本 %s 由 %s 制作，玩家不可编辑；来源保留。", ["新家族" if split else "原家族变体", family_id, id, creator], [0])
+	return DeskLocalization.source_format("LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714", [DeskLocalization.source("LOC_NEW_FAMILY_A5AC4668") if split else DeskLocalization.source("LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C"), family_id, id, creator], [0])
 
 func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> String:
 	var preset := catalog.find_preset(str(definition.external_preset_id))
 	if preset == null:
 		push_error("External preset not registered: " + str(definition.external_preset_id))
-		return "错误：外部预设未登记，没有创建家族。"
+		return DeskLocalization.source("LOC_ERROR_EXTERNAL_PRESET_IS_UNREGISTERED_NO_FAMILY_D2C6C1FB")
 	var kernel := find_kernel(str(preset.kernel_id))
 	var family_id := _new_id("family")
 	var id := _new_id("variant")
 	var source_presets: Array = [preset.source_record()]
 	families[family_id] = {"id":family_id, "owner":"environment", "anchor":preset.family_anchor, "split_threshold":kernel.split_threshold, "derived_from":[], "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true)}
 	variants.append({"id":id, "family_id":family_id, "parent_ids":[], "origin_ids":[], "creator":"environment", "owned":false, "controlled":false, "text":" / ".join(preset.default_values), "kernel_id":str(preset.kernel_id), "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":"mixed", "source_event":event_id, "topic_ids":Array(definition.topic_ids)})
-	return DeskLocalization.source_format("%s 正被其他人接续传播；发声者没有署名，你还无法接管它。", preset.title, [0])
+	return DeskLocalization.source_format("LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912", preset.title, [0])
 
 func _open_next_event() -> void:
 	if pending_events.is_empty():
@@ -622,7 +622,7 @@ func _open_next_event() -> void:
 	if phase == "running": resume_speed = speed
 	phase = "event"
 	speed = 0
-	status = "事件暂停：叙事描述与实际作用分别显示。"
+	status = DeskLocalization.source("LOC_EVENT_PAUSE_NARRATIVE_AND_ACTUAL_EFFECTS_ARE_C7BD1B68")
 	event_raised.emit(active_event.duplicate(true))
 
 func acknowledge_event() -> void:
@@ -636,7 +636,7 @@ func acknowledge_event() -> void:
 		changed.emit()
 		return
 	var id: String = active_event.instance_id
-	if economy.reward("event_" + id, catalog.event_research_reward, "收录传播研究发现", hour):
+	if economy.reward("event_" + id, catalog.event_research_reward, DeskLocalization.source("LOC_COLLECT_TRANSMISSION_RESEARCH_FINDINGS_07296438"), hour):
 		for item: String in active_event.discoveries:
 			if item not in discoveries:
 				discoveries.append(item)
@@ -644,7 +644,7 @@ func acknowledge_event() -> void:
 		if event.instance_id == id:
 			event.acknowledged = true
 			var definition := _event_definition(str(event.definition_id))
-			if definition != null and not event.get("design_rewards",[]).is_empty(): event.reward_text = "已领取：" + _reward_summary(event.design_rewards)
+			if definition != null and not event.get("design_rewards",[]).is_empty(): event.reward_text = DeskLocalization.source_join("", ["LOC_CLAIMED_9C9021A0", _reward_summary(event.design_rewards)])
 	active_event = {}
 	phase = "running"
 	speed = resume_speed
@@ -656,8 +656,8 @@ func acknowledge_event() -> void:
 func _finish() -> void:
 	phase = "complete"
 	speed = 0
-	status = "本轮结束：保留作者归属成果，也看见已经脱离控制的来源影响。"
-	if not competition._state.victory.is_empty(): status = "胜利：" + str(competition._state.victory.id)
+	status = DeskLocalization.source("LOC_RUN_COMPLETE_RETAIN_THE_RESULTS_UNDER_YOUR_3E988C72")
+	if not competition._state.victory.is_empty(): status = DeskLocalization.source_format("%s%s", ["LOC_VICTORY_5FFA76AC", str(competition._state.victory.id)], [0])
 	completed.emit(snapshot())
 
 func snapshot() -> Dictionary:

@@ -47,19 +47,19 @@ func _initialize_layers(base: Dictionary) -> PackedStringArray:
 	base = _canonical(base)
 	for pair in [["language","language_id"],["group","group_id"]]:
 		var id := _context_id(pair[0],str(base.get(pair[1],"")))
-		if id.is_empty() or _context_available(id)-_installed_context(id) <= 0: return PackedStringArray(["预设缺少可用的语言或群体语境资源。"])
+		if id.is_empty() or _context_available(id)-_installed_context(id) <= 0: return PackedStringArray([DeskLocalization.source("LOC_PRESET_LACKS_AN_AVAILABLE_LANGUAGE_OR_AUDIENCE_267B3DA7")])
 		_state.context_layers[pair[0]].slots[0] = {"resource_id":id,"source":_context_unit_source(id)}
 		_state.context_layers[pair[0]].origins[0] = id
 	var topics: Variant = base.get("topic_ids",[])
-	if not topics is Array or topics.size() > 3: return PackedStringArray(["预设话题超出三个槽位。"])
+	if not topics is Array or topics.size() > 3: return PackedStringArray([DeskLocalization.source("LOC_PRESET_TOPICS_EXCEED_THE_THREE_AVAILABLE_SLOTS_15C33F06")])
 	for index in topics.size():
 		var id := _context_id("topic",str(topics[index]))
-		if id.is_empty() or _installed_context(id) > 0 or _context_available(id) <= 0: return PackedStringArray(["预设话题无效、重复或库存不足。"])
+		if id.is_empty() or _installed_context(id) > 0 or _context_available(id) <= 0: return PackedStringArray([DeskLocalization.source("LOC_PRESET_TOPICS_ARE_INVALID_DUPLICATED_OR_EXCEED_08EF7D31")])
 		_state.context_layers.topics.slots[index] = {"resource_id":id,"source":_context_unit_source(id)}
 		_state.context_layers.topics.origins[index] = id
 	for pair in [["stance","political_position"],["pragmatic","pragmatic_position"]]:
 		var point: Variant = base.get(pair[1],[0.0,0.0])
-		if not point is Array or point.size() != 2 or not _number(point[0]) or not _number(point[1]) or absf(float(point[0])) > 1 or absf(float(point[1])) > 1: return PackedStringArray(["预设二维语境坐标无效。"])
+		if not point is Array or point.size() != 2 or not _number(point[0]) or not _number(point[1]) or absf(float(point[0])) > 1 or absf(float(point[1])) > 1: return PackedStringArray([DeskLocalization.source("LOC_INVALID_PRESET_D_CONTEXT_COORDINATES_A40AD586")])
 		_state.context_layers[pair[0]].origin = point.duplicate()
 		_state.context_layers[pair[0]].current = point.duplicate()
 		_state.context_layers[pair[0]].known = bool(base.get("political_known",false)) if pair[0] == "stance" else true
@@ -86,7 +86,7 @@ func _context_capacity_errors(modules: Array) -> PackedStringArray:
 	for layer in ["language","group"]:
 		var slots: Array = _state.context_layers.get(layer,{}).get("slots",[])
 		for index in range(context_slot_capacity(layer,modules),slots.size()):
-			if not slots[index].is_empty(): return PackedStringArray(["请先移除扩展语境槽里的资源，再取下解锁补丁。"])
+			if not slots[index].is_empty(): return PackedStringArray([DeskLocalization.source("LOC_REMOVE_RESOURCES_FROM_THE_EXPANDED_CONTEXT_SLOTS_C6DD12ED")])
 	return PackedStringArray()
 
 func _valid_context_slot(layer: String, slot: Dictionary) -> bool:
@@ -103,7 +103,7 @@ func _valid_context_slot(layer: String, slot: Dictionary) -> bool:
 	return false
 
 func required_context_errors() -> PackedStringArray:
-	if not _state.layers_initialized: return PackedStringArray(["请先确认开局模因并安装语言与群体语境。"])
+	if not _state.layers_initialized: return PackedStringArray([DeskLocalization.source("LOC_CONFIRM_A_STARTING_MEME_AND_INSTALL_LANGUAGE_352C120F")])
 	var errors := PackedStringArray()
 	for layer in ["language","group"]:
 		var data: Dictionary = _state.context_layers.get(layer,{})
@@ -112,7 +112,7 @@ func required_context_errors() -> PackedStringArray:
 		if bool(data.get("attached",true)):
 			for index in mini(context_slot_capacity(layer),slots.size()):
 				valid = valid or _valid_context_slot(layer,slots[index])
-		if not valid: errors.append(DeskLocalization.source_format("至少安装一个有效的%s槽位并将该语境放回纸面，才能继续。", ("语言" if layer == "language" else "群体"), [0]))
+		if not valid: errors.append(DeskLocalization.source_format("LOC_INSTALL_AT_LEAST_ONE_VALID_S_SLOT_2A8F7FA2", (DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A") if layer == "language" else DeskLocalization.source("LOC_AUDIENCE_D14FC4B5")), [0]))
 	return errors
 
 func _context_available(id: String) -> int:
@@ -148,46 +148,46 @@ func _locked_tokens(layer: String) -> int:
 func _perform_layer(action: String, params: Dictionary) -> PackedStringArray:
 	_layer_repeat = false
 	var layer := str(params.get("layer",""))
-	if not _state.layers_initialized or not _state.context_layers.has(layer): return PackedStringArray(["请先确认开局模因。"])
+	if not _state.layers_initialized or not _state.context_layers.has(layer): return PackedStringArray([DeskLocalization.source("LOC_CONFIRM_A_STARTING_MEME_FIRST_11EAF3C4")])
 	if action == "set_context_depth":
-		if not _number(params.get("depth")) or float(params.depth) < 0 or float(params.depth) > 1: return PackedStringArray(["切片深度需在 0—1 范围内。"])
+		if not _number(params.get("depth")) or float(params.depth) < 0 or float(params.depth) > 1: return PackedStringArray([DeskLocalization.source("LOC_SLICE_DEPTH_MUST_BE_IN_THE_RANGE_6D1A19C1")])
 		_state.context_layers[layer].depth = float(params.depth)
 		return PackedStringArray()
-	if not params.get("base") is Dictionary: return PackedStringArray(["语境配置需要自己的待发布草稿。"])
+	if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_CONTEXT_CONFIGURATION_REQUIRES_YOUR_OWN_DRAFT_AWAITING_084C0398")])
 	if action in ["detach_context_layer","attach_context_layer"]:
 		var data: Dictionary = _state.context_layers[layer]
 		var target := action == "attach_context_layer"
-		if bool(data.get("attached",true)) == target: return PackedStringArray(["切片已经在对应位置。"] )
-		if params.has("plane_id") and str(params.plane_id) != str(data.plane_id): return PackedStringArray(["切片来源不匹配。"] )
+		if bool(data.get("attached",true)) == target: return PackedStringArray([DeskLocalization.source("LOC_THE_SLICE_IS_ALREADY_IN_ITS_MATCHING_8BB39140")] )
+		if params.has("plane_id") and str(params.plane_id) != str(data.plane_id): return PackedStringArray([DeskLocalization.source("LOC_SLICE_SOURCE_MISMATCH_7FA89B1D")] )
 		data.attached = target
 		return _apply_layers(params.base)
-	if not bool(_state.context_layers[layer].attached): return PackedStringArray(["请先把这张切片放回脑体。"] )
+	if not bool(_state.context_layers[layer].attached): return PackedStringArray([DeskLocalization.source("LOC_RETURN_THIS_SLICE_TO_THE_BRAIN_FIRST_4F3C38DA")] )
 	if action in ["install_context","remove_context"]:
-		if layer not in ["language","group","topics"] or not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= context_slot_capacity(layer): return PackedStringArray(["语境槽位无效。"])
+		if layer not in ["language","group","topics"] or not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= context_slot_capacity(layer): return PackedStringArray([DeskLocalization.source("LOC_INVALID_CONTEXT_SLOT_17C28A5F")])
 		var slot := int(params.slot)
 		while _state.context_layers[layer].slots.size() <= slot:
 			_state.context_layers[layer].slots.append({})
 			_state.context_layers[layer].origins.append("")
 		if action == "remove_context":
-			if _state.context_layers[layer].slots[slot].is_empty(): return PackedStringArray(["该语境槽为空。"])
+			if _state.context_layers[layer].slots[slot].is_empty(): return PackedStringArray([DeskLocalization.source("LOC_THIS_CONTEXT_SLOT_IS_EMPTY_F2C503FA")])
 			_state.context_layers[layer].slots[slot] = {}
 		else:
 			var id := str(params.get("resource_id",""))
 			var entry: Dictionary = rules.context_resource(id)
-			if not _state.context_layers[layer].slots[slot].is_empty(): return PackedStringArray(["请先移除原语境资源。"])
-			if str(entry.get("kind","")) != ("topic" if layer == "topics" else layer) or _context_available(id)-_installed_context(id) <= 0: return PackedStringArray(["没有可用且匹配的语境资源。"])
-			if layer == "topics" and _installed_context(id) > 0: return PackedStringArray(["同一话题不能重复占槽。"])
+			if not _state.context_layers[layer].slots[slot].is_empty(): return PackedStringArray([DeskLocalization.source("LOC_REMOVE_THE_EXISTING_CONTEXT_RESOURCE_FIRST_72FBAD89")])
+			if str(entry.get("kind","")) != ("topic" if layer == "topics" else layer) or _context_available(id)-_installed_context(id) <= 0: return PackedStringArray([DeskLocalization.source("LOC_NO_AVAILABLE_MATCHING_CONTEXT_RESOURCE_32BB7FCF")])
+			if layer == "topics" and _installed_context(id) > 0: return PackedStringArray([DeskLocalization.source("LOC_THE_SAME_TOPIC_CANNOT_OCCUPY_MULTIPLE_SLOTS_E0AEF5DC")])
 			var source := _context_unit_source(id)
-			if source.is_empty(): return PackedStringArray(["语境资源来源不可用。"])
+			if source.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_CONTEXT_RESOURCE_SOURCE_IS_UNAVAILABLE_A94CDFAF")])
 			_state.context_layers[layer].slots[slot] = {"resource_id":id,"source":source}
 	else:
-		if layer not in ["stance","pragmatic"] or str(params.get("axis","")) not in ["x","y"] or not _integer(params.get("direction")) or int(params.direction) not in [-1,1]: return PackedStringArray(["二维移动每次只接受一个轴的一步。"])
-		if not params.get("request_id") is String or params.request_id.is_empty() or params.request_id.length() > 128: return PackedStringArray(["二维移动需要有限请求标识。"])
+		if layer not in ["stance","pragmatic"] or str(params.get("axis","")) not in ["x","y"] or not _integer(params.get("direction")) or int(params.direction) not in [-1,1]: return PackedStringArray([DeskLocalization.source("LOC_A_D_MOVE_ACCEPTS_ONE_STEP_ON_11740594")])
+		if not params.get("request_id") is String or params.request_id.is_empty() or params.request_id.length() > 128: return PackedStringArray([DeskLocalization.source("LOC_A_D_MOVE_REQUIRES_A_BOUNDED_REQUEST_83645A17")])
 		var request := {"request_id":str(params.request_id),"layer":layer,"axis":str(params.axis),"direction":int(params.direction)}
 		for previous: Dictionary in _state.axis_requests:
 			if previous.request_id == request.request_id:
 				_layer_repeat = true
-				return PackedStringArray() if previous == request else PackedStringArray(["请求标识已用于另一项移动。"])
+				return PackedStringArray() if previous == request else PackedStringArray([DeskLocalization.source("LOC_THIS_REQUEST_ID_HAS_ALREADY_BEEN_USED_C071C23E")])
 		var axis := 0 if str(params.axis) == "x" else 1
 		var data: Dictionary = _state.context_layers[layer]
 		var old := int(data.offsets[axis])
@@ -195,10 +195,10 @@ func _perform_layer(action: String, params: Dictionary) -> PackedStringArray:
 		var origin := float(data.origin[axis])
 		var minimum := int(floor((-1.0-origin)/rules.axis_step+0.000001))
 		var maximum := int(ceil((1.0-origin)/rules.axis_step-0.000001))
-		if next < minimum or next > maximum: return PackedStringArray(["坐标已到达边界。"])
+		if next < minimum or next > maximum: return PackedStringArray([DeskLocalization.source("LOC_THE_COORDINATE_HAS_REACHED_ITS_BOUNDARY_2B0D9566")])
 		var cost := absi(next)-absi(old)
 		var token_id := _axis_token(layer,str(params.axis),1 if next > 0 else -1)
-		if cost > 0 and _context_available(token_id)-_locked_token(token_id) < cost: return PackedStringArray(["没有足够的对应端筹码。"])
+		if cost > 0 and _context_available(token_id)-_locked_token(token_id) < cost: return PackedStringArray([DeskLocalization.source("LOC_NOT_ENOUGH_TOKENS_FOR_THE_MATCHING_DIRECTION_A220DB22")])
 		data.offsets[axis] = next
 		data.current[axis] = float(Vector2(clampf(origin+float(next)*rules.axis_step,-1.0,1.0),0.0).x)
 		data.known = true
@@ -224,7 +224,7 @@ func _layer_fields() -> Dictionary:
 
 func _apply_layers(base: Dictionary) -> PackedStringArray:
 	var draft: Dictionary = _canonical(base)
-	if not author_marks_valid(draft): return PackedStringArray(["草稿来源记录无效。"])
+	if not author_marks_valid(draft): return PackedStringArray([DeskLocalization.source("LOC_INVALID_DRAFT_SOURCE_RECORD_2123E441")])
 	var fields := _layer_fields()
 	for key in ["language_ids","group_ids"]: draft.erase(key)
 	draft.merge(fields,true)
@@ -239,9 +239,9 @@ func layer_errors(base: Dictionary) -> PackedStringArray:
 	base = _canonical(base)
 	var fields: Dictionary = _canonical(_layer_fields())
 	for key in fields:
-		if base.get(key) != fields[key]: return PackedStringArray(["草稿语境与脑切片配置不一致。"])
+		if base.get(key) != fields[key]: return PackedStringArray([DeskLocalization.source("LOC_DRAFT_CONTEXT_CONFLICTS_WITH_BRAIN_SLICE_CONFIGURATION_CBA3F275")])
 	for key in ["language_ids","group_ids"]:
-		if base.has(key) and not fields.has(key): return PackedStringArray(["草稿含有未安装的扩展语境。"])
+		if base.has(key) and not fields.has(key): return PackedStringArray([DeskLocalization.source("LOC_DRAFT_CONTAINS_AN_UNINSTALLED_EXPANDED_CONTEXT_52E5354E")])
 	return PackedStringArray()
 
 func _snapshot_layers(result: Dictionary) -> void:
@@ -297,7 +297,7 @@ func _snapshot_layers(result: Dictionary) -> void:
 		result.context_layers[layer].step = rules.axis_step
 		result.context_layers[layer].token_kind = layer+"_token"
 		result.context_layers[layer].token_ids = {"x_negative":_axis_token(layer,"x",-1),"x_positive":_axis_token(layer,"x",1),"y_negative":_axis_token(layer,"y",-1),"y_positive":_axis_token(layer,"y",1)}
-		result.context_layers[layer].axis_labels = {"x_negative":"自由","x_positive":"威权","y_negative":"平等","y_positive":"等级"} if layer == "stance" else {"x_negative":"真诚","x_positive":"反讽","y_negative":"支持","y_positive":"反对"}
+		result.context_layers[layer].axis_labels = {"x_negative":DeskLocalization.source("LOC_FREEDOM_D1047EED"),"x_positive":DeskLocalization.source("LOC_AUTHORITY_E9D827BA"),"y_negative":DeskLocalization.source("LOC_EQUALITY_14DD2491"),"y_positive":DeskLocalization.source("LOC_HIERARCHY_33771717")} if layer == "stance" else {"x_negative":DeskLocalization.source("LOC_SINCERITY_8BB7FF57"),"x_positive":DeskLocalization.source("LOC_IRONY_06D9BA32"),"y_negative":DeskLocalization.source("LOC_SUPPORT_D93373F8"),"y_positive":DeskLocalization.source("LOC_OPPOSITION_454F03C9")}
 
 func token_balance(id: String) -> int:
 	return maxi(0,_context_available(id)-_locked_token(id))
@@ -347,7 +347,7 @@ func starter_options() -> Array[Dictionary]:
 
 ## 用户动作失败时恢复整个设计状态；成功动作才进入重放账本。
 func perform(action: String, params: Dictionary = {}) -> PackedStringArray:
-	if action in ["claim", "publish", "unlock", "sync_draft", "request_material"]: return PackedStringArray(["该动作只能由模拟账本提交。"])
+	if action in ["claim", "publish", "unlock", "sync_draft", "request_material"]: return PackedStringArray([DeskLocalization.source("LOC_ONLY_THE_SIMULATION_LEDGER_MAY_SUBMIT_THIS_D4C608B2")])
 	var pristine := _state.duplicate(true)
 	var errors := _perform(action, params)
 	if not errors.is_empty(): _state = pristine
@@ -356,11 +356,11 @@ func perform(action: String, params: Dictionary = {}) -> PackedStringArray:
 func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> PackedStringArray:
 	params = _canonical(params)
 	var errors := PackedStringArray()
-	if _state.operations.size() >= RECORD_LIMIT: return PackedStringArray(["设计操作记录已达有限上限。"])
+	if _state.operations.size() >= RECORD_LIMIT: return PackedStringArray([DeskLocalization.source("LOC_DESIGN_ACTION_RECORD_HAS_REACHED_ITS_FINITE_37CDC932")])
 	var slot := -1
 	if action in ["install_module", "remove_module", "edit_module_content", "move_module"]:
 		if not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= rules.module_slots:
-			return PackedStringArray(["槽位超出有限范围。"])
+			return PackedStringArray([DeskLocalization.source("LOC_SLOT_IS_OUTSIDE_ITS_FINITE_RANGE_F48EA765")])
 		slot = int(params.slot)
 	if action in ["install_context", "remove_context", "move_context_axis", "set_context_depth", "detach_context_layer", "attach_context_layer"]:
 		errors = _perform_layer(action, params)
@@ -371,31 +371,31 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 		"choose_starter":
 			var preset_id := str(params.get("preset_id", ""))
 			if preset_id not in rules.starter_presets or catalog == null or catalog.find_preset(preset_id) == null:
-				return PackedStringArray(["开局预设未登记。"])
+				return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_STARTING_PRESET_4CB00AC5")])
 			if not str(_state.starter_preset_id).is_empty():
-				return errors if _state.starter_preset_id == preset_id else PackedStringArray(["本局开局预设已确认。"])
+				return errors if _state.starter_preset_id == preset_id else PackedStringArray([DeskLocalization.source("LOC_THIS_RUN_S_STARTING_PRESET_HAS_BEEN_975050D9")])
 			_state.starter_preset_id = preset_id
 			_state.core_preset_id = preset_id
 			_state.core_kernel_id = str(catalog.find_preset(preset_id).kernel_id)
 			_grant_module(str(catalog.find_preset(preset_id).kernel_id))
 			var expected: Dictionary = _preset_context_base(preset_id)
 			var base: Variant = params.get("base", expected)
-			if not base is Dictionary: return PackedStringArray(["开局草稿必须是对象。"])
+			if not base is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_THE_STARTING_DRAFT_MUST_BE_AN_OBJECT_93CDB3F4")])
 			for key in expected:
-				if _canonical(base.get(key)) != _canonical(expected[key]): return PackedStringArray(["开局语境原点必须来自已登记预设。"] )
+				if _canonical(base.get(key)) != _canonical(expected[key]): return PackedStringArray([DeskLocalization.source("LOC_STARTING_CONTEXT_ORIGIN_MUST_COME_FROM_A_84C13427")] )
 			errors = _initialize_layers(base)
 			if not errors.is_empty(): return errors
 		"install_module":
 			var module_id := str(params.get("module_id", ""))
 			if rules.find("modules", module_id).is_empty() or _available_module_count(module_id) <= 0:
-				return PackedStringArray(["仓库中没有该模块。"])
+				return PackedStringArray([DeskLocalization.source("LOC_THIS_MODULE_IS_NOT_IN_STORAGE_7C77E7E3")])
 			var used := 0
 			for index in _state.module_slots.size():
 				if index != slot and _state.module_slots[index] == module_id: used += 1
-			if used >= _available_module_count(module_id): return PackedStringArray(["已搬出的模块数量不足，不能复制纸片。"])
-			if not params.get("base") is Dictionary: return PackedStringArray(["表达补丁需要自己的待发布草稿。"])
+			if used >= _available_module_count(module_id): return PackedStringArray([DeskLocalization.source("LOC_NOT_ENOUGH_MODULES_HAVE_BEEN_TAKEN_OUT_F84E3A66")])
+			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_AN_EXPRESSION_PATCH_REQUIRES_YOUR_OWN_DRAFT_984A1272")])
 			var content: Variant = params.get("content", rules.find("modules", module_id).content)
-			if not content is String or content.strip_edges().is_empty() or content.length() > 2048: return PackedStringArray(["补丁内容需为有限非空文本。"])
+			if not content is String or content.strip_edges().is_empty() or content.length() > 2048: return PackedStringArray([DeskLocalization.source("LOC_PATCH_CONTENT_MUST_BE_BOUNDED_NON_EMPTY_F87EF1F2")])
 			var next_modules: Array = _state.module_slots.duplicate()
 			next_modules[slot] = module_id
 			errors = _context_capacity_errors(next_modules)
@@ -405,8 +405,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			errors = _apply_modules(params.base)
 			if not errors.is_empty(): return errors
 		"remove_module":
-			if str(_state.module_slots[slot]).is_empty(): return PackedStringArray(["该槽位没有表达补丁。"])
-			if not params.get("base") is Dictionary: return PackedStringArray(["移除补丁需要自己的待发布草稿。"])
+			if str(_state.module_slots[slot]).is_empty(): return PackedStringArray([DeskLocalization.source("LOC_THIS_SLOT_HAS_NO_EXPRESSION_PATCH_90260171")])
+			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_REMOVING_A_PATCH_REQUIRES_YOUR_OWN_DRAFT_C0DFA4F7")])
 			var next_modules: Array = _state.module_slots.duplicate()
 			next_modules[slot] = ""
 			errors = _context_capacity_errors(next_modules)
@@ -419,45 +419,45 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not errors.is_empty(): return errors
 		"edit_module_content":
 			var content: Variant = params.get("content")
-			if str(_state.module_slots[slot]).is_empty() or not params.get("base") is Dictionary or not content is String or content.strip_edges().is_empty() or content.length() > 2048: return PackedStringArray(["需要已安装补丁、自己的草稿与有限非空文本。"])
+			if str(_state.module_slots[slot]).is_empty() or not params.get("base") is Dictionary or not content is String or content.strip_edges().is_empty() or content.length() > 2048: return PackedStringArray([DeskLocalization.source("LOC_REQUIRES_AN_INSTALLED_PATCH_YOUR_OWN_DRAFT_CAC2A0FE")])
 			_state.module_contents[slot] = content
 			errors = _apply_modules(params.base)
 			if not errors.is_empty(): return errors
 		"move_module":
 			var point: Variant = params.get("position")
-			if str(_state.module_slots[slot]).is_empty() or not point is Array or point.size() != 2 or not _number(point[0]) or not _number(point[1]) or float(point[0]) < 0 or float(point[0]) > 1 or float(point[1]) < 0 or float(point[1]) > 1: return PackedStringArray(["只能移动纸内已安装的补丁神经元。"])
+			if str(_state.module_slots[slot]).is_empty() or not point is Array or point.size() != 2 or not _number(point[0]) or not _number(point[1]) or float(point[0]) < 0 or float(point[0]) > 1 or float(point[1]) < 0 or float(point[1]) > 1: return PackedStringArray([DeskLocalization.source("LOC_ONLY_INSTALLED_PATCH_NEURONS_WITHIN_THE_PAPER_F0E00E36")])
 			_state.module_positions[slot] = point.duplicate()
 		"connect":
 			if not _integer(params.get("from")) or not _integer(params.get("to")):
-				return PackedStringArray(["连接槽位类型错误。"])
+				return PackedStringArray([DeskLocalization.source("LOC_WRONG_CONNECTION_SLOT_TYPE_7FF11DFF")])
 			var first := int(params.from)
 			var second := int(params.to)
 			if first < 0 or second < 0 or first >= rules.module_slots or second >= rules.module_slots or first == second or str(_state.module_slots[first]).is_empty() or str(_state.module_slots[second]).is_empty():
-				return PackedStringArray(["连接需要两个已放置的不同模块槽。"])
+				return PackedStringArray([DeskLocalization.source("LOC_A_CONNECTION_REQUIRES_TWO_DISTINCT_PLACED_MODULE_E271A8B2")])
 			var connection := {"from":first, "to":second}
-			if connection in _state.connections: return PackedStringArray(["该连接已经存在。"])
+			if connection in _state.connections: return PackedStringArray([DeskLocalization.source("LOC_THIS_CONNECTION_ALREADY_EXISTS_1BFCDA18")])
 			_state.connections.append(connection)
 		"apply_skill":
 			var skill_id := str(params.get("skill_id", ""))
 			var skill: Dictionary = rules.find("skills", skill_id)
-			if skill_id not in _state.unlocked_skills or skill.get("draft_effects", []).is_empty(): return PackedStringArray(["该能力未解锁或没有可应用的草稿作用。"])
-			if skill_applied(skill_id): return PackedStringArray(["本轮待发布草稿已应用该能力，不能重复堆叠。"])
-			if not params.get("base") is Dictionary: return PackedStringArray(["应用能力需要合法的作者草稿。"])
+			if skill_id not in _state.unlocked_skills or skill.get("draft_effects", []).is_empty(): return PackedStringArray([DeskLocalization.source("LOC_THIS_ABILITY_IS_LOCKED_OR_HAS_NO_553BFB9A")])
+			if skill_applied(skill_id): return PackedStringArray([DeskLocalization.source("LOC_THIS_ABILITY_HAS_ALREADY_BEEN_APPLIED_TO_8B1D7CA8")])
+			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_APPLYING_AN_ABILITY_REQUIRES_A_VALID_AUTHOR_7C886A86")])
 			var draft := _effect_draft(params.base, skill.draft_effects)
-			if draft.is_empty(): return PackedStringArray(["作者草稿字段或固体来源不合法。"])
+			if draft.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_AUTHOR_DRAFT_FIELDS_OR_SOLID_PROVENANCE_9B401655")])
 			var application := {"publish_index":int(_state.current_publish_index), "skill_id":skill_id, "effects":_deltas(params.base, draft, skill.draft_effects)}
 			var marks: Array = draft.get("skill_effects", []).duplicate(true)
 			marks.append(application.duplicate(true))
 			draft.skill_effects = marks
 			_state.skill_applications.append(application)
 			_state.context_draft = draft
-			_state.skill_application = DeskLocalization.source_format("%s正帮你的表达走得更远。", str(skill.title), [0])
+			_state.skill_application = DeskLocalization.source_format("LOC_S_IS_HELPING_YOUR_EXPRESSION_TRAVEL_FURTHER_21DB569F", str(skill.title), [0])
 		"request_material":
 			errors = _request_material(params,source)
 			if not errors.is_empty(): return errors
 		"claim":
 			var instance_id := str(params.get("instance_id", ""))
-			if instance_id.is_empty() or source.is_empty() or not source.get("acknowledged", false): return PackedStringArray(["只能领取已确认的真实事件纸奖励。"])
+			if instance_id.is_empty() or source.is_empty() or not source.get("acknowledged", false): return PackedStringArray([DeskLocalization.source("LOC_ONLY_ACKNOWLEDGED_REAL_EVENT_PAPER_REWARDS_CAN_9A98F38C")])
 			if instance_id in _state.claimed_events: return errors
 			var rewards := _event_rewards(source, errors)
 			if not errors.is_empty(): return errors
@@ -475,9 +475,9 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 						_state.context_resource_inventory[reward_id] = int(_state.context_resource_inventory.get(reward_id,0)) + count
 				labels.append("%s ×%d" % [str(rules.reward_resource(kind, reward_id).title), count])
 			_state.claimed_events.append(instance_id)
-			if not labels.is_empty(): _state.inventory_log.append(DeskLocalization.source_format("事件 %s：%s", [instance_id, "、".join(labels)]))
+			if not labels.is_empty(): _state.inventory_log.append(DeskLocalization.source_format("LOC_EVENT_S_S_6E3B7EEE", [instance_id, "、".join(labels)]))
 		"publish":
-			if source.is_empty() or not source.get("controlled", false) or not source.get("owned", false) or source.get("creator", "") != "player": return PackedStringArray(["只有玩家已发布版本可登记模块。"])
+			if source.is_empty() or not source.get("controlled", false) or not source.get("owned", false) or source.get("creator", "") != "player": return PackedStringArray([DeskLocalization.source("LOC_ONLY_PLAYER_PUBLISHED_VERSIONS_MAY_REGISTER_MODULES_C45E35C2")])
 			_grant_module(str(source.kernel_id))
 			if str(_state.core_kernel_id).is_empty():
 				_state.core_kernel_id = str(source.kernel_id)
@@ -489,12 +489,12 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not errors.is_empty(): return errors
 			_state.unlocked_skills.append(skill_id)
 		"sync_draft":
-			if not params.get("base") is Dictionary: return PackedStringArray(["草稿同步类型错误。"])
+			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_WRONG_DRAFT_SYNC_TYPE_EAFCB504")])
 			var draft := _effect_draft(params.base, [])
-			if draft.is_empty(): return PackedStringArray(["草稿同步来源无效。"])
+			if draft.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_DRAFT_SYNC_SOURCE_437E9E98")])
 			_state.context_draft = draft
 		_:
-			return PackedStringArray(["设计动作未登记：" + action])
+			return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_DESIGN_ACTION_F210E360") + action])
 	_state.operations.append({"action":action, "params":params.duplicate(true)})
 	return errors
 
@@ -511,11 +511,11 @@ func claim_event(event: Dictionary) -> PackedStringArray:
 
 func skill_errors(id: String) -> PackedStringArray:
 	var entry: Dictionary = rules.find("skills", id)
-	if entry.is_empty(): return PackedStringArray(["传播技能未登记。"])
-	if id in _state.unlocked_skills: return PackedStringArray(["该技能已解锁，不能重复扣款。"])
+	if entry.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_SPREAD_SKILL_8953144F")])
+	if id in _state.unlocked_skills: return PackedStringArray([DeskLocalization.source("LOC_THIS_SKILL_IS_ALREADY_UNLOCKED_IT_CANNOT_9F356EAA")])
 	for dependency in entry.requires:
-		if str(dependency) not in _state.unlocked_skills: return PackedStringArray(["请先解锁依赖技能：" + str(dependency)])
-	if _state.operations.size() >= RECORD_LIMIT: return PackedStringArray(["设计操作记录已达有限上限。"])
+		if str(dependency) not in _state.unlocked_skills: return PackedStringArray([DeskLocalization.source("LOC_UNLOCK_REQUIRED_SKILLS_FIRST_B8C8D8A4") + str(dependency)])
+	if _state.operations.size() >= RECORD_LIMIT: return PackedStringArray([DeskLocalization.source("LOC_DESIGN_ACTION_RECORD_HAS_REACHED_ITS_FINITE_37CDC932")])
 	return PackedStringArray()
 
 func supported_channels() -> Array[String]:
@@ -611,7 +611,7 @@ func revision_base(base: Dictionary) -> Dictionary:
 func apply_unlocked(base: Dictionary, new_round: bool = false) -> PackedStringArray:
 	var pristine := _state.duplicate(true)
 	var draft: Dictionary = revision_base(base) if new_round else _canonical(base)
-	if draft.is_empty() or not author_marks_valid(draft): return PackedStringArray(["能力应用需要自己的合法草稿记录。"])
+	if draft.is_empty() or not author_marks_valid(draft): return PackedStringArray([DeskLocalization.source("LOC_APPLYING_AN_ABILITY_REQUIRES_YOUR_OWN_VALID_5A5FFD6C")])
 	for id in _state.unlocked_skills:
 		if rules.find("skills", str(id)).get("draft_effects", []).is_empty() or skill_applied(str(id)): continue
 		var errors := _perform("apply_skill", {"skill_id":str(id), "base":draft})
@@ -625,7 +625,7 @@ func apply_unlocked(base: Dictionary, new_round: bool = false) -> PackedStringAr
 
 func _apply_modules(base: Dictionary) -> PackedStringArray:
 	var draft: Dictionary = _canonical(base)
-	if not author_marks_valid(draft): return PackedStringArray(["表达补丁来源或作者草稿无效。"])
+	if not author_marks_valid(draft): return PackedStringArray([DeskLocalization.source("LOC_INVALID_EXPRESSION_PATCH_SOURCE_OR_AUTHOR_DRAFT_BDB1B39C")])
 	if draft.has("module_patch_record"):
 		var old: Dictionary = draft.module_patch_record
 		_strip_effects(draft, old.effects)
@@ -637,14 +637,14 @@ func _apply_modules(base: Dictionary) -> PackedStringArray:
 	var kernel: Resource = null
 	for entry in catalog.kernels:
 		if str(entry.id) == str(draft.get("kernel_id", "")): kernel = entry
-	if kernel == null or not draft.get("slots") is Dictionary: return PackedStringArray(["表达补丁不能替换原始基模。"])
+	if kernel == null or not draft.get("slots") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_AN_EXPRESSION_PATCH_CANNOT_REPLACE_THE_ORIGINAL_B0983DCE")])
 	var record := {"record_index":_state.operations.size(), "effects":[], "suffixes":[], "modules":_state.module_slots.duplicate()}
 	for module_slot in _state.module_slots.size():
 		var module_id: String = str(_state.module_slots[module_slot])
 		if str(module_id).is_empty(): continue
 		var module: Dictionary = rules.find("modules", str(module_id))
 		var amended := _effect_draft(draft, module.draft_effects)
-		if amended.is_empty(): return PackedStringArray(["表达补丁字段无效。"])
+		if amended.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_EXPRESSION_PATCH_FIELDS_C6043637")])
 		record.effects.append_array(_deltas(draft, amended, module.draft_effects))
 		draft = amended
 		var slot_id := str(kernel.required_slots[-1])
@@ -654,7 +654,7 @@ func _apply_modules(base: Dictionary) -> PackedStringArray:
 	_state.module_records.append(record.duplicate(true))
 	draft.module_patch_record = record
 	_state.context_draft = draft
-	_state.module_application = "补丁已经夹入你的表达。"
+	_state.module_application = DeskLocalization.source("LOC_THE_PATCH_IS_NOW_CLIPPED_INTO_YOUR_12514443")
 	return PackedStringArray()
 
 func unlock_skill(id: String) -> PackedStringArray:
@@ -677,26 +677,26 @@ func snapshot(variants: Array = []) -> Dictionary:
 	result.supported_channels = supported_channels()
 	result.available_module_inventory = _available_module_inventory()
 	_snapshot_layers(result)
-	result.explanation = "五层脑切片分别承载语言、群体、话题、立场与语用。"
+	result.explanation = DeskLocalization.source("LOC_THE_FIVE_BRAIN_SLICES_CARRY_LANGUAGE_AUDIENCE_F7F933BF")
 	return result
 
 func payload() -> Dictionary:
 	return _state.duplicate(true)
 
 func record_errors() -> PackedStringArray:
-	return PackedStringArray(["设计操作记录已达有限上限。"] if _state.operations.size() >= RECORD_LIMIT else [])
+	return PackedStringArray([DeskLocalization.source("LOC_DESIGN_ACTION_RECORD_HAS_REACHED_ITS_FINITE_37CDC932")] if _state.operations.size() >= RECORD_LIMIT else [])
 
 ## 仅接受当前设计格式，并通过重放核对来源、扣款、资源数量和最终状态。
 func validate_payload(data: Dictionary, events: Array, variants: Array, economy: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	data = _canonical(data)
 	if not _integer(data.get("design_version")) or int(data.design_version) != DESIGN_VERSION or not data.get("rules_signature") is String or data.rules_signature != rules.signature() or not data.get("operations") is Array or data.operations.size() > RECORD_LIMIT:
-		return PackedStringArray(["设计存档版本、定义或操作记录错误。"])
+		return PackedStringArray([DeskLocalization.source("LOC_INVALID_DESIGN_SAVE_VERSION_DEFINITIONS_OR_ACTION_1AA0AD8F")])
 	var replay = get_script().new(catalog, rules)
 	var published := {}
 	for operation: Variant in data.operations:
 		if not operation is Dictionary or not operation.get("action") is String or not operation.get("params") is Dictionary:
-			errors.append("设计存档操作类型错误。")
+			errors.append(DeskLocalization.source("LOC_WRONG_DESIGN_SAVE_ACTION_TYPE_41B257AA"))
 			continue
 		var source := {}
 		var params: Dictionary = operation.params
@@ -705,29 +705,29 @@ func validate_payload(data: Dictionary, events: Array, variants: Array, economy:
 				if str(event.get("instance_id", "")) == str(params.get("instance_id", "")): source = event
 		elif operation.action == "publish":
 			var id := str(params.get("variant_id", ""))
-			if published.has(id): errors.append("设计存档重复发布模块奖励。")
+			if published.has(id): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_GRANTS_A_PUBLICATION_MODULE_REWARD_C11AB2C0"))
 			published[id] = true
 			for variant: Dictionary in variants:
 				if str(variant.get("id", "")) == id: source = variant
-		elif operation.action == "choose_starter" and not published.is_empty(): errors.append("开局选择必须在首发之前。")
+		elif operation.action == "choose_starter" and not published.is_empty(): errors.append(DeskLocalization.source("LOC_STARTING_SELECTION_MUST_PRECEDE_FIRST_PUBLICATION_01D580DD"))
 		errors.append_array(replay._perform(operation.action, params, source))
 	for variant: Dictionary in variants:
-		if variant.get("controlled", false) and variant.get("creator", "") == "player" and not published.has(str(variant.get("id", ""))): errors.append("设计存档缺少玩家版本模块来源。")
+		if variant.get("controlled", false) and variant.get("creator", "") == "player" and not published.has(str(variant.get("id", ""))): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_LACKS_A_PLAYER_VERSION_MODULE_62FFDE84"))
 	if not errors.is_empty(): return errors
 	for variant: Dictionary in variants:
-		if not replay.author_marks_valid(variant): errors.append("版本表达补丁或能力来源不符合操作记录。")
-	if _canonical(replay.payload()) != data: errors.append("设计存档状态不符合操作记录，拒绝部分恢复。")
+		if not replay.author_marks_valid(variant): errors.append(DeskLocalization.source("LOC_VERSION_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_DOES_C71016AF"))
+	if _canonical(replay.payload()) != data: errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_STATE_CONFLICTS_WITH_ACTION_RECORDS_139DDFEB"))
 	var purchases := {}
 	for transaction: Variant in economy.get("transactions", []):
-		if transaction is Dictionary and str(transaction.get("reason", "")).begins_with("技能解锁："):
-			var id := str(transaction.reason).trim_prefix("技能解锁：")
+		if transaction is Dictionary and str(transaction.get("reason", "")).begins_with(DeskLocalization.source("LOC_SKILL_UNLOCKED_811EF328")):
+			var id := str(transaction.reason).trim_prefix(DeskLocalization.source("LOC_SKILL_UNLOCKED_811EF328"))
 			var skill: Dictionary = rules.find("skills", id)
 			if skill.is_empty() or id == "text" or purchases.has(id) or transaction.get("delta") != -int(skill.get("cost", -1)):
-				errors.append("设计存档技能收支不一致。")
+				errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_INCOME_AND_EXPENDITURE_DO_121EAB4E"))
 			purchases[id] = true
 	for id in _skill_ids(data):
-		if id != "text" and not purchases.has(id): errors.append("设计存档技能缺少实际扣款。")
-	if purchases.size() != _skill_ids(data).size() - 1: errors.append("设计存档技能与扣款数不一致。")
+		if id != "text" and not purchases.has(id): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_LACKS_AN_ACTUAL_DEDUCTION_59FBBF1C"))
+	if purchases.size() != _skill_ids(data).size() - 1: errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILLS_AND_DEDUCTION_COUNTS_DO_78EE7B1D"))
 	return errors
 
 func restore(data: Dictionary, events: Array = [], variants: Array = [], economy: Dictionary = {}) -> PackedStringArray:
@@ -773,16 +773,16 @@ func _request_material(params: Dictionary,event: Dictionary) -> PackedStringArra
 	var instance_id := str(params.get("instance_id",""))
 	var kind := str(params.get("kind",""))
 	var id := str(params.get("id",""))
-	if instance_id.is_empty() or str(event.get("instance_id","")) != instance_id: return PackedStringArray(["物资纸片必须来自本局真实事件。"])
+	if instance_id.is_empty() or str(event.get("instance_id","")) != instance_id: return PackedStringArray([DeskLocalization.source("LOC_A_SUPPLY_SLIP_MUST_COME_FROM_A_2BE34758")])
 	for current: Dictionary in _state.event_material_claims:
-		if current.source_instance_id == instance_id and current.kind == kind and current.id == id: return PackedStringArray(["这张物资纸片已经搬出。"])
+		if current.source_instance_id == instance_id and current.kind == kind and current.id == id: return PackedStringArray([DeskLocalization.source("LOC_THIS_SUPPLY_SLIP_HAS_ALREADY_BEEN_TAKEN_04A289EE")])
 	var errors := PackedStringArray()
 	var rewards := _event_rewards(event, errors)
 	if not errors.is_empty(): return errors
 	var count := 0
 	for reward: Dictionary in rewards:
 		if str(reward.kind) == kind and str(reward.id) == id: count += int(reward.count)
-	if count <= 0: return PackedStringArray(["事件没有这份物资。"])
+	if count <= 0: return PackedStringArray([DeskLocalization.source("LOC_THE_EVENT_DOES_NOT_CONTAIN_THIS_SUPPLY_E37D2D29")])
 	_state.event_material_claims.append({"source_instance_id":instance_id,"definition_id":str(event.get("definition_id","")),"preset_id":str(event.get("design_source_preset_id","")),"kind":kind,"id":id,"count":count})
 	return PackedStringArray()
 
@@ -791,7 +791,7 @@ func _event_rewards(event: Dictionary, errors: PackedStringArray) -> Array[Dicti
 	var rewards: Array[Dictionary] = []
 	var source: Variant = event.get("design_rewards")
 	if not source is Array:
-		errors.append("事件物资字段必须是数组。")
+		errors.append(DeskLocalization.source("LOC_THE_EVENT_SUPPLIES_FIELD_MUST_BE_AN_33CCF6AA"))
 		return rewards
 	errors.append_array(rules.validate_event_rewards(source))
 	if errors.is_empty(): rewards.assign(source)

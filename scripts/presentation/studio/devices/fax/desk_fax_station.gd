@@ -26,7 +26,7 @@ const OutputController := preload("res://scripts/presentation/studio/devices/fax
 const StationView := preload("res://scripts/presentation/studio/devices/fax/fax_station_view.gd")
 const A4_RATIO = StationView.A4_RATIO
 const KEY_ZONES = StationView.KEY_ZONES
-const REPLIES = CallSession.REPLIES
+static var REPLIES = CallSession.REPLIES
 var _call_session := CallSession.new()
 var _view := StationView.new()
 var _output := OutputController.new()
@@ -43,7 +43,7 @@ var _viewport_rect := Rect2(0, 0, 1280, 720)
 var _source_mouth := Rect2()
 var _textures: Dictionary = {}
 var _archived_event: Dictionary = {}
-var _diagnostic: String = "仅本地接线，不拨打真实电话。"
+var _diagnostic: String = DeskLocalization.source("LOC_LOCAL_CONNECTIONS_ONLY_NO_REAL_PHONE_CALLS_854E21C9")
 var _focused: bool = false
 var _focus_mode: String = ""
 var _blocked: bool = false
@@ -152,7 +152,7 @@ func component_details(mode: String = "phone") -> Dictionary:
 	if mode in ["paper","archive"]: return history_details()
 	var log_lines := PackedStringArray()
 	for record: Dictionary in _call_session.call_log: log_lines.append(str(record.get("text","")))
-	return {"title":"电话簿" if mode == "phonebook" else "传真机", "description":_physical_key_legend(),
+	return {"title":DeskLocalization.source("LOC_PHONE_BOOK_53C96D19") if mode == "phonebook" else DeskLocalization.source("LOC_FAX_MACHINE_347AFBA3"), "description":_physical_key_legend(),
 		"status":_diagnostic, "log":"\n".join(log_lines), "number":_call_session.dialed_number, "contact_count":_call_session.contacts.size(),
 		"contacts":_call_session.contacts.duplicate(true), "options":_call_session.starter_options.duplicate(true) if _starter_call() else Array(REPLIES),
 		"reply_enabled":_can_phone() and _call_session.state == "connected", "call_state":_call_session.state, "npc_text":_npc_source_text()}
@@ -160,10 +160,10 @@ func component_details(mode: String = "phone") -> Dictionary:
 
 func history_details() -> Dictionary:
 	var record: Dictionary = _archived_event if not _archived_event.is_empty() else _output.last_read
-	return {"title":str(record.get("title","事件纸堆")), "description":str(record.get("narrative","来信打印后留在这里，点露出的页签翻看。")),
+	return {"title":str(record.get("title",DeskLocalization.source("LOC_EVENT_PAPER_STACK_4B19BEB5"))), "description":str(record.get("narrative",DeskLocalization.source("LOC_PRINTED_MESSAGES_STAY_HERE_CLICK_AN_EXPOSED_709BB20D"))),
 		"instance_id":str(record.get("instance_id","")), "hour":str(record.get("hour","")),
 		"impact":str(record.get("impact_text","")), "effect":str(record.get("effect_text","")), "mentor":str(record.get("mentor_comment","")), "read_only":true,
-		"gesture":"点击露出的页签翻阅；滚轮继续翻更早或更新的来信。",
+		"gesture":DeskLocalization.source("LOC_CLICK_EXPOSED_TABS_TO_BROWSE_SCROLL_TO_526015E9"),
 		"history":_output.output_pages.map(func(page): return {"instance_id":str(page.event.get("instance_id","")),"title":str(page.event.get("title","")),"hour":page.event.get("hour",0)})}
 
 
@@ -201,7 +201,7 @@ func hover_details(viewport_point: Vector2) -> String:
 	if not viewport_point.is_finite(): return ""
 	for slip: Control in _reward_slips.values():
 		if slip.can_collect() and Rect2(Vector2.ZERO,slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse()*viewport_point):
-			return DeskLocalization.text("回车收取并归堆 · 拖拽自由摆放")
+			return DeskLocalization.text("LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D")
 	for control: Button in _view.keys + [_view.dial_button,_view.pickup_button,_view.hangup_button]:
 		if control.is_visible_in_tree() and Rect2(Vector2.ZERO,control.size).has_point(control.get_global_transform_with_canvas().affine_inverse()*viewport_point):
 			return _key_action_label(control)
@@ -440,12 +440,12 @@ func view_archived_event(event: Dictionary) -> bool:
 	_build()
 	if _blocked: return false
 	if not _output.continuous_output and (_output.busy()):
-		_diagnostic = "先处理当前待阅情报，再翻历史档案。"
+		_diagnostic = DeskLocalization.source("LOC_HANDLE_THE_CURRENT_UNREAD_INTELLIGENCE_BEFORE_BROWSING_7897645D")
 		if _output.event_state == "ready": focus_paper()
 		else: _refresh()
 		return false
 	if str(event.get("instance_id","")).strip_edges().is_empty() or not event.get("title") is String or not event.get("narrative") is String:
-		_diagnostic = "历史记录缺少真实编号、标题或正文。"
+		_diagnostic = DeskLocalization.source("LOC_HISTORICAL_RECORD_LACKS_A_REAL_ID_TITLE_B8D8042A")
 		_refresh()
 		return false
 	if _fixed_desktop_mode and not _camera_reveal_allowed and not (_focused and _focus_mode == "archive"):
@@ -551,7 +551,7 @@ func arm_stamp() -> bool:
 	if _output.continuous_output: return false
 	if _blocked or _focus_mode == "archive" or (_focused and _focus_mode == "phone") or _output.event_state != "ready" or _output.active_event.is_empty(): return false
 	_stamp_armed = true
-	_diagnostic = "印章已拿取；对准纸张右下的收阅圆框。"
+	_diagnostic = DeskLocalization.source("LOC_STAMP_PICKED_UP_AIM_AT_THE_ACKNOWLEDGEMENT_CF0A306F")
 	_refresh()
 	return true
 
@@ -626,7 +626,7 @@ func reset_station() -> void:
 	_reward_slips.clear()
 	_reward_rows.clear()
 	_stamp_armed = false
-	_diagnostic = "情报收件箱已重同步。"
+	_diagnostic = DeskLocalization.source("LOC_INTELLIGENCE_INBOX_RESYNCHRONIZED_33AEBEC8")
 	_call_session.reset()
 	_refresh_contacts()
 	_refresh()
@@ -752,17 +752,14 @@ func _build() -> void:
 	_refresh()
 
 
-func _english_ui() -> bool:
-	return TranslationServer.get_locale().to_lower().begins_with("en")
-
 func _physical_key_legend() -> String:
-	return "拨号：呼叫已选号码。接听：拿起听筒。挂断：结束通话。三个听筒图标对应这三个实体键，来信仍会继续打印。"
+	return DeskLocalization.source("LOC_DIAL_CALLS_THE_SELECTED_NUMBER_PICK_UP_6D7A3316")
 
 
 func _key_action_label(button: Button) -> String:
 	var action := str(button.get_meta("physical_action", ""))
-	if _english_ui(): return {"dial":"Dial", "answer":"Answer", "hangup":"Hang up", "backspace":"Delete last digit"}.get(action,button.text)
-	return {"dial":"拨号", "answer":"接听", "hangup":"挂断", "backspace":"删除一位"}.get(action,button.text)
+	var keys := {"dial":"LOC_DIAL_3CF09CFE", "answer":"LOC_ANSWER_712D6443", "hangup":"LOC_HANG_UP_225253BF", "backspace":"LOC_DELETE_ONE_DIGIT_732D612B"}
+	return DeskLocalization.text(str(keys.get(action, button.text)))
 
 
 func _launch_for_event(record: Dictionary) -> Dictionary:
@@ -796,13 +793,13 @@ func _update_paper_contents(expanded: bool) -> void:
 		_view.paper_title.text = ""
 		_view.body.text = ""
 		return
-	var meta := DeskLocalization.source_format("情报摘录 / 助手收集  ·  H%s / %s",[str(event.get("hour","?")),str(event.get("origin","未标出处"))])
-	var mentor := str(event.get("mentor_comment","先看清消息的出处，再决定要不要发声。"))
-	var full_body := DeskLocalization.source_format("%s\n\n作用摘录\n%s\n\n实际作用\n%s\n\n67：%s",[str(event.narrative),str(event.get("impact_text","未提供作用摘要")),str(event.get("effect_text","未提供实际作用记录")),mentor])
+	var meta := DeskLocalization.source_format("LOC_INTELLIGENCE_EXCERPT_COLLECTED_BY_ASSISTANT_H_S_E1E0CBCC",[str(event.get("hour","?")),str(event.get("origin",DeskLocalization.source("LOC_UNATTRIBUTED_9D4F610E")))])
+	var mentor := str(event.get("mentor_comment",DeskLocalization.source("LOC_CHECK_WHERE_THE_MESSAGE_CAME_FROM_BEFORE_5E5A9B91")))
+	var full_body := DeskLocalization.source_format("LOC_S_EFFECT_EXCERPT_S_ACTUAL_EFFECTS_S_108C4DB2",[str(event.narrative),str(event.get("impact_text",DeskLocalization.source("LOC_NO_EFFECT_SUMMARY_PROVIDED_81137404"))),str(event.get("effect_text",DeskLocalization.source("LOC_NO_ACTUAL_EFFECT_RECORD_PROVIDED_CF0090B1"))),mentor])
 	var rewards := str(event.get("reward_text",""))
 	if not rewards.is_empty(): full_body += "\n\n" + rewards
 	_paper_text = meta+"\n"+str(event.title)+"\n\n"+full_body
-	var rendered := DeskLocalization.format_text("%s\n\n作用摘录\n%s\n\n实际作用\n%s\n\n67：%s",[_localized_block(str(event.narrative)),_localized_block(str(event.get("impact_text","未提供作用摘要"))),_localized_block(str(event.get("effect_text","未提供实际作用记录"))),_localized_block(mentor)]) if expanded else DeskLocalization.format_text("%s\n\n67：%s",[_localized_block(str(event.narrative)),_localized_block(mentor)])
+	var rendered := DeskLocalization.format_text("LOC_S_EFFECT_EXCERPT_S_ACTUAL_EFFECTS_S_108C4DB2",[_localized_block(str(event.narrative)),_localized_block(str(event.get("impact_text",DeskLocalization.source("LOC_NO_EFFECT_SUMMARY_PROVIDED_81137404")))),_localized_block(str(event.get("effect_text",DeskLocalization.source("LOC_NO_ACTUAL_EFFECT_RECORD_PROVIDED_CF0090B1")))),_localized_block(mentor)]) if expanded else DeskLocalization.format_text("%s\n\n67：%s",[_localized_block(str(event.narrative)),_localized_block(mentor)])
 	if expanded and not rewards.is_empty(): rendered += "\n\n"+_localized_block(rewards)
 	_view.paper_meta.text = DeskLocalization.text(meta)
 	_view.paper_title.text = DeskLocalization.text(str(event.title))
@@ -848,7 +845,7 @@ func _refresh() -> void:
 	_sync_reward_slips()
 	_view.sheet.mouse_filter = Control.MOUSE_FILTER_STOP if paper_ui else Control.MOUSE_FILTER_IGNORE
 	_view.body.mouse_filter = Control.MOUSE_FILTER_PASS if paper_ui else Control.MOUSE_FILTER_IGNORE
-	_view.number_label.text = _call_session.dialed_number if not _call_session.dialed_number.is_empty() else "号码 / #"
+	_view.number_label.text = _call_session.dialed_number if not _call_session.dialed_number.is_empty() else DeskLocalization.source("LOC_NUMBER_23E2A8CD")
 	_view.status.text = DeskLocalization.text(_diagnostic)
 	_view.stamp_button.disabled = _blocked or _output.event_state != "ready"
 	_view.seal_guide.visible = not _output.continuous_output and _output.event_state != "retracting" and _focus_mode != "archive"
@@ -866,7 +863,7 @@ func _refresh() -> void:
 		button.text = DeskLocalization.text(str(_call_session.starter_options[index].title) if _starter_call() else (str(REPLIES[index]) if index < REPLIES.size() else ""))
 		button.disabled = not can_phone or _call_session.state != "connected" or not _call_session.pending_starter_id.is_empty()
 	_view.contact_list.mouse_filter = Control.MOUSE_FILTER_STOP if can_phone else Control.MOUSE_FILTER_IGNORE
-	_view.identity_label.text = "%s / %s" % [DeskLocalization.text(str(_call_session.selected_contact.get("name","67"))),DeskLocalization.text(str(_call_session.selected_contact.get("identity","助手 / 等待拨号")))]
+	_view.identity_label.text = "%s / %s" % [DeskLocalization.text(str(_call_session.selected_contact.get("name","67"))),DeskLocalization.text(str(_call_session.selected_contact.get("identity",DeskLocalization.source("LOC_ASSISTANT_WAITING_TO_DIAL_C0FFAA49"))))]
 	_view.portrait.visible = _view.portrait.texture != null and (_call_session.selected_contact.is_empty() or _call_session.dialed_number == "67#")
 	_view.player_portrait.visible = _view.player_portrait.texture != null
 	_view.player_fallback.visible = _view.player_portrait.texture == null
@@ -960,11 +957,11 @@ func refresh_locale() -> void:
 	_refresh()
 
 func _npc_source_text() -> String:
-	var source := "等待本地接线。"
+	var source := DeskLocalization.source("LOC_WAITING_FOR_A_LOCAL_CONNECTION_31769C4F")
 	for record: Dictionary in _call_session.call_log:
 		if str(record.kind) in ["connected","no_answer","starter_confirmed"]: source = str(record.text)
 	if _starter_call() and _call_session.starter_id.is_empty():
-		source = "先挑一份起始模因。不是替你写完，只给你一个能继续改的开头。"
+		source = DeskLocalization.source("LOC_CHOOSE_A_STARTING_MEME_FIRST_I_WON_340D5C0C")
 		for option: Dictionary in _call_session.starter_options:
 			var values := PackedStringArray()
 			for value: Variant in (option.get("slots",{}) as Dictionary).values(): values.append(str(value))
@@ -973,7 +970,7 @@ func _npc_source_text() -> String:
 
 func _npc_display_text() -> String:
 	if not (_starter_call() and _call_session.starter_id.is_empty()): return _localized_block(_npc_source_text())
-	var displayed := DeskLocalization.text("先挑一份起始模因。不是替你写完，只给你一个能继续改的开头。")
+	var displayed := DeskLocalization.text("LOC_CHOOSE_A_STARTING_MEME_FIRST_I_WON_340D5C0C")
 	for option: Dictionary in _call_session.starter_options:
 		var values := PackedStringArray()
 		for value: Variant in (option.get("slots",{}) as Dictionary).values(): values.append(DeskLocalization.text(str(value)))
@@ -981,10 +978,10 @@ func _npc_display_text() -> String:
 	return displayed
 
 func _reply_display_text() -> String:
-	if _call_session.selected_reply.is_empty(): return DeskLocalization.text("尚未选择回应。")
-	if _call_session.selected_reply.begins_with("选择："):
+	if _call_session.selected_reply.is_empty(): return DeskLocalization.text("LOC_NO_RESPONSE_SELECTED_YET_428401DB")
+	if _call_session.selected_reply.begins_with(DeskLocalization.source("LOC_SELECTED_AB41B55D")):
 		for option: Dictionary in _call_session.starter_options:
-			if "选择："+str(option.title) == _call_session.selected_reply: return DeskLocalization.text("选择：")+DeskLocalization.text(str(option.title))
+			if DeskLocalization.source("LOC_SELECTED_AB41B55D")+str(option.title) == _call_session.selected_reply: return DeskLocalization.text("LOC_SELECTED_AB41B55D")+DeskLocalization.text(str(option.title))
 	return DeskLocalization.text(_call_session.selected_reply)
 
 func _localized_block(source: String) -> String:

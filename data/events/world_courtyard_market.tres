@@ -26,9 +26,9 @@ group_ids = PackedStringArray("culture_fans", "students")
 [resource]
 script = ExtResource("1_event")
 id = &"world_courtyard_market"
-title = "共享庭院雨后开放手作展"
-narrative = "社区事务处在雨后重新开放共享庭院，邀请居民摆出手作和小型展品。学生与城市文化爱好者沿展位交流，现场的作品照片和展摊短句陆续传入社区群聊。"
-mentor_comment = "展位已经摆满，先让人看懂你那一件，热闹不会代签说明书。"
+title = "LOC_THE_SHARED_COURTYARD_REOPENS_WITH_A_CRAFT_959137D7"
+narrative = "LOC_AFTER_RAIN_THE_COMMUNITY_AFFAIRS_OFFICE_REOPENS_3926FA45"
+mentor_comment = "LOC_THE_STALLS_ARE_FULL_HELP_PEOPLE_UNDERSTAND_84E7388B"
 origin = &"world"
 topic_ids = PackedStringArray("entertainment", "community")
 operation_ids = PackedStringArray("attention_shift", "amplify")

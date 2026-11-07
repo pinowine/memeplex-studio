@@ -39,9 +39,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_personal_ledger"
-title = "职员提议用自己的账单重填原图"
-narrative = "一位职员提出用自己的日常账单重填原图，其他同事跟着拿出各自的记录比较。改写方案保留原帖链接，准备在确认再利用条款后发布，原来的对照关系仍被沿用。"
-mentor_comment = "读者拿出了自己的账单，你的态度最好别占据金额栏。"
+title = "LOC_AN_OFFICE_WORKER_PROPOSES_FILLING_THE_ORIGINAL_9D8E086B"
+narrative = "LOC_AN_OFFICE_WORKER_PROPOSES_FILLING_THE_ORIGINAL_DDE1D781"
+mentor_comment = "LOC_THE_READERS_BROUGHT_THEIR_OWN_BILLS_YOUR_8D7B8D60"
 origin = &"transmission"
 topic_ids = PackedStringArray("cost_of_living", "work")
 operation_ids = PackedStringArray("remix")

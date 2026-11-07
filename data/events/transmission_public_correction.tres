@@ -38,9 +38,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_public_correction"
-title = "使用者公开补正原句的一处指称"
-narrative = "一名使用者在转发后公开补正了一处不准确的指称，并将原句留在补记里。职员沿着补记核对前后说法，对这次明确承认边界的说明更愿意相信。"
-mentor_comment = "更正至少留了痕迹，别再给错误办理从未发生的手续。"
+title = "LOC_A_USER_PUBLICLY_CORRECTS_A_REFERENCE_IN_838BDE39"
+narrative = "LOC_AFTER_SHARING_THE_PHRASE_A_USER_PUBLICLY_209A892C"
+mentor_comment = "LOC_AT_LEAST_THE_CORRECTION_LEFT_A_RECORD_532D8ABF"
 origin = &"transmission"
 topic_ids = PackedStringArray("trust", "language")
 operation_ids = PackedStringArray("contest")
