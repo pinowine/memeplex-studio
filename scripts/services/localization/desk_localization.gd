@@ -1,7 +1,7 @@
 class_name DeskLocalization
 extends RefCounted
 
-const DEFAULT_TABLES := ["res://localization/messages.json"]
+const DEFAULT_TABLES := ["res://localization/messages.json", "res://localization/tutorial.json"]
 const EDIT_META := &"desk_localization_edit"
 const EDIT_CONNECTED_META := &"desk_localization_edit_connected"
 
@@ -9,6 +9,7 @@ static var _initialized := false
 static var _translation: Translation
 static var _chinese_translation: Translation
 static var _records: Dictionary = {}
+static var _record_paths: Dictionary = {}
 static var _messages: Dictionary = {}
 static var _chinese_messages: Dictionary = {}
 static var _aliases: Dictionary = {}
@@ -32,6 +33,7 @@ static func ensure_loaded(paths: Array = DEFAULT_TABLES) -> Error:
 
 static func reload_tables(paths: Array = DEFAULT_TABLES) -> Error:
 	var combined: Dictionary = {}
+	var record_paths: Dictionary = {}
 	var loaded_paths: Array[String] = []
 	var errors: Array[String] = []
 	var result: Error = OK
@@ -71,6 +73,7 @@ static func reload_tables(paths: Array = DEFAULT_TABLES) -> Error:
 				result = ERR_INVALID_DATA
 			else:
 				combined[key] = entry
+				record_paths[key] = path
 	var aliases: Dictionary = {}
 	for key: String in combined:
 		var canonical := str(combined[key].source)
@@ -91,6 +94,7 @@ static func reload_tables(paths: Array = DEFAULT_TABLES) -> Error:
 	var old_english := _translation
 	var old_chinese := _chinese_translation
 	_records = combined
+	_record_paths = record_paths
 	_aliases = aliases
 	_messages = {}
 	_chinese_messages = {}
@@ -120,6 +124,12 @@ static func reload_tables(paths: Array = DEFAULT_TABLES) -> Error:
 	TranslationServer.add_translation(_translation)
 	TranslationServer.add_translation(_chinese_translation)
 	return OK
+
+static func text_source(key: String) -> Dictionary:
+	ensure_loaded()
+	var identity := str(_aliases.get(key, key))
+	if not _records.has(identity): return {}
+	return {"key":identity, "path":str(_record_paths[identity])}
 
 static func source(key: String) -> String:
 	ensure_loaded()
