@@ -46,9 +46,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_exit_phrase"
-title = "学生提议给接句加一句退出语"
-narrative = "参与接句的学生提出加一句温和的退出语，允许成员不再继续回应。改写方案保留原帖链接，并等待再利用确认；群里有人因此不再担心沉默会被当成失礼。"
-mentor_comment = "退出语终于承认了一个事实，礼貌不是永久出勤记录。"
+title = "LOC_STUDENTS_PROPOSE_ADDING_AN_EXIT_PHRASE_TO_76DB60D1"
+narrative = "LOC_STUDENTS_IN_A_RESPONSE_CHAIN_PROPOSE_A_BC7BF7F2"
+mentor_comment = "LOC_THE_EXIT_PHRASE_FINALLY_ADMITS_ONE_THING_3EA99628"
 origin = &"transmission"
 topic_ids = PackedStringArray("community", "language")
 operation_ids = PackedStringArray("remix", "revive")

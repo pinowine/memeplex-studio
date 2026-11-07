@@ -3,12 +3,22 @@ extends Resource
 
 @export var id: StringName
 @export var kernel_id: StringName
-@export var title: String = ""
+@export var title: String = "":
+	set(value):
+		title = DeskLocalization.source(value)
 @export var required_slots: PackedStringArray = PackedStringArray()
-@export var slot_prompts: PackedStringArray = PackedStringArray()
-@export var default_values: PackedStringArray = PackedStringArray()
-@export_multiline var family_anchor: String = ""
-@export_multiline var context_hint: String = ""
+@export var slot_prompts: PackedStringArray = PackedStringArray():
+	set(value):
+		slot_prompts = DeskLocalization.source_value(value)
+@export var default_values: PackedStringArray = PackedStringArray():
+	set(value):
+		default_values = DeskLocalization.source_value(value)
+@export_multiline var family_anchor: String = "":
+	set(value):
+		family_anchor = DeskLocalization.source(value)
+@export_multiline var context_hint: String = "":
+	set(value):
+		context_hint = DeskLocalization.source(value)
 @export var source_case_id: String = ""
 @export var source_path: String = ""
 @export var source_sha256: String = ""

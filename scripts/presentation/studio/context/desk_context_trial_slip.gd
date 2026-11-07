@@ -3,7 +3,7 @@ extends Control
 
 const Paper := preload("res://assets/image/textures/studio/desk/blank_print_paper.png")
 const COMPONENTS := ["language", "group", "topics", "stance", "pragmatic", "access", "expression"]
-const TITLES := {"language":"语言匹配", "group":"群体匹配", "topics":"话题匹配", "stance":"立场匹配", "pragmatic":"语用匹配", "access":"语境可达", "expression":"表达匹配"}
+static var TITLES := {"language":DeskLocalization.source("LOC_LANGUAGE_MATCH_A7B82A01"), "group":DeskLocalization.source("LOC_AUDIENCE_MATCH_34064507"), "topics":DeskLocalization.source("LOC_TOPIC_MATCH_A34617ED"), "stance":DeskLocalization.source("LOC_STANCE_MATCH_EDBC6BA3"), "pragmatic":DeskLocalization.source("LOC_PRAGMATIC_MATCH_4CD83BF1"), "access":DeskLocalization.source("LOC_CONTEXT_REACH_B6C0B3C4"), "expression":DeskLocalization.source("LOC_EXPRESSION_MATCH_E0D7CCB1")}
 const INK := Color("384238")
 const MUTED := Color("737968")
 
@@ -38,7 +38,7 @@ func set_authored_target(source: String) -> void:
 	queue_redraw()
 
 func _country_display_title() -> String:
-	if _country_id.is_empty(): return DeskLocalization.text("未选落点")
+	if _country_id.is_empty(): return DeskLocalization.text("LOC_NO_DESTINATION_SELECTED_63D1DE60")
 	var key := _country_id+"_SHORT"
 	var value := tr(key)
 	return value if value != key else _country_title
@@ -87,7 +87,7 @@ func set_report(country_id: String, country_title: String, fitness: Dictionary, 
 	var components := _read_components(fitness)
 	if components.is_empty():
 		_status = "unavailable"
-		_error = "当前落点没有完整、有限的匹配分项。"
+		_error = DeskLocalization.source("LOC_THE_CURRENT_DESTINATION_HAS_NO_COMPLETE_FINITE_D0A25525")
 		queue_redraw()
 		return
 	_error = ""
@@ -131,7 +131,7 @@ func _read_components(fitness: Dictionary) -> Dictionary:
 	return result
 
 func _entry_title(kind: String, value: String) -> String:
-	if value.is_empty(): return DeskLocalization.text("未放入")
+	if value.is_empty(): return DeskLocalization.text("LOC_NOT_INSTALLED_3F136C06")
 	if kind == "group" and _catalog != null:
 		for group: Resource in _catalog.get("groups"):
 			if str(group.get("id")) == value: return DeskLocalization.text(str(group.get("title")))
@@ -145,21 +145,21 @@ func _entry_title(kind: String, value: String) -> String:
 func _attachment_label(layer: String, text: String) -> String:
 	var flags: Variant = _draft.get("context_layer_attachment", {})
 	if flags is Dictionary and flags.get(layer) is bool and not flags[layer]:
-		return text + DeskLocalization.text("（离体，不生效）")
+		return text + DeskLocalization.text("LOC_DETACHED_INACTIVE_F53886E7")
 	return text
 
 func _context_labels() -> Dictionary:
 	var topics := PackedStringArray()
 	for id: String in _draft.get("topic_ids", []): topics.append(_entry_title("topic", id))
-	var stance := DeskLocalization.text("未登记")
+	var stance := DeskLocalization.text("LOC_UNREGISTERED_0DB3DB44")
 	if bool(_draft.get("political_known", false)):
 		var point: Variant = _draft.get("political_position", Vector2.ZERO)
-		if point is Vector2: stance = DeskLocalization.format_text("已登记 %.1f / %.1f", [point.x, point.y])
-		elif point is Array and point.size() == 2: stance = DeskLocalization.format_text("已登记 %.1f / %.1f", [float(point[0]), float(point[1])])
-		else: stance = DeskLocalization.text("已登记")
+		if point is Vector2: stance = DeskLocalization.format_text("LOC_REGISTERED_F_F_21CB4430", [point.x, point.y])
+		elif point is Array and point.size() == 2: stance = DeskLocalization.format_text("LOC_REGISTERED_F_F_21CB4430", [float(point[0]), float(point[1])])
+		else: stance = DeskLocalization.text("LOC_REGISTERED_5F2F3886")
 	var target := str(_draft.get("target", "")).strip_edges()
 	if not _authored_target.is_empty() and target == _authored_target: target = DeskLocalization.text(target)
-	return {"language":_attachment_label("language", _entry_title("language", str(_draft.get("language_id", "")))), "group":_attachment_label("group", _entry_title("group", str(_draft.get("group_id", "")))), "topics":_attachment_label("topics", "、".join(topics) if not topics.is_empty() else DeskLocalization.text("未放入")), "political_known":bool(_draft.get("political_known", false)), "stance":_attachment_label("stance", stance), "target":_attachment_label("pragmatic", target if not target.is_empty() else DeskLocalization.text("未填写对象"))}
+	return {"language":_attachment_label("language", _entry_title("language", str(_draft.get("language_id", "")))), "group":_attachment_label("group", _entry_title("group", str(_draft.get("group_id", "")))), "topics":_attachment_label("topics", "、".join(topics) if not topics.is_empty() else DeskLocalization.text("LOC_NOT_INSTALLED_3F136C06")), "political_known":bool(_draft.get("political_known", false)), "stance":_attachment_label("stance", stance), "target":_attachment_label("pragmatic", target if not target.is_empty() else DeskLocalization.text("LOC_NO_TARGET_ENTERED_0397EF33"))}
 
 func _change_text(row: Dictionary) -> String:
 	var delta := float(row.delta)
@@ -167,19 +167,19 @@ func _change_text(row: Dictionary) -> String:
 	return DeskLocalization.text(str(row.title)) + (" ↑ +" if delta > 0 else " ↓ ") + number
 
 func _status_text() -> String:
-	if _status == "unselected": return DeskLocalization.text("未选落点 · 选定后再记录匹配")
-	if _status == "unavailable": return DeskLocalization.text("暂无可比记录")
-	if _status == "baseline": return DeskLocalization.text("当前基准 · 尚无修改前后差值")
+	if _status == "unselected": return DeskLocalization.text("LOC_NO_DESTINATION_SELECTED_SELECT_ONE_BEFORE_RECORDING_11E79B86")
+	if _status == "unavailable": return DeskLocalization.text("LOC_NO_COMPARABLE_RECORD_YET_8ABD12B3")
+	if _status == "baseline": return DeskLocalization.text("LOC_CURRENT_BASELINE_NO_BEFORE_AFTER_CHANGE_YET_02EFA6DD")
 	var changes := PackedStringArray()
 	for row: Dictionary in _displayed_changes: changes.append(_change_text(row))
-	return DeskLocalization.text("最近变化 · ") + "；".join(changes)
+	return DeskLocalization.text("LOC_RECENT_CHANGE_BB3F1A6A") + "；".join(changes)
 
 func _lines() -> Array:
 	var context := _context_labels()
 	var country := _country_display_title()
 	if size.x >= 540:
-		return [DeskLocalization.text("试配记录 / ") + country, DeskLocalization.text("语言 ") + str(context.language) + DeskLocalization.text(" · 群体 ") + str(context.group) + DeskLocalization.text(" · 话题 ") + str(context.topics), DeskLocalization.text("立场 ") + str(context.stance) + DeskLocalization.text(" · 语用对象 ") + str(context.target), _status_text()]
-	var lines := [DeskLocalization.text("试配记录 / ") + country, DeskLocalization.text("语言 ") + str(context.language) + DeskLocalization.text(" · 群体 ") + str(context.group), DeskLocalization.text("话题 ") + str(context.topics), DeskLocalization.text("立场 ") + str(context.stance), DeskLocalization.text("语用对象 ") + str(context.target)]
+		return [DeskLocalization.text("LOC_TRIAL_MATCH_4B9CC20A") + country, DeskLocalization.text("LOC_LANGUAGE_3E2D7373") + str(context.language) + DeskLocalization.text("LOC_AUDIENCE_C7845353") + str(context.group) + DeskLocalization.text("LOC_TOPICS_7D9B6617") + str(context.topics), DeskLocalization.text("LOC_STANCE_5AA7DD45") + str(context.stance) + DeskLocalization.text("LOC_PRAGMATIC_TARGET_5E569867") + str(context.target), _status_text()]
+	var lines := [DeskLocalization.text("LOC_TRIAL_MATCH_4B9CC20A") + country, DeskLocalization.text("LOC_LANGUAGE_3E2D7373") + str(context.language) + DeskLocalization.text("LOC_AUDIENCE_C7845353") + str(context.group), DeskLocalization.text("LOC_TOPICS_61BF0397") + str(context.topics), DeskLocalization.text("LOC_STANCE_5AA7DD45") + str(context.stance), DeskLocalization.text("LOC_PRAGMATIC_TARGET_8EC18981") + str(context.target)]
 	if _status == "changed":
 		for row: Dictionary in _displayed_changes: lines.append(_change_text(row))
 	else: lines.append(_status_text())
@@ -203,9 +203,9 @@ func _draw() -> void:
 		var y := 20.0 + float(index) * (21.0 if narrow else 20.0)
 		_draw_line(str(lines[index]), y, 13 if index == 0 else 12, INK if index == 0 or index == lines.size() - 1 else MUTED)
 	if narrow:
-		_draw_line(DeskLocalization.text("匹配记录，非支持或采用预测。"), size.y - 12, 10, MUTED)
+		_draw_line(DeskLocalization.text("LOC_A_MATCH_RECORD_NOT_A_PREDICTION_OF_EE8169CC"), size.y - 12, 10, MUTED)
 	else:
-		draw_string(get_theme_default_font(), Vector2(maxf(12, size.x - 210), 19), DeskLocalization.text("匹配记录，非支持或采用预测。"), HORIZONTAL_ALIGNMENT_LEFT, 200, 10, MUTED)
+		draw_string(get_theme_default_font(), Vector2(maxf(12, size.x - 210), 19), DeskLocalization.text("LOC_A_MATCH_RECORD_NOT_A_PREDICTION_OF_EE8169CC"), HORIZONTAL_ALIGNMENT_LEFT, 200, 10, MUTED)
 
 func inspection() -> Dictionary:
 	return {"comparison_available":_status == "changed" and not _last_change.is_empty(), "country_id":_country_id, "country_title":_country_title, "status":_status, "has_baseline":_has_baseline, "fitness":_fitness.duplicate(true), "components":_components.duplicate(true), "previous_components":_previous_components.duplicate(true), "last_change":_last_change.duplicate(true), "changed_components":_last_change.get("components", {}).duplicate(true), "displayed_changes":_displayed_changes.duplicate(true), "context":_context_labels(), "rendered_lines":_lines(), "is_prediction":false, "shows_success_rate":false, "paper_texture":Paper.resource_path, "change_sequence":_change_sequence, "reset_count":_reset_count, "error":DeskLocalization.text(_error),"display_country_title":_country_display_title(), "rect":Rect2(position, size), "layout_mode":"wide" if size.x >= 540 else "narrow"}

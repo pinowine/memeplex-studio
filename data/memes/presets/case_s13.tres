@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_s13"
 kernel_id = &"stance"
-title = "S13 · Rage Bait"
+title = "LOC_S13_RAGE_BAIT_F8467029"
 required_slots = PackedStringArray("speaker", "visible_situation", "claim")
-slot_prompts = PackedStringArray("发声者（可改写）", "可见情境（可改写）", "表态框架（可改写）")
-default_values = PackedStringArray("指认操控的人或实施操控的发布者", "故意低质、冒犯或错误的内容", "这是为激怒而设计")
-family_anchor = "识别与变异约束：可变为 outrage bait、engagement bait；稳定结构是“诱饵—情绪—互动收益”的因果框架。"
-context_hint = "语义：把愤怒内容解释为参与度工程，而非单纯意见表达。\n语用：标签可帮助受众退出互动，也会被用来贬低真实分歧；发布者利用纠错冲动换取推荐。\n跨语境：它是“关于传播的模因语言”：用户用一个短标签识别平台激励机制，却仍可能因指认而继续扩散。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_SPEAKER_EDITABLE_EB80468E", "LOC_VISIBLE_SITUATION_EDITABLE_9F24D9C9", "LOC_STANCE_FRAME_EDITABLE_F49E761B")
+default_values = PackedStringArray("LOC_SOMEONE_IDENTIFYING_MANIPULATION_OR_A_PUBLISHER_PERFORMING_CFE41E2A", "LOC_DELIBERATELY_LOW_QUALITY_OFFENSIVE_OR_INCORRECT_CONTENT_E8FD83A5", "LOC_THIS_WAS_DESIGNED_TO_PROVOKE_ANGER_5FEB3D84")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_VARIANTS_INCLUDE_OUTRAGE_CBB96425"
+context_hint = "LOC_SEMANTICS_ANGER_PROVOKING_CONTENT_IS_INTERPRETED_AS_CF663BFF"
 source_case_id = "S13"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\S13.png"
 source_sha256 = "abb86e7e08f29189ccf2d4ba6856b2591bf9185090c4a3813b9770eb319d0ab0"

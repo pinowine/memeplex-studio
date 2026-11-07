@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_w03"
 kernel_id = &"shared_world"
-title = "W03 · Goncharov"
+title = "LOC_W03_GONCHAROV_97555F5D"
 required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
-slot_prompts = PackedStringArray("世界前提（可改写）", "共享规则（可改写）", "补写空缺（可改写）")
-default_values = PackedStringArray("一部 1973 年 Scorsese 黑帮片确实存在", "共享锚点：同名靴标/海报、那不勒斯、钟表意象；规则：所有人认真补写", "不存在的正典细节")
-family_anchor = "共享锚点：同名靴标/海报、那不勒斯、钟表意象；识别与变异约束：任何新细节必须与已有角色/主题相容但保留矛盾；矛盾又可被解释为版本差异。"
-context_hint = "语义：集体假装把无作品状态反转为细节过剩的文化记忆。\n语用：参与者以影评、船配、配乐和剧照加入；不拆穿设定是最重要的合作礼仪。\n跨语境：它展示“共同知识”可先于对象存在，平台协作足以制造准档案与粉丝史。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_WORLD_PREMISE_EDITABLE_5557353A", "LOC_SHARED_RULES_EDITABLE_31A5A13D", "LOC_GAP_TO_FILL_EDITABLE_BB4FE38B")
+default_values = PackedStringArray("LOC_A_SCORSESE_GANGSTER_FILM_REALLY_EXISTS_674B5123", "LOC_SHARED_ANCHOR_A_BOOT_LABEL_OR_POSTER_D49825C5", "LOC_DETAILS_OF_A_NONEXISTENT_CANON_AFC30A8C")
+family_anchor = "LOC_SHARED_ANCHOR_A_BOOT_LABEL_OR_POSTER_C1D32CA3"
+context_hint = "LOC_SEMANTICS_COLLECTIVE_MAKE_BELIEVE_TURNS_A_NONEXISTENT_9FCAD709"
 source_case_id = "W03"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\W03.png"
 source_sha256 = "e32c44f61ca46632f9641358fcf1fc860af61b188809855c1df3bc04196b9539"

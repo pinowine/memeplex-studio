@@ -26,9 +26,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"world_budget_open_data"
-title = "城议会公开试行项目预算表"
-narrative = "城议会公开试行项目的预算表，列出支出项目并附可查证的原始记录。市民可在公共档案栏核对此前存在争议的账目，部分职员表示愿意依据公开材料重新讨论方案。"
-mentor_comment = "账本摊开不等于账已结清，先核对那些看起来最安静的数字。"
+title = "LOC_THE_CITY_COUNCIL_PUBLISHES_THE_PILOT_PROJECT_011C4DA1"
+narrative = "LOC_THE_CITY_COUNCIL_PUBLISHES_ITEMIZED_SPENDING_FOR_89B8C3DB"
+mentor_comment = "LOC_OPENING_THE_BOOKS_IS_NOT_THE_SAME_E82A344C"
 origin = &"world"
 topic_ids = PackedStringArray("policy", "trust", "archive")
 operation_ids = PackedStringArray("contest")

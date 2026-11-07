@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_script")
 id = &"commuters"
-title = "通勤职员 · 独立合成样本"
+title = "LOC_COMMUTING_OFFICE_WORKERS_INDEPENDENT_SYNTHETIC_SAMPLE_C5ECC170"
 tag_ids = PackedStringArray("occupation.office", "routine.commute", "sample.disjoint_commuters")
 topic_ids = PackedStringArray("cost_of_living", "work", "policy", "language")
 topic_affinities = PackedFloat32Array(0.95, 0.9, 0.75, 0.45)

@@ -26,9 +26,9 @@ group_ids = PackedStringArray("students", "culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_shared_rooftop"
-title = "球场观众接写赛间小故事"
-narrative = "屋顶球场的观众开始在比赛间隙接写小故事，为看台上的人物补充各自的遭遇。故事被转进体育和娱乐群，观众在比分讨论之外又找到了一个共同话题。"
-mentor_comment = "他们把比赛间隙写成连续剧，你的口号别急着插播广告。"
+title = "LOC_SPECTATORS_CONTINUE_SHORT_STORIES_BETWEEN_GAMES_43EB334A"
+narrative = "LOC_SPECTATORS_AT_THE_ROOFTOP_COURT_BEGIN_CONTINUING_C78D97CF"
+mentor_comment = "LOC_THEY_TURNED_THE_INTERVAL_INTO_A_SERIAL_95B5C654"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("sport", "entertainment")
 operation_ids = PackedStringArray("emerge", "attention_shift")

@@ -26,9 +26,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"world_staff_retraining"
-title = "市民服务窗口启动培训轮岗"
-narrative = "市民服务窗口启动培训轮岗，由老职员带新同事接待咨询。常用说法和交接流程被逐项解释，职员也获得暂时离开原岗位整理经验的机会。"
-mentor_comment = "培训至少肯逐项解释，熟练的套话只负责让疑问自行下班。"
+title = "LOC_THE_PUBLIC_SERVICE_DESK_BEGINS_TRAINING_ROTATIONS_E674A72F"
+narrative = "LOC_THE_PUBLIC_SERVICE_DESK_BEGINS_TRAINING_ROTATIONS_21520BDF"
+mentor_comment = "LOC_AT_LEAST_TRAINING_EXPLAINS_THINGS_ONE_BY_63E39173"
 origin = &"world"
 topic_ids = PackedStringArray("work", "education")
 operation_ids = PackedStringArray("revive")

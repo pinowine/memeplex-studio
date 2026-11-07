@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_r07"
 kernel_id = &"relation"
-title = "R07 · 搭子"
+title = "LOC_R07_ACTIVITY_BUDDY_A398620F"
 required_slots = PackedStringArray("role_a", "role_b", "relation")
-slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
-default_values = PackedStringArray("提出具体活动的人", "同好伙伴", "弱情感、强场景、低义务的临时协作")
-family_anchor = "识别与变异约束：在 X+搭子槽位中无限派生；不变量是共同活动而非完整人格关系。"
-context_hint = "语义：用一个后缀把关系拆为饭搭子、旅行搭子、学习搭子等功能模块。\n语用：用于降低建立关系的成本和承诺，也可能把友谊工具化或隐藏信任风险。\n跨语境：它反映大城市流动生活与平台化匹配：亲密度不必统一，关系可按任务组装。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_CHARACTER_A_EDITABLE_F753F7A7", "LOC_CHARACTER_B_EDITABLE_BC066A33", "LOC_RELATIONSHIP_DIRECTION_EDITABLE_4F2C3521")
+default_values = PackedStringArray("LOC_PERSON_PROPOSING_A_SPECIFIC_ACTIVITY_494E1B61", "LOC_PARTNER_WITH_A_SHARED_INTEREST_C272DA8E", "LOC_TEMPORARY_COOPERATION_WITH_WEAK_EMOTIONAL_TIES_A_0FE07054")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_THE_X_BUDDY_939091A7"
+context_hint = "LOC_SEMANTICS_A_SUFFIX_DIVIDES_RELATIONSHIPS_INTO_FUNCTIONAL_9E2DE4FF"
 source_case_id = "R07"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R07.png"
 source_sha256 = "e0211c5323d0f39679809f46a7533a882fe40fdab0b9f63feb8e42f437459c6e"

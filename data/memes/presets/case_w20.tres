@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_w20"
 kernel_id = &"shared_world"
-title = "W20 · Smurf Cat／Шайлушай／We Live, We Love, We Lie"
+title = "LOC_W20_SMURF_CAT_WE_LIVE_WE_LOVE_70189CEC"
 required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
-slot_prompts = PackedStringArray("世界前提（可改写）", "共享规则（可改写）", "补写空缺（可改写）")
-default_values = PackedStringArray("蓝色蘑菇猫及食物动物构成可对战的森林生物群", "共享锚点：Шайлушай、拐杖蜗牛、The Spectre 副歌；规则：新混种动物可加入并 powerscale", "下一物种/对手")
-family_anchor = "共享锚点：Шайлушай、拐杖蜗牛、The Spectre 副歌；识别与变异约束：换色、增加 Strawberry Elephant/Pineapple Owl；蓝猫轮廓、Impact 字体与 beat drop 是锚。"
-context_hint = "语义：旧概念艺术被无义俄语名和音乐重新世界化，作者原意不再决定角色身份。\n语用：用户做幻灯片、阵营对决和“图片没加载但最好别又是它”元评论。\n跨语境：俄语似义词、阿拉伯语食物动物和英语音乐共存，是跨语种误读创造世界的代表。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_WORLD_PREMISE_EDITABLE_5557353A", "LOC_SHARED_RULES_EDITABLE_31A5A13D", "LOC_GAP_TO_FILL_EDITABLE_BB4FE38B")
+default_values = PackedStringArray("LOC_A_BLUE_MUSHROOM_CAT_AND_FOOD_ANIMAL_3EAA6101", "LOC_SHARED_ANCHOR_A_CANE_CARRYING_SNAIL_AND_1ACA43AB", "LOC_THE_NEXT_SPECIES_OR_OPPONENT_A0BF294B")
+family_anchor = "LOC_SHARED_ANCHOR_A_CANE_CARRYING_SNAIL_AND_83F1494C"
+context_hint = "LOC_SEMANTICS_OLDER_CONCEPT_ART_BECOMES_A_WORLD_AE7512E9"
 source_case_id = "W20"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\W20.png"
 source_sha256 = "2d049ae82aad95207def175072c552969e8e50ac0671327059a47768e98c2018"

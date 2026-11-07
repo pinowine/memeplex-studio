@@ -26,9 +26,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_archive_echo"
-title = "学生回看旧梗，翻出早先回应"
-narrative = "学生读书群回看一则旧梗时，有人翻出了早先收藏的回应截图。几名原本觉得这个话题已经说尽的成员重新读完了全文，聊天也从敷衍表情转回具体经历。"
-mentor_comment = "旧截图比新口号更耐放，补一句具体处境就够了，不必再刷防腐漆。"
+title = "LOC_STUDENTS_REVISIT_AN_OLD_MEME_AND_RECOVER_55B71E6F"
+narrative = "LOC_WHILE_REVISITING_AN_OLD_MEME_A_STUDENT_2EC76E3B"
+mentor_comment = "LOC_OLD_SCREENSHOTS_KEEP_BETTER_THAN_NEW_SLOGANS_29E0577B"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("archive", "education")
 operation_ids = PackedStringArray("revive")

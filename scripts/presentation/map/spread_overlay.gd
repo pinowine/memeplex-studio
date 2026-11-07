@@ -4,7 +4,7 @@ extends Control
 const MAX_FAMILY_DOTS := 80
 const MAX_TOTAL_DOTS := 640
 const SAMPLE_ATTEMPTS := 24
-const EXPLANATION := "实心点按各国已采用人数抽样；空心是出生或投放位置。颜色区分模因家族。"
+static var EXPLANATION := DeskLocalization.source("LOC_SOLID_DOTS_SAMPLE_ADOPTION_IN_EACH_COUNTRY_741CDCE6")
 const PLAYER_COLORS := [Color("ad4438"), Color("bc852c")]
 const EXTERNAL_COLORS := [Color("326f91"), Color("438476"), Color("756095"), Color("3e8c96"), Color("7d7841"), Color("53699d"), Color("578950"), Color("955c83")]
 

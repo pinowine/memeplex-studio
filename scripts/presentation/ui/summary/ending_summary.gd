@@ -6,10 +6,10 @@ signal return_menu_requested
 const TEMPLATE = preload("res://scenes/ui/summary/ending_summary.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const ENDINGS := {
-	"own_world": ["你的模因占据了世界。", "You own the world.", "67：现在大家都在说你的话。请不要把这理解为大家都理解你。", "67: Everyone is saying your words. Do not confuse that with understanding you."],
-	"autonomous_lineage": ["失控的突变谱系已经独自生存。", "An autonomous mutant lineage survived.", "67：它不归你管了。恭喜，你终于有了一份不用签字的成果。", "67: You no longer control it. Congratulations on a result that does not require your signature."],
-	"competitor_equilibrium": ["你与竞争者的格局达到均衡。", "You reached equilibrium with competitors.", "67：谁也没把谁印没。机器可以休息，意见暂时不必一致。", "67: Nobody printed anyone out of existence. The machines can rest without an agreement."],
-	"lineage_diversity": ["多个不同版本共同完成了扩散。", "Distinct versions spread together.", "67：几份稿子一起活下来了。看来统一口径不是唯一的出路。", "67: Several manuscripts survived together. A single voice was not the only way out."]
+	"own_world": ["LOC_YOUR_MEME_HAS_TAKEN_OVER_THE_WORLD_B77F0A22", "LOC_EVERYONE_IS_SAYING_YOUR_WORDS_NOW_PLEASE_41ADB542"],
+	"autonomous_lineage": ["LOC_THE_UNCONTROLLED_MUTANT_LINEAGE_IS_SURVIVING_ON_0D828D42", "LOC_IT_S_OUT_OF_YOUR_HANDS_CONGRATULATIONS_C2D7631D"],
+	"competitor_equilibrium": ["LOC_YOU_AND_YOUR_COMPETITORS_HAVE_REACHED_EQUILIBRIUM_7117C232", "LOC_NEITHER_SIDE_PRINTED_THE_OTHER_OUT_OF_C3A5D603"],
+	"lineage_diversity": ["LOC_MULTIPLE_DISTINCT_VERSIONS_HAVE_SPREAD_TOGETHER_C71AB8B3", "LOC_SEVERAL_DRAFTS_SURVIVED_TOGETHER_APPARENTLY_A_SINGLE_E053C7C9"]
 }
 
 var _ui: Control
@@ -41,12 +41,11 @@ func show_result(snapshot: Dictionary, ending: Dictionary = {}) -> bool:
 
 func _refresh() -> void:
 	if not is_instance_valid(_ui) or _ending.is_empty(): return
-	var english := TranslationServer.get_locale().begins_with("en")
 	var copy: Array = ENDINGS[str(_ending.id)]
-	_ui.get_node("Paper/Content/Title").text = "Victory" if english else "胜利"
-	_ui.get_node("Paper/Content/Reason").text = copy[1 if english else 0]
-	_ui.get_node("Paper/Content/Verdict/Comment").text = copy[3 if english else 2]
-	_ui.get_node("Paper/Content/ReturnMenu").text = "Return to menu" if english else "返回主菜单"
+	_ui.get_node("Paper/Content/Title").text = DeskLocalization.text("LOC_VICTORY_943874EC")
+	_ui.get_node("Paper/Content/Reason").text = DeskLocalization.text(copy[0])
+	_ui.get_node("Paper/Content/Verdict/Comment").text = DeskLocalization.text(copy[1])
+	_ui.get_node("Paper/Content/ReturnMenu").text = DeskLocalization.text("LOC_RETURN_TO_MAIN_MENU_E34E61A2")
 	var world: Dictionary = _snapshot.get("world_competition", {})
 	var hour := int(_ending.get("hour", _snapshot.get("hour", 0)))
 	var own := float(_ending.get("owned_share", world.get("owned_share", 0))) * 100
@@ -54,7 +53,7 @@ func _refresh() -> void:
 	var escaped := float(_ending.get("escaped_share", world.get("escaped_share", 0))) * 100
 	var variants: Variant = world.get("variants", [])
 	var count: int = variants.size() if variants is Array or variants is Dictionary else 0
-	_ui.get_node("Paper/Content/Statistics").text = ("Hour %d · Population %d\nOwned %.2f%% · Lineage %.2f%% · Escaped %.2f%%\nVariants %d · Meme %s" if english else "第 %d 小时 · 世界人口 %d\n作者归属 %.2f%% · 原生谱系 %.2f%% · 外部分家 %.2f%%\n流通版本 %d · Meme %s") % [hour, int(world.get("world_population", 0)), own, lineage, escaped, count, str(_snapshot.get("meme_points", 0))]
+	_ui.get_node("Paper/Content/Statistics").text = DeskLocalization.text("LOC_HOUR_D_WORLD_POPULATION_D_AUTHOR_OWNERSHIP_877C9AE3") % [hour, int(world.get("world_population", 0)), own, lineage, escaped, count, str(_snapshot.get("meme_points", 0))]
 	_layout()
 
 func _layout() -> void:

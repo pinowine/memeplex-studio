@@ -11,7 +11,7 @@ signal slot_pressed(layer: String, index: int, viewport_rect: Rect2)
 
 const ContextController := preload("res://scripts/presentation/studio/context/desk_context_controller.gd")
 const LAYERS := ContextController.LAYERS
-const TITLES := {"language":"语言", "group":"群体", "topics":"话题", "stance":"立场", "pragmatic":"语用"}
+static var TITLES := {"language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), "group":DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"), "topics":DeskLocalization.source("LOC_TOPICS_A2C81C5A"), "stance":DeskLocalization.source("LOC_STANCE_8A2DE4CD"), "pragmatic":DeskLocalization.source("LOC_PRAGMATICS_7063D1D8")}
 const DEPTHS := ContextController.DEPTHS
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const CardFace := preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
@@ -120,11 +120,11 @@ func depth_control() -> VSlider:
 
 func selected_info() -> Dictionary:
 	var data: Dictionary = _layers().get(_layer, {})
-	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "depth":_depth, "slot":_selected_slot, "attached":_attached(_layer), "instructions":DeskLocalization.text("单击聚焦区块；拖动卡片取下。")}
+	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "depth":_depth, "slot":_selected_slot, "attached":_attached(_layer), "instructions":DeskLocalization.text("LOC_CLICK_TO_FOCUS_THIS_SECTION_DRAG_A_3E6ABE39")}
 	if _layer in ["stance", "pragmatic"]:
 		result.merge(data.duplicate(true), true)
-		result.instructions = DeskLocalization.text("从标记拖动，单次只沿一个轴，每格 0.1；离开起点用筹码，返回起点归还。")
-		if _layer == "stance" and not bool(data.get("known", false)): result.hint = DeskLocalization.text("立场未登记，不等于中立；从空心起点拖动才登记。")
+		result.instructions = DeskLocalization.text("LOC_DRAG_THE_MARKER_ALONG_ONE_AXIS_AT_291BFA50")
+		if _layer == "stance" and not bool(data.get("known", false)): result.hint = DeskLocalization.text("LOC_UNSPECIFIED_STANCE_DOES_NOT_MEAN_NEUTRAL_DRAG_57E53949")
 		if _layer == "pragmatic": result.target = _target()
 	elif _selected_slot >= 0:
 		var slots: Array = data.get("slots", [])
@@ -142,7 +142,7 @@ func _resource(id: String) -> Dictionary:
 
 func _target() -> String:
 	var target := str((_state.get("context_draft", {}) as Dictionary).get("target",""))
-	if target.is_empty(): return DeskLocalization.text("未填写对象")
+	if target.is_empty(): return DeskLocalization.text("LOC_NO_TARGET_ENTERED_0397EF33")
 	return DeskLocalization.text(target) if not _authored_target.is_empty() and target == _authored_target else target
 
 func _refresh() -> void:
@@ -262,16 +262,16 @@ func _draw() -> void:
 		_text(TITLES[id],rect.position+Vector2(4,20),21)
 		_draw_pencil_path(PackedVector2Array([rect.position+Vector2(1,29),rect.position+Vector2(rect.size.x*.42,28),rect.position+Vector2(rect.size.x*.75,30),Vector2(rect.end.x,rect.position.y+27)]),Color(INK,.64),1.15)
 		var handle: Rect2 = info.handle_rect
-		_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(), DeskLocalization.text("查看" if attached else "放回"), handle, 12, 10, 1), MUTED)
+		_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(), DeskLocalization.text("LOC_VIEW_DB8DB053" if attached else DeskLocalization.source("LOC_REPLACE_724E8987")), handle, 12, 10, 1), MUTED)
 		if not attached:
-			_text("待放回",rect.position+Vector2(6,rect.size.y*.57),15,MUTED,rect.size.x-12)
+			_text(DeskLocalization.source("LOC_AWAITING_RETURN_A4746B64"),rect.position+Vector2(6,rect.size.y*.57),15,MUTED,rect.size.x-12)
 			continue
 		if id in ["stance","pragmatic"]: _draw_axis(id)
 		else: _draw_slots(id)
 	if _held_moved and _held == "layer":
 		var point := get_global_transform_with_canvas().affine_inverse()*_last_point
 		draw_arc(point,17,0.2,TAU-0.2,32,Color(0.20,0.32,0.25,0.65),1.5,true)
-		_text("松手取下",point+Vector2(23,5),13)
+		_text(DeskLocalization.source("LOC_RELEASE_TO_DETACH_09EF1937"),point+Vector2(23,5),13)
 
 func _slot_shape(id: String) -> String:
 	return CardFace.SHAPES.get("topic" if id == "topics" else id, "xy_plane")
@@ -329,10 +329,10 @@ func _draw_axis(id: String) -> void:
 			coordinates = "%.1f/%.1f" % [float(current[0]),float(current[1])]
 		_text(coordinates, info.rect.position + Vector2(53,20),12,MUTED)
 	else:
-		_text("未登记", info.rect.position + Vector2(53, 20), 14, MUTED)
+		_text(DeskLocalization.source("LOC_UNREGISTERED_0DB3DB44"), info.rect.position + Vector2(53, 20), 14, MUTED)
 
 func _axis_labels(id: String) -> Dictionary:
-	var labels := {"x_negative":DeskLocalization.text("自由") if id == "stance" else DeskLocalization.text("真诚"), "x_positive":DeskLocalization.text("威权") if id == "stance" else DeskLocalization.text("反讽"), "y_negative":DeskLocalization.text("平等") if id == "stance" else DeskLocalization.text("支持"), "y_positive":DeskLocalization.text("等级") if id == "stance" else DeskLocalization.text("反对")}
+	var labels := {"x_negative":DeskLocalization.text("LOC_FREEDOM_D1047EED") if id == "stance" else DeskLocalization.text("LOC_SINCERITY_8BB7FF57"), "x_positive":DeskLocalization.text("LOC_AUTHORITY_E9D827BA") if id == "stance" else DeskLocalization.text("LOC_IRONY_06D9BA32"), "y_negative":DeskLocalization.text("LOC_EQUALITY_14DD2491") if id == "stance" else DeskLocalization.text("LOC_SUPPORT_D93373F8"), "y_positive":DeskLocalization.text("LOC_HIERARCHY_33771717") if id == "stance" else DeskLocalization.text("LOC_OPPOSITION_454F03C9")}
 	labels.merge(_layers().get(id, {}).get("axis_labels", {}), true)
 	for key: String in labels: labels[key] = DeskLocalization.text(str(labels[key]))
 	return labels
@@ -641,14 +641,14 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	if layer.is_empty(): return {}
 	var index := _slot_at(layer,point)
 	var data: Dictionary = _layers().get(layer,{})
-	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":DeskLocalization.text("单击聚焦区块"),"attached":_attached(layer)}
+	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":DeskLocalization.text("LOC_CLICK_TO_FOCUS_THIS_SECTION_901FD24F"),"attached":_attached(layer)}
 	if layer in ["stance","pragmatic"]:
 		result.text = " / ".join(_axis_labels(layer).values())
 		result.current = data.get("current",[0,0])
 	elif index >= 0:
 		var slots: Array = data.get("slots",[])
 		var resource := _resource(str(slots[index].get("resource_id",slots[index].get("id","")))) if index < slots.size() else {}
-		if resource.is_empty(): result.text = DeskLocalization.text("空槽 · 放入")+TITLES[layer]
+		if resource.is_empty(): result.text = DeskLocalization.text("LOC_EMPTY_SLOT_INSERT_D029F95E")+TITLES[layer]
 		else:
 			result.title = resource.get("title",TITLES[layer])
 			result.text = resource.get("description","")

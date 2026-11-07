@@ -10,7 +10,7 @@ extends Control
 @export var dim_color := Color("41633d")
 @export var scanline_opacity: float = 0.07
 
-var _title: String = "待印的模因"
+var _title: String = DeskLocalization.source("LOC_MEME_AWAITING_PRINT_02E38C0D")
 var _title_source: String = "none"
 var _hour: int = 0
 var _balance: int = 0
@@ -69,7 +69,7 @@ func sync_state(state: Dictionary) -> void:
 
 func reset_history() -> void:
 	_history.clear()
-	_title = "待印的模因"
+	_title = DeskLocalization.source("LOC_MEME_AWAITING_PRINT_02E38C0D")
 	_title_source = "none"
 	_hour = 0
 	_balance = 0
@@ -144,18 +144,18 @@ func _draw() -> void:
 	_draw_mono(font, "MEME / H%d" % _hour, Vector2(padding, padding + font.get_ascent(fs)), fs, dim_color)
 	_draw_mono(font, str(_title_text_layout().text), Vector2(padding, padding + line_height + font.get_ascent(fs)), fs, ink_color)
 	_draw_mono(font, "Meme %s" % (str(_balance) if _has_balance else "--"), Vector2(padding, padding + line_height * 2.0 + font.get_ascent(fs + 5)), fs + 5, ink_color)
-	var delta_text := DeskLocalization.format_text("上次 %s / H%d", [_signed(_last_delta), _last_change_hour]) if _has_change else DeskLocalization.text("上次 -- / 首次快照")
+	var delta_text := DeskLocalization.format_text("LOC_PREVIOUS_S_H_D_95575F25", [_signed(_last_delta), _last_change_hour]) if _has_change else DeskLocalization.text("LOC_PREVIOUS_FIRST_SNAPSHOT_F06FDAA1")
 	_draw_mono(font, delta_text, Vector2(padding, padding + line_height * 3.4 + font.get_ascent(fs)), fs, ink_color)
-	_draw_mono(font, DeskLocalization.text("净变化 / 快照余额"), Vector2(padding, padding + line_height * 4.5 + font.get_ascent(fs)), fs, dim_color)
+	_draw_mono(font, DeskLocalization.text("LOC_NET_CHANGE_SNAPSHOT_BALANCE_026C4FD9"), Vector2(padding, padding + line_height * 4.5 + font.get_ascent(fs)), fs, dim_color)
 	var plot := _plot_rect()
 	if plot.size.x <= 0.0 or plot.size.y <= 0.0:
 		return
 	_draw_plot(plot)
-	var time_text := "等待余额快照"
+	var time_text := DeskLocalization.source("LOC_WAITING_FOR_A_BALANCE_SNAPSHOT_0C681C27")
 	if not _history.is_empty():
-		time_text = DeskLocalization.format_text("H%d > H%d / 净%s", [int(_history[0].hour), int(_history[-1].hour), _signed(_balance - _origin_balance)])
+		time_text = DeskLocalization.format_text("LOC_H_D_H_D_NET_S_1AB49822", [int(_history[0].hour), int(_history[-1].hour), _signed(_balance - _origin_balance)])
 		if _x_mode() == "change_index_same_hour":
-			time_text = DeskLocalization.format_text("H%d / %d 个快照点", [int(_history[0].hour), _history.size()])
+			time_text = DeskLocalization.format_text("LOC_H_D_D_SNAPSHOT_POINTS_7A93E233", [int(_history[0].hour), _history.size()])
 	_draw_mono(font, time_text, Vector2(padding, plot.end.y + line_height), fs, dim_color)
 	var scale := _net_range()
 	_draw_mono(font, "%s..%s" % [str(int(scale.x)), str(int(scale.y))], Vector2(padding, plot.end.y + line_height * 2.0), maxi(8, fs - 2), dim_color)
@@ -165,7 +165,7 @@ func _draw_compact(font: Font) -> void:
 	var title := _title_rect()
 	_draw_mono(font, str(_title_text_layout().text), title.position + Vector2(0, font.get_ascent(11)), 11, ink_color)
 	var balance := _balance_rect()
-	var text := DeskLocalization.format_text("Meme%s 上次%s", [str(_balance) if _has_balance else "--", _signed(_last_delta) if _has_change else "--"])
+	var text := DeskLocalization.format_text("LOC_MEME_S_PREVIOUS_S_894D6A67", [str(_balance) if _has_balance else "--", _signed(_last_delta) if _has_change else "--"])
 	_draw_mono(font, text, balance.position + Vector2(0, font.get_ascent(13)), 13, ink_color)
 	var plot := _plot_rect()
 	if plot.size.x > 0.0 and plot.size.y > 0.0:
@@ -173,7 +173,7 @@ func _draw_compact(font: Font) -> void:
 	var first_hour := int(_history[0].hour) if not _history.is_empty() else _hour
 	var last_hour := int(_history[-1].hour) if not _history.is_empty() else _hour
 	var axis := _axis_rect()
-	_draw_mono(font, DeskLocalization.format_text("H%d > H%d / 快照", [first_hour, last_hour]), axis.position + Vector2(0, font.get_ascent(9)), 9, dim_color)
+	_draw_mono(font, DeskLocalization.format_text("LOC_H_D_H_D_SNAPSHOT_803657E4", [first_hour, last_hour]), axis.position + Vector2(0, font.get_ascent(9)), 9, dim_color)
 
 
 func _draw_plot(plot: Rect2) -> void:
@@ -204,7 +204,7 @@ func _select_title(state: Dictionary) -> Dictionary:
 				var value := str(branch.get(key, "")).strip_edges()
 				if not value.is_empty():
 					return {"text":value, "source":"owned_branch." + key}
-	return {"text":"待印的模因", "source":"none"}
+	return {"text":DeskLocalization.source("LOC_MEME_AWAITING_PRINT_02E38C0D"), "source":"none"}
 
 
 func _trim_history() -> bool:
@@ -299,7 +299,7 @@ func _title_text_layout() -> Dictionary:
 	var font := get_theme_font("font", "Label")
 	var fs := 11 if _compact() else _font_size()
 	var text := _title.replace("\n", " ").replace("\r", " ")
-	if not _compact(): text = DeskLocalization.text("模因：") + text
+	if not _compact(): text = DeskLocalization.text("LOC_MEME_40BDE4F6") + text
 	var rect := _title_rect()
 	var truncated := _mono_text_width(font, text, fs) > rect.size.x
 	var visible := text

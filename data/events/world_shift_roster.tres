@@ -26,9 +26,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"world_shift_roster"
-title = "港口调度室公布错峰排班表"
-narrative = "港口调度室公布新的错峰排班表，两批工人的交班时间不再重合。候车站台出现新的等待间隔，职员开始比较班次与通勤安排，并在交班群里询问由此增加的等待时间。"
-mentor_comment = "错峰把人错开了，等待时间仍整齐地留给同一批人，先把那一段单列出来。"
+title = "LOC_HARBOR_DISPATCH_PUBLISHES_STAGGERED_SHIFT_SCHEDULES_CE0749FD"
+narrative = "LOC_HARBOR_DISPATCH_PUBLISHES_STAGGERED_SHIFTS_SO_THAT_21EB5BD9"
+mentor_comment = "LOC_STAGGERING_SEPARATED_THE_WORKERS_BUT_LEFT_THE_947676E1"
 origin = &"world"
 topic_ids = PackedStringArray("work", "cost_of_living")
 operation_ids = PackedStringArray("attention_shift")

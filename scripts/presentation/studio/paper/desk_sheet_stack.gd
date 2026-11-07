@@ -19,11 +19,11 @@ const TAB_PROFILES := {
 	"cultivate": {"tint": Color("b6c59c"), "fiber_strength": 0.075, "grain_strength": 0.035, "detail_density": 0.65},
 	"spread": {"tint": Color("c8aec5"), "fiber_strength": 0.035, "grain_strength": 0.015, "detail_density": 1.4}
 }
-const PAPER_PROFILES := {
-	"map": {"name": "冷白地图纸", "tint": Color(0.966, 0.979, 0.969), "fiber_strength": 0.018, "grain_strength": 0.010},
-	"edit": {"name": "暖白稿纸", "tint": Color(0.999, 0.980, 0.946), "fiber_strength": 0.024, "grain_strength": 0.012},
-	"cultivate": {"name": "浅麦色纤维纸", "tint": Color(0.988, 0.971, 0.919), "fiber_strength": 0.031, "grain_strength": 0.014},
-	"spread": {"name": "灰白记录纸", "tint": Color(0.950, 0.969, 0.977), "fiber_strength": 0.016, "grain_strength": 0.009}
+static var PAPER_PROFILES := {
+	"map": {"name": DeskLocalization.source("LOC_COOL_WHITE_MAP_PAPER_FCD60A85"), "tint": Color(0.966, 0.979, 0.969), "fiber_strength": 0.018, "grain_strength": 0.010},
+	"edit": {"name": DeskLocalization.source("LOC_WARM_WHITE_DRAFT_PAPER_21E2A1BE"), "tint": Color(0.999, 0.980, 0.946), "fiber_strength": 0.024, "grain_strength": 0.012},
+	"cultivate": {"name": DeskLocalization.source("LOC_PALE_WHEAT_FIBRE_PAPER_9ECF0E37"), "tint": Color(0.988, 0.971, 0.919), "fiber_strength": 0.031, "grain_strength": 0.014},
+	"spread": {"name": DeskLocalization.source("LOC_GREY_WHITE_RECORD_PAPER_4F6AB689"), "tint": Color(0.950, 0.969, 0.977), "fiber_strength": 0.016, "grain_strength": 0.009}
 }
 
 class PaperMask extends TextureRect:
@@ -255,7 +255,7 @@ func _make_sheet(id: String, ancestor: Node, textures: Dictionary) -> void:
 	icon.size = Vector2(28, 28)
 	var title := Label.new()
 	title.name = "Title"
-	title.text = {"map":"世界", "edit":"编辑", "cultivate":"培养", "spread":"传播"}[id]
+	title.text = {"map":DeskLocalization.source("LOC_WORLD_33650A36"), "edit":DeskLocalization.source("LOC_EDIT_05183656"), "cultivate":DeskLocalization.source("LOC_CULTIVATE_62025174"), "spread":DeskLocalization.source("LOC_SPREAD_1A2DA4D4")}[id]
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE

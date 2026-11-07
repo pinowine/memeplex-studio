@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("1_script")
 id = &"relation"
-title = "关系模板"
-description = "以两个可替换位置及关系构成可复用表达。三个槽位是本Demo的语义简化，不声称复现全部节点端口。"
+title = "LOC_RELATIONSHIP_TEMPLATE_B151CE56"
+description = "LOC_A_REUSABLE_EXPRESSION_BUILT_FROM_TWO_REPLACEABLE_C7E23E2D"
 required_slots = PackedStringArray("role_a", "role_b", "relation")
-slot_prompts = PackedStringArray("第一个可替换位置是谁？", "第二个可替换位置是什么？", "二者的关系方向是什么？")
-default_values = PackedStringArray("我的月薪", "通勤票价", "前者追着后者跑，却总差一步")
-family_anchor = "两个可替换角色保持明确的追赶关系"
+slot_prompts = PackedStringArray("LOC_WHO_OCCUPIES_THE_FIRST_REPLACEABLE_POSITION_455188BD", "LOC_WHAT_OCCUPIES_THE_SECOND_REPLACEABLE_POSITION_044D3D47", "LOC_IN_WHICH_DIRECTION_DOES_THE_RELATIONSHIP_RUN_FA479CEA")
+default_values = PackedStringArray("LOC_MY_MONTHLY_SALARY_AC77A653", "LOC_COMMUTING_FARES_4F438C46", "LOC_THE_FIRST_CHASES_THE_SECOND_ALWAYS_ONE_8FDC425B")
+family_anchor = "LOC_TWO_REPLACEABLE_ROLES_RETAIN_A_CLEAR_RELATIONSHIP_5E0737BA"
 split_threshold = 0.6
 evidence_status = &"design"

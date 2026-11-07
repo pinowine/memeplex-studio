@@ -122,7 +122,7 @@ func _process(delta: float) -> void:
 		_pending_start_draft.clear()
 		simulation.reset(simulation.seed_value + 1)
 		if not _bind_world(): return
-		simulation.bind_country("", "未选择投放国家")
+		simulation.bind_country("", DeskLocalization.source("LOC_NO_DEPLOYMENT_COUNTRY_SELECTED_989E9AAC"))
 		_clock_anchor = atlas.clock.utc_seconds
 		_begin_startup()
 	_sync_setup()
@@ -138,7 +138,7 @@ func _process(delta: float) -> void:
 		atlas._update_clock()
 		atlas.set_speed(clock_speed())
 	atlas.get_node("%PointsValue").text = str(simulation.economy.balance)
-	atlas.get_node("%PointsIncome").text = "创作资源 · 不可购买"
+	atlas.get_node("%PointsIncome").text = DeskLocalization.source("LOC_CREATIVE_RESOURCES_NOT_FOR_SALE_45AE45C3")
 	hud.layout_for_date(desk.clock_rect())
 	_queue_context_trial()
 
@@ -146,7 +146,7 @@ func _studio_selected() -> void:
 	if not _ready_to_run or not startup_ready() or _interface_paused() or _pending_start_draft.is_empty() or simulation.publish_count != 0: return
 	var index: int = atlas.selected_country
 	if index < 0 or index >= atlas.settings.countries.size():
-		simulation.status = "请先在地图选择投放国家，再确认进入游戏。"
+		simulation.status = DeskLocalization.source("LOC_SELECT_A_DEPLOYMENT_COUNTRY_ON_THE_MAP_18ADCDE2")
 		_render()
 		return
 	var errors := _draft_errors(_pending_start_draft)
@@ -165,7 +165,7 @@ func _bind_country(index: int) -> void:
 func _publish(draft: Dictionary) -> void:
 	if not _ready_to_run or _interface_paused(): return
 	if not startup_ready():
-		simulation.status = "请先接听 67 来电，选择起始模因并结束通话。"
+		simulation.status = DeskLocalization.source("LOC_ANSWER_S_CALL_SELECT_A_STARTING_MEME_9CFFACED")
 		_render()
 		return
 	# Turning a page is presentation only; a new version starts at explicit publish.
@@ -188,8 +188,8 @@ func _publish(draft: Dictionary) -> void:
 		_tutorial_country = -1
 		_tutorial_observe("publish_requested")
 		atlas.close_drawer()
-		simulation.bind_country("", "未选择投放国家")
-		simulation.status = "稿子已准备好。选一处地方，让它开始流传。"
+		simulation.bind_country("", DeskLocalization.source("LOC_NO_DEPLOYMENT_COUNTRY_SELECTED_989E9AAC"))
+		simulation.status = DeskLocalization.source("LOC_YOUR_DRAFT_IS_READY_CHOOSE_SOMEWHERE_TO_BF7D7A29")
 		hud.show_workbench(false)
 		_render()
 		return
@@ -198,15 +198,15 @@ func _publish(draft: Dictionary) -> void:
 
 func _draft_errors(draft: Dictionary, revision_view: bool = false) -> PackedStringArray:
 	var errors := simulation.validate_draft(draft)
-	if simulation.phase != "draft" and not revision_view: errors.append("请先返回创作台，建立自己的新版本。")
+	if simulation.phase != "draft" and not revision_view: errors.append(DeskLocalization.source("LOC_RETURN_TO_THE_WORKBENCH_AND_CREATE_YOUR_1A4056D3"))
 	var cost: int = catalog.first_publish_cost if simulation.publish_count == 0 else catalog.revision_publish_cost
 	if simulation.economy.balance < cost:
-		errors.append(DeskLocalization.format_text("Meme 点数不足：需要 %d，当前 %d。", [cost, simulation.economy.balance]))
+		errors.append(DeskLocalization.format_text("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, simulation.economy.balance]))
 	return errors
 
 func _commit_draft(draft: Dictionary, index: int) -> bool:
 	if index < 0 or index >= atlas.settings.countries.size():
-		simulation.status = "请先在地图选择投放国家。"
+		simulation.status = DeskLocalization.source("LOC_SELECT_A_DEPLOYMENT_COUNTRY_ON_THE_MAP_AA28A76D")
 		_render()
 		return false
 	var old_id := simulation.country_id
@@ -282,10 +282,10 @@ func _on_event(event: Dictionary) -> void:
 	hud.show_event(event)
 	# Ordinary intelligence is committed on receipt; its physical printing is asynchronous.
 	if event.get("design_rewards", []).is_empty():
-		simulation.status = DeskLocalization.source_format("收到 %d 条消息。", simulation.events.size())
+		simulation.status = DeskLocalization.source_format("LOC_RECEIVED_D_MESSAGES_B3820ECB", simulation.events.size())
 		simulation.acknowledge_event()
 	else:
-		simulation.status = "传真附有物资：将纸片移出事件纸张后继续。"
+		simulation.status = DeskLocalization.source("LOC_THIS_FAX_INCLUDES_MATERIALS_MOVE_THE_CARD_4D9E87DA")
 	atlas.set_speed(clock_speed())
 
 func _event_has_pending_material(instance_id: String) -> bool:
@@ -301,7 +301,7 @@ func _read_intelligence(instance_id: String) -> void:
 		_pending_read_id = instance_id
 		return
 	_pending_read_id = ""
-	simulation.status = DeskLocalization.source_format("收到 %d 条消息。", simulation.events.size())
+	simulation.status = DeskLocalization.source_format("LOC_RECEIVED_D_MESSAGES_B3820ECB", simulation.events.size())
 	simulation.acknowledge_event()
 	atlas.set_speed(clock_speed())
 
@@ -378,13 +378,13 @@ func _save() -> void:
 		simulation.speed = _menu_resume_speed
 	var error := store.save_run(simulation, SAVE_PATH)
 	simulation.speed = paused_speed
-	simulation.status = DeskLocalization.source_format("已保存：%s",SAVE_PATH) if error == OK else DeskLocalization.source_format("保存失败 %s：%s", [error_string(error), "; ".join(store.last_errors)])
+	simulation.status = DeskLocalization.source_format("LOC_SAVED_S_C5E73322",SAVE_PATH) if error == OK else DeskLocalization.source_format("LOC_SAVE_FAILED_S_S_81E5BCAD", [error_string(error), "; ".join(store.last_errors)])
 	_render()
 
 func _load() -> bool:
 	var error := store.load_run(simulation, SAVE_PATH)
 	if error != OK:
-		simulation.status = DeskLocalization.source_format("读档被拒绝，当前局未改变：%s %s", [error_string(error), "; ".join(store.last_errors)])
+		simulation.status = DeskLocalization.source_format("LOC_LOAD_REJECTED_THE_CURRENT_RUN_IS_UNCHANGED_58D375FE", [error_string(error), "; ".join(store.last_errors)])
 		_render()
 		return false
 	atlas.set_meta("demo_external_clock", true)
@@ -428,7 +428,7 @@ func _restart() -> void:
 	hud.configure(catalog)
 	atlas.clock.reset()
 	atlas.close_drawer()
-	simulation.bind_country("", "未选择投放国家")
+	simulation.bind_country("", DeskLocalization.source("LOC_NO_DEPLOYMENT_COUNTRY_SELECTED_989E9AAC"))
 	_clock_anchor = atlas.clock.utc_seconds
 	_begin_startup()
 	_render()
@@ -447,9 +447,9 @@ func _begin_startup() -> void:
 	hud.show_workbench(false)
 	var chosen := str(simulation.snapshot().get("design_state", {}).get("starter_preset_id", ""))
 	if not desk._fax.offer_starters(simulation.starter_options(), chosen):
-		simulation.status = "起始模因来电未能建立，请检查内容目录。"
+		simulation.status = DeskLocalization.source("LOC_COULD_NOT_ESTABLISH_THE_STARTING_MEME_CALL_BBAAE077")
 		return
-	simulation.status = "67 来电：接听并选择一份起始模因。"
+	simulation.status = DeskLocalization.source("LOC_IS_CALLING_ANSWER_AND_CHOOSE_A_STARTING_3E32F621")
 	_queue_startup_focus()
 
 func _select_starter(preset_id: String) -> void:
@@ -479,7 +479,7 @@ func _finish_startup(preset_id: String) -> void:
 	_startup_complete = true
 	_tutorial_observe("startup_finished")
 	desk._fax.close_focus()
-	simulation.status = "起始模因已收到。先编辑、培养与配置传播，再确认投放国家。"
+	simulation.status = DeskLocalization.source("LOC_STARTING_MEME_RECEIVED_EDIT_CULTIVATE_AND_CONFIGURE_AE28DEF3")
 	hud.show_workbench(true)
 	_render()
 
@@ -510,7 +510,7 @@ func _buy_skill(skill_id: String) -> void:
 
 func _request_event_material(record: Dictionary) -> PackedStringArray:
 	if not _ready_to_run or not startup_ready() or hud.menu_mode() != "" or desk._stack.is_switching():
-		return PackedStringArray(["先放下手里的工作，再取这份物资。"])
+		return PackedStringArray([DeskLocalization.source("LOC_PUT_DOWN_WHAT_YOU_ARE_HOLDING_BEFORE_B69F635E")])
 	var errors: PackedStringArray = simulation.request_event_material(str(record.get("instance_id", "")), str(record.get("kind", "")), str(record.get("id", "")))
 	if not errors.is_empty(): hud.report_design_errors(errors)
 	elif desk._fax.event_delivered(str(record.get("instance_id", ""))):

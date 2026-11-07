@@ -237,7 +237,7 @@ func _layout_paper() -> void:
 		_stack_rule.size = Vector2(width, 1)
 		_stack_label.position = Vector2(padding, divider_y + 10)
 		_stack_label.size = Vector2(width, 24)
-		_stack_label.text = DeskLocalization.text(str(_details.get("stack_title", "库存卡片")))
+		_stack_label.text = DeskLocalization.text(str(_details.get("stack_title", DeskLocalization.source("LOC_INVENTORY_CARDS_6691F0EB"))))
 		_stack_label.add_theme_font_override("font", font)
 		_body_label.size.y = maxf(48, divider_y - body_y - 16)
 		var next_rect := Rect2(Vector2(padding, divider_y + 42), Vector2(width, dimensions.y - divider_y - 62))

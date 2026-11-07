@@ -26,9 +26,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"world_network_maintenance"
-title = "港区网络开始分段维护"
-narrative = "港区通信站开始分段维护网络，公告列明受影响片区及恢复顺序。部分群聊消息延迟送达，公共平台上的帖子加载变慢，居民被提醒错开集中发送的时段。"
-mentor_comment = "先查线路，消息还没送达，宏大结论倒是已经准时上线。"
+title = "LOC_THE_HARBOR_NETWORK_BEGINS_PHASED_MAINTENANCE_842E7458"
+narrative = "LOC_THE_HARBOR_COMMUNICATIONS_STATION_BEGINS_PHASED_NETWORK_18A2B82F"
+mentor_comment = "LOC_CHECK_THE_CONNECTION_FIRST_THE_MESSAGE_HAS_F766E0EA"
 origin = &"world"
 topic_ids = PackedStringArray("platform_tools", "community")
 operation_ids = PackedStringArray("platform_change", "attention_shift")

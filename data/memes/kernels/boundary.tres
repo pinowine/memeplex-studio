@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("1_script")
 id = &"boundary"
-title = "边界信号"
-description = "通过痕迹、圈内经验和识别门槛表现理解差异。并不将真实人口特征设置为理解能力加成，阈值属于设计。"
+title = "LOC_BOUNDARY_SIGNAL_A2019633"
+description = "LOC_USES_TRACES_INSIDER_EXPERIENCE_AND_RECOGNITION_THRESHOLDS_4A360F6E"
 required_slots = PackedStringArray("invariant_trace", "insider_context", "recognition_rule")
-slot_prompts = PackedStringArray("改写后仍保留什么痕迹？", "圈内人共享什么经验？", "谁凭什么认得出来？")
-default_values = PackedStringArray("被擦掉一角的圆形站牌", "长期在纸灯港夜班换乘", "认出缺角指向最后一班车，圈外只能看到不完整图形")
-family_anchor = "站牌缺角与最后一班车的共同记忆构成圈内识别线索"
+slot_prompts = PackedStringArray("LOC_WHAT_TRACE_SURVIVES_A_REWRITE_237DE3A9", "LOC_WHAT_EXPERIENCE_DO_INSIDERS_SHARE_326B89BA", "LOC_WHO_RECOGNIZES_IT_AND_ON_WHAT_BASIS_8C02BF13")
+default_values = PackedStringArray("LOC_A_CIRCULAR_STATION_SIGN_WITH_ONE_CORNER_FDAB99D3", "LOC_LONG_EXPERIENCE_OF_NIGHT_SHIFT_TRANSFERS_IN_564A2412", "LOC_INSIDERS_RECOGNIZE_THE_MISSING_CORNER_AS_THE_60CC45D6")
+family_anchor = "LOC_THE_SIGN_S_MISSING_CORNER_AND_A_BD57A995"
 split_threshold = 0.6
 evidence_status = &"design"

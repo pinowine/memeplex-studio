@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_w05"
 kernel_id = &"shared_world"
-title = "W05 · Barbenheimer"
+title = "LOC_W05_BARBENHEIMER_5AC9A75E"
 required_slots = PackedStringArray("premise", "shared_rule", "open_gap")
-slot_prompts = PackedStringArray("世界前提（可改写）", "共享规则（可改写）", "补写空缺（可改写）")
-default_values = PackedStringArray("《Barbie》与《Oppenheimer》是同一天的互补双片", "共享锚点：粉红芭比/黑白爆炸视觉；规则：把相反情绪并置", "观影顺序、混搭角色和海报")
-family_anchor = "共享锚点：粉红芭比/黑白爆炸视觉；识别与变异约束：替换海报人物、观影顺序和色彩比例；二元视觉冲突是世界入口。"
-context_hint = "语义：混成词把商业竞争重写为可共同消费的文化事件。\n语用：用户规划双片连看、晒混搭服装并制作交叉海报；电影公司也借势但并非完全控制。\n跨语境：它表明对立品牌可因观众的组合行动获得附加叙事，也带有核历史被娱乐化的张力。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_WORLD_PREMISE_EDITABLE_5557353A", "LOC_SHARED_RULES_EDITABLE_31A5A13D", "LOC_GAP_TO_FILL_EDITABLE_BB4FE38B")
+default_values = PackedStringArray("LOC_BARBIE_AND_OPPENHEIMER_FORM_A_COMPLEMENTARY_SAME_EE6A8043", "LOC_SHARED_ANCHOR_PINK_BARBIE_IMAGERY_AND_BLACK_41019CBD", "LOC_VIEWING_ORDER_HYBRID_CHARACTERS_AND_POSTERS_857DF672")
+family_anchor = "LOC_SHARED_ANCHOR_PINK_BARBIE_IMAGERY_AND_BLACK_F1615DEA"
+context_hint = "LOC_SEMANTICS_A_BLENDED_NAME_REFRAMES_COMMERCIAL_COMPETITION_F4A9B064"
 source_case_id = "W05"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\W05.png"
 source_sha256 = "4e54ea8cab38b4a6f705f596be36b2d1e090a4d85b633099d7da81239b690fee"

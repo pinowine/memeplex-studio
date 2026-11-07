@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_script")
 id = &"culture_fans"
-title = "城市文化爱好者 · 独立合成样本"
+title = "LOC_URBAN_CULTURE_ENTHUSIASTS_INDEPENDENT_SYNTHETIC_SAMPLE_61D14597"
 tag_ids = PackedStringArray("interest.city_culture", "interest.archive", "sample.disjoint_culture")
 topic_ids = PackedStringArray("community", "entertainment", "archive", "language", "sport", "identity")
 topic_affinities = PackedFloat32Array(0.9, 0.86, 0.95, 0.8, 0.55, 0.78)

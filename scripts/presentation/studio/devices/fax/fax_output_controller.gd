@@ -55,7 +55,7 @@ func enqueue(event: Dictionary) -> bool:
 	last_error = ""
 	var id := str(event.get("instance_id", "")).strip_edges()
 	if id.is_empty() or not event.get("title") is String or not event.get("narrative") is String:
-		last_error = "情报缺少 instance_id、标题或正文。"
+		last_error = DeskLocalization.source("LOC_INTELLIGENCE_LACKS_INSTANCE_ID_TITLE_OR_BODY_3CDE1AF6")
 		return false
 	if bool(event.get("acknowledged", false)) or received_event_ids.has(id): return false
 	received_event_ids[id] = true

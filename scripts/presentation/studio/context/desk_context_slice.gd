@@ -11,7 +11,7 @@ signal context_layer_detached(record: Dictionary, global_point: Vector2)
 const SliceProjection = preload("res://scripts/presentation/studio/context/desk_slice_projection.gd")
 const ContextController := preload("res://scripts/presentation/studio/context/desk_context_controller.gd")
 const LAYERS := ContextController.LAYERS
-const TITLES := ["语言", "群体", "话题", "立场", "语用"]
+static var TITLES := [DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"), DeskLocalization.source("LOC_TOPICS_A2C81C5A"), DeskLocalization.source("LOC_STANCE_8A2DE4CD"), DeskLocalization.source("LOC_PRAGMATICS_7063D1D8")]
 const DEPTHS := ContextController.DEPTHS
 const PLANE_SIZE := Vector2(640, 640)
 
@@ -261,7 +261,7 @@ func _draw() -> void:
 	if _plane_only or not is_instance_valid(_slider): return
 	var font := get_theme_font("font", "Label")
 	var ink := Color(0.19, 0.23, 0.21)
-	draw_string(font, Vector2(size.x - 69, 20), DeskLocalization.text("深度"), HORIZONTAL_ALIGNMENT_LEFT, -1, 12, ink)
+	draw_string(font, Vector2(size.x - 69, 20), DeskLocalization.text("LOC_DEPTH_D1B31CF8"), HORIZONTAL_ALIGNMENT_LEFT, -1, 12, ink)
 	for index in DEPTHS.size():
 		var y: float = _slider.position.y + _slider.size.y * (1.0 - DEPTHS[index])
 		draw_line(Vector2(size.x - 60, y), Vector2(size.x - 54, y), ink, 1, true)
@@ -275,7 +275,7 @@ func _draw_surface(canvas: Control) -> void:
 	canvas.draw_string(font, PLANE_SIZE * Vector2(0.16, 0.09), TITLES[LAYERS.find(_layer)], HORIZONTAL_ALIGNMENT_LEFT, -1, 27, ink)
 	if _layer in ["stance", "pragmatic"]:
 		var data: Dictionary = _layers().get(_layer, {})
-		var labels: Dictionary = data.get("axis_labels", {"x_negative": "自由" if _layer == "stance" else "真诚", "x_positive": "威权" if _layer == "stance" else "反讽", "y_negative": "平等" if _layer == "stance" else "支持", "y_positive": "等级" if _layer == "stance" else "反对"})
+		var labels: Dictionary = data.get("axis_labels", {"x_negative": DeskLocalization.source("LOC_FREEDOM_D1047EED") if _layer == "stance" else DeskLocalization.source("LOC_SINCERITY_8BB7FF57"), "x_positive": DeskLocalization.source("LOC_AUTHORITY_E9D827BA") if _layer == "stance" else DeskLocalization.source("LOC_IRONY_06D9BA32"), "y_negative": DeskLocalization.source("LOC_EQUALITY_14DD2491") if _layer == "stance" else DeskLocalization.source("LOC_SUPPORT_D93373F8"), "y_positive": DeskLocalization.source("LOC_HIERARCHY_33771717") if _layer == "stance" else DeskLocalization.source("LOC_OPPOSITION_454F03C9")})
 		canvas.draw_line(PLANE_SIZE * Vector2(0.20, 0.52), PLANE_SIZE * Vector2(0.80, 0.52), pale, 3, true)
 		canvas.draw_line(PLANE_SIZE * Vector2(0.5, 0.22), PLANE_SIZE * Vector2(0.5, 0.82), pale, 3, true)
 		for index in 21:
@@ -303,7 +303,7 @@ func _draw_surface(canvas: Control) -> void:
 			else:
 				canvas.draw_circle(centre + Vector2(0, -29), 7, ink)
 				canvas.draw_line(centre + Vector2(0, -21), centre + Vector2(0, 20), ink, 2, true)
-			var text := DeskLocalization.text(str(resource.get("title", "空位")))
+			var text := DeskLocalization.text(str(resource.get("title", DeskLocalization.source("LOC_EMPTY_SLOT_DC4641EA"))))
 			canvas.draw_string(font, centre + Vector2(-font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x * 0.5, 70), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, ink)
 			if index == _selected_slot: canvas.draw_arc(centre, 51, 0, TAU, 48, ink, 2, true)
 

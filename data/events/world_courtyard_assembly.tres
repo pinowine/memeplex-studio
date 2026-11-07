@@ -26,9 +26,9 @@ group_ids = PackedStringArray("commuters", "culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"world_courtyard_assembly"
-title = "庭院规则讨论会暂缓定案"
-narrative = "共享庭院管理会召开晚间使用规则讨论会，住户对活动时段和安静边界提出不同意见。多次发言被打断，管理会暂缓定案并继续征集书面意见，部分居民开始质疑会场上的承诺。"
-mentor_comment = "意见征集继续，倾听似乎还没排进议程，先记下被打断的那句。"
+title = "LOC_A_COURTYARD_RULES_MEETING_POSTPONES_ITS_DECISION_3B5A9769"
+narrative = "LOC_A_SHARED_COURTYARD_COMMITTEE_MEETS_TO_DISCUSS_DD846EC0"
+mentor_comment = "LOC_CONSULTATION_CONTINUES_LISTENING_HAS_APPARENTLY_NOT_MADE_2D954A2B"
 origin = &"world"
 topic_ids = PackedStringArray("policy", "community", "identity")
 operation_ids = PackedStringArray("contest")

@@ -38,9 +38,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_remix_comparison"
-title = "学生并排比较原帖与外部重填"
-narrative = "学生将原帖与一次外部重填并排展示，指出两者轮廓相似，却被用来谈不同的事情。比较帖保留双方的署名和链接，语言与身份话题里随之出现了更多讨论。"
-mentor_comment = "两版并排以后，相似和占有终于不再挤在同一栏，照这个标准继续分账。"
+title = "LOC_STUDENTS_COMPARE_THE_ORIGINAL_POST_WITH_AN_E67BE5E4"
+narrative = "LOC_STUDENTS_DISPLAY_THE_ORIGINAL_POST_BESIDE_AN_B53A80CE"
+mentor_comment = "LOC_SIDE_BY_SIDE_RESEMBLANCE_AND_OWNERSHIP_FINALLY_8ED69689"
 origin = &"transmission"
 topic_ids = PackedStringArray("language", "identity")
 operation_ids = PackedStringArray("amplify", "contest")

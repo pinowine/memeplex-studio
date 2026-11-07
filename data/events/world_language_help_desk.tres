@@ -33,9 +33,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"world_language_help_desk"
-title = "社区服务中心开设双语说明窗口"
-narrative = "社区服务中心开设双语说明窗口，由志愿者轮班翻译公共通知。窗口保留原文供读者对照，并单独标明解释与引用内容，学生开始把完整说明转给各自的语言群。"
-mentor_comment = "原文还在，别借第二种语言给第一种意思办失踪手续。"
+title = "LOC_A_COMMUNITY_CENTER_OPENS_A_BILINGUAL_INFORMATION_7A3D8B9E"
+narrative = "LOC_A_COMMUNITY_SERVICE_CENTER_OPENS_A_BILINGUAL_C74B43FC"
+mentor_comment = "LOC_THE_ORIGINAL_IS_STILL_THERE_DO_NOT_FA5D5E5A"
 origin = &"world"
 topic_ids = PackedStringArray("language", "education", "trust")
 operation_ids = PackedStringArray("platform_change", "contest")

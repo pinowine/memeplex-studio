@@ -22,9 +22,9 @@ func save_run(simulation: MemeDemoSimulation, path: String) -> Error:
 		# 完整写入后才替换正式存档；替换失败时原文件保持不变。
 		error = DirAccess.rename_absolute(temporary, absolute)
 	if error != OK:
-		last_errors.append("存档写入或替换失败：" + error_string(error))
+		last_errors.append(DeskLocalization.source("LOC_FAILED_TO_WRITE_OR_REPLACE_THE_SAVE_E43EEC87") + error_string(error))
 		var cleanup := DirAccess.remove_absolute(temporary)
-		if cleanup != OK: last_errors.append("临时存档清理失败：" + error_string(cleanup))
+		if cleanup != OK: last_errors.append(DeskLocalization.source("LOC_FAILED_TO_REMOVE_THE_TEMPORARY_SAVE_5892833F") + error_string(cleanup))
 	return error
 
 func load_run(simulation: MemeDemoSimulation, path: String) -> Error:
@@ -35,7 +35,7 @@ func load_run(simulation: MemeDemoSimulation, path: String) -> Error:
 	var error := json.parse(file.get_as_text())
 	file.close()
 	if error != OK or not json.data is Dictionary:
-		last_errors.append("存档不是有效的 JSON 对象。")
+		last_errors.append(DeskLocalization.source("LOC_SAVE_IS_NOT_A_VALID_JSON_OBJECT_5324AFC6"))
 		return ERR_PARSE_ERROR
 	last_errors = simulation.restore(json.data)
 	return OK if last_errors.is_empty() else ERR_INVALID_DATA

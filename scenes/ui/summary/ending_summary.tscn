@@ -34,7 +34,7 @@ theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="Paper/Content"]
 layout_mode = 2
-text = "胜利"
+text = "LOC_VICTORY_943874EC"
 theme_override_font_sizes/font_size = 32
 
 [node name="Reason" type="Label" parent="Paper/Content"]
@@ -68,4 +68,4 @@ autowrap_mode = 3
 [node name="ReturnMenu" type="Button" parent="Paper/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,44)
-text = "返回主菜单"
+text = "LOC_RETURN_TO_MAIN_MENU_E34E61A2"

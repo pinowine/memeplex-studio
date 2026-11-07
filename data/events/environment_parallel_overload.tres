@@ -39,9 +39,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_parallel_overload"
-title = "相似模板挤满群聊，职员跳过开头"
-narrative = "几种来自不同社群的相似模板同时进入本地群聊。职员反复看到近似的开头，开始略过整段消息，连原先愿意参与的社区话题也少了回应。"
-mentor_comment = "几种模板把开头挤成同一张脸，先别再给它添一份复印件。"
+title = "LOC_SIMILAR_TEMPLATES_FLOOD_CHATS_AND_OFFICE_WORKERS_87F9EC73"
+narrative = "LOC_SIMILAR_TEMPLATES_FROM_SEVERAL_COMMUNITIES_ARRIVE_IN_BBC93601"
+mentor_comment = "LOC_THE_TEMPLATES_HAVE_SQUEEZED_EVERY_OPENING_INTO_98B218E7"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("community", "platform_tools")
 operation_ids = PackedStringArray("fatigue", "attention_shift")

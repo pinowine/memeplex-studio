@@ -26,9 +26,9 @@ group_ids = PackedStringArray("commuters", "students")
 [resource]
 script = ExtResource("1_event")
 id = &"world_public_source_check"
-title = "市民说明会增设来源问答"
-narrative = "市民公共说明会新增来源问答环节，参会者可以当场要求出示原始材料。主持人员确认一处数字仍待核对，并将补充结果列入后续公告，部分职员和学生对此表示认可。"
-mentor_comment = "不知道终于列进议程，比临时编出的答案便宜一点，记住那处待核对的数字。"
+title = "LOC_A_PUBLIC_BRIEFING_ADDS_QUESTIONS_ABOUT_SOURCES_BDBCAA25"
+narrative = "LOC_A_PUBLIC_BRIEFING_ADDS_A_SOURCE_CHECKING_D0BDB7C2"
+mentor_comment = "LOC_WE_DON_T_KNOW_FINALLY_MADE_THE_29FD075F"
 origin = &"world"
 topic_ids = PackedStringArray("policy", "trust")
 operation_ids = PackedStringArray("contest")

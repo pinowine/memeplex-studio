@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_script")
 id = &"remix_workshop"
-title = "开放改写工坊"
+title = "LOC_OPEN_REMIX_WORKSHOP_3C107E32"
 reach_factor = 1.0
 remix_factor = 1.35
-description = "虚构的社区改写工坊。鼓励留痕与再创作；技术上的易改写不代表版权许可，因子为设计参数。"
+description = "LOC_A_FICTIONAL_COMMUNITY_REMIX_WORKSHOP_THAT_ENCOURAGES_9666E59B"
 evidence_status = &"design"

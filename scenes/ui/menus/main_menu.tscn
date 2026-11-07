@@ -46,39 +46,39 @@ theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="MenuPanel/Content"]
 layout_mode = 2
-text = "模因工作室"
+text = "LOC_MEMEPLEX_STUDIO_3D1D137F"
 theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MenuPanel/Content"]
 layout_mode = 2
-text = "印刷不保证理解。"
+text = "LOC_PRINTING_DOES_NOT_GUARANTEE_UNDERSTANDING_C623F385"
 horizontal_alignment = 1
 
 [node name="Start" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,48)
-text = "开始"
+text = "LOC_START_D2BB025A"
 
 [node name="Load" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,48)
-text = "读取"
+text = "LOC_LOAD_534CB3FA"
 
 [node name="Codex" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,48)
-text = "模因图鉴"
+text = "LOC_MEME_CODEX_2F7C7F0C"
 
 [node name="Settings" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,48)
-text = "设置"
+text = "LOC_SETTINGS_DF3D58C7"
 
 [node name="Quit" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,48)
-text = "退出"
+text = "LOC_QUIT_498E1D59"
 
 [node name="SettingsPanel" type="TextureRect" parent="."]
 visible = false
@@ -97,12 +97,12 @@ theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
-text = "设置"
+text = "LOC_SETTINGS_DF3D58C7"
 theme_override_font_sizes/font_size = 27
 
 [node name="LanguageLabel" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
-text = "语言"
+text = "LOC_LANGUAGE_9F6FEE1A"
 
 [node name="Language" type="OptionButton" parent="SettingsPanel/Content"]
 layout_mode = 2
@@ -115,7 +115,7 @@ popup/item_1/id = 1
 
 [node name="MusicLabel" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
-text = "音乐"
+text = "LOC_MUSIC_DB951421"
 
 [node name="Music" type="HSlider" parent="SettingsPanel/Content"]
 layout_mode = 2
@@ -130,7 +130,7 @@ text = "100%"
 
 [node name="EffectsLabel" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
-text = "音效"
+text = "LOC_EFFECTS_5E9D80D0"
 
 [node name="Effects" type="HSlider" parent="SettingsPanel/Content"]
 layout_mode = 2
@@ -145,10 +145,10 @@ text = "100%"
 
 [node name="Notice" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
-text = "语言切换适用于界面与已有译文。"
+text = "LOC_LANGUAGE_APPLIES_TO_THE_INTERFACE_AND_EXISTING_844A2439"
 autowrap_mode = 3
 
 [node name="Back" type="Button" parent="SettingsPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,42)
-text = "返回"
+text = "LOC_BACK_572CF45B"

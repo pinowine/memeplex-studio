@@ -38,9 +38,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_usage_example"
-title = "职员把原句写进交班说明"
-narrative = "一位职员把原句引用进交班说明，并在旁边写出对应的工作情景。几名早先看过这句话的同事开始用它描述自己的交接经历，短句获得了明确的新用途。"
-mentor_comment = "交班说明终于找到了一句能用的话，先留在岗位上，别急着升格成时代共识。"
+title = "LOC_AN_OFFICE_WORKER_USES_THE_PHRASE_IN_33A4EF3B"
+narrative = "LOC_AN_OFFICE_WORKER_QUOTES_THE_PHRASE_IN_3A3CF000"
+mentor_comment = "LOC_THE_HANDOVER_NOTE_FINALLY_FOUND_A_USEFUL_7132467A"
 origin = &"transmission"
 topic_ids = PackedStringArray("work", "language")
 operation_ids = PackedStringArray("amplify")

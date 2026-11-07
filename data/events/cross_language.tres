@@ -27,9 +27,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"cross_language"
-title = "文化工坊提交双语短句改写"
-narrative = "文化工坊提交了一份双语短句方案，在图角保留原帖链接。新说法沿用原来的对照关系，工坊正在确认再利用条款，准备把它带进另一种语言的讨论。"
-mentor_comment = "改写方案保留了出处，解释权可没附赠返程票。"
+title = "LOC_A_CULTURE_WORKSHOP_SUBMITS_A_BILINGUAL_REWRITE_FD1223D0"
+narrative = "LOC_A_CULTURE_WORKSHOP_SUBMITS_A_PROPOSAL_FOR_2EDD55FB"
+mentor_comment = "LOC_THE_REWRITE_KEPT_ITS_SOURCE_INTERPRETIVE_AUTHORITY_0A399954"
 origin = &"transmission"
 topic_ids = PackedStringArray("language", "community")
 operation_ids = PackedStringArray("remix")

@@ -254,7 +254,7 @@ func report_errors(errors: PackedStringArray) -> void:
 
 func _build() -> void:
 	for index in TABS.size():
-		var button:=_button(self,[DeskLocalization.text("编辑"),DeskLocalization.text("培养"),DeskLocalization.text("传播")][index],"Tab"+TABS[index].capitalize())
+		var button:=_button(self,[DeskLocalization.text("LOC_EDIT_05183656"),DeskLocalization.text("LOC_CULTIVATE_62025174"),DeskLocalization.text("LOC_SPREAD_1A2DA4D4")][index],"Tab"+TABS[index].capitalize())
 		button.toggle_mode=true
 		button.pressed.connect(select_tab.bind(TABS[index]))
 		_tabs.append(button)
@@ -301,8 +301,8 @@ func _build_edit() -> void:
 		page.add_child(clip)
 		_physical_clips.append(clip)
 		clip.pressed.connect(func(): module_slots_pressed.emit(module_clips_viewport_rect()))
-	_part_title=_label(page,"表达模块","PartTitle",17)
-	_part_note=_label(page,"点击细胞核、轴突或树突上的表达；将真实获得的补丁拖入图中。","PartDescription",12)
+	_part_title=_label(page,DeskLocalization.source("LOC_EXPRESSION_MODULES_46E5F9F9"),"PartTitle",17)
+	_part_note=_label(page,DeskLocalization.source("LOC_CLICK_AN_EXPRESSION_ON_THE_SOMA_AXON_B375AE2A"),"PartDescription",12)
 	_part_content=TextEdit.new()
 	_part_content.name="PartContent"
 	_part_content.wrap_mode=TextEdit.LINE_WRAPPING_BOUNDARY
@@ -340,7 +340,7 @@ func _build_culture() -> void:
 		material_tabletop_requested.emit(str(record.get("kind","")),str(record.get("id","")))
 		context_resource_detached.emit(record,point))
 	_context_slice.context_layer_detached.connect(func(record: Dictionary,point: Vector2): context_layer_detached.emit(record,point))
-	_context_title = _label(page,"皮层 / 语言","ContextLayerTitle",20)
+	_context_title = _label(page,DeskLocalization.source("LOC_CORTEX_LANGUAGE_0D41EBCC"),"ContextLayerTitle",20)
 	_context_details = RichTextLabel.new()
 	_context_details.name = "ContextLayerDetails"
 	_context_details.add_theme_font_size_override("normal_font_size",14)
@@ -360,16 +360,16 @@ func _build_spread() -> void:
 	_pages.spread.add_child(_spread_tree)
 	_spread_tree.node_selected.connect(_select_skill)
 	var page: Control=_pages.spread
-	_skill_title=_label(page,"文本","SkillTitle",18)
+	_skill_title=_label(page,DeskLocalization.source("LOC_TEXT_DD818618"),"SkillTitle",18)
 	_skill_details=RichTextLabel.new()
 	_skill_details.name="SkillDetails"
 	_skill_details.bbcode_enabled=false
 	_skill_details.add_theme_color_override("default_color",INK)
 	_skill_details.add_theme_font_size_override("normal_font_size",14)
 	page.add_child(_skill_details)
-	_buy=_button(page,"研究此节点","BuySkill")
+	_buy=_button(page,DeskLocalization.source("LOC_RESEARCH_THIS_NODE_9222A1F7"),"BuySkill")
 	_buy.pressed.connect(func() -> void: skill_purchase_requested.emit(_selected_skill))
-	_apply_skill=_button(page,"应用能力到草稿","ApplySkill")
+	_apply_skill=_button(page,DeskLocalization.source("LOC_APPLY_ABILITY_TO_DRAFT_DD49D83A"),"ApplySkill")
 	_apply_skill.pressed.connect(func() -> void: _request("apply_skill",{"skill_id":_selected_skill}))
 
 
@@ -465,7 +465,7 @@ func _refresh_part() -> void:
 	for node in definition.get("neuron_nodes",[]):
 		if str(node.get("id",""))==_selected_part: title=DeskLocalization.text(str(node.get("title",_selected_part)))
 	_part_title.text=title
-	_part_note.text=DeskLocalization.text("修正这里的表达。")
+	_part_note.text=DeskLocalization.text("LOC_REVISE_THIS_PART_OF_THE_EXPRESSION_5BCC9FA3")
 	_part_content.editable=true
 	var content := str((_draft.get("slots",{}) as Dictionary).get(_selected_part,""))
 	_bind_part_content(content,"slot:"+str(_draft.get("preset_id",""))+":"+_selected_part,_authored_slot_default(_selected_part,content))
@@ -501,11 +501,11 @@ func _select_variant(id: String) -> void:
 		_selected_module=""
 		_selected_installed_slot=-1
 		_setting=true
-		_part_title.text=DeskLocalization.text("传播中的表达")
-		_part_note.text=DeskLocalization.text("自己的表达") if bool(variant.get("controlled",false)) else DeskLocalization.text("他人改写")
+		_part_title.text=DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024")
+		_part_note.text=DeskLocalization.text("LOC_YOUR_OWN_EXPRESSION_0A35E8E2") if bool(variant.get("controlled",false)) else DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E")
 		_part_content.editable=false
 		_bind_part_content(str(variant.get("text","")),"variant:"+id,false)
-		_source.text=DeskLocalization.text("由此前表达改写而来。") if not (variant.get("parent_ids",[]) as Array).is_empty() else DeskLocalization.text("独立出现的表达。")
+		_source.text=DeskLocalization.text("LOC_REWRITTEN_FROM_AN_EARLIER_EXPRESSION_22EA25D8") if not (variant.get("parent_ids",[]) as Array).is_empty() else DeskLocalization.text("LOC_AN_INDEPENDENTLY_EMERGING_EXPRESSION_77A66F57")
 		_setting=false
 		return
 
@@ -557,9 +557,9 @@ func _select_skill(id: String) -> void:
 		_skill_title.text=DeskLocalization.text(str(skill.title))
 		var dependency_titles:=PackedStringArray()
 		for dependency in skill.get("requires",[]): dependency_titles.append(_entry_title("skills",str(dependency)))
-		_skill_details.text=DeskLocalization.format_text("%s\n\n效果\n%s\n\n依赖：%s\n消耗 %d Meme\n余额 %d\n%s", [DeskLocalization.text(str(skill.get("description",""))),DeskLocalization.text(str(skill.get("effect_text",skill.get("effect",skill.get("description",""))))),", ".join(dependency_titles) if not dependency_titles.is_empty() else DeskLocalization.text("无"),int(skill.get("cost",0)),int(_state.get("meme_points",0)),DeskLocalization.text("已解锁") if unlocked else (DeskLocalization.text("依赖尚未满足") if not missing.is_empty() else DeskLocalization.text("可解锁"))])
+		_skill_details.text=DeskLocalization.format_text("LOC_S_EFFECT_S_REQUIRES_S_COST_D_35DC10A9", [DeskLocalization.text(str(skill.get("description",""))),DeskLocalization.text(str(skill.get("effect_text",skill.get("effect",skill.get("description",""))))),", ".join(dependency_titles) if not dependency_titles.is_empty() else DeskLocalization.text("LOC_NONE_484D5561"),int(skill.get("cost",0)),int(_state.get("meme_points",0)),DeskLocalization.text("LOC_UNLOCKED_E4CF2DE9") if unlocked else (DeskLocalization.text("LOC_REQUIREMENTS_NOT_MET_114C5744") if not missing.is_empty() else DeskLocalization.text("LOC_AVAILABLE_TO_UNLOCK_097705A8"))])
 		_buy.disabled=unlocked or not missing.is_empty() or int(_state.get("meme_points",0))<int(skill.get("cost",0))
-		_buy.text=DeskLocalization.text("已解锁") if unlocked else DeskLocalization.format_text("消耗 %d Meme / 解锁", int(skill.get("cost",0)))
+		_buy.text=DeskLocalization.text("LOC_UNLOCKED_E4CF2DE9") if unlocked else DeskLocalization.format_text("LOC_SPEND_D_MEME_UNLOCK_45B2FF07", int(skill.get("cost",0)))
 		var applied:=false
 		for application in _design.get("skill_applications",[]):
 			if str(application.get("skill_id",""))==id and int(application.get("publish_index",-1))==int(_design.get("current_publish_index",0)): applied=true
@@ -708,7 +708,7 @@ func _module_texture(id: String) -> Texture2D:
 
 func _entry_title(kind: String, id: String) -> String:
 	if id.is_empty():
-		return DeskLocalization.text("未选择")
+		return DeskLocalization.text("LOC_NOT_SELECTED_1182C545")
 	var entry := _rules.find(kind, id)
 	return DeskLocalization.text(str(entry.get("title", id)))
 
@@ -777,9 +777,9 @@ func _module_content(id: String) -> String:
 
 func _show_context_info(info: Dictionary) -> void:
 	if _context_title == null: return
-	var title := DeskLocalization.text(str(info.get("title",info.get("layer",DeskLocalization.text("语言")))))
+	var title := DeskLocalization.text(str(info.get("title",info.get("layer",DeskLocalization.text("LOC_LANGUAGE_9F6FEE1A")))))
 	if info.get("resource") is Dictionary and not info.resource.is_empty(): title += " · "+DeskLocalization.text(str(info.resource.get("title","")))
-	_context_title.text = DeskLocalization.text("语境 / ")+title
+	_context_title.text = DeskLocalization.text("LOC_CONTEXT_5E21ECEB")+title
 	_context_details.text = ""
 	_context_details.hide()
 
@@ -793,12 +793,12 @@ func _refresh_overview() -> void:
 	var kernel: MemeDemoKernel = _kernel(str(_draft.get("kernel_id","")))
 	var base := DeskLocalization.text(kernel.title if kernel != null else str(_draft.get("kernel_id", "")))
 	_overview_name.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-	_overview_name.text = "MEME\n"+name+DeskLocalization.text("\n基模 · ")+base
+	_overview_name.text = "MEME\n"+name+DeskLocalization.text("LOC_BASE_FORM_2C6D2C53")+base
 	var modules := 0
 	for id in _design.get("module_slots",[]):
 		if not str(id).is_empty(): modules += 1
-	var permission: String = {"allowed":DeskLocalization.text("可重用"),"conditional":DeskLocalization.text("有条件"),"restricted":DeskLocalization.text("限制")}.get(str(_draft.get("reuse_permission","allowed")),DeskLocalization.text("限制"))
-	_overview_data.text = DeskLocalization.format_text("模块 %d / 5 · Meme %d\n许可 %s · 可替换 %d项\n重混 %.0f%% · 语境 %.0f%%\n可达 %.0f%% · 识别 %.0f%%\n语言 %s · 群体 %s\n话题 %d / 3", [modules,int(_state.get("meme_points",0)),permission,_draft.get("replaceable_slots",[]).size(),float(_draft.get("remix_cost",0))*100,float(_draft.get("context_dependency",0))*100,float(_draft.get("language_access",0))*100,float(_draft.get("recognizability",0))*100,str(_draft.get("language_id","—")),str(_draft.get("group_id","—")),_draft.get("topic_ids",[]).size()])
+	var permission: String = {"allowed":DeskLocalization.text("LOC_REUSABLE_D9D7DF9F"),"conditional":DeskLocalization.text("LOC_CONDITIONAL_26EE9BE2"),"restricted":DeskLocalization.text("LOC_RESTRICTED_688F8923")}.get(str(_draft.get("reuse_permission","allowed")),DeskLocalization.text("LOC_RESTRICTED_688F8923"))
+	_overview_data.text = DeskLocalization.format_text("LOC_MODULES_D_MEME_D_PERMISSION_S_REPLACEABLE_23F3D191", [modules,int(_state.get("meme_points",0)),permission,_draft.get("replaceable_slots",[]).size(),float(_draft.get("remix_cost",0))*100,float(_draft.get("context_dependency",0))*100,float(_draft.get("language_access",0))*100,float(_draft.get("recognizability",0))*100,str(_draft.get("language_id","—")),str(_draft.get("group_id","—")),_draft.get("topic_ids",[]).size()])
 
 
 func set_context_trial(country_id: String, country_title: String, fitness: Dictionary) -> void:

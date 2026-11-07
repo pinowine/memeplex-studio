@@ -2,10 +2,14 @@ class_name MemeDemoChannel
 extends Resource
 
 @export var id: StringName
-@export var title: String = ""
+@export var title: String = "":
+	set(value):
+		title = DeskLocalization.source(value)
 @export var reach_factor: float = 1.0
 @export var remix_factor: float = 1.0
-@export_multiline var description: String = ""
+@export_multiline var description: String = "":
+	set(value):
+		description = DeskLocalization.source(value)
 @export var evidence_status: StringName = &"design"
 
 func validate() -> PackedStringArray:

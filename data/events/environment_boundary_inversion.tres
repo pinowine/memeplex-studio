@@ -39,9 +39,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_boundary_inversion"
-title = "外部社群提议反用原来的入圈暗号"
-narrative = "一个外部社群公布了改写提案，把原帖中欢迎与排斥的位置交换。提案保留原链接，却将原来面向圈内人的暗号用于拒绝旧圈子的规则，正在等待再利用确认。"
-mentor_comment = "欢迎暗号改成谢绝入内，门牌没报废，只是换了收件人。"
+title = "LOC_AN_OUTSIDE_COMMUNITY_PROPOSES_REVERSING_THE_ORIGINAL_D2A71D0C"
+narrative = "LOC_AN_OUTSIDE_COMMUNITY_PROPOSES_SWAPPING_THE_WELCOMING_CE9CBBF4"
+mentor_comment = "LOC_THE_WELCOME_SIGNAL_NOW_SAYS_NO_ENTRY_0130D5C3"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("identity", "community")
 operation_ids = PackedStringArray("split", "remix")

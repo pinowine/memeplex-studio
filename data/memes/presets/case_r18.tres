@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_r18"
 kernel_id = &"relation"
-title = "R18 · Gen Z Stare"
+title = "LOC_R18_GEN_Z_STARE_554E28FA"
 required_slots = PackedStringArray("role_a", "role_b", "relation")
-slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
-default_values = PackedStringArray("提出问题的顾客/年长者", "沉默凝视的 Gen Z 服务者", "服务期待与交流拒绝冲突")
-family_anchor = "识别与变异约束：替换顾客问题与工作场景；问话—空白凝视—代际解释三角关系保持。"
-context_hint = "语义：一张中性脸被解释为代际沟通风格、社交能力或对荒谬问题的防御。\n语用：年长用户用它批评服务礼仪，Gen Z 则复演顾客的无理提问来反向归责。\n跨语境：标签把低薪服务劳动问题人格化为年龄冲突；同一表情在双方叙事中方向相反。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_CHARACTER_A_EDITABLE_F753F7A7", "LOC_CHARACTER_B_EDITABLE_BC066A33", "LOC_RELATIONSHIP_DIRECTION_EDITABLE_4F2C3521")
+default_values = PackedStringArray("LOC_A_QUESTIONING_CUSTOMER_OR_OLDER_PERSON_6720F19F", "LOC_A_GEN_Z_SERVICE_WORKER_STARING_SILENTLY_1C51F83A", "LOC_SERVICE_EXPECTATIONS_CONFLICT_WITH_REFUSAL_TO_ENGAGE_11B9AEE4")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_REPLACE_THE_CUSTOMER_56A81DE0"
+context_hint = "LOC_SEMANTICS_A_NEUTRAL_FACE_IS_INTERPRETED_AS_ACC869E0"
 source_case_id = "R18"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R18.png"
 source_sha256 = "c0a6c22d55d8a62b29fb3422fb85c00132d8093aa739150fe5b6cfd5fedd5a28"

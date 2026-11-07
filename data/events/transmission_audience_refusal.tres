@@ -32,9 +32,9 @@ group_ids = PackedStringArray("students")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_audience_refusal"
-title = "几名学生公开表示不愿跟用"
-narrative = "几名学生在看到原帖后公开表示，这个说法不适合他们的经历。讨论没有因此结束，但他们对原帖的判断更警惕，也拒绝照着现有版本接写。"
-mentor_comment = "受众没有跟用，招募表上至少保住了一个诚实的空格，先读他们的理由。"
+title = "LOC_SEVERAL_STUDENTS_PUBLICLY_DECLINE_TO_USE_THE_A5326613"
+narrative = "LOC_AFTER_SEEING_THE_ORIGINAL_POST_SEVERAL_STUDENTS_3A01BFDE"
+mentor_comment = "LOC_THE_AUDIENCE_DID_NOT_JOIN_IN_AT_5250B7E6"
 origin = &"transmission"
 topic_ids = PackedStringArray("identity", "education", "trust")
 operation_ids = PackedStringArray("contest")

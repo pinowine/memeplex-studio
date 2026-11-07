@@ -10,8 +10,12 @@ const EVENT_REWARD_COUNT := 1
 @export var definition_version: int = DEFINITION_VERSION
 @export var module_slots: int = 5
 @export var starter_presets: PackedStringArray = PackedStringArray()
-@export var modules: Array[Dictionary] = []
-@export var skills: Array[Dictionary] = []
+@export var modules: Array[Dictionary] = []:
+	set(value):
+		modules = DeskLocalization.source_value(value)
+@export var skills: Array[Dictionary] = []:
+	set(value):
+		skills = DeskLocalization.source_value(value)
 @export var context_definitions: MemeContextDefinitions
 @export var axis_step: float = 0.1
 @export var context_depths: PackedFloat32Array = PackedFloat32Array([0.1, 0.3, 0.5, 0.7, 0.9])

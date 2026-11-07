@@ -20,9 +20,9 @@ group_ids = PackedStringArray()
 [resource]
 script = ExtResource("1_event")
 id = &"competitor_birth"
-title = "“漏掉一分钟”短图在街角流传"
-narrative = "纸灯港街角出现了一组名为“漏掉一分钟”的短图，发布者邀请路人补写各自错过的小事。几家本地群聊开始转发这些续篇，原先讨论其他表达的人也加入了接写。"
-mentor_comment = "别人漏掉一分钟就留出了接写的位置，你的长文先别把最后一个空位占满。"
+title = "LOC_THE_MISSING_MINUTE_IMAGE_POSTS_CIRCULATE_ON_959C5000"
+narrative = "LOC_A_SERIES_OF_SHORT_IMAGE_POSTS_CALLED_7E1ED957"
+mentor_comment = "LOC_SOMEONE_LEFT_A_MISSING_MINUTE_FOR_OTHERS_C1328F16"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("community", "archive")
 operation_ids = PackedStringArray("emerge", "attention_shift")

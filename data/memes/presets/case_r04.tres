@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"case_r04"
 kernel_id = &"relation"
-title = "R04 · 伤害性不高，侮辱性极强"
+title = "LOC_R04_LITTLE_HARM_MAXIMUM_INSULT_B47EAAE4"
 required_slots = PackedStringArray("role_a", "role_b", "relation")
-slot_prompts = PackedStringArray("角色 A（可改写）", "角色 B（可改写）", "关系方向（可改写）")
-default_values = PackedStringArray("实施动作的人", "被轻视/尴尬的一方", "物理损失小、面子损失大")
-family_anchor = "识别与变异约束：替换“伤害性/侮辱性”的强弱或对象；固定对仗带来传播节奏。"
-context_hint = "语义：把伤害拆成物质与象征两个维度，突出地位关系。\n语用：用于描述竞争、比较或社交失误中的“破防”，常以旁观口吻放大尴尬。\n跨语境：“面子”解释在中文语境尤其强，但平行句式易被翻译成跨文化反应语。\n这是分类文档的结构抽象，不是截图逐字转录、实证数值、事实认可或版权许可；政治、语用坐标与六维仍由玩家设置。"
+slot_prompts = PackedStringArray("LOC_CHARACTER_A_EDITABLE_F753F7A7", "LOC_CHARACTER_B_EDITABLE_BC066A33", "LOC_RELATIONSHIP_DIRECTION_EDITABLE_4F2C3521")
+default_values = PackedStringArray("LOC_PERSON_PERFORMING_THE_ACTION_3DD645A6", "LOC_THE_BELITTLED_OR_EMBARRASSED_PARTY_3C5C14D3", "LOC_SMALL_MATERIAL_LOSS_LARGE_LOSS_OF_FACE_7BA73024")
+family_anchor = "LOC_RECOGNITION_AND_VARIATION_CONSTRAINTS_REPLACE_THE_STRENGTHS_AB098BC6"
+context_hint = "LOC_SEMANTICS_HARM_IS_DIVIDED_INTO_MATERIAL_AND_AE7477BF"
 source_case_id = "R04"
 source_path = "E:\\UAL\\Thesis-BLF\\memes\\cases\\R04.png"
 source_sha256 = "760e24b6941e683f981b20ef1cbf773c304c3eadead60dc7146f69762297cdbc"

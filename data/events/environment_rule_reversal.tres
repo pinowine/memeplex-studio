@@ -39,9 +39,9 @@ group_ids = PackedStringArray("culture_fans")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_rule_reversal"
-title = "外部工坊提议反向使用原帖规则"
-narrative = "外部工坊公布了一份反向使用原帖规则的提案，并保留原句供读者对照。提案把原来的判断推向相反方向，发布者正在核对再利用条款，准备以自己的署名说明这条新结论。"
-mentor_comment = "规则能被反着用，先看它给谁留了门，别忙着给门牌抛光。"
+title = "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_USING_THE_ORIGINAL_4699A441"
+narrative = "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_APPLYING_THE_ORIGINAL_541E242F"
+mentor_comment = "LOC_A_RULE_CAN_WORK_IN_REVERSE_CHECK_0F53AD2A"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("identity", "language")
 operation_ids = PackedStringArray("split", "remix")

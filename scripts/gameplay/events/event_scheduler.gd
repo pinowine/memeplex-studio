@@ -36,7 +36,7 @@ static func choose_event(definitions: Array[MemeDemoEvent], hour: int, time_scal
 	for definition: MemeDemoEvent in candidates:
 		remaining_weight -= definition.weight
 		if remaining_weight < 0.0: return definition
-	push_error("事件权重抽样未命中已验证的候选池。")
+	push_error(DeskLocalization.source("LOC_WEIGHTED_EVENT_SAMPLING_DID_NOT_SELECT_AN_01245473"))
 	return null
 
 static func _condition_passes(condition: MemeDemoCondition, values: Dictionary) -> bool:

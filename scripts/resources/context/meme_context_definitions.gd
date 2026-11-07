@@ -1,7 +1,9 @@
 class_name MemeContextDefinitions
 extends Resource
 
-@export var entries: Array[Dictionary] = []
+@export var entries: Array[Dictionary] = []:
+	set(value):
+		entries = DeskLocalization.source_value(value)
 
 func validate(catalog: Resource) -> PackedStringArray:
 	var errors := PackedStringArray()

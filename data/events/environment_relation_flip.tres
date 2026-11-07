@@ -39,9 +39,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"environment_relation_flip"
-title = "职员群提议翻转原帖的对照结论"
-narrative = "一个职员群公布了改写方案，把原帖的对照关系翻转成相反结论。方案仍附原链接，但署名者表示这次推论与原作者不同，正在核对可再利用的部分。"
-mentor_comment = "对照表翻过来还是对照表，结论却换了户主，先把搬走的那一步标出来。"
+title = "LOC_AN_OFFICE_CHAT_PROPOSES_REVERSING_THE_ORIGINAL_B5C3FFB8"
+narrative = "LOC_AN_OFFICE_CHAT_PUBLISHES_A_REWRITE_THAT_041EB821"
+mentor_comment = "LOC_TURN_A_COMPARISON_TABLE_OVER_AND_IT_E2703D34"
 origin = &"environment_meme"
 topic_ids = PackedStringArray("work", "cost_of_living", "identity")
 operation_ids = PackedStringArray("split", "remix")

@@ -16,7 +16,7 @@ const INVENTORIES := {"module":"module_inventory","language":"context_resource_i
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const NeuronGraphic := preload("res://scripts/presentation/studio/design/desk_neuron_graphic.gd")
 const STACK_KINDS := ["group", "language", "module", "topic"]
-const STACK_TITLES := {"group":"群体", "language":"语言", "module":"补丁", "topic":"话题"}
+static var STACK_TITLES := {"group":DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"), "language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), "module":DeskLocalization.source("LOC_PATCH_70F56533"), "topic":DeskLocalization.source("LOC_TOPICS_A2C81C5A")}
 const STACK_ANGLES := {"group":-3.0, "language":2.0, "module":-2.0, "topic":3.0}
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 
@@ -65,7 +65,7 @@ class StackSurface extends Control:
 			draw_colored_polygon(outline, palette.body.darkened(.10 * index))
 			outline.append(outline[0])
 			draw_polyline(outline, palette.edge, 1.1, true)
-		var caption := "松开收纳" if highlighted and hovered else ("空卡摞" if quantity == 0 else "库存卡片")
+		var caption := DeskLocalization.source("LOC_RELEASE_TO_STORE_5DA913B8") if highlighted and hovered else (DeskLocalization.source("LOC_EMPTY_STACK_4498EADD") if quantity == 0 else DeskLocalization.source("LOC_INVENTORY_CARDS_6691F0EB"))
 		_face.configure({"kind":kind, "title":title, "count":quantity, "source_label":DeskLocalization.text(caption)}, get_theme_default_font())
 		_face.set_hovered(hovered)
 		_face.set_selected(selected or highlighted)
@@ -323,7 +323,7 @@ func stack_details(kind: String) -> Dictionary:
 		if str(card.kind) == kind and bool(card.inventory_docked) and int(card.clipped_slot) < 0:
 			types += 1
 			quantity += _available(kind, str(card.id))
-	return {"kind":kind, "title":DeskLocalization.source_format("%s卡摞", [str(STACK_TITLES.get(kind, kind))], [0]), "body":DeskLocalization.source_format("单击下方卡片查看详情，拖到纸张槽位安装。\n共 %d 类，%d 张。", [types, quantity]), "count":quantity, "types":types}
+	return {"kind":kind, "title":DeskLocalization.source_format("LOC_S_STACK_430C52F7", [str(STACK_TITLES.get(kind, kind))], [0]), "body":DeskLocalization.source_format("LOC_CLICK_A_CARD_BELOW_FOR_DETAILS_OR_20674E56", [types, quantity]), "count":quantity, "types":types}
 
 func _stack_at(point: Vector2) -> String:
 	for kind: String in _stack_surfaces:
@@ -413,7 +413,7 @@ func _refresh_focus_list() -> void:
 	_focus_grid.columns = maxi(1, floori((_focus_rect.size.x - 12) / (dimensions.x + 8)))
 	if records.is_empty():
 		var empty := Label.new()
-		empty.text = DeskLocalization.text("暂无可用材料\n收取传真后会放入对应卡摞。")
+		empty.text = DeskLocalization.text("LOC_NO_MATERIALS_AVAILABLE_COLLECT_A_FAX_TO_3DE42B95")
 		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		empty.custom_minimum_size = Vector2(maxf(100, _focus_rect.size.x - 18), 72)
 		empty.add_theme_font_size_override("font_size", 15)
@@ -969,7 +969,7 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	var key := String(_props._hit_prop(viewport_point))
 	if key.begins_with("stack/"):
 		var details := stack_details(key.trim_prefix("stack/"))
-		details.gesture = "单击展开卡摞"
+		details.gesture = DeskLocalization.source("LOC_CLICK_TO_OPEN_STACK_97B40CE3")
 		return details
 	if not _cards.has(key): return {}
 	return details_for_item(str(_cards[key].kind),str(_cards[key].id))
@@ -1011,14 +1011,14 @@ func details_for_item(kind: String,id: String) -> Dictionary:
 	var installed: bool = int(card.get("clipped_slot",-1)) >= 0
 	var details := {"kind":card.kind,"id":card.id,"title":str(definition.get("title",card.id)),
 		"count":_available(card.kind,card.id),"description":str(definition.get("description","")),
-		"status":"已安装" if installed else ("收纳中" if bool(card.inventory_docked) else "桌面卡牌"),
-		"gesture":"拖到回形针安装；拖出回形针移除" if card.kind == "module" else "拖到对应空槽安装"}
+		"status":DeskLocalization.source("LOC_INSTALLED_A8B6C39D") if installed else (DeskLocalization.source("LOC_STORED_672A3730") if bool(card.inventory_docked) else DeskLocalization.source("LOC_DESK_CARD_D7A1366F")),
+		"gesture":DeskLocalization.source("LOC_DRAG_ONTO_A_PAPER_CLIP_TO_INSTALL_DAD3A6AB") if card.kind == "module" else DeskLocalization.source("LOC_DRAG_INTO_THE_MATCHING_EMPTY_SLOT_TO_C6DF82D5")}
 	var face_record := _physical_face_record(card)
 	details.source_label = str(face_record.get("source_label",""))
 	details.source_records = face_record.get("source_records",[]).duplicate(true)
-	if str(card.id) == "module_boundary": details.unlock_hint = "安装后增加一个语言槽"
-	elif str(card.id) == "module_relation": details.unlock_hint = "安装后增加一个人群槽"
-	if kind in ["stance_token", "pragmatic_token"]: details.gesture = "拖到对应坐标轴使用"
+	if str(card.id) == "module_boundary": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_LANGUAGE_SLOT_WHEN_INSTALLED_39520ED9")
+	elif str(card.id) == "module_relation": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_AUDIENCE_SLOT_WHEN_INSTALLED_D65F6334")
+	if kind in ["stance_token", "pragmatic_token"]: details.gesture = DeskLocalization.source("LOC_DRAG_TO_THE_MATCHING_AXIS_TO_USE_0068EEBC")
 	return details
 
 func inspection() -> Dictionary:

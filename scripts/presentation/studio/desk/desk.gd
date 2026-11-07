@@ -99,26 +99,26 @@ func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> v
 	if index >= 0 and index < slots.size():
 		var resource_id: String = str(slots[index].get("resource_id",slots[index].get("id","")))
 		info = board._resource(resource_id)
-	var names := {"language":"语言","group":"群体","topics":"话题","stance":"立场","pragmatic":"语用"}
+	var names := {"language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"),"group":DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"),"topics":DeskLocalization.source("LOC_TOPICS_A2C81C5A"),"stance":DeskLocalization.source("LOC_STANCE_8A2DE4CD"),"pragmatic":DeskLocalization.source("LOC_PRAGMATICS_7063D1D8")}
 	var title: String = str(info.get("title",names.get(layer,layer)))
 	var body: String = str(info.get("description",info.get("text","")))
 	var instructions := {
-		"language":"语言决定表达使用的语言。默认一个槽，释义补丁可增加第二个。至少保留一个来源有效且已挂接的语言，才能发布。",
-		"group":"人群决定表达面向的群体。默认一个槽，对照补丁可增加第二个。至少保留一个来源有效且已挂接的人群，才能发布。",
-		"topics":"话题用横向卡片安装；拖动卡片取下。下方库存中的卡片可拖入空槽。",
-		"stance":"横轴：自由—威权；纵轴：平等—等级。空心点是起点，实心点是当前位置。一次沿一个轴移动，每步0.1；离开起点使用对应筹码，返回归还。",
-		"pragmatic":"横轴：真诚—反讽；纵轴：支持—反对。一次沿一个轴移动，每步0.1。对应筹码数量可在显示器的语用模式查看。"}
+		"language":DeskLocalization.source("LOC_LANGUAGE_DETERMINES_WHICH_LANGUAGE_THE_EXPRESSION_USES_798C3F4A"),
+		"group":DeskLocalization.source("LOC_AUDIENCE_DETERMINES_WHO_THE_EXPRESSION_ADDRESSES_THERE_691D68FC"),
+		"topics":DeskLocalization.source("LOC_TOPICS_USE_HORIZONTAL_CARDS_DRAG_AN_INSTALLED_997B4F0A"),
+		"stance":DeskLocalization.source("LOC_HORIZONTAL_FREEDOM_AUTHORITY_VERTICAL_EQUALITY_HIERARCHY_THE_3F9038E0"),
+		"pragmatic":DeskLocalization.source("LOC_HORIZONTAL_SINCERITY_IRONY_VERTICAL_SUPPORT_OPPOSITION_MOVE_15B127DA")}
 	if not body.is_empty(): body += "\n\n"
 	body += str(instructions.get(layer,""))
 	if layer in ["language","group"]:
-		body += DeskLocalization.source_format("\n\n当前容量：%d。拖动卡片取下，单击下方库存卡片查看信息。", _page.simulation.design_state.context_slot_capacity(layer))
+		body += DeskLocalization.source_format("LOC_CAPACITY_D_DRAG_INSTALLED_CARDS_TO_REMOVE_8F1AAF85", _page.simulation.design_state.context_slot_capacity(layer))
 	_slot_details = {"title":title,"body":body,"layer":layer,"slot":index}
 	_focus_slot(layer,viewport_rect)
 
 func _module_slots_pressed(viewport_rect: Rect2) -> void:
 	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/edit": return
 	if _page._interface_paused() or not _page.startup_ready(): return
-	_slot_details = {"title":"补丁回形针","body":"将下方库存或桌面上的补丁拖到空回形针上安装。拖出已安装的补丁可将它取下。","layer":"module"}
+	_slot_details = {"title":DeskLocalization.source("LOC_PATCH_CLIPS_4D7B122D"),"body":DeskLocalization.source("LOC_DRAG_A_PATCH_FROM_THE_INVENTORY_BELOW_934DD092"),"layer":"module"}
 	_focus_slot("module",viewport_rect)
 
 func _focus_slot(layer: String, viewport_rect: Rect2) -> void:
@@ -188,14 +188,14 @@ func _update_hover_strip() -> void:
 	var info: Dictionary = _material_cards.hover_info(point) if _material_cards != null else {}
 	if info.is_empty(): info = _monitor.hover_info(point)
 	var fax_hint: String = _fax.hover_details(point)
-	if info.is_empty() and not fax_hint.is_empty(): info = {"title":"传真情报","hint":fax_hint}
+	if info.is_empty() and not fax_hint.is_empty(): info = {"title":DeskLocalization.source("LOC_FAX_INTELLIGENCE_214AFC92"),"hint":fax_hint}
 	var board: Control = _page.hud.design_workbench().context_slice()
 	if info.is_empty() and board.is_visible_in_tree(): info = board.hover_info(point)
 	if info.is_empty():
 		var id: String = str(_props.inspection().get("hovered",""))
-		var labels := {"fax":"传真机","printer":"日志打印机","crt":"点数显示器","folder":"档案与材料收纳","phonebook":"通讯录","clock":"时钟","speed":"播放速度","sheet/map":"世界","sheet/edit":"编辑","sheet/cultivate":"培养","sheet/spread":"传播"}
+		var labels := {"fax":DeskLocalization.source("LOC_FAX_MACHINE_347AFBA3"),"printer":DeskLocalization.source("LOC_LOG_PRINTER_CCF8EA8C"),"crt":DeskLocalization.source("LOC_MEME_MONITOR_09D96DD1"),"folder":DeskLocalization.source("LOC_ARCHIVE_AND_MATERIAL_STORAGE_0A932652"),"phonebook":DeskLocalization.source("LOC_CONTACTS_06657C27"),"clock":DeskLocalization.source("LOC_CLOCK_0F58FD2A"),"speed":DeskLocalization.source("LOC_PLAYBACK_SPEED_C114A632"),"sheet/map":DeskLocalization.source("LOC_WORLD_33650A36"),"sheet/edit":DeskLocalization.source("LOC_EDIT_05183656"),"sheet/cultivate":DeskLocalization.source("LOC_CULTIVATE_62025174"),"sheet/spread":DeskLocalization.source("LOC_SPREAD_1A2DA4D4")}
 		if labels.has(id):
-			info = {"title":labels[id],"hint":"移向旁边取用材料；单击查档案" if id == "folder" else "单击聚焦"}
+			info = {"title":labels[id],"hint":DeskLocalization.source("LOC_MOVE_ASIDE_TO_TAKE_MATERIALS_CLICK_TO_2A43CD1C") if id == "folder" else DeskLocalization.source("LOC_CLICK_TO_FOCUS_F860D57A")}
 	if info.has("text") and not info.has("description"): info.description = str(info.text)
 	if info.is_empty(): _hover_strip.clear_hover()
 	else: _hover_strip.show_hover(info)
@@ -277,7 +277,7 @@ func configure(page: Node2D) -> void:
 	empty.set_content_margin_all(25)
 	empty.set_content_margin(SIDE_TOP, 85)
 	workbench.add_theme_stylebox_override("panel", empty)
-	workbench.get_node("Column/Toolbar/Heading").text = "模因设计 / 印前稿"
+	workbench.get_node("Column/Toolbar/Heading").text = DeskLocalization.source("LOC_MEME_DESIGN_PRINT_DRAFT_944F8221")
 	for id in ["Fullscreen", "SelectCountry", "Purchase"]: page.hud.get_node("%" + id).hide()
 	page.hud.get_node("%SettingsMenu").minimum_size_changed.connect(_fit_settings)
 	page.hud.get_node("%CodexPanel").minimum_size_changed.connect(_fit_codex)
@@ -873,7 +873,7 @@ func _focus_material_stack(kind: String) -> void:
 
 func _show_stack_details() -> void:
 	_slot_details.stack_kind = _focused_stack
-	_slot_details.stack_title = {"group":"群体卡片","language":"语言卡片","topic":"话题卡片","module":"补丁卡片","stance_token":"立场筹码","pragmatic_token":"语用筹码"}.get(_focused_stack,"库存卡片")
+	_slot_details.stack_title = {"group":DeskLocalization.source("LOC_AUDIENCE_CARDS_39992E9B"),"language":DeskLocalization.source("LOC_LANGUAGE_CARDS_F27DA9A7"),"topic":DeskLocalization.source("LOC_TOPIC_CARDS_213FE1AB"),"module":DeskLocalization.source("LOC_PATCH_CARDS_F1906C0B"),"stance_token":DeskLocalization.source("LOC_STANCE_TOKEN_D1A72C88"),"pragmatic_token":DeskLocalization.source("LOC_PRAGMATICS_TOKEN_FEEBD9AF")}.get(_focused_stack,DeskLocalization.source("LOC_INVENTORY_CARDS_6691F0EB"))
 	_slot_reader.show_details(_slot_details,_slot_reader.get_viewport().get_visible_rect())
 	_layout_focused_stack()
 
@@ -1059,17 +1059,17 @@ func sync_state(state: Dictionary) -> void:
 	var sources: Array = []
 	var keys: Dictionary = {}
 	for index in state.get("economy_log", []).size():
-		var text := str(state.economy_log[index]).replace("；购买系统尚未设计。", "").replace("; 购买系统尚未设计。", "")
-		var entry := {"id":"points/%d/%s" % [index,text.sha256_text()],"text":"点数流水\n"+text}
+		var text := str(state.economy_log[index]).replace(DeskLocalization.source("LOC_THE_PURCHASING_SYSTEM_HAS_NOT_BEEN_DESIGNED_5865D56C"), "").replace(DeskLocalization.source("LOC_THE_PURCHASING_SYSTEM_HAS_NOT_BEEN_DESIGNED_427E491E"), "")
+		var entry := {"id":"points/%d/%s" % [index,text.sha256_text()],"text":DeskLocalization.source("LOC_MEME_LEDGER_55EA95CC")+text}
 		if index < _page.simulation.economy.transactions.size():
 			var transaction: Dictionary = _page.simulation.economy.transactions[index]
-			entry.display_template = "点数流水\nH%d  %s%d Meme  %s → %d"
+			entry.display_template = DeskLocalization.source("LOC_POINT_TRANSACTIONS_H_D_S_D_MEME_2F37D2F6")
 			entry.display_arguments = [transaction.hour,"+" if int(transaction.delta)>=0 else "",transaction.delta,transaction.reason,transaction.balance]
 			entry.localize_arguments = [3]
 		sources.append(entry)
 	for event in state.get("events", []):
-		var text := "H%d / %s\n%s\n67：%s" % [int(event.get("hour", 0)), str(event.get("title", "事件")), str(event.get("impact_text", "")), str(event.get("mentor_comment", ""))]
-		sources.append({"id":"event/"+str(event.get("instance_id",""))+"/"+text.sha256_text(),"event_id":str(event.get("instance_id","")),"text":text,"display_template":"H%d / %s\n%s\n67：%s","display_arguments":[int(event.get("hour",0)),str(event.get("title","事件")),str(event.get("impact_text","")),str(event.get("mentor_comment",""))],"localize_arguments":[1,2,3]})
+		var text := "H%d / %s\n%s\n67：%s" % [int(event.get("hour", 0)), str(event.get("title", DeskLocalization.source("LOC_EVENT_C560201B"))), str(event.get("impact_text", "")), str(event.get("mentor_comment", ""))]
+		sources.append({"id":"event/"+str(event.get("instance_id",""))+"/"+text.sha256_text(),"event_id":str(event.get("instance_id","")),"text":text,"display_template":"H%d / %s\n%s\n67：%s","display_arguments":[int(event.get("hour",0)),str(event.get("title",DeskLocalization.source("LOC_EVENT_C560201B"))),str(event.get("impact_text","")),str(event.get("mentor_comment",""))],"localize_arguments":[1,2,3]})
 	for source in sources: keys[source.id] = true
 	var replace := int(state.get("seed", _page.simulation.seed_value)) != _journal_seed or int(state.get("hour", 0)) < _journal_hour
 	for key in _journal_known:
@@ -1090,7 +1090,7 @@ func sync_state(state: Dictionary) -> void:
 		_status_text = status
 		var id := "status/%d" % _journal.size()
 		var arguments: Array = [_journal_hour,status,int(state.get("meme_points",0)),int(state.get("attention_budget",0)),int(state.get("exposed",0)),int(state.get("adopted",0))]
-		var template := "H%d / %s\nMeme %d · 注意力 %d\n曝光 %d · 采用 %d"
+		var template := DeskLocalization.source("LOC_H_D_S_MEME_D_ATTENTION_D_ED191286")
 		_journal.append({"id":id,"text":template%arguments,"display_template":template,"display_arguments":arguments,"localize_arguments":[1]})
 		_journal_known[id] = true
 	_printer.sync_entries(_journal)
@@ -1262,11 +1262,11 @@ func _component_details() -> Dictionary:
 		if mode != "phonebook": details.erase("contacts")
 		return details
 	var descriptions := {
-		"crt":{"title":"点数显示器","body":"下方三个键切换 Meme、政治立场和语用点数。Meme页保留变化曲线；其余两页显示四个方向已有的筹码。抓取方向格中的筹码，可拖到培养纸的对应坐标轴。"},
-		"printer":{"title":"日志打印机","body":"点数流水和事件摘要会继续打印。单击纸上的事件记录，可查看对应的原始事件。"},
-		"clock":{"title":"时间罗盘","body":"罗盘显示当前日期、季节与天气。时间推进遵守当前播放速度；查看说明不会改变模因与材料。"},
-		"speed":{"title":"播放速度","body":"三个实体键控制暂停、正常播放和加速。翻页与普通传真打印不会暂停；附带物资的传真会等待你取出纸片。"}}
-	return descriptions.get(_component_target,{"title":"工作台","body":"按 Esc，回到桌面。"}).duplicate(true)
+		"crt":{"title":DeskLocalization.source("LOC_MEME_MONITOR_09D96DD1"),"body":DeskLocalization.source("LOC_THE_THREE_KEYS_BELOW_SWITCH_BETWEEN_MEME_20D0119B")},
+		"printer":{"title":DeskLocalization.source("LOC_LOG_PRINTER_CCF8EA8C"),"body":DeskLocalization.source("LOC_THE_PRINTER_KEEPS_PRODUCING_THE_MEME_LEDGER_BDC9A3A3")},
+		"clock":{"title":DeskLocalization.source("LOC_TIME_COMPASS_BB6E1B5D"),"body":DeskLocalization.source("LOC_THE_COMPASS_SHOWS_THE_CURRENT_DATE_SEASON_C7931AB4")},
+		"speed":{"title":DeskLocalization.source("LOC_PLAYBACK_SPEED_C114A632"),"body":DeskLocalization.source("LOC_THE_THREE_PHYSICAL_KEYS_PAUSE_PLAY_NORMALLY_262AD9F1")}}
+	return descriptions.get(_component_target,{"title":DeskLocalization.source("LOC_WORKBENCH_F9E02D3C"),"body":DeskLocalization.source("LOC_PRESS_ESC_TO_RETURN_TO_THE_DESK_4D921FE1")}).duplicate(true)
 
 func _show_component_details(hover: Dictionary = {}) -> void:
 	if _slot_reader == null or _component_target.is_empty() or slot_details_active(): return
@@ -1316,7 +1316,7 @@ func _material_full_details(info: Dictionary) -> Dictionary:
 	for key: String in ["description","gesture","unlock_hint"]:
 		var text := str(info.get(key,""))
 		if not text.is_empty(): parts.append(text)
-	if info.has("count"): parts.append(DeskLocalization.source_format("可用数量：%s",str(info.count)))
+	if info.has("count"): parts.append(DeskLocalization.source_format("LOC_AVAILABLE_S_8B2D5419",str(info.count)))
 	var source := str(info.get("source_label",""))
-	if not source.is_empty(): parts.append(DeskLocalization.source_format("来源：%s",source))
+	if not source.is_empty(): parts.append(DeskLocalization.source_format("LOC_SOURCE_S_892247BA",source))
 	return {"title":str(info.get("title","")),"body":"\n\n".join(parts),"source_records":info.get("source_records",[]).duplicate(true)}

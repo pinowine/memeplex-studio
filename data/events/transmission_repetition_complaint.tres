@@ -39,9 +39,9 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_repetition_complaint"
-title = "职员抱怨几处群聊都在重复原句"
-narrative = "职员在群里抱怨，同一句话已经在几个聊天窗口反复出现。有人开始只扫过开头，不再为它停下来，原先愿意参与的回应也变少了。"
-mentor_comment = "同一句话换了几个窗口，疲劳倒不需要跨平台登录，先换用途。"
+title = "LOC_OFFICE_WORKERS_COMPLAIN_THAT_SEVERAL_CHATS_REPEAT_14850D5A"
+narrative = "LOC_OFFICE_WORKERS_COMPLAIN_THAT_THE_SAME_PHRASE_95FEB1B2"
+mentor_comment = "LOC_THE_PHRASE_CHANGED_CHAT_WINDOWS_BUT_FATIGUE_F125545E"
 origin = &"transmission"
 topic_ids = PackedStringArray("work", "community")
 operation_ids = PackedStringArray("fatigue")
