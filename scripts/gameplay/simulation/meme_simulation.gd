@@ -134,12 +134,15 @@ func starter_draft(preset_id: String, base: Dictionary = {}) -> Dictionary:
 	if preset_id not in design_state.rules.starter_presets: return {}
 	var preset := catalog.find_preset(preset_id)
 	if preset == null or catalog.groups.is_empty() or catalog.channels.is_empty(): return {}
-	var defaults := {"language_id":str(catalog.groups[0].language_id), "group_id":str(catalog.groups[0].id),
-		"channel_id":"local_board" if find_channel("local_board") != null else str(catalog.channels[0].id),
-		"political_known":false, "political_position":Vector2.ZERO, "pragmatic_position":Vector2.ZERO,
+	var defaults := {"channel_id":"local_board" if find_channel("local_board") != null else str(catalog.channels[0].id),
 		"target":preset.title, "remix_cost":0.3, "context_dependency":0.5, "reuse_permission":&"unknown",
-		"language_access":0.8, "recognizability":0.8, "topic_ids":PackedStringArray(["cost_of_living"] if "cost_of_living" in catalog.topics else [catalog.topics[0]])}
+		"language_access":0.8, "recognizability":0.8}
+	defaults.merge(design_state.rules.starter_contexts.get(preset_id,{}), true)
 	defaults.merge(base, true)
+	for field in ["political_position","pragmatic_position"]:
+		var point: Variant = defaults.get(field)
+		if point is Array and point.size() == 2: defaults[field] = Vector2(float(point[0]),float(point[1]))
+	defaults.topic_ids = PackedStringArray(defaults.get("topic_ids",[]))
 	return preset.to_draft(defaults)
 
 func design_action(action: String, params: Dictionary = {}) -> PackedStringArray:
