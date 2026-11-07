@@ -63,7 +63,10 @@ func _ready() -> void:
 	camera.current = true
 	logical = SubViewport.new()
 	logical.name = "Authoritative2DContent"
-	logical.size = LOGICAL_SIZE
+	# Keep desk/input units fixed while preserving small overview glyphs in the backing texture.
+	logical.size = LOGICAL_SIZE * 2
+	logical.size_2d_override = LOGICAL_SIZE
+	logical.size_2d_override_stretch = true
 	logical.disable_3d = true
 	logical.msaa_2d = Viewport.MSAA_4X
 	# Oversampled bitmap glyphs need mip filtering when the desk is reduced.
@@ -352,7 +355,7 @@ func _update_hover() -> int:
 		target = desktop.control_hover_target(logical.gui_get_hovered_control())
 		if not target.is_empty():
 			var polygon: PackedVector2Array = target.polygon
-			for index in polygon.size(): polygon[index] *= get_viewport().get_visible_rect().size / Vector2(logical.size)
+			for index in polygon.size(): polygon[index] *= get_viewport().get_visible_rect().size / logical.get_visible_rect().size
 			hover_outline.show_polygon(str(target.key), polygon)
 		else: hover_outline.clear()
 		return target.cursor_shape if not target.is_empty() else desktop.control_cursor_shape(logical.gui_get_hovered_control())

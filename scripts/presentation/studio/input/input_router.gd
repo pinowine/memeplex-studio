@@ -28,7 +28,7 @@ func configure(camera: Camera3D, logical: SubViewport, viewport: Viewport, butto
 	_desktop = desktop
 
 func modal_to_logical(point: Vector2) -> Vector2:
-	return point * Vector2(_logical.size) / _viewport.get_visible_rect().size
+	return point * _logical.get_visible_rect().size / _viewport.get_visible_rect().size
 
 func root_pointer_from_logical(point: Vector2) -> Vector2:
 	if pointer_known: return pointer_position
