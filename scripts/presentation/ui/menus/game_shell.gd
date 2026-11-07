@@ -77,6 +77,7 @@ func observe(action: String, data: Dictionary = {}) -> void:
 func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 	if bool(step.get("auto_overview", false)): page._return_to_desktop()
 	if _id == "starter": page.desk._show_component_details()
+	if _id == "starter_confirm": _reveal_starter_confirmation()
 	var action := str(step.get("action", ""))
 	if action not in ["phone_pickup", "starter_chosen", "startup_finished"]: return
 	# These steps can be completed while the introductory notes are still open.
@@ -92,13 +93,24 @@ func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 		"startup_finished":
 			if page.startup_ready(): tutorial.observe_action("startup_finished")
 
+func _reveal_starter_confirmation() -> void:
+	# Selection rebuilds the paper rows; wait for the native container layout.
+	await get_tree().process_frame
+	if not tutorial._active or str(tutorial.inspection().step.get("id","")) != "starter_confirm": return
+	var reader: Control = page.desk._slot_reader
+	if reader.is_visible_in_tree() and reader._choice_buttons.size() > 3:
+		reader._choice_scroll.ensure_control_visible(reader._choice_buttons[3])
+
 func _target(id: String) -> Variant:
 	var target: Variant = _logical_target(id)
 	# Physical controls keep their logical nodes visible but make their ink
 	# transparent. Check visibility before projection, without checking alpha.
 	if target is Control and not target.is_visible_in_tree(): return null
 	if page.has_meta("studio3d"):
-		return page.get_meta("studio3d").project_target(target)
+		target = page.get_meta("studio3d").project_target(target)
+	if id.begins_with("fax/option/") or id == "fax/confirm":
+		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
+		return area.intersection(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
 	return target
 
 func _logical_target(id: String) -> Variant:
@@ -110,7 +122,7 @@ func _logical_target(id: String) -> Variant:
 		"fax/options":
 			var reader: Control = page.desk._slot_reader
 			if reader != null and reader.is_visible_in_tree() and not reader._choice_buttons.is_empty():
-				return reader._choice_box
+				return reader._choice_scroll
 			return null
 		"fax/confirm":
 			var reader: Control = page.desk._slot_reader
@@ -269,8 +281,8 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	var id := str(step.get("target", ""))
 	var editor: Control = page.hud.design_workbench()
 	if id in ["fax/options", "fax/confirm"]:
-		for button: Button in page.desk._slot_reader._choice_buttons:
-			if button.is_visible_in_tree() and not button.disabled: areas.append(_tutorial_project_rect(button))
+		if page.desk._slot_reader.is_visible_in_tree():
+			areas.append(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
 	elif id.begins_with("map/") and page.atlas.map_input.is_visible_in_tree():

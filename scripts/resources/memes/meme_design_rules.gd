@@ -10,6 +10,7 @@ const EVENT_REWARD_COUNT := 1
 @export var definition_version: int = DEFINITION_VERSION
 @export var module_slots: int = 5
 @export var starter_presets: PackedStringArray = PackedStringArray()
+@export var starter_contexts: Dictionary = {}
 @export var modules: Array[Dictionary] = []:
 	set(value):
 		modules = DeskLocalization.source_value(value)
@@ -79,6 +80,7 @@ func signature() -> String:
 		"version": definition_version,
 		"module_slots": module_slots,
 		"starters": Array(starter_presets),
+		"starter_contexts": starter_contexts,
 		"modules": modules,
 		"skills": skills,
 		"contexts": context_definitions.entries if context_definitions != null else [],
@@ -140,10 +142,12 @@ func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
 		for edge: Variant in edges:
 			if not edge is Dictionary or not node_ids.has(str(edge.get("from", ""))) or not node_ids.has(str(edge.get("to", ""))): errors.append("Invalid neuron edge")
 	if starter_presets.size() != 3: errors.append("Exactly three opening choices are required")
+	if starter_contexts.size() != starter_presets.size(): errors.append("Every opening preset requires its own context profile")
 	var starter_seen := {}
 	for id in starter_presets:
 		if starter_seen.has(id) or catalog.find_preset(id) == null: errors.append("Invalid opening preset")
 		starter_seen[id] = true
+		errors.append_array(_starter_context_errors(id))
 	var skill_ids := {}
 	for skill in skills: skill_ids[str(skill.get("id", ""))] = true
 	for skill in skills:
@@ -188,3 +192,38 @@ func _cycle(id: String, visiting: Dictionary, done: Dictionary) -> bool:
 
 func _integer(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and float(value) == floor(float(value))
+
+func _starter_context_errors(id: String) -> PackedStringArray:
+	var errors := PackedStringArray()
+	var profile: Variant = starter_contexts.get(id)
+	if not profile is Dictionary:
+		return PackedStringArray(["Missing opening context profile: " + id])
+	for pair in [["language","language_id"],["group","group_id"]]:
+		if not profile.get(pair[1]) is String or not _context_value_exists(pair[0],str(profile.get(pair[1],""))):
+			errors.append("Unknown opening " + str(pair[0]) + ": " + id)
+	var topics: Variant = profile.get("topic_ids")
+	if not topics is Array or topics.is_empty() or topics.size() > 3:
+		errors.append("Opening topics require one to three defined resources: " + id)
+	else:
+		var seen := {}
+		for topic: Variant in topics:
+			if not topic is String or seen.has(topic) or not _context_value_exists("topic",str(topic)):
+				errors.append("Invalid or repeated opening topic: " + id)
+			seen[topic] = true
+	for field in ["political_position","pragmatic_position"]:
+		var point: Variant = profile.get(field)
+		if not point is Array or point.size() != 2:
+			errors.append("Opening axis must have two coordinates: " + id)
+			continue
+		for value: Variant in point:
+			if not (value is int or value is float) or not is_finite(float(value)) or absf(float(value)) > 1.0:
+				errors.append("Opening axis must be finite and bounded: " + id)
+	if profile.get("political_known") != true:
+		errors.append("Opening political context must be explicit, including neutral: " + id)
+	return errors
+
+func _context_value_exists(kind: String, value: String) -> bool:
+	if context_definitions == null: return false
+	for entry: Dictionary in context_definitions.entries:
+		if str(entry.kind) == kind and str(entry.value) == value: return true
+	return false
