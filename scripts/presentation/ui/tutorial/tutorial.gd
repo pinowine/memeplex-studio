@@ -17,6 +17,8 @@ const CARD_MARGIN := 20.0
 const TARGET_GAP := 52.0
 const MAX_ARROW_LENGTH := 72.0
 const TYPE_SPEED := 32.0
+const FOLLOW_RATE := 8.0
+const FocusShader = preload("res://shaders/ui/tutorial_focus.gdshader")
 
 class TypewriterEffect extends RichTextEffect:
 	var bbcode := "typewriter"
@@ -54,6 +56,10 @@ var _transition: Tween
 var _transitioning := false
 var _appearance := 0.0
 var _card_position := Vector2.ZERO
+var _card_destination := Vector2.ZERO
+var _card_placed := false
+var _focus: ColorRect
+var _focus_material: ShaderMaterial
 var _arrow_from := Vector2.ZERO
 var _arrow_to := Vector2.ZERO
 var _arrow_visible := false
@@ -70,6 +76,15 @@ func _ready() -> void:
 	# Read the card projection after the studio updates its camera and paper meshes.
 	process_priority = 101
 	if theme == null: theme = load("res://data/presentation/ui/demo_theme.tres")
+	_focus = ColorRect.new()
+	_focus.name = "TutorialFocus"
+	_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_focus_material = ShaderMaterial.new()
+	_focus_material.shader = FocusShader
+	_focus.material = _focus_material
+	add_child(_focus)
+	_focus.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_focus.hide()
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
 	_ui.get_node("Card/Content/Body").install_effect(_typewriter)
@@ -80,7 +95,7 @@ func _ready() -> void:
 	_drag_arrow = DragArrow.new()
 	_drag_arrow.name = "DragGuideArrow"
 	add_child(_drag_arrow)
-	move_child(_drag_arrow, 0)
+	move_child(_drag_arrow, 1)
 	_drag_arrow.hide()
 	_ui.get_node("Card/Content/Actions/Continue").pressed.connect(advance)
 	_ui.get_node("Card/Content/Actions/Skip").pressed.connect(skip)
@@ -225,6 +240,7 @@ func begin() -> void:
 	_history.clear()
 	_completed = false
 	_hint_only = false
+	_card_placed = false
 	_open()
 
 func set_step(id: String) -> bool:
@@ -308,35 +324,12 @@ func _present_step() -> void:
 	_stop_transition()
 	_hover_target = ""
 	_hover_text = ""
-	var previous_index := _display_index
-	var previous_position := _card_position
-	var previous_progress := _typewriter.progress
 	_display_index = _index
+	_typewriter.progress = 0.0
+	_transitioning = false
+	_appearance = 1.0
 	_refresh()
-	# A card that stays in place only needs new ink.
-	if _appearance >= 0.99 and previous_position.distance_to(_card_position) < 2.0:
-		_transitioning = false
-		_typewriter.progress = 0.0
-		_refresh()
-		_animate_portrait()
-		return
-	_display_index = previous_index
-	_card_position = previous_position
-	_refresh()
-	_typewriter.progress = previous_progress
-	_transitioning = true
-	_transition = create_tween()
-	if _appearance > 0.01:
-		_transition.tween_method(_set_appearance, _appearance, 0.0, 0.18).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	_transition.tween_callback(func():
-		_display_index = _index
-		_typewriter.progress = 0.0
-		_set_appearance(0.0)
-		_animate_portrait())
-	_transition.tween_method(_set_appearance, 0.0, 1.0, 0.30).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	_transition.tween_callback(func():
-		_transitioning = false
-		_refresh())
+	_animate_portrait()
 
 func _animate_portrait() -> void:
 	if _portrait_tween != null and _portrait_tween.is_valid(): _portrait_tween.kill()
@@ -361,6 +354,10 @@ func _set_appearance(value: float) -> void:
 func _process(delta: float) -> void:
 	if not visible: return
 	_refresh()
+	var weight := 1.0 - exp(-FOLLOW_RATE * delta)
+	_card_position = _card_position.lerp(_card_destination, weight)
+	_ui.get_node("Card").position = _card_position
+	_update_arrow(Rect2(_card_position, _ui.get_node("Card").size))
 	if _active and not _transitioning:
 		var speed := TYPE_SPEED * (1.8 if TranslationServer.get_locale().begins_with("en") else 1.0)
 		_typewriter.progress = minf(_typewriter.progress + delta * speed, _body_text.length() + 3.0)
@@ -429,11 +426,14 @@ func _refresh() -> void:
 	var card: Control = _ui.get_node("Card")
 	var compact := size.x < 900 or size.y < 560
 	var width := minf(600 if bool(step.get("centered", false)) else 500, size.x - CARD_MARGIN * 2.0)
-	var minimum_width := 268.0 if compact else 344.0
+	var minimum_width := minf(344.0, size.x - CARD_MARGIN * 2.0)
 	# The live phone paper reserves the right side, including while it slides in.
 	for rectangle: Rect2 in _avoid_rects:
 		if not bool(step.get("centered", false)) and rectangle.get_center().x > size.x * .5:
 			width = minf(width, maxf(minimum_width, rectangle.position.x - CARD_MARGIN * 2.0 - TARGET_GAP))
+	if not bool(step.get("centered", false)) and _target.has_area():
+		var side_width := maxf(_target.position.x, size.x - _target.end.x) - CARD_MARGIN - TARGET_GAP
+		if side_width >= minimum_width: width = minf(width, side_width)
 	var portrait: Control = card.get_node("Portrait67")
 	portrait.visible = true
 	portrait.position = Vector2(14, 18) if compact else Vector2(18, 20)
@@ -466,14 +466,24 @@ func _refresh() -> void:
 	waiting.size.x = content.size.x
 	card.size.y = maxf(minimum_height, content.get_combined_minimum_size().y + padding.y)
 	content.size = card.size - padding
-	_card_position = _place_card(card.size)
-	card.pivot_offset = Vector2(0, card.size.y * 0.5)
-	card.scale = Vector2(lerpf(0.04, 1.0, _appearance), lerpf(0.82, 1.0, _appearance))
+	_card_destination = _place_card(card.size)
+	if not _card_placed:
+		_card_position = _card_destination
+		_card_placed = true
+	card.scale = Vector2.ONE
 	card.position = _card_position
 	_ui.modulate.a = smoothstep(0.0, 0.25, _appearance)
-	# The pointer follows the settled card edges while the paper unfolds.
+	_update_focus()
+	# Card and pointer follow their projected destinations without changing scale.
 	_update_arrow(Rect2(_card_position, card.size))
 	queue_redraw()
+
+func _update_focus() -> void:
+	_focus.visible = _active and not _hint_only and not _blocked and _target.has_area()
+	if not _focus.visible: return
+	_focus_material.set_shader_parameter("viewport_size", size)
+	_focus_material.set_shader_parameter("focus_rect", Vector4(_target.position.x, _target.position.y, _target.size.x, _target.size.y))
+	_focus_material.set_shader_parameter("source_rect", Vector4(_drag_source.position.x, _drag_source.position.y, _drag_source.size.x, _drag_source.size.y))
 
 func _place_card(dimensions: Vector2) -> Vector2:
 	if bool(_steps[_display_index].get("centered", false)):
@@ -583,7 +593,7 @@ func handles_viewport_point(point: Vector2) -> bool:
 	return false
 
 func inspection() -> Dictionary:
-	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index, "dialogue_visible": _ui.get_node("Card").visible if _ui != null else false, "body_text":_body_text, "hover_target":_hover_target, "emotion":str(_steps[_index].get("emotion", "")), "centered":bool(_steps[_index].get("centered", false)), "portrait_rotation":_ui.get_node("Card/Portrait67").rotation if _ui != null else 0.0, "portrait_scale":_ui.get_node("Card/Portrait67").scale if _ui != null else Vector2.ONE, "text_source":_ui.get_node("Card/Content/Body").get_meta(&"text_workbench_source", {}) if _ui != null else {}}
+	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index, "dialogue_visible": _ui.get_node("Card").visible if _ui != null else false, "body_text":_body_text, "hover_target":_hover_target, "emotion":str(_steps[_index].get("emotion", "")), "centered":bool(_steps[_index].get("centered", false)), "portrait_rotation":_ui.get_node("Card/Portrait67").rotation if _ui != null else 0.0, "portrait_scale":_ui.get_node("Card/Portrait67").scale if _ui != null else Vector2.ONE, "card_destination":_card_destination, "card_scale":_ui.get_node("Card").scale if _ui != null else Vector2.ONE, "focus_visible":_focus.visible if _focus != null else false, "source_rect":_drag_source, "text_source":_ui.get_node("Card/Content/Body").get_meta(&"text_workbench_source", {}) if _ui != null else {}}
 
 func default_steps() -> Array[Dictionary]:
 	return OpeningSteps.steps()
