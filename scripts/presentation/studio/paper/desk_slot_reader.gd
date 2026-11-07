@@ -2,6 +2,7 @@ extends Control
 
 signal closed
 signal option_selected(index: int)
+signal choice_hovered(index: int)
 signal contact_selected(index: int)
 signal stack_layout_changed
 
@@ -219,7 +220,7 @@ func _layout_paper() -> void:
 		button.size = Vector2(content_width,button.custom_minimum_size.y)
 		natural_height += button.custom_minimum_size.y+5
 	if not _choice_buttons.is_empty(): natural_height-=5
-	var choice_height := minf(natural_height,floorf(dimensions.y*.42))
+	var choice_height := minf(natural_height, dimensions.y - body_y - 28.0 if bool(_details.get("starter_pending", false)) else floorf(dimensions.y*.42))
 	_choice_scroll.visible = not _choice_buttons.is_empty()
 	_choice_scroll.position = Vector2(padding,dimensions.y-22-choice_height)
 	_choice_scroll.size = Vector2(width,choice_height)
@@ -307,7 +308,7 @@ func _build_choices(details: Dictionary) -> void:
 		button.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 		button.text = _choice_text(row,not contacts.is_empty())
 		_choice_rows.append(row.duplicate(true) if row is Dictionary else row)
-		button.disabled = contacts.is_empty() and not bool(details.get("reply_enabled",false))
+		button.disabled = (contacts.is_empty() and not bool(details.get("reply_enabled",false))) or (row is Dictionary and bool(row.get("disabled", false)))
 		button.add_theme_font_override("font",_font)
 		button.add_theme_font_size_override("font_size",17)
 		var ink := StyleBoxEmpty.new()
@@ -316,7 +317,7 @@ func _build_choices(details: Dictionary) -> void:
 		ink.set_content_margin(SIDE_TOP,6)
 		ink.set_content_margin(SIDE_BOTTOM,6)
 		for state: String in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(state,ink)
-		button.add_theme_color_override("font_color",Color("444b3e"))
+		button.add_theme_color_override("font_color", Color("8e5c37") if row is Dictionary and bool(row.get("selected", false)) else Color("444b3e"))
 		button.add_theme_color_override("font_hover_color",Color("8e5c37"))
 		button.add_theme_color_override("font_disabled_color",Color("858372"))
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -327,7 +328,9 @@ func _build_choices(details: Dictionary) -> void:
 		_choice_box.add_child(button)
 		_choice_buttons.append(button)
 		if not contacts.is_empty(): button.pressed.connect(func(): contact_selected.emit(index))
-		else: button.pressed.connect(func(): option_selected.emit(index))
+		else:
+			button.pressed.connect(func(): option_selected.emit(index))
+			button.mouse_entered.connect(func(): choice_hovered.emit(index))
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and _built:
@@ -359,7 +362,10 @@ func _refresh_translation(reset_scroll: bool) -> void:
 
 func _choice_text(row: Variant, contact: bool) -> String:
 	var source := str(row.get("name",row.get("title",row.get("label",row.get("id",""))))) if row is Dictionary else str(row)
-	return DeskLocalization.text(source) + ("  " + str(row.get("number","")) if contact else "")
+	var text := DeskLocalization.text(source) + ("  " + str(row.get("number","")) if contact else "")
+	if not contact and row is Dictionary and not str(row.get("description", "")).is_empty():
+		text += "\n" + DeskLocalization.text(str(row.description))
+	return text
 
 func _localized_block(source: String) -> String:
 	var exact := str(TranslationServer.translate(StringName(source)))

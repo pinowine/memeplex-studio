@@ -82,6 +82,7 @@ func _ready() -> void:
 	_shell.configure(self)
 	_ready_to_run = true
 	_refresh_locale.call_deferred()
+	desk._fax.starter_previewed.connect(func(id: String): _tutorial_observe("starter_previewed", {"id":id}))
 	desk._fax.call_changed.connect(func(record: Dictionary):
 		if str(record.get("kind", "")) == "connected": _tutorial_observe("phone_pickup"))
 	_render()
@@ -352,7 +353,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 		if hud.menu_mode() == "" and desk != null and desk._camera != null and desk._camera.inspection().state != "overview":
-			desk.return_overview()
+			_return_to_desktop()
 			get_viewport().set_input_as_handled()
 			return
 		if _shell != null and _shell.main_mode:
@@ -450,7 +451,6 @@ func _begin_startup() -> void:
 		simulation.status = DeskLocalization.source("LOC_COULD_NOT_ESTABLISH_THE_STARTING_MEME_CALL_BBAAE077")
 		return
 	simulation.status = DeskLocalization.source("LOC_IS_CALLING_ANSWER_AND_CHOOSE_A_STARTING_3E32F621")
-	_queue_startup_focus()
 
 func _select_starter(preset_id: String) -> void:
 	if not _ready_to_run or hud.menu_mode() != "" or startup_ready(): return
@@ -480,7 +480,7 @@ func _finish_startup(preset_id: String) -> void:
 	_tutorial_observe("startup_finished")
 	desk._fax.close_focus()
 	simulation.status = DeskLocalization.source("LOC_STARTING_MEME_RECEIVED_EDIT_CULTIVATE_AND_CONFIGURE_AE28DEF3")
-	hud.show_workbench(true)
+	hud.show_workbench(false)
 	_render()
 
 func _design_action(action: String, params: Dictionary) -> void:
@@ -577,8 +577,9 @@ func _tutorial_observe(action: String, data: Dictionary = {}) -> void:
 
 func _start_from_main() -> void:
 	_restart()
+	desk.return_overview()
+	desk._monitor.set_mode("meme")
 	_shell.enter_game(true)
-	_queue_startup_focus()
 
 func _load_from_main() -> void:
 	if _load():
@@ -605,6 +606,12 @@ func _complete_run(state: Dictionary) -> void:
 	else:
 		hud.show_result(state)
 
+
+func _return_to_desktop() -> void:
+	var call: Dictionary = desk._fax.inspection()
+	if not startup_ready() and str(call.call_state) == "connected" and not str(call.starter_id).is_empty():
+		desk._fax.hangup()
+	desk.return_overview()
 
 func _queue_startup_focus() -> void:
 	if _shell == null or _shell.main_mode: return

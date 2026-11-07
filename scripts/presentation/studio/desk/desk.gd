@@ -148,6 +148,7 @@ func _slot_view_restored() -> void:
 	_slot_restoring = false
 	_set_sheet_content_visible(true)
 	_sync_reader_blocks()
+	if _camera.inspection().state == "overview": _page._tutorial_observe("overview_returned")
 
 func _cancel_slot_details() -> void:
 	_slot_return_state = {}
@@ -444,7 +445,8 @@ func configure(page: Node2D) -> void:
 	controls.add_child(_slot_reader)
 	_slot_reader.configure(Handwriting.FONT, _textures.paper_texture)
 	_slot_reader.stack_layout_changed.connect(_layout_focused_stack)
-	_slot_reader.option_selected.connect(func(index: int): _fax.choose_response(index))
+	_slot_reader.option_selected.connect(_reader_choice_selected)
+	_slot_reader.choice_hovered.connect(_reader_choice_hovered)
 	_slot_reader.contact_selected.connect(func(index: int): _fax.select_contact(index))
 	_hover_strip = HoverStrip.new()
 	_hover_strip.name = "DeskInformationSlip"
@@ -517,6 +519,7 @@ func _camera_arrived(id: String) -> void:
 	if id.begins_with("slot/") or id.begins_with("stack/"):
 		if slot_details_active() and not _slot_restoring:
 			_show_stack_details()
+			if id.begins_with("stack/"): _page._tutorial_observe("inventory_opened", {"kind":id.trim_prefix("stack/")})
 		return
 	_revealed_focus = id
 	_focus_reveal_count += 1
@@ -531,6 +534,8 @@ func _camera_arrived(id: String) -> void:
 	elif id.begins_with("fax/"):
 		_fax.reveal_after_camera(id.trim_prefix("fax/"))
 	if not _component_target.is_empty(): _show_component_details()
+	if id in ["fax", "fax/phone", "crt"]:
+		_page._tutorial_observe("component_focused", {"id":"monitor" if id == "crt" else "fax"})
 	_fit_settings()
 
 
@@ -559,6 +564,7 @@ func _camera_overview_arrived() -> void:
 	_set_sheet_content_visible(true)
 	if _fax != null and _fax.inspection().focused: _fax.close_focus()
 	_restore_occluders()
+	_page._tutorial_observe("overview_returned")
 
 
 func return_overview() -> void:
@@ -851,7 +857,9 @@ func _inspect_material(kind: String, id: String) -> void:
 	var record := _material_cards.details_for_item(kind,id)
 	if not slot_details_active(): _focus_material_stack(kind)
 	_slot_details = _material_full_details(record)
-	if _camera.inspection().state == "focused": _show_stack_details()
+	if _camera.inspection().state == "focused":
+		_show_stack_details()
+		_page._tutorial_observe("inventory_card_selected", {"kind":kind, "id":id})
 
 func _focus_material_stack(kind: String) -> void:
 	if not _page.startup_ready() or _page.hud.modal_visible(): return
@@ -1253,6 +1261,7 @@ func _component_details() -> Dictionary:
 	if _component_target in ["fax","phonebook"] or _component_target.begins_with("fax/"):
 		var mode := "archive" if _component_target == "fax/archive" else ("phonebook" if _component_target == "phonebook" else "phone")
 		var details: Dictionary = _fax.component_details(mode)
+		if bool(details.get("starter_pending", false)): return details
 		var paragraphs := PackedStringArray()
 		for key: String in ["description","npc_text","status","number","log","impact","effect","mentor","gesture"]:
 			var text := str(details.get(key,""))
@@ -1271,6 +1280,11 @@ func _component_details() -> Dictionary:
 func _show_component_details(hover: Dictionary = {}) -> void:
 	if _slot_reader == null or _component_target.is_empty() or slot_details_active(): return
 	var details := _component_details()
+	if _component_target in ["fax", "fax/phone"] and _page._shell != null:
+		var guide: Control = _page._shell.tutorial
+		if guide._active and str(guide._steps[guide._index].id) in ["fax_open", "pickup", "welcome", "confused", "studio", "mentor"]:
+			_slot_reader.hide_details()
+			return
 	if not hover.is_empty() and _component_target not in ["fax","phonebook"] and not _component_target.begins_with("fax/"):
 		var text := DeskLocalization.text(str(hover.get("description",hover.get("text",hover.get("hint","")))))
 		if hover.has("count") or hover.has("source_label"):
@@ -1282,6 +1296,16 @@ func _show_component_details(hover: Dictionary = {}) -> void:
 	var reader_state: Dictionary = _slot_reader.inspection()
 	if reader_state.details != details or not _slot_reader.is_visible_in_tree() or reader_state.phase in ["hidden","exiting"]:
 		_slot_reader.show_details(details,get_viewport().get_visible_rect())
+
+func _reader_choice_selected(index: int) -> void:
+	if bool(_slot_reader._details.get("starter_pending", false)):
+		if index < 3: _fax.preview_starter(index)
+		elif index == 3: _fax.commit_starter_choice()
+	else:
+		_fax.choose_response(index)
+
+func _reader_choice_hovered(index: int) -> void:
+	if _page._shell != null: _page._shell.hover_starter(index)
 
 func _fax_details_changed(_record: Dictionary) -> void:
 	if not _component_target.is_empty() and _camera != null and _camera.inspection().state == "focused": _show_component_details()

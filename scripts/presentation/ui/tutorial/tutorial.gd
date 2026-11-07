@@ -8,6 +8,7 @@ signal pointer_cancelled
 signal drag_cancelled
 signal overview_requested
 
+const OpeningSteps = preload("res://scripts/presentation/ui/tutorial/opening_steps.gd")
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
@@ -60,6 +61,9 @@ var _arrow: Node2D
 var _drag_arrow: Node2D
 var _typewriter := TypewriterEffect.new()
 var _body_text := ""
+var _hover_target := ""
+var _hover_text := ""
+var _portrait_tween: Tween
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -80,6 +84,7 @@ func _ready() -> void:
 	_drag_arrow.hide()
 	_ui.get_node("Card/Content/Actions/Continue").pressed.connect(advance)
 	_ui.get_node("Card/Content/Actions/Skip").pressed.connect(skip)
+	_ui.get_node("SilentSkip").pressed.connect(skip)
 	PaperStyle.apply_buttons(_ui)
 	if _steps.is_empty(): _steps = default_steps()
 	resized.connect(_refresh)
@@ -107,6 +112,19 @@ func set_input_target_provider(provider: Callable, point_test := Callable()) -> 
 	_input_provider = provider
 	_input_point_test = point_test
 
+func set_hover(target_id: String, text_key: String = "") -> void:
+	if not _active or not bool(_steps[_index].get("hover", false)): return
+	if _hover_target == target_id and _hover_text == text_key: return
+	_hover_target = target_id
+	_hover_text = text_key
+	_refresh()
+
+func clear_hover() -> void:
+	if _hover_target.is_empty() and _hover_text.is_empty(): return
+	_hover_target = ""
+	_hover_text = ""
+	_refresh()
+
 func _input(event: InputEvent) -> void:
 	if not allows_input(event): get_viewport().set_input_as_handled()
 
@@ -133,7 +151,7 @@ func allows_input(event: InputEvent) -> bool:
 	if _blocked or _transitioning: return false
 	if event is InputEventKey:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
-		if key == KEY_ESCAPE and str(_steps[_index].get("target", "")).begins_with("map/"):
+		if key == KEY_ESCAPE and (str(_steps[_index].get("action", "")) == "overview_returned" or str(_steps[_index].get("target", "")).begins_with("map/")):
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
 		if _return_overview and key == KEY_ESCAPE:
@@ -148,8 +166,10 @@ func allows_input(event: InputEvent) -> bool:
 		if not _pointer_mode.is_empty(): return true
 		return _contains_input_point(areas, point) or _drag_source.has_point(point)
 	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-		return not _return_overview and str(_steps[_index].get("target", "")).begins_with("map/") and _contains_input_point(areas, point)
+		return not _return_overview and (bool(_steps[_index].get("scroll", false)) or str(_steps[_index].get("target", "")).begins_with("map/")) and _contains_input_point(areas, point)
 	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return false
+	# Inspection steps expose hover and scrolling without activating desk controls.
+	if str(_steps[_index].get("action", "continue")) == "continue": return false
 	if event.pressed:
 		if _return_overview:
 			return false
@@ -174,7 +194,9 @@ func allows_input(event: InputEvent) -> bool:
 
 func _input_areas() -> Array[Rect2]:
 	var areas: Array[Rect2] = []
-	if str(_steps[_index].get("action", "continue")) in ["continue", "module_installed", "context_installed"]: return areas
+	var step := _steps[_index]
+	if str(step.get("action", "continue")) in ["module_installed", "context_installed"]: return areas
+	if str(step.get("action", "continue")) == "continue" and not bool(step.get("hover", false)) and not bool(step.get("scroll", false)): return areas
 	if _input_provider.is_valid():
 		var inverse := get_global_transform_with_canvas().affine_inverse()
 		for area: Rect2 in _input_provider.call(_steps[_index]):
@@ -278,6 +300,8 @@ func _stop_transition() -> void:
 
 func _present_step() -> void:
 	_stop_transition()
+	_hover_target = ""
+	_hover_text = ""
 	var previous_index := _display_index
 	var previous_position := _card_position
 	var previous_progress := _typewriter.progress
@@ -288,6 +312,7 @@ func _present_step() -> void:
 		_transitioning = false
 		_typewriter.progress = 0.0
 		_refresh()
+		_animate_portrait()
 		return
 	_display_index = previous_index
 	_card_position = previous_position
@@ -300,11 +325,28 @@ func _present_step() -> void:
 	_transition.tween_callback(func():
 		_display_index = _index
 		_typewriter.progress = 0.0
-		_set_appearance(0.0))
+		_set_appearance(0.0)
+		_animate_portrait())
 	_transition.tween_method(_set_appearance, 0.0, 1.0, 0.30).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_transition.tween_callback(func():
 		_transitioning = false
 		_refresh())
+
+func _animate_portrait() -> void:
+	if _portrait_tween != null and _portrait_tween.is_valid(): _portrait_tween.kill()
+	var portrait: Control = _ui.get_node("Card/Portrait67")
+	portrait.pivot_offset = portrait.size * 0.5
+	portrait.rotation = 0.0
+	portrait.scale = Vector2.ONE
+	match str(_steps[_index].get("emotion", "")):
+		"rotate":
+			_portrait_tween = create_tween()
+			_portrait_tween.tween_property(portrait, "rotation", TAU, 0.75).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			_portrait_tween.tween_callback(func(): portrait.rotation = 0.0)
+		"pulse":
+			_portrait_tween = create_tween()
+			_portrait_tween.tween_property(portrait, "scale", Vector2.ONE * 1.22, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			_portrait_tween.tween_property(portrait, "scale", Vector2.ONE, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
 func _set_appearance(value: float) -> void:
 	_appearance = value
@@ -323,7 +365,8 @@ func _refresh() -> void:
 	var step := _steps[_display_index]
 	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
 	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title", "")))
-	var text := DeskLocalization.text(str(step.get("text", "")))
+	var text_key := _hover_text if _display_index == _index and not _hover_text.is_empty() else str(step.get("text", ""))
+	var text := DeskLocalization.text(text_key)
 	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
 	if text != _body_text:
 		_body_text = text
@@ -338,9 +381,17 @@ func _refresh() -> void:
 	next.disabled = not _active or _blocked or _transitioning or requires_action
 	_ui.get_node("Card/Content/Actions/Skip").text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
 	_ui.get_node("Card/Content/Actions/Skip").disabled = not _active or _blocked
+	var silent := bool(step.get("silent", false))
+	_ui.get_node("Card").visible = not silent
+	var silent_skip: Button = _ui.get_node("SilentSkip")
+	silent_skip.visible = silent
+	silent_skip.text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
+	silent_skip.disabled = not _active or _blocked
+	silent_skip.position = Vector2(size.x - silent_skip.size.x - CARD_MARGIN, CARD_MARGIN)
 	_target = Rect2()
-	if _provider.is_valid() and not str(step.get("target", "")).is_empty():
-		var target: Variant = _provider.call(str(step.target))
+	var target_id := _hover_target if _display_index == _index and not _hover_target.is_empty() else str(step.get("target", ""))
+	if _provider.is_valid() and not target_id.is_empty():
+		var target: Variant = _provider.call(target_id)
 		if target is Control and target.is_visible_in_tree():
 			var transform: Transform2D = get_global_transform_with_canvas().affine_inverse() * target.get_global_transform_with_canvas()
 			_target = transform * Rect2(Vector2.ZERO, target.size)
@@ -370,14 +421,21 @@ func _refresh() -> void:
 	if _drag_source.has_area(): _avoid_rects.append(_drag_source)
 	var card: Control = _ui.get_node("Card")
 	var compact := size.x < 900 or size.y < 560
-	var width := minf(600 if compact else 500, size.x - CARD_MARGIN * 2.0)
+	var width := minf(600 if bool(step.get("centered", false)) else 500, size.x - CARD_MARGIN * 2.0)
 	var minimum_width := 268.0 if compact else 344.0
 	# The live phone paper reserves the right side, including while it slides in.
 	for rectangle: Rect2 in _avoid_rects:
-		if rectangle.get_center().x > size.x * .5:
+		if not bool(step.get("centered", false)) and rectangle.get_center().x > size.x * .5:
 			width = minf(width, maxf(minimum_width, rectangle.position.x - CARD_MARGIN * 2.0 - TARGET_GAP))
-	card.get_node("Portrait67").visible = not compact
-	card.get_node("Speaker").visible = not compact
+	var portrait: Control = card.get_node("Portrait67")
+	portrait.visible = true
+	portrait.position = Vector2(14, 18) if compact else Vector2(18, 20)
+	portrait.size = Vector2.ONE * (48 if compact else 64)
+	portrait.pivot_offset = portrait.size * 0.5
+	var speaker: Control = card.get_node("Speaker")
+	speaker.visible = true
+	speaker.position = portrait.position + Vector2(0, portrait.size.y + 6)
+	speaker.size.x = portrait.size.x
 	var title: Label = card.get_node("Content/Title")
 	var title_size := 18 if compact else 21
 	var body_size := 14 if compact else 17
@@ -385,17 +443,17 @@ func _refresh() -> void:
 	if body.get_theme_font_size("normal_font_size") != body_size: body.add_theme_font_size_override("normal_font_size", body_size)
 	var waiting: Label = _ui.get_node("Card/Content/Waiting")
 	waiting.visible = not _blocked and (_return_overview or (requires_action and not compact))
-	if _return_overview:
+	if _return_overview or str(step.get("action", "")) == "overview_returned":
 		waiting.text = DeskLocalization.text("LOC_PRESS_ESC_TO_RETURN_TO_THE_MAIN_445EA13C")
 	else:
 		waiting.text = DeskLocalization.text("LOC_FOLLOW_THE_CURRENT_PROMPT_TO_FINISH_THE_40A63035")
 	var minimum_height := 128.0 if compact else 190.0
 	card.size = Vector2(width, minimum_height)
 	var content: Control = card.get_node("Content")
-	content.position = Vector2(14, 14) if compact else Vector2(94, 18)
+	content.position = Vector2(76, 14) if compact else Vector2(94, 18)
 	var separation := 6 if compact else 8
 	if content.get_theme_constant("separation") != separation: content.add_theme_constant_override("separation", separation)
-	var padding := Vector2(28, 28) if compact else Vector2(112, 36)
+	var padding := Vector2(90, 28) if compact else Vector2(112, 36)
 	content.size = card.size - padding
 	body.size.x = content.size.x
 	waiting.size.x = content.size.x
@@ -411,6 +469,8 @@ func _refresh() -> void:
 	queue_redraw()
 
 func _place_card(dimensions: Vector2) -> Vector2:
+	if bool(_steps[_display_index].get("centered", false)):
+		return (size - dimensions) * 0.5
 	var candidates: Array[Vector2] = []
 	if _target.has_area():
 		# Three alignments per edge keep the bubble close even near a screen corner.
@@ -484,6 +544,14 @@ func _update_arrow(card: Rect2) -> void:
 		_drag_arrow.show()
 		_arrow_visible = true
 		return
+	if bool(_steps[_display_index].get("silent", false)):
+		_arrow_to = _target.get_center()
+		_arrow_from = _arrow_to - Vector2(62, -36)
+		_arrow_visible = true
+		_arrow.show()
+		_arrow.modulate.a = 1.0
+		_arrow.point_to(_arrow_to, (_arrow_to - _arrow_from).angle(), 64.0, true)
+		return
 	if card.intersects(_target): return
 	var endpoints := _nearest_edges(card, _target)
 	var direction := (endpoints[1] - endpoints[0]).normalized()
@@ -495,12 +563,12 @@ func _update_arrow(card: Rect2) -> void:
 	# The pointer stays visible while the dialogue card changes targets.
 	_arrow.modulate.a = 1.0 if _active else _appearance
 	if _arrow_visible:
-		var requires_action := not _hint_only and str(_steps[_display_index].get("action", "continue")) != "continue"
+		var requires_action := not _hint_only and (bool(_steps[_display_index].get("hand", false)) or str(_steps[_display_index].get("action", "continue")) != "continue")
 		_arrow.point_to(_arrow_to, direction.angle(), length, requires_action)
 
 func handles_viewport_point(point: Vector2) -> bool:
 	if not _active or not is_visible_in_tree() or not point.is_finite(): return false
-	for path: String in ["Card/Content/Actions/Continue", "Card/Content/Actions/Skip"]:
+	for path: String in ["Card/Content/Actions/Continue", "Card/Content/Actions/Skip", "SilentSkip"]:
 		var button: Button = _ui.get_node(path)
 		if not button.is_visible_in_tree(): continue
 		var local := button.get_global_transform_with_canvas().affine_inverse() * point
@@ -508,30 +576,10 @@ func handles_viewport_point(point: Vector2) -> bool:
 	return false
 
 func inspection() -> Dictionary:
-	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index}
+	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index, "dialogue_visible": _ui.get_node("Card").visible if _ui != null else false, "body_text":_body_text, "hover_target":_hover_target, "emotion":str(_steps[_index].get("emotion", "")), "centered":bool(_steps[_index].get("centered", false)), "portrait_rotation":_ui.get_node("Card/Portrait67").rotation if _ui != null else 0.0, "portrait_scale":_ui.get_node("Card/Portrait67").scale if _ui != null else Vector2.ONE}
 
 func default_steps() -> Array[Dictionary]:
-	return [
-		{"id":"identity", "title":"LOC_A_JOB_6E979BE1", "text":"LOC_YOU_ARE_THE_STUDIO_S_PRINT_EDITOR_FF8B8683", "action":"continue"},
-		{"id":"work", "title":"LOC_YOUR_DRAFT_B0E0C947", "text":"LOC_PUT_AN_EXPRESSION_INTO_A_MEME_ADJUST_FFBF95D7", "action":"continue"},
-		{"id":"goals", "title":"LOC_FOUR_WAYS_TO_FINISH_648EFA2D", "text":"LOC_OWN_THE_WORLD_LET_AN_UNCONTROLLED_LINEAGE_FCB2FB17", "action":"continue"},
-		{"id":"pickup", "title":"LOC_THE_PHONE_IS_RINGING_340485E6", "text":"LOC_ANSWER_THE_PHONE_THREE_STARTING_DRAFTS_ARE_B98B5B3A", "action":"phone_pickup", "target":"fax/pickup"},
-		{"id":"starter", "title":"LOC_TAKE_A_DRAFT_72393BB5", "text":"LOC_CHOOSE_A_STARTING_MEME_IN_THE_CALL_D26D5127", "action":"starter_chosen", "target":"fax/options"},
-		{"id":"hangup", "title":"LOC_END_THE_CALL_ADD703A6", "text":"LOC_HANG_UP_AND_RETURN_TO_THE_DESK_FA41627B", "action":"startup_finished", "target":"fax/hangup"},
-		{"id":"machines", "title":"LOC_FAX_AND_REPORTS_5CF0BA35", "text":"LOC_THE_FAX_RECEIVES_REPORTS_AND_CARDS_CLICK_FF09A1DF", "action":"continue", "target":"desktop/fax"},
-		{"id":"printer", "title":"LOC_PRINTER_7D6376EF", "text":"LOC_THE_PRINTER_KEEPS_YOUR_WORK_LOG_THE_5F08155E", "action":"continue", "target":"desktop/printer"},
-		{"id":"monitor", "title":"LOC_MONITOR_1A13EA59", "text":"LOC_THE_MONITOR_WATCHES_YOUR_MEMES_AND_POINTS_80B39D7D", "action":"continue", "target":"desktop/monitor"},
-		{"id":"speed", "title":"LOC_TIME_CONTROLS_4A53DBA9", "text":"LOC_TRY_PAUSE_NORMAL_SPEED_OR_FAST_FORWARD_DF69CA7C", "action":"speed_changed", "target":"speed"},
-		{"id":"edit", "title":"LOC_EDIT_SHEET_EFF562AB", "text":"LOC_PULL_OUT_THE_EDIT_SHEET_PATCHES_CLIP_C10C8769", "action":"sheet_selected", "match":{"id":"edit"}, "target":"sheet/edit"},
-		{"id":"module", "title":"LOC_CLIP_IN_A_PATCH_111ED358", "text":"LOC_CLIP_ONE_OF_YOUR_PATCH_SLIPS_INTO_E3D38B97", "action":"module_installed", "target":"editor/clips"},
-		{"id":"context", "title":"LOC_CONTEXT_SLICES_82B22623", "text":"LOC_PULL_OUT_THE_CULTIVATE_SHEET_AND_INSPECT_DAD209DF", "action":"sheet_selected", "match":{"id":"cultivate"}, "target":"sheet/cultivate"},
-		{"id":"context_item", "title":"LOC_GIVE_THE_EXPRESSION_A_CONTEXT_020970BF", "text":"LOC_PLACE_AN_AVAILABLE_ITEM_INTO_ITS_MATCHING_92ABA624", "action":"context_installed", "target":"context/slot"},
-		{"id":"spread", "title":"LOC_SPREAD_SHEET_9D66347F", "text":"LOC_PULL_OUT_THE_SPREAD_SHEET_ABILITIES_GROW_5530382E", "action":"sheet_selected", "match":{"id":"spread"}, "target":"sheet/spread"},
-		{"id":"skill", "title":"LOC_BUY_AN_ABILITY_697FC774", "text":"LOC_CHOOSE_AN_ABILITY_YOU_CAN_AFFORD_A_97E2AFCC", "action":"skill_purchased", "target":"spread/skill"},
-		{"id":"publish", "title":"LOC_SEND_TO_PRINT_832C1ECB", "text":"LOC_CONFIRM_THE_DRAFT_ON_THE_EDIT_SHEET_66DB30DA", "action":"publish_requested", "target":"editor/publish"},
-		{"id":"country", "title":"LOC_CHOOSE_A_DESTINATION_4678E011", "text":"LOC_CHOOSE_A_COUNTRY_ON_THE_MAP_SHEET_6A9D0811", "action":"country_selected", "target":"map/country"},
-		{"id":"confirm", "title":"LOC_START_CIRCULATING_4530C87E", "text":"LOC_CLICK_THE_CHECKED_BUBBLE_ABOVE_A_COUNTRY_B1C53CA4", "action":"published", "target":"map/confirm"}
-	]
+	return OpeningSteps.steps()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
