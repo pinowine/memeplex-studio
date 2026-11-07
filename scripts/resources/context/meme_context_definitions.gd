@@ -19,7 +19,7 @@ func validate(catalog: Resource) -> PackedStringArray:
 		var value := str(entry.get("value", ""))
 		if kind in ["stance_token","pragmatic_token"]:
 			if not tokens.has(id) or tokens[id] != [kind,str(entry.get("axis","")),entry.get("direction")]: errors.append("Invalid endpoint token mapping")
-		if kind == "language" and value not in ["zh", "en", "mixed"]: errors.append("Unknown language context")
+		if kind == "language" and value not in ["ninghua", "shiohara", "seowon"]: errors.append("Unknown language context")
 		if kind == "topic" and value not in catalog.topics: errors.append("Unknown topic context")
 		if kind == "group":
 			var found := false

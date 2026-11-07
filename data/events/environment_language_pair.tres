@@ -47,4 +47,4 @@ decay_parameter_hours = 0.0
 discovery_ids = PackedStringArray("relation")
 evidence_status = &"design"
 external_preset_id = &"case_r08"
-design_rewards = Array[Dictionary]([{"kind": "language", "id": "language_mixed", "count": 1}])
+design_rewards = Array[Dictionary]([{"kind": "language", "id": "language_seowon", "count": 1}])

@@ -47,4 +47,4 @@ attention_decay = &"exponential"
 decay_parameter_hours = 6.0
 discovery_ids = PackedStringArray("boundary")
 evidence_status = &"design"
-design_rewards = Array[Dictionary]([{"kind": "language", "id": "language_en", "count": 1}])
+design_rewards = Array[Dictionary]([{"kind": "language", "id": "language_shiohara", "count": 1}])

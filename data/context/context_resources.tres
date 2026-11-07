@@ -5,26 +5,26 @@
 [resource]
 script = ExtResource("1")
 entries = Array[Dictionary]([{
-"description": "LOC_PLACE_THE_EXPRESSION_IN_A_CHINESE_LANGUAGE_29B981D3",
-"id": "language_zh",
+"description": "LOC_LANGUAGE_NINGHUA_DESCRIPTION",
+"id": "language_ninghua",
 "initial_count": 1,
 "kind": "language",
-"title": "LOC_CHINESE_72726D88",
-"value": "zh"
+"title": "LOC_LANGUAGE_NINGHUA",
+"value": "ninghua"
 }, {
-"description": "LOC_PLACE_THE_EXPRESSION_IN_AN_ENGLISH_LANGUAGE_755F86BA",
-"id": "language_en",
+"description": "LOC_LANGUAGE_SHIOHARA_DESCRIPTION",
+"id": "language_shiohara",
 "initial_count": 1,
 "kind": "language",
-"title": "LOC_ENGLISH_348EA84C",
-"value": "en"
+"title": "LOC_LANGUAGE_SHIOHARA",
+"value": "shiohara"
 }, {
-"description": "LOC_PLACE_THE_EXPRESSION_IN_A_MIXED_CHINESE_056B33E9",
-"id": "language_mixed",
+"description": "LOC_LANGUAGE_SEOWON_DESCRIPTION",
+"id": "language_seowon",
 "initial_count": 1,
 "kind": "language",
-"title": "LOC_CHINESE_ENGLISH_MIX_DC1CE4AE",
-"value": "mixed"
+"title": "LOC_LANGUAGE_SEOWON",
+"value": "seowon"
 }, {
 "description": "LOC_ADDRESS_THE_EXPRESSION_TO_COMMUTING_OFFICE_WORKERS_EB817EB1",
 "id": "group_commuters",
