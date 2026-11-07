@@ -600,7 +600,7 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "")
 	var reuse_factor := EffectRules.reuse_factor(str(latest_draft.reuse_permission),
 		PackedStringArray(latest_draft.replaceable_slots).size(), find_kernel(parent.kernel_id).required_slots.size(),
 		float(latest_draft.remix_cost), float(latest_draft.context_dependency))
-	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":not split, "controlled":false, "text":remix_text, "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":draft_distance, "language_id":"mixed", "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor})
+	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":not split, "controlled":false, "text":remix_text, "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":draft_distance, "language_id":"seowon", "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor})
 	return DeskLocalization.source_format("LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714", [DeskLocalization.source("LOC_NEW_FAMILY_A5AC4668") if split else DeskLocalization.source("LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C"), family_id, id, creator], [0])
 
 func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> String:
@@ -613,7 +613,7 @@ func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> Stri
 	var id := _new_id("variant")
 	var source_presets: Array = [preset.source_record()]
 	families[family_id] = {"id":family_id, "owner":"environment", "anchor":preset.family_anchor, "split_threshold":kernel.split_threshold, "derived_from":[], "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true)}
-	variants.append({"id":id, "family_id":family_id, "parent_ids":[], "origin_ids":[], "creator":"environment", "owned":false, "controlled":false, "text":" / ".join(preset.default_values), "kernel_id":str(preset.kernel_id), "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":"mixed", "source_event":event_id, "topic_ids":Array(definition.topic_ids)})
+	variants.append({"id":id, "family_id":family_id, "parent_ids":[], "origin_ids":[], "creator":"environment", "owned":false, "controlled":false, "text":" / ".join(preset.default_values), "kernel_id":str(preset.kernel_id), "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":"seowon", "source_event":event_id, "topic_ids":Array(definition.topic_ids)})
 	return DeskLocalization.source_format("LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912", preset.title, [0])
 
 func _open_next_event() -> void:

@@ -189,15 +189,15 @@ func _line(points: Array,center: Vector2,radius: float,color: Color,width: float
 func _icon(center: Vector2,radius: float,color: Color,width: float) -> void:
 	var id := str(definition.get("id",""))
 	match id:
-		"language_zh":
-			_line([Vector2(-.75,-.72),Vector2(.75,-.72),Vector2(.2,-.22),Vector2(-.4,.46),Vector2(-.76,.75)],center,radius,color,width)
-			_line([Vector2(-.66,-.1),Vector2(.2,-.1),Vector2(.38,.35),Vector2(.8,.7)],center,radius,color,width)
-			_line([Vector2(0,-1),Vector2(0,-.76)],center,radius,color,width)
-		"language_en":
-			draw_arc(center,radius*.75,0,TAU,28,color,width,true)
-			_line([Vector2(-.52,.6),Vector2(.46,-.8),Vector2(.75,-.65),Vector2(.08,.56),Vector2(-.52,.6)],center,radius,color,width)
-			_line([Vector2(-.12,.06),Vector2(.58,-.35)],center,radius,color,width)
-		"language_mixed":
+		"language_ninghua":
+			_line([Vector2(0,-.85),Vector2(.72,-.3),Vector2(.45,.58),Vector2(-.45,.58),Vector2(-.72,-.3),Vector2(0,-.85)],center,radius,color,width)
+			_line([Vector2(0,-.85),Vector2(0,.25),Vector2(.75,.82)],center,radius,color,width)
+			draw_circle(center-Vector2(radius*.28,0),radius*.1,color)
+		"language_shiohara":
+			for y in [-.46,.34]:
+				_line([Vector2(-.85,y),Vector2(-.42,y-.23),Vector2(.1,y+.23),Vector2(.55,y-.23),Vector2(.85,y)],center,radius,color,width)
+			draw_circle(center+Vector2(radius*.72,-radius*.82),radius*.1,color)
+		"language_seowon":
 			draw_arc(center-Vector2(radius*.25,0),radius*.56,-PI*.8,PI*.8,24,color,width,true)
 			draw_arc(center+Vector2(radius*.25,0),radius*.56,PI*.2,PI*1.8,24,color,width,true)
 			_line([Vector2(-.5,-.7),Vector2(.5,.7)],center,radius,color,width)
