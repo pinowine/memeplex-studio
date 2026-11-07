@@ -471,6 +471,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 				var count := int(reward.count)
 				var reward_id := str(reward.id)
 				var kind := str(reward.kind)
+				if card_owned(kind, reward_id): continue
 				var provenance := {"source_instance_id":instance_id, "definition_id":str(source.get("definition_id", "")), "preset_id":str(source.get("design_source_preset_id", "")), "kind":kind, "id":reward_id, "count":count}
 				_state.inventory_sources.append(provenance.duplicate(true))
 				match kind:
@@ -507,7 +508,7 @@ func _grant_starter_context(base: Dictionary) -> void:
 	var resources: Array[String] = [_context_id("language",str(base.get("language_id",""))), _context_id("group",str(base.get("group_id","")))]
 	for topic: Variant in base.get("topic_ids",[]): resources.append(_context_id("topic",str(topic)))
 	for id: String in resources:
-		if id.is_empty() or _context_available(id) > 0: continue
+		if id.is_empty() or int(_state.context_resource_inventory.get(id,0)) > 0: continue
 		var entry: Dictionary = rules.context_resource(id)
 		var preset_id := str(_state.starter_preset_id)
 		_state.inventory_sources.append({"source_instance_id":"starter:" + preset_id, "definition_id":"starter_contexts/" + preset_id, "preset_id":preset_id, "kind":str(entry.kind), "id":id, "count":1})
@@ -516,7 +517,26 @@ func _grant_starter_context(base: Dictionary) -> void:
 func _grant_module(kernel_id: String) -> void:
 	var id := "module_" + kernel_id
 	if rules.find("modules", id).is_empty(): return
-	_state.module_inventory[id] = int(_state.module_inventory.get(id, 0)) + 1
+	_state.module_inventory[id] = 1
+
+func card_owned(kind: String, id: String) -> bool:
+	if kind == "module": return int(_state.module_inventory.get(id,0)) > 0
+	if kind in ["language","group","topic"]: return int(_state.context_resource_inventory.get(id,0)) > 0
+	return false
+
+func unique_event_rewards(rewards: Array, reserved_events: Array = []) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for reward: Dictionary in rewards:
+		var kind := str(reward.kind)
+		var id := str(reward.id)
+		if card_owned(kind,id): continue
+		var reserved := false
+		if kind in ["module","language","group","topic"]:
+			for event: Dictionary in reserved_events:
+				for prior: Dictionary in event.get("design_rewards",[]):
+					if str(prior.kind) == kind and str(prior.id) == id: reserved = true
+		if not reserved: result.append(reward.duplicate(true))
+	return result
 
 func record_publish(variant: Dictionary) -> PackedStringArray:
 	return _perform("publish", {"variant_id":str(variant.get("id", ""))}, variant)

@@ -15,6 +15,7 @@ func validate(catalog: Resource) -> PackedStringArray:
 		if id.is_empty() or seen.has(id) or kind not in ["language", "group", "topic", "stance_token", "pragmatic_token"] or str(entry.get("title", "")).is_empty() or not entry.get("initial_count") is int or int(entry.initial_count) < 0 or int(entry.initial_count) > 1000:
 			errors.append("Invalid context resource")
 		seen[id] = true
+		if kind in ["language","group","topic"] and int(entry.get("initial_count",0)) > 1: errors.append("Context cards must be unique")
 		var value := str(entry.get("value", ""))
 		if kind in ["stance_token","pragmatic_token"]:
 			if not tokens.has(id) or tokens[id] != [kind,str(entry.get("axis","")),entry.get("direction")]: errors.append("Invalid endpoint token mapping")
