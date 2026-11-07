@@ -52,6 +52,66 @@ func configure(fbx_loader: RefCounted, assembly: Node3D, logical: SubViewport, d
 	_bind_content()
 	return startup_error.is_empty()
 
+func bind_monitor_icons(buttons: Dictionary) -> void:
+	var ink := StandardMaterial3D.new()
+	ink.resource_name = "MonitorModeInk"
+	ink.albedo_color = Color("283323")
+	ink.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	ink.cull_mode = BaseMaterial3D.CULL_DISABLED
+	for mode in ["meme", "stance", "pragmatic"]:
+		var key: MeshInstance3D = buttons["crt_terminal/" + mode].mesh
+		var bounds := key.get_aabb()
+		var radius := minf(bounds.size.x, bounds.size.z) * .32
+		var vertices := PackedVector3Array()
+		var paths: Array[PackedVector2Array] = []
+		match mode:
+			"meme":
+				paths.append(_mode_icon_arc(Vector2.ZERO, .90, -PI * .9, PI * .6, 24))
+				paths.append(PackedVector2Array([Vector2(-.5, .72), Vector2(-.7, 1.10), Vector2(.06, .91)]))
+				for x in [-.35, .35]:
+					paths.append(_mode_icon_arc(Vector2(x, -.12), .055, 0, TAU, 12))
+			"stance":
+				paths.append(PackedVector2Array([Vector2(-1, 0), Vector2(1, 0)]))
+				paths.append(PackedVector2Array([Vector2(0, 1), Vector2(0, -1)]))
+				paths.append(PackedVector2Array([Vector2(.55, -.35), Vector2(1, 0), Vector2(.55, .35)]))
+				paths.append(PackedVector2Array([Vector2(-.35, -.55), Vector2(0, -1), Vector2(.35, -.55)]))
+			"pragmatic":
+				paths.append(_mode_icon_arc(Vector2.ZERO, 1, 0, TAU, 28))
+				for x in [-.35, .35]:
+					paths.append(_mode_icon_arc(Vector2(x, -.3), .055, 0, TAU, 12))
+				paths.append(_mode_icon_arc(Vector2(0, .04), .57, .12, PI - .12, 16))
+		var center := Vector3(bounds.get_center().x, bounds.end.y + .0002, bounds.get_center().z)
+		for path in paths:
+			for index in range(1, path.size()):
+				var start := path[index - 1] * radius
+				var end := path[index] * radius
+				var side := (end - start).orthogonal().normalized() * radius * .06
+				for point in [start - side, start + side, end + side, start - side, end + side, end - side]:
+					vertices.append(center + Vector3(point.x, 0, point.y))
+		var arrays := []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = vertices
+		var normals := PackedVector3Array()
+		normals.resize(vertices.size())
+		normals.fill(Vector3.UP)
+		arrays[Mesh.ARRAY_NORMAL] = normals
+		var mesh := ArrayMesh.new()
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		var glyph := MeshInstance3D.new()
+		glyph.name = "RuntimeModeIcon"
+		glyph.mesh = mesh
+		glyph.material_override = ink
+		glyph.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		glyph.set_meta("mode_id", mode)
+		# Local keycap ink follows the existing mechanical press without a live texture.
+		key.add_child(glyph)
+
+func _mode_icon_arc(center: Vector2, radius: float, start: float, end: float, segments: int) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for index in segments + 1:
+		points.append(center + Vector2.from_angle(lerpf(start, end, float(index) / segments)) * radius)
+	return points
+
 func sync(delta: float, clock_angles: Vector2, daylight: float) -> void:
 	var canvas := _logical.get_canvas_transform()
 	_ink.set_shader_parameter("canvas_origin", canvas.origin)

@@ -108,6 +108,7 @@ func _ready() -> void:
 		startup_error += content.startup_error
 	_bind_controls()
 	button_feedback.configure(buttons)
+	content.bind_monitor_icons(buttons)
 	input_router = InputRouter.new()
 	input_router.configure(camera, logical, get_viewport(), buttons, content.screen_surfaces, content.bindings, button_feedback, desktop)
 	page._shell.tutorial.pointer_cancelled.connect(_cancel_input)
