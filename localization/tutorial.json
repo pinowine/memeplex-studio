@@ -141,8 +141,8 @@
   },
   "LOC_OPENING_LABELS_TEXT": {
     "source": "我不在的时候，它会提醒你这些机器叫什么。认不出来就看一眼，别靠猜。",
-    "zh_CN": "我不在的时候，它会提醒你这些机器叫什么。认不出来就看一眼，别靠猜。",
-    "en": "When I’m not here, this reminds you what the machines are called. If you’re unsure, have a look. Don’t guess."
+    "zh_CN": "我不在的时候，它会提醒你这些机器叫什么。",
+    "en": "When I’m not here, this reminds you what the machines are called."
   },
   "LOC_OPENING_CLOCK_TITLE": {
     "source": "时钟",
@@ -191,8 +191,8 @@
   },
   "LOC_OPENING_LANGUAGE_DETAIL_TEXT": {
     "source": "一种很有趣的语言……上半张纸写着它的详情。之后的工作中，你也有机会接触更多的语言。",
-    "zh_CN": "一种很有趣的语言……上半张纸写着它的详情。之后的工作中，你也有机会接触更多的语言。",
-    "en": "An interesting language… Its details are in the top half of the paper. You’ll get to work with more languages later."
+    "zh_CN": "一种很有趣的语言……这里写着它的详情。之后的工作中，你也有机会接触更多的语言。",
+    "en": "An interesting language… The details are right here. You’ll get to work with more languages later."
   },
   "LOC_OPENING_LANGUAGE_RETURN_TITLE": {
     "source": "还有很多东西要学",
@@ -391,8 +391,8 @@
   },
   "LOC_OPENING_SPREAD_DETAILS_TEXT": {
     "source": "这里列着能力的效果和费用。买之前读一眼，我们不报销“点错了”。",
-    "zh_CN": "这里列着能力的效果和费用。买之前读一眼，我们不报销“点错了”。",
-    "en": "The effects and costs are listed here. Read them before buying. “I clicked the wrong thing” isn’t reimbursable."
+    "zh_CN": "这里列着能力的效果和费用。买之前读一眼，亏钱了自行离职吧。",
+    "en": "The effects and costs are listed here. Read them before buying. If you lose money, hand in your resignation."
   },
   "LOC_OPENING_SKILL_TITLE": {
     "source": "买一项能力",
@@ -421,8 +421,8 @@
   },
   "LOC_OPENING_MAP_INTRO_TEXT": {
     "source": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选址由你决定，我不替你做这份工作。",
-    "zh_CN": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选址由你决定，我不替你做这份工作。",
-    "en": "Here is the launch map. Click a country to inspect it, hold the middle mouse button to pan, and use the wheel to zoom. The location is your decision. I will not do that part for you."
+    "zh_CN": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选中一个国家试试。",
+    "en": "Here’s the launch map. Click a country to inspect it, hold the middle mouse button to pan, and use the wheel to zoom. Try selecting a country."
   },
   "LOC_OPENING_COUNTRY_TITLE": {
     "source": "工作室选址",
@@ -431,8 +431,8 @@
   },
   "LOC_OPENING_COUNTRY_TEXT": {
     "source": "随便看看，选个你认为合适的国家。点击只会选中、查看，不会投放；选错了，再点另一个就是了。",
-    "zh_CN": "随便看看，选个你认为合适的国家。点击只会选中、查看，不会投放；选错了，再点另一个就是了。",
-    "en": "Look around and choose a country that seems suitable. Clicking only selects it and opens its details; it does not launch anything. Changed your mind? Click another one."
+    "zh_CN": "随便看看，选个你认为合适的国家。",
+    "en": "Look around and choose a country that seems suitable."
   },
   "LOC_OPENING_COUNTRY_DETAILS_TITLE": {
     "source": "国家详情",
@@ -451,8 +451,8 @@
   },
   "LOC_OPENING_CONFIRM_TEXT": {
     "source": "选好了？点破当前国家上方的投放气泡，才算正式开工。还可以换国家；看资料、拖地图、滚滚轮，都不会投放。我们会用你此刻的最新稿件。",
-    "zh_CN": "选好了？点破当前国家上方的投放气泡，才算正式开工。还可以换国家；看资料、拖地图、滚滚轮，都不会投放。我们会用你此刻的最新稿件。",
-    "en": "Chosen? Pop the launch bubble above the current country to start work. You can still change countries. Reading details, panning and zooming will not launch anything. We will use your latest draft."
+    "zh_CN": "选好了？点破当前国家上方的投放气泡，接下来就交给你自己了。",
+    "en": "Made your choice? Pop the launch bubble above the selected country. The rest is up to you."
   },
   "LOC_OPENING_HOVER_FINE": {
     "source": "火都烧起来了，还能说一句“问题不大”。很好，情绪稳定也是一种生产力。",
@@ -526,8 +526,8 @@
   },
   "LOC_OPENING_MAP_OPEN_TEXT": {
     "source": "好了，改好的还是你的那个模因。直接去地图页选个国家吧，不需要再签一张确认单……纸张也是有成本的。",
-    "zh_CN": "好了，改好的还是你的那个模因。直接去地图页选个国家吧，不需要再签一张确认单……纸张也是有成本的。",
-    "en": "Good. It is still your meme, just edited. Go straight to the map and choose a country. No extra approval form… paper costs money too."
+    "zh_CN": "好了，直接去地图页选个国家吧。马上就可以开始了。",
+    "en": "All right. Go straight to the map and choose a country. You’re almost ready to start."
   },
   "LOC_OPENING_MEME_NAME_TITLE": {
     "source": "模因名称",
@@ -546,8 +546,8 @@
   },
   "LOC_OPENING_MODULE_RESULT_TEXT": {
     "source": "装好了，再看看最终表达。比如 This is Fine 装上反问补丁，会变成 This is Fine?补丁的内容可以点开查看，不能手写替换。",
-    "zh_CN": "装好了，再看看最终表达。比如 This is Fine 装上反问补丁，会变成 This is Fine?补丁的内容可以点开查看，不能手写替换。",
-    "en": "Now check the final expression again. For example, This is Fine with a question patch becomes This is Fine? Click a patch to inspect its content; it cannot be overwritten by typing."
+    "zh_CN": "装好了，再看看最终表达。似乎发生了一点变化？",
+    "en": "Installed. Check the final expression again. Looks a little different, doesn’t it?"
   },
   "LOC_OPENING_EDITOR_CONTEXT_TITLE": {
     "source": "当前语境",
