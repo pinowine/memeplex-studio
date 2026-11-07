@@ -53,4 +53,4 @@ func mouth() -> Vector2:
 
 func accepts(point: Vector2) -> bool:
 	var local := get_global_transform_with_canvas().affine_inverse()*point
-	return is_visible_in_tree() and Rect2(-8,0,size.x+16,104).has_point(local)
+	return is_visible_in_tree() and Rect2(-24,-12,size.x+48,size.y+40).has_point(local)

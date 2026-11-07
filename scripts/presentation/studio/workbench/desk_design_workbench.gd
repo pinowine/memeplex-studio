@@ -16,6 +16,7 @@ const DendriteTree = preload("res://scripts/presentation/studio/design/desk_dend
 const ContextSlice = preload("res://scripts/presentation/studio/context/desk_context_board.gd")
 const ContextTrialSlip = preload("res://scripts/presentation/studio/context/desk_context_trial_slip.gd")
 const ModuleClip = preload("res://scripts/presentation/studio/design/desk_module_paper_clip.gd")
+const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const INK := Color("384238")
 const TABS := ["edit", "cultivate", "spread"]
@@ -48,7 +49,11 @@ var _starter: OptionButton
 var _physical_clips: Array[Control] = []
 var _part_title: Label
 var _part_note: Label
-var _part_content: TextEdit
+var _part_content: RichTextLabel
+var _final_expression: RichTextLabel
+var _final_title: Label
+var _detail_scroll: ScrollContainer
+var _detail_stack: VBoxContainer
 var _source: RichTextLabel
 var _errors: Label
 var _footer: Control
@@ -70,7 +75,7 @@ var _context_title: Label
 var _context_details: RichTextLabel
 var _context_trial: Control
 var _overview_name: Label
-var _overview_data: Label
+var _overview_data: RichTextLabel
 var _text_layout_queued := false
 var _part_edit_identity := ""
 var _catalog_default_slots: Dictionary = {}
@@ -132,11 +137,9 @@ func _authored_slot_default(id: String, value: String) -> bool:
 	return not _edited_slots.has(id) and _catalog_default_slots.has(id) and str(_catalog_default_slots[id]) == value
 
 func _bind_part_content(value: String, identity: String, authored_default: bool = false) -> void:
-	if _part_edit_identity != identity or not _part_content.has_meta(DeskLocalization.EDIT_META) or DeskLocalization.text_edit_value(_part_content) != value:
-		DeskLocalization.bind_text_edit(_part_content,value,authored_default)
-		_part_edit_identity = identity
-	else:
-		DeskLocalization.refresh_edits(_part_content)
+	_part_edit_identity = identity
+	_part_content.text = DeskLocalization.text(value) if authored_default else value
+
 
 func configure(catalog: MemeDemoCatalog, rules: MemeDesignRules = null) -> void:
 	_catalog = catalog
@@ -196,8 +199,14 @@ func sync_state(snapshot: Dictionary) -> void:
 	if _state == relevant: return
 	_state=relevant.duplicate(true)
 	if _publish != null: _publish.visible = _tab == "edit" and int(_state.get("publish_count", 0)) > 0
+	var previous_modules: Array = _design.get("module_slots", [])
 	_design=design.duplicate(true)
 	var slots: Array=_design.get("module_slots",[])
+	for index in slots.size():
+		if not str(slots[index]).is_empty() and (index >= previous_modules.size() or slots[index] != previous_modules[index]):
+			_selected_module = str(slots[index])
+			_selected_installed_slot = index
+			_selected_variant = ""
 	if _selected_installed_slot>=0 and (_selected_installed_slot>=slots.size() or str(slots[_selected_installed_slot]).is_empty()): _selected_installed_slot=-1
 	_sync_count+=1
 	_refresh_culture()
@@ -302,32 +311,42 @@ func _build_edit() -> void:
 		page.add_child(clip)
 		_physical_clips.append(clip)
 		clip.pressed.connect(func(): module_slots_pressed.emit(module_clips_viewport_rect()))
-	_part_title=_label(page,DeskLocalization.source("LOC_EXPRESSION_MODULES_46E5F9F9"),"PartTitle",17)
-	_part_note=_label(page,DeskLocalization.source("LOC_CLICK_AN_EXPRESSION_ON_THE_SOMA_AXON_B375AE2A"),"PartDescription",12)
-	_part_content=TextEdit.new()
-	_part_content.name="PartContent"
-	_part_content.wrap_mode=TextEdit.LINE_WRAPPING_BOUNDARY
-	_part_content.add_theme_font_size_override("font_size",14)
-	_part_content.add_theme_color_override("font_color",INK)
-	var paper:=StyleBoxFlat.new()
-	paper.bg_color=Color("ede8d8")
-	paper.content_margin_left=10
-	paper.content_margin_right=10
-	paper.content_margin_top=8
-	_part_content.add_theme_stylebox_override("normal",paper)
-	_part_content.add_theme_stylebox_override("focus",paper)
-	page.add_child(_part_content)
-	DeskLocalization.bind_text_edit(_part_content,"",false)
-	_part_content.text_changed.connect(_content_changed)
-	_source=RichTextLabel.new()
-	_source.name="SourceAndMutation"
-	_source.bbcode_enabled=false
-	_source.selection_enabled=true
-	_source.add_theme_font_size_override("normal_font_size",11)
-	_source.add_theme_color_override("default_color",INK)
-	page.add_child(_source)
-	_overview_name=_label(page,"","MemeOverviewName",15)
-	_overview_data=_label(page,"","MemeOverviewData",12)
+	_detail_scroll = ScrollContainer.new()
+	_detail_scroll.name = "ExpressionDetails"
+	_detail_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	page.add_child(_detail_scroll)
+	_detail_stack = VBoxContainer.new()
+	_detail_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_detail_stack.add_theme_constant_override("separation", 10)
+	_detail_scroll.add_child(_detail_stack)
+	_overview_data = _readout(_detail_stack, "MemeOverviewData", 16)
+	_overview_data.bbcode_enabled = true
+	_part_title = _label(_detail_stack, "", "PartTitle", 19)
+	_part_note = _label(_detail_stack, "", "PartDescription", 14)
+	_part_content = _readout(_detail_stack, "PartContent", 16)
+	_source = _readout(_detail_stack, "SourceAndMutation", 13)
+	_overview_name = _label(page, "", "MemeOverviewName", 24)
+	_overview_name.set_meta("paper_emphasis", true)
+	_final_title = _label(page, DeskLocalization.source("LOC_EDIT_FINAL_EXPRESSION"), "FinalExpressionTitle", 14)
+	_final_expression = _readout(page, "FinalExpression", 23)
+	_final_expression.fit_content = false
+	_final_expression.scroll_active = true
+
+
+func _readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
+	var label := RichTextLabel.new()
+	label.name = node_name
+	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	label.fit_content = true
+	label.scroll_active = false
+	label.selection_enabled = true
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_font_size_override("normal_font_size", font_size)
+	label.add_theme_font_size_override("bold_font_size", font_size)
+	label.add_theme_constant_override("line_separation", 6)
+	label.add_theme_color_override("default_color", INK)
+	parent.add_child(label)
+	return label
 
 
 func _build_culture() -> void:
@@ -433,25 +452,6 @@ func _select_part(id: String) -> void:
 	_refresh_part()
 
 
-func _content_changed() -> void:
-	if _setting: return
-	var content := DeskLocalization.text_edit_value(_part_content)
-	if not _selected_module.is_empty():
-		_module_edits[_selected_module]=content
-		_catalog_default_modules.erase(_selected_module)
-		if _selected_installed_slot>=0: _request("edit_module_content",{"slot":_selected_installed_slot,"content":content,"draft":get_draft()})
-		return
-	if _selected_part.is_empty(): return
-	_edited_slots[_selected_part] = true
-	_catalog_default_slots.erase(_selected_part)
-	var slots: Dictionary=_draft.get("slots",{}).duplicate(true)
-	if str(slots.get(_selected_part,""))==content: return
-	slots[_selected_part]=content
-	_draft.slots=slots
-	_refresh_neuron()
-	draft_changed.emit(get_draft())
-
-
 func _refresh_part() -> void:
 	if _part_title==null: return
 	if not _selected_variant.is_empty():
@@ -466,8 +466,7 @@ func _refresh_part() -> void:
 	for node in definition.get("neuron_nodes",[]):
 		if str(node.get("id",""))==_selected_part: title=DeskLocalization.text(str(node.get("title",_selected_part)))
 	_part_title.text=title
-	_part_note.text=DeskLocalization.text("LOC_REVISE_THIS_PART_OF_THE_EXPRESSION_5BCC9FA3")
-	_part_content.editable=true
+	_part_note.text=DeskLocalization.text("LOC_EDIT_READ_ONLY_PART")
 	var content := str((_draft.get("slots",{}) as Dictionary).get(_selected_part,""))
 	_bind_part_content(content,"slot:"+str(_draft.get("preset_id",""))+":"+_selected_part,_authored_slot_default(_selected_part,content))
 	_source.text=""
@@ -483,7 +482,6 @@ func show_module(id: String,slot: int=-1) -> void:
 		_setting=true
 		_part_title.text=DeskLocalization.text(str(entry.title))
 		_part_note.text=DeskLocalization.text(str(entry.description))
-		_part_content.editable=true
 		var content:=str(_module_edits.get(id,entry.get("content","")))
 		if _selected_installed_slot>=0:
 			var contents: Array=_design.get("module_contents",[])
@@ -504,7 +502,6 @@ func _select_variant(id: String) -> void:
 		_setting=true
 		_part_title.text=DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024")
 		_part_note.text=DeskLocalization.text("LOC_YOUR_OWN_EXPRESSION_0A35E8E2") if bool(variant.get("controlled",false)) else DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E")
-		_part_content.editable=false
 		_bind_part_content(str(variant.get("text","")),"variant:"+id,false)
 		_source.text=DeskLocalization.text("LOC_REWRITTEN_FROM_AN_EARLIER_EXPRESSION_22EA25D8") if not (variant.get("parent_ids",[]) as Array).is_empty() else DeskLocalization.text("LOC_AN_INDEPENDENTLY_EMERGING_EXPRESSION_77A66F57")
 		_setting=false
@@ -593,29 +590,26 @@ func _layout_sheet(id: String,area: Vector2) -> void:
 	else: _layout_spread_sheet(w,h)
 
 
-func _layout_edit_sheet(w: float,h: float) -> void:
-	var right := w*.57
-	_place(_neuron,Rect2(0,4,right-18,h-54))
-	var span := w-right
+func _layout_edit_sheet(w: float, h: float) -> void:
+	var right := w * .52
+	var span := w - right - 8
+	# Keep the title below the clips and clear of the physical monitor.
+	_place(_overview_name, Rect2(right, 148, span, 38))
+	var graph_y := 54.0
+	var expression_y := maxf(graph_y + 110, h - 154)
+	_place(_neuron, Rect2(0, graph_y, right - 18, maxf(100, expression_y - graph_y - 14)))
+	_place(_final_title, Rect2(8, expression_y, right - 24, 24))
+	_place(_final_expression, Rect2(8, expression_y + 30, right - 28, maxf(60, h - expression_y - 78)))
 	for index in _physical_clips.size():
-		var x := right+float(index)*maxf(60,(span-92)/4.0)
-		var y: float = [1.0,7.0,-2.0,5.0,0.0][index]
-		_place(_physical_clips[index],Rect2(x,y,96,128))
-		_physical_clips[index].rotation = deg_to_rad([-5.0,3.5,-2.0,5.5,-3.5][index])
-	_place(_overview_name,Rect2(right,145,span*.48-8,96))
-	_place(_overview_data,Rect2(right+span*.48,145,span*.52,96))
-	# 按排版后的实际高度安排后续文本，避免较长译文互相覆盖。
-	var heading_y := maxf(256, maxf(_overview_name.position.y + _overview_name.size.y, _overview_data.position.y + _overview_data.size.y) + 15)
-	_place(_part_title,Rect2(right,heading_y,span,26))
-	var note_y := _part_title.position.y + _part_title.size.y + 7
-	_place(_part_note,Rect2(right,note_y,span,36))
-	var content_y := _part_note.position.y + _part_note.size.y + 9
-	_place(_part_content,Rect2(right,content_y,span,maxf(72,h-86-content_y)))
-	_place(_source,Rect2(right,h-76,span,26))
-	_place(_footer,Rect2(0,h-44,w,40))
-	if _publish!=null:
+		var x := right + float(index) * (span - 96) / 4.0
+		_place(_physical_clips[index], Rect2(x, 6, 96, 128))
+		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5, -3.5][index])
+	var details_y := _overview_name.position.y + _overview_name.size.y + 12
+	_place(_detail_scroll, Rect2(right, details_y, span, maxf(78, h - 52 - details_y)))
+	_place(_footer, Rect2(0, h - 44, w, 40))
+	if _publish != null:
 		var key_width := maxf(238, _publish.get_combined_minimum_size().x)
-		_place(_publish,Rect2(w-key_width-8,4,key_width,maxf(32,_publish.get_combined_minimum_size().y)))
+		_place(_publish, Rect2(w - key_width - 8, 4, key_width, maxf(32, _publish.get_combined_minimum_size().y)))
 
 
 func _layout_culture_sheet(w: float,h: float) -> void:
@@ -717,7 +711,7 @@ func inspection() -> Dictionary:
 	return {"tab":_tab,"tabs":TABS,"draft":get_draft(),"neuron":_neuron.inspection(),"design_state":_design.duplicate(true),"sync_count":_sync_count,
 		"module_slots":_physical_clips.size(),"skill_count":_skill_buttons.size(),
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
-		"content_editable":_part_content.editable,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
+		"content_editable":false,"final_expression":_final_expression.text,"final_expression_rect":_final_expression.get_global_rect(),"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
 		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
 		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
@@ -730,10 +724,20 @@ func module_clip_parent(slot: int) -> Control:
 	return _physical_clips[slot] if slot>=0 and slot<_physical_clips.size() else null
 
 
-func module_clip_at(point: Vector2) -> int:
-	for slot in range(_physical_clips.size()-1,-1,-1):
-		if _physical_clips[slot].accepts(point): return slot
-	return -1
+func module_clip_at(point: Vector2, empty_only: bool = false) -> int:
+	var best := -1
+	var distance := INF
+	var slots: Array = _design.get("module_slots", [])
+	for slot in _physical_clips.size():
+		if empty_only and (slot >= slots.size() or not str(slots[slot]).is_empty()): continue
+		var clip: Control = _physical_clips[slot]
+		if not clip.accepts(point): continue
+		var center: Vector2 = clip.get_global_transform_with_canvas() * (clip.size * .5)
+		var candidate := center.distance_squared_to(point)
+		if candidate < distance:
+			distance = candidate
+			best = slot
+	return best
 
 
 func module_clips_viewport_rect() -> Rect2:
@@ -751,13 +755,14 @@ func accept_tabletop_item(kind: String,id: String,global_position: Vector2) -> b
 		for placed in _design.get("module_slots",[]):
 			if str(placed)==id: free-=1
 		if free<=0: return false
-		var index := module_clip_at(global_position)
+		var index := module_clip_at(global_position, true)
 		var slots: Array=_design.get("module_slots",[])
 		if index<0 or index>=slots.size() or not str(slots[index]).is_empty(): return false
 		_request("install_module",{"slot":index,"module_id":id})
 		var current: Array=_design.get("module_slots",[])
 		if index>=current.size() or str(current[index])!=id: return false
 		_request("move_module",{"slot":index,"position":_neuron.suggested_module_position(index)})
+		show_module(id, index)
 		return true
 	if _tab != "cultivate": return false
 	return _context_slice.accept_tabletop_item(kind,id,global_position)
@@ -786,20 +791,36 @@ func _show_context_info(info: Dictionary) -> void:
 
 func _refresh_overview() -> void:
 	if _overview_name == null: return
-	var raw_name := str(_draft.get("name",_draft.get("title","")))
-	var name := DeskLocalization.text(raw_name) if not _catalog_default_name.is_empty() and raw_name == _catalog_default_name else raw_name
+	var raw_name := str(_draft.get("name", _draft.get("title", "")))
+	var name := DeskLocalization.text(raw_name) if raw_name == _catalog_default_name else raw_name
 	if name.is_empty() and _catalog != null:
-		var preset: MemeDemoPreset = _catalog.find_preset(str(_design.get("starter_preset_id","")))
-		if preset != null: name = DeskLocalization.text(str(preset.title))
-	var kernel: MemeDemoKernel = _kernel(str(_draft.get("kernel_id","")))
-	var base := DeskLocalization.text(kernel.title if kernel != null else str(_draft.get("kernel_id", "")))
+		var preset: MemeDemoPreset = _catalog.find_preset(str(_design.get("starter_preset_id", "")))
+		if preset != null: name = ExpressionText.preset_name(preset, true)
+	if _catalog != null:
+		var preset: MemeDemoPreset = _catalog.find_preset(str(_draft.get("preset_id", "")))
+		if preset != null and raw_name == preset.title: name = ExpressionText.preset_name(preset, true)
 	_overview_name.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-	_overview_name.text = "MEME\n"+name+DeskLocalization.text("LOC_BASE_FORM_2C6D2C53")+base
-	var modules := 0
-	for id in _design.get("module_slots",[]):
-		if not str(id).is_empty(): modules += 1
-	var permission: String = {"allowed":DeskLocalization.text("LOC_REUSABLE_D9D7DF9F"),"conditional":DeskLocalization.text("LOC_CONDITIONAL_26EE9BE2"),"restricted":DeskLocalization.text("LOC_RESTRICTED_688F8923")}.get(str(_draft.get("reuse_permission","allowed")),DeskLocalization.text("LOC_RESTRICTED_688F8923"))
-	_overview_data.text = DeskLocalization.format_text("LOC_MODULES_D_MEME_D_PERMISSION_S_REPLACEABLE_23F3D191", [modules,int(_state.get("meme_points",0)),permission,_draft.get("replaceable_slots",[]).size(),float(_draft.get("remix_cost",0))*100,float(_draft.get("context_dependency",0))*100,float(_draft.get("language_access",0))*100,float(_draft.get("recognizability",0))*100,str(_draft.get("language_id","—")),str(_draft.get("group_id","—")),_draft.get("topic_ids",[]).size()])
+	_overview_name.text = name
+	var rows := PackedStringArray()
+	for pair: Array in [["language", "LOC_LANGUAGE_9F6FEE1A", "○"], ["group", "LOC_EDIT_AUDIENCE", "◇"], ["topics", "LOC_EDIT_TOPICS", "≡"]]:
+		var layer: Dictionary = _design.get("context_layers", {}).get(pair[0], {})
+		var names := PackedStringArray()
+		if bool(layer.get("attached", true)):
+			for slot: Dictionary in layer.get("slots", []):
+				var id := str(slot.get("resource_id", ""))
+				if not id.is_empty(): names.append(DeskLocalization.text(str(_rules.context_resource(id).get("title", id))))
+		rows.append("[b]%s %s[/b]  %s" % [pair[2], DeskLocalization.text(pair[1]), _escape(" / ".join(names) if not names.is_empty() else DeskLocalization.text("LOC_NOT_SELECTED_1182C545"))])
+	var count := 0
+	for id: String in _design.get("module_slots", []):
+		if not id.is_empty(): count += 1
+	rows.append("[b]%s[/b]  [font_size=22]%d[/font_size] / %d" % [DeskLocalization.text("LOC_EDIT_PATCHES"), count, _physical_clips.size()])
+	_overview_data.text = "\n".join(rows)
+	_final_expression.text = ExpressionText.render(_catalog, _draft) if _catalog != null else ""
+	_final_title.text = DeskLocalization.text("LOC_EDIT_FINAL_EXPRESSION")
+
+
+func _escape(value: String) -> String:
+	return value.replace("[", "[lb]")
 
 
 func set_context_trial(country_id: String, country_title: String, fitness: Dictionary) -> void:

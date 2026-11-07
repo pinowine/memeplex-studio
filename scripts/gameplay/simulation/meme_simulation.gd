@@ -376,10 +376,7 @@ func publish(data: Dictionary) -> PackedStringArray:
 		family_id = _new_id("family")
 		families[family_id] = {"id":family_id, "owner":"player", "anchor":anchor, "split_threshold":kernel.split_threshold, "derived_from":[], "preset_id":preset_id, "source_presets":source_presets.duplicate(true)}
 	var id := _new_id("variant")
-	var text_parts := PackedStringArray()
-	for slot in kernel.required_slots:
-		text_parts.append(str(data.slots[slot]))
-	var text := " / ".join(text_parts)
+	var text: String = preload("res://scripts/gameplay/design/meme_expression.gd").render(catalog, data)
 	variants.append({"id":id, "family_id":family_id, "parent_ids":parent_ids, "origin_ids":[id] if parent_ids.is_empty() else old.origin_ids.duplicate(), "creator":"player", "owned":true, "controlled":true, "text":text, "kernel_id":str(kernel.id), "preset_id":preset_id, "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":str(data.language_id), "pragmatic_position":_vector_array(data.pragmatic_position), "political_position":_vector_array(data.political_position) if data.get("political_known", false) else [], "target":str(data.target), "topic_ids":Array(data.get("topic_ids", []))})
 	for field in ["module_patch_record", "skill_effects", "context_layer_record", "context_layer_attachment"]:
 		if data.has(field): variants.back()[field] = data[field].duplicate(true)
