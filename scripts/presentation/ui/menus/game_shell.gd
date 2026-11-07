@@ -43,6 +43,9 @@ func configure(owner_page: Node2D) -> void:
 	ending.name = "Ending67"
 	add_child(ending)
 	ending.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	main_menu.settings_changed.connect(_sync_guide_settings)
+	page.hud.guide_enabled_requested.connect(_set_guide_enabled)
+	_sync_guide_settings({})
 	main_menu.start_requested.connect(page._start_from_main)
 	main_menu.load_requested.connect(page._load_from_main)
 	main_menu.codex_requested.connect(page._open_main_codex)
@@ -61,11 +64,24 @@ func enter_game(guide: bool) -> void:
 	main_mode = false
 	main_menu.hide_menu()
 	ending.hide()
-	if guide: tutorial.begin()
+	if guide and main_menu.guide_enabled(): tutorial.begin()
 	else: tutorial.skip()
+	if page._direct_starter_selection: page._show_direct_starters()
 
 func blocks_input() -> bool:
 	return main_mode or main_menu.visible or ending.visible
+
+func _set_guide_enabled(value: bool) -> void:
+	var error: Error = main_menu.set_guide_enabled(value)
+	if error != OK:
+		_sync_guide_settings({})
+		page.hud.report_design_errors(PackedStringArray([DeskLocalization.format_text("LOC_GUIDANCE_SETTING_SAVE_ERROR", [error_string(error)])]))
+func _sync_guide_settings(_settings: Dictionary) -> void:
+	var enabled: bool = main_menu.guide_enabled()
+	page.hud.set_guide_enabled(enabled)
+	if not enabled:
+		tutorial.skip()
+		if not main_mode and not page.startup_ready(): page._show_direct_starters()
 
 func pauses_clock() -> bool:
 	var guide: Dictionary = tutorial.inspection()

@@ -1298,6 +1298,9 @@ func _show_component_details(hover: Dictionary = {}) -> void:
 		_slot_reader.show_details(details,get_viewport().get_visible_rect())
 
 func _reader_choice_selected(index: int) -> void:
+	if _page._direct_starter_selection:
+		_page._direct_starter_choice(index)
+		return
 	if bool(_slot_reader._details.get("starter_pending", false)):
 		if index < 3: _fax.preview_starter(index)
 		elif index == 3: _fax.commit_starter_choice()

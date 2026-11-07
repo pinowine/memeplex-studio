@@ -842,6 +842,13 @@ text = "LOC_ESC_TO_RETURN_OPENING_THE_MENU_DOES_31A34A86"
 autowrap_mode = 2
 theme_type_variation = "DemoCaption"
 
+[node name="GuideEnabled" type="CheckButton" parent="SettingsMenu/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+button_pressed = true
+text = "LOC_GUIDE_67_ENABLED"
+
 [node name="Buttons" type="VBoxContainer" parent="SettingsMenu/Column"]
 layout_mode = 2
 size_flags_vertical = 3

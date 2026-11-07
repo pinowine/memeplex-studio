@@ -148,6 +148,12 @@ layout_mode = 2
 text = "LOC_LANGUAGE_APPLIES_TO_THE_INTERFACE_AND_EXISTING_844A2439"
 autowrap_mode = 3
 
+[node name="GuideEnabled" type="CheckButton" parent="SettingsPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 42)
+button_pressed = true
+text = "LOC_GUIDE_67_ENABLED"
+
 [node name="Back" type="Button" parent="SettingsPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,42)
