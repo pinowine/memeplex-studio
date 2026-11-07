@@ -11,8 +11,8 @@
   },
   "LOC_OPENING_FAX_OPEN_TEXT": {
     "source": "先点开传真机。",
-    "zh_CN": "先点开传真机。",
-    "en": "Open the fax machine first."
+    "zh_CN": "点击传真机机身，拉近看看。",
+    "en": "Click the fax body to bring it into focus."
   },
   "LOC_OPENING_PICKUP_TITLE": {
     "source": "接听",
@@ -111,8 +111,8 @@
   },
   "LOC_OPENING_MACHINES_TEXT": {
     "source": "接电话的东西，我会不定期打给你评估工作情况。同时也会把一些新闻传真给你，可能会有一些有用的东西……",
-    "zh_CN": "接电话的东西，我会不定期打给你评估工作情况。同时也会把一些新闻传真给你，可能会有一些有用的东西……",
-    "en": "This is for calls. I’ll ring you now and then to review your work. I’ll also fax you some news. There might be something useful in it…"
+    "zh_CN": "点机身可以拉近；拿起听筒接听，放回听筒挂断。新闻和物资会从出纸口送来，机身上的其他按键不用操作。",
+    "en": "Click the body to focus. Lift the receiver to answer; put it down to hang up. News and supplies arrive through the paper outlet. The other keys are inactive."
   },
   "LOC_OPENING_FAX_OUTPUT_TITLE": {
     "source": "出纸口",

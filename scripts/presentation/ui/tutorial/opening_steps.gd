@@ -2,7 +2,7 @@ extends RefCounted
 
 static func steps() -> Array[Dictionary]:
 	return [
-		{"id":"fax_open","title":"LOC_OPENING_FAX_OPEN_TITLE","text":"LOC_OPENING_FAX_OPEN_TEXT","action":"component_focused","target":"fax/pickup","match":{"id":"fax"},"silent":true,"hand":true},
+		{"id":"fax_open","title":"LOC_OPENING_FAX_OPEN_TITLE","text":"LOC_OPENING_FAX_OPEN_TEXT","action":"component_focused","target":"desktop/fax","match":{"id":"fax"},"silent":true,"hand":true},
 		{"id":"pickup","title":"LOC_OPENING_PICKUP_TITLE","text":"LOC_OPENING_PICKUP_TEXT","action":"phone_pickup","target":"fax/pickup","silent":true,"hand":true},
 		{"id":"welcome","title":"LOC_OPENING_WELCOME_TITLE","text":"LOC_OPENING_WELCOME_TEXT","action":"continue","centered":true},
 		{"id":"confused","title":"LOC_OPENING_CONFUSED_TITLE","text":"LOC_OPENING_CONFUSED_TEXT","action":"continue","centered":true,"emotion":"rotate"},
