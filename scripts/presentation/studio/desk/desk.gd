@@ -1326,7 +1326,7 @@ func _foreground_ui_handles(point: Vector2) -> bool:
 	point = _foreground_point(point)
 	if country_details_handle_point(point): return true
 	if _slot_reader != null and _slot_reader.handles_viewport_point(point): return true
-	return _page._shell != null and _page._shell.tutorial.handles_viewport_point(point)
+	return _page._shell != null and _page._shell.guidance_handles_point(point)
 
 
 func country_details_handle_point(point: Vector2) -> bool:
@@ -1339,11 +1339,7 @@ func _desktop_pointer_guard(event: InputEvent) -> bool:
 	return _slot_pointer_guard(event)
 
 func _material_full_details(info: Dictionary) -> Dictionary:
-	var parts := PackedStringArray()
-	for key: String in ["description","gesture","unlock_hint"]:
-		var text := str(info.get(key,""))
-		if not text.is_empty(): parts.append(text)
-	if info.has("count"): parts.append(DeskLocalization.source_format("LOC_AVAILABLE_S_8B2D5419",str(info.count)))
-	var source := str(info.get("source_label",""))
-	if not source.is_empty(): parts.append(DeskLocalization.source_format("LOC_SOURCE_S_892247BA",source))
-	return {"title":str(info.get("title","")),"body":"\n\n".join(parts),"source_records":info.get("source_records",[]).duplicate(true)}
+	var details := {"title":str(info.get("title","")),"body":str(info.get("description","")),"sections":[]}
+	var commentary := str(info.get("commentary",""))
+	if not commentary.is_empty(): details.sections.append({"body":commentary,"role":"commentary"})
+	return details

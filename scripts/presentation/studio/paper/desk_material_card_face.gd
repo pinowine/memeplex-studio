@@ -76,6 +76,10 @@ func _source_text() -> String:
 	return "—"
 
 
+func _shows_count() -> bool:
+	return bool(_record.get("show_count", false))
+
+
 func _count_value() -> int:
 	var value: Variant = _record.get("count", _record.get("available", _record.get("amount", 1)))
 	if value is int: return maxi(0, value)
@@ -153,6 +157,7 @@ func _build_layout() -> Dictionary:
 	var dimensions := size.max(minimum_card_size(_kind))
 	var body := Rect2(4, 3, dimensions.x - 10, dimensions.y - 10)
 	var header := _header_layout(body)
+	if not _shows_count(): header.category = Rect2(body.position.x + 25, body.position.y + 5, body.size.x - 33, 14)
 	var sections := {
 		"icon":Rect2(body.position + Vector2(7, 6), Vector2(15, 13)),
 		"category":header.category,
@@ -233,13 +238,15 @@ func _draw() -> void:
 	_stroke(outline, palette.edge, 1.1)
 	_draw_face_structure(body, palette)
 	_draw_icon(_layout.sections.icon, palette.ink)
-	var badge: Rect2 = _layout.sections.count
-	var badge_style := StyleBoxFlat.new()
-	badge_style.bg_color = palette.ink
-	badge_style.set_corner_radius_all(2)
-	draw_style_box(badge_style, badge)
-	for role: String in ["category", "title", "source", "count"]:
-		_draw_text(_layout.text[role], palette.light if role == "count" else palette.ink, role == "count")
+	if _shows_count():
+		var badge: Rect2 = _layout.sections.count
+		var badge_style := StyleBoxFlat.new()
+		badge_style.bg_color = palette.ink
+		badge_style.set_corner_radius_all(2)
+		draw_style_box(badge_style, badge)
+		_draw_text(_layout.text.count, palette.light, true)
+	for role: String in ["category", "title", "source"]:
+		_draw_text(_layout.text[role], palette.ink)
 	if _hovered or _selected:
 		var glass := body.grow(-5)
 		var intensity := .17 if _selected else .10
@@ -331,7 +338,7 @@ func inspection() -> Dictionary:
 	_layout = _build_layout()
 	var fit := {}
 	for role: String in _layout.text: fit[role] = _layout.text[role].duplicate(true)
-	return {"component":"physical_material_card_face", "kind":_kind, "id":str(_record.get("id", "")), "shape":SHAPES[_kind], "thickness":_layout.thickness, "minimum_size":minimum_card_size(_kind), "size":size, "body":_layout.body, "silhouette":_shape(_layout.body), "sections":_layout.sections.duplicate(true), "font_fit":fit, "count":_count_value(), "source":_source_text(), "title":DeskLocalization.text(str(_record.get("title", _record.get("id", "")))), "hovered":_hovered, "selected":_selected, "reflection":_hovered or _selected, "draw_count":_draw_count, "rendering":"native_canvas_geometry_and_font", "mutates_inventory":false, "mouse_filter":mouse_filter}
+	return {"component":"physical_material_card_face", "kind":_kind, "id":str(_record.get("id", "")), "shape":SHAPES[_kind], "thickness":_layout.thickness, "minimum_size":minimum_card_size(_kind), "size":size, "body":_layout.body, "silhouette":_shape(_layout.body), "sections":_layout.sections.duplicate(true), "font_fit":fit, "count":_count_value(), "count_visible":_shows_count(), "source":_source_text(), "title":DeskLocalization.text(str(_record.get("title", _record.get("id", "")))), "hovered":_hovered, "selected":_selected, "reflection":_hovered or _selected, "draw_count":_draw_count, "rendering":"native_canvas_geometry_and_font", "mutates_inventory":false, "mouse_filter":mouse_filter}
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
