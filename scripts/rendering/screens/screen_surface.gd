@@ -169,6 +169,29 @@ func input_from_ray(ray_origin_world: Vector3, ray_direction_world: Vector3) -> 
 	var uv := Vector2((delta.dot(_uv_x)*yy-delta.dot(_uv_y)*xy)/determinant, (delta.dot(_uv_y)*xx-delta.dot(_uv_x)*xy)/determinant)
 	return input_from_uv((uv-_uv_min)/(_uv_max-_uv_min))
 
+func project_control_rect(control: Control, camera: Camera3D) -> Rect2:
+	if control != _source and not _source.is_ancestor_of(control): return Rect2()
+	var source_rect: Rect2 = _source.get_global_transform().affine_inverse() * control.get_global_transform() * Rect2(Vector2.ZERO, control.size)
+	var uv_rect := Rect2((source_rect.position - _source_rect.position) / _source_rect.size, source_rect.size / _source_rect.size)
+	if _inventory != null and _last_mode != "meme":
+		var original: Control = _source._inventory
+		if original.is_ancestor_of(control):
+			var local_rect: Rect2 = original.get_global_transform().affine_inverse() * control.get_global_transform() * Rect2(Vector2.ZERO, control.size)
+			for index in 4:
+				var cell: Rect2 = original.cell_rect(index)
+				if cell.has_point(local_rect.get_center()):
+					var rendered: Rect2 = _inventory.cell_rect(index)
+					uv_rect = Rect2((rendered.position + (local_rect.position - cell.position) / cell.size * rendered.size) / Vector2(_screen_size_px), local_rect.size / cell.size * rendered.size / Vector2(_screen_size_px))
+					break
+	if not Rect2(Vector2.ZERO, Vector2.ONE).encloses(uv_rect): return Rect2()
+	var result := Rect2()
+	var corners := [uv_rect.position, Vector2(uv_rect.end.x, uv_rect.position.y), uv_rect.end, Vector2(uv_rect.position.x, uv_rect.end.y)]
+	for index in corners.size():
+		var uv: Vector2 = _uv_min + corners[index] * (_uv_max - _uv_min)
+		var point := camera.unproject_position(_target.to_global(_uv_origin + _uv_x * uv.x + _uv_y * uv.y))
+		result = Rect2(point, Vector2.ZERO) if index == 0 else result.expand(point)
+	return result
+
 func _measure_uv_frame() -> bool:
 	_uv_min = Vector2.INF
 	_uv_max = -Vector2.INF

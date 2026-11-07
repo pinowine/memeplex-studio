@@ -29,16 +29,16 @@ func configure(owner_page: Node2D) -> void:
 	add_child(tutorial)
 	tutorial.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var steps: Array[Dictionary] = tutorial.default_steps()
-	var speed: Dictionary = {}
-	for index in range(steps.size()-1,-1,-1):
-		if str(steps[index].id) == "speed": speed = steps.pop_at(index)
-	steps.append(speed)
 	tutorial.step_changed.connect(_reconcile_startup_step)
 	tutorial.configure(steps, _target, _tutorial_reserved_areas, _tutorial_requires_overview)
 	tutorial.set_drag_target_provider(_tutorial_drag_targets)
 	tutorial.set_input_target_provider(_tutorial_input_targets, _tutorial_input_contains)
-	tutorial.overview_requested.connect(page.desk.return_overview)
+	tutorial.overview_requested.connect(page._return_to_desktop)
+	page.desk._monitor.mode_changed.connect(func(id: String):
+		tutorial.observe_action("monitor_mode_changed", {"mode":page.desk._monitor.MODES.find(id)}))
 	tutorial.drag_cancelled.connect(_cancel_tutorial_drag)
+	tutorial.finished.connect(func(skipped: bool):
+		if skipped and page.desk._fax.inspection().focused: page.desk._show_component_details())
 	ending = Summary.new()
 	ending.name = "Ending67"
 	add_child(ending)
@@ -75,6 +75,8 @@ func observe(action: String, data: Dictionary = {}) -> void:
 	tutorial.observe_action(action,data)
 
 func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
+	if bool(step.get("auto_overview", false)): page._return_to_desktop()
+	if _id == "starter": page.desk._show_component_details()
 	var action := str(step.get("action", ""))
 	if action not in ["phone_pickup", "starter_chosen", "startup_finished"]: return
 	# These steps can be completed while the introductory notes are still open.
@@ -109,11 +111,36 @@ func _logical_target(id: String) -> Variant:
 			if reader != null and reader.is_visible_in_tree() and not reader._choice_buttons.is_empty():
 				return reader._choice_box
 			return null
+		"fax/confirm":
+			var reader: Control = page.desk._slot_reader
+			return reader._choice_buttons[3] if reader.is_visible_in_tree() and reader._choice_buttons.size() > 3 else null
 		"fax/hangup": return fax.action_target("hangup")
 		"speed": return page.desk._speed_strip
 		"desktop/machines", "desktop/fax": return page.desk._art.fax
 		"desktop/printer": return page.desk._art.printer
 		"desktop/monitor": return page.desk._art.crt
+		"desktop/note": return page.desk._hover_strip
+		"desktop/clock": return page.desk._clock
+		"desktop/language": return page.desk._material_cards._stack_surfaces.language
+		"desktop/stacks": return _targets_bounds(["desktop/language", "desktop/stack/group", "desktop/stack/topic", "desktop/stack/module"])
+		"desktop/fax_output":
+			if page.has_meta("studio3d"): return {"equipment_part":"fax_machine__RearOutputSlot"}
+			var mouth: Dictionary = fax._mouth_geometry()
+			return _area_target(fax, Rect2(mouth.origin, Vector2(mouth.width, 18)))
+		"reader/first_card":
+			var grid: GridContainer = page.desk._material_cards._focus_grid
+			return grid.get_child(0) if grid != null and grid.get_child_count() > 0 else null
+		"reader/details": return page.desk._slot_reader._body_label
+		"monitor/points": return _area_target(page.desk._monitor, page.desk._monitor._screen_rect)
+		"monitor/ideology", "monitor/pragmatics": return page.desk._monitor._inventory
+		"sheet/tabs": return _targets_bounds(["sheet/map", "sheet/edit", "sheet/cultivate", "sheet/spread"])
+		"editor/expression": return editor._part_content
+		"editor/preview": return editor._neuron
+		"context/axes": return _context_regions_target(editor.context_slice(), ["stance", "pragmatic"])
+		"context/layers": return _context_regions_target(editor.context_slice(), ["language", "group", "topics"])
+		"spread/tree": return editor._spread_tree
+		"spread/details": return editor._skill_details
+		"map/details": return page.atlas.drawer
 		"editor/clips":
 			if not editor._pages.edit.is_visible_in_tree(): return page.desk._stack.tab_control("edit")
 			var slots: Array = editor._design.get("module_slots", [])
@@ -129,8 +156,32 @@ func _logical_target(id: String) -> Variant:
 		"spread/skill": return _skill_target(editor)
 		"map/country": return _country_target()
 		"map/confirm": return page.atlas.get_node("%StudioConfirm")
+	if id.begins_with("fax/option/"):
+		var buttons: Array = page.desk._slot_reader._choice_buttons
+		var index := int(id.get_slice("/", 2))
+		return buttons[index] if index >= 0 and index < buttons.size() else null
+	if id.begins_with("desktop/stack/"): return page.desk._material_cards._stack_surfaces.get(id.get_slice("/", 2))
+	if id.begins_with("monitor/button/"): return page.desk._monitor._buttons[int(id.get_slice("/", 2))]
+	if id.begins_with("monitor/value/"):
+		var inventory: Control = page.desk._monitor._inventory
+		return _area_target(inventory, inventory.cell_rect(int(id.get_slice("/", 2))))
 	if id.begins_with("sheet/"): return page.desk._stack.tab_control(id.trim_prefix("sheet/"))
 	return null
+
+func _targets_bounds(ids: Array) -> Rect2:
+	var bounds := Rect2()
+	for id: String in ids:
+		var target: Variant = _target(id)
+		var rect: Rect2 = target if target is Rect2 else (_tutorial_project_rect(target) if target is Control else Rect2())
+		if rect.has_area(): bounds = bounds.merge(rect) if bounds.has_area() else rect
+	return bounds
+
+func _context_regions_target(board: Control, ids: Array) -> Control:
+	var area := Rect2()
+	for id: String in ids:
+		var rect: Rect2 = board._layout_layers.get(id, {}).get("rect", Rect2())
+		if rect.has_area(): area = area.merge(rect) if area.has_area() else rect
+	return _area_target(board, area)
 
 func _area_target(source: Control, area: Rect2) -> Control:
 	if not source.is_visible_in_tree() or not area.has_area(): return null
@@ -216,7 +267,12 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	var areas: Array[Rect2] = []
 	var id := str(step.get("target", ""))
 	var editor: Control = page.hud.design_workbench()
-	if id.begins_with("map/") and page.atlas.map_input.is_visible_in_tree():
+	if id in ["fax/options", "fax/confirm"]:
+		for button: Button in page.desk._slot_reader._choice_buttons:
+			if button.is_visible_in_tree() and not button.disabled: areas.append(_tutorial_project_rect(button))
+	elif bool(step.get("scroll", false)) and id == "desktop/printer":
+		areas.append(_tutorial_project_rect(page.desk._printer))
+	elif id.begins_with("map/") and page.atlas.map_input.is_visible_in_tree():
 		areas.append(_tutorial_project_rect(page.atlas.map_input))
 		if page.atlas.drawer.is_visible_in_tree():
 			areas.append(_tutorial_project_rect(page.atlas.drawer))
@@ -301,6 +357,28 @@ func _tutorial_requires_overview(target_id: String) -> bool:
 	var camera: Dictionary = page.desk._camera.inspection()
 	if target_id == "speed" and str(camera.target) == "speed": return false
 	return str(camera.state) in ["focused", "travelling"]
+
+func hover_starter(index: int) -> void:
+	if not bool(page.desk._slot_reader._details.get("starter_pending", false)): return
+	if index < 0 or index >= 3:
+		tutorial.clear_hover()
+		return
+	var id := str(page.desk._slot_reader._details.options[index].id)
+	var comments := {"case_s01":"LOC_OPENING_HOVER_FINE", "case_s16":"LOC_OPENING_HOVER_PEAK", "case_p11":"LOC_OPENING_HOVER_67"}
+	tutorial.set_hover("fax/option/%d" % index, str(comments.get(id, "")))
+
+func _process(_delta: float) -> void:
+	if tutorial == null or not tutorial._active: return
+	var target := str(tutorial._steps[tutorial._index].get("target", ""))
+	if target not in ["monitor/ideology", "monitor/pragmatics"]: return
+	var point := tutorial.get_viewport().get_mouse_position()
+	for index in 4:
+		var value: Variant = _target("monitor/value/%d" % index)
+		var rect: Rect2 = value if value is Rect2 else (_tutorial_project_rect(value) if value is Control else Rect2())
+		if rect.has_point(point):
+			tutorial.set_hover("monitor/value/%d" % index)
+			return
+	tutorial.clear_hover()
 
 func inspection() -> Dictionary:
 	return {"main_mode":main_mode,"main_menu":main_menu.inspection(),"tutorial":tutorial.inspection(),"ending":ending.inspection(),"clock_paused":pauses_clock()}

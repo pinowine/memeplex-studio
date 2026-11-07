@@ -10,6 +10,7 @@ signal read_completed(instance_id: String)
 signal focus_changed(focused: bool)
 signal call_changed(record: Dictionary)
 signal starter_selected(preset_id: String)
+signal starter_previewed(preset_id: String)
 signal startup_finished(preset_id: String)
 signal material_requested(record: Dictionary, point: Vector2)
 signal material_collect_requested(record: Dictionary)
@@ -67,6 +68,7 @@ var _page_keyboard_shortcuts := false
 var _output_stack_area := Rect2()
 var _handwritten_font: Font
 var _external_details := false
+var _preview_starter_index := -1
 var viewport_exclusion: Callable
 
 
@@ -150,6 +152,9 @@ func set_external_details(value: bool) -> void:
 
 func component_details(mode: String = "phone") -> Dictionary:
 	if mode in ["paper","archive"]: return history_details()
+	if mode == "phone" and _starter_call():
+		return {"title":"LOC_GUIDE_STARTER_PAPER", "body":"", "options":starter_paper_options(),
+			"reply_enabled":true, "starter_pending":true, "preview_starter_index":_preview_starter_index}
 	var log_lines := PackedStringArray()
 	for record: Dictionary in _call_session.call_log: log_lines.append(str(record.get("text","")))
 	return {"title":DeskLocalization.source("LOC_PHONE_BOOK_53C96D19") if mode == "phonebook" else DeskLocalization.source("LOC_FAX_MACHINE_347AFBA3"), "description":_physical_key_legend(),
@@ -407,7 +412,7 @@ func offer_starters(options: Array, selected_id: String = "") -> bool:
 	_build()
 	if not _output.active_event.is_empty() or not _output.pending_events.is_empty(): return false
 	if not _call_session.offer_starters(options, selected_id): return false
-	focus()
+	_preview_starter_index = -1
 	_refresh_call_view()
 	return true
 
@@ -425,6 +430,7 @@ func reject_starter(message: String) -> void:
 
 
 func clear_starter_offer() -> void:
+	_preview_starter_index = -1
 	for slip in _reward_slips.values(): slip.queue_free()
 	_reward_slips.clear()
 	_reward_rows.clear()
@@ -604,6 +610,34 @@ func hangup() -> bool:
 	return accepted
 
 
+func starter_paper_options() -> Array[Dictionary]:
+	var labels := {"case_s01":["This is Fine", "LOC_GUIDE_MEANING_FINE"], "case_s16":["Why is this so PEAK", "LOC_GUIDE_MEANING_PEAK"], "case_p11":["67", "LOC_GUIDE_MEANING_67"]}
+	var options: Array[Dictionary] = []
+	for index in _call_session.starter_options.size():
+		var option: Dictionary = _call_session.starter_options[index]
+		var display: Array = labels.get(str(option.id), [str(option.title), ""])
+		options.append({"id":option.id, "title":display[0], "description":display[1],
+			"action":"starter_preview", "index":index, "selected":index == _preview_starter_index,
+			"disabled":not _call_session.starter_id.is_empty()})
+	options.append({"title":"LOC_GUIDE_CONFIRM_CHOICE", "action":"starter_confirm",
+		"disabled":_preview_starter_index < 0 or not _call_session.starter_id.is_empty()})
+	return options
+
+
+func preview_starter(index: int) -> bool:
+	if not _starter_call() or not _call_session.starter_id.is_empty(): return false
+	if index < 0 or index >= _call_session.starter_options.size(): return false
+	_preview_starter_index = index
+	_refresh_call_view()
+	starter_previewed.emit(str(_call_session.starter_options[index].id))
+	return true
+
+
+func commit_starter_choice() -> bool:
+	if _preview_starter_index < 0 or not _call_session.starter_id.is_empty(): return false
+	return choose_response(_preview_starter_index)
+
+
 func choose_response(index: int) -> bool:
 	_call_session.set_context(_output.last_read)
 	var accepted: bool = _call_session.choose_response(index, _can_phone())
@@ -612,6 +646,7 @@ func choose_response(index: int) -> bool:
 
 
 func reset_station() -> void:
+	_preview_starter_index = -1
 	if _focus_tween != null and _focus_tween.is_valid(): _focus_tween.kill()
 	_paused_tweens.clear()
 	var was_focused := _focused
@@ -662,7 +697,7 @@ func inspection() -> Dictionary:
 		"machine_rect":_machine_rect,"viewport_rect":_viewport_rect,"call_state":_call_session.state,"number":_call_session.dialed_number,"diagnostic":_diagnostic,
 		"contacts":_call_session.contacts.duplicate(true),"call_log":_call_session.call_log.duplicate(true),"last_read":_output.last_read.duplicate(true),
 		"pickup_enabled":not _view.pickup_button.disabled if _built else false,"npc_text":_view.conversation.text if _built else "","player_text":_call_session.selected_reply,"dialogue_options":_call_session.starter_options.duplicate(true) if _starter_call() else REPLIES,
-		"starter_options":_call_session.starter_options.duplicate(true),"starter_id":_call_session.starter_id,"pending_starter_id":_call_session.pending_starter_id,"startup_done":_call_session.startup_done,
+		"preview_starter_index":_preview_starter_index,"starter_options":_call_session.starter_options.duplicate(true),"starter_id":_call_session.starter_id,"pending_starter_id":_call_session.pending_starter_id,"startup_done":_call_session.startup_done,
 		"dialogue_rect":_view.identity.get_global_rect() if _built else Rect2(),"npc_rect":_view.conversation.get_global_rect() if _built else Rect2(),"player_rect":_view.player_line.get_global_rect() if _built else Rect2(),
 		"portrait_67_bound":_view.portrait.texture != null if _built else false,"player_portrait_native":_view.player_portrait.texture == null if _built else false,
 		"network_calls":0,"economic_calls":0,"mouse_filter":mouse_filter,"focus_shade_visible":_view.shade.visible if _built else false,
