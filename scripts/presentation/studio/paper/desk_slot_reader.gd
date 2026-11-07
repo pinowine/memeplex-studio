@@ -9,6 +9,7 @@ signal stack_layout_changed
 const SLIDE_DURATION := .24
 const SOURCE_PIXELS_PER_UNIT := 3.0
 
+const StarterContextCard = preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
 const PaperSurface = preload("res://scripts/presentation/studio/paper/desk_popup_paper.gd")
 
 class PencilRule extends Control:
@@ -189,7 +190,8 @@ func _layout_paper() -> void:
 	var view := _viewport_rect
 	var margin := clampf(view.size.x * .018, 12.0, 28.0)
 	var top := clampf(view.size.y * .055, 18.0, 48.0)
-	var dimensions := Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
+	var starter := bool(_details.get("starter_pending", false))
+	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
 	_target_rect = Rect2(Vector2(view.end.x - margin - dimensions.x, view.position.y + top).round(), dimensions)
 	_offscreen_rect = Rect2(Vector2(view.end.x + margin, _target_rect.position.y).round(), dimensions)
 	# This is a screen-layer paper: whole-pixel poses keep fibers and ink sharp.
@@ -214,15 +216,21 @@ func _layout_paper() -> void:
 	var content_width := maxf(1,width-16)
 	var natural_height := 0.0
 	for button: Button in _choice_buttons:
-		var fs := button.get_theme_font_size("font_size")
-		var needed := font.get_multiline_string_size(button.text,HORIZONTAL_ALIGNMENT_LEFT,maxf(1,content_width-20),fs)
-		button.custom_minimum_size = Vector2(0,maxf(44,ceilf(needed.y)+12))
+		if button.has_node("StarterCard"):
+			var card: Control = button.get_node("StarterCard")
+			card.fit_width(content_width - 20)
+			card.position = Vector2(10, 8)
+			button.custom_minimum_size = Vector2(0, ceilf(card.get_combined_minimum_size().y) + 16)
+		else:
+			var fs := button.get_theme_font_size("font_size")
+			var needed := font.get_multiline_string_size(button.text,HORIZONTAL_ALIGNMENT_LEFT,maxf(1,content_width-20),fs)
+			button.custom_minimum_size = Vector2(0,maxf(44,ceilf(needed.y)+12))
 		button.size = Vector2(content_width,button.custom_minimum_size.y)
 		natural_height += button.custom_minimum_size.y+5
 	if not _choice_buttons.is_empty(): natural_height-=5
 	var choice_height := minf(natural_height, dimensions.y - body_y - 28.0 if bool(_details.get("starter_pending", false)) else floorf(dimensions.y*.42))
 	_choice_scroll.visible = not _choice_buttons.is_empty()
-	_choice_scroll.position = Vector2(padding,dimensions.y-22-choice_height)
+	_choice_scroll.position = Vector2(padding, body_y + maxf(0, (dimensions.y - body_y - 22 - choice_height) * .5) if starter else dimensions.y-22-choice_height)
 	_choice_scroll.size = Vector2(width,choice_height)
 	_choice_box.custom_minimum_size.x = content_width
 	_choice_box.size = Vector2(content_width,natural_height)
@@ -327,6 +335,23 @@ func _build_choices(details: Dictionary) -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_choice_box.add_child(button)
 		_choice_buttons.append(button)
+		if row is Dictionary and str(row.get("action", "")) == "starter_preview":
+			button.text = ""
+			var card := StarterContextCard.new()
+			card.name = "StarterCard"
+			card.configure(row, _font)
+			button.add_child(card)
+			var normal := StyleBoxFlat.new()
+			normal.bg_color = Color("dcc99b", .28) if bool(row.get("selected", false)) else Color("e8dfc8", .16)
+			normal.border_color = Color("937448", .7) if bool(row.get("selected", false)) else Color("a99c7e", .35)
+			normal.set_border_width_all(1)
+			normal.set_corner_radius_all(5)
+			button.add_theme_stylebox_override("normal", normal)
+			var hover := normal.duplicate()
+			hover.bg_color = Color("d6c79e", .4)
+			button.add_theme_stylebox_override("hover", hover)
+			button.add_theme_stylebox_override("pressed", hover)
+			card.minimum_size_changed.connect(_layout_paper.call_deferred)
 		if not contacts.is_empty(): button.pressed.connect(func(): contact_selected.emit(index))
 		else:
 			button.pressed.connect(func(): option_selected.emit(index))
@@ -355,7 +380,9 @@ func _refresh_translation(reset_scroll: bool) -> void:
 	_title_label.text = _title
 	_body_label.text = _body
 	var contacts := not (_details.get("contacts",[]) as Array).is_empty()
-	for index in _choice_buttons.size(): _choice_buttons[index].text = _choice_text(_choice_rows[index],contacts)
+	for index in _choice_buttons.size():
+		if not _choice_buttons[index].has_node("StarterCard"):
+			_choice_buttons[index].text = _choice_text(_choice_rows[index],contacts)
 	_layout_paper()
 	if reset_scroll: _body_label.scroll_to_line(0)
 	else: _body_label.get_v_scroll_bar().set_deferred("value",scroll)

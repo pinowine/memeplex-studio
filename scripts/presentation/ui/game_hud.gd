@@ -119,14 +119,10 @@ func configure(catalog: MemeDemoCatalog) -> void:
 	_fill_options(_channel, _values(catalog, "channels"))
 	_fill_options(_topic, _values(catalog, "topics"))
 	_select_id(_topic, "cost_of_living")
-	var languages: Array = _values(catalog, "languages")
-	if languages.is_empty():
-		var seen: Dictionary = {}
-		for group in groups:
-			var language_id := str(_field(group, "language_id", ""))
-			if not language_id.is_empty() and not seen.has(language_id):
-				seen[language_id] = true
-				languages.append({"id": language_id, "title": language_id})
+	var languages: Array = []
+	for entry: Dictionary in catalog.DESIGN_RULES.context_definitions.entries:
+		if str(entry.kind) == "language":
+			languages.append({"id":str(entry.value), "title":str(entry.title)})
 	_fill_options(_language, languages)
 	_on_kernel_selected(maxi(0, _kernel.selected))
 	_on_group_selected(_group.selected)

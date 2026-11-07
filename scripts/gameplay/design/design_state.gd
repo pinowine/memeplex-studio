@@ -34,8 +34,10 @@ func _reset_layers() -> void:
 		_state.context_layers[layer].plane_id = "context-plane:%s:%s" % [str(_state.starter_preset_id) if not str(_state.starter_preset_id).is_empty() else "unselected",layer]
 func _preset_context_base(id: String) -> Dictionary:
 	var preset: Resource = catalog.find_preset(id)
-	var base := {"language_id":str(catalog.groups[0].language_id),"group_id":str(catalog.groups[0].id),
-		"topic_ids":["cost_of_living"],"political_position":[0.0,0.0],"pragmatic_position":[0.0,0.0],"political_known":false}
+	var base: Dictionary = rules.starter_contexts.get(id,{}).duplicate(true)
+	for field in ["political_position","pragmatic_position"]:
+		var point: Variant = base.get(field)
+		if point is Array and point.size() == 2: base[field] = Vector2(float(point[0]),float(point[1]))
 	return _canonical(preset.to_draft(base))
 
 func _context_id(kind: String, value: String) -> String:
@@ -342,7 +344,8 @@ func starter_options() -> Array[Dictionary]:
 		if preset == null: continue
 		var draft: Dictionary = preset.to_draft({})
 		options.append({"id":id, "title":preset.title, "kernel_id":str(preset.kernel_id), "slots":draft.slots,
-			"family_anchor":preset.family_anchor, "context_hint":preset.context_hint, "source_presets":[preset.source_record()]})
+			"family_anchor":preset.family_anchor, "context_hint":preset.context_hint, "source_presets":[preset.source_record()],
+			"default_context":_preset_context_base(id)})
 	return options
 
 ## 用户动作失败时恢复整个设计状态；成功动作才进入重放账本。
@@ -383,6 +386,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not base is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_THE_STARTING_DRAFT_MUST_BE_AN_OBJECT_93CDB3F4")])
 			for key in expected:
 				if _canonical(base.get(key)) != _canonical(expected[key]): return PackedStringArray([DeskLocalization.source("LOC_STARTING_CONTEXT_ORIGIN_MUST_COME_FROM_A_84C13427")] )
+			_grant_starter_context(base)
 			errors = _initialize_layers(base)
 			if not errors.is_empty(): return errors
 		"install_module":
@@ -497,6 +501,16 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_DESIGN_ACTION_F210E360") + action])
 	_state.operations.append({"action":action, "params":params.duplicate(true)})
 	return errors
+
+func _grant_starter_context(base: Dictionary) -> void:
+	var resources: Array[String] = [_context_id("language",str(base.get("language_id",""))), _context_id("group",str(base.get("group_id","")))]
+	for topic: Variant in base.get("topic_ids",[]): resources.append(_context_id("topic",str(topic)))
+	for id: String in resources:
+		if id.is_empty() or _context_available(id) > 0: continue
+		var entry: Dictionary = rules.context_resource(id)
+		var preset_id := str(_state.starter_preset_id)
+		_state.inventory_sources.append({"source_instance_id":"starter:" + preset_id, "definition_id":"starter_contexts/" + preset_id, "preset_id":preset_id, "kind":str(entry.kind), "id":id, "count":1})
+		_state.context_resource_inventory[id] = int(_state.context_resource_inventory.get(id,0)) + 1
 
 func _grant_module(kernel_id: String) -> void:
 	var id := "module_" + kernel_id
@@ -799,6 +813,13 @@ func _event_rewards(event: Dictionary, errors: PackedStringArray) -> Array[Dicti
 
 func _material_requested(instance_id: String,kind: String,id: String) -> bool:
 	if instance_id == "initial": return true
+	var preset_id := str(_state.starter_preset_id)
+	if not preset_id.is_empty() and instance_id == "starter:" + preset_id:
+		var profile: Dictionary = rules.starter_contexts.get(preset_id,{})
+		var entry: Dictionary = rules.context_resource(id)
+		if str(entry.get("kind","")) != kind: return false
+		var value := str(entry.get("value",""))
+		return value in profile.get("topic_ids",[]) if kind == "topic" else (kind in ["language","group"] and value == str(profile.get(kind + "_id","")))
 	for claim: Dictionary in _state.event_material_claims:
 		if claim.source_instance_id == instance_id and claim.kind == kind and claim.id == id: return true
 	return false

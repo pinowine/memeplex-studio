@@ -1,0 +1,62 @@
+{
+  "LOC_STARTER_NAME_FINE": {
+    "source": "This is Fine",
+    "zh_CN": "This is Fine",
+    "en": "This is Fine"
+  },
+  "LOC_STARTER_NAME_PEAK": {
+    "source": "Why is this so PEAK",
+    "zh_CN": "Why is this so PEAK",
+    "en": "Why is this so PEAK"
+  },
+  "LOC_STARTER_NAME_67": {
+    "source": "67",
+    "zh_CN": "67",
+    "en": "67"
+  },
+  "LOC_STARTER_FIELD_TOPIC": {
+    "source": "默认话题",
+    "zh_CN": "默认话题",
+    "en": "Default topic"
+  },
+  "LOC_STARTER_FIELD_LANGUAGE": {
+    "source": "默认语言",
+    "zh_CN": "默认语言",
+    "en": "Default language"
+  },
+  "LOC_STARTER_FIELD_GROUP": {
+    "source": "默认人群",
+    "zh_CN": "默认人群",
+    "en": "Default audience"
+  },
+  "LOC_STARTER_FIELD_STANCE": {
+    "source": "意识形态",
+    "zh_CN": "意识形态",
+    "en": "Ideology"
+  },
+  "LOC_STARTER_FIELD_PRAGMATICS": {
+    "source": "语用",
+    "zh_CN": "语用",
+    "en": "Pragmatics"
+  },
+  "LOC_STARTER_STANCE_UNSET": {
+    "source": "未设定",
+    "zh_CN": "未设定",
+    "en": "Not set"
+  },
+  "LOC_STARTER_AXIS_CENTER": {
+    "source": "中性",
+    "zh_CN": "中性",
+    "en": "Neutral"
+  },
+  "LOC_STARTER_DEFAULTS_NOTE": {
+    "source": "这些是初始设定，选好后仍可修改。",
+    "zh_CN": "这些是初始设定，选好后仍可修改。",
+    "en": "These are starting values. You can edit them after choosing."
+  },
+  "LOC_STARTER_POLITICAL_NEUTRAL": {
+    "source": "中立",
+    "zh_CN": "中立",
+    "en": "Neutral"
+  }
+}
