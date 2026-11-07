@@ -387,7 +387,7 @@ func _refresh_translation(reset_scroll: bool) -> void:
 		var paragraph := heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content
 		if not paragraph.is_empty():
 			paragraphs.append(paragraph)
-			_body_blocks.append({"heading":heading, "content":content})
+			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", ""))})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""
@@ -413,7 +413,14 @@ func _render_body() -> void:
 		if not str(block.heading).is_empty():
 			_write_heading(str(block.heading))
 			if not str(block.content).is_empty(): _body_label.add_text("\n")
+		var commentary := str(block.get("role", "")) == "commentary"
+		if commentary:
+			_body_label.push_font_size(16)
+			_body_label.push_color(Color("6e715e"))
 		_write_content(str(block.content))
+		if commentary:
+			_body_label.pop()
+			_body_label.pop()
 
 func _write_heading(text: String) -> void:
 	_body_label.push_font_size(20)

@@ -7,6 +7,7 @@ signal item_dropped(kind: String, id: String, point: Vector2)
 signal release_module(slot: int, id: String)
 signal stack_clicked(kind: String)
 
+const CardCopy := preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const CardFace := preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
 const Interaction = preload("res://scripts/presentation/studio/desk/desk_prop_interaction.gd")
 const Paper = preload("res://assets/image/textures/studio/desk/blank_print_paper.png")
@@ -66,7 +67,7 @@ class StackSurface extends Control:
 			outline.append(outline[0])
 			draw_polyline(outline, palette.edge, 1.1, true)
 		var caption := DeskLocalization.source("LOC_RELEASE_TO_STORE_5DA913B8") if highlighted and hovered else (DeskLocalization.source("LOC_EMPTY_STACK_4498EADD") if quantity == 0 else DeskLocalization.source("LOC_INVENTORY_CARDS_6691F0EB"))
-		_face.configure({"kind":kind, "title":title, "count":quantity, "source_label":DeskLocalization.text(caption)}, get_theme_default_font())
+		_face.configure({"kind":kind, "title":title, "count":quantity, "show_count":true, "source_label":DeskLocalization.text(caption)}, get_theme_default_font())
 		_face.set_hovered(hovered)
 		_face.set_selected(selected or highlighted)
 
@@ -1019,6 +1020,7 @@ func details_for_item(kind: String,id: String) -> Dictionary:
 	if str(card.id) == "module_boundary": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_LANGUAGE_SLOT_WHEN_INSTALLED_39520ED9")
 	elif str(card.id) == "module_relation": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_AUDIENCE_SLOT_WHEN_INSTALLED_D65F6334")
 	if kind in ["stance_token", "pragmatic_token"]: details.gesture = DeskLocalization.source("LOC_DRAG_TO_THE_MATCHING_AXIS_TO_USE_0068EEBC")
+	CardCopy.apply_to(details)
 	return details
 
 func inspection() -> Dictionary:
