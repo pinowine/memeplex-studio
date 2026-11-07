@@ -37,7 +37,6 @@ var _layer := "language"
 var _enabled := true
 var _selected_slot := -1
 var _axis_drag := false
-var _axis := -1
 var _press_uv := Vector2.ZERO
 var _held_record := {}
 var _held_slot := -1
@@ -214,7 +213,7 @@ func inspection() -> Dictionary:
 		var corners := PackedVector2Array()
 		for delta: Vector2 in [Vector2(-0.075, -0.075), Vector2(0.075, -0.075), Vector2(0.075, 0.075), Vector2(-0.075, 0.075)]: corners.append(project_point(point + delta))
 		rectangles.append(corners)
-	return {"layout_version": 11, "plane_id":str(_layers().get(_layer,{}).get("plane_id","")), "attached":_attached(), "plane_only":_plane_only, "image_opacity":0.90, "layer": _layer, "depth": _depth, "visual_depth": _visual_depth, "quad": _quad, "homography": _projection.forward.duplicate(), "inverse_homography": _projection.inverse.duplicate(), "projection_valid": _projection.valid, "slot_centres": centres, "slot_quads": rectangles, "slot_shapes": "open circle / rounded open triangle / three pins", "resource_graphics": _resource_graphics.keys(), "axis_point": project_point(_axis_point()), "axis_origin": project_point(_axis_origin()), "axis_drag": _axis_drag, "axis": _axis, "interaction_enabled": _enabled, "action_count": _action_count, "slot_rejections": _slot_rejections, "brain_texture": "" if not is_instance_valid(_image) or _image.texture == null else _image.texture.resource_path, "brain_shader": "res://shaders/studio/desk_brain_slice.gdshader", "displayed_cells": 1, "depth_ticks": DEPTHS.duplicate(), "selection": selected_info(), "reference_texture": "" if not is_instance_valid(_backplate) else _backplate.texture.resource_path, "reference_rect": _volume_rect, "volume_backplate": true, "active_plane_count": 1 if _attached() or _plane_only else 0, "plane_depth": _depth}
+	return {"layout_version": 11, "plane_id":str(_layers().get(_layer,{}).get("plane_id","")), "attached":_attached(), "plane_only":_plane_only, "image_opacity":0.90, "layer": _layer, "depth": _depth, "visual_depth": _visual_depth, "quad": _quad, "homography": _projection.forward.duplicate(), "inverse_homography": _projection.inverse.duplicate(), "projection_valid": _projection.valid, "slot_centres": centres, "slot_quads": rectangles, "slot_shapes": "open circle / rounded open triangle / three pins", "resource_graphics": _resource_graphics.keys(), "axis_point": project_point(_axis_point()), "axis_origin": project_point(_axis_origin()), "axis_drag": _axis_drag, "axis": -1, "interaction_enabled": _enabled, "action_count": _action_count, "slot_rejections": _slot_rejections, "brain_texture": "" if not is_instance_valid(_image) or _image.texture == null else _image.texture.resource_path, "brain_shader": "res://shaders/studio/desk_brain_slice.gdshader", "displayed_cells": 1, "depth_ticks": DEPTHS.duplicate(), "selection": selected_info(), "reference_texture": "" if not is_instance_valid(_backplate) else _backplate.texture.resource_path, "reference_rect": _volume_rect, "volume_backplate": true, "active_plane_count": 1 if _attached() or _plane_only else 0, "plane_depth": _depth}
 
 func _process(delta: float) -> void:
 	_visual_depth = move_toward(_visual_depth, _depth, delta * 2.0)
@@ -425,7 +424,6 @@ func _gui_input(event: InputEvent) -> void:
 		if event.pressed:
 			_held_plane = _edge_at(uv)
 			_press_uv = uv
-			_axis = -1
 			_axis_drag = _layer in ["stance", "pragmatic"] and uv.distance_to(_axis_point()) <= 0.08
 			_held_slot = _slot_at(uv)
 			_held_moved = false
@@ -454,19 +452,19 @@ func _gui_input(event: InputEvent) -> void:
 		if _held_plane and uv.distance_to(_press_uv)>0.025: _held_moved=true
 		if not _held_record.is_empty() and uv.distance_to(_press_uv) > 0.025: _held_moved = true
 		if not _axis_drag: return
-		if _axis < 0 and uv.distance_to(_press_uv) > 0.012:
-			_axis = 0 if absf(uv.x - _press_uv.x) >= absf(uv.y - _press_uv.y) else 1
-		if _axis >= 0: _move_axis(uv)
+		_held_moved = _held_moved or uv.distance_to(_press_uv) > 0.012
+		if _held_moved: _move_axis(uv)
 		accept_event()
 
 func _move_axis(uv: Vector2) -> void:
 	var data: Dictionary = _layers().get(_layer, {})
 	var origin: Array = data.get("origin", [0.0, 0.0])
-	var value := clampf((uv[_axis] - (0.5 if _axis == 0 else 0.52)) / 0.28, -1.0, 1.0)
 	var step := float(data.get("step", 0.1))
 	if step <= 0: return
-	var target := roundi((value - float(origin[_axis])) / step)
-	_commands.move_axis(_layers, perform, _layer, _axis, target)
+	for axis in 2:
+		var value := clampf((uv[axis] - (0.5 if axis == 0 else 0.52)) / 0.28, -1.0, 1.0)
+		var target := roundi((value - float(origin[axis])) / step)
+		_commands.move_axis(_layers, perform, _layer, axis, target)
 	_refresh()
 	selected_info_changed.emit(selected_info())
 
@@ -482,7 +480,6 @@ func _depth_input(value: float) -> void:
 
 func _cancel_input() -> void:
 	_axis_drag = false
-	_axis = -1
 	_held_record = {}
 	_held_slot = -1
 	_held_moved = false
