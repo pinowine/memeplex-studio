@@ -351,8 +351,8 @@
   },
   "LOC_OPENING_CONTEXT_AXES_TEXT": {
     "source": "坐标决定这份表达站在哪里。调整会用到相应点数，别把“立场鲜明”理解成“把预算花光”。",
-    "zh_CN": "坐标决定这份表达站在哪里。调整会用到相应点数，别把“立场鲜明”理解成“把预算花光”。",
-    "en": "The coordinates determine where the expression stands. Adjusting them uses the relevant points. A strong stance needn’t mean an empty budget."
+    "zh_CN": "拖动实心点调整立场或语用，可以沿轴走，也可以斜着走。每格 0.1；离开空心起点花对应方向筹码，退回时归还。",
+    "en": "Drag the solid dot along either axis or diagonally. Each step is 0.1. Moving away from the hollow origin uses direction tokens; moving back returns them."
   },
   "LOC_OPENING_CONTEXT_ITEM_TITLE": {
     "source": "补上一张语境卡",
