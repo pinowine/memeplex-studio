@@ -126,6 +126,12 @@ func clear_hover() -> void:
 	_refresh()
 
 func _input(event: InputEvent) -> void:
+	# The optional local editor owns developer shortcuts, including their releases.
+	if OS.is_debug_build():
+		var workbench := get_tree().root.get_node_or_null("LocalTextWorkbenchRuntime")
+		if workbench != null and workbench.has_method("handle_input") and workbench.call("handle_input", event):
+			_cancel_pointer()
+			return
 	if not allows_input(event): get_viewport().set_input_as_handled()
 
 func allows_hover(viewport_point: Vector2) -> bool:
@@ -368,6 +374,7 @@ func _refresh() -> void:
 	var text_key := _hover_text if _display_index == _index and not _hover_text.is_empty() else str(step.get("text", ""))
 	var text := DeskLocalization.text(text_key)
 	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
+	body.set_meta(&"text_workbench_source", DeskLocalization.text_source(text_key))
 	if text != _body_text:
 		_body_text = text
 		_typewriter.progress = 0.0
@@ -576,7 +583,7 @@ func handles_viewport_point(point: Vector2) -> bool:
 	return false
 
 func inspection() -> Dictionary:
-	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index, "dialogue_visible": _ui.get_node("Card").visible if _ui != null else false, "body_text":_body_text, "hover_target":_hover_target, "emotion":str(_steps[_index].get("emotion", "")), "centered":bool(_steps[_index].get("centered", false)), "portrait_rotation":_ui.get_node("Card/Portrait67").rotation if _ui != null else 0.0, "portrait_scale":_ui.get_node("Card/Portrait67").scale if _ui != null else Vector2.ONE}
+	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.png", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index, "dialogue_visible": _ui.get_node("Card").visible if _ui != null else false, "body_text":_body_text, "hover_target":_hover_target, "emotion":str(_steps[_index].get("emotion", "")), "centered":bool(_steps[_index].get("centered", false)), "portrait_rotation":_ui.get_node("Card/Portrait67").rotation if _ui != null else 0.0, "portrait_scale":_ui.get_node("Card/Portrait67").scale if _ui != null else Vector2.ONE, "text_source":_ui.get_node("Card/Content/Body").get_meta(&"text_workbench_source", {}) if _ui != null else {}}
 
 func default_steps() -> Array[Dictionary]:
 	return OpeningSteps.steps()
