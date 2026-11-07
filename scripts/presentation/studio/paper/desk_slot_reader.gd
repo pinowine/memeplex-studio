@@ -8,6 +8,7 @@ signal stack_layout_changed
 
 const SLIDE_DURATION := .24
 const SOURCE_PIXELS_PER_UNIT := 3.0
+const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 
 const StarterContextCard = preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
 const PaperSurface = preload("res://scripts/presentation/studio/paper/desk_popup_paper.gd")
@@ -39,6 +40,9 @@ var _paper: Texture2D
 var _details := {}
 var _title := ""
 var _body := ""
+var _body_blocks: Array[Dictionary] = []
+var _rendered_body_key := ""
+var _numbers := RegEx.create_from_string("[-+]?[0-9]+(?:[.,][0-9]+)*(?:%|％)?")
 var _phase := "hidden"
 var _generation := 0
 var _motion: Tween
@@ -68,9 +72,9 @@ func configure(hand_font: Font, paper: Texture2D) -> void:
 	_surface.paper = paper
 	_surface.queue_redraw()
 	if hand_font != null:
-		_title_label.add_theme_font_override("font", hand_font)
+		_title_label.add_theme_font_override("font", Handwriting.make_bold(hand_font))
 		for kind: String in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:
-			_body_label.add_theme_font_override(kind, hand_font)
+			_body_label.add_theme_font_override(kind, Handwriting.make_bold(hand_font) if "bold" in kind else hand_font)
 	else:
 		_title_label.remove_theme_font_override("font")
 		for kind: String in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:
@@ -124,7 +128,7 @@ func inspection() -> Dictionary:
 		"slide_progress":_slide_progress, "title":_title, "body":_body, "details":_details.duplicate(true),
 		"target_rect":_target_rect, "offscreen_rect":_offscreen_rect, "viewport_rect":_viewport_rect, "generation":_generation,
 		"mouse_filter":mouse_filter, "paper_mouse_filter":_paper_holder.mouse_filter if _built else Control.MOUSE_FILTER_IGNORE,
-		"body_rect":_viewport_bounds(_body_label) if _built else Rect2(), "body_plain_text":not _body_label.bbcode_enabled if _built else true,
+		"body_rect":_viewport_bounds(_body_label) if _built else Rect2(), "body_plain_text":not _body_label.bbcode_enabled if _built else true, "structured_body":true, "section_count":_body_blocks.size(),
 		"scroll_active":_body_label.scroll_active if _built else false, "font_bound":_font != null, "paper_texture_bound":_paper != null,
 		"source_pixels_per_world_unit":SOURCE_PIXELS_PER_UNIT, "slide_duration":SLIDE_DURATION}
 
@@ -141,6 +145,7 @@ func _build() -> void:
 	_title_label = Label.new()
 	_title_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_title_label.name = "HandwrittenTitle"
+	_title_label.set_meta("paper_emphasis", true)
 	_title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_title_label.max_lines_visible = 2
 	_title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -160,7 +165,8 @@ func _build() -> void:
 	_body_label.mouse_filter = Control.MOUSE_FILTER_STOP
 	_body_label.add_theme_color_override("default_color", Color("4e5346"))
 	_body_label.add_theme_font_size_override("normal_font_size", 18)
-	_body_label.add_theme_constant_override("line_separation", 5)
+	_body_label.add_theme_constant_override("line_separation", 6)
+	_body_label.add_theme_constant_override("paragraph_separation", 10)
 	_paper_holder.add_child(_body_label)
 	_choice_scroll = ScrollContainer.new()
 	_choice_scroll.name = "PaperChoices"
@@ -201,8 +207,9 @@ func _layout_paper() -> void:
 	var padding := minf(30.0, dimensions.x * .075)
 	var width := maxf(1, dimensions.x - padding * 2.0)
 	var font := _font if _font != null else ThemeDB.fallback_font
-	var measured := font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,width,25)
-	var title_height := minf(ceilf(measured.y),ceilf(font.get_height(25)*2)) if not _title.is_empty() else 0.0
+	var title_font := _title_label.get_theme_font("font")
+	var measured := title_font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,width,25)
+	var title_height := minf(ceilf(measured.y),ceilf(title_font.get_height(25)*2)) if not _title.is_empty() else 0.0
 	_full_title_in_body = not _title.is_empty() and measured.y>title_height+1
 	_title_label.visible = not _title.is_empty()
 	_title_label.position = Vector2(padding,25)
@@ -211,8 +218,7 @@ func _layout_paper() -> void:
 	_rule.position = Vector2(padding,25+title_height+7)
 	_rule.size = Vector2(width,1)
 	var body_y := 25.0+title_height+(25.0 if not _title.is_empty() else 0.0)
-	var rendered_body := (_title+"\n\n" if _full_title_in_body else "")+_body
-	if _body_label.text != rendered_body: _body_label.text = rendered_body
+	_render_body()
 	var content_width := maxf(1,width-16)
 	var natural_height := 0.0
 	for button: Button in _choice_buttons:
@@ -368,17 +374,23 @@ func _refresh_translation(reset_scroll: bool) -> void:
 	var scroll := _body_label.get_v_scroll_bar().value
 	_title = DeskLocalization.text(_text(_details,"title"))
 	var paragraphs := PackedStringArray()
+	_body_blocks.clear()
 	var body := _text(_details,"body","text")
-	if not body.is_empty(): paragraphs.append(_localized_block(body))
+	if not body.is_empty():
+		var localized := _localized_block(body)
+		paragraphs.append(localized)
+		_body_blocks.append({"heading":"", "content":localized})
 	for section: Variant in _details.get("sections",[]):
 		if not section is Dictionary: continue
 		var heading := DeskLocalization.text(_text(section,"title"))
 		var content := _localized_block(_text(section,"body","text"))
 		var paragraph := heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content
-		if not paragraph.is_empty(): paragraphs.append(paragraph)
+		if not paragraph.is_empty():
+			paragraphs.append(paragraph)
+			_body_blocks.append({"heading":heading, "content":content})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
-	_body_label.text = _body
+	_rendered_body_key = ""
 	var contacts := not (_details.get("contacts",[]) as Array).is_empty()
 	for index in _choice_buttons.size():
 		if not _choice_buttons[index].has_node("StarterCard"):
@@ -386,6 +398,44 @@ func _refresh_translation(reset_scroll: bool) -> void:
 	_layout_paper()
 	if reset_scroll: _body_label.scroll_to_line(0)
 	else: _body_label.get_v_scroll_bar().set_deferred("value",scroll)
+
+func _render_body() -> void:
+	var key := (_title if _full_title_in_body else "") + "\n" + _body
+	if _rendered_body_key == key: return
+	_rendered_body_key = key
+	_body_label.clear()
+	if _full_title_in_body:
+		_write_heading(_title)
+		_body_label.add_text("\n\n")
+	for index in _body_blocks.size():
+		var block: Dictionary = _body_blocks[index]
+		if index > 0: _body_label.add_text("\n\n")
+		if not str(block.heading).is_empty():
+			_write_heading(str(block.heading))
+			if not str(block.content).is_empty(): _body_label.add_text("\n")
+		_write_content(str(block.content))
+
+func _write_heading(text: String) -> void:
+	_body_label.push_font_size(20)
+	_body_label.push_bold()
+	_body_label.push_color(Color("373d33"))
+	_body_label.add_text(text)
+	_body_label.pop()
+	_body_label.pop()
+	_body_label.pop()
+
+func _write_content(text: String) -> void:
+	# Numeric emphasis uses literal text, never markup from player-authored content.
+	var cursor := 0
+	for match_result: RegExMatch in _numbers.search_all(text):
+		_body_label.add_text(text.substr(cursor, match_result.get_start() - cursor))
+		_body_label.push_bold()
+		_body_label.push_color(Color("855234"))
+		_body_label.add_text(match_result.get_string())
+		_body_label.pop()
+		_body_label.pop()
+		cursor = match_result.get_end()
+	_body_label.add_text(text.substr(cursor))
 
 func _choice_text(row: Variant, contact: bool) -> String:
 	var source := str(row.get("name",row.get("title",row.get("label",row.get("id",""))))) if row is Dictionary else str(row)

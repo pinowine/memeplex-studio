@@ -10923,5 +10923,45 @@
     "source": "已安装补丁",
     "zh_CN": "已安装补丁",
     "en": "Installed patches"
+  },
+  "LOC_EDIT_REQUIRES": {
+    "source": "前置能力",
+    "zh_CN": "前置能力",
+    "en": "Prerequisites"
+  },
+  "LOC_SUMMARY_HOUR": {
+    "source": "模拟小时",
+    "zh_CN": "模拟小时",
+    "en": "Simulation hour"
+  },
+  "LOC_SUMMARY_POPULATION": {
+    "source": "世界人口",
+    "zh_CN": "世界人口",
+    "en": "World population"
+  },
+  "LOC_SUMMARY_VARIANTS": {
+    "source": "流通版本",
+    "zh_CN": "流通版本",
+    "en": "Circulating variants"
+  },
+  "LOC_SUMMARY_MEME_POINTS": {
+    "source": "模因点数",
+    "zh_CN": "模因点数",
+    "en": "Meme points"
+  },
+  "LOC_SUMMARY_OWNED": {
+    "source": "作者归属",
+    "zh_CN": "作者归属",
+    "en": "Owned"
+  },
+  "LOC_SUMMARY_LINEAGE": {
+    "source": "原生谱系",
+    "zh_CN": "原生谱系",
+    "en": "Lineage"
+  },
+  "LOC_SUMMARY_ESCAPED": {
+    "source": "外部分家",
+    "zh_CN": "外部分家",
+    "en": "Escaped"
   }
 }

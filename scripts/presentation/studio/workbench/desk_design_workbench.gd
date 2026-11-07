@@ -383,7 +383,8 @@ func _build_spread() -> void:
 	_skill_title=_label(page,DeskLocalization.source("LOC_TEXT_DD818618"),"SkillTitle",18)
 	_skill_details=RichTextLabel.new()
 	_skill_details.name="SkillDetails"
-	_skill_details.bbcode_enabled=false
+	_skill_details.bbcode_enabled=true
+	_skill_details.add_theme_constant_override("line_separation", 7)
 	_skill_details.add_theme_color_override("default_color",INK)
 	_skill_details.add_theme_font_size_override("normal_font_size",14)
 	page.add_child(_skill_details)
@@ -555,7 +556,8 @@ func _select_skill(id: String) -> void:
 		_skill_title.text=DeskLocalization.text(str(skill.title))
 		var dependency_titles:=PackedStringArray()
 		for dependency in skill.get("requires",[]): dependency_titles.append(_entry_title("skills",str(dependency)))
-		_skill_details.text=DeskLocalization.format_text("LOC_S_EFFECT_S_REQUIRES_S_COST_D_35DC10A9", [DeskLocalization.text(str(skill.get("description",""))),DeskLocalization.text(str(skill.get("effect_text",skill.get("effect",skill.get("description",""))))),", ".join(dependency_titles) if not dependency_titles.is_empty() else DeskLocalization.text("LOC_NONE_484D5561"),int(skill.get("cost",0)),int(_state.get("meme_points",0)),DeskLocalization.text("LOC_UNLOCKED_E4CF2DE9") if unlocked else (DeskLocalization.text("LOC_REQUIREMENTS_NOT_MET_114C5744") if not missing.is_empty() else DeskLocalization.text("LOC_AVAILABLE_TO_UNLOCK_097705A8"))])
+		var status := DeskLocalization.text("LOC_UNLOCKED_E4CF2DE9") if unlocked else (DeskLocalization.text("LOC_REQUIREMENTS_NOT_MET_114C5744") if not missing.is_empty() else DeskLocalization.text("LOC_AVAILABLE_TO_UNLOCK_097705A8"))
+		_skill_details.text = "[b]%s[/b]\n%s\n\n%s\n\n[b]%s[/b]\n%s\n\n[font_size=22]%d / %d[/font_size]  MEME\n%s" % [_escape(DeskLocalization.text(str(skill.title))), _escape(DeskLocalization.text(str(skill.get("description", "")))), _escape(DeskLocalization.text(str(skill.get("effect_text", skill.get("description", ""))))), DeskLocalization.text("LOC_EDIT_REQUIRES"), _escape(", ".join(dependency_titles) if not dependency_titles.is_empty() else DeskLocalization.text("LOC_NONE_484D5561")), int(_state.get("meme_points", 0)), int(skill.get("cost", 0)), _escape(status)]
 		_buy.disabled=unlocked or not missing.is_empty() or int(_state.get("meme_points",0))<int(skill.get("cost",0))
 		_buy.text=DeskLocalization.text("LOC_UNLOCKED_E4CF2DE9") if unlocked else DeskLocalization.format_text("LOC_SPEND_D_MEME_UNLOCK_45B2FF07", int(skill.get("cost",0)))
 		var applied:=false
