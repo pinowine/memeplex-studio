@@ -288,8 +288,9 @@ func _validate_event_copy(event: Dictionary, errors: PackedStringArray) -> void:
 		return
 	var actual := JSON.stringify(JSON.parse_string(JSON.stringify(event.design_rewards)), "", true, true)
 	var expected := JSON.stringify(JSON.parse_string(JSON.stringify(definition.design_rewards)), "", true, true)
-	if actual != expected or event.design_source_preset_id != str(definition.external_preset_id): errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_OR_PRESET_SOURCE_CONFLICTS_WITH_2FE2F3F5"))
-	var expected_text: String = ((DeskLocalization.source("LOC_CLAIMED_9C9021A0") if event.acknowledged else DeskLocalization.source("LOC_CLAIM_AFTER_COLLECTING_008ABC0C")) + simulation._reward_summary(definition.design_rewards)) if not definition.design_rewards.is_empty() else ""
+	# An empty delivery is checked against the unique-card history below.
+	if (actual != expected and not event.design_rewards.is_empty()) or event.design_source_preset_id != str(definition.external_preset_id): errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_OR_PRESET_SOURCE_CONFLICTS_WITH_2FE2F3F5"))
+	var expected_text: String = ((DeskLocalization.source("LOC_CLAIMED_9C9021A0") if event.acknowledged else DeskLocalization.source("LOC_CLAIM_AFTER_COLLECTING_008ABC0C")) + simulation._reward_summary(event.design_rewards)) if not event.design_rewards.is_empty() else ""
 	if event.reward_text != expected_text: errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_TEXT_DOES_NOT_MATCH_ITS_038EBF27"))
 	for field in ["impact_text", "mentor_comment"]:
 		if str(event[field]).strip_edges().is_empty(): errors.append(DeskLocalization.source("LOC_SAVED_EVENT_TEXT_IS_EMPTY_BD4C7C07") + field)
@@ -300,12 +301,34 @@ func _validate_event_history(data: Dictionary, errors: PackedStringArray) -> voi
 	var instance_ids := {}
 	var observed_counts := {}
 	var observed_hours := {}
+	var initial := DesignState.new(catalog)
+	var starter := str(data.design_state.get("starter_preset_id",""))
+	if not starter.is_empty():
+		errors.append_array(initial.perform("choose_starter",{"preset_id":starter}))
+		if not errors.is_empty(): return
+	var reserved: Array = []
+	var records := {}
 	for event: Dictionary in data.events:
 		if event.instance_id.is_empty() or instance_ids.has(event.instance_id): errors.append(DeskLocalization.source("LOC_A_SAVED_EVENT_INSTANCE_HAS_AN_EMPTY_3FC63291"))
 		if event.hour < 0 or event.hour > data.hour: errors.append(DeskLocalization.source("LOC_A_SAVED_EVENT_TIME_IS_OUTSIDE_THE_09D4A40A"))
 		instance_ids[event.instance_id] = true
 		observed_counts[event.definition_id] = int(observed_counts.get(event.definition_id, 0)) + 1
 		observed_hours[event.definition_id] = int(event.hour)
+		var definition: MemeDemoEvent = simulation._event_definition(str(event.definition_id))
+		var expected := initial.unique_event_rewards(definition.design_rewards,reserved)
+		if competition._canonical(event.design_rewards) != competition._canonical(expected): errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_OR_PRESET_SOURCE_CONFLICTS_WITH_2FE2F3F5"))
+		reserved.append(event)
+		records[event.instance_id] = event
+	var queued: Array = data.pending_events.duplicate()
+	if not data.active_event.is_empty(): queued.append(data.active_event)
+	var queued_ids := {}
+	if not data.active_event.is_empty() and data.phase != "event": errors.append(DeskLocalization.source("LOC_EVENT_QUEUE_STATE_MISMATCH"))
+	for event: Dictionary in queued:
+		if not records.has(event.instance_id) or competition._canonical(event) != competition._canonical(records[event.instance_id]): errors.append(DeskLocalization.source("LOC_EVENT_QUEUE_STATE_MISMATCH"))
+		if event.acknowledged or queued_ids.has(event.instance_id): errors.append(DeskLocalization.source("LOC_EVENT_QUEUE_STATE_MISMATCH"))
+		queued_ids[event.instance_id] = true
+	for event: Dictionary in data.events:
+		if not event.acknowledged and not queued_ids.has(event.instance_id): errors.append(DeskLocalization.source("LOC_EVENT_QUEUE_STATE_MISMATCH"))
 	if competition._canonical(data.event_counts) != observed_counts or competition._canonical(data.last_event_hours) != observed_hours:
 		errors.append(DeskLocalization.source("LOC_SAVED_EVENT_SCHEDULING_COUNTS_OR_TIMES_DO_F90F1850"))
 

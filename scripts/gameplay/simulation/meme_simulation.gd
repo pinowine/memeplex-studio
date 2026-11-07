@@ -533,7 +533,8 @@ func _execute_event(definition: MemeDemoEvent) -> void:
 	for index in range(first_variant,variants.size()): _register_external_world(variants[index])
 	event_counts[id] = int(event_counts.get(id, 0)) + 1
 	last_event_hours[id] = hour
-	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(latest_draft.get("reuse_permission", "unknown") != "restricted"), "mentor_comment":definition.mentor_comment, "effect_text":DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":definition.design_rewards.duplicate(true), "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", definition.design_reward_summary()])) if not definition.design_rewards.is_empty() else ""}
+	var rewards := design_state.unique_event_rewards(definition.design_rewards, events)
+	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(latest_draft.get("reuse_permission", "unknown") != "restricted"), "mentor_comment":definition.mentor_comment, "effect_text":DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
 	record.competition_variant_ids = []
 	for index in range(first_variant,variants.size()): record.competition_variant_ids.append(str(variants[index].id))
 	events.append(record)
