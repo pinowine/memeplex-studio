@@ -1154,7 +1154,7 @@ func _process(_delta: float) -> void:
 			_fax_drop_preview = false
 	for item: Control in _context_layer_items.values(): item.set_interaction_enabled(enabled)
 	var editor: Control = _page.hud.design_workbench()
-	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _page.simulation.phase != "event" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
+	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
 	if editor.has_method("set_interaction_enabled"):
 		editor.set_interaction_enabled(design_enabled)
 	_country_layer.visible = _active_sheet == "map" and enabled and _revealed_focus == "sheet/map"
