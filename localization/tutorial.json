@@ -161,8 +161,8 @@
   },
   "LOC_OPENING_STACKS_TEXT": {
     "source": "存储一些用来给你的模因打模组的小卡片。我免费给了你一些，可以点开来看看。",
-    "zh_CN": "存储一些用来给你的模因打模组的小卡片。我免费给了你一些，可以点开来看看。",
-    "en": "These hold little cards for modifying your meme. I’ve given you a few for free. You can open the stacks and have a look."
+    "zh_CN": "存储一些用来给你的模因打模组的小卡片。我免费给了你一些，可以点开来看看。\n这里的数字显示了里面有几张卡片，直接拖拽会把里面的第一张拖出来。",
+    "en": "These hold little cards for modifying your meme. I’ve given you a few for free. You can open the stacks and have a look.\nThe number shows how many cards are inside. Drag the stack to take its top card."
   },
   "LOC_OPENING_LANGUAGE_OPEN_TITLE": {
     "source": "先看看语言",
