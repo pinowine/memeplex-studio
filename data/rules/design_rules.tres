@@ -5,7 +5,8 @@
 
 [resource]
 script = ExtResource("1")
-definition_version = 8
+definition_version = 9
+module_slots = 4
 starter_presets = PackedStringArray("case_s01", "case_s16", "case_p11")
 starter_contexts = {
 "case_s01": {"language_id":"shiohara", "group_id":"commuters", "topic_ids":["work", "cost_of_living"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.8, 0.2]},
