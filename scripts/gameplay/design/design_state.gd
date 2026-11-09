@@ -223,7 +223,8 @@ func _layer_fields() -> Dictionary:
 
 func _apply_layers(base: Dictionary) -> PackedStringArray:
 	var draft: Dictionary = _canonical(base)
-	if not author_marks_valid(draft): return PackedStringArray([DeskLocalization.source("LOC_INVALID_DRAFT_SOURCE_RECORD_2123E441")])
+	var patch_errors := _current_patch_errors(draft)
+	if not patch_errors.is_empty(): return patch_errors
 	var fields := _layer_fields()
 	for key in ["language_ids","group_ids"]: draft.erase(key)
 	draft.merge(fields,true)
@@ -236,14 +237,26 @@ func _apply_layers(base: Dictionary) -> PackedStringArray:
 	return PackedStringArray()
 
 func layer_errors(base: Dictionary) -> PackedStringArray:
-	if not _state.layers_initialized: return PackedStringArray()
 	base = _canonical(base)
+	var patch_errors := _current_patch_errors(base)
+	if not patch_errors.is_empty(): return patch_errors
+	if not _state.layers_initialized: return PackedStringArray()
 	var fields: Dictionary = _canonical(_layer_fields())
 	for key in fields:
 		if base.get(key) != fields[key]: return PackedStringArray([DeskLocalization.source("LOC_DRAFT_CONTEXT_CONFLICTS_WITH_BRAIN_SLICE_CONFIGURATION_CBA3F275")])
 	for key in ["language_ids","group_ids"]:
 		if base.has(key) and not fields.has(key): return PackedStringArray([DeskLocalization.source("LOC_DRAFT_CONTAINS_AN_UNINSTALLED_EXPANDED_CONTEXT_52E5354E")])
 	return _composition_errors(base)
+
+func _current_patch_errors(draft: Dictionary) -> PackedStringArray:
+	# Historical records prove provenance; active drafts must also match the fitted patches.
+	var matches := author_marks_valid(draft)
+	if matches and draft.has("module_patch_record"):
+		matches = draft.module_patch_record.modules == _state.module_slots
+	elif matches:
+		for module_id: String in _state.module_slots:
+			matches = matches and module_id.is_empty()
+	return PackedStringArray() if matches else PackedStringArray([DeskLocalization.source("LOC_INVALID_EXPRESSION_PATCH_SOURCE_OR_AUTHOR_DRAFT_BDB1B39C")])
 
 func _composition_errors(draft: Dictionary) -> PackedStringArray:
 	var preset_id := str(draft.get("preset_id",""))
@@ -458,6 +471,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_APPLYING_AN_ABILITY_REQUIRES_A_VALID_AUTHOR_7C886A86")])
 			var draft := revision_base(params.base)
 			if draft.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_AUTHOR_DRAFT_FIELDS_OR_SOLID_PROVENANCE_9B401655")])
+			errors = _current_patch_errors(draft)
+			if not errors.is_empty(): return errors
 			_state.context_draft = draft
 			_state.skill_application = DeskLocalization.source_format("LOC_S_IS_HELPING_YOUR_EXPRESSION_TRAVEL_FURTHER_21DB569F", str(skill.title), [0])
 		"request_material":
@@ -487,6 +502,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not labels.is_empty(): _state.inventory_log.append(DeskLocalization.source_format("LOC_EVENT_S_S_6E3B7EEE", [instance_id, "、".join(labels)]))
 		"publish":
 			if source.is_empty() or not source.get("controlled", false) or not source.get("owned", false) or source.get("creator", "") != "player": return PackedStringArray([DeskLocalization.source("LOC_ONLY_PLAYER_PUBLISHED_VERSIONS_MAY_REGISTER_MODULES_C45E35C2")])
+			errors = _current_patch_errors(source)
+			if not errors.is_empty(): return errors
 			_grant_module(str(source.kernel_id))
 			if str(_state.core_kernel_id).is_empty():
 				_state.core_kernel_id = str(source.kernel_id)
@@ -501,6 +518,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_WRONG_DRAFT_SYNC_TYPE_EAFCB504")])
 			var draft := _effect_draft(params.base, [])
 			if draft.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_DRAFT_SYNC_SOURCE_437E9E98")])
+			errors = _current_patch_errors(draft)
+			if not errors.is_empty(): return errors
 			errors = _composition_errors(draft)
 			if not errors.is_empty(): return errors
 			_state.context_draft = draft
