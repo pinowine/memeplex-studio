@@ -10,6 +10,8 @@ const DesignState = preload("res://scripts/gameplay/design/design_state.gd")
 const SaveCodec = preload("res://scripts/services/persistence/save_codec.gd")
 const EventScheduler = preload("res://scripts/gameplay/events/event_scheduler.gd")
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
+const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
+const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 
 var catalog: MemeDemoCatalog
 var economy := MemeDemoEconomy.new()
@@ -358,6 +360,8 @@ func validate_draft(data: Dictionary) -> PackedStringArray:
 	if topics.is_empty() and _draft_layer_attached(data,"topics"): errors.append(DeskLocalization.source("LOC_SELECT_AT_LEAST_ONE_TOPIC_E653923A"))
 	for topic in topics:
 		if topic not in catalog.topics: errors.append(DeskLocalization.source("LOC_UNREGISTERED_TOPIC_F5347B52") + topic)
+	if ExpressionText.Composition.supports(preset_id):
+		errors.append_array(ExpressionText.Composition.validate(data, ExpressionText.patch_ids(data)))
 	return errors
 
 func _draft_layer_attached(data: Dictionary,layer: String) -> bool:
@@ -367,6 +371,9 @@ func _draft_layer_attached(data: Dictionary,layer: String) -> bool:
 ## 校验来源、语境和费用后投放；外部版本不获得作者控制权。
 func publish(data: Dictionary) -> PackedStringArray:
 	var errors := validate_draft(data)
+	var patch_ids := MutationRules.authored_patch_ids(data)
+	errors.append_array(catalog.DESIGN_RULES.patch_errors(str(data.get("preset_id", "")), patch_ids))
+	if data.has("patch_ids") and data.patch_ids != patch_ids: errors.append("Player patches must match the author record")
 	errors.append_array(_required_context_errors())
 	errors.append_array(_core_errors(data))
 	errors.append_array(design_state.record_errors())
@@ -403,8 +410,11 @@ func publish(data: Dictionary) -> PackedStringArray:
 		family_id = _new_id("family")
 		families[family_id] = {"id":family_id, "owner":"player", "anchor":anchor, "split_threshold":kernel.split_threshold, "derived_from":[], "preset_id":preset_id, "source_presets":source_presets.duplicate(true)}
 	var id := _new_id("variant")
-	var text: String = preload("res://scripts/gameplay/design/meme_expression.gd").render(catalog, data)
+	var composed: Dictionary = ExpressionText.compose(catalog, data)
+	var text: String = str(composed.expression)
 	variants.append({"id":id, "family_id":family_id, "parent_ids":parent_ids, "origin_ids":[id] if parent_ids.is_empty() else old.origin_ids.duplicate(), "creator":"player", "owned":true, "controlled":true, "text":text, "kernel_id":str(kernel.id), "preset_id":preset_id, "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":str(data.language_id), "pragmatic_position":_vector_array(data.pragmatic_position), "political_position":_vector_array(data.political_position) if data.get("political_known", false) else [], "target":str(data.target), "topic_ids":Array(data.get("topic_ids", []))})
+	variants.back().patch_ids = patch_ids.duplicate()
+	for field: String in ["meaning", "meaning_id", "language_versions"]: variants.back()[field] = composed[field]
 	for field in ["module_patch_record", "skill_effects", "context_layer_record", "context_layer_attachment"]:
 		if data.has(field): variants.back()[field] = data[field].duplicate(true)
 	var profile_draft := data.duplicate(true)
@@ -557,11 +567,14 @@ func _execute_event(definition: MemeDemoEvent) -> void:
 		var independent: MemeDemoEvent = definition.duplicate(true)
 		independent.external_preset_id = StringName(catalog.gameplay_rules.event_presets[id])
 		observed.append(_spawn_external_preset(event_id,independent))
-	for index in range(first_variant,variants.size()): _register_external_world(variants[index])
+	var remix_created := false
+	for index in range(first_variant,variants.size()):
+		_register_external_world(variants[index])
+		remix_created = remix_created or not variants[index].parent_ids.is_empty()
 	event_counts[id] = int(event_counts.get(id, 0)) + 1
 	last_event_hours[id] = hour
 	var rewards := design_state.unique_event_rewards(definition.design_rewards, events)
-	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(latest_draft.get("reuse_permission", "unknown") != "restricted"), "mentor_comment":definition.mentor_comment, "effect_text":DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
+	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(remix_created), "mentor_comment":definition.mentor_comment, "effect_text":DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
 	record.competition_variant_ids = []
 	for index in range(first_variant,variants.size()): record.competition_variant_ids.append(str(variants[index].id))
 	events.append(record)
@@ -600,8 +613,6 @@ func _apply_effect(effect: MemeDemoEffect, event_id: String, definition: MemeDem
 			return DeskLocalization.source_format("LOC_EXTERNAL_REWRITES_SEMANTIC_DRIFT_FROM_THE_FIXED_35C3A40D", draft_distance)
 		"remix":
 			if amount <= 0.0: return DeskLocalization.source("LOC_NO_VERSIONS_CREATED_BECAUSE_THE_REWRITE_COUNT_0A2A9637")
-			if latest_draft.get("reuse_permission", "unknown") == "restricted":
-				return DeskLocalization.source("LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C")
 			return _spawn_remix(event_id, ids[0] if not ids.is_empty() else "community", str(definition.id) if definition != null else "")
 		"revival":
 			for id in ids:
@@ -612,22 +623,45 @@ func _apply_effect(effect: MemeDemoEffect, event_id: String, definition: MemeDem
 	push_error("Invalid effect reached simulation: " + str(effect.effect_id))
 	return DeskLocalization.source("LOC_ERROR_UNREGISTERED_EFFECT_D26EA480")
 
-func _spawn_remix(event_id: String, creator: String, definition_id: String = "") -> String:
-	var parent := variant_by_id(current_variant_id)
+func _spawn_remix(event_id: String, creator: String, definition_id: String = "", parent_id: String = "") -> String:
+	var parent := variant_by_id(current_variant_id if parent_id.is_empty() else parent_id)
 	if parent.is_empty():
 		return DeskLocalization.source("LOC_NO_DEPLOYED_VERSION_IS_AVAILABLE_TO_REWRITE_151CB474")
+	var mutation: Dictionary = {}
+	if parent_id.is_empty():
+		var origins: Array = parent.origin_ids
+		# Newer circulating descendants can become the source of the next community rewrite.
+		for index in range(variants.size() - 1, -1, -1):
+			var source: Dictionary = variants[index]
+			if source.origin_ids != origins or not competition._state.registry.has(str(source.id)): continue
+			if not source.get("flow_draft") is Dictionary or source.flow_draft.get("reuse_permission", "unknown") == "restricted": continue
+			mutation = MutationRules.candidate(catalog, source, definition_id)
+			if not mutation.is_empty():
+				parent = source
+				break
+	else:
+		if not parent.get("flow_draft") is Dictionary: return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
+		if parent.flow_draft.get("reuse_permission", "unknown") == "restricted":
+			return DeskLocalization.source("LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C")
+		if parent.patch_ids.size() >= catalog.DESIGN_RULES.module_slots:
+			return DeskLocalization.source("LOC_MUTATION_PATCHES_FULL")
+		mutation = MutationRules.candidate(catalog, parent, definition_id)
+	if mutation.is_empty(): return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
+	var composed: Dictionary = mutation.composition
 	var family_id: String = parent.family_id
-	var split := draft_distance >= float(families[family_id].split_threshold)
+	var distance := draft_distance if bool(mutation.meaning_changed) else 0.0
+	var split := distance >= float(families[family_id].split_threshold)
 	if split:
 		var previous := family_id
 		family_id = _new_id("family")
 		families[family_id] = {"id":family_id, "owner":creator, "anchor":DeskLocalization.source("LOC_REINTERPRETED_BY_AN_EXTERNAL_COMMUNITY_6264171E"), "split_threshold":families[previous].split_threshold, "derived_from":[previous], "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true)}
 	var id := _new_id("variant")
-	var remix_text := EffectRules.remix_text(definition_id, parent.text)
-	var reuse_factor := EffectRules.reuse_factor(str(latest_draft.reuse_permission),
-		PackedStringArray(latest_draft.replaceable_slots).size(), find_kernel(parent.kernel_id).required_slots.size(),
-		float(latest_draft.remix_cost), float(latest_draft.context_dependency))
-	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":not split, "controlled":false, "text":remix_text, "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":draft_distance, "language_id":"seowon", "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor})
+	var source_draft: Dictionary = parent.flow_draft
+	var reuse_factor := EffectRules.reuse_factor(str(source_draft.reuse_permission),
+		PackedStringArray(source_draft.replaceable_slots).size(), find_kernel(parent.kernel_id).required_slots.size(),
+		float(source_draft.remix_cost), float(source_draft.context_dependency))
+	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":bool(parent.owned) and not split, "controlled":false, "text":str(composed.expression), "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":distance, "language_id":str(source_draft.language_id), "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor, "patch_ids":mutation.patch_ids.duplicate(), "flow_draft":mutation.flow_draft.duplicate(true)})
+	for field: String in ["meaning", "meaning_id", "language_versions"]: variants.back()[field] = composed[field]
 	return DeskLocalization.source_format("LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714", [DeskLocalization.source("LOC_NEW_FAMILY_A5AC4668") if split else DeskLocalization.source("LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C"), family_id, id, creator], [0])
 
 func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> String:
@@ -641,6 +675,7 @@ func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> Stri
 	var source_presets: Array = [preset.source_record()]
 	families[family_id] = {"id":family_id, "owner":"environment", "anchor":preset.family_anchor, "split_threshold":kernel.split_threshold, "derived_from":[], "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true)}
 	variants.append({"id":id, "family_id":family_id, "parent_ids":[], "origin_ids":[], "creator":"environment", "owned":false, "controlled":false, "text":" / ".join(preset.default_values), "kernel_id":str(preset.kernel_id), "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":"seowon", "source_event":event_id, "topic_ids":Array(definition.topic_ids)})
+	variants.back().patch_ids = []
 	return DeskLocalization.source_format("LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912", preset.title, [0])
 
 func _open_next_event() -> void:

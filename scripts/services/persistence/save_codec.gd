@@ -3,6 +3,8 @@ extends RefCounted
 
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
 const DesignState = preload("res://scripts/gameplay/design/design_state.gd")
+const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
+const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const SAVE_VERSION := 3
 
 var simulation: RefCounted
@@ -164,6 +166,7 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 		for origin in variant.get("origin_ids", []):
 			if not variant_ids.has(origin): errors.append(DeskLocalization.source("LOC_SAVED_ORIGINAL_VERSION_SOURCE_IS_MISSING_84500A57"))
 			elif (not variant_ids[origin].parent_ids.is_empty() or str(variant_ids[origin].creator) != "player"): errors.append(DeskLocalization.source("LOC_A_COMPETITION_LINEAGE_MUST_ORIGINATE_FROM_THE_76CFFF89"))
+	if errors.is_empty(): errors.append_array(_validate_variant_compositions(data.variants, variant_ids))
 	if errors.is_empty():
 		var source_checker: RefCounted = CompetitionState.new(catalog)
 		source_checker._state = data.competition_state.duplicate(true)
@@ -183,8 +186,10 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 				else:
 					var parent: Dictionary = variant_ids[variant.parent_ids[0]]
 					if competition._canonical(variant.origin_ids) != competition._canonical(parent.origin_ids): errors.append(DeskLocalization.source("LOC_MUTATIONS_MUST_RETAIN_THE_ACTUAL_ORIGINAL_DEPLOYMENT_DD642E47"))
-					var split: bool = float(variant.semantic_distance) >= float(data.families[parent.family_id].split_threshold)
-					if split != (str(variant.family_id) != str(parent.family_id)) or variant.owned == split: errors.append(DeskLocalization.source("LOC_MUTATION_OWNERSHIP_CONFLICTS_WITH_THE_FIXED_FAMILY_6809C659"))
+					var meaning_changed: bool = str(variant.meaning_id) != str(parent.meaning_id)
+					var split: bool = meaning_changed and float(variant.semantic_distance) >= float(data.families[parent.family_id].split_threshold)
+					if not meaning_changed and float(variant.semantic_distance) != 0.0: errors.append("Unchanged meaning cannot claim semantic drift")
+					if split != (str(variant.family_id) != str(parent.family_id)) or bool(variant.owned) != (bool(parent.owned) and not split): errors.append(DeskLocalization.source("LOC_MUTATION_OWNERSHIP_CONFLICTS_WITH_THE_FIXED_FAMILY_6809C659"))
 			var entry: Dictionary = data.competition_state.registry[str(variant.id)]
 			if not variant.get("flow_profile") is Dictionary or competition._canonical(variant.flow_profile) != competition._canonical(entry.profile): errors.append(DeskLocalization.source("LOC_COMPETITION_EXPRESSION_CONFIGURATION_DOES_NOT_MATCH_ITS_FCCA1944"))
 			if variant.controlled:
@@ -258,6 +263,60 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 	if errors.is_empty() and not design_state.author_marks_valid(data.latest_draft, data.design_state): errors.append(DeskLocalization.source("LOC_CURRENT_DRAFT_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_F36FC5F9"))
 	if errors.is_empty(): errors.append_array(_validate_guidance_progress(data))
 	if errors.is_empty(): data.latest_draft = restored_draft
+	return errors
+
+func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary) -> PackedStringArray:
+	var errors := PackedStringArray()
+	for variant: Dictionary in variants:
+		if not variant.get("patch_ids") is Array:
+			return PackedStringArray(["Saved versions require expression patch IDs"])
+		for id: Variant in variant.patch_ids:
+			if not id is String: return PackedStringArray(["Expression patch IDs must be strings"])
+		errors.append_array(catalog.DESIGN_RULES.patch_errors(str(variant.preset_id), variant.patch_ids))
+		if not errors.is_empty(): return errors
+		if str(variant.creator) != "player" and variant.parent_ids.is_empty():
+			var preset: MemeDemoPreset = catalog.find_preset(str(variant.preset_id))
+			if not variant.patch_ids.is_empty() or preset == null or str(variant.text) != " / ".join(preset.default_values) or variant.has("flow_draft"):
+				return PackedStringArray(["Independent event expressions must retain their registered preset"])
+			continue
+		if not variant.get("flow_draft") is Dictionary or not variant.get("meaning") is String or not variant.get("meaning_id") is String or not variant.get("language_versions") is Array:
+			return PackedStringArray(["Saved compositions require their draft, meaning and language versions"])
+		var draft: Dictionary = variant.flow_draft
+		if not draft.get("flow_skill_ids") is Array:
+			return PackedStringArray(["Saved transmission skills must be an array"])
+		var skill_ids := {}
+		for skill_id: Variant in draft.flow_skill_ids:
+			if not skill_id is String or skill_ids.has(skill_id):
+				return PackedStringArray(["Saved transmission skill IDs must be unique strings"])
+			skill_ids[skill_id] = true
+		var decoded := _draft_from_json(draft, errors)
+		if not errors.is_empty(): return errors
+		errors.append_array(simulation.validate_draft(decoded))
+		if not errors.is_empty(): return errors
+		var composed: Dictionary
+		if str(variant.creator) == "player":
+			if variant.patch_ids != MutationRules.authored_patch_ids(draft) or (draft.has("patch_ids") and draft.patch_ids != variant.patch_ids):
+				return PackedStringArray(["Player expression patches must match the author record"])
+			composed = ExpressionText.compose(catalog, draft)
+		else:
+			if variant.parent_ids.size() != 1:
+				return PackedStringArray(["A mutation must have one source version"])
+			var parent: Dictionary = variants_by_id[variant.parent_ids[0]]
+			var inherited: Array = parent.patch_ids
+			if not parent.get("flow_draft") is Dictionary or variant.patch_ids.size() != inherited.size() + 1 or variant.patch_ids.slice(0, inherited.size()) != inherited:
+				return PackedStringArray(["A mutation must preserve its parent's patches and add one patch"])
+			if parent.flow_draft.get("reuse_permission", "unknown") == "restricted":
+				return PackedStringArray(["A restricted source version cannot produce a community rewrite"])
+			var mutation := MutationRules.derive(catalog, parent, str(variant.patch_ids.back()))
+			if mutation.is_empty() or competition._canonical(draft) != competition._canonical(mutation.flow_draft):
+				return PackedStringArray(["A mutation draft must match its inherited expression and new patch"])
+			composed = mutation.composition
+		if composed.is_empty(): return PackedStringArray(["Saved expression has no compatible composition"])
+		for field: String in ["meaning", "meaning_id", "language_versions"]:
+			if competition._canonical(variant[field]) != competition._canonical(composed[field]):
+				errors.append("Saved composition differs from its expression patches: " + field)
+		if str(variant.text) != str(composed.expression): errors.append("Saved expression differs from its patches")
+		if not errors.is_empty(): return errors
 	return errors
 
 func _validate_preset_sources(entry: Dictionary, label: String, errors: PackedStringArray) -> void:
