@@ -446,15 +446,9 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			var skill_id := str(params.get("skill_id", ""))
 			var skill: Dictionary = rules.find("skills", skill_id)
 			if skill_id not in _state.unlocked_skills or skill.get("draft_effects", []).is_empty(): return PackedStringArray([DeskLocalization.source("LOC_THIS_ABILITY_IS_LOCKED_OR_HAS_NO_553BFB9A")])
-			if skill_applied(skill_id): return PackedStringArray([DeskLocalization.source("LOC_THIS_ABILITY_HAS_ALREADY_BEEN_APPLIED_TO_8B1D7CA8")])
 			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_APPLYING_AN_ABILITY_REQUIRES_A_VALID_AUTHOR_7C886A86")])
-			var draft := _effect_draft(params.base, skill.draft_effects)
+			var draft := revision_base(params.base)
 			if draft.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_AUTHOR_DRAFT_FIELDS_OR_SOLID_PROVENANCE_9B401655")])
-			var application := {"publish_index":int(_state.current_publish_index), "skill_id":skill_id, "effects":_deltas(params.base, draft, skill.draft_effects)}
-			var marks: Array = draft.get("skill_effects", []).duplicate(true)
-			marks.append(application.duplicate(true))
-			draft.skill_effects = marks
-			_state.skill_applications.append(application)
 			_state.context_draft = draft
 			_state.skill_application = DeskLocalization.source_format("LOC_S_IS_HELPING_YOUR_EXPRESSION_TRAVEL_FURTHER_21DB569F", str(skill.title), [0])
 		"request_material":
@@ -620,9 +614,7 @@ func author_marks_valid(draft: Dictionary, state: Dictionary = {}) -> bool:
 	return true
 
 func skill_applied(id: String) -> bool:
-	for application: Dictionary in _state.skill_applications:
-		if int(application.publish_index) == int(_state.current_publish_index) and str(application.skill_id) == id: return true
-	return false
+	return id in _state.unlocked_skills
 
 func _strip_effects(draft: Dictionary, effects: Array) -> void:
 	for effect: Dictionary in effects:
@@ -632,28 +624,16 @@ func _strip_effects(draft: Dictionary, effects: Array) -> void:
 func revision_base(base: Dictionary) -> Dictionary:
 	var draft: Dictionary = _canonical(base)
 	if not author_marks_valid(draft): return {}
-	var current_marks: Array = []
+	# Earlier drafts stored propagation bonuses in their author fields.
 	for mark: Dictionary in draft.get("skill_effects", []):
-		# Skills bought while browsing already belong to this pending publication.
-		if int(mark.get("publish_index", -1)) == int(_state.current_publish_index):
-			current_marks.append(mark)
-		else:
-			_strip_effects(draft, mark.get("effects", []))
-	if current_marks.is_empty(): draft.erase("skill_effects")
-	else: draft.skill_effects = current_marks
+		_strip_effects(draft, mark.get("effects", []))
+	draft.erase("skill_effects")
 	return draft
 
-func apply_unlocked(base: Dictionary, new_round: bool = false) -> PackedStringArray:
+func apply_unlocked(base: Dictionary, _new_round: bool = false) -> PackedStringArray:
 	var pristine := _state.duplicate(true)
-	var draft: Dictionary = revision_base(base) if new_round else _canonical(base)
+	var draft: Dictionary = revision_base(base)
 	if draft.is_empty() or not author_marks_valid(draft): return PackedStringArray([DeskLocalization.source("LOC_APPLYING_AN_ABILITY_REQUIRES_YOUR_OWN_VALID_5A5FFD6C")])
-	for id in _state.unlocked_skills:
-		if rules.find("skills", str(id)).get("draft_effects", []).is_empty() or skill_applied(str(id)): continue
-		var errors := _perform("apply_skill", {"skill_id":str(id), "base":draft})
-		if not errors.is_empty():
-			_state = pristine
-			return errors
-		draft = _state.context_draft.duplicate(true)
 	var errors := _perform("sync_draft", {"base":draft})
 	if not errors.is_empty(): _state = pristine
 	return errors

@@ -107,6 +107,16 @@ func profile(draft: Dictionary) -> Dictionary:
 	for key in ["language_ids","group_ids"]:
 		var values: Variant = draft.get(key,[])
 		if values is Array and values.size() > 1: result[key] = values.duplicate()
+	# Legacy author drafts already contain these bonuses; remove them before recalculating.
+	for mark: Dictionary in draft.get("skill_effects",[]):
+		for effect: Dictionary in mark.get("effects",[]):
+			var field := str(effect.field)
+			result[field] = clampf(float(result[field]) - float(effect.delta),0.0,1.0)
+	for skill: Dictionary in catalog.DESIGN_RULES.skills:
+		if str(skill.id) not in result.skill_ids: continue
+		for effect: Dictionary in skill.get("draft_effects",[]):
+			var field := str(effect.field)
+			result[field] = clampf(float(result[field]) + float(effect.amount),0.0,1.0)
 	return result
 
 func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionary:
