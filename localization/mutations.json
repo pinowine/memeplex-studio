@@ -1,0 +1,12 @@
+{
+  "LOC_MUTATION_PATCHES_FULL": {
+    "source": "这个版本已用满四个补丁槽，无法再追加二创。",
+    "zh_CN": "这个版本已用满四个补丁槽，无法再追加二创。",
+    "en": "This version has filled all four patch slots and cannot add another remix."
+  },
+  "LOC_MUTATION_NO_COMPATIBLE_PATCH": {
+    "source": "没有满足兼容与前置条件的新补丁，这次没有生成二创。",
+    "zh_CN": "没有满足兼容与前置条件的新补丁，这次没有生成二创。",
+    "en": "No new patch meets the compatibility and prerequisite rules, so this attempt produced no remix."
+  }
+}
