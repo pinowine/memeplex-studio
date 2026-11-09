@@ -1,0 +1,27 @@
+{
+  "LOC_WB_MEANING": {
+    "source": "这版表达的含义",
+    "zh_CN": "这版表达的含义",
+    "en": "Meaning of this version"
+  },
+  "LOC_WB_LANGUAGE_GLOSS": {
+    "source": "%s版 · 中文释义",
+    "zh_CN": "%s版 · 中文释义",
+    "en": "%s version · English gloss"
+  },
+  "LOC_WB_UNSPECIFIED_LANGUAGE": {
+    "source": "未指定语言",
+    "zh_CN": "未指定语言",
+    "en": "Unspecified language"
+  },
+  "LOC_WB_NO_COMPOSITION": {
+    "source": "当前语境与补丁尚不能组成完整表达。",
+    "zh_CN": "当前语境与补丁尚不能组成完整表达。",
+    "en": "This context and patch selection cannot form a complete expression yet."
+  },
+  "LOC_WB_LINEAGE_PATCHES": {
+    "source": "表达补丁 %d / %d：%s",
+    "zh_CN": "表达补丁 %d / %d：%s",
+    "en": "Expression patches %d / %d: %s"
+  }
+}
