@@ -495,9 +495,7 @@ func _spread_world() -> void:
 	var factors := {}
 	for variant: Dictionary in variants:
 		var entry: Dictionary = competition._state.registry[str(variant.id)]
-		var group_id: String = str(entry.profile.group_id) if competition.attached(entry.profile,"group") else ""
-		var state: Dictionary = group_state.get(group_id,{"trust":0.72,"fatigue":0.0})
-		factors[str(variant.id)] = EffectRules.attraction_factor(modifiers, hour, group_id, competition.active_topics(entry.profile)) * maxf(0.05,float(state.trust)) * maxf(0.05,1.0-float(state.fatigue))
+		factors[str(variant.id)] = _audience_factor(entry.profile)
 	competition.step(hour,variants,factors)
 	var view: Dictionary = competition.snapshot(variants,false)
 	attention = view.attention
@@ -509,6 +507,18 @@ func _spread_world() -> void:
 		state.external = maxf(0.0,state.external)
 		state.fatigue = clampf(float(state.fatigue)+float(attention.player)/maxf(1.0,attention.budget)*catalog.gameplay_rules.fatigue_gain-catalog.gameplay_rules.fatigue_recovery,0.0,1.0)
 	_reward_milestones()
+
+func _audience_factor(profile: Dictionary) -> float:
+	var ids: Array = profile.get("group_ids", [str(profile.group_id)]).duplicate() if competition.attached(profile, "group") else [""]
+	ids.sort()
+	var seen := {}
+	var total := 0.0
+	for id: String in ids:
+		if seen.has(id): continue
+		seen[id] = true
+		var state: Dictionary = group_state.get(id, {"trust":0.72, "fatigue":0.0})
+		total += EffectRules.attraction_factor(modifiers, hour, id, competition.active_topics(profile)) * maxf(0.05, float(state.trust)) * maxf(0.05, 1.0 - float(state.fatigue))
+	return total / seen.size()
 
 func _register_external_world(variant: Dictionary) -> void:
 	var parent_id: String = str(variant.parent_ids[0]) if not variant.parent_ids.is_empty() else ""
