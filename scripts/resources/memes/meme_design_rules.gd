@@ -2,13 +2,14 @@
 class_name MemeDesignRules
 extends Resource
 
-const DEFINITION_VERSION := 8
+const DEFINITION_VERSION := 9
+const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const EVENT_REWARD_KINDS := ["module", "language", "group", "topic", "stance_token", "pragmatic_token"]
 const EVENT_REWARD_LIMIT := 1
 const EVENT_REWARD_COUNT := 1
 
 @export var definition_version: int = DEFINITION_VERSION
-@export var module_slots: int = 5
+@export var module_slots: int = 4
 @export var starter_presets: PackedStringArray = PackedStringArray()
 @export var starter_contexts: Dictionary = {}
 @export var expression_routes: Dictionary = {}:
@@ -79,8 +80,27 @@ func find(kind: String, id: String) -> Dictionary:
 	return {}
 
 func module_compatible(preset_id: String, module_id: String) -> bool:
+	if find("modules", module_id).is_empty(): return false
+	if Composition.supports(preset_id): return module_id in Composition.definition(preset_id).compatible_modules
 	var presets: Variant = find("modules", module_id).get("compatible_presets", [])
 	return presets is Array and preset_id in presets
+
+func patch_errors(preset_id: String, module_ids: Array) -> PackedStringArray:
+	var errors := PackedStringArray()
+	var ids: Array[String] = []
+	for value: Variant in module_ids:
+		if not str(value).is_empty(): ids.append(str(value))
+	var definition: Dictionary = Composition.definition(preset_id)
+	var capacity := mini(module_slots, int(definition.get("max_modules",4)))
+	if ids.size() > capacity: errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_SLOTS"))
+	var seen := {}
+	for id: String in ids:
+		if seen.has(id): errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_DUPLICATE"))
+		seen[id] = true
+		if not module_compatible(preset_id,id): errors.append(DeskLocalization.source("LOC_PATCH_INCOMPATIBLE_MEME"))
+		for required: String in definition.get("requires",{}).get(id,[]):
+			if required not in ids: errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_EXIT"))
+	return errors
 
 func expression_route(preset_id: String, module_ids: Array) -> String:
 	var ids := PackedStringArray()
@@ -90,12 +110,16 @@ func expression_route(preset_id: String, module_ids: Array) -> String:
 	return str(expression_routes.get(preset_id, {}).get("+".join(ids), ""))
 
 func signature() -> String:
+	var compositions := {}
+	for preset: String in starter_presets:
+		if Composition.supports(preset): compositions[preset] = Composition.definition(preset)
 	var data := {
 		"version": definition_version,
 		"module_slots": module_slots,
 		"starters": Array(starter_presets),
 		"starter_contexts": starter_contexts,
 		"expression_routes": expression_routes,
+		"compositions": compositions,
 		"modules": modules,
 		"skills": skills,
 		"contexts": context_definitions.entries if context_definitions != null else [],
@@ -108,7 +132,7 @@ func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
 	var errors := PackedStringArray()
 	if catalog == null:
 		return PackedStringArray(["Design rules require a catalog"])
-	if definition_version != DEFINITION_VERSION or module_slots < 1 or module_slots > 12:
+	if definition_version != DEFINITION_VERSION or module_slots != 4:
 		errors.append("Invalid current design version or finite module slot limit")
 	if context_definitions == null:
 		errors.append("Missing brain context definitions")
@@ -198,17 +222,26 @@ func _expression_route_errors() -> PackedStringArray:
 	var errors := PackedStringArray()
 	for module: Dictionary in modules:
 		var compatible: Variant = module.get("compatible_presets")
-		if not compatible is Array or compatible.is_empty() or compatible.size() >= starter_presets.size():
+		if not compatible is Array or compatible.is_empty():
 			errors.append("A patch must target a nonempty subset of opening memes")
 			continue
 		var seen := {}
 		for preset: Variant in compatible:
-			if not preset is String or preset not in starter_presets or seen.has(preset):
+			if not preset is String or (preset not in starter_presets and not expression_routes.has(preset)) or seen.has(preset):
 				errors.append("Invalid or repeated patch compatibility target")
 			seen[preset] = true
-	if expression_routes.size() != starter_presets.size():
-		errors.append("Every opening meme requires a finite expression route table")
+	var legacy_presets: Array = expression_routes.keys()
 	for preset: String in starter_presets:
+		if Composition.supports(preset):
+			var definition: Dictionary = Composition.definition(preset)
+			var draft: Dictionary = definition.default_context.duplicate(true)
+			draft.preset_id = preset
+			errors.append_array(Composition.validate(draft,[]))
+			for id: String in definition.compatible_modules:
+				if find("modules",id).is_empty(): errors.append("Unknown composition patch: " + id)
+		elif preset not in legacy_presets: legacy_presets.append(preset)
+	for preset: String in legacy_presets:
+		if Composition.supports(preset): continue
 		var compatible: Array[String] = []
 		for module: Dictionary in modules:
 			if module_compatible(preset, str(module.id)): compatible.append(str(module.id))

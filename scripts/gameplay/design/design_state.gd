@@ -2,7 +2,8 @@ class_name MemeDemoDesignState
 extends RefCounted
 
 const DEFAULT_RULES = preload("res://data/rules/design_rules.tres")
-const DESIGN_VERSION := 8
+const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
+const DESIGN_VERSION := 9
 const RECORD_LIMIT := 65536
 var catalog: MemeDemoCatalog
 var rules: MemeDesignRules
@@ -24,7 +25,7 @@ func _reset_layers() -> void:
 		if index < 3:
 			var slots: Array = []
 			var origins: Array = []
-			for slot in (3 if index == 2 else 1):
+			for slot in 3:
 				slots.append({})
 				origins.append("")
 			_state.context_layers[layer] = {"slots":slots,"origins":origins,"depth":float(rules.context_depths[index])}
@@ -77,12 +78,8 @@ func _installed_context(id: String) -> int:
 			if str(slot.get("resource_id","")) == id: count += 1
 	return count
 
-func context_slot_capacity(layer: String, installed_modules: Variant = null) -> int:
-	if layer == "topics": return 3
-	if layer not in ["language","group"]: return 0
-	var unlock := "module_boundary" if layer == "language" else "module_relation"
-	var modules: Array = installed_modules if installed_modules is Array else _state.get("module_slots",[])
-	return 2 if unlock in modules else 1
+func context_slot_capacity(layer: String, _installed_modules: Variant = null) -> int:
+	return 3 if layer in ["language","group","topics"] else 0
 
 func _context_capacity_errors(modules: Array) -> PackedStringArray:
 	for layer in ["language","group"]:
@@ -230,6 +227,8 @@ func _apply_layers(base: Dictionary) -> PackedStringArray:
 	var fields := _layer_fields()
 	for key in ["language_ids","group_ids"]: draft.erase(key)
 	draft.merge(fields,true)
+	var errors := _composition_errors(draft)
+	if not errors.is_empty(): return errors
 	var record := {"index":_state.layer_records.size(),"fields":fields.duplicate(true)}
 	_state.layer_records.append(record)
 	draft.context_layer_record = record.duplicate(true)
@@ -244,7 +243,13 @@ func layer_errors(base: Dictionary) -> PackedStringArray:
 		if base.get(key) != fields[key]: return PackedStringArray([DeskLocalization.source("LOC_DRAFT_CONTEXT_CONFLICTS_WITH_BRAIN_SLICE_CONFIGURATION_CBA3F275")])
 	for key in ["language_ids","group_ids"]:
 		if base.has(key) and not fields.has(key): return PackedStringArray([DeskLocalization.source("LOC_DRAFT_CONTAINS_AN_UNINSTALLED_EXPANDED_CONTEXT_52E5354E")])
-	return PackedStringArray()
+	return _composition_errors(base)
+
+func _composition_errors(draft: Dictionary) -> PackedStringArray:
+	var preset_id := str(draft.get("preset_id",""))
+	var errors := rules.patch_errors(preset_id,_state.module_slots)
+	if Composition.supports(preset_id): errors.append_array(Composition.validate(draft,_state.module_slots))
+	return errors
 
 func _snapshot_layers(result: Dictionary) -> void:
 	result.next_axis_request_index = _state.axis_requests.size()+1
@@ -380,7 +385,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			_state.starter_preset_id = preset_id
 			_state.core_preset_id = preset_id
 			_state.core_kernel_id = str(catalog.find_preset(preset_id).kernel_id)
-			_grant_module(str(catalog.find_preset(preset_id).kernel_id))
+			_grant_starter_module(preset_id)
 			var expected: Dictionary = _preset_context_base(preset_id)
 			var base: Variant = params.get("base", expected)
 			if not base is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_THE_STARTING_DRAFT_MUST_BE_AN_OBJECT_93CDB3F4")])
@@ -403,6 +408,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not content is String or content.strip_edges().is_empty() or content.length() > 2048: return PackedStringArray([DeskLocalization.source("LOC_PATCH_CONTENT_MUST_BE_BOUNDED_NON_EMPTY_F87EF1F2")])
 			var next_modules: Array = _state.module_slots.duplicate()
 			next_modules[slot] = module_id
+			errors = rules.patch_errors(str(params.base.get("preset_id","")),next_modules)
+			if not errors.is_empty(): return errors
 			errors = _context_capacity_errors(next_modules)
 			if not errors.is_empty(): return errors
 			_state.module_slots[slot] = module_id
@@ -414,6 +421,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_REMOVING_A_PATCH_REQUIRES_YOUR_OWN_DRAFT_C0DFA4F7")])
 			var next_modules: Array = _state.module_slots.duplicate()
 			next_modules[slot] = ""
+			errors = rules.patch_errors(str(params.base.get("preset_id","")),next_modules)
+			if not errors.is_empty(): return errors
 			errors = _context_capacity_errors(next_modules)
 			if not errors.is_empty(): return errors
 			_state.module_slots[slot] = ""
@@ -492,6 +501,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_WRONG_DRAFT_SYNC_TYPE_EAFCB504")])
 			var draft := _effect_draft(params.base, [])
 			if draft.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_DRAFT_SYNC_SOURCE_437E9E98")])
+			errors = _composition_errors(draft)
+			if not errors.is_empty(): return errors
 			_state.context_draft = draft
 		_:
 			return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_DESIGN_ACTION_F210E360") + action])
@@ -507,6 +518,18 @@ func _grant_starter_context(base: Dictionary) -> void:
 		var preset_id := str(_state.starter_preset_id)
 		_state.inventory_sources.append({"source_instance_id":"starter:" + preset_id, "definition_id":"starter_contexts/" + preset_id, "preset_id":preset_id, "kind":str(entry.kind), "id":id, "count":1})
 		_state.context_resource_inventory[id] = int(_state.context_resource_inventory.get(id,0)) + 1
+
+func _grant_starter_module(preset_id: String) -> void:
+	var kernel_id := str(catalog.find_preset(preset_id).kernel_id)
+	if Composition.supports(preset_id):
+		var definition: Dictionary = Composition.definition(preset_id)
+		var preferred := "module_" + kernel_id
+		if preferred not in definition.compatible_modules or not definition.requires.get(preferred,[]).is_empty():
+			for id: String in definition.compatible_modules:
+				if definition.requires.get(id,[]).is_empty():
+					kernel_id = str(rules.find("modules",id).kernel_id)
+					break
+	_grant_module(kernel_id)
 
 func _grant_module(kernel_id: String) -> void:
 	var id := "module_" + kernel_id
@@ -641,6 +664,8 @@ func apply_unlocked(base: Dictionary, _new_round: bool = false) -> PackedStringA
 func _apply_modules(base: Dictionary) -> PackedStringArray:
 	var draft: Dictionary = _canonical(base)
 	if not author_marks_valid(draft): return PackedStringArray([DeskLocalization.source("LOC_INVALID_EXPRESSION_PATCH_SOURCE_OR_AUTHOR_DRAFT_BDB1B39C")])
+	var errors := _composition_errors(draft)
+	if not errors.is_empty(): return errors
 	if draft.has("module_patch_record"):
 		var old: Dictionary = draft.module_patch_record
 		_strip_effects(draft, old.effects)
@@ -659,6 +684,7 @@ func _apply_modules(base: Dictionary) -> PackedStringArray:
 		if str(module_id).is_empty(): continue
 		var module: Dictionary = rules.find("modules", str(module_id))
 		if not rules.module_compatible(str(draft.get("preset_id","")), module_id): return PackedStringArray([DeskLocalization.source("LOC_PATCH_INCOMPATIBLE_MEME")])
+		if Composition.supports(str(draft.get("preset_id",""))) and str(_state.module_contents[module_slot]) != str(module.content): return PackedStringArray([DeskLocalization.source("LOC_COMPOSE_ERROR_PATCH")])
 		var amended := _effect_draft(draft, module.draft_effects)
 		if amended.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_EXPRESSION_PATCH_FIELDS_C6043637")])
 		record.effects.append_array(_deltas(draft, amended, module.draft_effects))
@@ -688,7 +714,9 @@ func snapshot(variants: Array = []) -> Dictionary:
 		lineage.append({"id":variant.id, "family_id":variant.family_id, "parent_ids":variant.parent_ids.duplicate(),
 			"origin_ids":variant.get("origin_ids", []).duplicate(), "source_presets":variant.get("source_presets", []).duplicate(true),
 			"kernel_id":variant.kernel_id, "module_id":"module_" + str(variant.kernel_id), "creator":variant.creator,
-			"owned":variant.owned, "controlled":variant.controlled, "text":variant.text, "semantic_distance":variant.semantic_distance})
+			"owned":variant.owned, "controlled":variant.controlled, "text":variant.text, "semantic_distance":variant.semantic_distance,
+			"meaning":variant.get("meaning", ""), "patch_ids":variant.get("patch_ids", []).duplicate(),
+			"language_versions":variant.get("language_versions", []).duplicate(true)})
 	result.lineage_view = lineage
 	result.supported_channels = supported_channels()
 	result.available_module_inventory = _available_module_inventory()
