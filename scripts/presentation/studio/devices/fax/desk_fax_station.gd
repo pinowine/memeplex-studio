@@ -634,12 +634,10 @@ func hangup() -> bool:
 
 
 func starter_paper_options() -> Array[Dictionary]:
-	var labels := {"case_s01":["LOC_STARTER_NAME_FINE", "LOC_GUIDE_MEANING_FINE"], "case_s16":["LOC_STARTER_NAME_PEAK", "LOC_GUIDE_MEANING_PEAK"], "case_p11":["LOC_STARTER_NAME_67", "LOC_GUIDE_MEANING_67"]}
 	var options: Array[Dictionary] = []
 	for index in _call_session.starter_options.size():
 		var option: Dictionary = _call_session.starter_options[index]
-		var display: Array = labels.get(str(option.id), [str(option.title), ""])
-		options.append({"id":option.id, "title":display[0], "description":display[1], "default_context":option.default_context,
+		options.append({"id":option.id, "title":option.title, "description":option.context_hint, "context_hint":option.context_hint, "default_context":option.default_context,
 			"action":"starter_preview", "index":index, "selected":index == _preview_starter_index,
 			"disabled":not _call_session.starter_id.is_empty()})
 	options.append({"title":"LOC_GUIDE_CONFIRM_CHOICE", "action":"starter_confirm",

@@ -416,9 +416,8 @@ func hover_starter(index: int) -> void:
 	if index < 0 or index >= 3:
 		tutorial.clear_hover()
 		return
-	var id := str(page.desk._slot_reader._details.options[index].id)
-	var comments := {"case_s01":"LOC_OPENING_HOVER_FINE", "case_s16":"LOC_OPENING_HOVER_PEAK", "case_p11":"LOC_OPENING_HOVER_67"}
-	tutorial.set_hover("fax/option/%d" % index, str(comments.get(id, "")))
+	var option: Dictionary = page.desk._slot_reader._details.options[index]
+	tutorial.set_hover("fax/option/%d" % index, str(option.context_hint))
 
 func _process(_delta: float) -> void:
 	if tutorial == null or not tutorial._active: return

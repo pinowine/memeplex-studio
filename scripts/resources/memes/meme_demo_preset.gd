@@ -41,11 +41,14 @@ func validate() -> PackedStringArray:
 		if value.strip_edges().is_empty(): errors.append("Preset prompts and defaults cannot be blank")
 	if family_anchor.strip_edges().is_empty() or context_hint.strip_edges().is_empty() or source_case_id.is_empty():
 		errors.append("Preset anchor, context and source case are required")
-	for path in [source_path, source_document_path]:
-		if not path.is_absolute_path(): errors.append("Preset source paths must be absolute")
-	for hash_value in [source_sha256, source_document_sha256]:
-		if hash_value.length() != 64 or not hash_value.is_valid_hex_number(false): errors.append("Preset source hashes must be SHA-256 hex strings")
-	if not source_url.begins_with("https://") or evidence_status != &"design_abstraction":
+	if evidence_status == &"design_abstraction":
+		for path in [source_path, source_document_path]:
+			if not path.is_absolute_path(): errors.append("Preset source paths must be absolute")
+		for hash_value in [source_sha256, source_document_sha256]:
+			if hash_value.length() != 64 or not hash_value.is_valid_hex_number(false): errors.append("Preset source hashes must be SHA-256 hex strings")
+	elif evidence_status != &"game_adaptation":
+		errors.append("Unknown preset evidence status")
+	if not (source_url.begins_with("https://") or source_url.begins_with("http://")):
 		errors.append("Preset provenance must distinguish a design abstraction from evidence")
 	return errors
 

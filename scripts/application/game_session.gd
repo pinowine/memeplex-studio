@@ -505,13 +505,11 @@ func _show_direct_starters() -> void:
 		desk.return_overview()
 		return
 	desk._fax.reset_station()
-	var labels := {"case_s01":["LOC_STARTER_NAME_FINE", "LOC_GUIDE_MEANING_FINE"], "case_s16":["LOC_STARTER_NAME_PEAK", "LOC_GUIDE_MEANING_PEAK"], "case_p11":["LOC_STARTER_NAME_67", "LOC_GUIDE_MEANING_67"]}
 	var options: Array[Dictionary] = []
 	var starters: Array = simulation.starter_options()
 	for index in starters.size():
 		var option: Dictionary = starters[index]
-		var display: Array = labels.get(str(option.id), [str(option.title), ""])
-		options.append({"id":option.id, "title":display[0], "description":display[1], "default_context":option.default_context, "action":"starter_preview", "index":index, "selected":index == _direct_starter_index, "disabled":false})
+		options.append({"id":option.id, "title":option.title, "description":option.context_hint, "context_hint":option.context_hint, "default_context":option.default_context, "action":"starter_preview", "index":index, "selected":index == _direct_starter_index, "disabled":false})
 	options.append({"title":"LOC_GUIDE_CONFIRM_CHOICE", "action":"starter_confirm", "disabled":_direct_starter_index < 0})
 	desk._slot_reader.show_details({"title":"LOC_GUIDE_STARTER_PAPER", "body":"", "options":options, "reply_enabled":true, "starter_pending":true, "preview_starter_index":_direct_starter_index}, get_viewport().get_visible_rect())
 
