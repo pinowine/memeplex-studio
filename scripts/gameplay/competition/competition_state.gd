@@ -1,6 +1,8 @@
 extends RefCounted
 
 const Generator = preload("res://scripts/gameplay/map/map_generator.gd")
+const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
+const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
 static var _geography_cache: Dictionary = {}
 var rules: MemeGameplayRules
 var catalog: MemeDemoCatalog
@@ -90,7 +92,9 @@ func profile(draft: Dictionary) -> Dictionary:
 	for item in catalog.channels:
 		if str(item.id) == channel_id: channel = item
 	var text := ""
-	if draft.get("slots") is Dictionary and not draft.slots.is_empty():
+	if ExpressionText.Composition.supports(str(draft.get("preset_id",""))):
+		text = ExpressionText.render(catalog,draft)
+	elif draft.get("slots") is Dictionary and not draft.slots.is_empty():
 		for kernel in catalog.kernels:
 			if str(kernel.id) == str(draft.get("kernel_id","")):
 				for slot in kernel.required_slots: text += str(draft.slots.get(slot,"")) + " / "
@@ -120,6 +124,11 @@ func profile(draft: Dictionary) -> Dictionary:
 	return result
 
 func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionary:
+	if variant.get("flow_draft") is Dictionary:
+		# The child draft contains its patch changes and the parent's unmodified skill inputs.
+		var derived := profile(variant.flow_draft)
+		derived.reach = maxf(1.0,float(derived.reach))
+		return derived
 	var source: Dictionary = _state.registry.get(parent_id,{}).get("profile",{}).duplicate(true)
 	if source.is_empty(): source = profile(variant)
 	source.language_id = str(variant.language_id)
@@ -178,9 +187,23 @@ func active_topics(profile_data: Dictionary) -> PackedStringArray:
 func _axis_match(a: Array,b: Array) -> float:
 	return clampf(1.0 - (absf(float(a[0])-float(b[0])) + absf(float(a[1])-float(b[1]))) / 4.0,0.0,1.0)
 
+func _community_reuse(variant: Dictionary) -> float:
+	if bool(variant.controlled): return 1.0
+	if not variant.get("flow_draft") is Dictionary:
+		return float(variant.get("reuse_factor",1.0)) if bool(variant.owned) else 1.0
+	var draft: Dictionary = variant.flow_draft
+	var source: Dictionary = _state.registry[str(variant.id)].profile
+	var required_slots := 0
+	for kernel: MemeDemoKernel in catalog.kernels:
+		if str(kernel.id) == str(draft.kernel_id): required_slots = kernel.required_slots.size()
+	return EffectRules.reuse_factor(str(draft.reuse_permission),draft.replaceable_slots.size(),required_slots,
+		float(source.remix_cost),float(source.context_dependency))
+
 func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 	_state.hour = hour
 	var previous: Dictionary = _state.countries.duplicate(true)
+	var reuse_factors := {}
+	for variant: Dictionary in variants: reuse_factors[str(variant.id)] = _community_reuse(variant)
 	for row: Dictionary in _state.world:
 		var cid := str(row.id)
 		var population := int(row.population)
@@ -203,7 +226,7 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 			var age: int = hour - int(entry.birth_hour)
 			var refresh: float = rules.controlled_refresh_hours if bool(variant.controlled) else rules.community_refresh_hours
 			var novelty: float = exp(-float(age) / refresh)
-			var reuse: float = float(variant.get("reuse_factor",1.0)) if not bool(variant.controlled) and bool(variant.owned) else 1.0
+			var reuse: float = reuse_factors[id]
 			weights[id] = maxf(0.0,pressure * float(fit.score) * float(fit.reach) * novelty * reuse * float(modifier_factors.get(id,1.0)))
 		var budget := floori(population * rules.attention_fraction)
 		var demand := 0.0
