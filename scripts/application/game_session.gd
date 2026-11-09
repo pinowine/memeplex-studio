@@ -406,7 +406,7 @@ func _load() -> bool:
 	atlas.clock.utc_seconds += simulation.elapsed_hours() * 3600.0
 	atlas.set_speed(simulation.speed)
 	atlas._update_clock()
-	if not simulation.latest_draft.is_empty(): hud.set_draft(simulation.latest_draft)
+	if not simulation.context_draft().is_empty(): hud.set_draft(simulation.context_draft())
 	_startup_complete = simulation.publish_count > 0
 	_direct_starter_selection = false
 	_direct_starter_index = -1
