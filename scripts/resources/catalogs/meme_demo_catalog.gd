@@ -2,7 +2,7 @@
 class_name MemeDemoCatalog
 extends Resource
 
-const CURRENT_CONTENT_VERSION := 10
+const CURRENT_CONTENT_VERSION := 11
 const OPERATION_IDS := ["attention_shift", "remix", "platform_change", "emerge", "split", "fatigue", "contest", "amplify", "revive"]
 const DESIGN_RULES = preload("res://data/rules/design_rules.tres")
 

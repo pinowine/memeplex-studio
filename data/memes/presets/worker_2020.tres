@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"worker_2020"
+kernel_id = &"stance"
+title = "LOC_COMPOSE_WORKER_2020_TITLE"
+required_slots = PackedStringArray("speaker", "visible_situation", "claim")
+slot_prompts = PackedStringArray("LOC_COMPOSE_PROMPT_SPEAKER", "LOC_COMPOSE_PROMPT_SCENE", "LOC_COMPOSE_PROMPT_CLAIM")
+default_values = PackedStringArray("LOC_COMPOSE_WORKER_SPEAKER", "LOC_COMPOSE_WORKER_SITUATION", "LOC_COMPOSE_WORKER_CLAIM")
+family_anchor = "LOC_COMPOSE_WORKER_ANCHOR"
+context_hint = "LOC_COMPOSE_WORKER_HINT"
+source_case_id = "worker_2020"
+source_url = "http://opinion.people.com.cn/n1/2020/1028/c1003-31908655.html"
+evidence_status = &"game_adaptation"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cheems_2020"
+kernel_id = &"ritual"
+title = "LOC_COMPOSE_CHEEMS_2020_TITLE"
+required_slots = PackedStringArray("trigger", "action", "response_and_exit")
+slot_prompts = PackedStringArray("LOC_COMPOSE_PROMPT_TRIGGER", "LOC_COMPOSE_PROMPT_ACTION", "LOC_COMPOSE_PROMPT_RESPONSE")
+default_values = PackedStringArray("LOC_COMPOSE_CHEEMS_TRIGGER", "LOC_COMPOSE_CHEEMS_ACTION", "LOC_COMPOSE_CHEEMS_RESPONSE")
+family_anchor = "LOC_COMPOSE_CHEEMS_ANCHOR"
+context_hint = "LOC_COMPOSE_CHEEMS_HINT"
+source_case_id = "cheems_2020"
+source_url = "https://knowyourmeme.com/editorials/interviews/chatting-with-cheems-balltzes-owner-gives-us-some-personal-insight-into-life-with-one-of-the-webs-favorite-shibas"
+evidence_status = &"game_adaptation"

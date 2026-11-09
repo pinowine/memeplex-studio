@@ -426,8 +426,8 @@
   },
   "LOC_COMPOSE_WORKER_HINT": {
     "source": "以 2020 年流行用法为起点的游戏改编，后续场景为手写情景。",
-    "zh_CN": "以 2020 年流行用法为起点的游戏改编，后续场景为手写情景。",
-    "en": "A game adaptation of usage popular in 2020, with authored fictional scenes."
+    "zh_CN": "用“打工人”自嘲劳动中的疲惫。从上班与生活开销出发，可以追问、对照，也可以邀请别人接着说。",
+    "en": "Calls itself a working stiff to joke about fatigue at work. Starts with work and living costs, with room for questions, contrasts and shared experiences."
   },
   "LOC_COMPOSE_VERSAILLES_A": {
     "source": "展示满分试卷的人",
@@ -451,8 +451,8 @@
   },
   "LOC_COMPOSE_VERSAILLES_HINT": {
     "source": "以 2020 年凡尔赛表达为起点，满分试卷是本游戏编写的例子。",
-    "zh_CN": "以 2020 年凡尔赛表达为起点，满分试卷是本游戏编写的例子。",
-    "en": "Based on the 2020 humblebrag format; the perfect exam is an example written for this game."
+    "zh_CN": "拿着满分试卷说“又没考好”。用反问、比较或解释继续假谦虚，始终让分数与抱怨同时可见。",
+    "en": "Shows a perfect exam while claiming to have done badly. Questions, comparisons and explanations develop the humblebrag while keeping the score and complaint visible."
   },
   "LOC_COMPOSE_CHEEMS_TRIGGER": {
     "source": "轮到自己开口时",
@@ -476,8 +476,8 @@
   },
   "LOC_COMPOSE_CHEEMS_HINT": {
     "source": "以 2020 年广泛传播的 Cheems 为起点，配文是游戏改编。",
-    "zh_CN": "以 2020 年广泛传播的 Cheems 为起点，配文是游戏改编。",
-    "en": "Based on Cheems as circulated in 2020; captions are adapted for the game."
+    "zh_CN": "想说两句，又不敢说。用 Cheems 表达怯场，可以交代缘由、对照想象与实际，或请别人接话并允许沉默。",
+    "en": "Wants to speak, then shrinks back. Cheems can explain the hesitation, contrast imagined confidence with reality, or invite a reply while leaving room for silence."
   },
   "LOC_COMPOSE_PROMPT_SPEAKER": {
     "source": "谁在说话",

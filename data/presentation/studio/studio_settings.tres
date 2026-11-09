@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1")
-start_date = "2000-01-01"
+start_date = "2020-12-01"
 normal_seconds_per_day = 5.0
 fast_seconds_per_day = 2.0
 restart_hold_seconds = 1.5
