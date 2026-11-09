@@ -17,6 +17,7 @@ const ContextSlice = preload("res://scripts/presentation/studio/context/desk_con
 const ContextTrialSlip = preload("res://scripts/presentation/studio/context/desk_context_trial_slip.gd")
 const ModuleClip = preload("res://scripts/presentation/studio/design/desk_module_paper_clip.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
+const SpecimenArt = preload("res://scripts/presentation/studio/design/meme_specimen_art.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const INK := Color("384238")
 const TABS := ["edit", "cultivate", "spread"]
@@ -52,6 +53,15 @@ var _part_note: Label
 var _part_content: RichTextLabel
 var _final_expression: RichTextLabel
 var _final_title: Label
+var _specimen_art: Control
+var _meaning_title: Label
+var _meaning: RichTextLabel
+var _language_selector: OptionButton
+var _language_note: Label
+var _composition: Dictionary = {}
+var _preview_language_id := ""
+var _lineage_preview: Dictionary = {}
+var _module_errors := PackedStringArray()
 var _detail_scroll: ScrollContainer
 var _detail_stack: VBoxContainer
 var _source: RichTextLabel
@@ -306,7 +316,7 @@ func _build_edit() -> void:
 	_starter.disabled=true
 	page.add_child(_starter)
 	_starter.item_selected.connect(_choose_starter)
-	for index in 5:
+	for index in _rules.module_slots:
 		var clip := ModuleClip.new()
 		clip.name = "PaperClip%d" % index
 		page.add_child(clip)
@@ -322,7 +332,22 @@ func _build_edit() -> void:
 	_detail_scroll.add_child(_detail_stack)
 	_final_title = _label(_detail_stack, DeskLocalization.source("LOC_EDIT_FINAL_EXPRESSION"), "FinalExpressionTitle", 14)
 	_final_title.set_meta("paper_emphasis", true)
+	_language_selector = OptionButton.new()
+	_language_selector.name = "ExpressionLanguage"
+	_language_selector.fit_to_longest_item = false
+	_language_selector.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_language_selector.add_theme_font_size_override("font_size", 14)
+	_detail_stack.add_child(_language_selector)
+	PaperStyle.apply_button(_language_selector)
+	_language_selector.item_selected.connect(_select_expression_language)
+	_language_note = _label(_detail_stack, "", "ExpressionLanguageNote", 12)
+	_specimen_art = SpecimenArt.new()
+	_specimen_art.name = "MemeSpecimenArt"
+	_detail_stack.add_child(_specimen_art)
 	_final_expression = _readout(_detail_stack, "FinalExpression", 23)
+	_meaning_title = _label(_detail_stack, DeskLocalization.source("LOC_WB_MEANING"), "ExpressionMeaningTitle", 14)
+	_meaning_title.set_meta("paper_emphasis", true)
+	_meaning = _readout(_detail_stack, "ExpressionMeaning", 15)
 	_information_rule("ExpressionContextRule")
 	_overview_data = _readout(_detail_stack, "MemeOverviewData", 16)
 	_overview_data.bbcode_enabled = true
@@ -467,6 +492,8 @@ func _select_part(id: String) -> void:
 	_selected_module=""
 	_selected_variant=""
 	_selected_installed_slot=-1
+	_lineage_preview.clear()
+	_module_errors.clear()
 	_neuron.select_part(id)
 	_refresh_part()
 
@@ -507,15 +534,14 @@ func show_module(id: String,slot: int=-1) -> void:
 			if _selected_installed_slot<contents.size(): content=str(contents[_selected_installed_slot])
 		var from_definition: bool = not _module_edits.has(id) and content == str(entry.get("content","")) and (_selected_installed_slot < 0 or _catalog_default_modules.get(id) == content)
 		_bind_part_content(content,"module:"+id+":"+str(_selected_installed_slot),from_definition)
-		var compatible := _rules.module_compatible(str(_draft.get("preset_id", "")), id)
-		_source.text = "" if compatible else DeskLocalization.text("LOC_PATCH_INCOMPATIBLE_MEME")
-		if not compatible: _detail_scroll.ensure_control_visible.call_deferred(_source)
+		_lineage_preview.clear()
+		_show_module_errors(_candidate_patch_errors(id, slot))
 		_setting=false
 		return
 
 
 func _select_variant(id: String) -> void:
-	for variant in _design.get("lineage_view",[]):
+	for variant in _state.get("lineage",_design.get("lineage_view",[])):
 		if str(variant.get("id",""))!=id: continue
 		_selected_variant=id
 		_selected_module=""
@@ -523,8 +549,16 @@ func _select_variant(id: String) -> void:
 		_setting=true
 		_part_title.text=DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024")
 		_part_note.text=DeskLocalization.text("LOC_YOUR_OWN_EXPRESSION_0A35E8E2") if bool(variant.get("controlled",false)) else DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E")
-		_bind_part_content(str(variant.get("text","")),"variant:"+id,false)
+		_bind_part_content(str(variant.get("text","")),"variant:"+id,not str(variant.get("meaning_id", "")).is_empty())
 		_source.text=DeskLocalization.text("LOC_REWRITTEN_FROM_AN_EARLIER_EXPRESSION_22EA25D8") if not (variant.get("parent_ids",[]) as Array).is_empty() else DeskLocalization.text("LOC_AN_INDEPENDENTLY_EMERGING_EXPRESSION_77A66F57")
+		var meaning := str(variant.get("meaning", ""))
+		var patches: Array = variant.get("patch_ids", [])
+		var patch_titles := PackedStringArray()
+		for patch_id: String in patches: patch_titles.append(_entry_title("modules", patch_id))
+		if not meaning.is_empty(): _source.text += "\n" + DeskLocalization.text("LOC_WB_MEANING") + "\n" + DeskLocalization.text(meaning)
+		_source.text += "\n" + DeskLocalization.format_text("LOC_WB_LINEAGE_PATCHES", [patches.size(), _rules.module_slots, ", ".join(patch_titles) if not patch_titles.is_empty() else DeskLocalization.text("LOC_NONE_484D5561")])
+		_lineage_preview = {"id":id, "text":str(variant.get("text", "")), "meaning":meaning, "patch_ids":patches.duplicate(), "parent_ids":variant.get("parent_ids", []).duplicate()}
+		_module_errors.clear()
 		_setting=false
 		return
 
@@ -537,6 +571,11 @@ func _refresh_culture() -> void:
 
 func _request(action: String, params: Dictionary) -> void:
 	var request:=params.duplicate(true)
+	if action in ["install_module", "remove_module"]:
+		var errors := _candidate_patch_errors(str(request.get("module_id", "")), int(request.get("slot", -1)), action == "remove_module")
+		if not errors.is_empty():
+			_show_module_errors(errors)
+			return
 	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context_axis","detach_context_layer","attach_context_layer"]:
 		request["draft"]=get_draft()
 		if action=="install_module":
@@ -620,9 +659,9 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 	var graph_y := 54.0
 	_place(_neuron, Rect2(0, graph_y, right - 18, maxf(100, h - graph_y - 54)))
 	for index in _physical_clips.size():
-		var x := right + float(index) * (span - 96) / 4.0
+		var x := right + float(index) * (span - 96) / maxf(1, _physical_clips.size() - 1)
 		_place(_physical_clips[index], Rect2(x, 6, 96, 128))
-		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5, -3.5][index])
+		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5][index])
 	var details_y := _overview_name.position.y + _overview_name.size.y + 12
 	_place(_detail_scroll, Rect2(right, details_y, span, maxf(78, h - 52 - details_y)))
 	_place(_footer, Rect2(0, h - 44, w, 40))
@@ -656,6 +695,7 @@ func set_interaction_enabled(enabled: bool) -> void:
 	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
+	if _language_selector != null: _language_selector.disabled = not enabled or _tab != "edit"
 
 
 func _button(parent: Node,text: String,name: String) -> Button:
@@ -730,7 +770,8 @@ func inspection() -> Dictionary:
 	return {"tab":_tab,"tabs":TABS,"draft":get_draft(),"neuron":_neuron.inspection(),"design_state":_design.duplicate(true),"sync_count":_sync_count,
 		"module_slots":_physical_clips.size(),"skill_count":_skill_buttons.size(),
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
-		"content_editable":false,"final_expression":_final_expression.text,"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"patch_summary":_patch_summary.text,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
+		"content_editable":false,"final_expression":_final_expression.text,"final_expression_rect":_final_expression.get_global_rect(),"information_sections":5,"patch_summary":_patch_summary.text,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
+		"composition":_composition.duplicate(true),"meaning":_meaning.text,"language_versions":_composition.get("language_versions",[]).duplicate(true),"selected_language":_preview_language_id,"language_note":_language_note.text,"language_selector_visible":_language_selector.visible,"specimen_art":_specimen_art.inspection(),"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),"lineage_preview":_lineage_preview.duplicate(true),
 		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
 		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
@@ -770,7 +811,7 @@ func module_clips_viewport_rect() -> Rect2:
 func accept_tabletop_item(kind: String,id: String,global_position: Vector2) -> bool:
 	if not _interaction_enabled or not is_visible_in_tree() or id.is_empty(): return false
 	if kind=="module" and _tab=="edit":
-		if not _rules.module_compatible(str(_draft.get("preset_id", "")), id):
+		if not _candidate_patch_errors(id).is_empty():
 			if module_clip_at(global_position) >= 0 and not _rules.find("modules", id).is_empty(): show_module(id)
 			return false
 		var free:=int((_design.get("available_module_inventory",_design.get("module_inventory",{})) as Dictionary).get(id,0))
@@ -837,8 +878,74 @@ func _refresh_overview() -> void:
 		if not id.is_empty(): count += 1
 	_patch_summary.text = "[b]%s[/b]  [font_size=22]%d[/font_size] / %d" % [DeskLocalization.text("LOC_EDIT_PATCHES"), count, _physical_clips.size()]
 	_overview_data.text = "\n".join(rows)
-	_final_expression.text = ExpressionText.render(_catalog, _draft) if _catalog != null else ""
 	_final_title.text = DeskLocalization.text("LOC_EDIT_FINAL_EXPRESSION")
+	_refresh_composition()
+
+
+func _refresh_composition() -> void:
+	_composition = ExpressionText.compose(_catalog, _draft) if _catalog != null and not _draft.is_empty() else {}
+	var versions: Array = _composition.get("language_versions", [])
+	_language_selector.clear()
+	var selected := 0
+	for index in versions.size():
+		var language_id := str(versions[index].language_id)
+		var label := DeskLocalization.text(str(_rules.context_resource("language_" + language_id).get("title", "LOC_WB_UNSPECIFIED_LANGUAGE")))
+		_language_selector.add_item(label)
+		_language_selector.set_item_metadata(index, language_id)
+		if language_id == _preview_language_id: selected = index
+	_language_selector.visible = versions.size() > 1
+	if not versions.is_empty():
+		_language_selector.select(selected)
+		_preview_language_id = str(versions[selected].language_id)
+	else:
+		_preview_language_id = ""
+	_meaning_title.text = DeskLocalization.text("LOC_WB_MEANING")
+	_meaning.text = DeskLocalization.text(str(_composition.get("meaning", "")))
+	_meaning_title.visible = not _meaning.text.is_empty()
+	_meaning.visible = _meaning_title.visible
+	_specimen_art.configure(_composition, ExpressionText.patch_ids(_draft))
+	_refresh_composed_expression()
+
+
+func _select_expression_language(index: int) -> void:
+	if not _interaction_enabled or _tab != "edit": return
+	_preview_language_id = str(_language_selector.get_item_metadata(index))
+	_refresh_composed_expression()
+
+
+func _refresh_composed_expression() -> void:
+	var expression := str(_composition.get("expression", ""))
+	for version: Dictionary in _composition.get("language_versions", []):
+		if str(version.language_id) == _preview_language_id: expression = str(version.expression)
+	_final_expression.text = DeskLocalization.text(expression) if not expression.is_empty() else DeskLocalization.text("LOC_WB_NO_COMPOSITION")
+	_language_note.visible = not _composition.get("language_versions", []).is_empty()
+	var language := DeskLocalization.text(str(_rules.context_resource("language_" + _preview_language_id).get("title", "LOC_WB_UNSPECIFIED_LANGUAGE")))
+	_language_note.text = DeskLocalization.format_text("LOC_WB_LANGUAGE_GLOSS", language)
+	_queue_text_layout()
+
+
+func _candidate_patch_errors(id: String, slot: int = -1, removing: bool = false) -> PackedStringArray:
+	var candidate: Array = _design.get("module_slots", []).duplicate()
+	if slot >= 0 and slot < candidate.size(): candidate[slot] = "" if removing else id
+	elif not removing: candidate.append(id)
+	return _rules.patch_errors(str(_draft.get("preset_id", "")), candidate)
+
+
+func _show_module_errors(errors: PackedStringArray) -> void:
+	_module_errors = errors.duplicate()
+	var translated := PackedStringArray()
+	for error: String in errors: translated.append(DeskLocalization.text(error))
+	_source.text = "\n".join(translated)
+	if not errors.is_empty(): _detail_scroll.ensure_control_visible.call_deferred(_source)
+
+
+func module_availability() -> Dictionary:
+	var result := {}
+	for module: Dictionary in _rules.modules:
+		var id := str(module.id)
+		var errors := _candidate_patch_errors(id)
+		result[id] = {"compatible":errors.is_empty(), "errors":Array(errors)}
+	return result
 
 
 func _escape(value: String) -> String:
