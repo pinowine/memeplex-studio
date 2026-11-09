@@ -103,11 +103,16 @@ func profile(draft: Dictionary) -> Dictionary:
 	for character in text: distinct[character] = true
 	var expression: float = clampf(float(distinct.size()) / rules.expression_character_scale,rules.expression_floor,1.0)
 	var skill_bonus := 0.0
-	for skill_id in draft.get("flow_skill_ids",[]): skill_bonus += float(rules.skill_reach.get(str(skill_id),0.0))
+	var skill_ids: Array[String] = []
+	for value: Variant in draft.get("flow_skill_ids",[]):
+		var skill_id := str(value)
+		if skill_id in skill_ids: continue
+		skill_ids.append(skill_id)
+		skill_bonus += float(rules.skill_reach.get(skill_id,0.0))
 	var attachment := {}
 	var saved: Dictionary = draft.get("context_layer_attachment",{}) if draft.get("context_layer_attachment",{}) is Dictionary else {}
 	for layer in ["language","group","topics","stance","pragmatic"]: attachment[layer] = bool(saved.get(layer,true))
-	var result := {"language_id":str(draft.get("language_id","seowon")),"group_id":str(draft.get("group_id","culture_fans")),"topic_ids":Array(draft.get("topic_ids",[])),"political_known":bool(draft.get("political_known",false)),"political_position":_pair(draft.get("political_position",[])),"pragmatic_position":_pair(draft.get("pragmatic_position",[])),"language_access":float(draft.get("language_access",0.8)),"recognizability":float(draft.get("recognizability",0.8)),"context_dependency":float(draft.get("context_dependency",0.5)),"remix_cost":float(draft.get("remix_cost",0.3)),"reach":(float(channel.reach_factor) if channel != null else 1.0)*(1.0+skill_bonus),"channel_id":channel_id,"expression":expression,"text":text,"skill_ids":Array(draft.get("flow_skill_ids",[])),"context_layer_attachment":attachment}
+	var result := {"language_id":str(draft.get("language_id","seowon")),"group_id":str(draft.get("group_id","culture_fans")),"topic_ids":Array(draft.get("topic_ids",[])),"political_known":bool(draft.get("political_known",false)),"political_position":_pair(draft.get("political_position",[])),"pragmatic_position":_pair(draft.get("pragmatic_position",[])),"language_access":float(draft.get("language_access",0.8)),"recognizability":float(draft.get("recognizability",0.8)),"context_dependency":float(draft.get("context_dependency",0.5)),"remix_cost":float(draft.get("remix_cost",0.3)),"reach":(float(channel.reach_factor) if channel != null else 1.0)*(1.0+skill_bonus),"channel_id":channel_id,"expression":expression,"text":text,"skill_ids":skill_ids,"context_layer_attachment":attachment}
 	for key in ["language_ids","group_ids"]:
 		var values: Variant = draft.get(key,[])
 		if values is Array and values.size() > 1: result[key] = values.duplicate()
