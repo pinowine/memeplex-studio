@@ -780,7 +780,7 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 	var clip_step := 96.0 + SPACE_WITHIN * 2
 	var clip_start := w - inset - 96.0 - clip_step * (_physical_clips.size() - 1)
 	_overview_data.columns = 2 if span >= 280 else 1
-	_place(_neuron, Rect2(0, 54, right - GROUP_SPACING, maxf(100, h - 108)))
+	_place(_neuron, Rect2(GROUP_SPACING, 144, right - GROUP_SPACING * 2, maxf(100, h - 168)))
 	_neuron.show()
 	for index in _physical_clips.size():
 		var x := clip_start + float(index) * clip_step
