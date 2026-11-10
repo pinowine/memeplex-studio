@@ -2,6 +2,7 @@
 
 [ext_resource type="SystemFont" path="res://assets/image/fonts/development_font.tres" id="1"]
 [ext_resource type="SystemFont" path="res://assets/image/fonts/print_heading_font.tres" id="2"]
+[ext_resource type="StyleBox" path="res://data/presentation/ui/receipt_tooltip_style.tres" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="Button"]
 content_margin_left = 9.0
@@ -148,3 +149,9 @@ TextEdit/styles/focus = SubResource("Focus")
 TextEdit/styles/normal = SubResource("Field")
 TextEdit/styles/read_only = SubResource("Field")
 VBoxContainer/constants/separation = 8
+TooltipPanel/styles/panel = ExtResource("3")
+TooltipLabel/colors/font_color = Color(0.247059, 0.262745, 0.219608, 1)
+TooltipLabel/colors/font_shadow_color = Color(0, 0, 0, 0)
+TooltipLabel/constants/outline_size = 0
+TooltipLabel/fonts/font = ExtResource("1")
+TooltipLabel/font_sizes/font_size = 14

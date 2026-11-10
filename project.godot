@@ -31,6 +31,10 @@ window/stretch/aspect="expand"
 
 enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
+[gui]
+
+theme/custom="res://data/presentation/ui/receipt_tooltip_theme.tres"
+
 [input]
 
 select={
