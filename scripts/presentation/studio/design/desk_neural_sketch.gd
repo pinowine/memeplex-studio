@@ -21,12 +21,14 @@ const EXTERNAL_INK := Color("a25b38")
 const CORE_RADIUS := 22.0
 const PATCH_RADIUS := 14.0
 const MEMBRANE_BLEND := 14.0
-const SHAPES := {"stance":[Vector2(.47,.43),Vector2(.20,.18),Vector2(.51,.85)],
-	"relation":[Vector2(.17,.42),Vector2(.83,.43),Vector2(.49,.44)],
-	"ritual":[Vector2(.18,.72),Vector2(.46,.43),Vector2(.48,.89)],
-	"boundary":[Vector2(.15,.19),Vector2(.24,.84),Vector2(.75,.47)],
-	"shared_world":[Vector2(.22,.14),Vector2(.51,.42),Vector2(.46,.86)]}
+const LAYOUT_INSET := 48.0
+const SHAPES := {"stance":[Vector2(.50,.46),Vector2(.16,.08),Vector2(.84,.90)],
+	"relation":[Vector2(.16,.08),Vector2(.84,.90),Vector2(.50,.46)],
+	"ritual":[Vector2(.84,.90),Vector2(.50,.46),Vector2(.16,.08)],
+	"boundary":[Vector2(.16,.08),Vector2(.84,.90),Vector2(.50,.46)],
+	"shared_world":[Vector2(.16,.08),Vector2(.50,.46),Vector2(.84,.90)]}
 const NUCLEUS_INDEX := {"stance":0,"relation":2,"ritual":1,"boundary":2,"shared_world":1}
+const PATCH_ANCHORS := [Vector2(.84,.08),Vector2(.08,.50),Vector2(.92,.50),Vector2(.16,.90)]
 
 var _kernel_id := ""
 var _nodes: Array = []
@@ -289,13 +291,14 @@ func set_family_texture(texture: Texture2D) -> void:
 		queue_redraw()
 
 
+func _layout_bounds() -> Rect2:
+	return Rect2(Vector2.ONE*LAYOUT_INSET,(size-Vector2.ONE*LAYOUT_INSET*2.0).max(Vector2.ONE))
+
+
 func _point(index: int) -> Vector2:
 	var points: Array=SHAPES.get(_kernel_id,SHAPES.stance)
-	var rect:=Rect2(Vector2.ZERO,size)
-	if _family_art!=null and _family_art.texture!=null:
-		var source:=Vector2(_family_art.texture.get_size())
-		var fit:=minf(size.x/source.x,size.y/source.y)
-		rect=Rect2((size-source*fit)*.5,source*fit)
+	# The paper owns the layout; the hidden specimen texture has a different aspect ratio.
+	var rect := _layout_bounds()
 	return rect.position+(points[index%points.size()] as Vector2)*rect.size
 
 
@@ -309,10 +312,26 @@ func _core_point() -> Vector2:
 
 func suggested_module_position(slot: int) -> Vector2:
 	if size.x <= 0.0 or size.y <= 0.0: return Vector2(.5,.5)
-	var angles: Array[float] = [-.65,.65,1.65,2.65]
-	var point := _core_point()+Vector2.from_angle(angles[slot])*32.0
-	var margin := Vector2(minf(.45,22.0/maxf(size.x,1.0)),minf(.45,22.0/maxf(size.y,1.0)))
-	return (point/size.max(Vector2.ONE)).clamp(margin,Vector2.ONE-margin)
+	var rect := _layout_bounds()
+	return (rect.position+PATCH_ANCHORS[slot]*rect.size)/size
+
+
+func _label_rect(point: Vector2, width: float, distance: float) -> Rect2:
+	var extent := Vector2(width,20)
+	var origin := point+Vector2(-width*.5,distance-12)
+	return Rect2(origin.clamp(Vector2(8,8),(size-extent-Vector2(8,24)).max(Vector2(8,8))),extent)
+
+
+func _part_label_rect(index: int) -> Rect2:
+	var point := _point(index)
+	# The gap below the core stays clear of the four default patch branches.
+	var distance := 96 if index==int(NUCLEUS_INDEX.get(_kernel_id,0)) else (-56 if point.y<_core_point().y else 64)
+	return _label_rect(point,112,distance)
+
+
+func _module_label_rect(index: int) -> Rect2:
+	var point := _module_point(index)
+	return _label_rect(point,64,-56 if point.y<_core_point().y else 64)
 
 
 func _cell_distance(point: Vector2) -> float:
@@ -351,17 +370,15 @@ func _draw() -> void:
 		var point:=_point(index)
 		_feedback.paint(self,point,Vector2(38,32),"part:" + str(_nodes[index].get("id","")))
 		var title:=DeskLocalization.text(str(_nodes[index].get("title","")))
-		var label := point+Vector2(-56,31)
-		if index == int(NUCLEUS_INDEX.get(_kernel_id,0)) and _has_nearby_patch(): label = point+Vector2(-56,-47)
-		draw_string(font,label,title,HORIZONTAL_ALIGNMENT_CENTER,112,11,INK)
+		var label := _part_label_rect(index)
+		draw_string(font,label.position+Vector2(0,12),title,HORIZONTAL_ALIGNMENT_CENTER,label.size.x,11,INK)
 	for index in _installed.size():
 		if str(_installed[index]).is_empty(): continue
 		var point:=_module_point(index)
 		_draw_fused_patch(index,point)
 		_feedback.paint(self,point,Vector2(31,29),"module:" + str(index))
-		var label := point+Vector2(-25,24)
-		if point.distance_to(_core_point()) < 50.0: label = point+(point-_core_point()).normalized()*32.0+Vector2(-25,5)
-		draw_string(font,label,DeskLocalization.format_text("LOC_PATCH_D_3EC77C1A", (index+1)),HORIZONTAL_ALIGNMENT_CENTER,50,10,INK)
+		var label := _module_label_rect(index)
+		draw_string(font,label.position+Vector2(0,12),DeskLocalization.format_text("LOC_PATCH_D_3EC77C1A", (index+1)),HORIZONTAL_ALIGNMENT_CENTER,label.size.x,10,INK)
 	for edge in _connections:
 		var from:=int(edge.get("from",-1))
 		var to:=int(edge.get("to",-1))
@@ -383,12 +400,6 @@ func _tracking_frame(point: Vector2,extent: Vector2,color: Color) -> void:
 		var inward: Vector2=rect.get_center()-corner
 		draw_line(corner,corner+Vector2(signf(inward.x)*7,0),color,.9,true)
 		draw_line(corner,corner+Vector2(0,signf(inward.y)*7),color,.9,true)
-
-
-func _has_nearby_patch() -> bool:
-	for index in _installed.size():
-		if not str(_installed[index]).is_empty() and _module_point(index).distance_to(_core_point()) < 50.0: return true
-	return false
 
 
 func _sketch_line(from: Vector2,to: Vector2,color: Color) -> void:
@@ -429,13 +440,15 @@ func _update_neuronal_network() -> void:
 	var cells: Array=[]
 	var links: Array=[]
 	cells.append(_cell_record(_core_point(),14.0,"core:"+_kernel_id,_kernel_id))
+	for index in _nodes.size():
+		if index == int(NUCLEUS_INDEX.get(_kernel_id,0)): continue
+		cells.append(_cell_record(_point(index),8.3,"part:"+_kernel_id+":"+str(_nodes[index].get("id","")),_kernel_id))
 	for index in _installed.size():
 		var id := str(_installed[index])
 		if id.is_empty():continue
 		var config := module_graphic_config(index)
 		cells.append(_cell_record(_module_point(index),8.3,id,str(config.kernel_id),"patch:"+str(index)+":"+id))
-		if _module_point(index).distance_to(_core_point())<90.0:
-			links.append({"points":_fusion_curve(_core_point(),_module_point(index),index),"width":1.6,"growth":cells[-1].growth})
+		links.append({"points":_fusion_curve(_core_point(),_module_point(index),index),"width":1.6,"growth":cells[-1].growth,"role":"patch","slot":index})
 	var ids: Dictionary={}
 	for index in _nodes.size():ids[str(_nodes[index].get("id",""))]=index
 	for edge: Dictionary in _edges:
@@ -487,16 +500,11 @@ func _layout_attached_lineage() -> void:
 		if not str(_installed[index]).is_empty(): occupied.append(_module_point(index))
 	var labels: Array[Rect2] = []
 	for index in _nodes.size():
-		var point := _point(index)
-		var offset := Vector2(-56,-47) if index == int(NUCLEUS_INDEX.get(_kernel_id,0)) and _has_nearby_patch() else Vector2(-56,31)
-		labels.append(Rect2(point + offset - Vector2(0,12), Vector2(112,20)).grow(18))
+		labels.append(_part_label_rect(index).grow(24))
 	for index in _installed.size():
 		if str(_installed[index]).is_empty(): continue
-		var point := _module_point(index)
-		var offset := Vector2(-25,24)
-		if point.distance_to(_core_point()) < 50.0: offset = (point-_core_point()).normalized()*32.0+Vector2(-25,5)
-		labels.append(Rect2(point+offset-Vector2(0,10),Vector2(50,18)).grow(14))
-	var bounds := Rect2(Vector2(30,30), (size-Vector2(60,60)).max(Vector2.ONE))
+		labels.append(_module_label_rect(index).grow(24))
+	var bounds := _layout_bounds()
 	for index in _visible_lineage.size():
 		var record: Dictionary = _visible_lineage[index]
 		var anchor := _core_point()
@@ -507,15 +515,14 @@ func _layout_attached_lineage() -> void:
 				break
 		var best := anchor
 		var best_score := INF
-		for ring in 3:
-			var radius := 42.0 + ring * 18.0
+		for radius: float in [64.0,96.0,128.0,192.0,256.0]:
 			for direction in 24:
 				var angle := -PI * .5 + direction * TAU / 24.0
 				var candidate := anchor + Vector2.from_angle(angle) * radius
 				if not bounds.has_point(candidate): continue
 				var score := radius + candidate.distance_to(_core_point()) * .65
 				for point: Vector2 in occupied:
-					score += maxf(0,34.0-candidate.distance_to(point)) * 100.0
+					score += maxf(0,96.0-candidate.distance_to(point)) * 100.0
 				for label: Rect2 in labels:
 					if label.has_point(candidate): score += 10000.0
 				if score < best_score:
@@ -621,19 +628,24 @@ func _drop_data(at_position: Vector2,data: Variant) -> void:
 func inspection() -> Dictionary:
 	var points := {}
 	var module_points := {}
+	var node_label_rects := {}
+	var module_label_rects := {}
 	var anatomy := {}
 	for index in _installed.size():
-		if not str(_installed[index]).is_empty(): module_points[index]=_module_point(index)
+		if not str(_installed[index]).is_empty():
+			module_points[index]=_module_point(index)
+			module_label_rects[index]=_module_label_rect(index)
 	for index in _nodes.size():
 		var id:=str(_nodes[index].get("id",""))
 		points[id]=_point(index)
+		node_label_rects[id]=_part_label_rect(index)
 		anatomy[id]="nucleus" if index==int(NUCLEUS_INDEX.get(_kernel_id,0)) else ("axon" if index==_nodes.size()-1 else "dendrite")
 	return {"kernel_id":_kernel_id,"nodes":_nodes.duplicate(true),"edges":_edges.duplicate(true),"source_slots":_slots.duplicate(true),"display_slots":_display_slots.duplicate(true),
-		"node_points":points,"anatomy":anatomy,"selected":_selected,"installed":_installed.duplicate(true),
+		"node_points":points,"node_label_rects":node_label_rects,"module_label_rects":module_label_rects,"layout_bounds":_layout_bounds(),"anatomy":anatomy,"selected":_selected,"installed":_installed.duplicate(true),
 		"module_points":module_points,"module_positions":_positions.duplicate(),"module_position_space":"normalized",
 		"fusion_bridges":_bridges.duplicate(true),"patch_body_count":module_points.size(),
 		"fusion_bridge_role":"position_reference","rendered_long_axons":0,"cell_fusion_mode":"smooth_membrane_union",
-		"morphology_version":10,"neuron_renderer":"shared_procedural_neuron","neuron_surface":_neuron_surface.inspection() if _neuron_surface!=null else {},
+		"morphology_version":11,"neuron_renderer":"shared_procedural_neuron","neuron_surface":_neuron_surface.inspection() if _neuron_surface!=null else {},
 		"core_radius":CORE_RADIUS,"patch_radius":PATCH_RADIUS,"membrane_blend":MEMBRANE_BLEND,
 		"feedback":_feedback.inspection(),"selected_module":_selected_module,"interaction_enabled":_interaction_enabled,
 		"dragging_slot":_pressed_module if _dragging else -1,"drag_count":_drag_count,"cancel_count":_cancel_count,"last_drag":_last_drag.duplicate(true),"tooltip":tooltip_text,
