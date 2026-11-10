@@ -18,6 +18,9 @@ var _layout_width := 288.0
 var _text_blocks: Array[Dictionary] = []
 var _separators: Array[float] = []
 var _fit_bounds := Rect2()
+var _pointer_following := false
+var _pointer_viewport := Vector2.ZERO
+var _layout_revision := 0
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -25,6 +28,25 @@ func _init() -> void:
 	tooltip_text = ""
 	add_theme_stylebox_override("panel",load("res://data/presentation/ui/receipt_tooltip_style.tres"))
 	_layout_content()
+
+func _ready() -> void:
+	set_process(_pointer_following)
+	if _pointer_following and is_visible_in_tree(): _follow_pointer()
+
+func _process(_delta: float) -> void:
+	if _pointer_following and is_visible_in_tree(): _follow_pointer()
+
+func set_pointer_following(enabled: bool) -> void:
+	_pointer_following = enabled
+	set_process(enabled)
+	if enabled and is_inside_tree() and is_visible_in_tree(): _follow_pointer()
+
+func _follow_pointer() -> void:
+	var viewport := get_viewport()
+	_pointer_viewport = viewport.get_mouse_position()
+	var parent_to_viewport := get_global_transform_with_canvas()*get_transform().affine_inverse()
+	var to_parent := parent_to_viewport.affine_inverse()
+	fit_at(to_parent*_pointer_viewport,to_parent*viewport.get_visible_rect())
 
 func set_content(title: String, rows: Array, body: String = "") -> void:
 	_title = title
@@ -51,8 +73,10 @@ func content_text() -> String:
 func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 	_fit_bounds = bounds
 	var available := bounds.grow(-SCREEN_MARGIN)
-	_layout_width = minf(_preferred_width,available.size.x)
-	_layout_content()
+	var width := minf(_preferred_width,available.size.x)
+	if not is_equal_approx(_layout_width,width):
+		_layout_width = width
+		_layout_content()
 	var factor := minf(1.0,available.size.y/size.y)
 	scale = Vector2.ONE*factor
 	var extent := size*factor
@@ -78,6 +102,7 @@ func _add_separator(y: float) -> float:
 	return y+GROUP_GAP
 
 func _layout_content() -> void:
+	_layout_revision += 1
 	_text_blocks.clear()
 	_separators.clear()
 	var width := _layout_width-PADDING.x*2.0
@@ -124,4 +149,5 @@ func inspection() -> Dictionary:
 	return {"component":"receipt_hover","title":_title,"rows":_rows.duplicate(true),"body":_body,"text":content_text(),
 		"rect":Rect2(position,size*scale),"preferred_width":_preferred_width,"layout_width":_layout_width,"scale":scale,
 		"text_blocks":blocks,"text_fits":fits,"separators":_separators.duplicate(),"fit_bounds":_fit_bounds,
+		"pointer_following":_pointer_following,"pointer_viewport":_pointer_viewport,"layout_revision":_layout_revision,
 		"mouse_filter":mouse_filter,"tooltip_text":tooltip_text,"content_format":"plain_text","serrated_edges":true}
