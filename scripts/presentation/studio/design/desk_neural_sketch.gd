@@ -86,7 +86,7 @@ func set_interaction_enabled(value: bool) -> void:
 
 
 func set_module_positions(positions: Array) -> void:
-	if positions.size() != 5: return
+	if positions.size() != _installed.size(): return
 	var next: Array[Vector2] = []
 	for value: Variant in positions:
 		var point := Vector2.ZERO
@@ -122,9 +122,9 @@ func cancel_module_drag(reason: String = "cancelled") -> void:
 
 
 func _ensure_positions() -> void:
-	if _positions.size() == 5: return
+	if _positions.size() == _installed.size(): return
 	_positions.clear()
-	for index in 5: _positions.append(Vector2(.18 + .15 * index,.82))
+	for index in _installed.size(): _positions.append(Vector2(.18 + .60 * index / maxf(_installed.size()-1,1),.82))
 
 
 func _hit_id(at: Vector2) -> String:
@@ -301,7 +301,7 @@ func _point(index: int) -> Vector2:
 
 func _module_point(index: int) -> Vector2:
 	_ensure_positions()
-	return _positions[clampi(index,0,4)] * size
+	return _positions[index] * size
 
 func _core_point() -> Vector2:
 	return _point(int(NUCLEUS_INDEX.get(_kernel_id,0)))
@@ -309,15 +309,15 @@ func _core_point() -> Vector2:
 
 func suggested_module_position(slot: int) -> Vector2:
 	if size.x <= 0.0 or size.y <= 0.0: return Vector2(.5,.5)
-	var angles: Array[float] = [-.65,.65,1.65,2.65,-2.65]
-	var point := _core_point()+Vector2.from_angle(angles[clampi(slot,0,4)])*32.0
+	var angles: Array[float] = [-.65,.65,1.65,2.65]
+	var point := _core_point()+Vector2.from_angle(angles[slot])*32.0
 	var margin := Vector2(minf(.45,22.0/maxf(size.x,1.0)),minf(.45,22.0/maxf(size.y,1.0)))
 	return (point/size.max(Vector2.ONE)).clamp(margin,Vector2.ONE-margin)
 
 
 func _cell_distance(point: Vector2) -> float:
 	var distance := point.distance_to(_core_point())-CORE_RADIUS
-	for index in mini(_installed.size(),5):
+	for index in _installed.size():
 		if str(_installed[index]).is_empty(): continue
 		var patch := point.distance_to(_module_point(index))-PATCH_RADIUS
 		var mix_value := clampf(.5+.5*(patch-distance)/MEMBRANE_BLEND,0.0,1.0)
@@ -334,7 +334,7 @@ func _update_field() -> void:
 	_material.set_shader_parameter("core",Vector4(core_point.x,core_point.y,CORE_RADIUS,1.0))
 	for index in 5:
 		var attached := index < _installed.size() and not str(_installed[index]).is_empty()
-		var point := _module_point(index) / size
+		var point := _module_point(index) / size if attached else Vector2.ZERO
 		_material.set_shader_parameter("module_%d" % index,Vector4(point.x,point.y,PATCH_RADIUS,1.0 if attached else 0.0))
 		if attached: _bridges[index] = _fusion_curve(_core_point(),_module_point(index),index)
 
@@ -386,7 +386,7 @@ func _tracking_frame(point: Vector2,extent: Vector2,color: Color) -> void:
 
 
 func _has_nearby_patch() -> bool:
-	for index in mini(_installed.size(),5):
+	for index in _installed.size():
 		if not str(_installed[index]).is_empty() and _module_point(index).distance_to(_core_point()) < 50.0: return true
 	return false
 
@@ -429,7 +429,7 @@ func _update_neuronal_network() -> void:
 	var cells: Array=[]
 	var links: Array=[]
 	cells.append(_cell_record(_core_point(),14.0,"core:"+_kernel_id,_kernel_id))
-	for index in mini(_installed.size(),5):
+	for index in _installed.size():
 		var id := str(_installed[index])
 		if id.is_empty():continue
 		var config := module_graphic_config(index)
@@ -483,14 +483,14 @@ func _layout_attached_lineage() -> void:
 	var core_id := _core_lineage_id()
 	var occupied: Array[Vector2] = []
 	for index in _nodes.size(): occupied.append(_point(index))
-	for index in mini(_installed.size(),5):
+	for index in _installed.size():
 		if not str(_installed[index]).is_empty(): occupied.append(_module_point(index))
 	var labels: Array[Rect2] = []
 	for index in _nodes.size():
 		var point := _point(index)
 		var offset := Vector2(-56,-47) if index == int(NUCLEUS_INDEX.get(_kernel_id,0)) and _has_nearby_patch() else Vector2(-56,31)
 		labels.append(Rect2(point + offset - Vector2(0,12), Vector2(112,20)).grow(18))
-	for index in mini(_installed.size(),5):
+	for index in _installed.size():
 		if str(_installed[index]).is_empty(): continue
 		var point := _module_point(index)
 		var offset := Vector2(-25,24)
@@ -613,7 +613,7 @@ func _drop_data(at_position: Vector2,data: Variant) -> void:
 		else: solid_drop_requested.emit(int(data.slot))
 		return
 	if str(data.get("type",""))=="design_context": context_drop_requested.emit(str(data.context_id)); return
-	var slot:=clampi(roundi((at_position.x/maxf(size.x,1)-.18)/.15),0,4)
+	var slot:=clampi(roundi((at_position.x/maxf(size.x,1)-.18)/.60*(_installed.size()-1)),0,_installed.size()-1)
 	_last_drop={"at_position":at_position,"size":size,"slot":slot,"global_mouse":get_global_mouse_position()}
 	module_drop_requested.emit(slot,str(data.module_id))
 
