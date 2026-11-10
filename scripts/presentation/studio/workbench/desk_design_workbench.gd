@@ -23,6 +23,7 @@ const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_s
 const INK := Color("384238")
 const SECONDARY_INK := Color("594d3f")
 const SPACE_WITHIN := 8
+const GROUP_SPACING := 16
 const SPACE_BETWEEN := 24
 const TABS := ["edit", "cultivate", "spread"]
 const ASSET_PATHS := {"modules": "res://assets/image/textures/studio/desk/neuron_family_bases.png"}
@@ -327,8 +328,6 @@ func _build_edit() -> void:
 	_neuron.installed_selected.connect(func(slot: int,id: String) -> void: show_module(id,slot))
 	_neuron.variant_selected.connect(_select_variant)
 	_neuron.module_position_changed.connect(func(slot: int,point: Vector2) -> void: _request("move_module",{"slot":slot,"position":point}))
-	_neuron.hide()
-	_neuron.set_interaction_enabled(false)
 	_starter=OptionButton.new()
 	_starter.name="StarterConfiguration"
 	_starter.disabled=true
@@ -346,25 +345,25 @@ func _build_edit() -> void:
 	page.add_child(_detail_scroll)
 	_detail_stack = VBoxContainer.new()
 	_detail_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_detail_stack.add_theme_constant_override("separation", SPACE_BETWEEN)
+	_detail_stack.add_theme_constant_override("separation", GROUP_SPACING)
 	_detail_scroll.add_child(_detail_stack)
 	var overview := _text_group("MemeOverview")
-	_overview_name = _label(overview, "", "MemeOverviewName", 28)
+	_overview_name = _label(overview, "", "MemeOverviewName", 22)
 	_overview_name.set_meta("paper_emphasis", true)
 	_build_summary(overview)
-	_module_feedback = _label(overview, "", "ModuleFeedback", 14)
+	_module_feedback = _label(overview, "", "ModuleFeedback", 12)
 	_module_feedback.add_theme_color_override("font_color", AnnotatedText.CHANGED_INK)
 	_module_feedback.hide()
 	var expression := _text_group("Expression")
 	_information_rule("OverviewExpressionRule", expression)
 	_final_title = _section_heading(expression, "expression", DeskLocalization.source("LOC_WB_EXPRESSION"), "FinalExpressionTitle")
-	_expression_context = _annotated_readout(expression, "ExpressionContext", 16)
+	_expression_context = _annotated_readout(expression, "ExpressionContext", 14)
 	_expression_context.add_theme_color_override("default_color", SECONDARY_INK)
-	_final_expression = _annotated_readout(expression, "FinalExpression", 26)
+	_final_expression = _annotated_readout(expression, "FinalExpression", 20)
 	var meaning := _text_group("Meaning")
 	_information_rule("ExpressionMeaningRule", meaning)
 	_meaning_title = _section_heading(meaning, "meaning", DeskLocalization.source("LOC_WB_MEANING"), "ExpressionMeaningTitle")
-	_meaning = _annotated_readout(meaning, "ExpressionMeaning", 18)
+	_meaning = _annotated_readout(meaning, "ExpressionMeaning", 16)
 	var legacy := Control.new()
 	legacy.name = "SelectionState"
 	legacy.hide()
@@ -391,10 +390,10 @@ func _text_group(node_name: String) -> VBoxContainer:
 func _build_summary(parent: Node) -> void:
 	_overview_data = GridContainer.new()
 	_overview_data.name = "MemeOverviewData"
-	_overview_data.columns = 3
+	_overview_data.columns = 2
 	_overview_data.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_overview_data.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_overview_data.add_theme_constant_override("h_separation", SPACE_BETWEEN)
+	_overview_data.add_theme_constant_override("h_separation", GROUP_SPACING)
 	_overview_data.add_theme_constant_override("v_separation", SPACE_WITHIN)
 	parent.add_child(_overview_data)
 	for kind: String in ["language", "group", "topic", "stance", "pragmatic", "spread"]:
@@ -405,6 +404,7 @@ func _build_summary(parent: Node) -> void:
 		cell.add_theme_constant_override("separation", SPACE_WITHIN)
 		_overview_data.add_child(cell)
 		var icon := _paper_icon(cell, kind)
+		icon.custom_minimum_size = Vector2(20, 20)
 		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		var words := VBoxContainer.new()
 		words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -413,7 +413,7 @@ func _build_summary(parent: Node) -> void:
 		cell.add_child(words)
 		var title := _label(words, "", "Category", 12)
 		title.add_theme_color_override("font_color", SECONDARY_INK)
-		var value := _label(words, "", "Value", 16)
+		var value := _label(words, "", "Value", 14)
 		_summary_cells[kind] = {"title":title, "value":value, "control":cell}
 
 
@@ -433,7 +433,7 @@ func _section_heading(parent: Node, kind: String, title: String, node_name: Stri
 	parent.add_child(row)
 	var icon := _paper_icon(row, kind)
 	icon.custom_minimum_size = Vector2(20, 20)
-	var label := _label(row, title, node_name, 14)
+	var label := _label(row, title, node_name, 12)
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.add_theme_color_override("font_color", SECONDARY_INK)
 	return label
@@ -444,6 +444,7 @@ func _annotated_readout(parent: Node, node_name: String, font_size: int) -> Rich
 	label.name = node_name
 	label.add_theme_font_size_override("normal_font_size", font_size)
 	label.add_theme_font_size_override("bold_font_size", font_size)
+	label.add_theme_constant_override("line_separation", 6)
 	parent.add_child(label)
 	label.source_hovered.connect(_show_source_hover)
 	label.source_hover_ended.connect(_hide_source_hover)
@@ -769,7 +770,8 @@ func _layout_sheet(id: String,area: Vector2) -> void:
 
 func _layout_edit_sheet(w: float, h: float) -> void:
 	var inset := float(SPACE_BETWEEN)
-	var span := w - inset * 2
+	var right := w * .52
+	var span := w - right - SPACE_WITHIN
 	var has_cards := false
 	for id: String in _design.get("module_slots", []):
 		if not id.is_empty(): has_cards = true
@@ -777,16 +779,16 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 	var content_y := 160.0 if has_cards else 144.0
 	var clip_step := 96.0 + SPACE_WITHIN * 2
 	var clip_start := w - inset - 96.0 - clip_step * (_physical_clips.size() - 1)
-	_overview_data.columns = 3 if span >= 576 else 2
-	_place(_neuron, Rect2(inset, content_y, span, maxf(100, h - content_y)))
-	_neuron.hide()
+	_overview_data.columns = 2 if span >= 280 else 1
+	_place(_neuron, Rect2(0, 54, right - GROUP_SPACING, maxf(100, h - 108)))
+	_neuron.show()
 	for index in _physical_clips.size():
 		var x := clip_start + float(index) * clip_step
 		_place(_physical_clips[index], Rect2(x, 6, 96, clip_height))
 		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5][index])
 	var footer_height := 48.0 if _publish != null and _publish.visible else 0.0
-	_place(_detail_scroll, Rect2(inset, content_y, span, maxf(78, h - content_y - inset - footer_height)))
-	_place(_footer, Rect2(inset, h - footer_height, span, footer_height))
+	_place(_detail_scroll, Rect2(right, content_y, span, maxf(78, h - content_y - inset - footer_height)))
+	_place(_footer, Rect2(right, h - footer_height, span, footer_height))
 	if _publish != null:
 		var key_width := maxf(238, _publish.get_combined_minimum_size().x)
 		_place(_publish, Rect2(span - key_width, 4, key_width, maxf(32, _publish.get_combined_minimum_size().y)))
@@ -813,7 +815,7 @@ func _layout_spread_sheet(w: float,h: float) -> void:
 
 func set_interaction_enabled(enabled: bool) -> void:
 	_interaction_enabled = enabled
-	_neuron.set_interaction_enabled(false)
+	_neuron.set_interaction_enabled(enabled and _tab == "edit")
 	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
@@ -894,8 +896,8 @@ func inspection() -> Dictionary:
 	return {"tab":_tab,"tabs":TABS,"draft":get_draft(),"neuron":_neuron.inspection(),"design_state":_design.duplicate(true),"sync_count":_sync_count,
 		"module_slots":_physical_clips.size(),"skill_count":_skill_buttons.size(),
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
-		"content_editable":false,"final_expression":_final_expression.get_parsed_text(),"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
-		"composition":_composition.duplicate(true),"meaning":_meaning.get_parsed_text(),"expression_context":_expression_context.get_parsed_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":_expression_context.inspection(),"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
+		"content_editable":false,"final_expression":_final_expression.current_text(),"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
+		"composition":_composition.duplicate(true),"meaning":_meaning.current_text(),"expression_context":_expression_context.get_parsed_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":_expression_context.inspection(),"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
 		"source_hover":{"visible":_source_hover.visible,"text":_source_hover_body.text,"sources":_source_hover_records.duplicate(true),"rect":_source_hover.get_global_rect(),"mouse_filter":_source_hover.mouse_filter},"neuron_visible":_neuron.is_visible_in_tree(),"part_details_visible":_part_content.is_visible_in_tree(),"language_selector_visible":false,"specimen_art":{"visible":false},
 		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
@@ -1125,7 +1127,7 @@ func _hide_source_hover() -> void:
 
 
 func preview_control() -> Control:
-	return _final_expression
+	return _neuron
 
 
 func summary_control() -> Control:
