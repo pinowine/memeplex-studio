@@ -4,17 +4,21 @@ extends PanelContainer
 const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const HEADING_FONT = preload("res://assets/image/fonts/print_heading_font.tres")
 const BODY_FONT = preload("res://assets/image/fonts/development_font.tres")
+const DEFAULT_WIDTH := 176.0
+const MINIMUM_HEIGHT := 240.0
 const PADDING := Vector2(16,16)
 const BOTTOM_PADDING := 20.0
 const GROUP_GAP := 16.0
 const ROW_GAP := 8.0
 const SCREEN_MARGIN := 8.0
+const BARCODE_HEIGHT := 32.0
+const FOOTER_HEIGHT := 56.0
 
 var _title := ""
 var _body := ""
 var _rows: Array[Dictionary] = []
-var _preferred_width := 288.0
-var _layout_width := 288.0
+var _preferred_width := DEFAULT_WIDTH
+var _layout_width := DEFAULT_WIDTH
 var _text_blocks: Array[Dictionary] = []
 var _separators: Array[float] = []
 var _fit_bounds := Rect2()
@@ -22,6 +26,10 @@ var _pointer_following := false
 var _pointer_viewport := Vector2.ZERO
 var _pointer_source: Callable
 var _layout_revision := 0
+var _barcode_rect := Rect2()
+var _barcode_bars: Array[Rect2] = []
+var _barcode_digits := ""
+var _footer_rule := 0.0
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -90,10 +98,10 @@ func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 	position = origin.clamp(available.position,(available.end-extent).max(available.position))
 	return Rect2(position,extent)
 
-func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String) -> float:
+func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
 	var paragraph := TextParagraph.new()
 	paragraph.width = width
-	paragraph.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	paragraph.alignment = alignment
 	paragraph.break_flags = TextServer.BREAK_MANDATORY|TextServer.BREAK_WORD_BOUND|TextServer.BREAK_ADAPTIVE
 	# TextParagraph keeps brackets and markup literal in every hover source.
 	paragraph.add_string(text,font,font_size)
@@ -112,30 +120,32 @@ func _layout_content() -> void:
 	var width := _layout_width-PADDING.x*2.0
 	var y := PADDING.y
 	if not _title.is_empty():
-		y += _add_text(_title,Vector2(PADDING.x,y),width,HEADING_FONT,16,ReceiptStyle.INK,"title")
+		y += _add_text(_title,Vector2(PADDING.x,y),width,HEADING_FONT,16,ReceiptStyle.INK,"title",HORIZONTAL_ALIGNMENT_CENTER)
 		if not _rows.is_empty() or not _body.is_empty(): y = _add_separator(y)
-	var category_width := minf(80.0,width*.30)
 	for index in _rows.size():
 		var row: Dictionary = _rows[index]
 		var category := str(row.get("category",""))
 		var value := str(row.get("value",""))
-		var value_x := PADDING.x
-		var category_height := 0.0
 		if not category.is_empty():
-			category_height = _add_text(category,Vector2(PADDING.x,y+2),category_width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"category")
-			value_x += category_width+ROW_GAP
-		var value_height := _add_text(value,Vector2(value_x,y),_layout_width-PADDING.x-value_x,BODY_FONT,14,ReceiptStyle.INK,"value")
-		y += maxf(category_height+2,value_height)
-		if index < _rows.size()-1: y += ROW_GAP
+			y += _add_text(category,Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"category")+ROW_GAP*.5
+		y += _add_text(value,Vector2(PADDING.x,y),width,BODY_FONT,14,ReceiptStyle.INK,"value")
+		if index < _rows.size()-1: y += GROUP_GAP
 	if not _body.is_empty():
 		if not _rows.is_empty(): y = _add_separator(y)
 		y += _add_text(_body,Vector2(PADDING.x,y),width,BODY_FONT,14,ReceiptStyle.INK,"body")
-	custom_minimum_size = Vector2(_layout_width,y+BOTTOM_PADDING)
+	var height := maxf(MINIMUM_HEIGHT,y+GROUP_GAP+FOOTER_HEIGHT+BOTTOM_PADDING)
+	_barcode_rect = Rect2(Vector2(PADDING.x,height-BOTTOM_PADDING-FOOTER_HEIGHT),Vector2(width,BARCODE_HEIGHT))
+	_footer_rule = _barcode_rect.position.y-GROUP_GAP*.5
+	_barcode_digits = "%08d" % posmod(content_text().hash(),100000000)
+	_barcode_bars = ReceiptStyle.barcode_bars(_barcode_rect.grow_individual(-8,0,-8,0),_barcode_digits)
+	custom_minimum_size = Vector2(_layout_width,height)
 	size = custom_minimum_size
 	queue_redraw()
 
 func _draw() -> void:
-	for y: float in _separators:
+	var rules := _separators.duplicate()
+	rules.append(_footer_rule)
+	for y: float in rules:
 		var x := PADDING.x
 		while x < size.x-PADDING.x:
 			draw_line(Vector2(x,y),Vector2(minf(x+4,size.x-PADDING.x),y),ReceiptStyle.EDGE,1)
@@ -143,6 +153,9 @@ func _draw() -> void:
 	for block: Dictionary in _text_blocks:
 		var paragraph: TextParagraph = block.paragraph
 		paragraph.draw(get_canvas_item(),block.position,block.color)
+	for bar: Rect2 in _barcode_bars: draw_rect(bar,ReceiptStyle.INK)
+	var baseline := _barcode_rect.end.y+ROW_GAP+BODY_FONT.get_ascent(10)
+	draw_string(BODY_FONT,Vector2(PADDING.x,baseline),_barcode_digits,HORIZONTAL_ALIGNMENT_CENTER,_barcode_rect.size.x,10,ReceiptStyle.SECONDARY_INK)
 
 func inspection() -> Dictionary:
 	var blocks: Array[Dictionary] = []
@@ -154,4 +167,5 @@ func inspection() -> Dictionary:
 		"rect":Rect2(position,size*scale),"preferred_width":_preferred_width,"layout_width":_layout_width,"scale":scale,
 		"text_blocks":blocks,"text_fits":fits,"separators":_separators.duplicate(),"fit_bounds":_fit_bounds,
 		"pointer_following":_pointer_following,"pointer_viewport":_pointer_viewport,"layout_revision":_layout_revision,
+		"format":"portrait_receipt","barcode_rect":_barcode_rect,"barcode_digits":_barcode_digits,"barcode_bars":_barcode_bars.duplicate(),"footer_rule":_footer_rule,
 		"mouse_filter":mouse_filter,"tooltip_text":tooltip_text,"content_format":"plain_text","serrated_edges":true}
