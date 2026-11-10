@@ -6,7 +6,6 @@ signal source_hover_ended
 
 const INK := Color("384238")
 const CHANGED_INK := Color("9d503c")
-const REMOVED_INK := Color("776f61")
 
 var _segments: Array = []
 var _annotations: Array[Dictionary] = []
@@ -43,12 +42,8 @@ func set_segments(segments: Array, plain_text: String = "") -> void:
 			pieces.append(escaped)
 		else:
 			var index := _annotations.size()
-			var original := DeskLocalization.text(str(segment.get("original_text", "")))
-			_annotations.append({"sources":sources.duplicate(true), "text":translated, "original_text":original})
-			var replacement := ""
-			if not original.is_empty():
-				replacement = "[color=#%s][s]%s[/s][/color] " % [REMOVED_INK.to_html(false), _escape(original)]
-			pieces.append("[url=%d]%s[color=#%s][b][u]%s[/u][/b][/color][/url]" % [index, replacement, CHANGED_INK.to_html(false), escaped])
+			_annotations.append({"sources":sources.duplicate(true), "text":translated})
+			pieces.append("[url=%d][color=#%s][b]%s[/b][/color][/url]" % [index, CHANGED_INK.to_html(false), escaped])
 	text = "".join(pieces) if not _segments.is_empty() else _escape(DeskLocalization.text(plain_text))
 	_current_text = "".join(current_pieces) if not _segments.is_empty() else DeskLocalization.text(plain_text)
 	source_hover_ended.emit()
