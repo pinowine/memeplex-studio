@@ -1,4 +1,4 @@
-## 组织编辑、语境和传播工作纸；所有库存与设计操作都交给模拟层提交。
+## Keeps paper interactions separate from the simulation that owns each design.
 class_name DeskDesignWorkbench
 extends Control
 
@@ -17,9 +17,13 @@ const ContextSlice = preload("res://scripts/presentation/studio/context/desk_con
 const ContextTrialSlip = preload("res://scripts/presentation/studio/context/desk_context_trial_slip.gd")
 const ModuleClip = preload("res://scripts/presentation/studio/design/desk_module_paper_clip.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
-const SpecimenArt = preload("res://scripts/presentation/studio/design/meme_specimen_art.gd")
+const AnnotatedText = preload("res://scripts/presentation/studio/workbench/desk_annotated_text.gd")
+const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const INK := Color("384238")
+const SECONDARY_INK := Color("594d3f")
+const SPACE_WITHIN := 8
+const SPACE_BETWEEN := 24
 const TABS := ["edit", "cultivate", "spread"]
 const ASSET_PATHS := {"modules": "res://assets/image/textures/studio/desk/neuron_family_bases.png"}
 const MODULE_REGIONS := {
@@ -53,15 +57,19 @@ var _part_note: Label
 var _part_content: RichTextLabel
 var _final_expression: RichTextLabel
 var _final_title: Label
-var _specimen_art: Control
 var _meaning_title: Label
 var _meaning: RichTextLabel
-var _language_selector: OptionButton
-var _language_note: Label
+var _expression_context: RichTextLabel
+var _source_hover: PanelContainer
+var _source_hover_title: Label
+var _source_hover_body: Label
+var _source_hover_records: Array = []
+var _source_hover_point := Vector2.ZERO
+var _source_hover_layout_queued := false
 var _composition: Dictionary = {}
-var _preview_language_id := ""
 var _lineage_preview: Dictionary = {}
 var _module_errors := PackedStringArray()
+var _module_feedback: Label
 var _detail_scroll: ScrollContainer
 var _detail_stack: VBoxContainer
 var _source: RichTextLabel
@@ -85,7 +93,9 @@ var _context_title: Label
 var _context_details: RichTextLabel
 var _context_trial: Control
 var _overview_name: Label
-var _overview_data: RichTextLabel
+var _overview_data: GridContainer
+var _summary_cells: Dictionary = {}
+var _summary_text := ""
 var _patch_summary: RichTextLabel
 var _text_layout_queued := false
 var _part_edit_identity := ""
@@ -186,6 +196,11 @@ func bind_publish(button: Button, cost: Label) -> void:
 func set_draft(draft: Dictionary) -> void:
 	if _draft == draft: return
 	if str(_draft.get("preset_id","")) != str(draft.get("preset_id","")) or str(_draft.get("kernel_id","")) != str(draft.get("kernel_id","")):
+		_selected_module = ""
+		_selected_variant = ""
+		_selected_installed_slot = -1
+		_lineage_preview.clear()
+		_show_module_errors(PackedStringArray())
 		_catalog_default_slots.clear()
 		_edited_slots.clear()
 		_catalog_default_name = ""
@@ -236,6 +251,7 @@ func select_tab(id: String) -> void:
 func set_active_sheet(id: String) -> void:
 	if id not in TABS: return
 	_tab=id
+	_hide_source_hover()
 	set_interaction_enabled(_interaction_enabled)
 	for key in _pages:
 		if not _sheet_hosts.has(key): _pages[key].visible=key==id
@@ -311,6 +327,8 @@ func _build_edit() -> void:
 	_neuron.installed_selected.connect(func(slot: int,id: String) -> void: show_module(id,slot))
 	_neuron.variant_selected.connect(_select_variant)
 	_neuron.module_position_changed.connect(func(slot: int,point: Vector2) -> void: _request("move_module",{"slot":slot,"position":point}))
+	_neuron.hide()
+	_neuron.set_interaction_enabled(false)
 	_starter=OptionButton.new()
 	_starter.name="StarterConfiguration"
 	_starter.disabled=true
@@ -328,51 +346,149 @@ func _build_edit() -> void:
 	page.add_child(_detail_scroll)
 	_detail_stack = VBoxContainer.new()
 	_detail_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_detail_stack.add_theme_constant_override("separation", 10)
+	_detail_stack.add_theme_constant_override("separation", SPACE_BETWEEN)
 	_detail_scroll.add_child(_detail_stack)
-	_final_title = _label(_detail_stack, DeskLocalization.source("LOC_EDIT_FINAL_EXPRESSION"), "FinalExpressionTitle", 14)
-	_final_title.set_meta("paper_emphasis", true)
-	_language_selector = OptionButton.new()
-	_language_selector.name = "ExpressionLanguage"
-	_language_selector.fit_to_longest_item = false
-	_language_selector.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_language_selector.add_theme_font_size_override("font_size", 14)
-	_detail_stack.add_child(_language_selector)
-	PaperStyle.apply_button(_language_selector)
-	_language_selector.item_selected.connect(_select_expression_language)
-	_language_note = _label(_detail_stack, "", "ExpressionLanguageNote", 12)
-	_specimen_art = SpecimenArt.new()
-	_specimen_art.name = "MemeSpecimenArt"
-	_detail_stack.add_child(_specimen_art)
-	_final_expression = _readout(_detail_stack, "FinalExpression", 23)
-	_meaning_title = _label(_detail_stack, DeskLocalization.source("LOC_WB_MEANING"), "ExpressionMeaningTitle", 14)
-	_meaning_title.set_meta("paper_emphasis", true)
-	_meaning = _readout(_detail_stack, "ExpressionMeaning", 15)
-	_information_rule("ExpressionContextRule")
-	_overview_data = _readout(_detail_stack, "MemeOverviewData", 16)
-	_overview_data.bbcode_enabled = true
-	_information_rule("ContextPatchesRule")
-	_patch_summary = _readout(_detail_stack, "PatchSummary", 16)
-	_patch_summary.bbcode_enabled = true
-	_information_rule("PatchDetailsRule")
-	_part_title = _label(_detail_stack, "", "PartTitle", 19)
-	_part_note = _label(_detail_stack, "", "PartDescription", 14)
-	_part_content = _readout(_detail_stack, "PartContent", 16)
-	_source = _readout(_detail_stack, "SourceAndMutation", 13)
-	_overview_name = _label(page, "", "MemeOverviewName", 24)
+	var overview := _text_group("MemeOverview")
+	_overview_name = _label(overview, "", "MemeOverviewName", 28)
 	_overview_name.set_meta("paper_emphasis", true)
+	_build_summary(overview)
+	_module_feedback = _label(overview, "", "ModuleFeedback", 14)
+	_module_feedback.add_theme_color_override("font_color", AnnotatedText.CHANGED_INK)
+	_module_feedback.hide()
+	var expression := _text_group("Expression")
+	_information_rule("OverviewExpressionRule", expression)
+	_final_title = _section_heading(expression, "expression", DeskLocalization.source("LOC_WB_EXPRESSION"), "FinalExpressionTitle")
+	_expression_context = _annotated_readout(expression, "ExpressionContext", 16)
+	_expression_context.add_theme_color_override("default_color", SECONDARY_INK)
+	_final_expression = _annotated_readout(expression, "FinalExpression", 26)
+	var meaning := _text_group("Meaning")
+	_information_rule("ExpressionMeaningRule", meaning)
+	_meaning_title = _section_heading(meaning, "meaning", DeskLocalization.source("LOC_WB_MEANING"), "ExpressionMeaningTitle")
+	_meaning = _annotated_readout(meaning, "ExpressionMeaning", 18)
+	var legacy := Control.new()
+	legacy.name = "SelectionState"
+	legacy.hide()
+	page.add_child(legacy)
+	_patch_summary = _readout(legacy, "PatchSummary", 16)
+	_patch_summary.bbcode_enabled = true
+	_part_title = _label(legacy, "", "PartTitle", 19)
+	_part_note = _label(legacy, "", "PartDescription", 14)
+	_part_content = _readout(legacy, "PartContent", 16)
+	_source = _readout(legacy, "SourceAndMutation", 13)
+	_build_source_hover(page)
+	_detail_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float) -> void: _hide_source_hover())
 
 
-func _information_rule(node_name: String) -> void:
+func _text_group(node_name: String) -> VBoxContainer:
+	var group := VBoxContainer.new()
+	group.name = node_name
+	group.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	group.add_theme_constant_override("separation", SPACE_WITHIN)
+	_detail_stack.add_child(group)
+	return group
+
+
+func _build_summary(parent: Node) -> void:
+	_overview_data = GridContainer.new()
+	_overview_data.name = "MemeOverviewData"
+	_overview_data.columns = 3
+	_overview_data.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_overview_data.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_overview_data.add_theme_constant_override("h_separation", SPACE_BETWEEN)
+	_overview_data.add_theme_constant_override("v_separation", SPACE_WITHIN)
+	parent.add_child(_overview_data)
+	for kind: String in ["language", "group", "topic", "stance", "pragmatic", "spread"]:
+		var cell := HBoxContainer.new()
+		cell.name = kind.capitalize()
+		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.add_theme_constant_override("separation", SPACE_WITHIN)
+		_overview_data.add_child(cell)
+		var icon := _paper_icon(cell, kind)
+		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		var words := VBoxContainer.new()
+		words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		words.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		words.add_theme_constant_override("separation", 0)
+		cell.add_child(words)
+		var title := _label(words, "", "Category", 12)
+		title.add_theme_color_override("font_color", SECONDARY_INK)
+		var value := _label(words, "", "Value", 16)
+		_summary_cells[kind] = {"title":title, "value":value, "control":cell}
+
+
+func _paper_icon(parent: Node, kind: String) -> Control:
+	var icon := PaperIcon.new()
+	icon.name = kind.capitalize() + "Icon"
+	icon.kind = kind
+	parent.add_child(icon)
+	return icon
+
+
+func _section_heading(parent: Node, kind: String, title: String, node_name: String) -> Label:
+	var row := HBoxContainer.new()
+	row.name = node_name + "Row"
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", SPACE_WITHIN)
+	parent.add_child(row)
+	var icon := _paper_icon(row, kind)
+	icon.custom_minimum_size = Vector2(20, 20)
+	var label := _label(row, title, node_name, 14)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_color_override("font_color", SECONDARY_INK)
+	return label
+
+
+func _annotated_readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
+	var label := AnnotatedText.new()
+	label.name = node_name
+	label.add_theme_font_size_override("normal_font_size", font_size)
+	label.add_theme_font_size_override("bold_font_size", font_size)
+	parent.add_child(label)
+	label.source_hovered.connect(_show_source_hover)
+	label.source_hover_ended.connect(_hide_source_hover)
+	return label
+
+
+func _build_source_hover(page: Control) -> void:
+	_source_hover = PanelContainer.new()
+	_source_hover.name = "InlineSourceNote"
+	_source_hover.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_source_hover.z_index = 20
+	var paper := StyleBoxFlat.new()
+	paper.bg_color = Color("e8dfc9")
+	paper.border_color = Color("858571")
+	paper.set_border_width_all(1)
+	paper.content_margin_left = SPACE_BETWEEN
+	paper.content_margin_right = SPACE_BETWEEN
+	paper.content_margin_top = SPACE_WITHIN * 2
+	paper.content_margin_bottom = SPACE_WITHIN * 2
+	paper.shadow_color = Color(0, 0, 0, .19)
+	paper.shadow_size = 4
+	paper.shadow_offset = Vector2(0, 4)
+	_source_hover.add_theme_stylebox_override("panel", paper)
+	page.add_child(_source_hover)
+	var content := VBoxContainer.new()
+	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	content.add_theme_constant_override("separation", SPACE_WITHIN)
+	_source_hover.add_child(content)
+	_source_hover_title = _label(content, "", "SourceHeading", 13)
+	_source_hover_title.add_theme_color_override("font_color", SECONDARY_INK)
+	_source_hover_body = _label(content, "", "SourceNames", 16)
+	_source_hover.hide()
+	_source_hover.minimum_size_changed.connect(_queue_source_hover_layout)
+
+
+func _information_rule(node_name: String, parent: Node) -> void:
 	var rule := HSeparator.new()
 	rule.name = node_name
 	rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	rule.custom_minimum_size.y = 10
+	rule.custom_minimum_size.y = 1
 	var pencil := StyleBoxLine.new()
 	pencil.color = Color("858571", .55)
 	pencil.thickness = 1
 	rule.add_theme_stylebox_override("separator", pencil)
-	_detail_stack.add_child(rule)
+	parent.add_child(rule)
 
 
 func _readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
@@ -652,22 +768,28 @@ func _layout_sheet(id: String,area: Vector2) -> void:
 
 
 func _layout_edit_sheet(w: float, h: float) -> void:
-	var right := w * .52
-	var span := w - right - 8
-	# Keep the title below the clips and clear of the physical monitor.
-	_place(_overview_name, Rect2(right, 148, span, 38))
-	var graph_y := 54.0
-	_place(_neuron, Rect2(0, graph_y, right - 18, maxf(100, h - graph_y - 54)))
+	var inset := float(SPACE_BETWEEN)
+	var span := w - inset * 2
+	var has_cards := false
+	for id: String in _design.get("module_slots", []):
+		if not id.is_empty(): has_cards = true
+	var clip_height := 128.0 if has_cards else 48.0
+	var content_y := 160.0 if has_cards else 144.0
+	var clip_step := 96.0 + SPACE_WITHIN * 2
+	var clip_start := w - inset - 96.0 - clip_step * (_physical_clips.size() - 1)
+	_overview_data.columns = 3 if span >= 576 else 2
+	_place(_neuron, Rect2(inset, content_y, span, maxf(100, h - content_y)))
+	_neuron.hide()
 	for index in _physical_clips.size():
-		var x := right + float(index) * (span - 96) / maxf(1, _physical_clips.size() - 1)
-		_place(_physical_clips[index], Rect2(x, 6, 96, 128))
+		var x := clip_start + float(index) * clip_step
+		_place(_physical_clips[index], Rect2(x, 6, 96, clip_height))
 		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5][index])
-	var details_y := _overview_name.position.y + _overview_name.size.y + 12
-	_place(_detail_scroll, Rect2(right, details_y, span, maxf(78, h - 52 - details_y)))
-	_place(_footer, Rect2(0, h - 44, w, 40))
+	var footer_height := 48.0 if _publish != null and _publish.visible else 0.0
+	_place(_detail_scroll, Rect2(inset, content_y, span, maxf(78, h - content_y - inset - footer_height)))
+	_place(_footer, Rect2(inset, h - footer_height, span, footer_height))
 	if _publish != null:
 		var key_width := maxf(238, _publish.get_combined_minimum_size().x)
-		_place(_publish, Rect2(w - key_width - 8, 4, key_width, maxf(32, _publish.get_combined_minimum_size().y)))
+		_place(_publish, Rect2(span - key_width, 4, key_width, maxf(32, _publish.get_combined_minimum_size().y)))
 
 
 func _layout_culture_sheet(w: float,h: float) -> void:
@@ -691,11 +813,13 @@ func _layout_spread_sheet(w: float,h: float) -> void:
 
 func set_interaction_enabled(enabled: bool) -> void:
 	_interaction_enabled = enabled
-	_neuron.set_interaction_enabled(enabled and _tab == "edit")
+	_neuron.set_interaction_enabled(false)
 	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
-	if _language_selector != null: _language_selector.disabled = not enabled or _tab != "edit"
+	for label: RichTextLabel in [_final_expression, _meaning, _expression_context]:
+		label.mouse_filter = Control.MOUSE_FILTER_PASS if enabled and _tab == "edit" else Control.MOUSE_FILTER_IGNORE
+	if not enabled: _hide_source_hover()
 
 
 func _button(parent: Node,text: String,name: String) -> Button:
@@ -770,12 +894,13 @@ func inspection() -> Dictionary:
 	return {"tab":_tab,"tabs":TABS,"draft":get_draft(),"neuron":_neuron.inspection(),"design_state":_design.duplicate(true),"sync_count":_sync_count,
 		"module_slots":_physical_clips.size(),"skill_count":_skill_buttons.size(),
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
-		"content_editable":false,"final_expression":_final_expression.text,"final_expression_rect":_final_expression.get_global_rect(),"information_sections":5,"patch_summary":_patch_summary.text,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
-		"composition":_composition.duplicate(true),"meaning":_meaning.text,"language_versions":_composition.get("language_versions",[]).duplicate(true),"selected_language":_preview_language_id,"language_note":_language_note.text,"language_selector_visible":_language_selector.visible,"specimen_art":_specimen_art.inspection(),"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),"lineage_preview":_lineage_preview.duplicate(true),
+		"content_editable":false,"final_expression":_final_expression.get_parsed_text(),"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
+		"composition":_composition.duplicate(true),"meaning":_meaning.get_parsed_text(),"expression_context":_expression_context.get_parsed_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":_expression_context.inspection(),"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
+		"source_hover":{"visible":_source_hover.visible,"text":_source_hover_body.text,"sources":_source_hover_records.duplicate(true),"rect":_source_hover.get_global_rect(),"mouse_filter":_source_hover.mouse_filter},"neuron_visible":_neuron.is_visible_in_tree(),"part_details_visible":_part_content.is_visible_in_tree(),"language_selector_visible":false,"specimen_art":{"visible":false},
 		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
 		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
-		"overview":{"name":_overview_name.text,"data":_overview_data.text,"name_rect":_overview_name.get_global_rect(),"data_rect":_overview_data.get_global_rect()},
+		"overview":{"name":_overview_name.text,"data":_summary_text,"columns":_overview_data.columns,"cells":_summary_inspection(),"name_rect":_overview_name.get_global_rect(),"data_rect":_overview_data.get_global_rect()},
 		"spread_tree":_spread_tree.inspection(),"module_slot_rects":_physical_clips.map(func(clip: Control)->Rect2:return clip.get_global_rect()),
 		"sheet_pages":_pages.keys(),"state_mutation":"signals only; authoritative simulation applies resources"}
 
@@ -865,63 +990,150 @@ func _refresh_overview() -> void:
 	_overview_name.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_overview_name.text = name
 	var rows := PackedStringArray()
-	for pair: Array in [["language", "LOC_LANGUAGE_9F6FEE1A", "○"], ["group", "LOC_EDIT_AUDIENCE", "◇"], ["topics", "LOC_EDIT_TOPICS", "≡"]]:
-		var layer: Dictionary = _design.get("context_layers", {}).get(pair[0], {})
-		var names := PackedStringArray()
-		if bool(layer.get("attached", true)):
-			for slot: Dictionary in layer.get("slots", []):
-				var id := str(slot.get("resource_id", ""))
-				if not id.is_empty(): names.append(DeskLocalization.text(str(_rules.context_resource(id).get("title", id))))
-		rows.append("[b]%s %s[/b]  %s" % [pair[2], DeskLocalization.text(pair[1]), _escape(" / ".join(names) if not names.is_empty() else DeskLocalization.text("LOC_NOT_SELECTED_1182C545"))])
-	var count := 0
-	for id: String in _design.get("module_slots", []):
-		if not id.is_empty(): count += 1
-	_patch_summary.text = "[b]%s[/b]  [font_size=22]%d[/font_size] / %d" % [DeskLocalization.text("LOC_EDIT_PATCHES"), count, _physical_clips.size()]
-	_overview_data.text = "\n".join(rows)
-	_final_title.text = DeskLocalization.text("LOC_EDIT_FINAL_EXPRESSION")
+	for pair: Array in [["language", "LOC_LANGUAGE_9F6FEE1A"], ["group", "LOC_EDIT_AUDIENCE"], ["topic", "LOC_EDIT_TOPICS"]]:
+		rows.append(_summary_value(pair[0], pair[1], _context_summary(pair[0])))
+	rows.append(_summary_value("stance", "LOC_WB_IDEOLOGY", _axis_summary("stance", "political_position")))
+	rows.append(_summary_value("pragmatic", "LOC_PRAGMATICS_7063D1D8", _axis_summary("pragmatic", "pragmatic_position")))
+	var skills := PackedStringArray()
+	for id: String in _design.get("unlocked_skills", ["text"]): skills.append(_entry_title("skills", id))
+	rows.append(_summary_value("spread", "LOC_SPREAD_1A2DA4D4", " / ".join(skills)))
+	_summary_text = "\n".join(rows)
+	_final_title.text = DeskLocalization.text("LOC_WB_EXPRESSION")
 	_refresh_composition()
+
+
+func _summary_value(kind: String, title_key: String, value: String) -> String:
+	var title := DeskLocalization.text(title_key)
+	_summary_cells[kind].title.text = title
+	_summary_cells[kind].value.text = value
+	return "%s  %s" % [title, value]
+
+
+func _summary_inspection() -> Dictionary:
+	var result := {}
+	for kind: String in _summary_cells:
+		var cell: Dictionary = _summary_cells[kind]
+		result[kind] = {"title":cell.title.text, "value":cell.value.text, "rect":cell.control.get_global_rect(), "icon":kind}
+	return result
 
 
 func _refresh_composition() -> void:
 	_composition = ExpressionText.compose(_catalog, _draft) if _catalog != null and not _draft.is_empty() else {}
-	var versions: Array = _composition.get("language_versions", [])
-	_language_selector.clear()
-	var selected := 0
-	for index in versions.size():
-		var language_id := str(versions[index].language_id)
-		var label := DeskLocalization.text(str(_rules.context_resource("language_" + language_id).get("title", "LOC_WB_UNSPECIFIED_LANGUAGE")))
-		_language_selector.add_item(label)
-		_language_selector.set_item_metadata(index, language_id)
-		if language_id == _preview_language_id: selected = index
-	_language_selector.visible = versions.size() > 1
-	if not versions.is_empty():
-		_language_selector.select(selected)
-		_preview_language_id = str(versions[selected].language_id)
-	else:
-		_preview_language_id = ""
+	_hide_source_hover()
+	_final_expression.set_segments(_composition.get("expression_segments", []), str(_composition.get("expression", "LOC_WB_NO_COMPOSITION")))
+	_meaning.set_segments(_composition.get("meaning_segments", []), str(_composition.get("meaning", "")))
+	_expression_context.set_segments(_composition.get("context_segments", []))
+	_expression_context.visible = not _expression_context.get_parsed_text().is_empty()
 	_meaning_title.text = DeskLocalization.text("LOC_WB_MEANING")
-	_meaning.text = DeskLocalization.text(str(_composition.get("meaning", "")))
-	_meaning_title.visible = not _meaning.text.is_empty()
+	_meaning_title.visible = not _meaning.get_parsed_text().is_empty()
 	_meaning.visible = _meaning_title.visible
-	_specimen_art.configure(_composition, ExpressionText.patch_ids(_draft))
-	_refresh_composed_expression()
-
-
-func _select_expression_language(index: int) -> void:
-	if not _interaction_enabled or _tab != "edit": return
-	_preview_language_id = str(_language_selector.get_item_metadata(index))
-	_refresh_composed_expression()
-
-
-func _refresh_composed_expression() -> void:
-	var expression := str(_composition.get("expression", ""))
-	for version: Dictionary in _composition.get("language_versions", []):
-		if str(version.language_id) == _preview_language_id: expression = str(version.expression)
-	_final_expression.text = DeskLocalization.text(expression) if not expression.is_empty() else DeskLocalization.text("LOC_WB_NO_COMPOSITION")
-	_language_note.visible = not _composition.get("language_versions", []).is_empty()
-	var language := DeskLocalization.text(str(_rules.context_resource("language_" + _preview_language_id).get("title", "LOC_WB_UNSPECIFIED_LANGUAGE")))
-	_language_note.text = DeskLocalization.format_text("LOC_WB_LANGUAGE_GLOSS", language)
+	_meaning_title.get_parent().visible = _meaning_title.visible
 	_queue_text_layout()
+
+
+func _context_summary(kind: String) -> String:
+	var layer := "topics" if kind == "topic" else kind
+	if not bool(_draft.get("context_layer_attachment", {}).get(layer, true)):
+		return DeskLocalization.text("LOC_WB_UNATTACHED")
+	var ids := Array(_draft.get(kind + "_ids", [_draft.get(kind + "_id", "")]))
+	var names := PackedStringArray()
+	for id: String in ids:
+		if id.is_empty(): continue
+		var title := DeskLocalization.text(str(_rules.context_resource(kind + "_" + id).get("title", "")))
+		if not title.is_empty() and title not in names: names.append(title)
+	return " / ".join(names) if not names.is_empty() else DeskLocalization.text("LOC_NOT_SELECTED_1182C545")
+
+
+func _axis_summary(kind: String, field: String) -> String:
+	if not bool(_draft.get("context_layer_attachment", {}).get(kind, true)):
+		return DeskLocalization.text("LOC_WB_UNATTACHED")
+	if kind == "stance" and not bool(_draft.get("political_known", false)):
+		return DeskLocalization.text("LOC_WB_UNSPECIFIED")
+	var value: Variant = _draft.get(field, Vector2.ZERO)
+	var point: Vector2 = value if value is Vector2 else Vector2(float(value[0]), float(value[1]))
+	var directions := ["freedom", "authority", "equality", "hierarchy"] if kind == "stance" else ["sincere", "ironic", "support", "opposition"]
+	var names := PackedStringArray()
+	for axis in 2:
+		if is_zero_approx(point[axis]): continue
+		names.append(_direction_title(directions[axis * 2 + int(point[axis] > 0)]))
+	return " / ".join(names) if not names.is_empty() else DeskLocalization.text("LOC_WB_NEUTRAL")
+
+
+func _direction_title(id: String) -> String:
+	return DeskLocalization.text({"freedom":"LOC_FREEDOM_D1047EED", "authority":"LOC_AUTHORITY_E9D827BA", "equality":"LOC_EQUALITY_14DD2491", "hierarchy":"LOC_HIERARCHY_33771717", "sincere":"LOC_SINCERITY_8BB7FF57", "ironic":"LOC_IRONY_06D9BA32", "support":"LOC_SUPPORT_D93373F8", "opposition":"LOC_OPPOSITION_454F03C9"}[id])
+
+
+func _show_source_hover(sources: Array, excerpt: String) -> void:
+	if not _interaction_enabled or _tab != "edit": return
+	_source_hover_records = sources.duplicate(true)
+	_source_hover_point = _pages.edit.get_local_mouse_position()
+	var lines := PackedStringArray()
+	for source: Dictionary in sources:
+		var kind := str(source.kind)
+		var id := str(source.id)
+		var title := ""
+		if kind == "patch": title = _entry_title("modules", id)
+		elif kind in ["stance", "pragmatic"]: title = _direction_title(id)
+		else: title = DeskLocalization.text(str(_rules.context_resource(id).get("title", "")))
+		var category := DeskLocalization.text({"patch":"LOC_EDIT_PATCHES", "language":"LOC_LANGUAGE_9F6FEE1A", "group":"LOC_EDIT_AUDIENCE", "topic":"LOC_EDIT_TOPICS", "stance":"LOC_WB_IDEOLOGY", "pragmatic":"LOC_PRAGMATICS_7063D1D8"}[kind])
+		var line := "%s · %s" % [category, title]
+		if line not in lines: lines.append(line)
+	_source_hover_title.text = DeskLocalization.text("LOC_WB_CHANGED_BY")
+	_source_hover_body.text = "\n".join(lines)
+	_source_hover.set_meta("excerpt", excerpt)
+	var text_width := minf(272, _pages.edit.size.x - SPACE_BETWEEN * 4)
+	for label: Label in [_source_hover_title, _source_hover_body]:
+		label.custom_minimum_size.x = text_width
+		label.size.x = text_width
+	_source_hover.custom_minimum_size.x = text_width + SPACE_BETWEEN * 2
+	_source_hover.size.x = _source_hover.custom_minimum_size.x
+	_source_hover.queue_sort()
+	_source_hover.hide()
+	_queue_source_hover_layout()
+
+
+func _queue_source_hover_layout() -> void:
+	if _source_hover_records.is_empty() or _source_hover_layout_queued: return
+	_source_hover_layout_queued = true
+	_finish_source_hover()
+
+
+func _finish_source_hover() -> void:
+	await get_tree().process_frame
+	_fit_source_hover.call_deferred()
+
+
+func _fit_source_hover() -> void:
+	_source_hover_layout_queued = false
+	if _source_hover_records.is_empty(): return
+	_source_hover.reset_size()
+	_position_source_hover(_source_hover_point)
+	_source_hover.show()
+
+
+func _position_source_hover(point: Vector2) -> void:
+	var bounds: Vector2 = _pages.edit.size
+	var origin := point + Vector2(SPACE_WITHIN * 2, SPACE_WITHIN * 2)
+	if origin.y + _source_hover.size.y > bounds.y - SPACE_WITHIN:
+		origin.y = point.y - _source_hover.size.y - SPACE_WITHIN * 2
+	_source_hover.position = origin.clamp(Vector2.ONE * SPACE_WITHIN, (bounds - _source_hover.size - Vector2.ONE * SPACE_WITHIN).max(Vector2.ONE * SPACE_WITHIN))
+
+
+func _hide_source_hover() -> void:
+	if _source_hover != null: _source_hover.hide()
+	_source_hover_records.clear()
+
+
+func preview_control() -> Control:
+	return _final_expression
+
+
+func summary_control() -> Control:
+	return _overview_data
+
+
+func meaning_control() -> Control:
+	return _meaning
 
 
 func _candidate_patch_errors(id: String, slot: int = -1, removing: bool = false) -> PackedStringArray:
@@ -936,7 +1148,9 @@ func _show_module_errors(errors: PackedStringArray) -> void:
 	var translated := PackedStringArray()
 	for error: String in errors: translated.append(DeskLocalization.text(error))
 	_source.text = "\n".join(translated)
-	if not errors.is_empty(): _detail_scroll.ensure_control_visible.call_deferred(_source)
+	_module_feedback.text = _source.text
+	_module_feedback.visible = not errors.is_empty()
+	if not errors.is_empty(): _detail_scroll.ensure_control_visible.call_deferred(_module_feedback)
 
 
 func module_availability() -> Dictionary:
