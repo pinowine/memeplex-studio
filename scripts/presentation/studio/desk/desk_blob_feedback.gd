@@ -2,7 +2,8 @@ class_name DeskBlobFeedback
 extends RefCounted
 
 const INK := Color("485046")
-const ACTIVE := Color("9d503c")
+const PaperStyle := preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const ACTIVE := PaperStyle.ACCENT
 var _states: Dictionary = {}
 var _hover := ""
 var _pressed := ""
