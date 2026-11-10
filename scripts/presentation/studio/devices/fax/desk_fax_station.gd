@@ -22,6 +22,7 @@ signal event_output_delivered(record: Dictionary, page: Control)
 
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
+const StarterContextCard := preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
 
 const CallSession := preload("res://scripts/presentation/studio/devices/fax/fax_call_session.gd")
 const OutputController := preload("res://scripts/presentation/studio/devices/fax/fax_output_controller.gd")
@@ -1021,6 +1022,10 @@ func _npc_source_text() -> String:
 	if _starter_call() and _call_session.starter_id.is_empty():
 		source = DeskLocalization.source("LOC_CHOOSE_A_STARTING_MEME_FIRST_I_WON_340D5C0C")
 		for option: Dictionary in _call_session.starter_options:
+			var sample := StarterContextCard.sample_text(option)
+			if not sample.is_empty():
+				source += "\n"+str(option.title)+"：\n"+sample
+				continue
 			var values := PackedStringArray()
 			for value: Variant in (option.get("slots",{}) as Dictionary).values(): values.append(str(value))
 			source += "\n"+str(option.title)+"："+" / ".join(values)
@@ -1030,6 +1035,10 @@ func _npc_display_text() -> String:
 	if not (_starter_call() and _call_session.starter_id.is_empty()): return _localized_block(_npc_source_text())
 	var displayed := DeskLocalization.text("LOC_CHOOSE_A_STARTING_MEME_FIRST_I_WON_340D5C0C")
 	for option: Dictionary in _call_session.starter_options:
+		var sample := StarterContextCard.sample_text(option)
+		if not sample.is_empty():
+			displayed += "\n"+DeskLocalization.text(str(option.title))+":\n"+DeskLocalization.text(sample)
+			continue
 		var values := PackedStringArray()
 		for value: Variant in (option.get("slots",{}) as Dictionary).values(): values.append(DeskLocalization.text(str(value)))
 		displayed += "\n"+DeskLocalization.text(str(option.title))+": "+" / ".join(values)

@@ -546,8 +546,8 @@
   },
   "LOC_OPENING_MODULE_RESULT_TEXT": {
     "source": "装好了，再看看最终表达。比如 This is Fine 装上反问补丁，会变成 This is Fine?补丁的内容可以点开查看，不能手写替换。",
-    "zh_CN": "再看最终表达。打工人装上反问补丁，会追问“说好六点下班，怎么还没轮到我？”你选的模因只会接受兼容的补丁。",
-    "en": "Check the final expression. With the question patch, the worker asks why the promised six o'clock finish never comes. Each meme only accepts patches that fit it."
+    "zh_CN": "再看最终表达，比较补丁前后的说法和含义。对照补丁会把两种处境摆在一起，反问补丁会改变追问的方式。你选的模因只会接受兼容的补丁。",
+    "en": "Check the final expression and compare its wording and meaning before and after the patch. Comparison places two situations side by side; a rhetorical question changes how the point is challenged. Each meme only accepts compatible patches."
   },
   "LOC_OPENING_EDITOR_CONTEXT_TITLE": {
     "source": "当前语境",
