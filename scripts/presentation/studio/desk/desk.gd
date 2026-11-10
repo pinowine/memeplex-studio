@@ -459,7 +459,7 @@ func configure(page: Node2D) -> void:
 	_hover_strip.pointer_source = _hover_pointer_position
 	controls.add_child(_hover_strip)
 	_hover_strip.configure(Handwriting.FONT, _textures.paper_texture)
-	_hover_strip.size = Vector2(288,74)
+	_hover_strip.size = Vector2(DeskReceiptHover.DEFAULT_WIDTH,74)
 	editor.mount_hover_overlay(controls, _hover_pointer_position)
 	var board: Control = editor.context_slice()
 	board.set_drag_preview_parent(_material_cards)

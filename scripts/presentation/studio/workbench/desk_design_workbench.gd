@@ -1059,7 +1059,7 @@ func _show_source_hover(sources: Array, excerpt: String) -> void:
 		if row not in rows: rows.append(row)
 	_source_hover.set_content(DeskLocalization.text("LOC_WB_CHANGED_BY"), rows)
 	_source_hover.set_meta("excerpt", excerpt)
-	_source_hover.set_width(288)
+	_source_hover.set_width(ReceiptHover.DEFAULT_WIDTH)
 	_source_hover.show()
 	_source_hover.set_pointer_following(true)
 
