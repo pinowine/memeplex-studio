@@ -6,12 +6,12 @@
 script = ExtResource("1_script")
 id = &"versailles_2020"
 kernel_id = &"relation"
-title = "LOC_COMPOSE_VERSAILLES_2020_TITLE"
+title = "LOC_TEXT_STARTER_VERSAILLES_TITLE"
 required_slots = PackedStringArray("role_a", "role_b", "relation")
 slot_prompts = PackedStringArray("LOC_COMPOSE_PROMPT_A", "LOC_COMPOSE_PROMPT_B", "LOC_COMPOSE_PROMPT_RELATION")
-default_values = PackedStringArray("LOC_COMPOSE_VERSAILLES_A", "LOC_COMPOSE_VERSAILLES_B", "LOC_COMPOSE_VERSAILLES_RELATION")
-family_anchor = "LOC_COMPOSE_VERSAILLES_ANCHOR"
-context_hint = "LOC_COMPOSE_VERSAILLES_HINT"
+default_values = PackedStringArray("LOC_TEXT_STARTER_VERSAILLES_A", "LOC_TEXT_STARTER_VERSAILLES_B", "LOC_TEXT_STARTER_VERSAILLES_RELATION")
+family_anchor = "LOC_TEXT_STARTER_VERSAILLES_ANCHOR"
+context_hint = "LOC_TEXT_STARTER_VERSAILLES_HINT"
 source_case_id = "versailles_2020"
 source_url = "https://dailyview.tw/popular/detail/9384"
 evidence_status = &"game_adaptation"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MemeDemoPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_demo_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"nobody_2020"
+kernel_id = &"relation"
+title = "LOC_TEXT_STARTER_NOBODY_TITLE"
+required_slots = PackedStringArray("role_a", "role_b", "relation")
+slot_prompts = PackedStringArray("LOC_COMPOSE_PROMPT_A", "LOC_COMPOSE_PROMPT_B", "LOC_COMPOSE_PROMPT_RELATION")
+default_values = PackedStringArray("LOC_TEXT_STARTER_NOBODY_A", "LOC_TEXT_STARTER_NOBODY_B", "LOC_TEXT_STARTER_NOBODY_RELATION")
+family_anchor = "LOC_TEXT_STARTER_NOBODY_ANCHOR"
+context_hint = "LOC_TEXT_STARTER_NOBODY_HINT"
+source_case_id = "nobody_2020"
+source_url = "https://knowyourmeme.com/memes/nobody"
+evidence_status = &"game_adaptation"

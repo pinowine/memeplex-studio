@@ -4,14 +4,14 @@
 
 [resource]
 script = ExtResource("1_script")
-id = &"worker_2020"
+id = &"ok_boomer_2020"
 kernel_id = &"stance"
-title = "LOC_COMPOSE_WORKER_2020_TITLE"
+title = "LOC_TEXT_STARTER_BOOMER_TITLE"
 required_slots = PackedStringArray("speaker", "visible_situation", "claim")
 slot_prompts = PackedStringArray("LOC_COMPOSE_PROMPT_SPEAKER", "LOC_COMPOSE_PROMPT_SCENE", "LOC_COMPOSE_PROMPT_CLAIM")
-default_values = PackedStringArray("LOC_COMPOSE_WORKER_SPEAKER", "LOC_COMPOSE_WORKER_SITUATION", "LOC_COMPOSE_WORKER_CLAIM")
-family_anchor = "LOC_COMPOSE_WORKER_ANCHOR"
-context_hint = "LOC_COMPOSE_WORKER_HINT"
-source_case_id = "worker_2020"
-source_url = "http://opinion.people.com.cn/n1/2020/1028/c1003-31908655.html"
+default_values = PackedStringArray("LOC_TEXT_STARTER_BOOMER_SPEAKER", "LOC_TEXT_STARTER_BOOMER_SITUATION", "LOC_TEXT_STARTER_BOOMER_CLAIM")
+family_anchor = "LOC_TEXT_STARTER_BOOMER_ANCHOR"
+context_hint = "LOC_TEXT_STARTER_BOOMER_HINT"
+source_case_id = "ok_boomer_2020"
+source_url = "https://knowyourmeme.com/memes/ok-boomer"
 evidence_status = &"game_adaptation"
