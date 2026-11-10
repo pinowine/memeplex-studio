@@ -2,6 +2,7 @@
 class_name DeskPaperStyle
 extends RefCounted
 
+const ACCENT := Color("41675f")
 
 class PaperFeedback extends Control:
 	var button: Button
@@ -36,7 +37,7 @@ class PaperFeedback extends Control:
 	func _draw() -> void:
 		if size.x < 2.0 or size.y < 2.0: return
 		var rect := Rect2(Vector2(2,2),size-Vector2(4,4)).grow(-press * .8)
-		var color := Color("485046").lerp(Color("9d503c"),hover * .48 + press * .3)
+		var color := Color("485046").lerp(ACCENT,hover * .48 + press * .3)
 		color.a = lerpf(.68,.25,disabled)
 		draw_colored_polygon(PackedVector2Array([rect.position,rect.position+Vector2(rect.size.x,0),rect.end,rect.position+Vector2(0,rect.size.y)]),Color(.83,.80,.71,(.025+hover*.065+press*.045)*(1.0-disabled)))
 		var corners := PackedVector2Array([rect.position+Vector2(0,.4),rect.position+Vector2(rect.size.x,-.2),rect.end+Vector2(-.4,.3),rect.position+Vector2(-.2,rect.size.y),rect.position+Vector2(0,.4)])

@@ -21,7 +21,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.64, 0.27, 0.18, 1)
+border_color = Color(0.254902, 0.403922, 0.372549, 1)
 
 [sub_resource type="StyleBoxFlat" id="Hover"]
 content_margin_left = 9.0
@@ -30,16 +30,16 @@ content_margin_right = 9.0
 content_margin_bottom = 7.0
 bg_color = Color(0.88, 0.79, 0.59, 1)
 border_width_bottom = 2
-border_color = Color(0.54, 0.25, 0.18, 1)
+border_color = Color(0.254902, 0.403922, 0.372549, 1)
 
 [sub_resource type="StyleBoxFlat" id="Pressed"]
 content_margin_left = 9.0
 content_margin_top = 7.0
 content_margin_right = 9.0
 content_margin_bottom = 7.0
-bg_color = Color(0.63, 0.29, 0.2, 1)
+bg_color = Color(0.254902, 0.403922, 0.372549, 1)
 border_width_bottom = 2
-border_color = Color(0.3, 0.18, 0.13, 1)
+border_color = Color(0.184314, 0.298039, 0.27451, 1)
 
 [sub_resource type="StyleBoxFlat" id="HeaderPaper"]
 content_margin_left = 16.0
@@ -66,7 +66,7 @@ content_margin_right = 9.0
 content_margin_bottom = 6.0
 bg_color = Color(0.83, 0.75, 0.58, 1)
 border_width_bottom = 2
-border_color = Color(0.54, 0.25, 0.18, 1)
+border_color = Color(0.254902, 0.403922, 0.372549, 1)
 
 [sub_resource type="StyleBoxFlat" id="Paper"]
 content_margin_left = 16.0
@@ -115,7 +115,7 @@ ItemList/styles/panel = SubResource("Field")
 ItemList/styles/selected = SubResource("Selected")
 ItemList/styles/selected_focus = SubResource("Selected")
 Label/colors/font_color = Color(0.18, 0.17, 0.14, 1)
-LineEdit/colors/caret_color = Color(0.62, 0.26, 0.17, 1)
+LineEdit/colors/caret_color = Color(0.254902, 0.403922, 0.372549, 1)
 LineEdit/colors/font_color = Color(0.18, 0.17, 0.14, 1)
 LineEdit/colors/font_placeholder_color = Color(0.5, 0.46, 0.38, 0.9)
 LineEdit/colors/font_uneditable_color = Color(0.49, 0.45, 0.37, 1)
@@ -142,7 +142,7 @@ TabContainer/colors/font_unselected_color = Color(0.41, 0.37, 0.3, 1)
 TabContainer/styles/panel = SubResource("Field")
 TabContainer/styles/tab_selected = SubResource("Selected")
 TabContainer/styles/tab_unselected = SubResource("Button")
-TextEdit/colors/caret_color = Color(0.62, 0.26, 0.17, 1)
+TextEdit/colors/caret_color = Color(0.254902, 0.403922, 0.372549, 1)
 TextEdit/colors/font_color = Color(0.18, 0.17, 0.14, 1)
 TextEdit/styles/focus = SubResource("Focus")
 TextEdit/styles/normal = SubResource("Field")

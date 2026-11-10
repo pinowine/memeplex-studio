@@ -382,7 +382,7 @@ func _draw() -> void:
 	for edge in _connections:
 		var from:=int(edge.get("from",-1))
 		var to:=int(edge.get("to",-1))
-		if from>=0 and to>=0 and from<_installed.size() and to<_installed.size(): _sketch_line(_module_point(from),_module_point(to),Color("9d503c",.45))
+		if from>=0 and to>=0 and from<_installed.size() and to<_installed.size(): _sketch_line(_module_point(from),_module_point(to),Color(BlobFeedback.ACTIVE,.45))
 	for index in _visible_lineage.size():
 		var point:=_lineage_point(index)
 		_tracking_frame(point,Vector2(12,12),Color(_lineage_ink(_visible_lineage[index]),.65))

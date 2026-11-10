@@ -5,7 +5,8 @@ signal source_hovered(sources: Array, excerpt: String)
 signal source_hover_ended
 
 const INK := Color("384238")
-const CHANGED_INK := Color("9d503c")
+const PaperStyle := preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const CHANGED_INK := PaperStyle.ACCENT
 
 var _segments: Array = []
 var _annotations: Array[Dictionary] = []
