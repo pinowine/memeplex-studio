@@ -1,707 +1,1947 @@
 {
-  "LOC_TEXT_COMPOSE_V_TITLE": {
+  "LOC_TEXT_COMPOSE_V2_V_TITLE": {
     "source": "凡尔赛",
     "zh_CN": "凡尔赛",
     "en": "Humblebrag"
   },
-  "LOC_TEXT_COMPOSE_N_TITLE": {
+  "LOC_TEXT_COMPOSE_V2_N_TITLE": {
     "source": "Nobody",
     "zh_CN": "Nobody",
     "en": "Nobody"
   },
-  "LOC_TEXT_COMPOSE_B_TITLE": {
+  "LOC_TEXT_COMPOSE_V2_B_TITLE": {
     "source": "OK boomer",
     "zh_CN": "OK boomer",
     "en": "OK boomer"
   },
-  "LOC_TEXT_COMPOSE_V_LEAD_NINGHUA": {
+  "LOC_TEXT_COMPOSE_V2_V_LEAD_NINGHUA": {
     "source": "唉，",
     "zh_CN": "唉，",
     "en": "Sigh, "
   },
-  "LOC_TEXT_COMPOSE_V_LEAD_SHIOHARA": {
+  "LOC_TEXT_COMPOSE_V2_V_LEAD_SHIOHARA": {
     "source": "真不好意思，",
     "zh_CN": "真不好意思，",
-    "en": "Honestly, how embarrassing. "
+    "en": "How embarrassing, "
   },
-  "LOC_TEXT_COMPOSE_V_LEAD_SEOWON": {
+  "LOC_TEXT_COMPOSE_V2_V_LEAD_SEOWON": {
     "source": "说来有点丢人，",
     "zh_CN": "说来有点丢人，",
     "en": "It's a bit embarrassing to admit, "
   },
-  "LOC_TEXT_COMPOSE_N_NOBODY": {
+  "LOC_TEXT_COMPOSE_V2_N_NOBODY": {
     "source": "Nobody：\n",
     "zh_CN": "没有人：\n",
     "en": "Nobody:\n"
   },
-  "LOC_TEXT_COMPOSE_N_COMPARISON": {
-    "source": "其他人：聊完就走。\n",
-    "zh_CN": "其他人：聊完就走。\n",
-    "en": "Everyone else: finishes chatting and leaves.\n"
-  },
-  "LOC_TEXT_COMPOSE_N_SPEAKER_CULTURE_FANS": {
-    "source": "我：",
-    "zh_CN": "凌晨两点的我：",
-    "en": "Me at 2 a.m.: "
-  },
-  "LOC_TEXT_COMPOSE_N_SPEAKER_STUDENTS": {
-    "source": "课堂上的我：",
-    "zh_CN": "课堂上的我：",
-    "en": "Me in class: "
-  },
-  "LOC_TEXT_COMPOSE_N_SPEAKER_COMMUTERS": {
-    "source": "办公室里的我：",
-    "zh_CN": "办公室里的我：",
-    "en": "Me at the office: "
-  },
-  "LOC_TEXT_COMPOSE_N_LANGUAGE_SHIOHARA": {
+  "LOC_TEXT_COMPOSE_V2_N_LANGUAGE_SHIOHARA": {
     "source": "又开始",
     "zh_CN": "又开始",
     "en": "starts "
   },
-  "LOC_TEXT_COMPOSE_N_LANGUAGE_NINGHUA": {
-    "source": "忍不住开始",
-    "zh_CN": "忍不住开始",
-    "en": "can't help "
+  "LOC_TEXT_COMPOSE_V2_N_LANGUAGE_NINGHUA": {
+    "source": "忍不住",
+    "zh_CN": "忍不住",
+    "en": "cannot resist "
   },
-  "LOC_TEXT_COMPOSE_N_LANGUAGE_SEOWON": {
-    "source": "自己就开始",
-    "zh_CN": "自己就开始",
+  "LOC_TEXT_COMPOSE_V2_N_LANGUAGE_SEOWON": {
+    "source": "自己就",
+    "zh_CN": "自己就",
     "en": "goes ahead and starts "
   },
-  "LOC_TEXT_COMPOSE_N_FILM_ACTION": {
-    "source": "逐帧讲这部电影的隐藏细节。",
-    "zh_CN": "逐帧讲这部电影的隐藏细节。",
-    "en": "explaining the hidden details in this film, frame by frame."
-  },
-  "LOC_TEXT_COMPOSE_N_FILM_EXPLANATION": {
-    "source": "毕竟我已经看了二十遍。",
-    "zh_CN": "毕竟我已经看了二十遍。",
-    "en": " After all, I've watched it twenty times."
-  },
-  "LOC_TEXT_COMPOSE_N_FAN_CHAT_ACTION": {
-    "source": "给刚进同好群的人讲电影里没被问过的细节。",
-    "zh_CN": "给刚进同好群的人讲电影里没被问过的细节。",
-    "en": "explaining film details nobody asked about to the newcomer in the fan chat."
-  },
-  "LOC_TEXT_COMPOSE_N_FAN_CHAT_EXPLANATION": {
-    "source": "新人只发了句“大家好”，我的长文已经打完了。",
-    "zh_CN": "新人只发了句“大家好”，我的长文已经打完了。",
-    "en": " The newcomer only said hello. I've already typed an essay."
-  },
-  "LOC_TEXT_COMPOSE_N_OFFICE_ACTION": {
-    "source": "给同事讲一整套没人问过的办公窍门。",
-    "zh_CN": "给同事讲一整套没人问过的办公窍门。",
-    "en": "explaining a whole set of office tips nobody asked for."
-  },
-  "LOC_TEXT_COMPOSE_N_OFFICE_EXPLANATION": {
-    "source": "同事只是路过，我的演示已经打开了。",
-    "zh_CN": "同事只是路过，我的演示已经打开了。",
-    "en": " My colleague was only passing by. I've already opened the presentation."
-  },
-  "LOC_TEXT_COMPOSE_N_SOFTWARE_ACTION": {
-    "source": "演示一个能把三次点击减成两次的办公插件。",
-    "zh_CN": "演示一个能把三次点击减成两次的办公插件。",
-    "en": "demonstrating an office plugin that turns three clicks into two."
-  },
-  "LOC_TEXT_COMPOSE_N_SOFTWARE_EXPLANATION": {
-    "source": "为省这一次点击，我花了两小时做教程。",
-    "zh_CN": "为省这一次点击，我花了两小时做教程。",
-    "en": " I spent two hours making a tutorial to save that one click."
-  },
-  "LOC_TEXT_COMPOSE_N_LESSON_ACTION": {
-    "source": "把老师没问的下一章也讲了。",
-    "zh_CN": "把老师没问的下一章也讲了。",
-    "en": "explaining the next chapter, which the teacher never asked about."
-  },
-  "LOC_TEXT_COMPOSE_N_LESSON_EXPLANATION": {
-    "source": "老师只想点个名，我已经翻到下一页了。",
-    "zh_CN": "老师只想点个名，我已经翻到下一页了。",
-    "en": " The teacher just wanted to take attendance. I'm already on the next page."
-  },
-  "LOC_TEXT_COMPOSE_N_INVITE": {
-    "source": "\n你也有没人问却忍不住讲的事吗？",
-    "zh_CN": "\n你也有没人问却忍不住讲的事吗？",
-    "en": "\nWhat do you keep explaining even when nobody asks?"
-  },
-  "LOC_TEXT_COMPOSE_N_EXIT": {
-    "source": "不想接也可以，围观就好。",
-    "zh_CN": "不想接也可以，围观就好。",
-    "en": " You can just watch if you'd rather not join in."
-  },
-  "LOC_TEXT_COMPOSE_B_QUESTION": {
-    "source": "讲完了吗？",
-    "zh_CN": "讲完了吗？",
-    "en": "Finished? "
-  },
-  "LOC_TEXT_COMPOSE_B_REPLY_SEOWON": {
-    "source": "OK boomer。",
-    "zh_CN": "行吧，老古董。",
-    "en": "OK boomer."
-  },
-  "LOC_TEXT_COMPOSE_B_REPLY_NINGHUA": {
-    "source": "行吧，boomer。",
-    "zh_CN": "好吧，老古董。",
-    "en": "All right, boomer."
-  },
-  "LOC_TEXT_COMPOSE_B_REPLY_SHIOHARA": {
-    "source": "知道了，boomer。",
-    "zh_CN": "知道了，老古董。",
-    "en": "Got it, boomer."
-  },
-  "LOC_TEXT_COMPOSE_B_EXPLANATION": {
-    "source": "我不想再因为年纪小，就被当成什么都不懂。",
-    "zh_CN": "我不想再因为年纪小，就被当成什么都不懂。",
-    "en": " I'm tired of being treated as clueless just because I'm younger."
-  },
-  "LOC_TEXT_COMPOSE_B_EXIT": {
-    "source": "这轮就到这里。",
-    "zh_CN": "这轮就到这里。",
-    "en": " This conversation ends here."
-  },
-  "LOC_TEXT_COMPOSE_B_SPEAKER_STUDENTS": {
-    "source": "长辈：",
-    "zh_CN": "长辈：",
-    "en": "Older relative: "
-  },
-  "LOC_TEXT_COMPOSE_B_SPEAKER_COMMUTERS": {
-    "source": "前辈：",
-    "zh_CN": "前辈：",
-    "en": "Senior colleague: "
-  },
-  "LOC_TEXT_COMPOSE_B_SPEAKER_CULTURE_FANS": {
-    "source": "老观众：",
-    "zh_CN": "老观众：",
-    "en": "Older audience member: "
-  },
-  "LOC_TEXT_COMPOSE_B_SCHOOL_CONTEXT": {
-    "source": "你们年轻人读书吃不了苦，就爱找借口。",
-    "zh_CN": "你们年轻人读书吃不了苦，就爱找借口。",
-    "en": "Young people can't handle hard study. You just make excuses."
-  },
-  "LOC_TEXT_COMPOSE_B_SCHOOL_COMPARISON": {
-    "source": "你读书那会儿的办法，现在还能照搬吗？",
-    "zh_CN": "你读书那会儿的办法，现在还能照搬吗？",
-    "en": "Can we really copy how you studied back then? "
-  },
-  "LOC_TEXT_COMPOSE_B_FIRST_JOB_CONTEXT": {
-    "source": "我们那时一毕业就有工作，你们读这么多书还挑三拣四。",
-    "zh_CN": "我们那时一毕业就有工作，你们读这么多书还挑三拣四。",
-    "en": "We got jobs straight after graduation. You study for years and still act picky."
-  },
-  "LOC_TEXT_COMPOSE_B_FIRST_JOB_COMPARISON": {
-    "source": "你毕业那会儿的招聘条件，和今天一样吗？",
-    "zh_CN": "你毕业那会儿的招聘条件，和今天一样吗？",
-    "en": "Were job requirements when you graduated the same as today? "
-  },
-  "LOC_TEXT_COMPOSE_B_OVERTIME_CONTEXT": {
-    "source": "我们年轻时加班从不抱怨，就你们现在事多。",
-    "zh_CN": "我们年轻时加班从不抱怨，就你们现在事多。",
-    "en": "We never complained about overtime when we were young. Your generation makes such a fuss."
-  },
-  "LOC_TEXT_COMPOSE_B_OVERTIME_COMPARISON": {
-    "source": "你当年的工时和回报，跟现在是一回事吗？",
-    "zh_CN": "你当年的工时和回报，跟现在是一回事吗？",
-    "en": "Were your hours and pay back then the same as ours now? "
-  },
-  "LOC_TEXT_COMPOSE_B_RENT_CONTEXT": {
-    "source": "我们那时工作几年就买房，你们买不起就是不够努力。",
-    "zh_CN": "我们那时工作几年就买房，你们买不起就是不够努力。",
-    "en": "We bought homes after a few years of work. If you can't, you're not trying hard enough."
-  },
-  "LOC_TEXT_COMPOSE_B_RENT_COMPARISON": {
-    "source": "你当年的工资和房价，跟现在是一回事吗？",
-    "zh_CN": "你当年的工资和房价，跟现在是一回事吗？",
-    "en": "Were wages and house prices back then anything like today's? "
-  },
-  "LOC_TEXT_COMPOSE_B_NEIGHBORHOOD_CONTEXT": {
-    "source": "你们年轻人总想改社区规矩，照老办法过不就行了。",
-    "zh_CN": "你们年轻人总想改社区规矩，照老办法过不就行了。",
-    "en": "Young people keep wanting to change the neighborhood rules. Why not do things the old way?"
-  },
-  "LOC_TEXT_COMPOSE_B_NEIGHBORHOOD_COMPARISON": {
-    "source": "以前的社区和现在住的人一样吗？",
-    "zh_CN": "以前的社区和现在住的人一样吗？",
-    "en": "Is this neighborhood, and who lives here, the same as it used to be? "
-  },
-  "LOC_TEXT_COMPOSE_V_MEANING": {
-    "source": "说话人把轻松取得的好成绩说成遗憾，用假谦虚炫耀自己。",
-    "zh_CN": "说话人把轻松取得的好成绩说成遗憾，用假谦虚炫耀自己。",
-    "en": "The speaker presents an easily earned good result as a disappointment, boasting through false modesty. "
-  },
-  "LOC_TEXT_COMPOSE_V_MEANING_QUESTION": {
-    "source": "反问是在等别人夸奖，又把求夸藏在“不值得夸”后面。",
-    "zh_CN": "反问是在等别人夸奖，又把求夸藏在“不值得夸”后面。",
-    "en": "The question seeks praise while hiding behind the claim that praise is unwarranted. "
-  },
-  "LOC_TEXT_COMPOSE_V_MEANING_COMPARISON": {
-    "source": "把别人的努力和自己的轻松并排，更显得自己不用费劲就能赢。",
-    "zh_CN": "把别人的努力和自己的轻松并排，更显得自己不用费劲就能赢。",
-    "en": "Contrasting other people's effort with the speaker's ease makes success look effortless. "
-  },
-  "LOC_TEXT_COMPOSE_V_MEANING_EXPLANATION": {
-    "source": "补出的差距很小，进一步显出这份遗憾其实是在展示优势。",
-    "zh_CN": "补出的差距很小，进一步显出这份遗憾其实是在展示优势。",
-    "en": "The tiny gap explains why the apparent disappointment is really another way to show off. "
-  },
-  "LOC_TEXT_COMPOSE_N_MEANING": {
-    "source": "没人提出要求，说话人却主动展开一大段，用这个反差自嘲过度热情。",
-    "zh_CN": "没人提出要求，说话人却主动展开一大段，用这个反差自嘲过度热情。",
-    "en": "Nobody asks, but the speaker launches into an explanation, making fun of their own excessive enthusiasm. "
-  },
-  "LOC_TEXT_COMPOSE_N_MEANING_COMPARISON": {
-    "source": "别人已经结束话题，自己还在往下讲，热情过头的样子更明显了。",
-    "zh_CN": "别人已经结束话题，自己还在往下讲，热情过头的样子更明显了。",
-    "en": "Everyone else has finished, while the speaker keeps going, making the excessive enthusiasm more obvious. "
-  },
-  "LOC_TEXT_COMPOSE_N_MEANING_EXPLANATION": {
-    "source": "说出自己为什么停不下来，让这份主动显得具体可笑。",
-    "zh_CN": "说出自己为什么停不下来，让这份主动显得具体可笑。",
-    "en": "The reason they cannot stop makes the unsolicited enthusiasm more specifically funny. "
-  },
-  "LOC_TEXT_COMPOSE_N_MEANING_CONTINUATION": {
-    "source": "最后请别人也讲一次类似经历，让自嘲有了接话的位置。",
-    "zh_CN": "最后请别人也讲一次类似经历，让自嘲有了接话的位置。",
-    "en": "The invitation lets others add a similar experience to the self-mockery. "
-  },
-  "LOC_TEXT_COMPOSE_N_MEANING_EXIT": {
-    "source": "接话成为自愿的事，沉默的人也能留下来围观。",
-    "zh_CN": "接话成为自愿的事，沉默的人也能留下来围观。",
-    "en": "Joining in is optional, so silent readers can stay and watch. "
-  },
-  "LOC_TEXT_COMPOSE_B_MEANING": {
-    "source": "说话人用“boomer”这个代际标签挡回长辈的说教，表示自己不想继续听。",
-    "zh_CN": "说话人用“boomer”这个代际标签挡回长辈的说教，表示自己不想继续听。",
-    "en": "The speaker uses the generational label 'boomer' to brush off an older person's lecture and signal they do not want to hear more. "
-  },
-  "LOC_TEXT_COMPOSE_B_MEANING_QUESTION": {
-    "source": "开头先问对方讲完没有，把不耐烦摆到明面上。",
-    "zh_CN": "开头先问对方讲完没有，把不耐烦摆到明面上。",
-    "en": "Asking whether the other person is finished makes the impatience explicit. "
-  },
-  "LOC_TEXT_COMPOSE_B_MEANING_COMPARISON": {
-    "source": "把过去和现在的条件拿来对照，质疑老经验能否直接套用。",
-    "zh_CN": "把过去和现在的条件拿来对照，质疑老经验能否直接套用。",
-    "en": "Comparing past and present conditions questions whether old experience can be applied directly. "
-  },
-  "LOC_TEXT_COMPOSE_B_MEANING_EXPLANATION": {
-    "source": "说明拒绝的是因年龄被看低的处境，让回绝有了具体理由。",
-    "zh_CN": "说明拒绝的是因年龄被看低的处境，让回绝有了具体理由。",
-    "en": "Explaining the objection to being dismissed for being young gives the refusal a concrete reason. "
-  },
-  "LOC_TEXT_COMPOSE_B_MEANING_EXIT": {
-    "source": "最后明确结束这一轮对话，让回绝成为实际的退出。",
-    "zh_CN": "最后明确结束这一轮对话，让回绝成为实际的退出。",
-    "en": "Explicitly ending the conversation turns the dismissal into an actual exit. "
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_STUDENTS_EFFORT": {
-    "source": "这次都没复习，",
-    "zh_CN": "这次都没复习，",
-    "en": "I didn't even revise, "
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_STUDENTS_RESULT": {
-    "source": "才考了全校第二，好丢人。",
-    "zh_CN": "才考了全校第二，好丢人。",
-    "en": "and only came second in the school. How embarrassing."
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_STUDENTS_QUESTION": {
-    "source": "全校第二，也值得夸吗？",
-    "zh_CN": "全校第二，也值得夸吗？",
-    "en": "and came second in the school. Is that even worth praising?"
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_STUDENTS_COMPARISON": {
-    "source": "别人复习到半夜，",
-    "zh_CN": "别人复习到半夜，",
-    "en": "Everyone else studied until midnight. "
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_STUDENTS_EXPLANATION": {
-    "source": "第一名也就比我多一分。",
-    "zh_CN": "第一名也就比我多一分。",
-    "en": " First place was only one mark ahead of me."
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_COMMUTERS_EFFORT": {
-    "source": "培训考核都没准备，",
-    "zh_CN": "培训考核都没准备，",
-    "en": "I didn't even prepare for the training assessment, "
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_COMMUTERS_RESULT": {
-    "source": "才拿了部门第二，好丢人。",
-    "zh_CN": "才拿了部门第二，好丢人。",
-    "en": "and only ranked second in the department. How embarrassing."
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_COMMUTERS_QUESTION": {
-    "source": "部门第二，也值得夸吗？",
-    "zh_CN": "部门第二，也值得夸吗？",
-    "en": "and ranked second in the department. Is that even worth praising?"
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_COMMUTERS_COMPARISON": {
-    "source": "同事把题库背了三遍，",
-    "zh_CN": "同事把题库背了三遍，",
-    "en": "My colleagues memorized the question bank three times. "
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_COMMUTERS_EXPLANATION": {
-    "source": "第一名也就比我多一分。",
-    "zh_CN": "第一名也就比我多一分。",
-    "en": " First place was only one mark ahead of me."
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_CULTURE_FANS_EFFORT": {
-    "source": "知识问答都没做功课，",
-    "zh_CN": "知识问答都没做功课，",
-    "en": "I didn't even study for the trivia quiz, "
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_CULTURE_FANS_RESULT": {
-    "source": "才拿了同好圈第二，好丢人。",
-    "zh_CN": "才拿了同好圈第二，好丢人。",
-    "en": "and only came second in the fan group. How embarrassing."
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_CULTURE_FANS_QUESTION": {
-    "source": "同好圈第二，也值得夸吗？",
-    "zh_CN": "同好圈第二，也值得夸吗？",
-    "en": "and came second in the fan group. Is that even worth praising?"
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_CULTURE_FANS_COMPARISON": {
-    "source": "别人把资料翻到半夜，",
-    "zh_CN": "别人把资料翻到半夜，",
-    "en": "Everyone else read up on it until midnight. "
-  },
-  "LOC_TEXT_COMPOSE_V_EXAM_CULTURE_FANS_EXPLANATION": {
-    "source": "第一名也就比我多答对一题。",
-    "zh_CN": "第一名也就比我多答对一题。",
-    "en": " First place only got one more answer right."
-  },
-  "LOC_TEXT_COMPOSE_V_CLASS_CHAT_EFFORT": {
-    "source": "同学群催我晒成绩，我都没复习，",
-    "zh_CN": "同学群催我晒成绩，我都没复习，",
-    "en": "The class chat asked for my score. I didn't even revise, "
-  },
-  "LOC_TEXT_COMPOSE_V_CLASS_CHAT_RESULT": {
-    "source": "才考了全校第二，好丢人。",
-    "zh_CN": "才考了全校第二，好丢人。",
-    "en": "and only came second in the school. How embarrassing."
-  },
-  "LOC_TEXT_COMPOSE_V_CLASS_CHAT_QUESTION": {
-    "source": "全校第二，还要特意晒出来吗？",
-    "zh_CN": "全校第二，还要特意晒出来吗？",
-    "en": "and came second in the school. Does that really deserve a post?"
-  },
-  "LOC_TEXT_COMPOSE_V_CLASS_CHAT_COMPARISON": {
-    "source": "群里都说自己复习到半夜，",
-    "zh_CN": "群里都说自己复习到半夜，",
-    "en": "Everyone in the chat says they studied until midnight. "
-  },
-  "LOC_TEXT_COMPOSE_V_CLASS_CHAT_EXPLANATION": {
-    "source": "第一名也就比我多一分。",
-    "zh_CN": "第一名也就比我多一分。",
-    "en": " First place was only one mark ahead of me."
-  },
-  "LOC_TEXT_COMPOSE_V_QUALIFICATION_EFFORT": {
-    "source": "上班忙得没空备考，",
-    "zh_CN": "上班忙得没空备考，",
-    "en": "Work left me no time to prepare for the qualification exam, "
-  },
-  "LOC_TEXT_COMPOSE_V_QUALIFICATION_RESULT": {
-    "source": "才考了全市第二，好丢人。",
-    "zh_CN": "才考了全市第二，好丢人。",
-    "en": "and I only came second in the city. How embarrassing."
-  },
-  "LOC_TEXT_COMPOSE_V_QUALIFICATION_QUESTION": {
-    "source": "全市第二，也值得夸吗？",
-    "zh_CN": "全市第二，也值得夸吗？",
-    "en": "and I came second in the city. Is that even worth praising?"
-  },
-  "LOC_TEXT_COMPOSE_V_QUALIFICATION_COMPARISON": {
-    "source": "同事请假备考了一个月，",
-    "zh_CN": "同事请假备考了一个月，",
-    "en": "My colleagues took a month off to prepare. "
-  },
-  "LOC_TEXT_COMPOSE_V_QUALIFICATION_EXPLANATION": {
-    "source": "离第一名也就差一分。",
-    "zh_CN": "离第一名也就差一分。",
-    "en": " I was only one mark behind first place."
-  },
-  "LOC_TEXT_COMPOSE_V_TRIVIA_EFFORT": {
-    "source": "电影知识测验都没补片，",
-    "zh_CN": "电影知识测验都没补片，",
-    "en": "I didn't even catch up on the films before the quiz, "
-  },
-  "LOC_TEXT_COMPOSE_V_TRIVIA_RESULT": {
-    "source": "才拿了影迷组第二，好丢人。",
-    "zh_CN": "才拿了影迷组第二，好丢人。",
-    "en": "and only came second among the film fans. How embarrassing."
-  },
-  "LOC_TEXT_COMPOSE_V_TRIVIA_QUESTION": {
-    "source": "影迷组第二，也值得夸吗？",
-    "zh_CN": "影迷组第二，也值得夸吗？",
-    "en": "and came second among the film fans. Is that even worth praising?"
-  },
-  "LOC_TEXT_COMPOSE_V_TRIVIA_COMPARISON": {
-    "source": "别人连片尾字幕都背了，",
-    "zh_CN": "别人连片尾字幕都背了，",
-    "en": "Everyone else memorized even the closing credits. "
-  },
-  "LOC_TEXT_COMPOSE_V_TRIVIA_EXPLANATION": {
-    "source": "第一名也就比我多认出一位演员。",
-    "zh_CN": "第一名也就比我多认出一位演员。",
-    "en": " First place only identified one more actor."
-  },
-  "LOC_TEXT_COMPOSE_V_READING_FREEDOM": {
-    "source": "晒不晒成绩更被看成自己的选择。",
-    "zh_CN": "晒不晒成绩更被看成自己的选择。",
-    "en": "Sharing results is read more as a personal choice. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_FREEDOM_STRONG": {
-    "source": "这次尤其看重本人决定如何展示成绩的自由。",
-    "zh_CN": "这次尤其看重本人决定如何展示成绩的自由。",
-    "en": "This use puts particular weight on choosing how to present one's own results. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_AUTHORITY": {
-    "source": "这次更顾及晒成绩时大家默认的社交分寸。",
-    "zh_CN": "这次更顾及晒成绩时大家默认的社交分寸。",
-    "en": "This use gives more weight to shared conventions about showing results. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_AUTHORITY_STRONG": {
-    "source": "这次很在意炫耀有没有越过大家认可的分寸。",
-    "zh_CN": "这次很在意炫耀有没有越过大家认可的分寸。",
-    "en": "This use is especially concerned with whether boasting crosses accepted social boundaries. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_EQUALITY": {
-    "source": "这次更怀疑好成绩足以让一个人高人一等。",
-    "zh_CN": "这次更怀疑好成绩足以让一个人高人一等。",
-    "en": "This use is more skeptical that a good score makes someone superior. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_EQUALITY_STRONG": {
-    "source": "这次尤其不认同凭成绩把人分出高低。",
-    "zh_CN": "这次尤其不认同凭成绩把人分出高低。",
-    "en": "This use particularly rejects ranking people's worth by their scores. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_HIERARCHY": {
-    "source": "这次更看重成绩带来的胜人一筹。",
-    "zh_CN": "这次更看重成绩带来的胜人一筹。",
-    "en": "This use places more weight on being ahead of others. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_HIERARCHY_STRONG": {
-    "source": "这次把领先别人的成绩看得格外重。",
-    "zh_CN": "这次把领先别人的成绩看得格外重。",
-    "en": "This use places particular importance on outperforming others. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_SINCERE": {
-    "source": "这次较认真地对待自己没达到第一名的遗憾。",
-    "zh_CN": "这次较认真地对待自己没达到第一名的遗憾。",
-    "en": "This use takes the disappointment at missing first place more seriously. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_SINCERE_STRONG": {
-    "source": "这次的遗憾更接近真实的自我要求，炫耀仍藏在好成绩里。",
-    "zh_CN": "这次的遗憾更接近真实的自我要求，炫耀仍藏在好成绩里。",
-    "en": "The disappointment is closer to a sincere personal standard, with the boast still carried by the good score. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_IRONIC": {
-    "source": "嘴上失望、心里得意的反差更明显了。",
-    "zh_CN": "嘴上失望、心里得意的反差更明显了。",
-    "en": "The gap between spoken disappointment and private pride is more apparent. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_IRONIC_STRONG": {
-    "source": "这次尤其突出失望口气背后的得意。",
-    "zh_CN": "这次尤其突出失望口气背后的得意。",
-    "en": "This use particularly emphasizes the pride beneath the disappointed tone. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_SUPPORT": {
-    "source": "这次更像和熟人分享得意，接受这种假谦虚。",
-    "zh_CN": "这次更像和熟人分享得意，接受这种假谦虚。",
-    "en": "This use is more accepting of the humblebrag, as if sharing pride with friends. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_SUPPORT_STRONG": {
-    "source": "这次明显纵容这种用假谦虚分享得意的说法。",
-    "zh_CN": "这次明显纵容这种用假谦虚分享得意的说法。",
-    "en": "This use clearly indulges false modesty as a way to share pride. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_OPPOSITION": {
-    "source": "这次更像拿假谦虚的说话人开涮。",
-    "zh_CN": "这次更像拿假谦虚的说话人开涮。",
-    "en": "This use is more at the expense of the person pretending to be modest. "
-  },
-  "LOC_TEXT_COMPOSE_V_READING_OPPOSITION_STRONG": {
-    "source": "这次明显在嘲笑成绩很好还装作失望的人。",
-    "zh_CN": "这次明显在嘲笑成绩很好还装作失望的人。",
-    "en": "This use clearly mocks someone with an excellent result who pretends to be disappointed. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_FREEDOM": {
-    "source": "这次更容许一个人没人问也想说两句。",
-    "zh_CN": "这次更容许一个人没人问也想说两句。",
-    "en": "This use is more accepting of speaking even when nobody asks. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_FREEDOM_STRONG": {
-    "source": "这次尤其维护主动开口、不必等别人点名的自由。",
-    "zh_CN": "这次尤其维护主动开口、不必等别人点名的自由。",
-    "en": "This use particularly defends the freedom to speak without waiting to be invited. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_AUTHORITY": {
-    "source": "这次更在意开口前是否轮到自己。",
-    "zh_CN": "这次更在意开口前是否轮到自己。",
-    "en": "This use is more concerned with whether it is the speaker's turn. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_AUTHORITY_STRONG": {
-    "source": "这次尤其强调先等别人邀请，再开始长篇解释。",
-    "zh_CN": "这次尤其强调先等别人邀请，再开始长篇解释。",
-    "en": "This use particularly emphasizes waiting for an invitation before a long explanation. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_EQUALITY": {
-    "source": "这次更希望大家都能分到说话的机会。",
-    "zh_CN": "这次更希望大家都能分到说话的机会。",
-    "en": "This use places more weight on everyone having a chance to speak. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_EQUALITY_STRONG": {
-    "source": "这次尤其反感一个人的热情占满所有人的时间。",
-    "zh_CN": "这次尤其反感一个人的热情占满所有人的时间。",
-    "en": "This use particularly objects to one person's enthusiasm taking everyone's time. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_HIERARCHY": {
-    "source": "这次更容许懂得多的人主动多讲一点。",
-    "zh_CN": "这次更容许懂得多的人主动多讲一点。",
-    "en": "This use is more accepting of knowledgeable people volunteering more detail. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_HIERARCHY_STRONG": {
-    "source": "这次尤其认可熟悉话题的人多占一点发言空间。",
-    "zh_CN": "这次尤其认可熟悉话题的人多占一点发言空间。",
-    "en": "This use particularly accepts people familiar with the topic taking more room to speak. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_SINCERE": {
-    "source": "这次更认真地承认自己确实很想分享。",
-    "zh_CN": "这次更认真地承认自己确实很想分享。",
-    "en": "This use more sincerely admits the wish to share. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_SINCERE_STRONG": {
-    "source": "这次的主动更接近真心热爱，自嘲只是轻轻带过。",
-    "zh_CN": "这次的主动更接近真心热爱，自嘲只是轻轻带过。",
-    "en": "The enthusiasm is closer to sincere affection, with only a light touch of self-mockery. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_IRONIC": {
-    "source": "这次更拿自己停不下来的样子开玩笑。",
-    "zh_CN": "这次更拿自己停不下来的样子开玩笑。",
-    "en": "This use makes more fun of the speaker's inability to stop. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_IRONIC_STRONG": {
-    "source": "这次把没人问却说个不停的反差推得更夸张。",
-    "zh_CN": "这次把没人问却说个不停的反差推得更夸张。",
-    "en": "This use exaggerates the gap between nobody asking and the speaker talking nonstop. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_SUPPORT": {
-    "source": "这次更愿意接住这种热情，让对方继续讲。",
-    "zh_CN": "这次更愿意接住这种热情，让对方继续讲。",
-    "en": "This use is more welcoming of the enthusiasm and lets the person continue. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_SUPPORT_STRONG": {
-    "source": "这次明显把没人问也想分享的热情当成可爱的事。",
-    "zh_CN": "这次明显把没人问也想分享的热情当成可爱的事。",
-    "en": "This use clearly treats unsolicited enthusiasm as endearing. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_OPPOSITION": {
-    "source": "这次更嫌这种主动分享打扰了别人。",
-    "zh_CN": "这次更嫌这种主动分享打扰了别人。",
-    "en": "This use is more critical of unsolicited sharing as an interruption. "
-  },
-  "LOC_TEXT_COMPOSE_N_READING_OPPOSITION_STRONG": {
-    "source": "这次明显在讥讽没人问还要讲个不停的人。",
-    "zh_CN": "这次明显在讥讽没人问还要讲个不停的人。",
-    "en": "This use clearly mocks someone who keeps talking despite nobody asking. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_FREEDOM": {
-    "source": "这次更强调年轻人有权决定听不听。",
-    "zh_CN": "这次更强调年轻人有权决定听不听。",
-    "en": "This use puts more weight on younger people's right to decide whether to listen. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_FREEDOM_STRONG": {
-    "source": "这次尤其拒绝把年长当成强迫别人听话的理由。",
-    "zh_CN": "这次尤其拒绝把年长当成强迫别人听话的理由。",
-    "en": "This use particularly rejects age as a reason to compel someone to listen. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_AUTHORITY": {
-    "source": "这次仍较愿意承认长辈有经验，只拒绝眼前的说教。",
-    "zh_CN": "这次仍较愿意承认长辈有经验，只拒绝眼前的说教。",
-    "en": "This use remains more willing to credit older people's experience while rejecting this lecture. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_AUTHORITY_STRONG": {
-    "source": "这次仍保留对经验的尊重，把拒绝集中在这场说教上。",
-    "zh_CN": "这次仍保留对经验的尊重，把拒绝集中在这场说教上。",
-    "en": "This use retains respect for experience and directs the refusal at this particular lecture. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_EQUALITY": {
-    "source": "这次更希望双方按同样的标准交谈。",
-    "zh_CN": "这次更希望双方按同样的标准交谈。",
-    "en": "This use puts more weight on both sides speaking on equal terms. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_EQUALITY_STRONG": {
-    "source": "这次尤其反对把年龄大小当成谁说了算的依据。",
-    "zh_CN": "这次尤其反对把年龄大小当成谁说了算的依据。",
-    "en": "This use particularly rejects age as the basis for deciding whose word counts. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_HIERARCHY": {
-    "source": "这次仍接受资历差别，只不接受由此看低年轻人。",
-    "zh_CN": "这次仍接受资历差别，只不接受由此看低年轻人。",
-    "en": "This use still accepts differences in experience while rejecting contempt for younger people. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_HIERARCHY_STRONG": {
-    "source": "这次把资历与说教分开，承认经验却拒绝居高临下。",
-    "zh_CN": "这次把资历与说教分开，承认经验却拒绝居高临下。",
-    "en": "This use separates experience from lecturing, crediting the former while rejecting condescension. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_SINCERE": {
-    "source": "这次较直接地表达被轻视后的不满。",
-    "zh_CN": "这次较直接地表达被轻视后的不满。",
-    "en": "This use more directly expresses dissatisfaction at being dismissed. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_SINCERE_STRONG": {
-    "source": "这次主要是在认真拒绝轻视，玩笑的意味变淡了。",
-    "zh_CN": "这次主要是在认真拒绝轻视，玩笑的意味变淡了。",
-    "en": "This use is chiefly a serious refusal of contempt, with less of a joking tone. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_IRONIC": {
-    "source": "这次更用轻飘飘的回应表现不耐烦。",
-    "zh_CN": "这次更用轻飘飘的回应表现不耐烦。",
-    "en": "This use conveys impatience through a more flippant reply. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_IRONIC_STRONG": {
-    "source": "这次尤其用敷衍的口气把说教顶回去。",
-    "zh_CN": "这次尤其用敷衍的口气把说教顶回去。",
-    "en": "This use particularly brushes the lecture aside with a dismissive tone. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_SUPPORT": {
-    "source": "这次让回绝稍微缓和，但仍不接受这场说教。",
-    "zh_CN": "这次让回绝稍微缓和，但仍不接受这场说教。",
-    "en": "This use softens the refusal slightly while still rejecting the lecture. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_SUPPORT_STRONG": {
-    "source": "这次尽量给对方留余地，仍坚持结束说教。",
-    "zh_CN": "这次尽量给对方留余地，仍坚持结束说教。",
-    "en": "This use leaves the other person more room while still insisting the lecture end. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_OPPOSITION": {
-    "source": "这次更明确地拒绝对方继续说教。",
-    "zh_CN": "这次更明确地拒绝对方继续说教。",
-    "en": "This use more explicitly refuses any further lecturing. "
-  },
-  "LOC_TEXT_COMPOSE_B_READING_OPPOSITION_STRONG": {
-    "source": "这次把拒绝说教的态度说得毫不含糊。",
-    "zh_CN": "这次把拒绝说教的态度说得毫不含糊。",
-    "en": "This use leaves no ambiguity about rejecting the lecture. "
-  },
-  "LOC_TEXT_COMPOSE_AUDIENCE_COMMUTERS_CULTURE_FANS": {
-    "source": "这句话发在上班族和影迷的群聊里。\n",
-    "zh_CN": "这句话发在上班族和影迷的群聊里。\n",
-    "en": "This is posted in a group chat for office workers and film fans.\n"
-  },
-  "LOC_TEXT_COMPOSE_AUDIENCE_COMMUTERS_STUDENTS": {
-    "source": "这句话发在上班族和学生的群聊里。\n",
-    "zh_CN": "这句话发在上班族和学生的群聊里。\n",
-    "en": "This is posted in a group chat for office workers and students.\n"
-  },
-  "LOC_TEXT_COMPOSE_AUDIENCE_CULTURE_FANS_STUDENTS": {
-    "source": "这句话发在学生和影迷的群聊里。\n",
-    "zh_CN": "这句话发在学生和影迷的群聊里。\n",
-    "en": "This is posted in a group chat for students and film fans.\n"
-  },
-  "LOC_TEXT_COMPOSE_AUDIENCE_COMMUTERS_CULTURE_FANS_STUDENTS": {
-    "source": "这句话发在学生、上班族和影迷都在的群聊里。\n",
-    "zh_CN": "这句话发在学生、上班族和影迷都在的群聊里。\n",
-    "en": "This is posted in a group chat with students, office workers and film fans.\n"
+  "LOC_TEXT_COMPOSE_V2_B_REPLY_NINGHUA": {
+    "source": "行行行，您说得都对",
+    "zh_CN": "行行行，您说得都对",
+    "en": "Sure, sure. Whatever you say"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_REPLY_SHIOHARA": {
+    "source": "好的，老前辈",
+    "zh_CN": "好的，老前辈",
+    "en": "Right, old-timer"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_REPLY_SEOWON": {
+    "source": "行吧，老古董",
+    "zh_CN": "行吧，老古董",
+    "en": "OK boomer"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_STUDENTS_EFFORT": {
+    "source": "只翻了两页笔记",
+    "zh_CN": "只翻了两页笔记",
+    "en": "only skimmed two pages of notes"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_STUDENTS_RESULT": {
+    "source": "考到全校第二",
+    "zh_CN": "考到全校第二",
+    "en": "came second in the school"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_STUDENTS_PEER": {
+    "source": "熬了三晚复习",
+    "zh_CN": "熬了三晚复习",
+    "en": "studied for three nights"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_STUDENTS_CAUSE": {
+    "source": "刚好翻到了考题那页",
+    "zh_CN": "刚好翻到了考题那页",
+    "en": "I happened to read the page the exam was based on"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_STUDENTS_SUBJECT": {
+    "source": "全校第二的成绩",
+    "zh_CN": "全校第二的成绩",
+    "en": "coming second in the school"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_COMMUTERS_EFFORT": {
+    "source": "在地铁上听了两节课",
+    "zh_CN": "在地铁上听了两节课",
+    "en": "listened to two lessons on the train"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_COMMUTERS_RESULT": {
+    "source": "拿到部门唯一的满分",
+    "zh_CN": "拿到部门唯一的满分",
+    "en": "got the department's only perfect score"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_COMMUTERS_PEER": {
+    "source": "专门请假备考",
+    "zh_CN": "专门请假备考",
+    "en": "took time off to prepare"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_COMMUTERS_CAUSE": {
+    "source": "考的恰好都是平时做的事",
+    "zh_CN": "考的恰好都是平时做的事",
+    "en": "the questions happened to cover my daily work"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_COMMUTERS_SUBJECT": {
+    "source": "培训考试的满分",
+    "zh_CN": "培训考试的满分",
+    "en": "a perfect score on the training exam"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_CULTURE_FANS_EFFORT": {
+    "source": "顺手填了影展的知识问答",
+    "zh_CN": "顺手填了影展的知识问答",
+    "en": "casually filled in the film festival quiz"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_CULTURE_FANS_RESULT": {
+    "source": "赢走了导演签名的海报",
+    "zh_CN": "赢走了导演签名的海报",
+    "en": "won the director's signed poster"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_CULTURE_FANS_PEER": {
+    "source": "查了整晚的电影资料",
+    "zh_CN": "查了整晚的电影资料",
+    "en": "looked up film trivia all night"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_CULTURE_FANS_CAUSE": {
+    "source": "题目全是我看过十遍的老片",
+    "zh_CN": "题目全是我看过十遍的老片",
+    "en": "all the questions were about films I have seen ten times"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_EXAM_CULTURE_FANS_SUBJECT": {
+    "source": "影展问答的独家奖品",
+    "zh_CN": "影展问答的独家奖品",
+    "en": "winning the festival's exclusive quiz prize"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_STUDENTS_EFFORT": {
+    "source": "在班群问了句第二名有没有奖学金",
+    "zh_CN": "在班群问了句第二名有没有奖学金",
+    "en": "asked the class chat whether second place gets a scholarship"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_STUDENTS_RESULT": {
+    "source": "被老师单独拉去填申请",
+    "zh_CN": "被老师单独拉去填申请",
+    "en": "got a personal invitation to apply"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_STUDENTS_PEER": {
+    "source": "追着问及格线",
+    "zh_CN": "追着问及格线",
+    "en": "kept asking about the pass mark"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_STUDENTS_CAUSE": {
+    "source": "怕拿少了不好跟家里交代",
+    "zh_CN": "怕拿少了不好跟家里交代",
+    "en": "I was worried a small award would disappoint my family"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_STUDENTS_SUBJECT": {
+    "source": "班群里轻描淡写的奖学金资格",
+    "zh_CN": "班群里轻描淡写的奖学金资格",
+    "en": "casually mentioning scholarship eligibility in the class chat"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_COMMUTERS_EFFORT": {
+    "source": "在夜校群问结业证能不能邮寄",
+    "zh_CN": "在夜校群问结业证能不能邮寄",
+    "en": "asked the evening-class chat whether certificates could be mailed"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_COMMUTERS_RESULT": {
+    "source": "被班主任请去给下一届讲话",
+    "zh_CN": "被班主任请去给下一届讲话",
+    "en": "was invited to address the next class"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_COMMUTERS_PEER": {
+    "source": "还在补交作业",
+    "zh_CN": "还在补交作业",
+    "en": "were still handing in late assignments"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_COMMUTERS_CAUSE": {
+    "source": "实在抽不出时间去领优秀学员奖",
+    "zh_CN": "实在抽不出时间去领优秀学员奖",
+    "en": "I could not make time to collect the outstanding-student award"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_COMMUTERS_SUBJECT": {
+    "source": "夜校里的优秀学员身份",
+    "zh_CN": "夜校里的优秀学员身份",
+    "en": "being named the evening class's outstanding student"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_CULTURE_FANS_EFFORT": {
+    "source": "在读书群问谁要多出来的票",
+    "zh_CN": "在读书群问谁要多出来的票",
+    "en": "asked the reading group who wanted my spare ticket"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_CULTURE_FANS_RESULT": {
+    "source": "被作家认出来留了前排座",
+    "zh_CN": "被作家认出来留了前排座",
+    "en": "was recognised by the author and given a front-row seat"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_CULTURE_FANS_PEER": {
+    "source": "在群里蹲了三天余票",
+    "zh_CN": "在群里蹲了三天余票",
+    "en": "waited three days in the chat for spare tickets"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_CULTURE_FANS_CAUSE": {
+    "source": "以前随手写的书评被作者看见了",
+    "zh_CN": "以前随手写的书评被作者看见了",
+    "en": "the author had read a review I wrote on a whim"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_CLASS_CHAT_CULTURE_FANS_SUBJECT": {
+    "source": "读书群里显出的作家人脉",
+    "zh_CN": "读书群里显出的作家人脉",
+    "en": "revealing a personal connection to an author in the reading group"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_STUDENTS_EFFORT": {
+    "source": "把课程作业投了个实习岗位",
+    "zh_CN": "把课程作业投了个实习岗位",
+    "en": "sent a class assignment with an internship application"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_STUDENTS_RESULT": {
+    "source": "拿到带薪录用通知",
+    "zh_CN": "拿到带薪录用通知",
+    "en": "received a paid internship offer"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_STUDENTS_PEER": {
+    "source": "准备了整月的作品集",
+    "zh_CN": "准备了整月的作品集",
+    "en": "spent a month preparing portfolios"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_STUDENTS_CAUSE": {
+    "source": "面试官刚好用过我写的小工具",
+    "zh_CN": "面试官刚好用过我写的小工具",
+    "en": "the interviewer happened to use a small tool I had built"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_STUDENTS_SUBJECT": {
+    "source": "靠课程作业拿到的实习机会",
+    "zh_CN": "靠课程作业拿到的实习机会",
+    "en": "getting an internship with a class assignment"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_COMMUTERS_EFFORT": {
+    "source": "在地铁上翻了讲义",
+    "zh_CN": "在地铁上翻了讲义",
+    "en": "skimmed the handout on the train"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_COMMUTERS_RESULT": {
+    "source": "拿到公司唯一的进修名额",
+    "zh_CN": "拿到公司唯一的进修名额",
+    "en": "got the company's only funded study place"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_COMMUTERS_PEER": {
+    "source": "上了三个月培训",
+    "zh_CN": "上了三个月培训",
+    "en": "attended three months of training"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_COMMUTERS_CAUSE": {
+    "source": "资格材料早就随手备好了",
+    "zh_CN": "资格材料早就随手备好了",
+    "en": "I happened to have the application documents ready"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_COMMUTERS_SUBJECT": {
+    "source": "公司唯一的进修名额",
+    "zh_CN": "公司唯一的进修名额",
+    "en": "the company's only funded study place"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_CULTURE_FANS_EFFORT": {
+    "source": "把旧影评当写作课作业交了",
+    "zh_CN": "把旧影评当写作课作业交了",
+    "en": "handed in an old film review for a writing class"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_CULTURE_FANS_RESULT": {
+    "source": "收到杂志约稿",
+    "zh_CN": "收到杂志约稿",
+    "en": "received a magazine commission"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_CULTURE_FANS_PEER": {
+    "source": "照着范文改了十遍",
+    "zh_CN": "照着范文改了十遍",
+    "en": "rewrote their pieces ten times using the examples"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_CULTURE_FANS_CAUSE": {
+    "source": "老师恰好是那家杂志的编辑",
+    "zh_CN": "老师恰好是那家杂志的编辑",
+    "en": "the teacher happened to edit that magazine"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_QUALIFICATION_CULTURE_FANS_SUBJECT": {
+    "source": "由旧影评换来的约稿",
+    "zh_CN": "由旧影评换来的约稿",
+    "en": "a commission earned with an old film review"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_STUDENTS_EFFORT": {
+    "source": "拿选修课的笔记报了知识赛",
+    "zh_CN": "拿选修课的笔记报了知识赛",
+    "en": "used my elective notes to enter a quiz"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_STUDENTS_RESULT": {
+    "source": "替全班赢了免作业券",
+    "zh_CN": "替全班赢了免作业券",
+    "en": "won homework passes for the whole class"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_STUDENTS_PEER": {
+    "source": "临时背了两百道题",
+    "zh_CN": "临时背了两百道题",
+    "en": "memorised two hundred questions at the last minute"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_STUDENTS_CAUSE": {
+    "source": "出题老师正好教过那门课",
+    "zh_CN": "出题老师正好教过那门课",
+    "en": "the quiz writer had taught that elective"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_STUDENTS_SUBJECT": {
+    "source": "替全班赢来的免作业券",
+    "zh_CN": "替全班赢来的免作业券",
+    "en": "winning homework passes for the whole class"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_COMMUTERS_EFFORT": {
+    "source": "陪同事去听了一场公开课",
+    "zh_CN": "陪同事去听了一场公开课",
+    "en": "went along to a public lecture with a colleague"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_COMMUTERS_RESULT": {
+    "source": "答题拿走了年会大奖",
+    "zh_CN": "答题拿走了年会大奖",
+    "en": "won the grand prize in the office quiz"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_COMMUTERS_PEER": {
+    "source": "背了一整本题库",
+    "zh_CN": "背了一整本题库",
+    "en": "memorised an entire question bank"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_COMMUTERS_CAUSE": {
+    "source": "最后一道题刚好在课上听过",
+    "zh_CN": "最后一道题刚好在课上听过",
+    "en": "the final question had come up in that lecture"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_COMMUTERS_SUBJECT": {
+    "source": "公司知识赛的大奖",
+    "zh_CN": "公司知识赛的大奖",
+    "en": "winning the office quiz's grand prize"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_CULTURE_FANS_EFFORT": {
+    "source": "照着同人本背了几句古诗",
+    "zh_CN": "照着同人本背了几句古诗",
+    "en": "learnt a few poems from a fan book"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_CULTURE_FANS_RESULT": {
+    "source": "拿了诗词赛的冠军",
+    "zh_CN": "拿了诗词赛的冠军",
+    "en": "won the poetry contest"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_CULTURE_FANS_PEER": {
+    "source": "抱着诗集背了半年",
+    "zh_CN": "抱着诗集背了半年",
+    "en": "spent six months learning poetry collections"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_CULTURE_FANS_CAUSE": {
+    "source": "决赛题全是我喜欢的角色念过的",
+    "zh_CN": "决赛题全是我喜欢的角色念过的",
+    "en": "every final-round poem had been quoted by my favourite character"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TRIVIA_CULTURE_FANS_SUBJECT": {
+    "source": "靠同人爱好赢下的诗词赛",
+    "zh_CN": "靠同人爱好赢下的诗词赛",
+    "en": "winning a poetry contest through a fan obsession"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_CULTURE_FANS_SPEAKER": {
+    "source": "凌晨两点的我：",
+    "zh_CN": "凌晨两点的我：",
+    "en": "Me at 2 a.m.: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_CULTURE_FANS_ACTION": {
+    "source": "逐帧讲这部电影的隐藏细节",
+    "zh_CN": "逐帧讲这部电影的隐藏细节",
+    "en": "explaining the hidden details of this film frame by frame"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_CULTURE_FANS_REASON": {
+    "source": "已经把这部电影看了二十遍",
+    "zh_CN": "已经把这部电影看了二十遍",
+    "en": "I have watched this film twenty times"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_CULTURE_FANS_PEER": {
+    "source": "看完片尾就散场",
+    "zh_CN": "看完片尾就散场",
+    "en": "leave when the credits end"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_CULTURE_FANS_SUBJECT": {
+    "source": "逐帧分析冷门电影",
+    "zh_CN": "逐帧分析冷门电影",
+    "en": "analysing an obscure film frame by frame"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_STUDENTS_SPEAKER": {
+    "source": "晚自习前的我：",
+    "zh_CN": "晚自习前的我：",
+    "en": "Me before evening study: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_STUDENTS_ACTION": {
+    "source": "拿黑板推理动画大结局",
+    "zh_CN": "拿黑板推理动画大结局",
+    "en": "using the blackboard to predict an anime finale"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_STUDENTS_REASON": {
+    "source": "老师擦掉的线条太像片尾彩蛋",
+    "zh_CN": "老师擦掉的线条太像片尾彩蛋",
+    "en": "the half-erased marks look like the final scene's clue"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_STUDENTS_PEER": {
+    "source": "趁老师没来补作业",
+    "zh_CN": "趁老师没来补作业",
+    "en": "finish their homework before the teacher arrives"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_STUDENTS_SUBJECT": {
+    "source": "把教室变成动画推理现场",
+    "zh_CN": "把教室变成动画推理现场",
+    "en": "turning the classroom into an anime theory session"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_COMMUTERS_SPEAKER": {
+    "source": "午休时的我：",
+    "zh_CN": "午休时的我：",
+    "en": "Me on my lunch break: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_COMMUTERS_ACTION": {
+    "source": "用部门关系图讲宫斗剧",
+    "zh_CN": "用部门关系图讲宫斗剧",
+    "en": "explaining a palace drama with our department chart"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_COMMUTERS_REASON": {
+    "source": "昨晚的剧情和今天的晨会一模一样",
+    "zh_CN": "昨晚的剧情和今天的晨会一模一样",
+    "en": "last night's plot matched this morning's meeting"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_COMMUTERS_PEER": {
+    "source": "边吃饭边刷短视频",
+    "zh_CN": "边吃饭边刷短视频",
+    "en": "watch short videos over lunch"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FILM_COMMUTERS_SUBJECT": {
+    "source": "拿职场关系拆解电视剧",
+    "zh_CN": "拿职场关系拆解电视剧",
+    "en": "explaining a TV drama through office politics"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_CULTURE_FANS_SPEAKER": {
+    "source": "新人刚进群时的我：",
+    "zh_CN": "新人刚进群时的我：",
+    "en": "Me when someone joins the fan chat: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_CULTURE_FANS_ACTION": {
+    "source": "给新人梳理十年的角色关系",
+    "zh_CN": "给新人梳理十年的角色关系",
+    "en": "mapping ten years of character relationships for the newcomer"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_CULTURE_FANS_REASON": {
+    "source": "对方头像用了一个冷门配角",
+    "zh_CN": "对方头像用了一个冷门配角",
+    "en": "their avatar is an obscure supporting character"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_CULTURE_FANS_PEER": {
+    "source": "发个欢迎表情就潜水",
+    "zh_CN": "发个欢迎表情就潜水",
+    "en": "send a welcome emoji and go quiet"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_CULTURE_FANS_SUBJECT": {
+    "source": "给新人讲十年角色史",
+    "zh_CN": "给新人讲十年角色史",
+    "en": "giving a newcomer ten years of character history"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_STUDENTS_SPEAKER": {
+    "source": "社团招新时的我：",
+    "zh_CN": "社团招新时的我：",
+    "en": "Me at the club recruitment table: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_STUDENTS_ACTION": {
+    "source": "把入社登记表讲成世界观设定",
+    "zh_CN": "把入社登记表讲成世界观设定",
+    "en": "explaining the signup sheet as part of our fictional universe"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_STUDENTS_REASON": {
+    "source": "新人问了一句社团名字怎么念",
+    "zh_CN": "新人问了一句社团名字怎么念",
+    "en": "a newcomer asked how to pronounce the club name"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_STUDENTS_PEER": {
+    "source": "收完报名表就走",
+    "zh_CN": "收完报名表就走",
+    "en": "leave after collecting the forms"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_STUDENTS_SUBJECT": {
+    "source": "把社团招新讲成设定课",
+    "zh_CN": "把社团招新讲成设定课",
+    "en": "turning club recruitment into a lore lecture"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_COMMUTERS_SPEAKER": {
+    "source": "部门群下班后的我：",
+    "zh_CN": "部门群下班后的我：",
+    "en": "Me in the office chat after work: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_COMMUTERS_ACTION": {
+    "source": "用表情包给新同事补团建八卦",
+    "zh_CN": "用表情包给新同事补团建八卦",
+    "en": "using memes to explain old team-outing gossip to a new colleague"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_COMMUTERS_REASON": {
+    "source": "新人把老梗当成了工作通知",
+    "zh_CN": "新人把老梗当成了工作通知",
+    "en": "the new colleague mistook an old joke for a work notice"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_COMMUTERS_PEER": {
+    "source": "六点准时把群设成免打扰",
+    "zh_CN": "六点准时把群设成免打扰",
+    "en": "mute the chat at six"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_FAN_CHAT_COMMUTERS_SUBJECT": {
+    "source": "给新同事补公司的老梗",
+    "zh_CN": "给新同事补公司的老梗",
+    "en": "catching a new colleague up on office in-jokes"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_CULTURE_FANS_SPEAKER": {
+    "source": "同好问起接稿时的我：",
+    "zh_CN": "同好问起接稿时的我：",
+    "en": "Me when a fan friend mentions commissions: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_CULTURE_FANS_ACTION": {
+    "source": "拿接稿报价讲整套创作生存术",
+    "zh_CN": "拿接稿报价讲整套创作生存术",
+    "en": "explaining a whole creative career through commission prices"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_CULTURE_FANS_REASON": {
+    "source": "自己的改稿次数已经超过了页数",
+    "zh_CN": "自己的改稿次数已经超过了页数",
+    "en": "my revision count has overtaken the page count"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_CULTURE_FANS_PEER": {
+    "source": "报完价格就收工",
+    "zh_CN": "报完价格就收工",
+    "en": "quote a price and call it a day"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_CULTURE_FANS_SUBJECT": {
+    "source": "从报价聊到创作者谋生",
+    "zh_CN": "从报价聊到创作者谋生",
+    "en": "turning a price quote into a lecture on creative work"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_STUDENTS_SPEAKER": {
+    "source": "实习第一天的我：",
+    "zh_CN": "实习第一天的我：",
+    "en": "Me on my first internship day: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_STUDENTS_ACTION": {
+    "source": "拿学校作业给主管演示工作流",
+    "zh_CN": "拿学校作业给主管演示工作流",
+    "en": "demonstrating a workflow to the manager with a school assignment"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_STUDENTS_REASON": {
+    "source": "入职培训的例子恰好做过",
+    "zh_CN": "入职培训的例子恰好做过",
+    "en": "I have already done the induction exercise"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_STUDENTS_PEER": {
+    "source": "听完培训记下工号",
+    "zh_CN": "听完培训记下工号",
+    "en": "note their employee number after induction"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_STUDENTS_SUBJECT": {
+    "source": "实习第一天抢着讲工作流",
+    "zh_CN": "实习第一天抢着讲工作流",
+    "en": "explaining workflows on the first day of an internship"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_COMMUTERS_SPEAKER": {
+    "source": "办公室里的我：",
+    "zh_CN": "办公室里的我：",
+    "en": "Me at the office: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_COMMUTERS_ACTION": {
+    "source": "拆解整套报销流程",
+    "zh_CN": "拆解整套报销流程",
+    "en": "walking through the entire expenses process"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_COMMUTERS_REASON": {
+    "source": "午休实在太安静",
+    "zh_CN": "午休实在太安静",
+    "en": "lunch is far too quiet"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_COMMUTERS_PEER": {
+    "source": "交完发票就去吃饭",
+    "zh_CN": "交完发票就去吃饭",
+    "en": "hand in their receipts and get lunch"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_OFFICE_COMMUTERS_SUBJECT": {
+    "source": "给同事讲报销流程",
+    "zh_CN": "给同事讲报销流程",
+    "en": "lecturing colleagues on expenses"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_CULTURE_FANS_SPEAKER": {
+    "source": "画群里的我：",
+    "zh_CN": "画群里的我：",
+    "en": "Me in the art chat: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_CULTURE_FANS_ACTION": {
+    "source": "演示一套画笔参数和图层命名法",
+    "zh_CN": "演示一套画笔参数和图层命名法",
+    "en": "demonstrating my brush settings and layer naming system"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_CULTURE_FANS_REASON": {
+    "source": "对方只问了软件叫什么",
+    "zh_CN": "对方只问了软件叫什么",
+    "en": "someone only asked what the app was called"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_CULTURE_FANS_PEER": {
+    "source": "发完成图就下线",
+    "zh_CN": "发完成图就下线",
+    "en": "post their finished art and log off"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_CULTURE_FANS_SUBJECT": {
+    "source": "把软件推荐变成绘画教程",
+    "zh_CN": "把软件推荐变成绘画教程",
+    "en": "turning an app recommendation into an art tutorial"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_STUDENTS_SPEAKER": {
+    "source": "小组作业群里的我：",
+    "zh_CN": "小组作业群里的我：",
+    "en": "Me in the group-project chat: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_STUDENTS_ACTION": {
+    "source": "给共享文档搭一套自动化脚本",
+    "zh_CN": "给共享文档搭一套自动化脚本",
+    "en": "building an automation script for the shared document"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_STUDENTS_REASON": {
+    "source": "复制粘贴第三遍就受不了了",
+    "zh_CN": "复制粘贴第三遍就受不了了",
+    "en": "I could not face copying and pasting a third time"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_STUDENTS_PEER": {
+    "source": "手动把作业拼在一起",
+    "zh_CN": "手动把作业拼在一起",
+    "en": "assemble the assignment by hand"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_STUDENTS_SUBJECT": {
+    "source": "为小组作业过度折腾工具",
+    "zh_CN": "为小组作业过度折腾工具",
+    "en": "overengineering the tools for a group assignment"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_COMMUTERS_SPEAKER": {
+    "source": "下班前的我：",
+    "zh_CN": "下班前的我：",
+    "en": "Me just before clocking off: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_COMMUTERS_ACTION": {
+    "source": "把报表软件讲成一门编程课",
+    "zh_CN": "把报表软件讲成一门编程课",
+    "en": "turning the reporting app into a programming lesson"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_COMMUTERS_REASON": {
+    "source": "终于找到隐藏了三年的快捷键",
+    "zh_CN": "终于找到隐藏了三年的快捷键",
+    "en": "I finally found the shortcut that had eluded me for three years"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_COMMUTERS_PEER": {
+    "source": "点完导出就关电脑",
+    "zh_CN": "点完导出就关电脑",
+    "en": "export the report and shut down"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_SOFTWARE_COMMUTERS_SUBJECT": {
+    "source": "把报表窍门讲成编程课",
+    "zh_CN": "把报表窍门讲成编程课",
+    "en": "turning a reporting shortcut into a programming lesson"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_CULTURE_FANS_SPEAKER": {
+    "source": "读书会里的我：",
+    "zh_CN": "读书会里的我：",
+    "en": "Me at the reading group: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_CULTURE_FANS_ACTION": {
+    "source": "从一个脚注讲到整部文学史",
+    "zh_CN": "从一个脚注讲到整部文学史",
+    "en": "explaining an entire literary history from one footnote"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_CULTURE_FANS_REASON": {
+    "source": "那个脚注提到了最喜欢的作家",
+    "zh_CN": "那个脚注提到了最喜欢的作家",
+    "en": "the footnote mentions my favourite author"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_CULTURE_FANS_PEER": {
+    "source": "读完指定章节就合书",
+    "zh_CN": "读完指定章节就合书",
+    "en": "close the book after the assigned chapter"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_CULTURE_FANS_SUBJECT": {
+    "source": "从脚注一路讲到文学史",
+    "zh_CN": "从脚注一路讲到文学史",
+    "en": "going from a footnote to a literary history"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_STUDENTS_SPEAKER": {
+    "source": "课堂上的我：",
+    "zh_CN": "课堂上的我：",
+    "en": "Me in class: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_STUDENTS_ACTION": {
+    "source": "把一道附加题讲出三种解法",
+    "zh_CN": "把一道附加题讲出三种解法",
+    "en": "explaining three ways to solve the bonus question"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_STUDENTS_REASON": {
+    "source": "昨晚为了它忘了睡觉",
+    "zh_CN": "昨晚为了它忘了睡觉",
+    "en": "I lost a night's sleep working on it"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_STUDENTS_PEER": {
+    "source": "等下课铃响",
+    "zh_CN": "等下课铃响",
+    "en": "wait for the bell"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_STUDENTS_SUBJECT": {
+    "source": "抢着分享附加题解法",
+    "zh_CN": "抢着分享附加题解法",
+    "en": "rushing to share bonus-question solutions"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_COMMUTERS_SPEAKER": {
+    "source": "夜校课间的我：",
+    "zh_CN": "夜校课间的我：",
+    "en": "Me during an evening-class break: "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_COMMUTERS_ACTION": {
+    "source": "用白天的客户案例重讲整节课",
+    "zh_CN": "用白天的客户案例重讲整节课",
+    "en": "reteaching the lesson through a client case from work"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_COMMUTERS_REASON": {
+    "source": "课本省掉了最折腾的那一步",
+    "zh_CN": "课本省掉了最折腾的那一步",
+    "en": "the textbook leaves out the most troublesome step"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_COMMUTERS_PEER": {
+    "source": "趁课间打个盹",
+    "zh_CN": "趁课间打个盹",
+    "en": "nap during the break"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_LESSON_COMMUTERS_SUBJECT": {
+    "source": "用工作经验重讲夜校课程",
+    "zh_CN": "用工作经验重讲夜校课程",
+    "en": "reteaching an evening class through work experience"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_STUDENTS_CONTEXT": {
+    "source": "长辈：你们现在读书太轻松了，我们那时哪有这些条件。",
+    "zh_CN": "长辈：你们现在读书太轻松了，我们那时哪有这些条件。",
+    "en": "An elder: School is so easy for you now. We never had those advantages."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_STUDENTS_QUESTION": {
+    "source": "您的旧课本能替我交学费吗",
+    "zh_CN": "您的旧课本能替我交学费吗",
+    "en": "will your old textbooks pay my tuition"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_STUDENTS_COMPARISON": {
+    "source": "您那时毕业就分配工作，我还得先还助学贷款",
+    "zh_CN": "您那时毕业就分配工作，我还得先还助学贷款",
+    "en": "you graduated into an assigned job; I graduate into student debt"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_STUDENTS_REASON": {
+    "source": "这笔学费得我自己还",
+    "zh_CN": "这笔学费得我自己还",
+    "en": "I have to repay my own tuition"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_STUDENTS_DEPARTURE": {
+    "source": "我去赶助学岗的班了",
+    "zh_CN": "我去赶助学岗的班了",
+    "en": "I have a campus job shift to get to"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_STUDENTS_SUBJECT": {
+    "source": "长辈拿旧求学经历训年轻人",
+    "zh_CN": "长辈拿旧求学经历训年轻人",
+    "en": "an elder lecturing students through outdated school experiences"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_COMMUTERS_CONTEXT": {
+    "source": "老同事：读夜校有什么用，我们当年靠肯干就能升。",
+    "zh_CN": "老同事：读夜校有什么用，我们当年靠肯干就能升。",
+    "en": "An older colleague: Why take evening classes? Hard work got us promoted."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_COMMUTERS_QUESTION": {
+    "source": "您那张旧工牌能替我过学历筛选吗",
+    "zh_CN": "您那张旧工牌能替我过学历筛选吗",
+    "en": "will your old staff badge get me past the degree filter"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_COMMUTERS_COMPARISON": {
+    "source": "您入职时看师傅推荐，我转岗先看学位",
+    "zh_CN": "您入职时看师傅推荐，我转岗先看学位",
+    "en": "you entered on a mentor's recommendation; my transfer needs a degree"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_COMMUTERS_REASON": {
+    "source": "转岗公告第一条就写着学历要求",
+    "zh_CN": "转岗公告第一条就写着学历要求",
+    "en": "the transfer notice starts with a degree requirement"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_COMMUTERS_DEPARTURE": {
+    "source": "我去上夜课了",
+    "zh_CN": "我去上夜课了",
+    "en": "I am off to my evening class"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_COMMUTERS_SUBJECT": {
+    "source": "老同事否定在职学习的说教",
+    "zh_CN": "老同事否定在职学习的说教",
+    "en": "an older colleague dismissing adult education"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_CULTURE_FANS_CONTEXT": {
+    "source": "前辈：看这些漫画有什么出息，年轻人该多读正经书。",
+    "zh_CN": "前辈：看这些漫画有什么出息，年轻人该多读正经书。",
+    "en": "An older reader: Comics are a waste. Young people should read proper books."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_CULTURE_FANS_QUESTION": {
+    "source": "连书名都没看过就能打分吗",
+    "zh_CN": "连书名都没看过就能打分吗",
+    "en": "can you grade a book without reading its title"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_CULTURE_FANS_COMPARISON": {
+    "source": "您当年追武侠，我现在追漫画",
+    "zh_CN": "您当年追武侠，我现在追漫画",
+    "en": "you grew up reading martial-arts serials; I read comics"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_CULTURE_FANS_REASON": {
+    "source": "这本漫画正是课程研究的材料",
+    "zh_CN": "这本漫画正是课程研究的材料",
+    "en": "this comic is the subject of my course research"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_CULTURE_FANS_DEPARTURE": {
+    "source": "我回去读完这一卷了",
+    "zh_CN": "我回去读完这一卷了",
+    "en": "I am going back to finish this volume"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_CULTURE_FANS_SUBJECT": {
+    "source": "前辈按载体给阅读爱好分高下",
+    "zh_CN": "前辈按载体给阅读爱好分高下",
+    "en": "an older reader ranking reading habits by medium"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_STUDENTS_CONTEXT": {
+    "source": "长辈：刚毕业别挑，先免费干几个月让人看到诚意。",
+    "zh_CN": "长辈：刚毕业别挑，先免费干几个月让人看到诚意。",
+    "en": "An elder: Do not be picky after graduation. Work free for a few months to prove yourself."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_STUDENTS_QUESTION": {
+    "source": "房东也接受诚意抵房租吗",
+    "zh_CN": "房东也接受诚意抵房租吗",
+    "en": "will my landlord accept sincerity as rent"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_STUDENTS_COMPARISON": {
+    "source": "您实习时住家里，我去外地先要交押金",
+    "zh_CN": "您实习时住家里，我去外地先要交押金",
+    "en": "you lived at home as an intern; I need a deposit in another city"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_STUDENTS_REASON": {
+    "source": "这份实习连车费都不报",
+    "zh_CN": "这份实习连车费都不报",
+    "en": "this internship will not even cover travel"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_STUDENTS_DEPARTURE": {
+    "source": "我去投有薪岗位了",
+    "zh_CN": "我去投有薪岗位了",
+    "en": "I am applying for paid positions"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_STUDENTS_SUBJECT": {
+    "source": "长辈把无薪实习说成吃苦机会",
+    "zh_CN": "长辈把无薪实习说成吃苦机会",
+    "en": "an elder praising unpaid internships as character building"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_COMMUTERS_CONTEXT": {
+    "source": "老员工：新人先把杂活全包了，我们都是这么过来的。",
+    "zh_CN": "老员工：新人先把杂活全包了，我们都是这么过来的。",
+    "en": "A senior employee: New hires should do every chore. We all did our time."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_COMMUTERS_QUESTION": {
+    "source": "替全组倒咖啡也算岗位培训吗",
+    "zh_CN": "替全组倒咖啡也算岗位培训吗",
+    "en": "does making coffee for the whole team count as training"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_COMMUTERS_COMPARISON": {
+    "source": "您新人时有人带，我现在一人顶两个缺",
+    "zh_CN": "您新人时有人带，我现在一人顶两个缺",
+    "en": "you had a mentor; I am filling two vacancies"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_COMMUTERS_REASON": {
+    "source": "我的合同里没有私人跑腿这项",
+    "zh_CN": "我的合同里没有私人跑腿这项",
+    "en": "personal errands are not in my contract"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_COMMUTERS_DEPARTURE": {
+    "source": "我去做合同里的工作了",
+    "zh_CN": "我去做合同里的工作了",
+    "en": "I am returning to the work in my contract"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_COMMUTERS_SUBJECT": {
+    "source": "资深员工要求新人无条件打杂",
+    "zh_CN": "资深员工要求新人无条件打杂",
+    "en": "a senior employee demanding unpaid personal errands"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_CULTURE_FANS_CONTEXT": {
+    "source": "圈内前辈：新人投稿谈什么稿费，能刊登就是给你机会。",
+    "zh_CN": "圈内前辈：新人投稿谈什么稿费，能刊登就是给你机会。",
+    "en": "An established creator: A newcomer should not ask for a fee. Publication is your reward."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_CULTURE_FANS_QUESTION": {
+    "source": "印厂也愿意收曝光当货款吗",
+    "zh_CN": "印厂也愿意收曝光当货款吗",
+    "en": "will the printer accept exposure as payment"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_CULTURE_FANS_COMPARISON": {
+    "source": "您入行时刊物付稿费，我如今还得倒贴版面钱",
+    "zh_CN": "您入行时刊物付稿费，我如今还得倒贴版面钱",
+    "en": "magazines paid you when you started; I am asked to pay page charges"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_CULTURE_FANS_REASON": {
+    "source": "画稿占的工时已经超过了兼职",
+    "zh_CN": "画稿占的工时已经超过了兼职",
+    "en": "the commission takes longer than my paid part-time job"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_CULTURE_FANS_DEPARTURE": {
+    "source": "我去接付钱的稿了",
+    "zh_CN": "我去接付钱的稿了",
+    "en": "I am taking a commission that pays"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_CULTURE_FANS_SUBJECT": {
+    "source": "前辈拿入圈机会压低创作报酬",
+    "zh_CN": "前辈拿入圈机会压低创作报酬",
+    "en": "an established creator using access to suppress newcomer pay"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_STUDENTS_CONTEXT": {
+    "source": "带队老师：年轻人熬几夜算什么，比赛成绩就是这么拼出来的。",
+    "zh_CN": "带队老师：年轻人熬几夜算什么，比赛成绩就是这么拼出来的。",
+    "en": "A teacher: A few sleepless nights are nothing when you are young. That is how contests are won."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_STUDENTS_QUESTION": {
+    "source": "缺觉也能算竞赛加分吗",
+    "zh_CN": "缺觉也能算竞赛加分吗",
+    "en": "does sleep deprivation earn contest points"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_STUDENTS_COMPARISON": {
+    "source": "您当年只管参赛，我还得补落下的课",
+    "zh_CN": "您当年只管参赛，我还得补落下的课",
+    "en": "you only had the contest; I still have missed classes to catch up on"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_STUDENTS_REASON": {
+    "source": "明早还有必须到场的考试",
+    "zh_CN": "明早还有必须到场的考试",
+    "en": "I have a compulsory exam tomorrow morning"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_STUDENTS_DEPARTURE": {
+    "source": "我先回宿舍睡觉了",
+    "zh_CN": "我先回宿舍睡觉了",
+    "en": "I am going back to the dorm to sleep"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_STUDENTS_SUBJECT": {
+    "source": "老师把竞赛熬夜当成年轻人的义务",
+    "zh_CN": "老师把竞赛熬夜当成年轻人的义务",
+    "en": "a teacher treating sleepless contest work as a student duty"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_COMMUTERS_CONTEXT": {
+    "source": "主管：年轻人别总盯着下班时间，我们当年都睡办公室。",
+    "zh_CN": "主管：年轻人别总盯着下班时间，我们当年都睡办公室。",
+    "en": "A manager: Stop watching the clock. We used to sleep at the office."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_COMMUTERS_QUESTION": {
+    "source": "睡办公室能抵扣房租吗",
+    "zh_CN": "睡办公室能抵扣房租吗",
+    "en": "does sleeping at the office count toward rent"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_COMMUTERS_COMPARISON": {
+    "source": "您那时加班有调休，我这周连周末都排满了",
+    "zh_CN": "您那时加班有调休，我这周连周末都排满了",
+    "en": "your overtime earned time off; even my weekend is booked"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_COMMUTERS_REASON": {
+    "source": "明天的工时已经排在合同之外",
+    "zh_CN": "明天的工时已经排在合同之外",
+    "en": "tomorrow's hours already exceed my contract"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_COMMUTERS_DEPARTURE": {
+    "source": "我下班了",
+    "zh_CN": "我下班了",
+    "en": "I am clocking off"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_COMMUTERS_SUBJECT": {
+    "source": "主管拿吃苦经历要求无偿加班",
+    "zh_CN": "主管拿吃苦经历要求无偿加班",
+    "en": "a manager using past hardship to demand unpaid overtime"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_CULTURE_FANS_CONTEXT": {
+    "source": "前辈：喜欢画画就别怕通宵，赶死线才练得出来。",
+    "zh_CN": "前辈：喜欢画画就别怕通宵，赶死线才练得出来。",
+    "en": "An older artist: If you love drawing, do not fear an all-nighter. Deadlines build skill."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_CULTURE_FANS_QUESTION": {
+    "source": "腱鞘炎也算从业资格吗",
+    "zh_CN": "腱鞘炎也算从业资格吗",
+    "en": "does tendonitis count as a professional qualification"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_CULTURE_FANS_COMPARISON": {
+    "source": "您只赶一部连载，我还要白天上班晚上接稿",
+    "zh_CN": "您只赶一部连载，我还要白天上班晚上接稿",
+    "en": "you had one serial; I have a day job and evening commissions"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_CULTURE_FANS_REASON": {
+    "source": "手腕已经疼得握不住笔",
+    "zh_CN": "手腕已经疼得握不住笔",
+    "en": "my wrist already hurts too much to hold a pen"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_CULTURE_FANS_DEPARTURE": {
+    "source": "我先把画板关了",
+    "zh_CN": "我先把画板关了",
+    "en": "I am turning off the drawing tablet"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_CULTURE_FANS_SUBJECT": {
+    "source": "前辈把创作热爱当成透支身体的理由",
+    "zh_CN": "前辈把创作热爱当成透支身体的理由",
+    "en": "an older artist using passion to excuse exhaustion"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_STUDENTS_CONTEXT": {
+    "source": "长辈：年轻人少买点奶茶，毕业就能自己买房。",
+    "zh_CN": "长辈：年轻人少买点奶茶，毕业就能自己买房。",
+    "en": "An elder: Buy less milk tea and you can own a home after graduation."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_STUDENTS_QUESTION": {
+    "source": "戒奶茶能省出首付吗",
+    "zh_CN": "戒奶茶能省出首付吗",
+    "en": "will giving up milk tea cover a down payment"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_STUDENTS_COMPARISON": {
+    "source": "您首付是三个月工资，我的押金就要攒一学期",
+    "zh_CN": "您首付是三个月工资，我的押金就要攒一学期",
+    "en": "your down payment was three months' pay; my deposit takes a semester"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_STUDENTS_REASON": {
+    "source": "学校周围最便宜的合租也涨价了",
+    "zh_CN": "学校周围最便宜的合租也涨价了",
+    "en": "even the cheapest room near campus has gone up"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_STUDENTS_DEPARTURE": {
+    "source": "我去看合租房了",
+    "zh_CN": "我去看合租房了",
+    "en": "I am going to view a shared flat"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_STUDENTS_SUBJECT": {
+    "source": "长辈把毕业生住房困境归咎于小额消费",
+    "zh_CN": "长辈把毕业生住房困境归咎于小额消费",
+    "en": "an elder blaming graduate housing costs on small treats"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_COMMUTERS_CONTEXT": {
+    "source": "长辈：我们当年一份工资就养家，你们就是不会省钱。",
+    "zh_CN": "长辈：我们当年一份工资就养家，你们就是不会省钱。",
+    "en": "An elder: One wage supported our family. You simply cannot save."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_COMMUTERS_QUESTION": {
+    "source": "房租会按您当年的工资算吗",
+    "zh_CN": "房租会按您当年的工资算吗",
+    "en": "will the rent be set by your old salary"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_COMMUTERS_COMPARISON": {
+    "source": "您当年月薪三倍能付首付，我现在押金就得借钱",
+    "zh_CN": "您当年月薪三倍能付首付，我现在押金就得借钱",
+    "en": "your down payment cost three months' pay; I must borrow for a deposit"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_COMMUTERS_REASON": {
+    "source": "房租涨得比工资快",
+    "zh_CN": "房租涨得比工资快",
+    "en": "rent is rising faster than my pay"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_COMMUTERS_DEPARTURE": {
+    "source": "我去赶末班地铁了",
+    "zh_CN": "我去赶末班地铁了",
+    "en": "I need to catch the last train"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_COMMUTERS_SUBJECT": {
+    "source": "长辈用旧房价评判今天的打工生活",
+    "zh_CN": "长辈用旧房价评判今天的打工生活",
+    "en": "an elder judging working life through old housing costs"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_CULTURE_FANS_CONTEXT": {
+    "source": "前辈：别买那些周边了，省下来的钱早够租个工作室。",
+    "zh_CN": "前辈：别买那些周边了，省下来的钱早够租个工作室。",
+    "en": "An older creator: Stop buying merchandise. You could have rented a studio with that money."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_CULTURE_FANS_QUESTION": {
+    "source": "卖几本画集就够一年房租吗",
+    "zh_CN": "卖几本画集就够一年房租吗",
+    "en": "will selling a few art books cover a year's rent"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_CULTURE_FANS_COMPARISON": {
+    "source": "您工作室租金二十年没变，我续租一次就涨三成",
+    "zh_CN": "您工作室租金二十年没变，我续租一次就涨三成",
+    "en": "your studio rent has stayed fixed for twenty years; mine rises thirty percent at renewal"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_CULTURE_FANS_REASON": {
+    "source": "合租画室的押金已经超过了整柜周边",
+    "zh_CN": "合租画室的押金已经超过了整柜周边",
+    "en": "the shared studio deposit costs more than my whole collection"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_CULTURE_FANS_DEPARTURE": {
+    "source": "我去找合租画室了",
+    "zh_CN": "我去找合租画室了",
+    "en": "I am looking for a shared studio"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_CULTURE_FANS_SUBJECT": {
+    "source": "前辈把创作者的租房压力怪到收藏爱好上",
+    "zh_CN": "前辈把创作者的租房压力怪到收藏爱好上",
+    "en": "an older creator blaming studio costs on collecting merchandise"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_STUDENTS_CONTEXT": {
+    "source": "邻居：年轻人别占活动室，我们排练几十年了。",
+    "zh_CN": "邻居：年轻人别占活动室，我们排练几十年了。",
+    "en": "A neighbour: Young people should stay out of the activity room. We have rehearsed here for decades."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_STUDENTS_QUESTION": {
+    "source": "公共活动室还按年龄排座吗",
+    "zh_CN": "公共活动室还按年龄排座吗",
+    "en": "are seats in a public room assigned by age"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_STUDENTS_COMPARISON": {
+    "source": "您每周排五天，我们社团只预约了两小时",
+    "zh_CN": "您每周排五天，我们社团只预约了两小时",
+    "en": "you book five days a week; our club booked two hours"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_STUDENTS_REASON": {
+    "source": "这两小时已经在社区系统里预约了",
+    "zh_CN": "这两小时已经在社区系统里预约了",
+    "en": "our two-hour booking is confirmed in the community system"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_STUDENTS_DEPARTURE": {
+    "source": "我去找值班管理员了",
+    "zh_CN": "我去找值班管理员了",
+    "en": "I am going to speak to the duty manager"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_STUDENTS_SUBJECT": {
+    "source": "老住户用资历排斥学生使用公共空间",
+    "zh_CN": "老住户用资历排斥学生使用公共空间",
+    "en": "a long-time resident excluding students from a shared room"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_COMMUTERS_CONTEXT": {
+    "source": "老住户：加班回来晚就别叫外卖，年轻人不能这么娇气。",
+    "zh_CN": "老住户：加班回来晚就别叫外卖，年轻人不能这么娇气。",
+    "en": "A long-time resident: If you get home late, do not order food. Young people are too soft."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_COMMUTERS_QUESTION": {
+    "source": "十点下班还得按您六点的饭点吃吗",
+    "zh_CN": "十点下班还得按您六点的饭点吃吗",
+    "en": "must I eat at your six-o'clock dinner time after a ten-o'clock finish"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_COMMUTERS_COMPARISON": {
+    "source": "您六点已经吃完饭，我十点才出公司",
+    "zh_CN": "您六点已经吃完饭，我十点才出公司",
+    "en": "you finish dinner at six; I leave work at ten"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_COMMUTERS_REASON": {
+    "source": "楼下能吃饭的店早关门了",
+    "zh_CN": "楼下能吃饭的店早关门了",
+    "en": "every restaurant downstairs has already closed"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_COMMUTERS_DEPARTURE": {
+    "source": "我去门口拿饭了",
+    "zh_CN": "我去门口拿饭了",
+    "en": "I am collecting my food at the gate"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_COMMUTERS_SUBJECT": {
+    "source": "老住户拿自己的作息训加班的人",
+    "zh_CN": "老住户拿自己的作息训加班的人",
+    "en": "a resident imposing their timetable on someone working late"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_CULTURE_FANS_CONTEXT": {
+    "source": "老住户：社区活动就该唱老歌，你们这些服装看着不像样。",
+    "zh_CN": "老住户：社区活动就该唱老歌，你们这些服装看着不像样。",
+    "en": "A long-time resident: Community events should feature old songs. Your costumes are ridiculous."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_CULTURE_FANS_QUESTION": {
+    "source": "节目单也得按出生年份排吗",
+    "zh_CN": "节目单也得按出生年份排吗",
+    "en": "must the programme be sorted by birth year"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_CULTURE_FANS_COMPARISON": {
+    "source": "您穿戏服登台，我们换角色服就不合规了",
+    "zh_CN": "您穿戏服登台，我们换角色服就不合规了",
+    "en": "you perform in opera costumes; our character costumes are somehow improper"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_CULTURE_FANS_REASON": {
+    "source": "我们的节目同样通过了报名审核",
+    "zh_CN": "我们的节目同样通过了报名审核",
+    "en": "our act passed the same registration review"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_CULTURE_FANS_DEPARTURE": {
+    "source": "我去后台准备节目了",
+    "zh_CN": "我去后台准备节目了",
+    "en": "I am going backstage to prepare"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_CULTURE_FANS_SUBJECT": {
+    "source": "老住户用熟悉的审美排斥同好表演",
+    "zh_CN": "老住户用熟悉的审美排斥同好表演",
+    "en": "a resident excluding fan performances through familiar tastes"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_STUDENTS_SUBJECT_NOUN": {
+    "source": "长辈拿旧求学经历压人的训话",
+    "zh_CN": "长辈拿旧求学经历压人的训话",
+    "en": "an elder's lecture about how hard school used to be"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_COMMUTERS_SUBJECT_NOUN": {
+    "source": "老同事对在职学习的贬低",
+    "zh_CN": "老同事对在职学习的贬低",
+    "en": "an older colleague's dismissal of adult education"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_SCHOOL_CULTURE_FANS_SUBJECT_NOUN": {
+    "source": "前辈按载体给阅读分高下的说教",
+    "zh_CN": "前辈按载体给阅读分高下的说教",
+    "en": "an older reader's lecture about proper books"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_STUDENTS_SUBJECT_NOUN": {
+    "source": "长辈对无薪实习的劝说",
+    "zh_CN": "长辈对无薪实习的劝说",
+    "en": "an elder's advice to take an unpaid internship"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_COMMUTERS_SUBJECT_NOUN": {
+    "source": "老员工要求新人打杂的训话",
+    "zh_CN": "老员工要求新人打杂的训话",
+    "en": "a senior employee's demand for personal errands"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FIRST_JOB_CULTURE_FANS_SUBJECT_NOUN": {
+    "source": "圈内前辈压低稿费的说辞",
+    "zh_CN": "圈内前辈压低稿费的说辞",
+    "en": "an established creator's excuse for unpaid work"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_STUDENTS_SUBJECT_NOUN": {
+    "source": "老师要求熬夜备赛的训话",
+    "zh_CN": "老师要求熬夜备赛的训话",
+    "en": "a teacher's demand for sleepless contest preparation"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_COMMUTERS_SUBJECT_NOUN": {
+    "source": "主管要求无偿加班的训话",
+    "zh_CN": "主管要求无偿加班的训话",
+    "en": "a manager's demand for unpaid overtime"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_OVERTIME_CULTURE_FANS_SUBJECT_NOUN": {
+    "source": "前辈拿热爱要求通宵的说教",
+    "zh_CN": "前辈拿热爱要求通宵的说教",
+    "en": "an older artist's lecture about working all night for love of art"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_STUDENTS_SUBJECT_NOUN": {
+    "source": "长辈把买房困难怪到奶茶上的说教",
+    "zh_CN": "长辈把买房困难怪到奶茶上的说教",
+    "en": "an elder's claim that milk tea prevents home ownership"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_COMMUTERS_SUBJECT_NOUN": {
+    "source": "长辈拿旧房价教人省钱的说教",
+    "zh_CN": "长辈拿旧房价教人省钱的说教",
+    "en": "an elder's saving advice based on old house prices"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_RENT_CULTURE_FANS_SUBJECT_NOUN": {
+    "source": "前辈把租房压力怪到收藏上的说教",
+    "zh_CN": "前辈把租房压力怪到收藏上的说教",
+    "en": "an older creator's claim that collecting causes rent trouble"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_STUDENTS_SUBJECT_NOUN": {
+    "source": "老住户按资历独占活动室的说辞",
+    "zh_CN": "老住户按资历独占活动室的说辞",
+    "en": "a long-time resident's claim to priority in the activity room"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_COMMUTERS_SUBJECT_NOUN": {
+    "source": "老住户拿自己作息训人的话",
+    "zh_CN": "老住户拿自己作息训人的话",
+    "en": "a resident's demand that everyone keep the same hours"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_NEIGHBORHOOD_CULTURE_FANS_SUBJECT_NOUN": {
+    "source": "老住户排斥同好表演的说教",
+    "zh_CN": "老住户排斥同好表演的说教",
+    "en": "a resident's dismissal of fan performances"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_0": {
+    "source": "我%s，结果%s。",
+    "zh_CN": "我%s，结果%s。",
+    "en": "I %s and somehow %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_1": {
+    "source": "我%s，怎么就%s了？",
+    "zh_CN": "我%s，怎么就%s了？",
+    "en": "how is it that I %s and %s?"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_2": {
+    "source": "别人%s，我%s就%s了。",
+    "zh_CN": "别人%s，我%s就%s了。",
+    "en": "everyone else %s; I %s and %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_3": {
+    "source": "别人%s，怎么我%s就%s了？",
+    "zh_CN": "别人%s，怎么我%s就%s了？",
+    "en": "everyone else %s, so how is it that I %s and %s?"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_4": {
+    "source": "大概是%s，我%s就%s了。",
+    "zh_CN": "大概是%s，我%s就%s了。",
+    "en": "maybe because %s, I %s and %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_5": {
+    "source": "难道因为%s，我%s就%s了？",
+    "zh_CN": "难道因为%s，我%s就%s了？",
+    "en": "could it be because %s that I %s and %s?"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_6": {
+    "source": "别人%s，我倒因为%s，%s就%s了。",
+    "zh_CN": "别人%s，我倒因为%s，%s就%s了。",
+    "en": "everyone else %s; because %s, I %s and %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_FORM_7": {
+    "source": "别人%s，我就因为%s，%s便%s了，这也算难吗？",
+    "zh_CN": "别人%s，我就因为%s，%s便%s了，这也算难吗？",
+    "en": "everyone else %s, yet because %s I %s and %s. Was it meant to be hard?"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_COMPARE": {
+    "source": "没有人：\n其他人：%s。\n",
+    "zh_CN": "没有人：\n其他人：%s。\n",
+    "en": "Nobody:\nEveryone else: %s.\n"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_REASON": {
+    "source": "因为%s，",
+    "zh_CN": "因为%s，",
+    "en": "because %s, "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_ACTION_0": {
+    "source": "%s。",
+    "zh_CN": "%s。",
+    "en": "%s."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_ACTION_1": {
+    "source": "拉着大家一起%s。",
+    "zh_CN": "拉着大家一起%s。",
+    "en": "inviting everyone to join in %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_ACTION_2": {
+    "source": "和愿意听的人一起%s，其他人忙自己的。",
+    "zh_CN": "和愿意听的人一起%s，其他人忙自己的。",
+    "en": "%s with whoever wants to listen, leaving everyone else to their own plans."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_0": {
+    "source": "%s。",
+    "zh_CN": "%s。",
+    "en": "%s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_1": {
+    "source": "%s？%s。",
+    "zh_CN": "%s？%s。",
+    "en": "%s? %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_2": {
+    "source": "%s，%s。",
+    "zh_CN": "%s，%s。",
+    "en": "%s. %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_3": {
+    "source": "%s，那%s？%s。",
+    "zh_CN": "%s，那%s？%s。",
+    "en": "%s. So %s? %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_4": {
+    "source": "%s，还要听这种话，%s。",
+    "zh_CN": "%s，还要听这种话，%s。",
+    "en": "%s, and I still have to hear this. %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_5": {
+    "source": "既然%s，那%s？%s。",
+    "zh_CN": "既然%s，那%s？%s。",
+    "en": "Since %s, %s? %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_6": {
+    "source": "%s，如今%s，还这么劝人，%s。",
+    "zh_CN": "%s，如今%s，还这么劝人，%s。",
+    "en": "%s; now %s, and that is still your advice. %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_7": {
+    "source": "%s，可%s，那%s？%s。",
+    "zh_CN": "%s，可%s，那%s？%s。",
+    "en": "%s, but %s. So %s? %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_8": {
+    "source": "%s，%s。",
+    "zh_CN": "%s，%s。",
+    "en": "%s. %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_9": {
+    "source": "%s？%s，%s。",
+    "zh_CN": "%s？%s，%s。",
+    "en": "%s? %s. %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_10": {
+    "source": "%s，您慢慢怀旧；%s，%s。",
+    "zh_CN": "%s，您慢慢怀旧；%s，%s。",
+    "en": "%s. Enjoy the nostalgia. %s; %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_11": {
+    "source": "%s，那%s？%s，%s。",
+    "zh_CN": "%s，那%s？%s，%s。",
+    "en": "%s. So %s? %s; %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_12": {
+    "source": "%s，没空听这套；%s，%s。",
+    "zh_CN": "%s，没空听这套；%s，%s。",
+    "en": "%s, so I have no time for this. %s; %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_13": {
+    "source": "既然%s，那%s？%s，%s。",
+    "zh_CN": "既然%s，那%s？%s，%s。",
+    "en": "Since %s, %s? %s; %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_14": {
+    "source": "%s，如今%s；%s，%s。",
+    "zh_CN": "%s，如今%s；%s，%s。",
+    "en": "%s, and now %s. %s; %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_FORM_15": {
+    "source": "%s，可%s，您倒说说%s？%s，%s。",
+    "zh_CN": "%s，可%s，您倒说说%s？%s，%s。",
+    "en": "%s, but %s. Tell me, %s? %s; %s."
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_V_COMMUTERS_CULTURE_FANS": {
+    "source": "当着同事和同好的面：",
+    "zh_CN": "当着同事和同好的面：",
+    "en": "In front of co-workers and fellow fans: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_N_COMMUTERS_CULTURE_FANS": {
+    "source": "给同事和同好讲上头的我：",
+    "zh_CN": "给同事和同好讲上头的我：",
+    "en": "Me, getting carried away with co-workers and fellow fans: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_B_COMMUTERS_CULTURE_FANS": {
+    "source": "当着同事和同好的面，",
+    "zh_CN": "当着同事和同好的面，",
+    "en": "In front of co-workers and fellow fans, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_M_COMMUTERS_CULTURE_FANS": {
+    "source": "在同事和同好面前，",
+    "zh_CN": "在同事和同好面前，",
+    "en": "Among co-workers and fellow fans, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_V_COMMUTERS_STUDENTS": {
+    "source": "当着同事和同学的面：",
+    "zh_CN": "当着同事和同学的面：",
+    "en": "In front of co-workers and classmates: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_N_COMMUTERS_STUDENTS": {
+    "source": "给同事和同学讲上头的我：",
+    "zh_CN": "给同事和同学讲上头的我：",
+    "en": "Me, getting carried away with co-workers and classmates: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_B_COMMUTERS_STUDENTS": {
+    "source": "当着同事和同学的面，",
+    "zh_CN": "当着同事和同学的面，",
+    "en": "In front of co-workers and classmates, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_M_COMMUTERS_STUDENTS": {
+    "source": "在同事和同学面前，",
+    "zh_CN": "在同事和同学面前，",
+    "en": "Among co-workers and classmates, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_V_CULTURE_FANS_STUDENTS": {
+    "source": "当着同好和同学的面：",
+    "zh_CN": "当着同好和同学的面：",
+    "en": "In front of fellow fans and classmates: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_N_CULTURE_FANS_STUDENTS": {
+    "source": "给同好和同学讲上头的我：",
+    "zh_CN": "给同好和同学讲上头的我：",
+    "en": "Me, getting carried away with fellow fans and classmates: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_B_CULTURE_FANS_STUDENTS": {
+    "source": "当着同好和同学的面，",
+    "zh_CN": "当着同好和同学的面，",
+    "en": "In front of fellow fans and classmates, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_M_CULTURE_FANS_STUDENTS": {
+    "source": "在同好和同学面前，",
+    "zh_CN": "在同好和同学面前，",
+    "en": "Among fellow fans and classmates, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_V_COMMUTERS_CULTURE_FANS_STUDENTS": {
+    "source": "当着同事、同好和同学的面：",
+    "zh_CN": "当着同事、同好和同学的面：",
+    "en": "In front of co-workers, fellow fans and classmates: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_N_COMMUTERS_CULTURE_FANS_STUDENTS": {
+    "source": "给同事、同好和同学讲上头的我：",
+    "zh_CN": "给同事、同好和同学讲上头的我：",
+    "en": "Me, getting carried away with co-workers, fellow fans and classmates: "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_B_COMMUTERS_CULTURE_FANS_STUDENTS": {
+    "source": "当着同事、同好和同学的面，",
+    "zh_CN": "当着同事、同好和同学的面，",
+    "en": "In front of co-workers, fellow fans and classmates, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_M_COMMUTERS_CULTURE_FANS_STUDENTS": {
+    "source": "在同事、同好和同学面前，",
+    "zh_CN": "在同事、同好和同学面前，",
+    "en": "Among co-workers, fellow fans and classmates, "
+  },
+  "LOC_TEXT_COMPOSE_V2_AUDIENCE_MEANING": {
+    "source": "%s%s",
+    "zh_CN": "%s%s",
+    "en": "%s%s"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_0": {
+    "source": "拿%s装作烦恼，借熟人的回应抬高自己",
+    "zh_CN": "拿%s装作烦恼，借熟人的回应抬高自己",
+    "en": "turns %s into a complaint and waits for friends to notice the achievement"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_1": {
+    "source": "拿%s反问别人，把等人夸奖藏进求助",
+    "zh_CN": "拿%s反问别人，把等人夸奖藏进求助",
+    "en": "asks others about %s, fishing for praise through a request for help"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_2": {
+    "source": "把%s和旁人的忙碌摆在一起，一句话就分出高下",
+    "zh_CN": "把%s和旁人的忙碌摆在一起，一句话就分出高下",
+    "en": "sets %s beside everyone else's effort and quietly establishes a ranking"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_3": {
+    "source": "对着旁人的忙碌追问自己为何得到%s，让求助成了显摆",
+    "zh_CN": "对着旁人的忙碌追问自己为何得到%s，让求助成了显摆",
+    "en": "asks why %s came so easily while others worked, making a plea into a boast"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_4": {
+    "source": "用一个平常理由解释%s，越说随意越显得走运",
+    "zh_CN": "用一个平常理由解释%s，越说随意越显得走运",
+    "en": "explains %s with an ordinary reason, making the success seem even more effortless"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_5": {
+    "source": "假装没想通那个理由怎会换来%s，等别人点破自己的优势",
+    "zh_CN": "假装没想通那个理由怎会换来%s，等别人点破自己的优势",
+    "en": "pretends not to understand how that reason led to %s and waits for someone to point out the advantage"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_6": {
+    "source": "把自己的巧合和别人的付出对上，衬出%s来得轻松",
+    "zh_CN": "把自己的巧合和别人的付出对上，衬出%s来得轻松",
+    "en": "compares a lucky coincidence with others' labour, making %s look effortless"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_MEANING_7": {
+    "source": "把巧合、付出和%s揉成一句反问，让人替自己承认赢得轻松",
+    "zh_CN": "把巧合、付出和%s揉成一句反问，让人替自己承认赢得轻松",
+    "en": "turns luck, effort and %s into a question that makes others admit how easily the speaker won"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_0": {
+    "source": "没人开口就忙着%s，笑的是自己收不住的表达欲",
+    "zh_CN": "没人开口就忙着%s，笑的是自己收不住的表达欲",
+    "en": "rushes into %s without being asked and laughs at an inability to stop talking"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_1": {
+    "source": "拿旁人的安静衬出自己忙着%s，把过分投入变成自嘲",
+    "zh_CN": "拿旁人的安静衬出自己忙着%s，把过分投入变成自嘲",
+    "en": "contrasts everyone else's quiet with %s and laughs at getting carried away"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_2": {
+    "source": "顺着一点由头就开始%s，让过度热情有了具体来处",
+    "zh_CN": "顺着一点由头就开始%s，让过度热情有了具体来处",
+    "en": "uses a tiny prompt to launch into %s, giving excessive enthusiasm a recognisable cause"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_3": {
+    "source": "别人早已停下，自己却抓着一点由头忙着%s，笑点落在投入的落差",
+    "zh_CN": "别人早已停下，自己却抓着一点由头忙着%s，笑点落在投入的落差",
+    "en": "keeps pursuing %s on a tiny pretext after everyone else has stopped, exposing the mismatch in enthusiasm"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_4": {
+    "source": "没人邀请就把%s变成集体活动，热情已经拉上了身边人",
+    "zh_CN": "没人邀请就把%s变成集体活动，热情已经拉上了身边人",
+    "en": "turns %s into a group activity without an invitation and pulls the people nearby into it"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_5": {
+    "source": "把旁人的冷淡和自己拉人一起%s放在同一幕里，尴尬也成了共玩的开场",
+    "zh_CN": "把旁人的冷淡和自己拉人一起%s放在同一幕里，尴尬也成了共玩的开场",
+    "en": "sets others' indifference against an attempt to involve them in %s, making awkwardness the start of a shared game"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_6": {
+    "source": "借一点由头把%s变成邀请，越讲越想拉人一起玩",
+    "zh_CN": "借一点由头把%s变成邀请，越讲越想拉人一起玩",
+    "en": "uses a small prompt to invite others into %s and grows keener to involve them"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_7": {
+    "source": "顺着自己的由头拉人一起%s，把独自上头与他人的兴致差写进同一次邀请",
+    "zh_CN": "顺着自己的由头拉人一起%s，把独自上头与他人的兴致差写进同一次邀请",
+    "en": "invites others into %s on a personal pretext while admitting the gap in enthusiasm"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_12": {
+    "source": "把无人问起的%s改成随意加入的邀请，热情有了留给旁人的余地",
+    "zh_CN": "把无人问起的%s改成随意加入的邀请，热情有了留给旁人的余地",
+    "en": "turns unasked-for %s into an open invitation that gives others room to decline"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_13": {
+    "source": "对着兴致不同的人邀请他们一起%s，把听与不听都留作自然选择",
+    "zh_CN": "对着兴致不同的人邀请他们一起%s，把听与不听都留作自然选择",
+    "en": "invites people with different levels of interest into %s and treats listening or leaving as equally ordinary"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_14": {
+    "source": "说清自己为何想%s，再把加入的决定交回听众",
+    "zh_CN": "说清自己为何想%s，再把加入的决定交回听众",
+    "en": "makes the impulse behind %s clear and returns the choice to join to the listeners"
+  },
+  "LOC_TEXT_COMPOSE_V2_N_MEANING_15": {
+    "source": "承认大家兴致不同，借自己的由头邀请人一起%s，让这场上头可以参加也可以路过",
+    "zh_CN": "承认大家兴致不同，借自己的由头邀请人一起%s，让这场上头可以参加也可以路过",
+    "en": "admits the difference in interest and invites people into %s on a personal pretext, welcoming both participants and passers-by"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_0": {
+    "source": "用一句轻飘飘的回应截住%s，让对方的资历失去压人的分量",
+    "zh_CN": "用一句轻飘飘的回应截住%s，让对方的资历失去压人的分量",
+    "en": "cuts off %s with a casual reply that strips seniority of its weight"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_1": {
+    "source": "反问%s凭什么成立，把训人的资格送回对方面前",
+    "zh_CN": "反问%s凭什么成立，把训人的资格送回对方面前",
+    "en": "questions the basis of %s and asks the lecturer to justify their authority"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_2": {
+    "source": "用两代人的实际条件拆开%s，让老经验显出时差",
+    "zh_CN": "用两代人的实际条件拆开%s，让老经验显出时差",
+    "en": "compares two generations' circumstances to expose how far %s is out of date"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_3": {
+    "source": "拿现实差别反问%s，逼对方面对经验失效的地方",
+    "zh_CN": "拿现实差别反问%s，逼对方面对经验失效的地方",
+    "en": "uses present-day differences to question %s where the old experience no longer works"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_4": {
+    "source": "拿眼前的具体处境挡住%s，让敷衍的回应有了现实分量",
+    "zh_CN": "拿眼前的具体处境挡住%s，让敷衍的回应有了现实分量",
+    "en": "sets a concrete situation against %s and gives the dismissive reply real weight"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_5": {
+    "source": "从自己的处境追问%s，把被训的人变成要求解释的人",
+    "zh_CN": "从自己的处境追问%s，把被训的人变成要求解释的人",
+    "en": "questions %s from lived circumstances, turning the person being lectured into the one asking for an explanation"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_6": {
+    "source": "把新旧条件和眼前难处放在一起回应%s，拒绝把代价全算给年轻人",
+    "zh_CN": "把新旧条件和眼前难处放在一起回应%s，拒绝把代价全算给年轻人",
+    "en": "answers %s with old and new circumstances and refuses to charge every cost to the young"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_7": {
+    "source": "用眼前难处和代际条件连成一问，要求%s给出经得起现实的理由",
+    "zh_CN": "用眼前难处和代际条件连成一问，要求%s给出经得起现实的理由",
+    "en": "joins lived difficulty and generational differences into a question demanding a realistic reason for %s"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_8": {
+    "source": "对%s丢下一句敷衍便回到自己的事，收走了继续训话的听众",
+    "zh_CN": "对%s丢下一句敷衍便回到自己的事，收走了继续训话的听众",
+    "en": "leaves %s with a casual reply and returns to personal business, removing the lecturer's audience"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_9": {
+    "source": "反问%s之后转身办自己的事，把解释的负担留给对方",
+    "zh_CN": "反问%s之后转身办自己的事，把解释的负担留给对方",
+    "en": "questions %s and returns to personal business, leaving the burden of explanation with the lecturer"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_10": {
+    "source": "指出新旧条件的差别便退出%s，把时间留给眼前的生活",
+    "zh_CN": "指出新旧条件的差别便退出%s，把时间留给眼前的生活",
+    "en": "points out the difference between old and new conditions and leaves %s to make time for life now"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_11": {
+    "source": "用现实差别问住%s后离开，让旧经验无法继续占用自己的时间",
+    "zh_CN": "用现实差别问住%s后离开，让旧经验无法继续占用自己的时间",
+    "en": "questions %s through real differences and leaves, refusing to give outdated experience any more time"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_12": {
+    "source": "亮出自己的处境便退出%s，让做正事代替继续受教",
+    "zh_CN": "亮出自己的处境便退出%s，让做正事代替继续受教",
+    "en": "shows the current situation and leaves %s, returning to necessary work instead of another lecture"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_13": {
+    "source": "拿自己的难处反问%s，再去处理眼前的事，让说教留在原地",
+    "zh_CN": "拿自己的难处反问%s，再去处理眼前的事，让说教留在原地",
+    "en": "questions %s through a present difficulty and leaves to handle it, abandoning the lecture"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_14": {
+    "source": "把代际条件和现实代价摆清便离开%s，把回应收在行动里",
+    "zh_CN": "把代际条件和现实代价摆清便离开%s，把回应收在行动里",
+    "en": "lays out generational conditions and real costs, then leaves %s with an action as the reply"
+  },
+  "LOC_TEXT_COMPOSE_V2_B_MEANING_15": {
+    "source": "把处境、代价和代际差别压进最后一问便离开%s，连争辩的节奏也由自己决定",
+    "zh_CN": "把处境、代价和代际差别压进最后一问便离开%s，连争辩的节奏也由自己决定",
+    "en": "compresses circumstances, costs and generational differences into a final question before leaving %s, taking control of the exchange"
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_0_0": {
+    "source": "这句认真求认同的自白，",
+    "zh_CN": "这句认真求认同的自白，",
+    "en": "This earnest bid for recognition "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_1_0": {
+    "source": "这句半真半假的打趣，",
+    "zh_CN": "这句半真半假的打趣，",
+    "en": "This half-serious joke "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_2_0": {
+    "source": "这句故意夸大的玩笑，",
+    "zh_CN": "这句故意夸大的玩笑，",
+    "en": "This deliberately exaggerated joke "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_0_1": {
+    "source": "这句带着善意的自我解释，",
+    "zh_CN": "这句带着善意的自我解释，",
+    "en": "This friendly self-explanation "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_1_1": {
+    "source": "这句留着余地的自嘲，",
+    "zh_CN": "这句留着余地的自嘲，",
+    "en": "This gentle self-mockery "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_2_1": {
+    "source": "这句邀请熟人一起笑的夸张话，",
+    "zh_CN": "这句邀请熟人一起笑的夸张话，",
+    "en": "This invitation to laugh together "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_0_2": {
+    "source": "这句较起真的显摆，",
+    "zh_CN": "这句较起真的显摆，",
+    "en": "This pointed boast "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_1_2": {
+    "source": "这句带刺的反话，",
+    "zh_CN": "这句带刺的反话，",
+    "en": "This barbed irony "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_TONE_2_2": {
+    "source": "这句冲着别人去的嘲弄，",
+    "zh_CN": "这句冲着别人去的嘲弄，",
+    "en": "This mockery aimed at others "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_0_0": {
+    "source": "这段认真袒露热情的独白，",
+    "zh_CN": "这段认真袒露热情的独白，",
+    "en": "This earnest confession of enthusiasm "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_1_0": {
+    "source": "这段明知自己上头的自嘲，",
+    "zh_CN": "这段明知自己上头的自嘲，",
+    "en": "This self-aware monologue "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_2_0": {
+    "source": "这段把失控热情演给人看的闹剧，",
+    "zh_CN": "这段把失控热情演给人看的闹剧，",
+    "en": "This theatrical display of runaway enthusiasm "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_0_1": {
+    "source": "这段坦率分享兴趣的话，",
+    "zh_CN": "这段坦率分享兴趣的话，",
+    "en": "This candid sharing of an interest "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_1_1": {
+    "source": "这段愿意拉人同乐的自嘲，",
+    "zh_CN": "这段愿意拉人同乐的自嘲，",
+    "en": "This invitation to laugh at shared enthusiasm "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_2_1": {
+    "source": "这段邀人一起表演的玩笑，",
+    "zh_CN": "这段邀人一起表演的玩笑，",
+    "en": "This invitation to join the performance "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_0_2": {
+    "source": "这段执意占住话题的独白，",
+    "zh_CN": "这段执意占住话题的独白，",
+    "en": "This stubborn claim on the conversation "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_1_2": {
+    "source": "这段拿旁人冷淡开刀的反话，",
+    "zh_CN": "这段拿旁人冷淡开刀的反话，",
+    "en": "This irony aimed at an indifferent audience "
+  },
+  "LOC_TEXT_COMPOSE_V2_N_TONE_2_2": {
+    "source": "这段故意冲着听众演的夸张话，",
+    "zh_CN": "这段故意冲着听众演的夸张话，",
+    "en": "This deliberate provocation of the listeners "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_0_0": {
+    "source": "这句认真划出界线的回应，",
+    "zh_CN": "这句认真划出界线的回应，",
+    "en": "This earnest statement of a boundary "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_1_0": {
+    "source": "这句带着不耐烦的敷衍，",
+    "zh_CN": "这句带着不耐烦的敷衍，",
+    "en": "This impatient brush-off "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_2_0": {
+    "source": "这句把训话当笑料的回应，",
+    "zh_CN": "这句把训话当笑料的回应，",
+    "en": "This reply that treats the lecture as a joke "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_0_1": {
+    "source": "这句仍愿意说明处境的回应，",
+    "zh_CN": "这句仍愿意说明处境的回应，",
+    "en": "This attempt to explain lived circumstances "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_1_1": {
+    "source": "这句给对方留台阶的打趣，",
+    "zh_CN": "这句给对方留台阶的打趣，",
+    "en": "This joke that leaves room for the other person "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_2_1": {
+    "source": "这句把分歧化成共同笑料的回应，",
+    "zh_CN": "这句把分歧化成共同笑料的回应，",
+    "en": "This invitation to laugh about a disagreement "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_0_2": {
+    "source": "这句直接顶回去的拒绝，",
+    "zh_CN": "这句直接顶回去的拒绝，",
+    "en": "This direct refusal "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_1_2": {
+    "source": "这句不打算再受教的冷嘲，",
+    "zh_CN": "这句不打算再受教的冷嘲，",
+    "en": "This refusal of another lesson "
+  },
+  "LOC_TEXT_COMPOSE_V2_B_TONE_2_2": {
+    "source": "这句让训话者难堪的讥讽，",
+    "zh_CN": "这句让训话者难堪的讥讽，",
+    "en": "This ridicule of the lecturer "
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_0_0": {
+    "source": "，也让那点高人一头的得意露了出来。",
+    "zh_CN": "，也让那点高人一头的得意露了出来。",
+    "en": ", letting a small pleasure in being ahead show through."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_1_0": {
+    "source": "，炫耀的分量落在谁能替成功作证。",
+    "zh_CN": "，炫耀的分量落在谁能替成功作证。",
+    "en": ", making recognised approval the measure of success."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_2_0": {
+    "source": "，那点得意也归在自己作主的生活里。",
+    "zh_CN": "，那点得意也归在自己作主的生活里。",
+    "en": ", claiming that pleasure as part of a self-directed life."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_0_1": {
+    "source": "，连自己的好运也显得可以拿来平常地聊。",
+    "zh_CN": "，连自己的好运也显得可以拿来平常地聊。",
+    "en": ", treating even personal good fortune as something ordinary to share."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_1_1": {
+    "source": "，权威给的名次也被拉回了平常人的聊天。",
+    "zh_CN": "，权威给的名次也被拉回了平常人的聊天。",
+    "en": ", bringing an official ranking back down to an ordinary conversation."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_2_1": {
+    "source": "，各自过得开心比排出高低更有分量。",
+    "zh_CN": "，各自过得开心比排出高低更有分量。",
+    "en": ", valuing a satisfying life over a ranking."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_0_2": {
+    "source": "，话里的比较最终坐实了赢家的位置。",
+    "zh_CN": "，话里的比较最终坐实了赢家的位置。",
+    "en": ", allowing the comparison to establish a winner."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_1_2": {
+    "source": "，被认可的名次成了压住旁人的凭据。",
+    "zh_CN": "，被认可的名次成了压住旁人的凭据。",
+    "en": ", turning an endorsed ranking into a claim over others."
+  },
+  "LOC_TEXT_COMPOSE_V2_V_STANCE_2_2": {
+    "source": "，自己争来的优势成了值得守住的位置。",
+    "zh_CN": "，自己争来的优势成了值得守住的位置。",
+    "en": ", treating a personally won advantage as a position worth keeping."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_0_0": {
+    "source": "，热情和打扰之间的距离留给听的人体会。",
+    "zh_CN": "，热情和打扰之间的距离留给听的人体会。",
+    "en": ", leaving listeners to judge the distance between enthusiasm and intrusion."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_1_0": {
+    "source": "，话题由谁带着走也成了这场玩笑的一部分。",
+    "zh_CN": "，话题由谁带着走也成了这场玩笑的一部分。",
+    "en": ", making control of the conversation part of the joke."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_2_0": {
+    "source": "，自己想说什么成了开口的理由。",
+    "zh_CN": "，自己想说什么成了开口的理由。",
+    "en": ", treating the wish to speak as reason enough to start."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_0_1": {
+    "source": "，说的人和听的人都可以平等地接住这个梗。",
+    "zh_CN": "，说的人和听的人都可以平等地接住这个梗。",
+    "en": ", giving speaker and listeners equal room in the joke."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_1_1": {
+    "source": "，抢先开口也没有替谁定下更高的位置。",
+    "zh_CN": "，抢先开口也没有替谁定下更高的位置。",
+    "en": ", giving the first speaker no higher standing."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_2_1": {
+    "source": "，每个人按自己的兴致接话就好。",
+    "zh_CN": "，每个人按自己的兴致接话就好。",
+    "en": ", leaving everyone free to respond according to their interest."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_0_2": {
+    "source": "，懂得多的人顺势成了话题中心。",
+    "zh_CN": "，懂得多的人顺势成了话题中心。",
+    "en": ", letting the person with more knowledge become the centre of attention."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_1_2": {
+    "source": "，掌握细节的人也掌握了谁来听的安排。",
+    "zh_CN": "，掌握细节的人也掌握了谁来听的安排。",
+    "en": ", letting the keeper of details decide who should listen."
+  },
+  "LOC_TEXT_COMPOSE_V2_N_STANCE_2_2": {
+    "source": "，自己的热情也带着争取主场的意思。",
+    "zh_CN": "，自己的热情也带着争取主场的意思。",
+    "en": ", giving personal enthusiasm a claim to the floor."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_0_0": {
+    "source": "，年轻人把说话的边界握回自己手里。",
+    "zh_CN": "，年轻人把说话的边界握回自己手里。",
+    "en": ", returning control of the boundary to the younger speaker."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_1_0": {
+    "source": "，争的也是谁有资格规定别人怎么过日子。",
+    "zh_CN": "，争的也是谁有资格规定别人怎么过日子。",
+    "en": ", making the right to dictate another person's life part of the dispute."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_2_0": {
+    "source": "，自己的生活不再等长辈批准。",
+    "zh_CN": "，自己的生活不再等长辈批准。",
+    "en": ", removing the need for an elder's approval."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_0_1": {
+    "source": "，年龄不再自动换来更高的发言位置。",
+    "zh_CN": "，年龄不再自动换来更高的发言位置。",
+    "en": ", refusing to turn age automatically into higher standing."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_1_1": {
+    "source": "，训人的资格也得接受同样的检验。",
+    "zh_CN": "，训人的资格也得接受同样的检验。",
+    "en": ", subjecting the right to lecture to the same scrutiny."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_2_1": {
+    "source": "，双方各过各的生活，也各担自己的选择。",
+    "zh_CN": "，双方各过各的生活，也各担自己的选择。",
+    "en": ", giving each person their own life and responsibility."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_0_2": {
+    "source": "，旧资历被顶开，也露出了新的圈内高低。",
+    "zh_CN": "，旧资历被顶开，也露出了新的圈内高低。",
+    "en": ", displacing old seniority while exposing a new pecking order."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_1_2": {
+    "source": "，较量落在谁能占住教训人的位置。",
+    "zh_CN": "，较量落在谁能占住教训人的位置。",
+    "en": ", turning the exchange into a contest over who gets to lecture."
+  },
+  "LOC_TEXT_COMPOSE_V2_B_STANCE_2_2": {
+    "source": "，夺回自主也带着不愿再居人下的意思。",
+    "zh_CN": "，夺回自主也带着不愿再居人下的意思。",
+    "en": ", linking autonomy with a refusal of lower standing."
   }
 }

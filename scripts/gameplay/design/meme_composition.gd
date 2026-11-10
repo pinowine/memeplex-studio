@@ -81,91 +81,156 @@ static func compose(draft: Dictionary, module_ids: Array) -> Dictionary:
 
 static func _expression_segments(draft: Dictionary, modules: Array[String], language_id: String) -> Array[Dictionary]:
 	var seed := _seed(str(draft.preset_id))
-	var scene := _scene(draft)
-	var sources := _scene_sources(draft)
 	var defaults: Dictionary = definition(str(draft.preset_id)).default_context
 	var language_sources: Array[Dictionary] = []
-	if language_id != str(defaults.language_id): language_sources = [_source("language",language_id)]
-	var group := _primary_group(draft)
-	var group_sources: Array[Dictionary] = []
-	if group != str(defaults.group_id): group_sources = [_source("group",group)]
+	if language_id != str(defaults.language_id): language_sources.append(_source("language",language_id))
+	var scene_sources := _content_sources(draft)
+	var body_sources := scene_sources.duplicate()
+	for module_id: String in modules: body_sources.append(_source("patch",module_id))
 	var result: Array[Dictionary] = []
+	var audience := _audience_key(draft)
 	if seed == "V":
-		result.append(_segment("V_LEAD_"+language_id.to_upper(),language_sources,"V_LEAD_NINGHUA"))
-		var details := sources.duplicate()
-		if scene == "exam": details.append_array(group_sources)
-		var situation := "EXAM_"+group.to_upper() if scene == "exam" else scene.to_upper()
-		if COMPARISON in modules: result.append(_versailles_segment(situation,"COMPARISON",details,COMPARISON))
-		result.append(_versailles_segment(situation,"EFFORT",details))
-		result.append(_versailles_segment(situation,"QUESTION" if QUESTION in modules else "RESULT",details,QUESTION if QUESTION in modules else ""))
-		if EXPLANATION in modules: result.append(_versailles_segment(situation,"EXPLANATION",details,EXPLANATION))
+		if not audience.is_empty(): result.append(_segment("AUDIENCE_V_"+audience,_group_sources(draft)))
+		result.append(_segment("V_LEAD_"+language_id.to_upper(),language_sources))
+		var mask := _mask(modules,[QUESTION,COMPARISON,EXPLANATION])
+		var fields := [["EFFORT","RESULT"],["EFFORT","RESULT"],["PEER","EFFORT","RESULT"],["PEER","EFFORT","RESULT"],["CAUSE","EFFORT","RESULT"],["CAUSE","EFFORT","RESULT"],["PEER","CAUSE","EFFORT","RESULT"],["PEER","CAUSE","EFFORT","RESULT"]]
+		result.append(_formatted_segment("V_FORM_"+str(mask),_scene_values(draft,fields[mask]),body_sources))
 	elif seed == "N":
-		result.append(_segment("N_NOBODY",[]))
-		if COMPARISON in modules: result.append(_segment("N_COMPARISON",[_source("patch",COMPARISON)]))
-		result.append(_segment("N_SPEAKER_"+group.to_upper(),group_sources,"N_SPEAKER_CULTURE_FANS"))
-		result.append(_segment("N_LANGUAGE_"+language_id.to_upper(),language_sources,"N_LANGUAGE_SHIOHARA"))
-		result.append(_segment("N_"+scene.to_upper()+"_ACTION",sources,"N_FILM_ACTION"))
-		if EXPLANATION in modules: result.append(_segment("N_"+scene.to_upper()+"_EXPLANATION",_with_patch(sources,EXPLANATION)))
-		if CONTINUATION in modules:
-			result.append(_segment("N_INVITE",[_source("patch",CONTINUATION)]))
-			if EXIT in modules: result.append(_segment("N_EXIT",[_source("patch",CONTINUATION),_source("patch",EXIT)]))
+		var opening := _segment("N_NOBODY",[])
+		if COMPARISON in modules:
+			opening = _formatted_segment("N_COMPARE",_scene_values(draft,["PEER"]),_with_patch(scene_sources,COMPARISON))
+		result.append(opening)
+		result.append(_scene_segment(draft,"SPEAKER",scene_sources) if audience.is_empty() else _segment("AUDIENCE_N_"+audience,_group_sources(draft)))
+		if EXPLANATION in modules:
+			result.append(_formatted_segment("N_REASON",_scene_values(draft,["REASON"]),_with_patch(scene_sources,EXPLANATION)))
+		result.append(_segment("N_LANGUAGE_"+language_id.to_upper(),language_sources))
+		var action := 2 if EXIT in modules else (1 if CONTINUATION in modules else 0)
+		var action_sources := scene_sources.duplicate()
+		if CONTINUATION in modules: action_sources.append(_source("patch",CONTINUATION))
+		if EXIT in modules: action_sources.append(_source("patch",EXIT))
+		result.append(_formatted_segment("N_ACTION_"+str(action),_scene_values(draft,["ACTION"]),action_sources))
 	else:
-		if QUESTION in modules: result.append(_segment("B_QUESTION",[_source("patch",QUESTION)]))
-		if COMPARISON in modules: result.append(_segment("B_"+scene.to_upper()+"_COMPARISON",_with_patch(sources,COMPARISON)))
-		result.append(_segment("B_REPLY_"+language_id.to_upper(),language_sources,"B_REPLY_SEOWON"))
-		if EXPLANATION in modules: result.append(_segment("B_EXPLANATION",[_source("patch",EXPLANATION)]))
-		if EXIT in modules: result.append(_segment("B_EXIT",[_source("patch",EXIT)]))
+		var mask := _mask(modules,[QUESTION,COMPARISON,EXPLANATION,EXIT])
+		var fields := [["REPLY"],["QUESTION","REPLY"],["COMPARISON","REPLY"],["COMPARISON","QUESTION","REPLY"],["REASON","REPLY"],["REASON","QUESTION","REPLY"],["COMPARISON","REASON","REPLY"],["COMPARISON","REASON","QUESTION","REPLY"],["REPLY","DEPARTURE"],["QUESTION","REPLY","DEPARTURE"],["COMPARISON","REPLY","DEPARTURE"],["COMPARISON","QUESTION","REPLY","DEPARTURE"],["REASON","REPLY","DEPARTURE"],["REASON","QUESTION","REPLY","DEPARTURE"],["COMPARISON","REASON","REPLY","DEPARTURE"],["COMPARISON","REASON","QUESTION","REPLY","DEPARTURE"]]
+		var values: Array[String] = []
+		for field: String in fields[mask]:
+			values.append(_text("B_REPLY_"+language_id.to_upper()) if field == "REPLY" else _scene_text(draft,field))
+		if mask == 0: body_sources.clear()
+		body_sources.append_array(language_sources)
+		result.append(_reply_segment("B_FORM_"+str(mask),values,body_sources))
 	return result
-
-static func _versailles_segment(scene: String, part: String, sources: Array, patch: String = "") -> Dictionary:
-	var key := "V_"+scene+"_"+part
-	var changed: Array = [] if _text(key) == _text("V_EXAM_STUDENTS_"+part) else sources.duplicate()
-	if not patch.is_empty(): changed.append(_source("patch",patch))
-	var original := ""
-	if part in ["EFFORT","RESULT","QUESTION"]:
-		original = "V_EXAM_STUDENTS_"+("RESULT" if part == "QUESTION" else part)
-	return _segment(key,changed,original)
 
 static func _context_segments(draft: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
-	var groups := _values(draft,"group")
-	groups.sort()
-	if groups.size() > 1:
-		var added: Array[Dictionary] = []
-		var default_group := str(definition(str(draft.preset_id)).default_context.group_id)
-		for group_id: String in groups:
-			if group_id != default_group: added.append(_source("group",group_id))
-		result.append(_segment("AUDIENCE_"+"_".join(groups).to_upper(),added))
 	if str(draft.preset_id) != "ok_boomer_2020": return result
-	var group := _primary_group(draft)
-	var sources: Array[Dictionary] = []
-	if group != str(definition(str(draft.preset_id)).default_context.group_id): sources.append(_source("group",group))
-	result.append(_segment("B_SPEAKER_"+group.to_upper(),sources,"B_SPEAKER_STUDENTS"))
-	result.append(_segment("B_"+_scene(draft).to_upper()+"_CONTEXT",_scene_sources(draft),"B_SCHOOL_CONTEXT"))
+	var audience := _audience_key(draft)
+	if not audience.is_empty(): result.append(_segment("AUDIENCE_B_"+audience,_group_sources(draft)))
+	result.append(_scene_segment(draft,"CONTEXT",_content_sources(draft)))
 	return result
 
 static func _meaning(draft: Dictionary, modules: Array[String]) -> Dictionary:
 	var seed := _seed(str(draft.preset_id))
-	var defaults: Dictionary = definition(str(draft.preset_id)).default_context
-	var segments: Array[Dictionary] = [_segment(seed+"_MEANING",[])]
-	var names := {QUESTION:"QUESTION",COMPARISON:"COMPARISON",EXPLANATION:"EXPLANATION",CONTINUATION:"CONTINUATION",EXIT:"EXIT"}
-	for module_id: String in modules:
-		segments.append(_segment(seed+"_MEANING_"+str(names[module_id]),[_source("patch",module_id)]))
-	var identity: Array[String] = [str(draft.preset_id),"+".join(modules)]
+	var orders := {"V":[QUESTION,COMPARISON,EXPLANATION],"N":[COMPARISON,EXPLANATION,CONTINUATION,EXIT],"B":[QUESTION,COMPARISON,EXPLANATION,EXIT]}
+	var tone := _reading(draft,"pragmatic_position")
+	var stance := _reading(draft,"political_position")
+	var tone_segment := _segment("%s_TONE_%d_%d" % [seed,tone.x,tone.y],tone.sources)
+	var audience := _audience_key(draft)
+	if not audience.is_empty():
+		var sources: Array = _group_sources(draft)
+		sources.append_array(tone.sources)
+		tone_segment = _formatted_segment("AUDIENCE_MEANING",[_text("AUDIENCE_M_"+audience),tone_segment.text],sources)
+	var core_sources := _content_sources(draft)
+	for module_id: String in modules: core_sources.append(_source("patch",module_id))
+	var core := _formatted_segment(seed+"_MEANING_"+str(_mask(modules,orders[seed])),_scene_values(draft,["SUBJECT"]),core_sources)
+	var ending := _segment("%s_STANCE_%d_%d" % [seed,stance.x,stance.y],stance.sources)
+	var groups := _values(draft,"group")
+	groups.sort()
+	var identity: Array[String] = [str(draft.preset_id),"composition:2",_scene(draft),_primary_group(draft),"+".join(groups),"+".join(modules)]
 	for field: String in ["political_position","pragmatic_position"]:
 		if not _meaning_attached(draft,field): continue
 		var point := _position(draft.get(field,Vector2.ZERO))
-		var origin := _position(defaults[field])
-		var kind := "stance" if field == "political_position" else "pragmatic"
-		identity.append("%s:%.2f,%.2f" % [kind,point.x,point.y])
-		var names_by_direction := ["freedom","authority","equality","hierarchy"] if kind == "stance" else ["sincere","ironic","support","opposition"]
-		for axis in 2:
-			if is_equal_approx(point[axis],origin[axis]): continue
-			var direction: String = names_by_direction[axis*2+int(point[axis]>origin[axis])]
-			var key := seed+"_READING_"+direction.to_upper()
-			if absf(point[axis]-origin[axis]) > 0.4: key += "_STRONG"
-			segments.append(_segment(key,[_source(kind,direction)]))
-	return {"segments":segments,"id":"/".join(identity)}
+		identity.append("%s:%.2f,%.2f" % [field,point.x,point.y])
+	return {"segments":[tone_segment,core,ending],"id":"/".join(identity)}
+
+static func _reading(draft: Dictionary, field: String) -> Dictionary:
+	var pragmatic := field == "pragmatic_position"
+	var defaults: Dictionary = definition(str(draft.preset_id)).default_context
+	var origin := _position(defaults[field])
+	var point := _position(draft.get(field,Vector2.ZERO)) if _meaning_attached(draft,field) else origin
+	var axes := _reading_axes(point,pragmatic)
+	var original_axes := _reading_axes(origin,pragmatic)
+	var result := {"x":axes.x,"y":axes.y,"sources":[]}
+	var names := ["sincere","ironic","support","opposition"] if pragmatic else ["freedom","authority","equality","hierarchy"]
+	for axis in 2:
+		if axes[axis] == original_axes[axis]: continue
+		var positive := point[axis] > origin[axis]
+		var direction: String = names[axis*2+int(positive)]
+		result.sources.append(_source("pragmatic" if pragmatic else "stance",direction))
+	return result
+
+static func _reading_axes(point: Vector2, pragmatic: bool) -> Vector2i:
+	# The selected position controls the reading; small moves within it keep the same prose.
+	var x := (0 if point.x < 0.45 else (2 if point.x > 0.85 else 1)) if pragmatic else (2 if point.x < -0.25 else (1 if point.x > 0.25 else 0))
+	var y := 1 if point.y < -0.25 else (2 if point.y > 0.25 else 0)
+	return Vector2i(x,y)
+
+static func _mask(modules: Array[String], order: Array) -> int:
+	var mask := 0
+	for index in order.size():
+		if str(order[index]) in modules: mask |= 1 << index
+	return mask
+
+static func _scene_values(draft: Dictionary, fields: Array) -> Array[String]:
+	var values: Array[String] = []
+	for field: String in fields: values.append(_scene_text(draft,field))
+	return values
+
+static func _scene_text(draft: Dictionary, field: String) -> String:
+	var actual_field := "SUBJECT_NOUN" if field == "SUBJECT" and str(draft.preset_id) == "ok_boomer_2020" else field
+	return _text("_".join([_seed(str(draft.preset_id)),_scene(draft),_primary_group(draft),actual_field]).to_upper())
+
+static func _scene_segment(draft: Dictionary, field: String, sources: Array) -> Dictionary:
+	var value := _scene_text(draft,field)
+	var baseline: Dictionary = definition(str(draft.preset_id)).default_context.duplicate(true)
+	baseline.preset_id = str(draft.preset_id)
+	return {"text":value,"sources":[] if value == _scene_text(baseline,field) else sources.duplicate(true)}
+
+static func _audience_key(draft: Dictionary) -> String:
+	var groups := _values(draft,"group")
+	groups.sort()
+	return "_".join(groups).to_upper() if groups.size() > 1 else ""
+
+static func _group_sources(draft: Dictionary) -> Array[Dictionary]:
+	var sources: Array[Dictionary] = []
+	var default_group := str(definition(str(draft.preset_id)).default_context.group_id)
+	var groups := _values(draft,"group")
+	groups.sort()
+	for group: String in groups:
+		if group != default_group: sources.append(_source("group",group))
+	return sources
+
+static func _content_sources(draft: Dictionary) -> Array[Dictionary]:
+	var sources := _scene_sources(draft)
+	var group := _primary_group(draft)
+	if group != str(definition(str(draft.preset_id)).default_context.group_id): sources.append(_source("group",group))
+	return sources
+
+static func _formatted_segment(key: String, values: Array, sources: Array) -> Dictionary:
+	return {"text":DeskLocalization.source_format("LOC_TEXT_COMPOSE_V2_"+key,values,range(values.size())),"sources":sources.duplicate(true)}
+
+static func _reply_segment(key: String, values: Array, sources: Array) -> Dictionary:
+	var result := _formatted_segment(key,values,sources)
+	var english := DeskLocalization.english_text(result.text)
+	var capital := true
+	var sentence := ""
+	# The same reply phrase can open a sentence or follow another clause.
+	for index in english.length():
+		var character := english.substr(index,1)
+		sentence += character.to_upper() if capital else character
+		if character in [".","?","!"]: capital = true
+		elif character != " ": capital = false
+	DeskLocalization.register_display(result.text,sentence,DeskLocalization.chinese_text(result.text))
+	return result
 
 static func _scene(draft: Dictionary) -> String:
 	return str(SCENES[str(draft.preset_id)].get("+".join(_topics(draft)),""))
@@ -225,13 +290,8 @@ static func _with_patch(sources: Array, id: String) -> Array:
 	result.append(_source("patch",id))
 	return result
 
-static func _segment(key: String, sources: Array, original_key: String = "") -> Dictionary:
-	var result := {"text":_text(key),"sources":sources.duplicate(true)}
-	# Stable phrase roles keep additions from crossing out unrelated parts of the seed.
-	if not original_key.is_empty():
-		var original := _text(original_key)
-		if original != str(result.text): result.original_text = original
-	return result
+static func _segment(key: String, sources: Array) -> Dictionary:
+	return {"text":_text(key),"sources":sources.duplicate(true)}
 
 static func _join(segments: Array) -> String:
 	var parts: Array[String] = []
@@ -242,7 +302,7 @@ static func _seed(preset_id: String) -> String:
 	return {"versailles_2020":"V","nobody_2020":"N","ok_boomer_2020":"B"}[preset_id]
 
 static func _text(key: String) -> String:
-	return DeskLocalization.source("LOC_TEXT_COMPOSE_"+key)
+	return DeskLocalization.source("LOC_TEXT_COMPOSE_V2_"+key)
 
 static func _error(key: String) -> PackedStringArray:
 	return PackedStringArray([DeskLocalization.source("LOC_COMPOSE_ERROR_"+key)])
