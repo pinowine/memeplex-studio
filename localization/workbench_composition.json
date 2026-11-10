@@ -31,8 +31,8 @@
   },
   "LOC_WB_CHANGED_BY": {
     "source": "这段表达来自",
-    "zh_CN": "这段表达来自",
-    "en": "This passage comes from"
+    "zh_CN": "来源",
+    "en": "Sources"
   },
   "LOC_WB_LANGUAGE_GLOSS": {
     "source": "%s版 · 中文释义",
