@@ -18,6 +18,7 @@ const ContextTrialSlip = preload("res://scripts/presentation/studio/context/desk
 const ModuleClip = preload("res://scripts/presentation/studio/design/desk_module_paper_clip.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const AnnotatedText = preload("res://scripts/presentation/studio/workbench/desk_annotated_text.gd")
+const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const INK := Color("384238")
@@ -62,11 +63,8 @@ var _meaning_title: Label
 var _meaning: RichTextLabel
 var _expression_context: RichTextLabel
 var _source_hover: PanelContainer
-var _source_hover_title: Label
-var _source_hover_body: Label
 var _source_hover_records: Array = []
 var _source_hover_point := Vector2.ZERO
-var _source_hover_layout_queued := false
 var _composition: Dictionary = {}
 var _lineage_preview: Dictionary = {}
 var _module_errors := PackedStringArray()
@@ -452,32 +450,11 @@ func _annotated_readout(parent: Node, node_name: String, font_size: int) -> Rich
 
 
 func _build_source_hover(page: Control) -> void:
-	_source_hover = PanelContainer.new()
+	_source_hover = ReceiptHover.new()
 	_source_hover.name = "InlineSourceNote"
-	_source_hover.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_source_hover.z_index = 20
-	var paper := StyleBoxFlat.new()
-	paper.bg_color = Color("e8dfc9")
-	paper.border_color = Color("858571")
-	paper.set_border_width_all(1)
-	paper.content_margin_left = SPACE_BETWEEN
-	paper.content_margin_right = SPACE_BETWEEN
-	paper.content_margin_top = SPACE_WITHIN * 2
-	paper.content_margin_bottom = SPACE_WITHIN * 2
-	paper.shadow_color = Color(0, 0, 0, .19)
-	paper.shadow_size = 4
-	paper.shadow_offset = Vector2(0, 4)
-	_source_hover.add_theme_stylebox_override("panel", paper)
 	page.add_child(_source_hover)
-	var content := VBoxContainer.new()
-	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	content.add_theme_constant_override("separation", SPACE_WITHIN)
-	_source_hover.add_child(content)
-	_source_hover_title = _label(content, "", "SourceHeading", 13)
-	_source_hover_title.add_theme_color_override("font_color", SECONDARY_INK)
-	_source_hover_body = _label(content, "", "SourceNames", 16)
 	_source_hover.hide()
-	_source_hover.minimum_size_changed.connect(_queue_source_hover_layout)
 
 
 func _information_rule(node_name: String, parent: Node) -> void:
@@ -898,7 +875,7 @@ func inspection() -> Dictionary:
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
 		"content_editable":false,"final_expression":_final_expression.current_text(),"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
 		"composition":_composition.duplicate(true),"meaning":_meaning.current_text(),"expression_context":_expression_context.get_parsed_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":_expression_context.inspection(),"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
-		"source_hover":{"visible":_source_hover.visible,"text":_source_hover_body.text,"sources":_source_hover_records.duplicate(true),"rect":_source_hover.get_global_rect(),"mouse_filter":_source_hover.mouse_filter},"neuron_visible":_neuron.is_visible_in_tree(),"part_details_visible":_part_content.is_visible_in_tree(),"language_selector_visible":false,"specimen_art":{"visible":false},
+		"source_hover":{"visible":_source_hover.visible,"text":_source_hover.content_text(),"sources":_source_hover_records.duplicate(true),"rect":_source_hover.get_global_rect(),"mouse_filter":_source_hover.mouse_filter,"receipt":_source_hover.inspection()},"neuron_visible":_neuron.is_visible_in_tree(),"part_details_visible":_part_content.is_visible_in_tree(),"language_selector_visible":false,"specimen_art":{"visible":false},
 		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
 		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
@@ -1069,7 +1046,7 @@ func _show_source_hover(sources: Array, excerpt: String) -> void:
 	if not _interaction_enabled or _tab != "edit": return
 	_source_hover_records = sources.duplicate(true)
 	_source_hover_point = _pages.edit.get_local_mouse_position()
-	var lines := PackedStringArray()
+	var rows: Array[Dictionary] = []
 	for source: Dictionary in sources:
 		var kind := str(source.kind)
 		var id := str(source.id)
@@ -1078,47 +1055,17 @@ func _show_source_hover(sources: Array, excerpt: String) -> void:
 		elif kind in ["stance", "pragmatic"]: title = _direction_title(id)
 		else: title = DeskLocalization.text(str(_rules.context_resource(id).get("title", "")))
 		var category := DeskLocalization.text({"patch":"LOC_EDIT_PATCHES", "language":"LOC_LANGUAGE_9F6FEE1A", "group":"LOC_EDIT_AUDIENCE", "topic":"LOC_EDIT_TOPICS", "stance":"LOC_WB_IDEOLOGY", "pragmatic":"LOC_PRAGMATICS_7063D1D8"}[kind])
-		var line := "%s · %s" % [category, title]
-		if line not in lines: lines.append(line)
-	_source_hover_title.text = DeskLocalization.text("LOC_WB_CHANGED_BY")
-	_source_hover_body.text = "\n".join(lines)
+		var row := {"category":category, "value":title}
+		if row not in rows: rows.append(row)
+	_source_hover.set_content(DeskLocalization.text("LOC_WB_CHANGED_BY"), rows)
 	_source_hover.set_meta("excerpt", excerpt)
-	var text_width := minf(272, _pages.edit.size.x - SPACE_BETWEEN * 4)
-	for label: Label in [_source_hover_title, _source_hover_body]:
-		label.custom_minimum_size.x = text_width
-		label.size.x = text_width
-	_source_hover.custom_minimum_size.x = text_width + SPACE_BETWEEN * 2
-	_source_hover.size.x = _source_hover.custom_minimum_size.x
-	_source_hover.queue_sort()
-	_source_hover.hide()
-	_queue_source_hover_layout()
-
-
-func _queue_source_hover_layout() -> void:
-	if _source_hover_records.is_empty() or _source_hover_layout_queued: return
-	_source_hover_layout_queued = true
-	_finish_source_hover()
-
-
-func _finish_source_hover() -> void:
-	await get_tree().process_frame
-	_fit_source_hover.call_deferred()
-
-
-func _fit_source_hover() -> void:
-	_source_hover_layout_queued = false
-	if _source_hover_records.is_empty(): return
-	_source_hover.reset_size()
+	_source_hover.set_width(288)
 	_position_source_hover(_source_hover_point)
 	_source_hover.show()
 
 
 func _position_source_hover(point: Vector2) -> void:
-	var bounds: Vector2 = _pages.edit.size
-	var origin := point + Vector2(SPACE_WITHIN * 2, SPACE_WITHIN * 2)
-	if origin.y + _source_hover.size.y > bounds.y - SPACE_WITHIN:
-		origin.y = point.y - _source_hover.size.y - SPACE_WITHIN * 2
-	_source_hover.position = origin.clamp(Vector2.ONE * SPACE_WITHIN, (bounds - _source_hover.size - Vector2.ONE * SPACE_WITHIN).max(Vector2.ONE * SPACE_WITHIN))
+	_source_hover.fit_at(point, Rect2(Vector2.ZERO, _pages.edit.size))
 
 
 func _hide_source_hover() -> void:

@@ -23,8 +23,9 @@ static func _apply(node: Node, themes: Dictionary) -> void:
 			if not themes.has(key):
 				var paper_theme := control.theme.duplicate() as Theme
 				paper_theme.default_font = FONT
-				# Headings and custom type variations must not keep a printed font.
+				# Hover receipts keep their printed type while desk text uses handwriting.
 				for type_name in paper_theme.get_font_type_list():
+					if type_name == "TooltipLabel": continue
 					for font_name in paper_theme.get_font_list(type_name):
 						paper_theme.set_font(font_name, type_name, BOLD_FONT if "bold" in font_name else FONT)
 				themes[key] = paper_theme

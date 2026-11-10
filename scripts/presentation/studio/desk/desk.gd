@@ -268,6 +268,7 @@ func configure(page: Node2D) -> void:
 	_paper.set_texture_margin_all(22)
 	_paper.set_content_margin_all(22)
 	for panel: PanelContainer in _panels(page.hud):
+		if panel is DeskReceiptHover: continue
 		panel.add_theme_stylebox_override("panel", _paper)
 		# The retired form owns state only; its pages are mounted on the real paper stack.
 		if panel != page.hud.get_node("%Workbench"):
