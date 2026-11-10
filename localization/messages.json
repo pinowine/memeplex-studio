@@ -6147,7 +6147,7 @@
   "LOC_RHETORICAL_QUESTION_MODULE_B73188E9": {
     "source": "反问补丁",
     "zh_CN": "反问补丁",
-    "en": "Rhetorical-question module"
+    "en": "Question"
   },
   "LOC_PLACE_BOTH_SIDES_PROMISES_BESIDE_WHAT_THEY_4AEDB763": {
     "source": "把双方承诺与实际所得并置",
@@ -6177,7 +6177,7 @@
   "LOC_COMPARISON_MODULE_1A68D50B": {
     "source": "对照补丁",
     "zh_CN": "对照补丁",
-    "en": "Comparison module"
+    "en": "Compare"
   },
   "LOC_ALLOW_PEOPLE_NOT_TO_JOIN_IN_WHILE_E26A9825": {
     "source": "允许不跟做，也保留回应位置",
@@ -6207,7 +6207,7 @@
   "LOC_EXIT_MODULE_427FF76E": {
     "source": "退出补丁",
     "zh_CN": "退出补丁",
-    "en": "Exit module"
+    "en": "Exit"
   },
   "LOC_LEAVE_ONE_SENTENCE_OF_EXPLANATION_FOR_OUTSIDERS_30278B47": {
     "source": "给圈外读者留下一句解释",
@@ -6237,7 +6237,7 @@
   "LOC_EXPLANATION_MODULE_17E40062": {
     "source": "释义补丁",
     "zh_CN": "释义补丁",
-    "en": "Explanation module"
+    "en": "Explain"
   },
   "LOC_LEAVE_AN_OPENING_OTHERS_CAN_EXTEND_WITHOUT_14BEA689": {
     "source": "留下可接续但不替人定论的空白",
@@ -6267,7 +6267,7 @@
   "LOC_CONTINUATION_MODULE_0FCD9CEF": {
     "source": "续写补丁",
     "zh_CN": "续写补丁",
-    "en": "Continuation module"
+    "en": "Continue"
   },
   "LOC_LANGUAGE_SOLVENT_E2FA801D": {
     "source": "语言溶剂",
@@ -10997,7 +10997,7 @@
   "LOC_PATCH_EXIT_DESCRIPTION": {
     "source": "仅适用于 67，保留不参与或结束接梗的选择，不给数字附加含义。",
     "zh_CN": "适用于 Nobody 和 OK boomer。Nobody 先装续写，再允许别人不接话；OK boomer 可以直接声明这轮对话结束。",
-    "en": "For Nobody and OK boomer. With Nobody, add Continuation first, then let others sit out. With OK boomer, explicitly end the conversation."
+    "en": "For Nobody and OK boomer. With Nobody, add Continue first, then let others sit out. With OK boomer, explicitly end the conversation."
   },
   "LOC_PATCH_EXPLANATION_CONTENT": {
     "source": "补充画面或评价依据。",
