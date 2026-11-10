@@ -18,6 +18,7 @@ const ContextTrialSlip = preload("res://scripts/presentation/studio/context/desk
 const ModuleClip = preload("res://scripts/presentation/studio/design/desk_module_paper_clip.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const AnnotatedText = preload("res://scripts/presentation/studio/workbench/desk_annotated_text.gd")
+const MemeExpression = preload("res://scripts/presentation/studio/workbench/desk_meme_expression.gd")
 const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
@@ -57,11 +58,9 @@ var _physical_clips: Array[Control] = []
 var _part_title: Label
 var _part_note: Label
 var _part_content: RichTextLabel
-var _final_expression: RichTextLabel
-var _final_title: Label
+var _final_expression: Control
 var _meaning_title: Label
 var _meaning: RichTextLabel
-var _expression_context: RichTextLabel
 var _source_hover: PanelContainer
 var _source_hover_records: Array = []
 var _source_hover_point := Vector2.ZERO
@@ -354,10 +353,11 @@ func _build_edit() -> void:
 	_module_feedback.hide()
 	var expression := _text_group("Expression")
 	_information_rule("OverviewExpressionRule", expression)
-	_final_title = _section_heading(expression, "expression", DeskLocalization.source("LOC_WB_EXPRESSION"), "FinalExpressionTitle")
-	_expression_context = _annotated_readout(expression, "ExpressionContext", 14)
-	_expression_context.add_theme_color_override("default_color", SECONDARY_INK)
-	_final_expression = _annotated_readout(expression, "FinalExpression", 20)
+	_final_expression = MemeExpression.new()
+	_final_expression.name = "FinalExpression"
+	expression.add_child(_final_expression)
+	_final_expression.source_hovered.connect(_show_source_hover)
+	_final_expression.source_hover_ended.connect(_hide_source_hover)
 	var meaning := _text_group("Meaning")
 	_information_rule("ExpressionMeaningRule", meaning)
 	_meaning_title = _section_heading(meaning, "meaning", DeskLocalization.source("LOC_WB_MEANING"), "ExpressionMeaningTitle")
@@ -796,8 +796,8 @@ func set_interaction_enabled(enabled: bool) -> void:
 	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
-	for label: RichTextLabel in [_final_expression, _meaning, _expression_context]:
-		label.mouse_filter = Control.MOUSE_FILTER_PASS if enabled and _tab == "edit" else Control.MOUSE_FILTER_IGNORE
+	_final_expression.set_interaction_enabled(enabled and _tab == "edit")
+	_meaning.mouse_filter = Control.MOUSE_FILTER_PASS if enabled and _tab == "edit" else Control.MOUSE_FILTER_IGNORE
 	if not enabled: _hide_source_hover()
 
 
@@ -874,7 +874,7 @@ func inspection() -> Dictionary:
 		"module_slots":_physical_clips.size(),"skill_count":_skill_buttons.size(),
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
 		"content_editable":false,"final_expression":_final_expression.current_text(),"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
-		"composition":_composition.duplicate(true),"meaning":_meaning.current_text(),"expression_context":_expression_context.get_parsed_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":_expression_context.inspection(),"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
+		"composition":_composition.duplicate(true),"meaning":_meaning.current_text(),"expression_context":_final_expression.context_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":{"plain_text":_final_expression.context_text(),"annotations":_final_expression.inspection().context_annotations},"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
 		"source_hover":{"visible":_source_hover.visible,"text":_source_hover.content_text(),"sources":_source_hover_records.duplicate(true),"rect":_source_hover.get_global_rect(),"mouse_filter":_source_hover.mouse_filter,"receipt":_source_hover.inspection()},"neuron_visible":_neuron.is_visible_in_tree(),"part_details_visible":_part_content.is_visible_in_tree(),"language_selector_visible":false,"specimen_art":{"visible":false},
 		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
@@ -977,7 +977,6 @@ func _refresh_overview() -> void:
 	for id: String in _design.get("unlocked_skills", ["text"]): skills.append(_entry_title("skills", id))
 	rows.append(_summary_value("spread", "LOC_SPREAD_1A2DA4D4", " / ".join(skills)))
 	_summary_text = "\n".join(rows)
-	_final_title.text = DeskLocalization.text("LOC_WB_EXPRESSION")
 	_refresh_composition()
 
 
@@ -999,10 +998,8 @@ func _summary_inspection() -> Dictionary:
 func _refresh_composition() -> void:
 	_composition = ExpressionText.compose(_catalog, _draft) if _catalog != null and not _draft.is_empty() else {}
 	_hide_source_hover()
-	_final_expression.set_segments(_composition.get("expression_segments", []), str(_composition.get("expression", "LOC_WB_NO_COMPOSITION")))
+	_final_expression.configure(str(_draft.get("preset_id", "")), _composition.get("expression_segments", []), _composition.get("context_segments", []), str(_composition.get("expression", "LOC_WB_NO_COMPOSITION")))
 	_meaning.set_segments(_composition.get("meaning_segments", []), str(_composition.get("meaning", "")))
-	_expression_context.set_segments(_composition.get("context_segments", []))
-	_expression_context.visible = not _expression_context.get_parsed_text().is_empty()
 	_meaning_title.text = DeskLocalization.text("LOC_WB_MEANING")
 	_meaning_title.visible = not _meaning.get_parsed_text().is_empty()
 	_meaning.visible = _meaning_title.visible
