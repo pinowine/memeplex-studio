@@ -136,13 +136,13 @@
   },
   "LOC_OPENING_LABELS_TITLE": {
     "source": "显示纸条",
-    "zh_CN": "显示纸条",
-    "en": "Name strip"
+    "zh_CN": "悬停提示",
+    "en": "Hover hints"
   },
   "LOC_OPENING_LABELS_TEXT": {
     "source": "我不在的时候，它会提醒你这些机器叫什么。认不出来就看一眼，别靠猜。",
-    "zh_CN": "我不在的时候，它会提醒你这些机器叫什么。",
-    "en": "When I’m not here, this reminds you what the machines are called."
+    "zh_CN": "把鼠标移到机器或材料上，旁边的票据会显示名称和说明。",
+    "en": "Hover over a machine or material to see its name and details beside the pointer."
   },
   "LOC_OPENING_CLOCK_TITLE": {
     "source": "时钟",

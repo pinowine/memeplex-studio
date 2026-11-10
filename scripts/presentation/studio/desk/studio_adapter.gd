@@ -49,7 +49,6 @@ func initial_papers() -> Array[Dictionary]:
 	for id in ["map", "edit", "cultivate", "spread"]:
 		sources.append({"asset":"workpaper_" + id, "source":_desk._stack._masks[id], "size":Vector2(1.14, .740), "id":id, "curve":0})
 	sources.append({"asset":"receipt_paper", "source":_desk._printer, "size":Vector2(.146, .330), "id":"receipt", "curve":1})
-	sources.append({"asset":"note_strip", "source":_desk._hover_strip, "size":Vector2(.410, .074), "id":"note", "curve":0})
 	return sources
 
 func screen_sources() -> Array[Dictionary]:

@@ -22,6 +22,7 @@ var _content_revision := 0
 var _layout_revision := 0
 var _corner_tape: Array[TextureRect] = []
 var _receipt: PanelContainer
+var pointer_source: Callable
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -32,6 +33,7 @@ func _init() -> void:
 func _ready() -> void:
 	resized.connect(_layout)
 	_layout()
+	hide()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
@@ -84,12 +86,15 @@ func show_hover(details: Dictionary) -> void:
 	_hover = details.duplicate(true)
 	_has_hover = true
 	_update_content(entering_hover)
+	show()
+	_receipt.set_pointer_following(true)
 
 func clear_hover() -> void:
 	if not _has_hover: return
 	_has_hover = false
 	_hover.clear()
 	_update_content(true)
+	hide()
 
 func _normalized(text: String) -> String:
 	return " ".join(text.replace("\r", " ").replace("\n", " ").replace("\t", " ").split(" ", false)).strip_edges()
@@ -210,10 +215,11 @@ func _layout() -> void:
 		if _receipt == null:
 			_receipt = ReceiptHover.new()
 			_receipt.name = "HoverReceipt"
+			_receipt.set_pointer_source(pointer_source)
 			add_child(_receipt)
-		_receipt.position = Vector2.ZERO
 		_receipt.set_width(size.x)
 		_receipt.set_content(_heading,[],_detail)
+		_receipt.set_pointer_following(true)
 		queue_redraw()
 		return
 	var font := _active_font()

@@ -173,7 +173,6 @@ func _logical_target(id: String) -> Variant:
 		"desktop/machines", "desktop/fax": return page.desk._art.fax
 		"desktop/printer": return page.desk._art.printer
 		"desktop/monitor": return page.desk._art.crt
-		"desktop/note": return page.desk._hover_strip
 		"desktop/clock": return page.desk._clock
 		"desktop/language": return page.desk._material_cards._stack_surfaces.language
 		"desktop/stacks": return _targets_bounds(["desktop/language", "desktop/stack/group", "desktop/stack/topic", "desktop/stack/module"])

@@ -63,7 +63,6 @@ var _meaning_title: Label
 var _meaning: RichTextLabel
 var _source_hover: PanelContainer
 var _source_hover_records: Array = []
-var _source_hover_point := Vector2.ZERO
 var _composition: Dictionary = {}
 var _lineage_preview: Dictionary = {}
 var _module_errors := PackedStringArray()
@@ -455,6 +454,11 @@ func _build_source_hover(page: Control) -> void:
 	_source_hover.z_index = 20
 	page.add_child(_source_hover)
 	_source_hover.hide()
+
+
+func mount_hover_overlay(parent: CanvasLayer, pointer_source: Callable) -> void:
+	_source_hover.reparent(parent)
+	_source_hover.set_pointer_source(pointer_source)
 
 
 func _information_rule(node_name: String, parent: Node) -> void:
@@ -1042,7 +1046,6 @@ func _direction_title(id: String) -> String:
 func _show_source_hover(sources: Array, excerpt: String) -> void:
 	if not _interaction_enabled or _tab != "edit": return
 	_source_hover_records = sources.duplicate(true)
-	_source_hover_point = _pages.edit.get_local_mouse_position()
 	var rows: Array[Dictionary] = []
 	for source: Dictionary in sources:
 		var kind := str(source.kind)
@@ -1057,12 +1060,8 @@ func _show_source_hover(sources: Array, excerpt: String) -> void:
 	_source_hover.set_content(DeskLocalization.text("LOC_WB_CHANGED_BY"), rows)
 	_source_hover.set_meta("excerpt", excerpt)
 	_source_hover.set_width(288)
-	_position_source_hover(_source_hover_point)
 	_source_hover.show()
-
-
-func _position_source_hover(point: Vector2) -> void:
-	_source_hover.fit_at(point, Rect2(Vector2.ZERO, _pages.edit.size))
+	_source_hover.set_pointer_following(true)
 
 
 func _hide_source_hover() -> void:

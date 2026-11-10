@@ -185,6 +185,10 @@ func _update_material_storage(_enabled: bool) -> void:
 
 func _update_hover_strip() -> void:
 	if _hover_strip == null: return
+	var editor: Control = _page.hud.design_workbench()
+	if _page.hud.modal_visible() or (_page._shell != null and _page._shell.blocks_input()) or editor._source_hover.visible:
+		_hover_strip.clear_hover()
+		return
 	var point := get_viewport().get_mouse_position()
 	var info: Dictionary = _material_cards.hover_info(point) if _material_cards != null else {}
 	if info.is_empty(): info = _monitor.hover_info(point)
@@ -452,9 +456,11 @@ func configure(page: Node2D) -> void:
 	_hover_strip = HoverStrip.new()
 	_hover_strip.name = "DeskInformationSlip"
 	_hover_strip.z_index = 21
-	page.hud.add_child(_hover_strip)
+	_hover_strip.pointer_source = _hover_pointer_position
+	controls.add_child(_hover_strip)
 	_hover_strip.configure(Handwriting.FONT, _textures.paper_texture)
-	_place(_hover_strip, Rect2(900,58,375,74))
+	_hover_strip.size = Vector2(288,74)
+	editor.mount_hover_overlay(controls, _hover_pointer_position)
 	var board: Control = editor.context_slice()
 	board.set_drag_preview_parent(_material_cards)
 	board.slot_pressed.connect(_context_slot_pressed)
@@ -676,7 +682,6 @@ func _layout() -> void:
 	_book_contacts.layout_book(Rect2(Vector2.ZERO,_art.phonebook.size))
 	_page.hud.configure_desk(_stack_rect,self)
 	if _material_cards != null: _material_cards.set_storage_area(MATERIAL_STORAGE_RECT)
-	if _hover_strip != null: _place(_hover_strip,Rect2(900,58,375,74))
 	_props.set_bounds(Rect2(-80,-100,1760,1100))
 	_update_prop_dependents()
 	_fit_settings()
@@ -1322,6 +1327,9 @@ func _foreground_point(point: Vector2) -> Vector2:
 	if _page.has_meta("studio3d"):
 		return _page.get_meta("studio3d").root_pointer_from_logical(point)
 	return point
+
+func _hover_pointer_position() -> Vector2:
+	return _foreground_point(get_viewport().get_mouse_position())
 
 func _foreground_ui_handles(point: Vector2) -> bool:
 	point = _foreground_point(point)

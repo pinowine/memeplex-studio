@@ -15,7 +15,7 @@ static func steps() -> Array[Dictionary]:
 		{"id":"machines","title":"LOC_OPENING_MACHINES_TITLE","text":"LOC_OPENING_MACHINES_TEXT","action":"continue","target":"desktop/fax"},
 		{"id":"fax_output","title":"LOC_OPENING_FAX_OUTPUT_TITLE","text":"LOC_OPENING_FAX_OUTPUT_TEXT","action":"continue","target":"desktop/fax_output"},
 		{"id":"printer","title":"LOC_OPENING_PRINTER_TITLE","text":"LOC_OPENING_PRINTER_TEXT","action":"continue","target":"desktop/printer","scroll":true},
-		{"id":"labels","title":"LOC_OPENING_LABELS_TITLE","text":"LOC_OPENING_LABELS_TEXT","action":"continue","target":"desktop/note"},
+		{"id":"labels","title":"LOC_OPENING_LABELS_TITLE","text":"LOC_OPENING_LABELS_TEXT","action":"continue","hover":true},
 		{"id":"clock","title":"LOC_OPENING_CLOCK_TITLE","text":"LOC_OPENING_CLOCK_TEXT","action":"continue","target":"desktop/clock"},
 		{"id":"stacks","title":"LOC_OPENING_STACKS_TITLE","text":"LOC_OPENING_STACKS_TEXT","action":"continue","target":"desktop/stacks"},
 		{"id":"language_open","title":"LOC_OPENING_LANGUAGE_OPEN_TITLE","text":"LOC_OPENING_LANGUAGE_OPEN_TEXT","action":"inventory_opened","target":"desktop/language","match":{"kind":"language"}},
