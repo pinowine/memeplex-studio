@@ -10976,18 +10976,18 @@
   },
   "LOC_PATCH_QUESTION_DESCRIPTION": {
     "source": "适用于 This is Fine 和 Why is this so PEAK，让原本笃定的表达产生疑问。",
-    "zh_CN": "适用于 This is Fine 和 Why is this so PEAK，让原本笃定的表达产生疑问。",
-    "en": "For This is Fine and Why is this so PEAK. Question what the original expression takes for granted."
+    "zh_CN": "适用于凡尔赛和 OK boomer。让假谦虚变成求夸的反问，或在回绝说教前问一句“讲完了吗？”",
+    "en": "For Humblebrag and OK boomer. Turn false modesty into a question seeking praise, or ask 'Finished?' before dismissing a lecture."
   },
   "LOC_PATCH_COMPARISON_CONTENT": {
     "source": "把预期与实际放在一起对照。",
-    "zh_CN": "把预期与实际放在一起对照。",
-    "en": "Contrast expectations with what actually happened."
+    "zh_CN": "把两种处境并排对照。",
+    "en": "Put two situations side by side for comparison."
   },
   "LOC_PATCH_COMPARISON_DESCRIPTION": {
     "source": "仅适用于 Why is this so PEAK，用预期与实际的落差构成评价。",
-    "zh_CN": "仅适用于 Why is this so PEAK，用预期与实际的落差构成评价。",
-    "en": "For Why is this so PEAK only. Make the contrast between expectations and the result part of the judgment."
+    "zh_CN": "适用于三个起点。凡尔赛对照别人和自己的努力；Nobody 对照别人离场和自己继续讲；OK boomer 对照过去和现在的处境。",
+    "en": "For all three starters. Humblebrag contrasts other people's effort with your own; Nobody contrasts others leaving with you talking on; OK boomer contrasts conditions then and now."
   },
   "LOC_PATCH_EXIT_CONTENT": {
     "source": "允许参与者退出这轮接梗。",
@@ -10996,18 +10996,18 @@
   },
   "LOC_PATCH_EXIT_DESCRIPTION": {
     "source": "仅适用于 67，保留不参与或结束接梗的选择，不给数字附加含义。",
-    "zh_CN": "仅适用于 67，保留不参与或结束接梗的选择，不给数字附加含义。",
-    "en": "For 67 only. Leave room to opt out or stop the exchange without assigning a meaning to the numbers."
+    "zh_CN": "适用于 Nobody 和 OK boomer。Nobody 先装续写，再允许别人不接话；OK boomer 可以直接声明这轮对话结束。",
+    "en": "For Nobody and OK boomer. With Nobody, add Continuation first, then let others sit out. With OK boomer, explicitly end the conversation."
   },
   "LOC_PATCH_EXPLANATION_CONTENT": {
     "source": "补充画面或评价依据。",
-    "zh_CN": "补充画面或评价依据。",
-    "en": "Make the situation or the reason for the judgment explicit."
+    "zh_CN": "为这句话补上一句具体理由。",
+    "en": "Add a concrete reason for the statement."
   },
   "LOC_PATCH_EXPLANATION_DESCRIPTION": {
     "source": "适用于 This is Fine 和 Why is this so PEAK，补足读者理解句子所需的情境。",
-    "zh_CN": "适用于 This is Fine 和 Why is this so PEAK，补足读者理解句子所需的情境。",
-    "en": "For This is Fine and Why is this so PEAK. Supply the context needed to understand the expression."
+    "zh_CN": "适用于三个起点。为凡尔赛的假遗憾、Nobody 停不下来的分享，或 OK boomer 对说教的回绝，补上一句具体理由。",
+    "en": "For all three starters. Add a concrete reason for Humblebrag's apparent disappointment, Nobody's unstoppable sharing, or OK boomer's refusal to hear a lecture."
   },
   "LOC_PATCH_CONTINUATION_CONTENT": {
     "source": "把下一轮接梗留给别人。",
@@ -11016,8 +11016,8 @@
   },
   "LOC_PATCH_CONTINUATION_DESCRIPTION": {
     "source": "仅适用于 67，用轮流接梗延续参与，不把它改造成观点或口号。",
-    "zh_CN": "仅适用于 67，用轮流接梗延续参与，不把它改造成观点或口号。",
-    "en": "For 67 only. Keep the exchange going by handing over the next turn, not by turning it into a statement or slogan."
+    "zh_CN": "仅适用于 Nobody。在自己的自嘲后邀请别人也讲一次“没人问却忍不住说”的经历，还可以搭配退出补丁。",
+    "en": "For Nobody only. Follow your self-mockery by inviting others to share something they explain even when nobody asks. Can be combined with Exit."
   },
   "LOC_ROUTE_FINE_BASE": {
     "source": "This is Fine",
@@ -11296,28 +11296,28 @@
   },
   "LOC_CARD_MODULE_STANCE_COMMENTARY": {
     "source": "问号一落下，熟悉的话就变了声调。",
-    "zh_CN": "问号一落下，熟悉的话就变了声调。",
-    "en": "A question mark changes the tone of familiar words."
+    "zh_CN": "同一个问号，有人用来等夸奖，有人用来催对方讲完。",
+    "en": "One person uses a question to wait for praise; another uses it to hurry a lecturer along."
   },
   "LOC_CARD_MODULE_RELATION_COMMENTARY": {
     "source": "多一个听众，旧话也可能有了新意。",
-    "zh_CN": "多一个听众，旧话也可能有了新意。",
-    "en": "With another listener, old words may take on new meaning."
+    "zh_CN": "别人熬夜复习，你说没准备。两句放在一起，那点得意就藏不住了。",
+    "en": "Everyone else studied all night; you say you didn't prepare. Put those together and the pride becomes hard to hide."
   },
   "LOC_CARD_MODULE_RITUAL_COMMENTARY": {
     "source": "重复让一句话变成大家都认得的暗号。",
-    "zh_CN": "重复让一句话变成大家都认得的暗号。",
-    "en": "Repetition turns a phrase into a signal everyone recognises."
+    "zh_CN": "可以让别人不接，也可以轮到自己说“到这里吧”。",
+    "en": "You can let someone else sit out, or be the one to say, 'Let's leave it there.'"
   },
   "LOC_CARD_MODULE_BOUNDARY_COMMENTARY": {
     "source": "语言的边界，有时也是新故事的入口。",
-    "zh_CN": "语言的边界，有时也是新故事的入口。",
-    "en": "The edge of a language can be the entrance to a new story."
+    "zh_CN": "补一句为什么，别人就更容易听懂你在得意什么，又在烦什么。",
+    "en": "Give a reason and people can better understand what you're proud of or fed up with."
   },
   "LOC_CARD_MODULE_SHARED_WORLD_COMMENTARY": {
     "source": "当细节被共同记住，世界就有了轮廓。",
-    "zh_CN": "当细节被共同记住，世界就有了轮廓。",
-    "en": "When details are remembered together, a world takes shape."
+    "zh_CN": "自己的故事讲完了，把下一句留给也有同感的人。",
+    "en": "Once your story is told, leave the next line to someone who knows the feeling."
   },
   "LOC_GUIDANCE_FIRST_FAX": {
     "source": "纸出来了。带来的材料有两种收法：按 Enter 快捷收取，或把纸上的卡片拖到卡片摞／工作纸。只读传真不会取走材料；先拿好，再继续传播。",
