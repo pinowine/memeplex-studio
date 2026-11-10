@@ -1,10 +1,24 @@
 extends VBoxContainer
 
 const Rules = preload("res://data/rules/design_rules.tres")
+const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const INK := Color("40463b")
 var _record := {}
 var _font: Font
 var _localized: Array[Dictionary] = []
+
+static func sample_text(record: Dictionary) -> String:
+	var preset_id := str(record.get("id",""))
+	if not Composition.supports(preset_id): return ""
+	var draft: Dictionary = record.default_context.duplicate(true)
+	draft.preset_id = preset_id
+	var composed := Composition.compose(draft,[])
+	var context: Array[String] = []
+	for segment: Dictionary in composed.context_segments: context.append(str(segment.text))
+	var parts: Array[String] = []
+	if not context.is_empty(): parts.append(DeskLocalization.source_join("",context))
+	parts.append(str(composed.expression))
+	return DeskLocalization.source_join("\n",parts)
 
 class ContextIcon extends Control:
 	var kind := ""
@@ -40,6 +54,11 @@ func configure(record: Dictionary, font: Font) -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_theme_constant_override("separation", 4)
 	add_child(_label(str(record.title), 18))
+	var sample := sample_text(record)
+	if not sample.is_empty():
+		var sample_label := _label(sample,16)
+		sample_label.name = "StarterSample"
+		add_child(sample_label)
 	add_child(_label(str(record.description), 13))
 	var grid := GridContainer.new()
 	grid.name = "DefaultContext"
