@@ -10,6 +10,25 @@ const FONT = preload("res://assets/image/fonts/development_font.tres")
 const SHADOW_OFFSET := Vector2(0,4)
 const TOOTH_PITCH := 8.0
 const TOOTH_DEPTH := 3.0
+const CODE39_PATTERNS := {
+	"0":"111221211", "1":"211211112", "2":"112211112", "3":"212211111",
+	"4":"111221112", "5":"211221111", "6":"112221111", "7":"111211212",
+	"8":"211211211", "9":"112211211", "*":"121121211"
+}
+
+static func barcode_bars(rect: Rect2, digits: String) -> Array[Rect2]:
+	var symbols := "*"+digits+"*"
+	var narrow := rect.size.x/float(symbols.length()*12+symbols.length()-1)
+	var bars: Array[Rect2] = []
+	var x := rect.position.x
+	for symbol_index in symbols.length():
+		if symbol_index > 0: x += narrow
+		var pattern: String = CODE39_PATTERNS[symbols[symbol_index]]
+		for element in 9:
+			var width := narrow*int(pattern[element])
+			if element%2 == 0: bars.append(Rect2(x,rect.position.y,width,rect.size.y))
+			x += width
+	return bars
 
 func _get_draw_rect(rect: Rect2) -> Rect2:
 	return rect.expand(rect.end+SHADOW_OFFSET)
