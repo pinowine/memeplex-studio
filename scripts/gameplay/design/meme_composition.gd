@@ -6,23 +6,13 @@ const COMPARISON := "module_relation"
 const EXPLANATION := "module_boundary"
 const CONTINUATION := "module_shared_world"
 const EXIT := "module_ritual"
-const SEEDS := ["worker_2020", "versailles_2020", "cheems_2020"]
+const SEEDS := ["versailles_2020", "nobody_2020", "ok_boomer_2020"]
 const LANGUAGES := ["ninghua", "shiohara", "seowon"]
 const GROUPS := ["commuters", "students", "culture_fans"]
 const SCENES := {
-	"worker_2020": [
-		{"id":"shift", "topics":["work","cost_of_living","policy"], "groups":[]},
-		{"id":"student_job", "topics":["education","work","cost_of_living"], "groups":["students"]},
-		{"id":"club_duty", "topics":["community","entertainment","work"], "groups":["culture_fans"]}],
-	"versailles_2020": [
-		{"id":"exam", "topics":["education","identity","community"], "groups":[]},
-		{"id":"training", "topics":["education","work","platform_tools"], "groups":["commuters"]},
-		{"id":"quiz", "topics":["education","entertainment","community"], "groups":["culture_fans"]}],
-	"cheems_2020": [
-		{"id":"reply", "topics":["community","language","trust","identity"], "groups":[]},
-		{"id":"presentation", "topics":["education","language","community"], "groups":["students"]},
-		{"id":"meeting", "topics":["work","platform_tools","community"], "groups":["commuters"]},
-		{"id":"fan_chat", "topics":["entertainment","community","language"], "groups":["culture_fans"]}]
+	"versailles_2020": {"":"exam", "education":"exam", "community+education":"class_chat", "education+work":"qualification", "education+entertainment":"trivia"},
+	"nobody_2020": {"":"film", "entertainment":"film", "community+entertainment":"fan_chat", "work":"office", "platform_tools+work":"software", "education":"lesson"},
+	"ok_boomer_2020": {"":"school", "education":"school", "education+work":"first_job", "work":"overtime", "cost_of_living+work":"rent", "community":"neighborhood"}
 }
 
 static func supports(preset_id: String) -> bool:
@@ -30,43 +20,40 @@ static func supports(preset_id: String) -> bool:
 
 static func definition(preset_id: String) -> Dictionary:
 	var definitions := {
-		"worker_2020": {"compatible_modules":[QUESTION,COMPARISON,EXPLANATION,CONTINUATION,EXIT], "requires":{EXIT:[CONTINUATION]}, "default_context":{"language_id":"ninghua","group_id":"commuters","topic_ids":["work","cost_of_living"],"political_position":[-0.3,-0.3],"political_known":true,"pragmatic_position":[0.6,0.1]}, "meaning_bounds":{"political_position":[-1.0,0.4,-1.0,0.4],"pragmatic_position":[-0.2,1.0,-0.5,1.0]}},
-		"versailles_2020": {"compatible_modules":[QUESTION,COMPARISON,EXPLANATION], "requires":{}, "default_context":{"language_id":"ninghua","group_id":"students","topic_ids":["education"],"political_position":[0.0,0.3],"political_known":true,"pragmatic_position":[0.8,0.1]}, "meaning_bounds":{"political_position":[-0.5,0.5,-0.3,1.0],"pragmatic_position":[0.2,1.0,-0.5,1.0]}},
-		"cheems_2020": {"compatible_modules":[COMPARISON,EXPLANATION,CONTINUATION,EXIT], "requires":{EXIT:[CONTINUATION]}, "default_context":{"language_id":"ninghua","group_id":"students","topic_ids":["community","language"],"political_position":[0.0,0.0],"political_known":true,"pragmatic_position":[0.5,-0.3]}, "meaning_bounds":{"political_position":[-0.5,0.5,-0.5,0.5],"pragmatic_position":[-0.5,1.0,-1.0,0.4]}}
+		"versailles_2020":{"compatible_modules":[QUESTION,COMPARISON,EXPLANATION], "requires":{}, "default_context":{"language_id":"ninghua","group_id":"students","topic_ids":["education"],"political_position":[0.0,0.3],"political_known":true,"pragmatic_position":[0.8,0.1]}, "meaning_bounds":{"political_position":[-0.5,0.5,-0.3,1.0],"pragmatic_position":[0.2,1.0,-0.5,1.0]}},
+		"nobody_2020":{"compatible_modules":[COMPARISON,EXPLANATION,CONTINUATION,EXIT], "requires":{EXIT:[CONTINUATION]}, "default_context":{"language_id":"shiohara","group_id":"culture_fans","topic_ids":["entertainment"],"political_position":[0.0,0.0],"political_known":true,"pragmatic_position":[0.7,0.1]}, "meaning_bounds":{"political_position":[-0.6,0.6,-0.6,0.6],"pragmatic_position":[0.2,1.0,-0.6,0.8]}},
+		"ok_boomer_2020":{"compatible_modules":[QUESTION,COMPARISON,EXPLANATION,EXIT], "requires":{}, "default_context":{"language_id":"seowon","group_id":"students","topic_ids":["education"],"political_position":[-0.4,-0.2],"political_known":true,"pragmatic_position":[0.6,0.7]}, "meaning_bounds":{"political_position":[-1.0,0.2,-1.0,0.3],"pragmatic_position":[0.1,1.0,0.2,1.0]}}
 	}
 	if not supports(preset_id): return {}
 	var result: Dictionary = definitions[preset_id]
 	result.max_modules = 4
-	result.title = _text(preset_id.to_upper() + "_TITLE")
-	result.media = _text("MEDIA_TEXT" if preset_id == "worker_2020" else "MEDIA_IMAGE")
-	result.illustration = preset_id.trim_suffix("_2020")
-	result.scenes = SCENES[preset_id].duplicate(true)
+	result.title = _text(_seed(preset_id)+"_TITLE")
+	result.media = DeskLocalization.source("LOC_COMPOSE_MEDIA_TEXT")
+	result.illustration = ""
+	result.scenes = SCENES[preset_id].duplicate()
 	return result
 
 static func validate(draft: Dictionary, module_ids: Array) -> PackedStringArray:
+	var id := str(draft.get("preset_id",""))
+	if not supports(id): return _error("SEED")
 	var errors := PackedStringArray()
-	var preset_id := str(draft.get("preset_id", ""))
-	if not supports(preset_id):
-		return PackedStringArray([_text("ERROR_SEED")])
-	var rules := definition(preset_id)
+	var rules := definition(id)
 	var modules := _modules(module_ids)
-	if modules.size() > 4: errors.append(_text("ERROR_SLOTS"))
+	if modules.size() > 4: errors.append_array(_error("SLOTS"))
 	var seen := {}
-	for id: String in modules:
-		if seen.has(id): errors.append(_text("ERROR_DUPLICATE"))
-		seen[id] = true
-		if id not in rules.compatible_modules: errors.append(_text("ERROR_PATCH"))
-		for required: String in rules.requires.get(id, []):
-			if required not in modules: errors.append(_text("ERROR_EXIT"))
-	for language_id: String in _context_values(draft,"language"):
-		if language_id not in LANGUAGES: errors.append(_text("ERROR_LANGUAGE"))
-	for group_id: String in _context_values(draft,"group"):
-		if group_id not in GROUPS: errors.append(_text("ERROR_GROUP"))
-	if _scene(draft).is_empty(): errors.append(_text("ERROR_SCENE"))
+	for module_id: String in modules:
+		if seen.has(module_id): errors.append_array(_error("DUPLICATE"))
+		seen[module_id] = true
+		if module_id not in rules.compatible_modules: errors.append_array(_error("PATCH"))
+		for required: String in rules.requires.get(module_id,[]):
+			if required not in modules: errors.append_array(_error("EXIT"))
+	for language_id: String in _values(draft,"language"):
+		if language_id not in LANGUAGES: errors.append_array(_error("LANGUAGE"))
+	for group_id: String in _values(draft,"group"):
+		if group_id not in GROUPS: errors.append_array(_error("GROUP"))
+	if _scene(draft).is_empty(): errors.append_array(_error("SCENE"))
 	for field: String in rules.meaning_bounds:
-		var layer := "stance" if field == "political_position" else "pragmatic"
-		if not _attached(draft,layer): continue
-		if field == "political_position" and not draft.get("political_known",false): continue
+		if not _meaning_attached(draft,field): continue
 		var point := _position(draft.get(field,Vector2.ZERO))
 		var bounds: Array = rules.meaning_bounds[field]
 		for axis in 2:
@@ -74,21 +61,142 @@ static func validate(draft: Dictionary, module_ids: Array) -> PackedStringArray:
 			var lower: float = bounds[axis*2]
 			var upper: float = bounds[axis*2+1]
 			if (value < lower and not is_equal_approx(value,lower)) or (value > upper and not is_equal_approx(value,upper)):
-				errors.append(_text("ERROR_MEANING"))
+				errors.append_array(_error("MEANING"))
 	return errors
 
 static func compose(draft: Dictionary, module_ids: Array) -> Dictionary:
 	if not validate(draft,module_ids).is_empty(): return {}
-	var preset_id := str(draft.preset_id)
 	var modules := _modules(module_ids)
-	var scene := _scene(draft)
-	var languages := _context_values(draft,"language")
-	if languages.is_empty(): languages.append("")
-	var versions: Array[Dictionary] = []
-	for language_id: String in languages:
-		versions.append({"language_id":language_id,"expression":_expression(preset_id,scene,language_id,modules)})
+	var defaults: Dictionary = definition(str(draft.preset_id)).default_context
+	var languages := _values(draft,"language")
+	var language_id := str(draft.get("language_id",defaults.language_id))
+	if language_id not in languages: language_id = languages[0] if not languages.is_empty() else str(defaults.language_id)
+	var segments := _expression_segments(draft,modules,language_id)
 	var meaning := _meaning(draft,modules)
-	return {"expression":versions[0].expression,"meaning":meaning.text,"meaning_id":meaning.id,"language_versions":versions,"media":definition(preset_id).media,"illustration":preset_id.trim_suffix("_2020") + "_" + str(scene.id),"effects":{}}
+	var context := _context_segments(draft)
+	var versions: Array[Dictionary] = []
+	for language: String in languages:
+		versions.append({"language_id":language,"expression":_join(_expression_segments(draft,modules,language))})
+	return {"expression":_join(segments),"meaning":_join(meaning.segments),"meaning_id":meaning.id,"expression_segments":segments,"meaning_segments":meaning.segments,"context_segments":context,"language_versions":versions,"media":DeskLocalization.source("LOC_COMPOSE_MEDIA_TEXT"),"illustration":"","effects":{}}
+
+static func _expression_segments(draft: Dictionary, modules: Array[String], language_id: String) -> Array[Dictionary]:
+	var seed := _seed(str(draft.preset_id))
+	var scene := _scene(draft)
+	var sources := _scene_sources(draft)
+	var defaults: Dictionary = definition(str(draft.preset_id)).default_context
+	var language_sources: Array[Dictionary] = []
+	if language_id != str(defaults.language_id): language_sources = [_source("language",language_id)]
+	var group := _primary_group(draft)
+	var group_sources: Array[Dictionary] = []
+	if group != str(defaults.group_id): group_sources = [_source("group",group)]
+	var result: Array[Dictionary] = []
+	if seed == "V":
+		result.append(_segment("V_LEAD_"+language_id.to_upper(),language_sources))
+		var details := sources.duplicate()
+		if scene == "exam": details.append_array(group_sources)
+		var situation := "EXAM_"+group.to_upper() if scene == "exam" else scene.to_upper()
+		if COMPARISON in modules: result.append(_versailles_segment(situation,"COMPARISON",details,COMPARISON))
+		result.append(_versailles_segment(situation,"EFFORT",details))
+		result.append(_versailles_segment(situation,"QUESTION" if QUESTION in modules else "RESULT",details,QUESTION if QUESTION in modules else ""))
+		if EXPLANATION in modules: result.append(_versailles_segment(situation,"EXPLANATION",details,EXPLANATION))
+	elif seed == "N":
+		result.append(_segment("N_NOBODY",[]))
+		if COMPARISON in modules: result.append(_segment("N_COMPARISON",[_source("patch",COMPARISON)]))
+		result.append(_segment("N_SPEAKER_"+group.to_upper(),group_sources))
+		result.append(_segment("N_LANGUAGE_"+language_id.to_upper(),language_sources))
+		result.append(_segment("N_"+scene.to_upper()+"_ACTION",sources))
+		if EXPLANATION in modules: result.append(_segment("N_"+scene.to_upper()+"_EXPLANATION",_with_patch(sources,EXPLANATION)))
+		if CONTINUATION in modules:
+			result.append(_segment("N_INVITE",[_source("patch",CONTINUATION)]))
+			if EXIT in modules: result.append(_segment("N_EXIT",[_source("patch",CONTINUATION),_source("patch",EXIT)]))
+	else:
+		if QUESTION in modules: result.append(_segment("B_QUESTION",[_source("patch",QUESTION)]))
+		if COMPARISON in modules: result.append(_segment("B_"+scene.to_upper()+"_COMPARISON",_with_patch(sources,COMPARISON)))
+		result.append(_segment("B_REPLY_"+language_id.to_upper(),language_sources))
+		if EXPLANATION in modules: result.append(_segment("B_EXPLANATION",[_source("patch",EXPLANATION)]))
+		if EXIT in modules: result.append(_segment("B_EXIT",[_source("patch",EXIT)]))
+	return result
+
+static func _versailles_segment(scene: String, part: String, sources: Array, patch: String = "") -> Dictionary:
+	var key := "V_"+scene+"_"+part
+	var changed: Array = [] if _text(key) == _text("V_EXAM_STUDENTS_"+part) else sources.duplicate()
+	if not patch.is_empty(): changed.append(_source("patch",patch))
+	return _segment(key,changed)
+
+static func _context_segments(draft: Dictionary) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var groups := _values(draft,"group")
+	groups.sort()
+	if groups.size() > 1:
+		var added: Array[Dictionary] = []
+		var default_group := str(definition(str(draft.preset_id)).default_context.group_id)
+		for group_id: String in groups:
+			if group_id != default_group: added.append(_source("group",group_id))
+		result.append(_segment("AUDIENCE_"+"_".join(groups).to_upper(),added))
+	if str(draft.preset_id) != "ok_boomer_2020": return result
+	var group := _primary_group(draft)
+	var sources: Array[Dictionary] = []
+	if group != str(definition(str(draft.preset_id)).default_context.group_id): sources.append(_source("group",group))
+	result.append(_segment("B_SPEAKER_"+group.to_upper(),sources))
+	result.append(_segment("B_"+_scene(draft).to_upper()+"_CONTEXT",_scene_sources(draft)))
+	return result
+
+static func _meaning(draft: Dictionary, modules: Array[String]) -> Dictionary:
+	var seed := _seed(str(draft.preset_id))
+	var defaults: Dictionary = definition(str(draft.preset_id)).default_context
+	var segments: Array[Dictionary] = [_segment(seed+"_MEANING",[])]
+	var names := {QUESTION:"QUESTION",COMPARISON:"COMPARISON",EXPLANATION:"EXPLANATION",CONTINUATION:"CONTINUATION",EXIT:"EXIT"}
+	for module_id: String in modules:
+		segments.append(_segment(seed+"_MEANING_"+str(names[module_id]),[_source("patch",module_id)]))
+	var identity: Array[String] = [str(draft.preset_id),"+".join(modules)]
+	for field: String in ["political_position","pragmatic_position"]:
+		if not _meaning_attached(draft,field): continue
+		var point := _position(draft.get(field,Vector2.ZERO))
+		var origin := _position(defaults[field])
+		var kind := "stance" if field == "political_position" else "pragmatic"
+		identity.append("%s:%.2f,%.2f" % [kind,point.x,point.y])
+		var names_by_direction := ["freedom","authority","equality","hierarchy"] if kind == "stance" else ["sincere","ironic","support","opposition"]
+		for axis in 2:
+			if is_equal_approx(point[axis],origin[axis]): continue
+			var direction: String = names_by_direction[axis*2+int(point[axis]>origin[axis])]
+			var key := seed+"_READING_"+direction.to_upper()
+			if absf(point[axis]-origin[axis]) > 0.4: key += "_STRONG"
+			segments.append(_segment(key,[_source(kind,direction)]))
+	return {"segments":segments,"id":"/".join(identity)}
+
+static func _scene(draft: Dictionary) -> String:
+	return str(SCENES[str(draft.preset_id)].get("+".join(_topics(draft)),""))
+
+static func _scene_sources(draft: Dictionary) -> Array[Dictionary]:
+	var baseline: Dictionary = definition(str(draft.preset_id)).default_context.duplicate(true)
+	baseline.preset_id = str(draft.preset_id)
+	var sources: Array[Dictionary] = []
+	if _scene(draft) != _scene(baseline):
+		var original_topics := _topics(baseline)
+		for topic: String in _topics(draft):
+			if topic not in original_topics: sources.append(_source("topic",topic))
+	return sources
+
+static func _topics(draft: Dictionary) -> Array[String]:
+	var result: Array[String] = []
+	if _attached(draft,"topics"):
+		for value: Variant in draft.get("topic_ids",[]):
+			if str(value) not in result: result.append(str(value))
+	result.sort()
+	return result
+
+static func _primary_group(draft: Dictionary) -> String:
+	var values := _values(draft,"group")
+	values.sort()
+	var primary := str(draft.get("group_id",""))
+	return primary if primary in values else (values[0] if not values.is_empty() else str(definition(str(draft.preset_id)).default_context.group_id))
+
+static func _values(draft: Dictionary, kind: String) -> Array[String]:
+	var result: Array[String] = []
+	if not _attached(draft,kind): return result
+	for value: Variant in draft.get(kind+"_ids",[draft.get(kind+"_id","")]):
+		if not str(value).is_empty() and str(value) not in result: result.append(str(value))
+	return result
 
 static func _modules(values: Array) -> Array[String]:
 	var result: Array[String] = []
@@ -97,112 +205,36 @@ static func _modules(values: Array) -> Array[String]:
 	result.sort()
 	return result
 
+static func _meaning_attached(draft: Dictionary, field: String) -> bool:
+	return _attached(draft,"pragmatic") if field == "pragmatic_position" else _attached(draft,"stance") and bool(draft.get("political_known",false))
+
 static func _attached(draft: Dictionary, layer: String) -> bool:
 	return bool(draft.get("context_layer_attachment",{}).get(layer,true))
-
-static func _context_values(draft: Dictionary, kind: String) -> Array[String]:
-	var result: Array[String] = []
-	if not _attached(draft,kind): return result
-	var values: Variant = draft.get(kind + "_ids",[draft.get(kind + "_id","")])
-	for value: Variant in values:
-		if not str(value).is_empty() and str(value) not in result: result.append(str(value))
-	return result
-
-static func _scene(draft: Dictionary) -> Dictionary:
-	var topics: Array[String] = []
-	if _attached(draft,"topics"):
-		for value: Variant in draft.get("topic_ids",[]): topics.append(str(value))
-	topics.sort()
-	var groups := _context_values(draft,"group")
-	var selected := {}
-	var best_score := -1
-	for scene: Dictionary in SCENES[str(draft.preset_id)]:
-		var fits := true
-		for topic: String in topics: fits = fits and topic in scene.topics
-		if not fits: continue
-		var score := 0
-		for group_id: String in groups:
-			if group_id in scene.groups: score += 1
-		if score > best_score:
-			selected = scene
-			best_score = score
-	if not selected.is_empty():
-		selected = selected.duplicate(true)
-		selected.selected_topics = topics
-	return selected
-
-static func _scene_expression(scene: Dictionary) -> String:
-	var prefix := "SCENE_" + str(scene.id).to_upper()
-	var details: Array[String] = []
-	for topic: String in scene.selected_topics:
-		details.append(_text(prefix + "_" + topic.to_upper()))
-	if details.is_empty(): return _text(prefix + "_DEFAULT")
-	var joined := details[0]
-	for index in range(1,details.size()):
-		joined = _format("LIST_PAIR" if index == details.size()-1 else "LIST_MORE",[joined,details[index]])
-	return _format(prefix + "_FOCUS",[joined])
-
-static func _expression(preset_id: String, scene: Dictionary, language_id: String, modules: Array[String]) -> String:
-	var question := QUESTION in modules
-	var compare := COMPARISON in modules
-	var explain := EXPLANATION in modules
-	var core_mask := int(question) + int(compare) * 2 + int(explain) * 4
-	var seed := preset_id.trim_suffix("_2020").to_upper()
-	var language := language_id.to_upper() if not language_id.is_empty() else "NINGHUA"
-	var prefix := _text(seed + "_LEAD_" + language)
-	var scene_id := str(scene.id).to_upper()
-	var core: String
-	if preset_id == "worker_2020":
-		var promise := _text(scene_id+"_PROMISE")
-		var actual := _text(scene_id+"_ACTUAL")
-		var reason := _text(scene_id+"_REASON")
-		var arguments := {0:[],1:[promise],2:[promise,actual],3:[promise,actual],4:[reason,actual],5:[reason,promise],6:[promise,reason,actual],7:[promise,reason,actual]}
-		core = "" if core_mask == 0 else _format("WORKER_CORE_%d" % core_mask,arguments[core_mask])
-	elif preset_id == "versailles_2020":
-		core = "" if core_mask == 0 else _text("VERSAILLES_CORE_%d" % core_mask)
-		prefix = _format("VERSAILLES_SCENE",[_text(scene_id+"_PAPER"),prefix])
-	else:
-		var action := _text(scene_id+"_ACTION")
-		var reason := _text(scene_id+"_REASON")
-		var arguments := {0:[],2:[action],4:[action,reason],6:[action,reason]}
-		core = "" if core_mask == 0 else _format("CHEEMS_CORE_%d" % core_mask,arguments[core_mask])
-	var expression := DeskLocalization.source_join("",[prefix,_scene_expression(scene),core])
-	if CONTINUATION in modules:
-		var ending := seed + ("_INVITE_EXIT" if EXIT in modules else "_INVITE")
-		expression = DeskLocalization.source_join("",[expression,_text(ending)])
-	return expression
-
-static func _meaning(draft: Dictionary, modules: Array[String]) -> Dictionary:
-	var seed := str(draft.preset_id).trim_suffix("_2020").to_upper()
-	var core_mask := int(QUESTION in modules) + int(COMPARISON in modules)*2 + int(EXPLANATION in modules)*4
-	var core := _text(seed + "_MEANING_%d" % core_mask)
-	if CONTINUATION in modules:
-		core = _format("MEANING_CLAUSES",[core,_text("MEANING_INVITE_EXIT" if EXIT in modules else "MEANING_INVITE")])
-	var parts: Array[String] = [_format("MEANING_CORE",[core])]
-	var identity: Array[String] = [str(draft.preset_id),"+".join(modules)]
-	for field: String in ["political_position","pragmatic_position"]:
-		var layer := "stance" if field == "political_position" else "pragmatic"
-		if not _attached(draft,layer) or (field == "political_position" and not draft.get("political_known",false)): continue
-		var point := _position(draft.get(field,Vector2.ZERO))
-		identity.append("%s:%.2f,%.2f" % [layer,point.x,point.y])
-		var axis_keys := ["FREEDOM","AUTHORITY","EQUALITY","HIERARCHY"] if layer == "stance" else ["SINCERE","IRONIC","SUPPORT","OPPOSITION"]
-		var reading: Array[String] = []
-		if not is_zero_approx(point.x): reading.append(_axis_reading(seed,axis_keys[0 if point.x < 0.0 else 1],point.x))
-		if not is_zero_approx(point.y): reading.append(_axis_reading(seed,axis_keys[2 if point.y < 0.0 else 3],point.y))
-		if not reading.is_empty():
-			var text := reading[0] if reading.size() == 1 else _format("MEANING_CLAUSES",reading)
-			parts.append(_format("MEANING_STANCE" if layer == "stance" else "MEANING_USAGE",[text]))
-	return {"text":DeskLocalization.source_join("",parts),"id":"/".join(identity)}
-
-static func _axis_reading(seed: String, axis: String, value: float) -> String:
-	var degree := clampi(ceili(absf(value)*5.0),1,5)
-	return _format("MEANING_DEGREE_%d" % degree,[_text(seed+"_READING_"+axis)])
 
 static func _position(value: Variant) -> Vector2:
 	return value if value is Vector2 else Vector2(float(value[0]),float(value[1]))
 
-static func _text(key: String) -> String:
-	return DeskLocalization.source("LOC_COMPOSE_" + key)
+static func _source(kind: String, id: String) -> Dictionary:
+	return {"kind":kind,"id":kind+"_"+id if kind in ["language","group","topic"] else id}
 
-static func _format(key: String, values: Array) -> String:
-	return DeskLocalization.source_format("LOC_COMPOSE_" + key,values,range(values.size()))
+static func _with_patch(sources: Array, id: String) -> Array:
+	var result := sources.duplicate()
+	result.append(_source("patch",id))
+	return result
+
+static func _segment(key: String, sources: Array) -> Dictionary:
+	return {"text":_text(key),"sources":sources.duplicate(true)}
+
+static func _join(segments: Array) -> String:
+	var parts: Array[String] = []
+	for segment: Dictionary in segments: parts.append(str(segment.text))
+	return DeskLocalization.source_join("",parts)
+
+static func _seed(preset_id: String) -> String:
+	return {"versailles_2020":"V","nobody_2020":"N","ok_boomer_2020":"B"}[preset_id]
+
+static func _text(key: String) -> String:
+	return DeskLocalization.source("LOC_TEXT_COMPOSE_"+key)
+
+static func _error(key: String) -> PackedStringArray:
+	return PackedStringArray([DeskLocalization.source("LOC_COMPOSE_ERROR_"+key)])

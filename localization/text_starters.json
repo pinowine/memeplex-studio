@@ -1,0 +1,92 @@
+{
+  "LOC_TEXT_STARTER_VERSAILLES_TITLE": {
+    "source": "凡尔赛式自述",
+    "zh_CN": "凡尔赛式自述",
+    "en": "A humblebrag"
+  },
+  "LOC_TEXT_STARTER_VERSAILLES_A": {
+    "source": "我这次期末考都没念书。",
+    "zh_CN": "我这次期末考都没念书。",
+    "en": "I didn't even study for these finals."
+  },
+  "LOC_TEXT_STARTER_VERSAILLES_B": {
+    "source": "成绩出来又是满分。",
+    "zh_CN": "成绩出来又是满分。",
+    "en": "The results came out: full marks again."
+  },
+  "LOC_TEXT_STARTER_VERSAILLES_RELATION": {
+    "source": "嘴上淡化努力，话里展示成绩。",
+    "zh_CN": "嘴上淡化努力，话里展示成绩。",
+    "en": "Downplays the effort while showing off the result."
+  },
+  "LOC_TEXT_STARTER_VERSAILLES_ANCHOR": {
+    "source": "保留淡化努力与展示成绩之间的反差，用文字完成自述。",
+    "zh_CN": "保留淡化努力与展示成绩之间的反差，用文字完成自述。",
+    "en": "Keep the contrast between playing down the effort and showing off the result in a written account."
+  },
+  "LOC_TEXT_STARTER_VERSAILLES_HINT": {
+    "source": "把成绩说成轻松得来，等别人听出炫耀。期末考试是游戏编写的文字例子。",
+    "zh_CN": "把成绩说成轻松得来，等别人听出炫耀。",
+    "en": "Makes success sound effortless and leaves others to notice the brag."
+  },
+  "LOC_TEXT_STARTER_NOBODY_TITLE": {
+    "source": "Nobody：没人问起",
+    "zh_CN": "Nobody：没人问起",
+    "en": "Nobody: no one asked"
+  },
+  "LOC_TEXT_STARTER_NOBODY_A": {
+    "source": "Nobody：",
+    "zh_CN": "Nobody：",
+    "en": "Nobody:"
+  },
+  "LOC_TEXT_STARTER_NOBODY_B": {
+    "source": "我：让我再讲一遍这部剧哪里好看。",
+    "zh_CN": "我：让我再讲一遍这部剧哪里好看。",
+    "en": "Me: let me explain once more why this show is so good."
+  },
+  "LOC_TEXT_STARTER_NOBODY_RELATION": {
+    "source": "没人提问，自己先忍不住开口。",
+    "zh_CN": "没人提问，自己先忍不住开口。",
+    "en": "No one asks, but the speaker cannot resist starting."
+  },
+  "LOC_TEXT_STARTER_NOBODY_ANCHOR": {
+    "source": "保留无人发问的空白与主动发言之间的反差。",
+    "zh_CN": "保留无人发问的空白与主动发言之间的反差。",
+    "en": "Keep the contrast between an unprompted silence and someone speaking up."
+  },
+  "LOC_TEXT_STARTER_NOBODY_HINT": {
+    "source": "先留一句无人发问的空白，再写谁忍不住说了什么。剧集话题是游戏改编。",
+    "zh_CN": "先留一句无人发问的空白，再写谁忍不住说了什么。",
+    "en": "Leave the opening silent, then show who speaks without being asked."
+  },
+  "LOC_TEXT_STARTER_BOOMER_TITLE": {
+    "source": "OK boomer：结束说教",
+    "zh_CN": "OK boomer：结束说教",
+    "en": "OK boomer: ending the lecture"
+  },
+  "LOC_TEXT_STARTER_BOOMER_SPEAKER": {
+    "source": "被一概而论的学生",
+    "zh_CN": "被一概而论的学生",
+    "en": "A student being stereotyped"
+  },
+  "LOC_TEXT_STARTER_BOOMER_SITUATION": {
+    "source": "又听到“你们这一代就是不肯努力”。",
+    "zh_CN": "又听到“你们这一代就是不肯努力”。",
+    "en": "Hears another claim that this generation simply refuses to work hard."
+  },
+  "LOC_TEXT_STARTER_BOOMER_CLAIM": {
+    "source": "OK boomer.",
+    "zh_CN": "OK boomer.",
+    "en": "OK boomer."
+  },
+  "LOC_TEXT_STARTER_BOOMER_ANCHOR": {
+    "source": "保留对代际说教的简短回应，以及拒绝继续争辩的姿态。",
+    "zh_CN": "保留对代际说教的简短回应，以及拒绝继续争辩的姿态。",
+    "en": "Keep the short reply to a generational lecture and the refusal to keep arguing."
+  },
+  "LOC_TEXT_STARTER_BOOMER_HINT": {
+    "source": "用一句短回复打断代际说教。学校里的对话是游戏编写的情境。",
+    "zh_CN": "用一句短回复打断代际说教。",
+    "en": "Cuts off a generational lecture with a short reply."
+  }
+}

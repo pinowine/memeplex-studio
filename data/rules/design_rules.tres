@@ -7,11 +7,11 @@
 script = ExtResource("1")
 definition_version = 9
 module_slots = 4
-starter_presets = PackedStringArray("worker_2020", "versailles_2020", "cheems_2020")
+starter_presets = PackedStringArray("versailles_2020", "nobody_2020", "ok_boomer_2020")
 starter_contexts = {
-"worker_2020": {"language_id":"ninghua", "group_id":"commuters", "topic_ids":["work", "cost_of_living"], "political_position":[-0.3, -0.3], "political_known":true, "pragmatic_position":[0.6, 0.1]},
 "versailles_2020": {"language_id":"ninghua", "group_id":"students", "topic_ids":["education"], "political_position":[0.0, 0.3], "political_known":true, "pragmatic_position":[0.8, 0.1]},
-"cheems_2020": {"language_id":"ninghua", "group_id":"students", "topic_ids":["community", "language"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.5, -0.3]}
+"nobody_2020": {"language_id":"shiohara", "group_id":"culture_fans", "topic_ids":["entertainment"], "political_position":[0.0, 0.0], "political_known":true, "pragmatic_position":[0.7, 0.1]},
+"ok_boomer_2020": {"language_id":"seowon", "group_id":"students", "topic_ids":["education"], "political_position":[-0.4, -0.2], "political_known":true, "pragmatic_position":[0.6, 0.7]}
 }
 expression_routes = {
 "case_s01": {
