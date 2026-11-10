@@ -91,7 +91,7 @@ static func _expression_segments(draft: Dictionary, modules: Array[String], lang
 	if group != str(defaults.group_id): group_sources = [_source("group",group)]
 	var result: Array[Dictionary] = []
 	if seed == "V":
-		result.append(_segment("V_LEAD_"+language_id.to_upper(),language_sources))
+		result.append(_segment("V_LEAD_"+language_id.to_upper(),language_sources,"V_LEAD_NINGHUA"))
 		var details := sources.duplicate()
 		if scene == "exam": details.append_array(group_sources)
 		var situation := "EXAM_"+group.to_upper() if scene == "exam" else scene.to_upper()
@@ -102,9 +102,9 @@ static func _expression_segments(draft: Dictionary, modules: Array[String], lang
 	elif seed == "N":
 		result.append(_segment("N_NOBODY",[]))
 		if COMPARISON in modules: result.append(_segment("N_COMPARISON",[_source("patch",COMPARISON)]))
-		result.append(_segment("N_SPEAKER_"+group.to_upper(),group_sources))
-		result.append(_segment("N_LANGUAGE_"+language_id.to_upper(),language_sources))
-		result.append(_segment("N_"+scene.to_upper()+"_ACTION",sources))
+		result.append(_segment("N_SPEAKER_"+group.to_upper(),group_sources,"N_SPEAKER_CULTURE_FANS"))
+		result.append(_segment("N_LANGUAGE_"+language_id.to_upper(),language_sources,"N_LANGUAGE_SHIOHARA"))
+		result.append(_segment("N_"+scene.to_upper()+"_ACTION",sources,"N_FILM_ACTION"))
 		if EXPLANATION in modules: result.append(_segment("N_"+scene.to_upper()+"_EXPLANATION",_with_patch(sources,EXPLANATION)))
 		if CONTINUATION in modules:
 			result.append(_segment("N_INVITE",[_source("patch",CONTINUATION)]))
@@ -112,7 +112,7 @@ static func _expression_segments(draft: Dictionary, modules: Array[String], lang
 	else:
 		if QUESTION in modules: result.append(_segment("B_QUESTION",[_source("patch",QUESTION)]))
 		if COMPARISON in modules: result.append(_segment("B_"+scene.to_upper()+"_COMPARISON",_with_patch(sources,COMPARISON)))
-		result.append(_segment("B_REPLY_"+language_id.to_upper(),language_sources))
+		result.append(_segment("B_REPLY_"+language_id.to_upper(),language_sources,"B_REPLY_SEOWON"))
 		if EXPLANATION in modules: result.append(_segment("B_EXPLANATION",[_source("patch",EXPLANATION)]))
 		if EXIT in modules: result.append(_segment("B_EXIT",[_source("patch",EXIT)]))
 	return result
@@ -121,7 +121,10 @@ static func _versailles_segment(scene: String, part: String, sources: Array, pat
 	var key := "V_"+scene+"_"+part
 	var changed: Array = [] if _text(key) == _text("V_EXAM_STUDENTS_"+part) else sources.duplicate()
 	if not patch.is_empty(): changed.append(_source("patch",patch))
-	return _segment(key,changed)
+	var original := ""
+	if part in ["EFFORT","RESULT","QUESTION"]:
+		original = "V_EXAM_STUDENTS_"+("RESULT" if part == "QUESTION" else part)
+	return _segment(key,changed,original)
 
 static func _context_segments(draft: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
@@ -137,8 +140,8 @@ static func _context_segments(draft: Dictionary) -> Array[Dictionary]:
 	var group := _primary_group(draft)
 	var sources: Array[Dictionary] = []
 	if group != str(definition(str(draft.preset_id)).default_context.group_id): sources.append(_source("group",group))
-	result.append(_segment("B_SPEAKER_"+group.to_upper(),sources))
-	result.append(_segment("B_"+_scene(draft).to_upper()+"_CONTEXT",_scene_sources(draft)))
+	result.append(_segment("B_SPEAKER_"+group.to_upper(),sources,"B_SPEAKER_STUDENTS"))
+	result.append(_segment("B_"+_scene(draft).to_upper()+"_CONTEXT",_scene_sources(draft),"B_SCHOOL_CONTEXT"))
 	return result
 
 static func _meaning(draft: Dictionary, modules: Array[String]) -> Dictionary:
@@ -222,8 +225,13 @@ static func _with_patch(sources: Array, id: String) -> Array:
 	result.append(_source("patch",id))
 	return result
 
-static func _segment(key: String, sources: Array) -> Dictionary:
-	return {"text":_text(key),"sources":sources.duplicate(true)}
+static func _segment(key: String, sources: Array, original_key: String = "") -> Dictionary:
+	var result := {"text":_text(key),"sources":sources.duplicate(true)}
+	# Stable phrase roles keep additions from crossing out unrelated parts of the seed.
+	if not original_key.is_empty():
+		var original := _text(original_key)
+		if original != str(result.text): result.original_text = original
+	return result
 
 static func _join(segments: Array) -> String:
 	var parts: Array[String] = []
