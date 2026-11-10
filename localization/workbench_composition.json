@@ -1,8 +1,38 @@
 {
   "LOC_WB_MEANING": {
     "source": "这版表达的含义",
-    "zh_CN": "这版表达的含义",
-    "en": "Meaning of this version"
+    "zh_CN": "含义",
+    "en": "Meaning"
+  },
+  "LOC_WB_EXPRESSION": {
+    "source": "表达",
+    "zh_CN": "表达",
+    "en": "Expression"
+  },
+  "LOC_WB_IDEOLOGY": {
+    "source": "意识形态",
+    "zh_CN": "意识形态",
+    "en": "Ideology"
+  },
+  "LOC_WB_UNATTACHED": {
+    "source": "未接入",
+    "zh_CN": "未接入",
+    "en": "Detached"
+  },
+  "LOC_WB_UNSPECIFIED": {
+    "source": "未明确",
+    "zh_CN": "未明确",
+    "en": "Unspecified"
+  },
+  "LOC_WB_NEUTRAL": {
+    "source": "居中",
+    "zh_CN": "居中",
+    "en": "Centered"
+  },
+  "LOC_WB_CHANGED_BY": {
+    "source": "这段表达来自",
+    "zh_CN": "这段表达来自",
+    "en": "This passage comes from"
   },
   "LOC_WB_LANGUAGE_GLOSS": {
     "source": "%s版 · 中文释义",

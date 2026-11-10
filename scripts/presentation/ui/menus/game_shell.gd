@@ -190,9 +190,9 @@ func _logical_target(id: String) -> Variant:
 		"sheet/tabs": return _targets_bounds(["sheet/map", "sheet/edit", "sheet/cultivate", "sheet/spread"])
 		"editor/name": return editor._overview_name
 		"editor/expression": return editor._final_expression
-		"editor/context": return editor._overview_data
-		"editor/details": return editor._part_content
-		"editor/preview": return editor._neuron
+		"editor/context": return editor.summary_control()
+		"editor/details": return editor.meaning_control()
+		"editor/preview": return editor.preview_control()
 		"context/axes": return _context_regions_target(editor.context_slice(), ["stance", "pragmatic"])
 		"context/layers": return _context_regions_target(editor.context_slice(), ["language", "group", "topics"])
 		"spread/tree": return editor._spread_tree
