@@ -20,6 +20,7 @@ var _separators: Array[float] = []
 var _fit_bounds := Rect2()
 var _pointer_following := false
 var _pointer_viewport := Vector2.ZERO
+var _pointer_source: Callable
 var _layout_revision := 0
 
 func _init() -> void:
@@ -41,9 +42,12 @@ func set_pointer_following(enabled: bool) -> void:
 	set_process(enabled)
 	if enabled and is_inside_tree() and is_visible_in_tree(): _follow_pointer()
 
+func set_pointer_source(source: Callable) -> void:
+	_pointer_source = source
+
 func _follow_pointer() -> void:
 	var viewport := get_viewport()
-	_pointer_viewport = viewport.get_mouse_position()
+	_pointer_viewport = _pointer_source.call() if _pointer_source.is_valid() else viewport.get_mouse_position()
 	var parent_to_viewport := get_global_transform_with_canvas()*get_transform().affine_inverse()
 	var to_parent := parent_to_viewport.affine_inverse()
 	fit_at(to_parent*_pointer_viewport,to_parent*viewport.get_visible_rect())
