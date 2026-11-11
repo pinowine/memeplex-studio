@@ -37,8 +37,8 @@ func configure(camera: Camera3D) -> void:
 	_mask.add_child(_polygon)
 	var layer := CanvasLayer.new()
 	layer.name = "HoverOutline"
-	# Keep target outlines above the desk finish and below foreground papers.
-	layer.layer = 2
+	# Keep target outlines above focused cards and below hover notes.
+	layer.layer = 46
 	add_child(layer)
 	_outline = TextureRect.new()
 	_outline.name = "TornHover"

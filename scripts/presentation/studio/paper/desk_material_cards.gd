@@ -967,6 +967,17 @@ func handles_viewport_point(viewport_point: Vector2) -> bool:
 
 func hover_info(viewport_point: Vector2) -> Dictionary:
 	if not _enabled or not is_visible_in_tree(): return {}
+	if _focus_scroll != null and _focus_scroll.is_visible_in_tree():
+		var point := viewport_point
+		if _focus_scroll.get_viewport() != get_viewport(): point = _focus_scroll.get_viewport().get_mouse_position()
+		var scroll_point := _focus_scroll.get_global_transform_with_canvas().affine_inverse() * point
+		if Rect2(Vector2.ZERO, _focus_scroll.size).has_point(scroll_point):
+			for row: Node in _focus_grid.get_children():
+				if not row is StackCard: continue
+				var local: Vector2 = row.get_global_transform_with_canvas().affine_inverse() * point
+				if Rect2(Vector2.ZERO, row.size).has_point(local):
+					return details_for_item(str(row.record.kind), str(row.record.id))
+			return {}
 	var key := String(_props._hit_prop(viewport_point))
 	if key.begins_with("stack/"):
 		var details := stack_details(key.trim_prefix("stack/"))
