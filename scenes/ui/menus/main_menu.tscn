@@ -24,6 +24,7 @@ expand_mode = 1
 stretch_mode = 6
 
 [node name="Shade" type="ColorRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,10 +32,8 @@ anchor_bottom = 1.0
 color = Color(0.04,0.05,0.04,0.40)
 mouse_filter = 0
 
-[node name="MenuPanel" type="Panel" parent="."]
-mouse_filter = 0
-script = ExtResource("2")
-paper_margin = 32.0
+[node name="MenuPanel" type="Control" parent="."]
+mouse_filter = 2
 
 [node name="Content" type="VBoxContainer" parent="MenuPanel"]
 layout_mode = 0
@@ -42,38 +41,56 @@ offset_left = 48.0
 offset_top = 40.0
 offset_right = 472.0
 offset_bottom = 500.0
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="MenuPanel/Content"]
 layout_mode = 2
 text = "LOC_MEMEPLEX_STUDIO_3D1D137F"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 64
 theme_override_fonts/font = ExtResource("3")
 horizontal_alignment = 0
 
-[node name="TitleRule" type="HSeparator" parent="MenuPanel/Content"]
+[node name="TitleRule" type="Control" parent="MenuPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 12)
+custom_minimum_size = Vector2(0, 24)
+mouse_filter = 2
 
 [node name="Start" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0,48)
+custom_minimum_size = Vector2(288,56)
+size_flags_horizontal = 0
 text = "LOC_START_D2BB025A"
 
 [node name="Load" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0,48)
+custom_minimum_size = Vector2(288,56)
+size_flags_horizontal = 0
 text = "LOC_LOAD_534CB3FA"
 
 [node name="Settings" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0,48)
+custom_minimum_size = Vector2(288,56)
+size_flags_horizontal = 0
 text = "LOC_SETTINGS_DF3D58C7"
 
 [node name="Quit" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0,48)
+custom_minimum_size = Vector2(288,56)
+size_flags_horizontal = 0
 text = "LOC_QUIT_498E1D59"
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -48.0
+offset_right = 192.0
+offset_bottom = -24.0
+grow_vertical = 0
+mouse_filter = 2
+horizontal_alignment = 0
 
 [node name="SettingsPanel" type="Panel" parent="."]
 visible = false

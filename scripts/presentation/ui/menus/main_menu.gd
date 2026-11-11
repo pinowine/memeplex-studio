@@ -10,7 +10,7 @@ signal settings_closed
 const TEMPLATE = preload("res://scenes/ui/menus/main_menu.tscn")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd")
-const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_START_D2BB025A", "LOC_LOAD_534CB3FA", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
+const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_MAIN_NEW_GAME", "LOC_MAIN_LOAD_GAME", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
 var _settings := {"language": "zh_CN", "music": 1.0, "effects": 1.0, "guide_enabled": true, "typewriter_enabled": true, "key_bindings": {}}
@@ -18,6 +18,7 @@ var _music_bus := "BGM"
 var _effect_buses := PackedStringArray(["SFX", "BGS", "MFX"])
 var _ui: Control
 var _load_available := false
+var _continue_available := false
 var _existing_background := false
 var _last_error := OK
 var _settings_in_game := false
@@ -45,7 +46,7 @@ func _ready() -> void:
 	for entry: Array in [["Music", "music"], ["Effects", "effects"]]:
 		var slider: HSlider = _ui.get_node("SettingsPanel/Content/" + entry[0] + "Row/" + entry[0])
 		slider.value_changed.connect(func(value: float): set_volume(entry[1], value))
-	ReceiptUI.primary(_ui.get_node("MenuPanel/Content/Start"))
+	_style_desktop_menu()
 	ReceiptUI.primary(_ui.get_node("SettingsPanel/Content/Back"))
 	ReceiptUI.primary(_ui.get_node("KeysPanel/Content/Back"))
 	for name: String in ["MenuPanel", "SettingsPanel", "KeysPanel"]:
@@ -76,6 +77,41 @@ func set_load_available(value: bool) -> void:
 	_load_available = value
 	if is_instance_valid(_ui): _ui.get_node("MenuPanel/Content/Load").disabled = not value
 
+func set_continue_available(value: bool) -> void:
+	_continue_available = value
+	_refresh_labels()
+
+func _style_desktop_menu() -> void:
+	# Ivory lettering keeps the title and actions legible on the wood.
+	var title: Label = _ui.get_node("MenuPanel/Content/Title")
+	title.add_theme_font_override("font", preload("res://assets/image/fonts/print_heading_font.tres"))
+	for label: Label in [title, _ui.get_node("Version")]:
+		label.add_theme_color_override("font_color", ReceiptUI.Style.PAPER)
+		label.add_theme_color_override("font_shadow_color", ReceiptUI.Style.SECTION_BROWN)
+		label.add_theme_constant_override("shadow_offset_y", 2)
+	_ui.get_node("Version").text = "v" + str(ProjectSettings.get_setting("application/config/version"))
+	for id: String in ["Start", "Load", "Settings", "Quit"]:
+		var button: Button = _ui.get_node("MenuPanel/Content/" + id)
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		button.add_theme_font_size_override("font_size", 24)
+		for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
+			var box := StyleBoxFlat.new()
+			box.content_margin_left = 24
+			box.content_margin_right = 24
+			box.content_margin_top = 8
+			box.content_margin_bottom = 8
+			box.bg_color = ReceiptUI.Style.PAPER if id == "Start" or state in ["hover", "pressed"] else Color.TRANSPARENT
+			if state == "pressed": box.bg_color = ReceiptUI.Style.EDGE
+			if state == "focus":
+				box.bg_color = Color.TRANSPARENT
+				box.border_color = ReceiptUI.Style.PAPER
+				box.border_width_bottom = 2
+			button.add_theme_stylebox_override(state, box)
+		for state: String in ["font_color", "font_focus_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color"]:
+			button.add_theme_color_override(state, ReceiptUI.Style.INK if id == "Start" or state in ["font_hover_color", "font_pressed_color", "font_hover_pressed_color"] else ReceiptUI.Style.PAPER)
+		button.add_theme_color_override("font_disabled_color", ReceiptUI.Style.EDGE)
+
 func open_settings() -> void:
 	_ui.get_node("MenuPanel").hide()
 	_ui.get_node("KeysPanel").hide()
@@ -101,6 +137,7 @@ func close_settings() -> void:
 	else:
 		_ui.get_node("MenuPanel").show()
 		_ui.get_node("MenuPanel/Content/Settings").grab_focus()
+	_layout()
 
 func back() -> bool:
 	if not _binding_capture.is_empty():
@@ -268,6 +305,7 @@ func _refresh_labels() -> void:
 	var words: Array = LABELS
 	var keys := ["Title", "Start", "Load", "Settings", "Quit"]
 	for index in keys.size(): _ui.get_node("MenuPanel/Content/" + keys[index]).text = words[index]
+	_ui.get_node("MenuPanel/Content/Start").text = "LOC_CONTINUE_7C969119" if _continue_available else "LOC_MAIN_NEW_GAME"
 	for pair: Array in [["Title", 3], ["LanguageRow/LanguageLabel", 5], ["MusicRow/MusicLabel", 6], ["EffectsRow/EffectsLabel", 7], ["Back", 8]]:
 		_ui.get_node("SettingsPanel/Content/" + pair[0]).text = words[pair[1]]
 	var notice: Label = _ui.get_node("SettingsPanel/Content/Notice")
@@ -286,7 +324,17 @@ func _refresh_labels() -> void:
 func _layout() -> void:
 	if not is_instance_valid(_ui): return
 	_ui.get_node("Background").visible = not _existing_background
-	for name: String in ["MenuPanel", "SettingsPanel", "KeysPanel"]:
+	_ui.get_node("Shade").visible = not _ui.get_node("MenuPanel").visible
+	_ui.get_node("Version").visible = _ui.get_node("MenuPanel").visible
+	var menu: Control = _ui.get_node("MenuPanel")
+	var content: Control = menu.get_node("Content")
+	var scale_factor := minf(size.x / 1600.0, size.y / 900.0)
+	menu.scale = Vector2.ONE * scale_factor
+	content.position = Vector2.ZERO
+	content.size = content.get_combined_minimum_size()
+	menu.size = content.size
+	menu.position = Vector2(size.x * .38, size.y * .30)
+	for name: String in ["SettingsPanel", "KeysPanel"]:
 		var panel: Control = _ui.get_node(name)
 		ReceiptUI.layout_menu(panel, panel.get_node("Content"), size)
 

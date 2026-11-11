@@ -2909,6 +2909,16 @@
     "zh_CN": "开始",
     "en": "Start"
   },
+  "LOC_MAIN_NEW_GAME": {
+    "source": "新游戏",
+    "zh_CN": "新游戏",
+    "en": "New game"
+  },
+  "LOC_MAIN_LOAD_GAME": {
+    "source": "读取存档",
+    "zh_CN": "读取存档",
+    "en": "Load game"
+  },
   "LOC_MEMEPLEX_STUDIO_3D1D137F": {
     "source": "模因工作室",
     "zh_CN": "模因工作室",
