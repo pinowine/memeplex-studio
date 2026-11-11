@@ -1,0 +1,112 @@
+{
+  "LOC_RECEIPT_FAX_PURPOSE": {
+    "source": "接收来电、外界消息和随信送来的物资。",
+    "zh_CN": "接收来电、外界消息和随信送来的物资。",
+    "en": "Receives calls, news from outside, and supplies sent with the messages."
+  },
+  "LOC_RECEIPT_FAX_NOTE": {
+    "source": "细细的电流声。远处发生的事，抵达这里时只剩一张温热的纸。",
+    "zh_CN": "细细的电流声。远处发生的事，抵达这里时只剩一张温热的纸。",
+    "en": "A faint electrical hiss. Something happens far away and arrives here as a warm sheet of paper."
+  },
+  "LOC_RECEIPT_PRINTER_PURPOSE": {
+    "source": "记录你的操作、点数收支与机器日志。",
+    "zh_CN": "记录你的操作、点数收支与机器日志。",
+    "en": "Records your actions, points earned and spent, and machine logs."
+  },
+  "LOC_RECEIPT_PRINTER_NOTE": {
+    "source": "纸卷又短了一截。墨迹还湿着，今天已经有了凭据。",
+    "zh_CN": "纸卷又短了一截。墨迹还湿着，今天已经有了凭据。",
+    "en": "The roll is a little shorter. The ink is still wet, and today already has a paper trail."
+  },
+  "LOC_RECEIPT_MONITOR_PURPOSE": {
+    "source": "追踪模因点数的收支，以及可用的意识形态和语用资源。",
+    "zh_CN": "追踪模因点数的收支，以及可用的意识形态和语用资源。",
+    "en": "Tracks meme points earned and spent, along with available ideology and pragmatics resources."
+  },
+  "LOC_RECEIPT_MONITOR_NOTE": {
+    "source": "屏幕泛着绿光，数字在里面轻轻跳了一下。那一点变化，够你盯上很久。",
+    "zh_CN": "屏幕泛着绿光，数字在里面轻轻跳了一下。那一点变化，够你盯上很久。",
+    "en": "The screen glows green. A number flickers and changes. You could stare at that small difference for a long time."
+  },
+  "LOC_RECEIPT_FOLDER_PURPOSE": {
+    "source": "收存语言、群体、话题和补丁卡片。",
+    "zh_CN": "收存语言、群体、话题和补丁卡片。",
+    "en": "Stores language, group, topic, and patch cards."
+  },
+  "LOC_RECEIPT_FOLDER_NOTE": {
+    "source": "纸页被压得很平。那些还没用上的念头，在夹层里挨着彼此。",
+    "zh_CN": "纸页被压得很平。那些还没用上的念头，在夹层里挨着彼此。",
+    "en": "The pages have been pressed flat. Ideas you have yet to use lie close together between them."
+  },
+  "LOC_RECEIPT_PHONEBOOK_PURPOSE": {
+    "source": "保存联络号码，记下可以接通的联系人。",
+    "zh_CN": "保存联络号码，记下可以接通的联系人。",
+    "en": "Keeps the numbers of people you can reach."
+  },
+  "LOC_RECEIPT_PHONEBOOK_NOTE": {
+    "source": "名字排成一列，号码缩在旁边。合上本子，声音就留在薄薄的纸后。",
+    "zh_CN": "名字排成一列，号码缩在旁边。合上本子，声音就留在薄薄的纸后。",
+    "en": "Names in a column, numbers tucked beside them. Close the book and the voices stay behind those thin pages."
+  },
+  "LOC_RECEIPT_CLOCK_PURPOSE": {
+    "source": "观察你的时间，现在是什么季节？",
+    "zh_CN": "观察你的时间，现在是什么季节？",
+    "en": "Keep an eye on your time. What season is it now?"
+  },
+  "LOC_RECEIPT_CLOCK_NOTE": {
+    "source": "不知有汉，无论魏晋。",
+    "zh_CN": "不知有汉，无论魏晋。",
+    "en": "They knew nothing of the Han, let alone the Wei or Jin."
+  },
+  "LOC_RECEIPT_SPEED_PURPOSE": {
+    "source": "调节世界的时间流速，让这一刻停下或快些过去。",
+    "zh_CN": "调节世界的时间流速，让这一刻停下或快些过去。",
+    "en": "Sets the pace of time, holding this moment still or letting it pass more quickly."
+  },
+  "LOC_RECEIPT_SPEED_NOTE": {
+    "source": "几枚按键安静地并排躺着。窗外的日子正等你发话。",
+    "zh_CN": "几枚按键安静地并排躺着。窗外的日子正等你发话。",
+    "en": "A few keys sit quietly in a row. The days outside are waiting for your word."
+  },
+  "LOC_RECEIPT_MAP_PURPOSE": {
+    "source": "查看各地的受众、语言与文化偏好，为模因寻找投放地点。",
+    "zh_CN": "查看各地的受众、语言与文化偏好，为模因寻找投放地点。",
+    "en": "Shows local audiences, languages, and cultural preferences so you can choose where to release a meme."
+  },
+  "LOC_RECEIPT_MAP_NOTE": {
+    "source": "国境是一道细线。越过它，同一句话就有了另一种回声。",
+    "zh_CN": "国境是一道细线。越过它，同一句话就有了另一种回声。",
+    "en": "A border is a thin line. Cross it, and the same words return with a different echo."
+  },
+  "LOC_RECEIPT_EDIT_PURPOSE": {
+    "source": "查看基模、装配表达补丁，辨认成品的说法和含义。",
+    "zh_CN": "查看基模、装配表达补丁，辨认成品的说法和含义。",
+    "en": "Shows the base meme, fits expression patches, and reveals what the finished version says and means."
+  },
+  "LOC_RECEIPT_EDIT_NOTE": {
+    "source": "铅笔还搁在纸边。有几个词刚刚换过位置，整句话已经不太像昨天。",
+    "zh_CN": "铅笔还搁在纸边。有几个词刚刚换过位置，整句话已经不太像昨天。",
+    "en": "The pencil is still beside the page. A few words have moved, and the sentence already feels different from yesterday."
+  },
+  "LOC_RECEIPT_CULTIVATE_PURPOSE": {
+    "source": "组合语言、群体和话题，调整模因的立场与语气。",
+    "zh_CN": "组合语言、群体和话题，调整模因的立场与语气。",
+    "en": "Combines languages, groups, and topics, and shapes the meme's stance and tone."
+  },
+  "LOC_RECEIPT_CULTIVATE_NOTE": {
+    "source": "一张空椅子，一句没说完的话。先有人坐下来，意思才慢慢长出来。",
+    "zh_CN": "一张空椅子，一句没说完的话。先有人坐下来，意思才慢慢长出来。",
+    "en": "An empty chair, a sentence left unfinished. Someone sits down, and meaning slowly takes shape."
+  },
+  "LOC_RECEIPT_SPREAD_PURPOSE": {
+    "source": "解锁传播能力，让模因更容易被接触、转述和再创作。",
+    "zh_CN": "解锁传播能力，让模因更容易被接触、转述和再创作。",
+    "en": "Unlocks abilities that help people encounter, repeat, and remix your meme."
+  },
+  "LOC_RECEIPT_SPREAD_NOTE": {
+    "source": "隔壁的声音已经传到街角。你的话还在门口，等一阵顺路的风。",
+    "zh_CN": "隔壁的声音已经传到街角。你的话还在门口，等一阵顺路的风。",
+    "en": "The voices next door have reached the street corner. Your words are still at the door, waiting for a wind headed their way."
+  }
+}

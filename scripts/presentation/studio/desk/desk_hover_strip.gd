@@ -4,6 +4,7 @@ extends Control
 const CORNER_TAPE := preload("res://assets/image/textures/studio/desk/clear_tape.png")
 const ReceiptHover := preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
 const CardCopy := preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
+const ComponentCopy := preload("res://scripts/presentation/studio/desk/desk_component_hover_copy.gd")
 
 @export var title_font_size: int = 20
 @export var detail_font_size: int = 18
@@ -119,12 +120,17 @@ func _update_content(force_layout: bool = false) -> void:
 	if _has_hover:
 		heading = _first_text(["title", "name", "label", "id"])
 		presentation = _presentation_details()
-		detail = _first_text(["hover_description"])
-		if detail.is_empty():
-			var resource: Dictionary = _hover.get("resource",{})
-			var id := str(_hover.get("id",resource.get("id","")))
-			detail = _normalized(DeskLocalization.text(CardCopy.hover_description(id)))
-		if detail.is_empty(): detail = _first_text(["description", "body"])
+		var component_copy := ComponentCopy.for_kind(str(_hover.get("kind","")))
+		if not component_copy.is_empty():
+			detail = DeskLocalization.text(component_copy.description)
+			presentation.note = DeskLocalization.text(component_copy.note)
+		else:
+			detail = _first_text(["hover_description"])
+			if detail.is_empty():
+				var resource: Dictionary = _hover.get("resource",{})
+				var id := str(_hover.get("id",resource.get("id","")))
+				detail = _normalized(DeskLocalization.text(CardCopy.hover_description(id)))
+			if detail.is_empty(): detail = _first_text(["description", "body"])
 	if heading.is_empty() and not detail.is_empty():
 		heading = detail
 		detail = ""
