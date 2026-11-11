@@ -11293,5 +11293,55 @@
     "source": "引导设置保存失败：%s",
     "zh_CN": "引导设置保存失败：%s",
     "en": "Could not save guidance setting: %s"
+  },
+  "LOC_TYPEWRITER_ENABLED": {
+    "source": "文本打字机效果",
+    "zh_CN": "文本打字机效果",
+    "en": "Typewriter text"
+  },
+  "LOC_KEY_BINDINGS": {
+    "source": "键位设置",
+    "zh_CN": "键位设置",
+    "en": "Key bindings"
+  },
+  "LOC_KEY_RESET": {
+    "source": "恢复默认键位",
+    "zh_CN": "恢复默认键位",
+    "en": "Restore default keys"
+  },
+  "LOC_KEY_PRESS_KEY": {
+    "source": "请按键…",
+    "zh_CN": "请按键…",
+    "en": "Press a key…"
+  },
+  "LOC_KEY_PAUSE": {
+    "source": "暂停/继续",
+    "zh_CN": "暂停/继续",
+    "en": "Pause / resume"
+  },
+  "LOC_KEY_SLOWER": {
+    "source": "减慢时间",
+    "zh_CN": "减慢时间",
+    "en": "Slow down"
+  },
+  "LOC_KEY_FASTER": {
+    "source": "加快时间",
+    "zh_CN": "加快时间",
+    "en": "Speed up"
+  },
+  "LOC_KEY_SPEED_PAUSED": {
+    "source": "暂停时间",
+    "zh_CN": "暂停时间",
+    "en": "Pause time"
+  },
+  "LOC_KEY_SPEED_NORMAL": {
+    "source": "正常速度",
+    "zh_CN": "正常速度",
+    "en": "Normal speed"
+  },
+  "LOC_KEY_SPEED_FAST": {
+    "source": "快速时间",
+    "zh_CN": "快速时间",
+    "en": "Fast speed"
   }
 }

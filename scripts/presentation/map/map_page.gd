@@ -5,6 +5,7 @@ signal launch_confirmed
 
 const COUNTRY_RULES = preload("res://data/rules/gameplay_rules.tres")
 const CONTEXT_DEFINITIONS = preload("res://data/context/context_resources.tres")
+const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -319,19 +320,18 @@ func _input(event: InputEvent) -> void:
 		return
 	if not event.pressed:
 		return
-	match key:
-		KEY_F1: set_speed(0)
-		KEY_F2: set_speed(1)
-		KEY_F3: set_speed(2)
-		KEY_SPACE:
-			clock.toggle_pause()
-			_update_clock()
-		KEY_ESCAPE:
-			if workbench.visible: close_workbench()
-			else: hide_country_details()
-		KEY_COMMA, KEY_LESS: set_speed(maxi(clock.speed - 1, 0))
-		KEY_PERIOD, KEY_GREATER: set_speed(mini(clock.speed + 1, 2))
-		_: return
+	if KeyBindings.matches(event, "speed_paused"): set_speed(0)
+	elif KeyBindings.matches(event, "speed_normal"): set_speed(1)
+	elif KeyBindings.matches(event, "speed_fast"): set_speed(2)
+	elif KeyBindings.matches(event, "pause"):
+		clock.toggle_pause()
+		_update_clock()
+	elif key == KEY_ESCAPE:
+		if workbench.visible: close_workbench()
+		else: hide_country_details()
+	elif KeyBindings.matches(event, "slower"): set_speed(maxi(clock.speed - 1, 0))
+	elif KeyBindings.matches(event, "faster"): set_speed(mini(clock.speed + 1, 2))
+	else: return
 	get_viewport().set_input_as_handled()
 
 func fit_map() -> void:

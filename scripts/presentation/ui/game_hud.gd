@@ -1,8 +1,5 @@
 extends Control
 
-signal interface_language_requested(locale: String)
-signal guide_enabled_requested(enabled: bool)
-
 signal draft_publish_requested(draft: Dictionary)
 signal country_selection_requested
 signal speed_requested(value: int)
@@ -38,7 +35,7 @@ const DesignWorkbench = preload("res://scripts/presentation/studio/workbench/des
 
 var _screen_modals: Control
 var _locale_catalog: Resource
-var _interface_language: OptionButton
+var _guide_enabled := true
 var _kernels: Array = []
 var _presets: Array = []
 var _slot_ids: PackedStringArray = []
@@ -63,8 +60,8 @@ func _ready() -> void:
 	ReceiptUI.primary(%Resume)
 	%Resume.pressed.connect(func(): menu_close_requested.emit())
 	%SettingsMenu.get_node("Column").minimum_size_changed.connect(layout_screen_modals)
-	_install_interface_language()
-	%GuideEnabled.toggled.connect(func(enabled: bool): guide_enabled_requested.emit(enabled))
+	_configure_text_translation()
+	%Preferences.pressed.connect(func(): settings_requested.emit())
 	%SelectCountry.pressed.connect(func() -> void: country_selection_requested.emit())
 	%Create.pressed.connect(func() -> void: workbench_requested.emit())
 	%Tools.pressed.connect(func() -> void: tools_requested.emit())
@@ -365,7 +362,7 @@ func show_result(result: Dictionary) -> void:
 
 func inspection() -> Dictionary:
 	return {
-		"guide_enabled": %GuideEnabled.button_pressed,
+		"guide_enabled": _guide_enabled,
 		"workbench_visible": _workbench.visible, "active_design_sheet":_active_design_sheet, "fullscreen": _fullscreen,
 		"setup_stage": _setup_stage,
 		"menu_mode": _menu_mode, "modal_visible": modal_visible(),
@@ -394,7 +391,7 @@ func inspection() -> Dictionary:
 
 
 func set_menu(mode: String) -> void:
-	if mode not in ["", "settings", "developer"]:
+	if mode not in ["", "settings", "preferences", "developer"]:
 		push_error("Unknown demo menu: " + mode)
 		return
 	_menu_mode = mode
@@ -415,7 +412,7 @@ func menu_mode() -> String:
 	return _menu_mode
 
 func set_guide_enabled(enabled: bool) -> void:
-	%GuideEnabled.set_pressed_no_signal(enabled)
+	_guide_enabled = enabled
 
 
 func modal_visible() -> bool:
@@ -451,8 +448,8 @@ func set_legend(rows: Array[Dictionary]) -> void:
 
 
 func _refresh_modal() -> void:
-	%ModalShade.visible = modal_visible()
-	%ModalShade.color = Color(0.04, 0.05, 0.04, 0.40) if _menu_mode == "settings" else Color(0.14, 0.14, 0.14, 0.64)
+	%ModalShade.visible = modal_visible() and _menu_mode != "preferences"
+	%ModalShade.color = Color(0.04, 0.05, 0.04, 0.40) if _menu_mode in ["settings", "preferences"] else Color(0.14, 0.14, 0.14, 0.64)
 	%Create.disabled = modal_visible()
 	%EventContinue.disabled = not _menu_mode.is_empty() or (_desk_controller != null and not _desk_controller.event_ready())
 	%EffectDetails.disabled = not _menu_mode.is_empty()
@@ -682,30 +679,13 @@ func _values(catalog: Resource, key: String) -> Array:
 		return Array(value)
 	return value if value is Array else []
 
-func _install_interface_language() -> void:
-	var row := VBoxContainer.new()
-	row.name = "InterfaceLanguageRow"
-	row.add_theme_constant_override("separation", 12)
-	var caption := Label.new()
-	caption.text = DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A")
-	row.add_child(caption)
-	_interface_language = OptionButton.new()
-	_interface_language.name = "InterfaceLanguage"
-	_interface_language.custom_minimum_size.y = 44
-	_interface_language.add_item("中文")
-	_interface_language.add_item("English")
-	_interface_language.select(1 if TranslationServer.get_locale().begins_with("en") else 0)
-	row.add_child(_interface_language)
-	%SettingsMenu.get_node("Column").add_child(row)
-	%SettingsMenu.get_node("Column").move_child(row,2)
-	_interface_language.item_selected.connect(func(index: int): interface_language_requested.emit("zh_CN" if index == 0 else "en"))
+func _configure_text_translation() -> void:
 	for edit: LineEdit in _slot_edits: edit.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	%Target.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	%Preview.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 
 func refresh_localization() -> void:
 	if not is_node_ready(): return
-	if _interface_language != null: _interface_language.select(1 if TranslationServer.get_locale().begins_with("en") else 0)
 	DeskLocalization.refresh_edits(self)
 	if _locale_catalog != null:
 		for option: OptionButton in [_kernel,_preset,_group,_channel,_topic,_language]:

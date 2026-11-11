@@ -99,58 +99,73 @@ theme_override_fonts/font = ExtResource("3")
 layout_mode = 2
 custom_minimum_size = Vector2(0, 12)
 
-[node name="LanguageLabel" type="Label" parent="SettingsPanel/Content"]
+[node name="LanguageRow" type="HBoxContainer" parent="SettingsPanel/Content"]
 layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="LanguageLabel" type="Label" parent="SettingsPanel/Content/LanguageRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 0)
 text = "LOC_LANGUAGE_9F6FEE1A"
 
-[node name="Language" type="OptionButton" parent="SettingsPanel/Content"]
+[node name="Language" type="OptionButton" parent="SettingsPanel/Content/LanguageRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,44)
+size_flags_horizontal = 3
 item_count = 2
 popup/item_0/text = "中文"
 popup/item_0/id = 0
 popup/item_1/text = "English"
 popup/item_1/id = 1
 
-[node name="MusicHeading" type="HBoxContainer" parent="SettingsPanel/Content"]
+[node name="MusicRow" type="HBoxContainer" parent="SettingsPanel/Content"]
 layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
 
-[node name="MusicLabel" type="Label" parent="SettingsPanel/Content/MusicHeading"]
+[node name="MusicLabel" type="Label" parent="SettingsPanel/Content/MusicRow"]
 layout_mode = 2
-size_flags_horizontal = 3
+custom_minimum_size = Vector2(100, 0)
 text = "LOC_MUSIC_DB951421"
 
-[node name="MusicValue" type="Label" parent="SettingsPanel/Content/MusicHeading"]
-layout_mode = 2
-text = "100%"
-horizontal_alignment = 2
-
-[node name="Music" type="HSlider" parent="SettingsPanel/Content"]
+[node name="Music" type="HSlider" parent="SettingsPanel/Content/MusicRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,28)
+size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="EffectsHeading" type="HBoxContainer" parent="SettingsPanel/Content"]
+[node name="MusicValue" type="Label" parent="SettingsPanel/Content/MusicRow"]
 layout_mode = 2
+custom_minimum_size = Vector2(48, 0)
+text = "100%"
+horizontal_alignment = 2
 
-[node name="EffectsLabel" type="Label" parent="SettingsPanel/Content/EffectsHeading"]
+[node name="EffectsRow" type="HBoxContainer" parent="SettingsPanel/Content"]
 layout_mode = 2
-size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="EffectsLabel" type="Label" parent="SettingsPanel/Content/EffectsRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 0)
 text = "LOC_EFFECTS_5E9D80D0"
 
-[node name="EffectsValue" type="Label" parent="SettingsPanel/Content/EffectsHeading"]
-layout_mode = 2
-text = "100%"
-horizontal_alignment = 2
-
-[node name="Effects" type="HSlider" parent="SettingsPanel/Content"]
+[node name="Effects" type="HSlider" parent="SettingsPanel/Content/EffectsRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,28)
+size_flags_horizontal = 3
 max_value = 1.0
 step = 0.01
 value = 1.0
+
+[node name="EffectsValue" type="Label" parent="SettingsPanel/Content/EffectsRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(48, 0)
+text = "100%"
+horizontal_alignment = 2
 
 [node name="Notice" type="Label" parent="SettingsPanel/Content"]
 visible = false
@@ -158,13 +173,58 @@ layout_mode = 2
 text = ""
 autowrap_mode = 3
 
+[node name="TypewriterEnabled" type="CheckButton" parent="SettingsPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+button_pressed = true
+text = "LOC_TYPEWRITER_ENABLED"
+
 [node name="GuideEnabled" type="CheckButton" parent="SettingsPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 button_pressed = true
 text = "LOC_GUIDE_67_ENABLED"
 
+[node name="KeyBindings" type="Button" parent="SettingsPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "LOC_KEY_BINDINGS"
+
 [node name="Back" type="Button" parent="SettingsPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0,48)
+text = "LOC_BACK_572CF45B"
+
+[node name="KeysPanel" type="Panel" parent="."]
+visible = false
+mouse_filter = 0
+script = ExtResource("2")
+paper_margin = 32.0
+
+[node name="Content" type="VBoxContainer" parent="KeysPanel"]
+layout_mode = 0
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="KeysPanel/Content"]
+layout_mode = 2
+text = "LOC_KEY_BINDINGS"
+theme_override_font_sizes/font_size = 28
+theme_override_fonts/font = ExtResource("3")
+
+[node name="TitleRule" type="HSeparator" parent="KeysPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 12)
+
+[node name="Rows" type="VBoxContainer" parent="KeysPanel/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Reset" type="Button" parent="KeysPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "LOC_KEY_RESET"
+
+[node name="Back" type="Button" parent="KeysPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
 text = "LOC_BACK_572CF45B"

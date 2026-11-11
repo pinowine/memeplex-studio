@@ -14,6 +14,7 @@ signal skip_requested
 const OpeningSteps = preload("res://scripts/presentation/ui/tutorial/opening_steps.gd")
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
+const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 const Portrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait.gd")
 const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
 const DragArrow = preload("res://scripts/presentation/ui/tutorial/tutorial_drag_arrow.gd")
@@ -71,6 +72,7 @@ var _arrow_visible := false
 var _arrow: Node2D
 var _drag_arrow: Node2D
 var _typewriter := TypewriterEffect.new()
+var _typewriter_enabled := true
 var _body_text := ""
 var _hover_target := ""
 var _hover_text := ""
@@ -201,7 +203,7 @@ func _accepts_drag_source(viewport_point: Vector2) -> bool:
 
 func allows_input(event: InputEvent) -> bool:
 	if not _active or _hint_only: return true
-	if _blocked and is_choosing_starter(): return true
+	if _blocked: return true
 	if _pointer_mode == "guide" and event is InputEventMouse:
 		if event is InputEventMouseMotion: return true
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -213,7 +215,7 @@ func allows_input(event: InputEvent) -> bool:
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed: _pointer_mode = "guide"
 			return true
-	if _blocked or _transitioning: return false
+	if _transitioning: return false
 	if event is InputEventKey:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 		if key == KEY_ESCAPE and bool(_steps[_index].get("starter_choices", false)): return true
@@ -229,8 +231,12 @@ func allows_input(event: InputEvent) -> bool:
 		if _return_overview and key == KEY_ESCAPE:
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
+		if key == KEY_ESCAPE: return true
 		if _return_overview: return false
-		return str(_steps[_index].get("action", "")) == "speed_changed" and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and key in [KEY_SPACE, KEY_COMMA, KEY_LESS, KEY_PERIOD, KEY_GREATER]
+		if str(_steps[_index].get("action", "")) == "speed_changed":
+			for action: String in KeyBindings.ACTION_IDS:
+				if KeyBindings.matches(event, action): return true
+		return false
 	if not event is InputEventMouse: return false
 	var map_navigation := bool(_steps[_index].get("map_navigation", false))
 	var point: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
@@ -348,6 +354,10 @@ func set_interaction_blocked(blocked: bool) -> void:
 	if blocked: _cancel_pointer()
 	_refresh()
 
+func set_typewriter_enabled(enabled: bool) -> void:
+	_typewriter_enabled = enabled
+	if not enabled: _typewriter.progress = _body_text.length() + 3.0
+
 func _open() -> void:
 	_cancel_pointer()
 	_active = true
@@ -388,7 +398,7 @@ func _present_step() -> void:
 	_hover_target = ""
 	_hover_text = ""
 	_display_index = _index
-	_typewriter.progress = 0.0
+	_typewriter.progress = 0.0 if _typewriter_enabled else _body_text.length() + 3.0
 	_transitioning = false
 	_appearance = 1.0
 	_refresh()
@@ -412,7 +422,7 @@ func _process(delta: float) -> void:
 	_card_position = _card_position.lerp(_card_destination, weight)
 	_ui.get_node("Card").position = _card_position
 	_update_arrow(Rect2(_card_position, _ui.get_node("Card").size))
-	if _active and not _transitioning:
+	if _active and not _transitioning and _typewriter_enabled:
 		var speed := TYPE_SPEED * (1.8 if TranslationServer.get_locale().begins_with("en") else 1.0)
 		_typewriter.progress = minf(_typewriter.progress + delta * speed, _body_text.length() + 3.0)
 
@@ -436,7 +446,7 @@ func _refresh() -> void:
 	if text != _body_text:
 		_body_text = text
 		_ui.get_node("Card/Portrait67").set_emotion(Portrait.emotion_for(step, text_key))
-		_typewriter.progress = 0.0
+		_typewriter.progress = 0.0 if _typewriter_enabled else text.length() + 3.0
 		body.clear()
 		body.push_customfx(_typewriter, {})
 		body.add_text(text)
@@ -453,9 +463,9 @@ func _refresh() -> void:
 	_actions.get_node("Skip").disabled = not _active or _blocked
 	_actions.get_node("Skip").visible = not choosing and not bool(step.get("contextual", false))
 	var silent := bool(step.get("silent", false))
-	_ui.get_node("Card").visible = not silent
+	_ui.get_node("Card").visible = not silent and not _blocked
 	var silent_skip: Button = _ui.get_node("SilentSkip")
-	silent_skip.visible = silent
+	silent_skip.visible = silent and not _blocked
 	silent_skip.text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
 	silent_skip.disabled = not _active or _blocked
 	silent_skip.position = Vector2(size.x - silent_skip.size.x - CARD_MARGIN, CARD_MARGIN)

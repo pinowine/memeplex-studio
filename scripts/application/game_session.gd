@@ -6,6 +6,7 @@ var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
 
 const SAVE_PATH := "user://saves/current_run.json"
+const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 
 @onready var atlas: Node2D = $Atlas
 @onready var hud: Control = $DemoLayer/HUD
@@ -52,12 +53,11 @@ func _ready() -> void:
 	hud.load_requested.connect(_load)
 	hud.restart_requested.connect(_restart)
 	hud.event_acknowledged.connect(_acknowledge)
-	hud.settings_requested.connect(func(): _toggle_menu("settings"))
+	hud.settings_requested.connect(_open_settings)
 	hud.developer_requested.connect(func(): _toggle_menu("developer"))
 	hud.quit_requested.connect(func(): get_tree().quit())
 	hud.menu_close_requested.connect(_close_menu)
 	hud.design_action_requested.connect(_design_action)
-	hud.interface_language_requested.connect(_change_interface_language)
 	hud.skill_purchase_requested.connect(_buy_skill)
 	atlas.get_node("%PointsButton").hide()
 	atlas.set_process_input(false)
@@ -345,10 +345,19 @@ func _close_menu() -> void:
 	if simulation.phase == "running": _set_speed(_menu_resume_speed, true)
 	else: atlas.set_speed(0)
 
+func _open_settings() -> void:
+	hud.set_menu("preferences")
+	_shell.main_menu.show_settings()
+	desk._sync_reader_blocks()
+
 func _input(event: InputEvent) -> void:
 	if not _ready_to_run or not event is InputEventKey or not event.pressed or event.echo: return
 	var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 	if key == KEY_ESCAPE:
+		if _shell != null and _shell.main_menu.visible:
+			_shell.main_menu.back()
+			get_viewport().set_input_as_handled()
+			return
 		if _shell != null and _shell.is_choosing_starter():
 			_toggle_menu("settings")
 			get_viewport().set_input_as_handled()
@@ -370,11 +379,13 @@ func _input(event: InputEvent) -> void:
 	else:
 		var focus := get_viewport().gui_get_focus_owner()
 		if focus is LineEdit or focus is TextEdit or _clock_paused() or simulation.phase == "event": return
-		match key:
-			KEY_SPACE: _set_speed(atlas.clock.previous_speed if simulation.speed == 0 else 0)
-			KEY_COMMA, KEY_LESS: _set_speed(maxi(0, simulation.speed - 1))
-			KEY_PERIOD, KEY_GREATER: _set_speed(mini(2, simulation.speed + 1))
-			_: return
+		if KeyBindings.matches(event, "pause"): _set_speed(atlas.clock.previous_speed if simulation.speed == 0 else 0)
+		elif KeyBindings.matches(event, "slower"): _set_speed(maxi(0, simulation.speed - 1))
+		elif KeyBindings.matches(event, "faster"): _set_speed(mini(2, simulation.speed + 1))
+		elif KeyBindings.matches(event, "speed_paused"): _set_speed(0)
+		elif KeyBindings.matches(event, "speed_normal"): _set_speed(1)
+		elif KeyBindings.matches(event, "speed_fast"): _set_speed(2)
+		else: return
 	get_viewport().set_input_as_handled()
 
 func _save() -> void:
@@ -684,12 +695,6 @@ func _focus_startup_call(_sheet: String = "") -> void:
 	desk._sync_reader_blocks()
 	desk._fax.focus()
 
-func _change_interface_language(locale: String) -> void:
-	if _shell == null: return
-	var error: Error = _shell.main_menu.change_language(locale)
-	if error != OK: simulation.status = error_string(error)
-	_refresh_locale.call_deferred()
-
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and _ready_to_run:
 		_refresh_locale.call_deferred()
@@ -723,7 +728,7 @@ func presentation_blocks_input() -> bool:
 	return _shell.blocks_input()
 
 func presentation_modal_visible() -> bool:
-	return hud.modal_visible()
+	return hud.modal_visible() and hud.menu_mode() != "preferences"
 
 func presentation_daylight() -> float:
 	return atlas.clock.daylight_fraction()
