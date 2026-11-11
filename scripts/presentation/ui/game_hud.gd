@@ -22,6 +22,7 @@ signal skill_purchase_requested(id: String)
 signal material_tabletop_requested(kind: String, id: String)
 
 const PaperStyle := preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const ReceiptUI := preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const DesignWorkbench = preload("res://scripts/presentation/studio/workbench/desk_design_workbench.gd")
 
 @onready var _workbench: PanelContainer = %Workbench
@@ -58,6 +59,10 @@ var _active_design_sheet := "edit"
 
 
 func _ready() -> void:
+	%SettingsMenu.theme = ReceiptUI.create_theme()
+	ReceiptUI.primary(%Resume)
+	%Resume.pressed.connect(func(): menu_close_requested.emit())
+	%SettingsMenu.get_node("Column").minimum_size_changed.connect(layout_screen_modals)
 	_install_interface_language()
 	%GuideEnabled.toggled.connect(func(enabled: bool): guide_enabled_requested.emit(enabled))
 	%SelectCountry.pressed.connect(func() -> void: country_selection_requested.emit())
@@ -398,7 +403,8 @@ func set_menu(mode: String) -> void:
 	%DeveloperStatus.text = DeskLocalization.format_text("LOC_CURRENT_CONTENT_D_CASE_PRESETS_THE_EVENT_922995D7", _presets.size())
 	_refresh_modal()
 	if mode == "settings":
-		%Save.grab_focus()
+		layout_screen_modals()
+		%Resume.grab_focus()
 	elif mode == "developer":
 		%Tools.grab_focus()
 	elif %EventCard.visible:
@@ -446,6 +452,7 @@ func set_legend(rows: Array[Dictionary]) -> void:
 
 func _refresh_modal() -> void:
 	%ModalShade.visible = modal_visible()
+	%ModalShade.color = Color(0.04, 0.05, 0.04, 0.40) if _menu_mode == "settings" else Color(0.14, 0.14, 0.14, 0.64)
 	%Create.disabled = modal_visible()
 	%EventContinue.disabled = not _menu_mode.is_empty() or (_desk_controller != null and not _desk_controller.event_ready())
 	%EffectDetails.disabled = not _menu_mode.is_empty()
@@ -526,6 +533,19 @@ func layout_screen_modals() -> void:
 	var available := (view-Vector2(96,96)).max(Vector2(1,1))
 	for panel: Control in [%SettingsMenu,%DeveloperMenu]:
 		var desired := Vector2(600,650)
+		if panel == %SettingsMenu:
+			var column: VBoxContainer = panel.get_node("Column")
+			var screen := get_window().get_visible_rect().size
+			var screen_available := screen - Vector2(32, 32)
+			column.size.x = minf(448, screen_available.x) - 64
+			desired = Vector2(448, column.get_combined_minimum_size().y + 96)
+			var settings_size := desired.min(screen_available)
+			# The modal texture stretches from desk coordinates to the window.
+			panel.scale = view / screen
+			_desk_place(panel, Rect2((view - settings_size * panel.scale) * .5, settings_size))
+			column.position = Vector2(32, 32)
+			column.size = settings_size - Vector2(64, 96)
+			continue
 		var dimensions := desired.max(panel.get_combined_minimum_size()).min(available)
 		_desk_place(panel,Rect2((view-dimensions)*.5,dimensions))
 
@@ -670,6 +690,7 @@ func _values(catalog: Resource, key: String) -> Array:
 func _install_interface_language() -> void:
 	var row := HBoxContainer.new()
 	row.name = "InterfaceLanguageRow"
+	row.custom_minimum_size.y = 44
 	var caption := Label.new()
 	caption.text = DeskLocalization.source("LOC_INTERFACE_LANGUAGE_3D138685")
 	caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL

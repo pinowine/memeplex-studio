@@ -7,7 +7,7 @@ signal quit_requested
 signal settings_changed(settings: Dictionary)
 
 const TEMPLATE = preload("res://scenes/ui/menus/main_menu.tscn")
-const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_START_D2BB025A", "LOC_LOAD_534CB3FA", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
@@ -21,7 +21,7 @@ var _last_error := OK
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if theme == null: theme = load("res://data/presentation/ui/demo_theme.tres")
+	theme = ReceiptUI.create_theme()
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
 	_ui.get_node("MenuPanel/Content/Start").pressed.connect(func(): start_requested.emit())
@@ -35,8 +35,10 @@ func _ready() -> void:
 	for entry: Array in [["Music", "music"], ["Effects", "effects"]]:
 		var slider: HSlider = _ui.get_node("SettingsPanel/Content/" + entry[0])
 		slider.value_changed.connect(func(value: float): set_volume(entry[1], value))
-	PaperStyle.apply_buttons(_ui.get_node("MenuPanel"))
-	PaperStyle.apply_buttons(_ui.get_node("SettingsPanel"))
+	ReceiptUI.primary(_ui.get_node("MenuPanel/Content/Start"))
+	ReceiptUI.primary(_ui.get_node("SettingsPanel/Content/Back"))
+	for name: String in ["MenuPanel", "SettingsPanel"]:
+		_ui.get_node(name + "/Content").minimum_size_changed.connect(_layout)
 	resized.connect(_layout)
 	load_settings()
 	_layout()
@@ -64,6 +66,7 @@ func set_load_available(value: bool) -> void:
 func open_settings() -> void:
 	_ui.get_node("MenuPanel").hide()
 	_ui.get_node("SettingsPanel").show()
+	_ui.get_node("SettingsPanel/Content/Language").grab_focus()
 
 func close_settings() -> void:
 	if not is_instance_valid(_ui): return
@@ -151,15 +154,18 @@ func _refresh_labels() -> void:
 	var words: Array = LABELS
 	var keys := ["Title", "Start", "Load", "Settings", "Quit"]
 	for index in keys.size(): _ui.get_node("MenuPanel/Content/" + keys[index]).text = words[index]
-	for pair: Array in [["Title", 3], ["LanguageLabel", 5], ["MusicLabel", 6], ["EffectsLabel", 7], ["Back", 8], ["Notice", 9]]:
+	for pair: Array in [["Title", 3], ["LanguageLabel", 5], ["MusicHeading/MusicLabel", 6], ["EffectsHeading/EffectsLabel", 7], ["Back", 8]]:
 		_ui.get_node("SettingsPanel/Content/" + pair[0]).text = words[pair[1]]
-	if _last_error != OK: _ui.get_node("SettingsPanel/Content/Notice").text = error_string(_last_error)
+	var notice: Label = _ui.get_node("SettingsPanel/Content/Notice")
+	notice.visible = _last_error != OK
+	if notice.visible: notice.text = error_string(_last_error)
 	_ui.get_node("SettingsPanel/Content/Language").select(0 if _settings.language == "zh_CN" else 1)
 	_ui.get_node("SettingsPanel/Content/GuideEnabled").set_pressed_no_signal(_settings.guide_enabled)
 	for pair: Array in [["Music", "music"], ["Effects", "effects"]]:
 		_ui.get_node("SettingsPanel/Content/" + pair[0]).set_value_no_signal(_settings[pair[1]])
-		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Value").text = "%d%%" % roundi(float(_settings[pair[1]]) * 100)
+		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Heading/" + pair[0] + "Value").text = "%d%%" % roundi(float(_settings[pair[1]]) * 100)
 	set_load_available(_load_available)
+	_layout()
 
 func _layout() -> void:
 	if not is_instance_valid(_ui): return
@@ -167,11 +173,13 @@ func _layout() -> void:
 	for name: String in ["MenuPanel", "SettingsPanel"]:
 		var panel: Control = _ui.get_node(name)
 		var content: Control = panel.get_node("Content")
-		var height := content.get_combined_minimum_size().y + 80 if name == "MenuPanel" else 550.0
-		panel.size = Vector2(minf(520, size.x - 40), minf(height, size.y - 32))
+		var width := minf(448, size.x - 32)
+		content.size.x = width - 64
+		var height := content.get_combined_minimum_size().y + 96
+		panel.size = Vector2(width, height)
 		panel.position = (size - panel.size) * 0.5
-		content.position = Vector2(48, 40)
-		content.size = panel.size - Vector2(96, 80)
+		content.position = Vector2(32, 32)
+		content.size = panel.size - Vector2(64, 96)
 
 func inspection() -> Dictionary:
 	var buses := {}

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/presentation/ui/game_hud.gd" id="1"]
 [ext_resource type="Theme" path="res://data/presentation/ui/demo_theme.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_receipt_panel.gd" id="3"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/body_bold_font.tres" id="4"]
 
 [node name="DemoHUD" type="Control"]
 layout_mode = 3
@@ -801,7 +803,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "LOC_RESTART_CC92CB4B"
 size_flags_horizontal = 3
-[node name="SettingsMenu" type="PanelContainer" parent="."]
+[node name="SettingsMenu" type="Panel" parent="."]
 unique_name_in_owner = true
 layout_mode = 1
 anchor_left = 0.5
@@ -816,59 +818,70 @@ grow_horizontal = 2
 grow_vertical = 2
 z_index = 30
 visible = false
+script = ExtResource("3")
+paper_margin = 32.0
 
 [node name="Column" type="VBoxContainer" parent="SettingsMenu"]
-layout_mode = 2
-theme_override_constants/separation = 12
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 416.0
+offset_bottom = 500.0
+grow_horizontal = 1
+grow_vertical = 1
+theme_override_constants/separation = 16
 
 [node name="Heading" type="Label" parent="SettingsMenu/Column"]
 layout_mode = 2
 mouse_filter = 2
 text = "LOC_SETTINGS_DF3D58C7"
-theme_type_variation = "DemoHeading"
-horizontal_alignment = 1
+theme_override_fonts/font = ExtResource("4")
+theme_override_font_sizes/font_size = 28
 
-[node name="Hint" type="Label" parent="SettingsMenu/Column"]
+[node name="TitleRule" type="HSeparator" parent="SettingsMenu/Column"]
 layout_mode = 2
-mouse_filter = 2
-text = "LOC_ESC_TO_RETURN_OPENING_THE_MENU_DOES_31A34A86"
-autowrap_mode = 2
-theme_type_variation = "DemoCaption"
+custom_minimum_size = Vector2(0, 8)
 
 [node name="GuideEnabled" type="CheckButton" parent="SettingsMenu/Column"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 42)
+custom_minimum_size = Vector2(0, 44)
 button_pressed = true
 text = "LOC_GUIDE_67_ENABLED"
 
 [node name="Buttons" type="VBoxContainer" parent="SettingsMenu/Column"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
+
+[node name="Resume" type="Button" parent="SettingsMenu/Column/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "LOC_CONTINUE_7C969119"
 
 [node name="Save" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
+custom_minimum_size = Vector2(0, 44)
 text = "LOC_SAVE_A3030BF8"
 
 [node name="Load" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
+custom_minimum_size = Vector2(0, 44)
 text = "LOC_LOAD_534CB3FA"
 
 [node name="Restart" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
+custom_minimum_size = Vector2(0, 44)
 text = "LOC_NEW_RUN_19518C53"
 
 [node name="Quit" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
+custom_minimum_size = Vector2(0, 44)
 text = "LOC_QUIT_498E1D59"
 
 [node name="DeveloperMenu" type="PanelContainer" parent="."]
