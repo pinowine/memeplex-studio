@@ -2,7 +2,6 @@ extends Node2D
 
 signal initialization_finished(error: Error)
 signal launch_confirmed
-signal country_inspected(index: int)
 
 const COUNTRY_RULES = preload("res://data/rules/gameplay_rules.tres")
 const CONTEXT_DEFINITIONS = preload("res://data/context/context_resources.tres")
@@ -31,7 +30,7 @@ var initialization_message := ""
 @onready var topics: Label = %Topics
 @onready var drawer: Control = %CountryDrawer
 @onready var country_scroll: ScrollContainer = %CountryScroll
-@onready var hover_note: PanelContainer = %HoverNote
+@onready var hover_note: DeskReceiptHover = %HoverNote
 @onready var launch_marker: BaseButton = %StudioConfirm
 @onready var workbench: PanelContainer = %WorkbenchOverlay
 @onready var restart_progress: ProgressBar = %RestartProgress
@@ -60,6 +59,7 @@ var _marker_projection_signature: Array = []
 var _clock_presentation_updates := 0
 var _marker_projection_updates := 0
 var _marker_projection_cache_hits := 0
+var _hover_profile_signature: Array = []
 
 func _ready() -> void:
 	set_process(false)
@@ -73,7 +73,7 @@ func _ready() -> void:
 	%WorkbenchClose.pressed.connect(close_workbench)
 	for button: BaseButton in [%SpeedControl, %DrawerClose, %PointsButton, %WorkbenchClose]:
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	map_input.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	map_input.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	map_input.gui_input.connect(_on_map_input)
 	map_input.mouse_exited.connect(_on_map_exited)
 	get_viewport().size_changed.connect(_on_viewport_resized)
@@ -131,6 +131,7 @@ func _process(delta: float) -> void:
 func refresh_localization() -> void:
 	_clock_presentation_signature.clear()
 	_marker_projection_signature.clear()
+	_hover_profile_signature.clear()
 	for country in settings.countries:
 		markers.get_node("%s/Name" % country.id).text = tr(country.short_name_key)
 		for j in 4:
@@ -143,20 +144,10 @@ func refresh_localization() -> void:
 
 func select_country(index: int) -> void:
 	if launch_marker.popping: return
-	var changed := selected_country != index
 	selected_country = index
 	terrain.set_highlight(hovered_country, selected_country)
 	_update_details()
 	_update_launch_marker()
-	if index < 0:
-		close_drawer()
-		return
-	if changed: country_scroll.scroll_vertical = 0
-	if not drawer.visible:
-		drawer.offset_left = 0.0
-		drawer.offset_right = -_drawer_offset
-		drawer.visible = true
-	_animate_drawer(_drawer_offset, 0.0)
 	_update_hover()
 
 func focus_country(index: int) -> void:
@@ -220,14 +211,22 @@ func _profile_labels(weights: Dictionary, kind: String, limit: int = 0) -> Strin
 	return (", " if TranslationServer.get_locale().begins_with("en") else "、").join(labels)
 
 func _update_hover() -> void:
-	hover_note.visible = hovered_country >= 0 and not drawer.visible and not workbench.visible and not _launch_selection_active
-	if hovered_country < 0:
-		return
+	hover_note.visible = map_input.is_visible_in_tree() and hovered_country >= 0 and not panning and not workbench.visible
+	hover_note.set_pointer_following(hover_note.visible)
+	if not hover_note.visible: return
+	var signature: Array = [hovered_country, TranslationServer.get_locale(), world.seed_value]
+	if signature == _hover_profile_signature: return
+	_hover_profile_signature = signature
 	var country := settings.countries[hovered_country]
-	%HoverName.text = tr(country.short_name_key)
-	%HoverSummary.text = tr("MAP_POPULATION") % (int(COUNTRY_RULES.country(str(country.id)).population) / 1000000.0)
-	var edge := get_viewport_rect().size - hover_note.size
-	hover_note.position = (_pointer + Vector2(18.0, 18.0)).clamp(Vector2.ZERO, edge)
+	var profile := COUNTRY_RULES.country(str(country.id))
+	var rows := [
+		{"category":tr("MAP_GROUPS"), "value":_profile_labels(profile.groups,"group"), "kind":"group"},
+		{"category":tr("MAP_LANGUAGES"), "value":_profile_labels(profile.languages,"language"), "kind":"language"},
+		{"category":tr("MAP_TOPICS"), "value":_profile_labels(profile.topics,"topic",4), "kind":"topic"}]
+	hover_note.set_width(360)
+	hover_note.set_content(tr(country.official_name_key), rows,
+		tr(country.description_key)+"\n\n"+tr(country.culture_key),
+		{"kind":"language", "badge":tr("MAP_POPULATION") % (int(profile.population)/1000000.0)})
 
 func establish_studio() -> void:
 	clock.establish(selected_country, world.seed_value, settings.latitude_at(world.territories[selected_country].anchor))
@@ -238,6 +237,7 @@ func establish_studio() -> void:
 func set_launch_selection_active(active: bool) -> void:
 	if _launch_selection_active == active: return
 	_launch_selection_active = active
+	map_input.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if active else Control.CURSOR_ARROW
 	launch_marker.reset()
 	_update_launch_marker()
 	_update_hover()
@@ -432,12 +432,10 @@ func _on_map_input(event: InputEvent) -> void:
 			_stop_country_focus()
 			panning = event.pressed
 			target_zoom = camera.zoom.x
-		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_update_hover()
+		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _launch_selection_active:
 			var index := world.country_at(_world_position(screen_position))
 			select_country(index)
-			if index >= 0:
-				country_inspected.emit(index)
-				focus_country(index)
 		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			_stop_country_focus()
 			_zoom_anchor = screen_position

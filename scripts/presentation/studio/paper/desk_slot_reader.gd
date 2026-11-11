@@ -243,9 +243,10 @@ func _layout_paper() -> void:
 	_body_label.position = Vector2(padding,body_y)
 	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(34 if choice_height>0 else 28)))
 	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
+	var stack_only := has_stack and _body.is_empty()
 	_stack_host.visible = has_stack
-	_stack_rule.visible = has_stack
-	_stack_label.visible = has_stack
+	_stack_rule.visible = has_stack and not stack_only
+	_stack_label.visible = has_stack and not stack_only
 	if has_stack:
 		var divider_y := floorf(dimensions.y * .49)
 		_stack_rule.position = Vector2(padding, divider_y)
@@ -255,7 +256,8 @@ func _layout_paper() -> void:
 		_stack_label.text = DeskLocalization.text(str(_details.get("stack_title", DeskLocalization.source("LOC_INVENTORY_CARDS_6691F0EB"))))
 		_stack_label.add_theme_font_override("font", font)
 		_body_label.size.y = maxf(48, divider_y - body_y - 16)
-		var next_rect := Rect2(Vector2(padding, divider_y + 42), Vector2(width, dimensions.y - divider_y - 62))
+		var stack_y := body_y if stack_only else divider_y + 42
+		var next_rect := Rect2(Vector2(padding, stack_y), Vector2(width, dimensions.y - stack_y - 20))
 		var changed := _stack_host.position != next_rect.position or _stack_host.size != next_rect.size
 		_stack_host.position = next_rect.position
 		_stack_host.size = next_rect.size

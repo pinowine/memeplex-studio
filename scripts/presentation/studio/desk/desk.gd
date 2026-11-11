@@ -89,42 +89,22 @@ func _slot_paper_rect() -> Rect2:
 	var width := minf(430.0,view.x*.32)
 	return Rect2(view.x-width-28,48,width,maxf(210,minf(560,view.y-90)))
 
-func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> void:
+func _context_slot_pressed(layer: String, _index: int, viewport_rect: Rect2) -> void:
 	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/cultivate": return
 	if _page._interface_paused() or not _page.startup_ready(): return
-	var board: Control = _page.hud.design_workbench().context_slice()
-	var layer_data: Dictionary = board._layers().get(layer,{})
-	var info: Dictionary = {}
-	var slots: Array = layer_data.get("slots",[])
-	if index >= 0 and index < slots.size():
-		var resource_id: String = str(slots[index].get("resource_id",slots[index].get("id","")))
-		info = board._resource(resource_id)
-	var names := {"language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"),"group":DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"),"topics":DeskLocalization.source("LOC_TOPICS_A2C81C5A"),"stance":DeskLocalization.source("LOC_STANCE_8A2DE4CD"),"pragmatic":DeskLocalization.source("LOC_PRAGMATICS_7063D1D8")}
-	var title: String = str(info.get("title",names.get(layer,layer)))
-	var body: String = str(info.get("description",info.get("text","")))
-	var instructions := {
-		"language":DeskLocalization.source("LOC_LANGUAGE_DETERMINES_WHICH_LANGUAGE_THE_EXPRESSION_USES_798C3F4A"),
-		"group":DeskLocalization.source("LOC_AUDIENCE_DETERMINES_WHO_THE_EXPRESSION_ADDRESSES_THERE_691D68FC"),
-		"topics":DeskLocalization.source("LOC_TOPICS_USE_HORIZONTAL_CARDS_DRAG_AN_INSTALLED_997B4F0A"),
-		"stance":DeskLocalization.source("LOC_HORIZONTAL_FREEDOM_AUTHORITY_VERTICAL_EQUALITY_HIERARCHY_THE_3F9038E0"),
-		"pragmatic":DeskLocalization.source("LOC_HORIZONTAL_SINCERITY_IRONY_VERTICAL_SUPPORT_OPPOSITION_MOVE_15B127DA")}
-	if not body.is_empty(): body += "\n\n"
-	body += str(instructions.get(layer,""))
-	if layer in ["language","group"]:
-		body += DeskLocalization.source_format("LOC_CAPACITY_D_DRAG_INSTALLED_CARDS_TO_REMOVE_8F1AAF85", _page.simulation.design_state.context_slot_capacity(layer))
-	_slot_details = {"title":title,"body":body,"layer":layer,"slot":index}
 	_focus_slot(layer,viewport_rect)
 
 func _module_slots_pressed(viewport_rect: Rect2) -> void:
 	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/edit": return
 	if _page._interface_paused() or not _page.startup_ready(): return
-	_slot_details = {"title":DeskLocalization.source("LOC_PATCH_CLIPS_4D7B122D"),"body":DeskLocalization.source("LOC_DRAG_A_PATCH_FROM_THE_INVENTORY_BELOW_934DD092"),"layer":"module"}
 	_focus_slot("module",viewport_rect)
 
 func _focus_slot(layer: String, viewport_rect: Rect2) -> void:
+	_page.atlas._on_map_exited()
 	if not slot_details_active():
 		_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
 	_focused_stack = {"topics":"topic","stance":"stance_token","pragmatic":"pragmatic_token"}.get(layer,layer)
+	_slot_details = {}
 	_component_target = ""
 	_slot_restoring = false
 	var world_rect: Rect2 = get_viewport().get_canvas_transform().affine_inverse()*viewport_rect
@@ -188,6 +168,10 @@ func _update_hover_strip() -> void:
 	var editor: Control = _page.hud.design_workbench()
 	if _page.hud.modal_visible() or (_page._shell != null and _page._shell.blocks_input()) or editor._source_hover.visible:
 		_hover_strip.clear_hover()
+		_page.atlas.hover_note.hide()
+		return
+	if _page.atlas.hover_note.is_visible_in_tree():
+		_hover_strip.clear_hover()
 		return
 	var point := get_viewport().get_mouse_position()
 	var info: Dictionary = _material_cards.hover_info(point) if _material_cards != null else {}
@@ -204,8 +188,6 @@ func _update_hover_strip() -> void:
 	if info.has("text") and not info.has("description"): info.description = str(info.text)
 	if info.is_empty(): _hover_strip.clear_hover()
 	else: _hover_strip.show_hover(info)
-	if not _component_target.is_empty() and _camera.inspection().state == "focused":
-		_show_component_details(info)
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -288,11 +270,12 @@ func configure(page: Node2D) -> void:
 	page.hud.get_node("%SettingsMenu").minimum_size_changed.connect(_fit_settings)
 	_country_layer = CanvasLayer.new()
 	_country_layer.name = "CountryFileLayer"
-	_country_layer.layer = 31
+	_country_layer.layer = 60
 	page.atlas.add_child(_country_layer)
 	page.atlas.drawer.theme = page.atlas.get_node("Interface/HUD").theme
 	page.atlas.drawer.reparent(_country_layer, false)
-	page.atlas.country_inspected.connect(_country_inspected)
+	page.atlas.hover_note.reparent(_country_layer, false)
+	page.atlas.hover_note.set_pointer_source(_hover_pointer_position)
 	_stack = load("res://scripts/presentation/studio/paper/desk_sheet_stack.gd").new()
 	_stack.name = "PaperStack"
 	add_child(_stack)
@@ -452,14 +435,18 @@ func configure(page: Node2D) -> void:
 	_slot_reader.option_selected.connect(_reader_choice_selected)
 	_slot_reader.choice_hovered.connect(_reader_choice_hovered)
 	_slot_reader.contact_selected.connect(func(index: int): _fax.select_contact(index))
+	var hover_notes := CanvasLayer.new()
+	hover_notes.name = "DeskHoverNotes"
+	hover_notes.layer = 60
+	controls.add_child(hover_notes)
 	_hover_strip = HoverStrip.new()
 	_hover_strip.name = "DeskInformationSlip"
 	_hover_strip.z_index = 21
 	_hover_strip.pointer_source = _hover_pointer_position
-	controls.add_child(_hover_strip)
+	hover_notes.add_child(_hover_strip)
 	_hover_strip.configure(Handwriting.FONT, _textures.paper_texture)
 	_hover_strip.size = Vector2(DeskReceiptHover.DEFAULT_WIDTH,74)
-	editor.mount_hover_overlay(controls, _hover_pointer_position)
+	editor.mount_hover_overlay(hover_notes, _hover_pointer_position)
 	var board: Control = editor.context_slice()
 	board.set_drag_preview_parent(_material_cards)
 	board.slot_pressed.connect(_context_slot_pressed)
@@ -491,6 +478,7 @@ func _set_sheet_content_visible(value: bool) -> void:
 	_page.atlas.map_input.visible = map_visible
 	_page.atlas.get_node("%MapFinish").visible = map_visible
 	_page.spread.visible = map_visible
+	if not map_visible: _page.atlas._on_map_exited()
 
 func focus_component(id: String) -> bool:
 	if id == "phonebook" and _page.has_meta("studio3d"): return false
@@ -513,11 +501,6 @@ func focus_component(id: String) -> bool:
 	if id == "phonebook": _move_occluder("fax",Vector2(290,95))
 	var center := node.get_global_transform() * (node.size * .5)
 	return _camera.focus_equipment(id, center, node.size * node.scale, node.get_global_transform().get_rotation(), 1.5 if id == "fax" else 1.0)
-
-
-func _country_inspected(_index: int) -> void:
-	if _revealed_focus == "sheet/map" and _camera.inspection().state == "focused": return
-	focus_component("sheet/map")
 
 
 func _camera_arrived(id: String) -> void:
@@ -858,16 +841,14 @@ func _prop_moved(id: StringName, _point: Vector2) -> void:
 
 func _inspect_material(kind: String, id: String) -> void:
 	if not _page.startup_ready(): return
-	var record := _material_cards.details_for_item(kind,id)
 	if not slot_details_active(): _focus_material_stack(kind)
-	_slot_details = _material_full_details(record)
 	if _camera.inspection().state == "focused":
-		_show_stack_details()
 		_page._tutorial_observe("inventory_card_selected", {"kind":kind, "id":id})
 
 func _focus_material_stack(kind: String) -> void:
 	if not _page.startup_ready() or _page.hud.modal_visible(): return
 	if _camera.inspection().state in ["travelling","returning"]: return
+	_page.atlas._on_map_exited()
 	_page.atlas.hide_country_details()
 	if _fax.inspection().focused:
 		_fax.close_focus()
@@ -875,7 +856,7 @@ func _focus_material_stack(kind: String) -> void:
 	if not slot_details_active():
 		_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
 	_focused_stack = kind
-	_slot_details = _material_cards.stack_details(kind)
+	_slot_details = {}
 	_component_target = ""
 	_slot_restoring = false
 	var rect := _material_cards.stack_viewport_rect(kind)
@@ -886,6 +867,7 @@ func _focus_material_stack(kind: String) -> void:
 func _show_stack_details() -> void:
 	_slot_details.stack_kind = _focused_stack
 	_slot_details.stack_title = {"group":DeskLocalization.source("LOC_AUDIENCE_CARDS_39992E9B"),"language":DeskLocalization.source("LOC_LANGUAGE_CARDS_F27DA9A7"),"topic":DeskLocalization.source("LOC_TOPIC_CARDS_213FE1AB"),"module":DeskLocalization.source("LOC_PATCH_CARDS_F1906C0B"),"stance_token":DeskLocalization.source("LOC_STANCE_TOKEN_D1A72C88"),"pragmatic_token":DeskLocalization.source("LOC_PRAGMATICS_TOKEN_FEEBD9AF")}.get(_focused_stack,DeskLocalization.source("LOC_INVENTORY_CARDS_6691F0EB"))
+	_slot_details.title = _slot_details.stack_title
 	_slot_reader.show_details(_slot_details,_slot_reader.get_viewport().get_visible_rect())
 	_layout_focused_stack()
 
@@ -1154,8 +1136,8 @@ func _process(_delta: float) -> void:
 	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
 	if editor.has_method("set_interaction_enabled"):
 		editor.set_interaction_enabled(design_enabled)
-	_country_layer.visible = _active_sheet == "map" and enabled and _revealed_focus == "sheet/map"
-	_page.atlas.hover_note.hide()
+	_country_layer.visible = _active_sheet == "map" and enabled
+	_page.atlas._update_hover()
 	_page.atlas.get_node("%SpeedControl").disabled = blocked or interaction_paused() or _page._clock_paused() or _page.simulation.phase != "running"
 	_speed_strip.sync(_page.clock_speed(), enabled and not _page._clock_paused() and _page.simulation.phase == "running")
 
@@ -1267,28 +1249,17 @@ func _component_details() -> Dictionary:
 		if mode == "archive": details.erase("contacts")
 		if mode != "phonebook": details.erase("contacts")
 		return details
-	var descriptions := {
-		"crt":{"title":DeskLocalization.source("LOC_MEME_MONITOR_09D96DD1"),"body":DeskLocalization.source("LOC_THE_THREE_KEYS_BELOW_SWITCH_BETWEEN_MEME_20D0119B")},
-		"printer":{"title":DeskLocalization.source("LOC_LOG_PRINTER_CCF8EA8C"),"body":DeskLocalization.source("LOC_THE_PRINTER_KEEPS_PRODUCING_THE_MEME_LEDGER_BDC9A3A3")},
-		"clock":{"title":DeskLocalization.source("LOC_TIME_COMPASS_BB6E1B5D"),"body":DeskLocalization.source("LOC_THE_COMPASS_SHOWS_THE_CURRENT_DATE_SEASON_C7931AB4")},
-		"speed":{"title":DeskLocalization.source("LOC_PLAYBACK_SPEED_C114A632"),"body":DeskLocalization.source("LOC_THE_THREE_PHYSICAL_KEYS_PAUSE_PLAY_NORMALLY_262AD9F1")}}
-	return descriptions.get(_component_target,{"title":DeskLocalization.source("LOC_WORKBENCH_F9E02D3C"),"body":DeskLocalization.source("LOC_PRESS_ESC_TO_RETURN_TO_THE_DESK_4D921FE1")}).duplicate(true)
+	return {}
 
-func _show_component_details(hover: Dictionary = {}) -> void:
+func _show_component_details() -> void:
 	if _slot_reader == null or _component_target.is_empty() or slot_details_active(): return
 	var details := _component_details()
+	if details.is_empty(): return
 	if _component_target in ["fax", "fax/phone"] and _page._shell != null:
 		var guide: Control = _page._shell.tutorial
 		if guide._active and str(guide._steps[guide._index].id) in ["fax_open", "pickup", "welcome", "confused", "studio", "mentor"]:
 			_slot_reader.hide_details()
 			return
-	if not hover.is_empty() and _component_target not in ["fax","phonebook"] and not _component_target.begins_with("fax/"):
-		var text := DeskLocalization.text(str(hover.get("description",hover.get("text",hover.get("hint","")))))
-		if hover.has("count") or hover.has("source_label"):
-			details = _material_full_details(hover)
-		else:
-			if not text.is_empty(): details.body = text
-			if not DeskLocalization.text(str(hover.get("title",""))).is_empty(): details.title = str(hover.title)
 	# Avoid restarting the slide or resetting scroll when nothing changed.
 	var reader_state: Dictionary = _slot_reader.inspection()
 	if reader_state.details != details or not _slot_reader.is_visible_in_tree() or reader_state.phase in ["hidden","exiting"]:
@@ -1320,6 +1291,8 @@ func _foreground_point(point: Vector2) -> Vector2:
 	return point
 
 func _hover_pointer_position() -> Vector2:
+	var point := _slot_reader.get_viewport().get_mouse_position()
+	if _slot_reader.handles_viewport_point(point): return point
 	return _foreground_point(get_viewport().get_mouse_position())
 
 func _foreground_ui_handles(point: Vector2) -> bool:
@@ -1337,9 +1310,3 @@ func _desktop_pointer_guard(event: InputEvent) -> bool:
 	if event is InputEventMouse and _foreground_ui_handles(event.position):
 		return false
 	return _slot_pointer_guard(event)
-
-func _material_full_details(info: Dictionary) -> Dictionary:
-	var details := {"title":str(info.get("title","")),"body":str(info.get("description","")),"sections":[]}
-	var commentary := str(info.get("commentary",""))
-	if not commentary.is_empty(): details.sections.append({"body":commentary,"role":"commentary"})
-	return details
