@@ -555,6 +555,7 @@ func _design_action(action: String, params: Dictionary) -> void:
 	if errors.is_empty():
 		if action == "install_module": _tutorial_observe("module_installed", params)
 		if action == "install_context": _tutorial_observe("context_installed", params)
+		if action == "remove_context": _tutorial_observe("context_removed", params)
 	hud.report_design_errors(errors)
 	_render()
 

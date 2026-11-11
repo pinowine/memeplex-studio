@@ -4,6 +4,7 @@ const MainMenu = preload("res://scripts/presentation/ui/menus/main_menu.gd")
 const Tutorial = preload("res://scripts/presentation/ui/tutorial/tutorial.gd")
 const ContextGuidance = preload("res://scripts/presentation/ui/tutorial/context_guidance.gd")
 const Summary = preload("res://scripts/presentation/ui/summary/ending_summary.gd")
+const CONTEXT_RETURN_AREA := Rect2(920, 62, 160, 86)
 
 var page: Node2D
 var main_menu: Control
@@ -18,6 +19,8 @@ var _tutorial_drag_anchor: Control
 var _tutorial_drag_anchor_uv := Vector2(0.5, 0.5)
 var _tutorial_dragged_card: Control
 var _tutorial_drag_origin := Vector2.ZERO
+var _tutorial_context_slot := -1
+var _tutorial_context_card_key := ""
 
 func configure(owner_page: Node2D) -> void:
 	page = owner_page
@@ -223,6 +226,7 @@ func _logical_target(id: String) -> Variant:
 			var publish: Control = page.hud.get_node("%Publish")
 			return publish if publish.is_visible_in_tree() else page.desk._stack.tab_control("edit")
 		"context/slot": return _context_target(editor)
+		"context/current_topic": return _context_current_topic(editor.context_slice())
 		"spread/skill": return _skill_target(editor)
 		"map/country": return _country_target()
 		"map/confirm": return page.atlas.get_node("%StudioConfirm")
@@ -285,15 +289,44 @@ func _context_slot_target(board: Control, kind: String, id: String) -> Control:
 			return _area_target(board, rectangle)
 	return null
 
+func _context_current_topic(board: Control) -> Control:
+	var slots: Array = board._layers().get("topics", {}).get("slots", [])
+	for index in slots.size():
+		if slots[index].is_empty(): continue
+		_tutorial_context_slot = index
+		_tutorial_context_card_key = "topic/" + str(slots[index].get("resource_id", slots[index].get("id", "")))
+		return board._resource_graphics["topics:%d" % index]
+	return null
+
+func _tutorial_context_remove_targets(board: Control) -> Dictionary:
+	var source := _context_current_topic(board)
+	if source == null: return {}
+	var source_rect := _tutorial_project_rect(source)
+	var target_rect := _tutorial_project_rect(_area_target(page.desk, CONTEXT_RETURN_AREA))
+	return {"source":source_rect, "source_point":source_rect.get_center(), "target":target_rect,
+		"accepts_point":_tutorial_context_remove_contains, "accepts_drop":_tutorial_context_return_contains}
+
+func _tutorial_context_remove_contains(point: Vector2) -> bool:
+	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
+	var board: Control = page.hud.design_workbench().context_slice()
+	var local := board.get_global_transform_with_canvas().affine_inverse() * point
+	return board._layer_at(local) == "topics" and board._slot_at("topics", local) == _tutorial_context_slot
+
+func _tutorial_context_return_contains(point: Vector2) -> bool:
+	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
+	return CONTEXT_RETURN_AREA.has_point(page.desk.get_global_transform_with_canvas().affine_inverse() * point)
+
 func _tutorial_drag_targets(step_id: String) -> Dictionary:
-	if step_id not in ["module", "context_item"]: return {}
+	if step_id not in ["module", "context_remove", "context_item"]: return {}
 	var editor: Control = page.hud.design_workbench()
 	if not editor._interaction_enabled: return {}
 	var sheet := "edit" if step_id == "module" else "cultivate"
 	if not editor._pages[sheet].is_visible_in_tree() or editor._tab != sheet: return {}
+	if step_id == "context_remove": return _tutorial_context_remove_targets(editor.context_slice())
 	var kinds: Array[String] = ["module"]
 	if step_id == "context_item": kinds.assign(["language", "group", "topic"])
-	for card: Dictionary in page.desk._material_cards.tutorial_drag_cards(kinds, _tutorial_drag_source_key, _tutorial_drag_anchor_uv):
+	var preferred := _tutorial_context_card_key if step_id == "context_item" and not _tutorial_context_card_key.is_empty() else _tutorial_drag_source_key
+	for card: Dictionary in page.desk._material_cards.tutorial_drag_cards(kinds, preferred, _tutorial_drag_anchor_uv):
 		var target: Control = _logical_target("editor/clips") if step_id == "module" else _context_slot_target(editor.context_slice(), card.kind, card.id)
 		if target == null: continue
 		var source_rect := _tutorial_project_rect(card.node)
@@ -313,8 +346,33 @@ func _tutorial_drag_targets(step_id: String) -> Dictionary:
 		_tutorial_drag_anchor.size = Vector2.ONE
 		_tutorial_drag_anchor.position = card.node.size * card.anchor - Vector2.ONE * 0.5
 		var source_point := _tutorial_project_rect(_tutorial_drag_anchor).get_center()
-		return {"source":source_rect, "source_point":source_point, "target":target_rect, "dragging":card.dragging, "kind":card.kind, "id":card.id, "accepts_point":_tutorial_drag_contains.bind(card.key)}
+		var source_test := _tutorial_context_drag_contains if step_id == "context_item" else _tutorial_drag_contains.bind(card.key)
+		var drop_test := _tutorial_context_drop_contains if step_id == "context_item" else Callable()
+		return {"source":source_rect, "source_point":source_point, "target":target_rect, "dragging":card.dragging, "kind":card.kind, "id":card.id, "accepts_point":source_test, "accepts_drop":drop_test}
 	return {}
+
+func _tutorial_context_drag_contains(point: Vector2) -> bool:
+	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
+	var cards: Control = page.desk._material_cards
+	var key := String(cards._props._hit_prop(point))
+	if not cards._cards.has(key): return false
+	var card: Dictionary = cards._cards[key]
+	if card.kind not in ["language", "group", "topic"]: return false
+	var board: Control = page.hud.design_workbench().context_slice()
+	if _context_slot_target(board, card.kind, card.id) == null: return false
+	if cards._props._pressed == &"":
+		_tutorial_drag_source_key = key
+		_tutorial_drag_anchor_uv = (card.node.get_global_transform_with_canvas().affine_inverse() * point) / card.node.size
+		_tutorial_dragged_card = card.node
+		_tutorial_drag_origin = card.node.global_position
+	return true
+
+func _tutorial_context_drop_contains(point: Vector2) -> bool:
+	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
+	var card: Dictionary = page.desk._material_cards._cards[_tutorial_drag_source_key]
+	var board: Control = page.hud.design_workbench().context_slice()
+	var local := board.get_global_transform_with_canvas().affine_inverse() * point
+	return board._can_drop_data(local, {"type":"context_resource", "kind":card.kind, "resource_id":card.id})
 
 func _tutorial_drag_contains(point: Vector2, key: String) -> bool:
 	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
@@ -330,6 +388,9 @@ func _tutorial_project_rect(control: Control) -> Rect2:
 	return projected.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, projected.size)
 
 func _cancel_tutorial_drag() -> void:
+	if str(tutorial._steps[tutorial._index].id) == "context_remove":
+		page.hud.design_workbench().context_slice()._cancel_input()
+		return
 	# Keep a rejected drop on the desk so the same card remains available to retry.
 	_tutorial_dragged_card.global_position = _tutorial_drag_origin
 
@@ -337,7 +398,9 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	var areas: Array[Rect2] = []
 	var id := str(step.get("target", ""))
 	var editor: Control = page.hud.design_workbench()
-	if bool(step.get("scroll", false)) and id in ["editor/context", "editor/details", "editor/expression"]:
+	if id.is_empty() and str(step.get("action", "continue")) == "continue" and bool(step.get("hover", false)):
+		areas.append(get_viewport().get_visible_rect())
+	elif bool(step.get("scroll", false)) and id in ["editor/context", "editor/details", "editor/expression"]:
 		areas.append(_tutorial_project_rect(editor._detail_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
@@ -408,6 +471,10 @@ func _country_target() -> Control:
 
 func _tutorial_reserved_areas() -> Array:
 	var rectangles: Array = []
+	var hover: Control = page.desk._hover_strip
+	if hover.is_visible_in_tree(): rectangles.append(hover._receipt.get_global_rect())
+	var source_hover: Control = page.hud.design_workbench()._source_hover
+	if source_hover.is_visible_in_tree(): rectangles.append(source_hover.get_global_rect())
 	if page.atlas.drawer.is_visible_in_tree():
 		rectangles.append(_tutorial_project_rect(page.atlas.drawer))
 	var reader: Control = page.desk._slot_reader

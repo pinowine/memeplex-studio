@@ -53,6 +53,7 @@ var _target := Rect2()
 var _drag_source := Rect2()
 var _drag_source_point := Vector2.ZERO
 var _drag_source_test := Callable()
+var _drag_drop_test := Callable()
 var _ui: Control
 var _history: Array[Dictionary] = []
 var _display_index := 0
@@ -82,13 +83,17 @@ func _ready() -> void:
 	# Read the card projection after the studio updates its camera and paper meshes.
 	process_priority = 101
 	theme = ReceiptUI.create_theme()
+	var focus_layer := CanvasLayer.new()
+	focus_layer.name = "TutorialFocusLayer"
+	focus_layer.layer = 55
+	add_child(focus_layer)
 	_focus = ColorRect.new()
 	_focus.name = "TutorialFocus"
 	_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_focus_material = ShaderMaterial.new()
 	_focus_material.shader = FocusShader
 	_focus.material = _focus_material
-	add_child(_focus)
+	focus_layer.add_child(_focus)
 	_focus.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_focus.hide()
 	_ui = TEMPLATE.instantiate()
@@ -187,9 +192,12 @@ func allows_hover(viewport_point: Vector2) -> bool:
 	if not _active or _hint_only: return true
 	if _blocked or _transitioning or _return_overview: return false
 	var point := get_global_transform_with_canvas().affine_inverse() * viewport_point
-	if _drag_source.has_area() and _drag_source.has_point(point):
-		return not _drag_source_test.is_valid() or _drag_source_test.call(viewport_point)
+	if _accepts_drag_source(viewport_point): return true
 	return _contains_input_point(_input_areas(), point) and (not _input_point_test.is_valid() or _input_point_test.call(_steps[_index], viewport_point))
+
+func _accepts_drag_source(viewport_point: Vector2) -> bool:
+	if _drag_source_test.is_valid(): return _drag_source_test.call(viewport_point)
+	return _drag_source.has_point(get_global_transform_with_canvas().affine_inverse() * viewport_point)
 
 func allows_input(event: InputEvent) -> bool:
 	if not _active or _hint_only: return true
@@ -229,7 +237,7 @@ func allows_input(event: InputEvent) -> bool:
 	var areas := _input_areas()
 	if event is InputEventMouseMotion:
 		if not _pointer_mode.is_empty(): return true
-		return _contains_input_point(areas, point) or _drag_source.has_point(point)
+		return _contains_input_point(areas, point) or _accepts_drag_source(event.position)
 	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 		return not _return_overview and (bool(_steps[_index].get("scroll", false)) or map_navigation or str(_steps[_index].get("target", "")).begins_with("map/")) and _contains_input_point(areas, point)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE and map_navigation:
@@ -247,7 +255,7 @@ func allows_input(event: InputEvent) -> bool:
 		if _return_overview:
 			return false
 		_press_point = point
-		if _drag_source.has_area() and _drag_source.has_point(point) and (not _drag_source_test.is_valid() or _drag_source_test.call(event.position)):
+		if _accepts_drag_source(event.position):
 			_pointer_mode = "drag"
 			return true
 		for area: Rect2 in areas:
@@ -259,6 +267,8 @@ func allows_input(event: InputEvent) -> bool:
 		return false
 	if _pointer_mode.is_empty(): return false
 	var allowed: bool = _target.has_point(point) and point.distance_to(_press_point) >= 8.0 if _pointer_mode == "drag" else _press_rect.has_point(point)
+	if _pointer_mode == "drag" and _drag_drop_test.is_valid():
+		allowed = point.distance_to(_press_point) >= 8.0 and _drag_drop_test.call(event.position)
 	if allowed and map_navigation and _input_point_test.is_valid(): allowed = _input_point_test.call(_steps[_index], event.position)
 	if not allowed and _pointer_mode == "drag": drag_cancelled.emit()
 	_pointer_mode = ""
@@ -269,8 +279,7 @@ func allows_input(event: InputEvent) -> bool:
 func _input_areas() -> Array[Rect2]:
 	var areas: Array[Rect2] = []
 	var step := _steps[_index]
-	if str(step.get("action", "continue")) in ["module_installed", "context_installed"]: return areas
-	if str(step.get("action", "continue")) == "continue" and not bool(step.get("hover", false)) and not bool(step.get("scroll", false)) and not bool(step.get("map_navigation", false)): return areas
+	if str(step.get("action", "continue")) in ["module_installed", "context_removed", "context_installed"]: return areas
 	if _input_provider.is_valid():
 		var inverse := get_global_transform_with_canvas().affine_inverse()
 		for area: Rect2 in _input_provider.call(_steps[_index]):
@@ -360,6 +369,7 @@ func _advance() -> void:
 func _close(skipped: bool) -> void:
 	_cancel_pointer()
 	_active = false
+	_focus.hide()
 	_stop_transition()
 	_transitioning = true
 	_transition = create_tween()
@@ -459,6 +469,7 @@ func _refresh() -> void:
 		elif target is Rect2: _target = get_global_transform_with_canvas().affine_inverse() * target
 	_drag_source = Rect2()
 	_drag_source_test = Callable()
+	if _pointer_mode != "drag": _drag_drop_test = Callable()
 	if _drag_provider.is_valid() and _display_index == _index:
 		var drag_targets: Dictionary = _drag_provider.call(str(step.id))
 		if not drag_targets.is_empty():
@@ -466,6 +477,7 @@ func _refresh() -> void:
 			_drag_source = inverse * drag_targets.source
 			_drag_source_point = inverse * drag_targets.source_point
 			_drag_source_test = drag_targets.get("accepts_point", Callable())
+			if _pointer_mode != "drag": _drag_drop_test = drag_targets.get("accepts_drop", Callable())
 			_target = inverse * drag_targets.target
 	# Offscreen or missing targets never receive a speculative pointer.
 	_target = _target.intersection(Rect2(Vector2.ZERO, size))
@@ -573,6 +585,11 @@ func _place_card(dimensions: Vector2) -> Vector2:
 		candidates.append(Vector2((size.x - dimensions.x) * 0.5, size.y - dimensions.y - 36))
 		candidates.append(Vector2(CARD_MARGIN, size.y - dimensions.y - 36))
 		candidates.append(Vector2(CARD_MARGIN, CARD_MARGIN))
+	for reserved: Rect2 in _avoid_rects:
+		candidates.append(Vector2(reserved.position.x - dimensions.x - TARGET_GAP, reserved.get_center().y - dimensions.y * .5))
+		candidates.append(Vector2(reserved.end.x + TARGET_GAP, reserved.get_center().y - dimensions.y * .5))
+		candidates.append(Vector2(reserved.get_center().x - dimensions.x * .5, reserved.position.y - dimensions.y - TARGET_GAP))
+		candidates.append(Vector2(reserved.get_center().x - dimensions.x * .5, reserved.end.y + TARGET_GAP))
 	var best := Vector2.ZERO
 	var best_score := INF
 	var lower := Vector2.ONE * CARD_MARGIN
