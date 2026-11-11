@@ -92,6 +92,7 @@ func _style_desktop_menu() -> void:
 	_ui.get_node("Version").text = "v" + str(ProjectSettings.get_setting("application/config/version"))
 	for id: String in ["Start", "Load", "Settings", "Quit"]:
 		var button: Button = _ui.get_node("MenuPanel/Content/" + id)
+		button.set_meta("hover_outline", false)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		button.add_theme_font_size_override("font_size", 24)
