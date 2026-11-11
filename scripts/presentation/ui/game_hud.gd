@@ -38,7 +38,7 @@ const DesignWorkbench = preload("res://scripts/presentation/studio/workbench/des
 
 var _screen_modals: Control
 var _locale_catalog: Resource
-var _interface_language: CheckButton
+var _interface_language: OptionButton
 var _kernels: Array = []
 var _presets: Array = []
 var _slot_ids: PackedStringArray = []
@@ -536,15 +536,10 @@ func layout_screen_modals() -> void:
 		if panel == %SettingsMenu:
 			var column: VBoxContainer = panel.get_node("Column")
 			var screen := get_window().get_visible_rect().size
-			var screen_available := screen - Vector2(32, 32)
-			column.size.x = minf(448, screen_available.x) - 64
-			desired = Vector2(448, column.get_combined_minimum_size().y + 96)
-			var settings_size := desired.min(screen_available)
+			ReceiptUI.layout_menu(panel, column, screen)
 			# The modal texture stretches from desk coordinates to the window.
 			panel.scale = view / screen
-			_desk_place(panel, Rect2((view - settings_size * panel.scale) * .5, settings_size))
-			column.position = Vector2(32, 32)
-			column.size = settings_size - Vector2(64, 96)
+			panel.position *= panel.scale
 			continue
 		var dimensions := desired.max(panel.get_combined_minimum_size()).min(available)
 		_desk_place(panel,Rect2((view-dimensions)*.5,dimensions))
@@ -688,28 +683,29 @@ func _values(catalog: Resource, key: String) -> Array:
 	return value if value is Array else []
 
 func _install_interface_language() -> void:
-	var row := HBoxContainer.new()
+	var row := VBoxContainer.new()
 	row.name = "InterfaceLanguageRow"
-	row.custom_minimum_size.y = 44
+	row.add_theme_constant_override("separation", 12)
 	var caption := Label.new()
-	caption.text = DeskLocalization.source("LOC_INTERFACE_LANGUAGE_3D138685")
-	caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	caption.text = DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A")
 	row.add_child(caption)
-	_interface_language = CheckButton.new()
+	_interface_language = OptionButton.new()
 	_interface_language.name = "InterfaceLanguage"
-	_interface_language.text = "English"
-	_interface_language.set_pressed_no_signal(TranslationServer.get_locale().begins_with("en"))
+	_interface_language.custom_minimum_size.y = 44
+	_interface_language.add_item("中文")
+	_interface_language.add_item("English")
+	_interface_language.select(1 if TranslationServer.get_locale().begins_with("en") else 0)
 	row.add_child(_interface_language)
 	%SettingsMenu.get_node("Column").add_child(row)
 	%SettingsMenu.get_node("Column").move_child(row,2)
-	_interface_language.toggled.connect(func(enabled: bool): interface_language_requested.emit("en" if enabled else "zh_CN"))
+	_interface_language.item_selected.connect(func(index: int): interface_language_requested.emit("zh_CN" if index == 0 else "en"))
 	for edit: LineEdit in _slot_edits: edit.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	%Target.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	%Preview.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 
 func refresh_localization() -> void:
 	if not is_node_ready(): return
-	if _interface_language != null: _interface_language.set_pressed_no_signal(TranslationServer.get_locale().begins_with("en"))
+	if _interface_language != null: _interface_language.select(1 if TranslationServer.get_locale().begins_with("en") else 0)
 	DeskLocalization.refresh_edits(self)
 	if _locale_catalog != null:
 		for option: OptionButton in [_kernel,_preset,_group,_channel,_topic,_language]:

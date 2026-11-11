@@ -23,6 +23,7 @@ static func create_theme() -> Theme:
 	result.set_font("font", "Label", BODY_FONT)
 	result.set_font("font", "Button", MEDIUM_FONT)
 	result.set_font("font", "OptionButton", MEDIUM_FONT)
+	result.set_font("font", "CheckButton", MEDIUM_FONT)
 	result.set_color("font_color", "Label", Style.INK)
 	result.set_color("default_color", "RichTextLabel", Style.INK)
 	result.set_constant("line_separation", "RichTextLabel", 4)
@@ -30,8 +31,10 @@ static func create_theme() -> Theme:
 	result.set_font("font", "ReceiptHeading", BOLD_FONT)
 	result.set_font_size("font_size", "ReceiptHeading", 28)
 	for type: String in ["Button", "OptionButton", "CheckButton"]:
+		result.set_font_size("font_size", type, 16)
 		result.set_color("font_color", type, Style.INK)
 		result.set_color("font_hover_color", type, Style.INK)
+		result.set_color("font_hover_pressed_color", type, Style.INK)
 		result.set_color("font_pressed_color", type, Style.INK)
 		result.set_color("font_disabled_color", type, Style.SECONDARY_INK)
 		result.set_color("font_focus_color", type, Style.INK)
@@ -39,6 +42,7 @@ static func create_theme() -> Theme:
 		result.set_stylebox("normal", type, _box(Color.TRANSPARENT, Style.EDGE))
 		result.set_stylebox("hover", type, _box(Color(Style.EDGE, .20), Style.SECONDARY_INK))
 		result.set_stylebox("pressed", type, _box(Color(Style.EDGE, .36), Style.INK))
+		result.set_stylebox("hover_pressed", type, _box(Color(Style.EDGE, .36), Style.INK))
 		result.set_stylebox("disabled", type, _box(Color.TRANSPARENT, Color(Style.EDGE, .5)))
 		result.set_stylebox("focus", type, _box(Color.TRANSPARENT, Style.SECTION_TEAL, 2))
 	result.set_stylebox("panel", "PopupMenu", load("res://data/presentation/ui/receipt_tooltip_style.tres"))
@@ -59,6 +63,15 @@ static func create_theme() -> Theme:
 	result.set_stylebox("grabber_area", "HSlider", fill)
 	result.set_stylebox("grabber_area_highlight", "HSlider", fill)
 	return result
+
+static func layout_menu(panel: Control, content: Control, view: Vector2) -> void:
+	panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	var width := minf(448, view.x - 32)
+	content.size.x = width - 64
+	panel.size = Vector2(width, content.get_combined_minimum_size().y + 96)
+	panel.position = (view - panel.size) * 0.5
+	content.position = Vector2(32, 32)
+	content.size = panel.size - Vector2(64, 96)
 
 static func primary(button: Button) -> void:
 	button.add_theme_stylebox_override("normal", _box(Style.INK, Style.INK))

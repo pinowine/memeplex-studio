@@ -829,7 +829,7 @@ offset_right = 416.0
 offset_bottom = 500.0
 grow_horizontal = 1
 grow_vertical = 1
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
 
 [node name="Heading" type="Label" parent="SettingsMenu/Column"]
 layout_mode = 2
@@ -840,7 +840,7 @@ theme_override_font_sizes/font_size = 28
 
 [node name="TitleRule" type="HSeparator" parent="SettingsMenu/Column"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 8)
+custom_minimum_size = Vector2(0, 12)
 
 [node name="GuideEnabled" type="CheckButton" parent="SettingsMenu/Column"]
 unique_name_in_owner = true
@@ -863,25 +863,25 @@ text = "LOC_CONTINUE_7C969119"
 [node name="Save" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 48)
 text = "LOC_SAVE_A3030BF8"
 
 [node name="Load" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 48)
 text = "LOC_LOAD_534CB3FA"
 
 [node name="Restart" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 48)
 text = "LOC_NEW_RUN_19518C53"
 
 [node name="Quit" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 48)
 text = "LOC_QUIT_498E1D59"
 
 [node name="DeveloperMenu" type="PanelContainer" parent="."]
