@@ -834,20 +834,13 @@ theme_override_constants/separation = 12
 [node name="Heading" type="Label" parent="SettingsMenu/Column"]
 layout_mode = 2
 mouse_filter = 2
-text = "LOC_SETTINGS_DF3D58C7"
+text = "LOC_MEMEPLEX_STUDIO_3D1D137F"
 theme_override_fonts/font = ExtResource("4")
 theme_override_font_sizes/font_size = 28
 
 [node name="TitleRule" type="HSeparator" parent="SettingsMenu/Column"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 12)
-
-[node name="GuideEnabled" type="CheckButton" parent="SettingsMenu/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
-button_pressed = true
-text = "LOC_GUIDE_67_ENABLED"
 
 [node name="Buttons" type="VBoxContainer" parent="SettingsMenu/Column"]
 layout_mode = 2
@@ -877,6 +870,12 @@ unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
 text = "LOC_NEW_RUN_19518C53"
+
+[node name="Preferences" type="Button" parent="SettingsMenu/Column/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "LOC_SETTINGS_DF3D58C7"
 
 [node name="Quit" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
