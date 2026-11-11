@@ -3,6 +3,20 @@ extends RefCounted
 
 var last_errors := PackedStringArray()
 
+func startup_world_seed(path: String) -> int:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null: return -1
+	var json := JSON.new()
+	var error := json.parse(file.get_as_text())
+	file.close()
+	if error != OK or not json.data is Dictionary: return -1
+	var competition: Variant = json.data.get("competition_state")
+	if not competition is Dictionary: return -1
+	var seed: Variant = competition.get("world_seed")
+	if not (seed is int or seed is float): return -1
+	if not is_finite(float(seed)) or float(seed) < 0.0 or float(seed) != floorf(float(seed)): return -1
+	return int(seed)
+
 func save_run(simulation: MemeDemoSimulation, path: String) -> Error:
 	last_errors.clear()
 	var data := simulation.payload()

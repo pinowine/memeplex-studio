@@ -47,14 +47,14 @@ var _event_clock_arrivals: Dictionary = {}
 var competition: RefCounted
 var guide_progress: Dictionary = {}
 
-func _init(content: MemeDemoCatalog = null) -> void:
+func _init(content: MemeDemoCatalog = null, initial_world: RefCounted = null) -> void:
 	catalog = content
 	design_state = DesignState.new(content)
 	competition = CompetitionState.new(content)
 	if catalog != null:
-		reset(seed_value)
+		reset(seed_value, initial_world)
 
-func reset(run_seed: int) -> void:
+func reset(run_seed: int, world: RefCounted = null) -> void:
 	seed_value = run_seed
 	_rng.seed = run_seed
 	hour = 0
@@ -80,7 +80,7 @@ func reset(run_seed: int) -> void:
 	pending_events.clear()
 	active_event = {}
 	_event_clock_arrivals.clear()
-	competition.reset()
+	competition.reset(world)
 	attention = competition.snapshot(variants,false).attention
 	economy.reset(catalog.initial_meme_points)
 	design_state.reset()
