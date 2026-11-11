@@ -1,0 +1,157 @@
+{
+  "LOC_RECEIPT_CARD_LANGUAGE_NINGHUA": {
+    "source": "宁华的官方语言，有悠久的象形文字传统，语法逐渐转向依靠词序和虚词。",
+    "zh_CN": "宁华的官方语言，有悠久的象形文字传统，语法逐渐转向依靠词序和虚词。",
+    "en": "The official language of Ninghua, with an old pictographic writing tradition. Its grammar increasingly relies on word order and function words."
+  },
+  "LOC_RECEIPT_CARD_LANGUAGE_SHIOHARA": {
+    "source": "汐原通行的语言，日常寒暄和街头传闻都用它表达。",
+    "zh_CN": "汐原通行的语言，日常寒暄和街头传闻都用它表达。",
+    "en": "The common language of Shiohara, heard in everyday greetings and street gossip."
+  },
+  "LOC_RECEIPT_CARD_LANGUAGE_SEOWON": {
+    "source": "瑞原通行的语言，城市里的人用它讲述经历，也听取彼此的故事。",
+    "zh_CN": "瑞原通行的语言，城市里的人用它讲述经历，也听取彼此的故事。",
+    "en": "The common language of Seowon, used by city residents to share experiences and listen to one another's stories."
+  },
+  "LOC_RECEIPT_CARD_GROUP_COMMUTERS": {
+    "source": "一群需要定时上班打卡、下班打卡、请假审批的成年人。",
+    "zh_CN": "一群需要定时上班打卡、下班打卡、请假审批的成年人。",
+    "en": "Adults who must clock in and out at set times and obtain approval to take leave."
+  },
+  "LOC_RECEIPT_CARD_GROUP_STUDENTS": {
+    "source": "一群日常围着课程、作业和考试安排生活的人。",
+    "zh_CN": "一群日常围着课程、作业和考试安排生活的人。",
+    "en": "People whose daily lives revolve around classes, assignments and exams."
+  },
+  "LOC_RECEIPT_CARD_GROUP_CULTURE_FANS": {
+    "source": "一群因电影、音乐或其他文化爱好聚在一起的人，常常讨论作品、交流收藏。",
+    "zh_CN": "一群因电影、音乐或其他文化爱好聚在一起的人，常常讨论作品、交流收藏。",
+    "en": "People brought together by films, music or other cultural interests, often discussing works and sharing their collections."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_POLICY": {
+    "source": "公共事务怎么决定、规则由谁制定，以及这些决定如何影响日常生活。",
+    "zh_CN": "公共事务怎么决定、规则由谁制定，以及这些决定如何影响日常生活。",
+    "en": "How public decisions are made, who sets the rules and how those decisions affect daily life."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_COST_OF_LIVING": {
+    "source": "维持日常生活所需的开销，包括住房、吃饭和出行。",
+    "zh_CN": "维持日常生活所需的开销，包括住房、吃饭和出行。",
+    "en": "The expense of everyday life, including housing, food and travel."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_WORK": {
+    "source": "人们为了谋生或完成职责付出的劳动，以及工作中的待遇与关系。",
+    "zh_CN": "人们为了谋生或完成职责付出的劳动，以及工作中的待遇与关系。",
+    "en": "The work people do to earn a living or fulfil their duties, along with their working conditions and relationships."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_PLATFORM_TOOLS": {
+    "source": "人们发布、查找和分享内容时使用的平台与工具。",
+    "zh_CN": "人们发布、查找和分享内容时使用的平台与工具。",
+    "en": "The platforms and tools people use to publish, find and share content."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_SPORT": {
+    "source": "围绕体育运动、比赛和运动员的活动与讨论。",
+    "zh_CN": "围绕体育运动、比赛和运动员的活动与讨论。",
+    "en": "Activities and conversations about sports, competitions and athletes."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_EDUCATION": {
+    "source": "人们学习知识和技能的过程，也包括学校里的教学、考试与升学。",
+    "zh_CN": "人们学习知识和技能的过程，也包括学校里的教学、考试与升学。",
+    "en": "How people gain knowledge and skills, including teaching, exams and progression through school."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_IDENTITY": {
+    "source": "人们怎样看待自己属于哪个群体，以及别人用什么称呼辨认他们。",
+    "zh_CN": "人们怎样看待自己属于哪个群体，以及别人用什么称呼辨认他们。",
+    "en": "How people understand their group membership and the labels others use to identify them."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_LANGUAGE": {
+    "source": "人们表达和理解意思的方式，包括词语、语气和不同语言之间的翻译。",
+    "zh_CN": "人们表达和理解意思的方式，包括词语、语气和不同语言之间的翻译。",
+    "en": "How people express and understand meaning through words, tone and translation between languages."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_ENTERTAINMENT": {
+    "source": "人们观看、聆听或参与的文化娱乐活动，例如电影、音乐和演出。",
+    "zh_CN": "人们观看、聆听或参与的文化娱乐活动，例如电影、音乐和演出。",
+    "en": "Cultural and leisure activities people watch, listen to or take part in, such as films, music and performances."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_ARCHIVE": {
+    "source": "为以后查阅而保存的文字、影像和其他记录，也包括整理这些记录的工作。",
+    "zh_CN": "为以后查阅而保存的文字、影像和其他记录，也包括整理这些记录的工作。",
+    "en": "Writing, images and other records kept for future reference, along with the work of organising them."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_TRUST": {
+    "source": "相信一个人、一种说法或一份信息可靠，并愿意据此作判断。",
+    "zh_CN": "相信一个人、一种说法或一份信息可靠，并愿意据此作判断。",
+    "en": "Belief that a person, a claim or a piece of information is reliable enough to base a judgement on."
+  },
+  "LOC_RECEIPT_CARD_TOPIC_COMMUNITY": {
+    "source": "因共同生活的地方或共同兴趣而保持来往的人群，以及他们之间的关系。",
+    "zh_CN": "因共同生活的地方或共同兴趣而保持来往的人群，以及他们之间的关系。",
+    "en": "People who keep in touch through a shared place or interest, and the relationships among them."
+  },
+  "LOC_RECEIPT_CARD_MODULE_STANCE": {
+    "source": "用问句表达已经有答案的态度，往往是在赞叹、质疑或讽刺。",
+    "zh_CN": "用问句表达已经有答案的态度，往往是在赞叹、质疑或讽刺。",
+    "en": "A question whose answer is already implied, often expressing admiration, doubt or mockery."
+  },
+  "LOC_RECEIPT_CARD_MODULE_RELATION": {
+    "source": "把不同人物或处境放在一起，借相同处和差别说清想法。",
+    "zh_CN": "把不同人物或处境放在一起，借相同处和差别说清想法。",
+    "en": "Placing people or situations side by side to make a point through their similarities and differences."
+  },
+  "LOC_RECEIPT_CARD_MODULE_RITUAL": {
+    "source": "结束一段对话或表演，也让参与者可以选择不加入或先离开。",
+    "zh_CN": "结束一段对话或表演，也让参与者可以选择不加入或先离开。",
+    "en": "Ending a conversation or performance while allowing people to sit it out or leave."
+  },
+  "LOC_RECEIPT_CARD_MODULE_BOUNDARY": {
+    "source": "交代一件事为什么发生，或一句话为什么这样说。",
+    "zh_CN": "交代一件事为什么发生，或一句话为什么这样说。",
+    "en": "An account of why something happened or why someone chose to say it that way."
+  },
+  "LOC_RECEIPT_CARD_MODULE_SHARED_WORLD": {
+    "source": "在一段话里留下接话的空间，让别人也能讲自己的经历或想法。",
+    "zh_CN": "在一段话里留下接话的空间，让别人也能讲自己的经历或想法。",
+    "en": "Leaving room in a conversation for others to add their experiences or ideas."
+  },
+  "LOC_RECEIPT_CARD_FREEDOM": {
+    "source": "看重个人按自己意愿选择生活、表达意见和行动的权利。",
+    "zh_CN": "看重个人按自己意愿选择生活、表达意见和行动的权利。",
+    "en": "Valuing a person's right to choose how to live, speak and act."
+  },
+  "LOC_RECEIPT_CARD_AUTHORITY": {
+    "source": "认可规则制定者或组织的指挥权，重视服从共同秩序。",
+    "zh_CN": "认可规则制定者或组织的指挥权，重视服从共同秩序。",
+    "en": "Accepting the authority of rule-makers or organisations and valuing obedience to a shared order."
+  },
+  "LOC_RECEIPT_CARD_EQUALITY": {
+    "source": "认为每个人都应得到同等尊重，权利和机会不应由身份高低决定。",
+    "zh_CN": "认为每个人都应得到同等尊重，权利和机会不应由身份高低决定。",
+    "en": "The belief that everyone deserves equal respect and that status should not determine rights or opportunities."
+  },
+  "LOC_RECEIPT_CARD_HIERARCHY": {
+    "source": "认可身份、资历或成就带来的高低次序，以及相应的权力和待遇差别。",
+    "zh_CN": "认可身份、资历或成就带来的高低次序，以及相应的权力和待遇差别。",
+    "en": "Accepting ranks based on status, seniority or achievement, with corresponding differences in power and treatment."
+  },
+  "LOC_RECEIPT_CARD_SINCERE": {
+    "source": "说话人直接表达自己的真实想法，希望听的人按字面理解。",
+    "zh_CN": "说话人直接表达自己的真实想法，希望听的人按字面理解。",
+    "en": "Speaking one's true thoughts directly and expecting the listener to take the words at face value."
+  },
+  "LOC_RECEIPT_CARD_IRONIC": {
+    "source": "借字面意思与真实态度之间的反差表达想法，常带着调侃或讽刺。",
+    "zh_CN": "借字面意思与真实态度之间的反差表达想法，常带着调侃或讽刺。",
+    "en": "Expressing a view through the contrast between literal words and the speaker's attitude, often with humour or sarcasm."
+  },
+  "LOC_RECEIPT_CARD_SUPPORT": {
+    "source": "对一个人、一种主张或一个行动表示认同，愿意站在这一边。",
+    "zh_CN": "对一个人、一种主张或一个行动表示认同，愿意站在这一边。",
+    "en": "Agreeing with a person, position or action and being willing to take that side."
+  },
+  "LOC_RECEIPT_CARD_OPPOSITION": {
+    "source": "对一个人、一种主张或一个行动持否定态度。",
+    "zh_CN": "对一个人、一种主张或一个行动持否定态度。",
+    "en": "Disagreement with a person, position or action."
+  }
+}

@@ -5991,13 +5991,13 @@
   },
   "LOC_ADDRESS_THE_EXPRESSION_TO_COMMUTING_OFFICE_WORKERS_EB817EB1": {
     "source": "让表达面向通勤职员。",
-    "zh_CN": "让表达面向通勤职员。",
-    "en": "Address the expression to commuting office workers."
+    "zh_CN": "让表达面向上班族。",
+    "en": "Address the expression to office workers."
   },
   "LOC_COMMUTING_OFFICE_WORKERS_5AD7C5FF": {
     "source": "通勤职员",
-    "zh_CN": "通勤职员",
-    "en": "Commuting office workers"
+    "zh_CN": "上班族",
+    "en": "Office workers"
   },
   "LOC_ADDRESS_THE_EXPRESSION_TO_STUDENTS_CE2E94A8": {
     "source": "让表达面向学生。",
@@ -7356,8 +7356,8 @@
   },
   "LOC_COMMUTING_OFFICE_WORKERS_INDEPENDENT_SYNTHETIC_SAMPLE_C5ECC170": {
     "source": "通勤职员 · 独立合成样本",
-    "zh_CN": "通勤职员 · 独立合成样本",
-    "en": "Commuting office workers · independent synthetic sample"
+    "zh_CN": "上班族 · 独立合成样本",
+    "en": "Office workers · independent synthetic sample"
   },
   "LOC_URBAN_CULTURE_ENTHUSIASTS_INDEPENDENT_SYNTHETIC_SAMPLE_61D14597": {
     "source": "城市文化爱好者 · 独立合成样本",
