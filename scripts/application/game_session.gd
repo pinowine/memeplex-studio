@@ -131,7 +131,9 @@ func _process(delta: float) -> void:
 	if _setup_stage() == "country" and atlas.selected_country >= 0 and atlas.selected_country != _tutorial_country:
 		_tutorial_country = atlas.selected_country
 		_tutorial_observe("country_selected", {"index":atlas.selected_country})
-	if _shell != null: _shell.tutorial.set_interaction_blocked(hud.modal_visible())
+	if _shell != null:
+		_shell.tutorial.set_interaction_blocked(hud.modal_visible())
+		_shell.starter_dialog.set_interaction_blocked(hud.modal_visible())
 	if simulation.phase != "running" or _clock_paused():
 		atlas.set_speed(0)
 	else:
@@ -347,6 +349,10 @@ func _input(event: InputEvent) -> void:
 	if not _ready_to_run or not event is InputEventKey or not event.pressed or event.echo: return
 	var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 	if key == KEY_ESCAPE:
+		if _shell != null and _shell.is_choosing_starter():
+			_toggle_menu("settings")
+			get_viewport().set_input_as_handled()
+			return
 		if hud.menu_mode() == "" and desk != null and desk.slot_details_active():
 			desk.close_slot_details()
 			get_viewport().set_input_as_handled()
@@ -498,6 +504,8 @@ func _show_direct_starters() -> void:
 				desk._fax._refresh_call_view()
 			_direct_starter_selection = false
 			desk._slot_reader.hide_details()
+			_shell.starter_dialog.skip()
+			_shell.starter_dialog.hide()
 			desk.return_overview()
 		return
 	if str(desk._camera.inspection().state) != "overview":
@@ -509,8 +517,8 @@ func _show_direct_starters() -> void:
 	for index in starters.size():
 		var option: Dictionary = starters[index]
 		options.append({"id":option.id, "title":option.title, "description":option.context_hint, "context_hint":option.context_hint, "default_context":option.default_context, "action":"starter_preview", "index":index, "selected":index == _direct_starter_index, "disabled":false})
-	options.append({"title":"LOC_GUIDE_CONFIRM_CHOICE", "action":"starter_confirm", "disabled":_direct_starter_index < 0})
-	desk._slot_reader.show_details({"title":"LOC_GUIDE_STARTER_PAPER", "body":"", "options":options, "reply_enabled":true, "starter_pending":true, "preview_starter_index":_direct_starter_index}, get_viewport().get_visible_rect())
+	desk._slot_reader.hide_details()
+	_shell.show_direct_starters(options, _direct_starter_index)
 
 func _direct_starter_choice(index: int) -> void:
 	if not _direct_starter_selection or startup_ready() or hud.menu_mode() != "" or (_shell != null and _shell.blocks_input()): return

@@ -70,9 +70,9 @@
     "en": "Choose a base meme"
   },
   "LOC_OPENING_STARTER_TEXT": {
-    "source": "右边有三个基础模因。把鼠标移上去看看，选一个你顺眼的。审美问题，我暂时不计入绩效。",
-    "zh_CN": "右边有三个基础模因。把鼠标移上去看看，选一个你顺眼的。审美问题，我暂时不计入绩效。",
-    "en": "There are three base memes on the right. Hover over them, then pick one you like. Your taste won’t count towards your performance review. For now."
+    "source": "这里有三个基础模因。把鼠标移上去看看，选一个你顺眼的。审美问题，我暂时不计入绩效。",
+    "zh_CN": "这里有三个基础模因。把鼠标移上去看看，选一个你顺眼的。审美问题，我暂时不计入绩效。",
+    "en": "Here are three base memes. Hover over them, then pick one you like. Your taste won’t count towards your performance review. For now."
   },
   "LOC_OPENING_STARTER_CONFIRM_TITLE": {
     "source": "确定选择",
@@ -80,9 +80,9 @@
     "en": "Confirm selection"
   },
   "LOC_OPENING_STARTER_CONFIRM_TEXT": {
-    "source": "看中了？点击纸上的“确定选择”。现在反悔还来得及，签了字可就是你的项目了。",
-    "zh_CN": "看中了？点击纸上的“确定选择”。现在反悔还来得及，签了字可就是你的项目了。",
-    "en": "Found one? Click “Confirm selection” on the paper. You can still change your mind; once you sign, it’s your project."
+    "source": "看中了？点击下方的“确定选择”。现在反悔还来得及，签了字可就是你的项目了。",
+    "zh_CN": "看中了？点击下方的“确定选择”。现在反悔还来得及，签了字可就是你的项目了。",
+    "en": "Found one? Click “Confirm selection” below. You can still change your mind; once you sign, it’s your project."
   },
   "LOC_OPENING_RETURN_DESK_TITLE": {
     "source": "回到桌面",

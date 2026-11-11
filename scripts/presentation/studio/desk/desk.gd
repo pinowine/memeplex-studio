@@ -1256,6 +1256,9 @@ func _show_component_details() -> void:
 	if _slot_reader == null or _component_target.is_empty() or slot_details_active(): return
 	var details := _component_details()
 	if details.is_empty(): return
+	if bool(details.get("starter_pending", false)):
+		_slot_reader.hide_details()
+		return
 	if _component_target in ["fax", "fax/phone"] and _page._shell != null:
 		var guide: Control = _page._shell.tutorial
 		if guide._active and str(guide._steps[guide._index].id) in ["fax_open", "pickup", "welcome", "confused", "studio", "mentor"]:

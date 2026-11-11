@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_receipt_panel.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/portrait_67.svg" id="2"]
 [ext_resource type="Script" path="res://scripts/presentation/ui/tutorial/mentor_portrait.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/presentation/ui/tutorial/starter_choices.gd" id="4"]
 
 [node name="TutorialUI" type="Control"]
 anchors_preset = 15
@@ -91,3 +92,7 @@ offset_right = 110.0
 offset_bottom = 38.0
 text = "LOC_SKIP_EXPLANATION_2786614D"
 visible = false
+
+[node name="StarterChoices" type="ScrollContainer" parent="Card"]
+visible = false
+script = ExtResource("4")

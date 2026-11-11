@@ -48,7 +48,7 @@ class ContextIcon extends Control:
 				draw_polyline(PackedVector2Array([Vector2(2,3),Vector2(16,3),Vector2(16,12),Vector2(8,12),Vector2(4,16),Vector2(4,12),Vector2(2,12),Vector2(2,3)]),color,1.2,true)
 				draw_line(Vector2(5,7),Vector2(13,7),color,1.2,true)
 
-func configure(record: Dictionary, font: Font) -> void:
+func configure(record: Dictionary, font: Font, show_description: bool = true) -> void:
 	_record = record.duplicate(true)
 	_font = font
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -59,7 +59,7 @@ func configure(record: Dictionary, font: Font) -> void:
 		var sample_label := _label(sample,16)
 		sample_label.name = "StarterSample"
 		add_child(sample_label)
-	add_child(_label(str(record.description), 13))
+	if show_description: add_child(_label(str(record.description), 13))
 	var grid := GridContainer.new()
 	grid.name = "DefaultContext"
 	grid.columns = 2

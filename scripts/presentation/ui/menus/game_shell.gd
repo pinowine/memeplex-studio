@@ -8,6 +8,7 @@ const Summary = preload("res://scripts/presentation/ui/summary/ending_summary.gd
 var page: Node2D
 var main_menu: Control
 var tutorial: Control
+var starter_dialog: Control
 var context_guidance: Node
 var ending: Control
 var main_mode := true
@@ -36,11 +37,23 @@ func configure(owner_page: Node2D) -> void:
 	tutorial.set_drag_target_provider(_tutorial_drag_targets)
 	tutorial.set_input_target_provider(_tutorial_input_targets, _tutorial_input_contains)
 	tutorial.overview_requested.connect(page._return_to_desktop)
+	tutorial.starter_preview_requested.connect(_preview_starter)
+	tutorial.starter_confirm_requested.connect(func(): page.desk._fax.commit_starter_choice())
+	starter_dialog = Tutorial.new()
+	starter_dialog.name = "StarterSelection67"
+	add_child(starter_dialog)
+	starter_dialog.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var starter_steps: Array[Dictionary] = [{"id":"starter_direct", "action":"starter_chosen", "text":"LOC_OPENING_STARTER_TEXT", "emotion":"curious", "starter_choices":true, "centered":true, "no_blur":true, "hover":true}]
+	starter_dialog.configure(starter_steps)
+	starter_dialog.starter_preview_requested.connect(page._direct_starter_choice)
+	starter_dialog.starter_confirm_requested.connect(func(): page._direct_starter_choice(page.simulation.starter_options().size()))
 	page.desk._monitor.mode_changed.connect(func(id: String):
 		tutorial.observe_action("monitor_mode_changed", {"mode":page.desk._monitor.MODES.find(id)}))
 	tutorial.drag_cancelled.connect(_cancel_tutorial_drag)
 	tutorial.finished.connect(func(skipped: bool):
 		if skipped and page.desk._fax.inspection().focused: page.desk._show_component_details())
+	tutorial.skip_requested.connect(func():
+		if not page.startup_ready(): page._show_direct_starters())
 	ending = Summary.new()
 	ending.name = "Ending67"
 	add_child(ending)
@@ -61,6 +74,8 @@ func configure(owner_page: Node2D) -> void:
 func show_main() -> void:
 	main_mode = true
 	tutorial.skip()
+	starter_dialog.skip()
+	starter_dialog.hide()
 	if context_guidance != null: context_guidance.close()
 	ending.hide()
 	main_menu.set_load_available(FileAccess.file_exists(page.SAVE_PATH))
@@ -70,6 +85,8 @@ func enter_game(guide: bool) -> void:
 	main_mode = false
 	main_menu.hide_menu()
 	ending.hide()
+	starter_dialog.skip()
+	starter_dialog.hide()
 	if guide and main_menu.guide_enabled(): tutorial.begin()
 	else: tutorial.skip()
 	if page._direct_starter_selection: page._show_direct_starters()
@@ -93,18 +110,35 @@ func _sync_guide_settings(_settings: Dictionary) -> void:
 
 func pauses_clock() -> bool:
 	var guide: Dictionary = tutorial.inspection()
-	return blocks_input() or (context_guidance != null and context_guidance.mentor._active) or (bool(guide.active) and str(guide.step.get("action", "")) != "speed_changed")
+	return blocks_input() or starter_dialog._active or (context_guidance != null and context_guidance.mentor._active) or (bool(guide.active) and str(guide.step.get("action", "")) != "speed_changed")
 
 func guidance_handles_point(point: Vector2) -> bool:
-	return tutorial.handles_viewport_point(point) or (context_guidance != null and context_guidance.mentor.handles_viewport_point(point))
+	return tutorial.handles_viewport_point(point) or starter_dialog.handles_viewport_point(point) or (context_guidance != null and context_guidance.mentor.handles_viewport_point(point))
+
+func is_choosing_starter() -> bool:
+	return tutorial.is_choosing_starter() or starter_dialog.is_choosing_starter()
 
 func observe(action: String, data: Dictionary = {}) -> void:
 	tutorial.observe_action(action,data)
+	starter_dialog.observe_action(action,data)
+
+func show_direct_starters(options: Array, selected_index: int) -> void:
+	starter_dialog.set_starter_options(options, selected_index)
+	if not starter_dialog._active: starter_dialog.begin()
+
+func sync_starter_options() -> void:
+	var fax: Control = page.desk._fax
+	tutorial.set_starter_options(fax.starter_paper_options().slice(0, 3), fax.inspection().preview_starter_index)
+
+func _preview_starter(index: int) -> void:
+	page.desk._fax.preview_starter(index)
+	sync_starter_options()
 
 func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 	if bool(step.get("auto_overview", false)): page._return_to_desktop()
-	if _id == "starter": page.desk._show_component_details()
-	if _id == "starter_confirm": _reveal_starter_confirmation()
+	if _id in ["starter", "starter_confirm"]:
+		page.desk._slot_reader.hide_details()
+		sync_starter_options()
 	if _id in ["editor_context", "expression", "module_result"]: _reveal_editor_readout(_id)
 	var action := str(step.get("action", ""))
 	if action == "country_selected" and page.atlas.selected_country >= 0:
@@ -123,14 +157,6 @@ func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 		"startup_finished":
 			if page.startup_ready(): tutorial.observe_action("startup_finished")
 
-func _reveal_starter_confirmation() -> void:
-	# Selection rebuilds the paper rows; wait for the native container layout.
-	await get_tree().process_frame
-	if not tutorial._active or str(tutorial.inspection().step.get("id","")) != "starter_confirm": return
-	var reader: Control = page.desk._slot_reader
-	if reader.is_visible_in_tree() and reader._choice_buttons.size() > 3:
-		reader._choice_scroll.ensure_control_visible(reader._choice_buttons[3])
-
 func _reveal_editor_readout(step_id: String) -> void:
 	await get_tree().process_frame
 	if not tutorial._active or str(tutorial.inspection().step.get("id", "")) != step_id: return
@@ -145,9 +171,6 @@ func _target(id: String) -> Variant:
 	if target is Control and not target.is_visible_in_tree(): return null
 	if page.has_meta("studio3d"):
 		target = page.get_meta("studio3d").project_target(target)
-	if id.begins_with("fax/option/") or id == "fax/confirm":
-		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
-		return area.intersection(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
 	if id in ["editor/context", "editor/details", "editor/expression"]:
 		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
 		return area.intersection(_tutorial_project_rect(page.hud.design_workbench()._detail_scroll))
@@ -159,14 +182,6 @@ func _logical_target(id: String) -> Variant:
 	match id:
 		"fax/pickup":
 			return {"hardware_key":"fax_machine/pickup"} if page.has_meta("studio3d") else fax.action_target("pickup")
-		"fax/options":
-			var reader: Control = page.desk._slot_reader
-			if reader != null and reader.is_visible_in_tree() and not reader._choice_buttons.is_empty():
-				return reader._choice_scroll
-			return null
-		"fax/confirm":
-			var reader: Control = page.desk._slot_reader
-			return reader._choice_buttons[3] if reader.is_visible_in_tree() and reader._choice_buttons.size() > 3 else null
 		"fax/hangup": return fax.action_target("hangup")
 		"speed": return page.desk._speed_strip
 		"desktop/machines", "desktop/fax": return page.desk._art.fax
@@ -322,10 +337,7 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	var areas: Array[Rect2] = []
 	var id := str(step.get("target", ""))
 	var editor: Control = page.hud.design_workbench()
-	if id in ["fax/options", "fax/confirm"]:
-		if page.desk._slot_reader.is_visible_in_tree():
-			areas.append(_tutorial_project_rect(page.desk._slot_reader._choice_scroll))
-	elif bool(step.get("scroll", false)) and id in ["editor/context", "editor/details", "editor/expression"]:
+	if bool(step.get("scroll", false)) and id in ["editor/context", "editor/details", "editor/expression"]:
 		areas.append(_tutorial_project_rect(editor._detail_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
@@ -410,11 +422,11 @@ func _tutorial_requires_overview(target_id: String) -> bool:
 	return str(camera.state) in ["focused", "travelling"]
 
 func hover_starter(index: int) -> void:
-	if not bool(page.desk._slot_reader._details.get("starter_pending", false)): return
+	if not tutorial._active or str(tutorial._steps[tutorial._index].id) not in ["starter", "starter_confirm"]: return
 	if index < 0 or index >= 3:
 		tutorial.clear_hover()
 		return
-	var option: Dictionary = page.desk._slot_reader._details.options[index]
+	var option: Dictionary = page.simulation.starter_options()[index]
 	tutorial.set_hover("fax/option/%d" % index, str(option.context_hint))
 
 func _process(_delta: float) -> void:
@@ -431,4 +443,4 @@ func _process(_delta: float) -> void:
 	tutorial.clear_hover()
 
 func inspection() -> Dictionary:
-	return {"main_mode":main_mode,"main_menu":main_menu.inspection(),"tutorial":tutorial.inspection(),"mentor":context_guidance.mentor.inspection(),"mentor_visible":context_guidance.mentor.is_visible_in_tree() and context_guidance.mentor._active,"ending":ending.inspection(),"clock_paused":pauses_clock()}
+	return {"main_mode":main_mode,"main_menu":main_menu.inspection(),"tutorial":tutorial.inspection(),"starter_dialog":starter_dialog.inspection(),"mentor":context_guidance.mentor.inspection(),"mentor_visible":context_guidance.mentor.is_visible_in_tree() and context_guidance.mentor._active,"ending":ending.inspection(),"clock_paused":pauses_clock()}
