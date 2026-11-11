@@ -1,5 +1,7 @@
 extends Node2D
 
+const SPAN_ROW_HEIGHT := 8.0
+
 @onready var style: Label = $Name
 var anchor: Vector2
 var layout_angle: float = 0.0
@@ -16,9 +18,11 @@ var _extent: Vector2
 var _layout_territory: TerritoryGeometry
 var _layout_text: String
 var _layout_zoom: float
+var _span_bins: Dictionary = {}
 
 func layout_country(territory: TerritoryGeometry, fitted_zoom: float, levels: PackedFloat32Array) -> void:
 	if _layout_territory == territory and _layout_text == style.text and is_equal_approx(_layout_zoom, fitted_zoom): return
+	if _layout_territory != territory: _span_bins.clear()
 	_layout_territory = territory
 	_layout_text = style.text
 	_layout_zoom = fitted_zoom
@@ -93,14 +97,30 @@ func _draw() -> void:
 func _spans(ring: PackedVector2Array, holes: Array[PackedVector2Array], origin: Vector2, direction: Vector2) -> Array[Vector2]:
 	var cuts: Array[float] = []
 	var normal := direction.orthogonal()
-	for outline in [ring] + holes:
-		for i in outline.size():
-			var a: Vector2 = outline[i] - origin
-			var b: Vector2 = outline[(i + 1) % outline.size()] - origin
-			var ay := a.dot(normal)
-			var by := b.dot(normal)
-			if (ay > 0.0) != (by > 0.0):
-				cuts.append(a.lerp(b, ay / (ay - by)).dot(direction))
+	if not _span_bins.has(direction):
+		var bins: Dictionary = {}
+		for outline in [ring] + holes:
+			for i in outline.size():
+				var a: Vector2 = outline[i]
+				var b: Vector2 = outline[(i + 1) % outline.size()]
+				var ay := a.dot(normal)
+				var by := b.dot(normal)
+				# Neighboring rows cover rounding at projected bin boundaries.
+				var first := floori(minf(ay, by) / SPAN_ROW_HEIGHT) - 1
+				var last := floori(maxf(ay, by) / SPAN_ROW_HEIGHT) + 1
+				for row in range(first, last + 1):
+					if not bins.has(row): bins[row] = PackedVector4Array()
+					bins[row].append(Vector4(a.x, a.y, b.x, b.y))
+		_span_bins[direction] = bins
+	var query_row := floori(origin.dot(normal) / SPAN_ROW_HEIGHT)
+	var edges: PackedVector4Array = _span_bins[direction].get(query_row, PackedVector4Array())
+	for edge in edges:
+		var a := Vector2(edge.x, edge.y) - origin
+		var b := Vector2(edge.z, edge.w) - origin
+		var ay := a.dot(normal)
+		var by := b.dot(normal)
+		if (ay > 0.0) != (by > 0.0):
+			cuts.append(a.lerp(b, ay / (ay - by)).dot(direction))
 	cuts.sort()
 	var result: Array[Vector2] = []
 	for i in range(0, cuts.size() - 1, 2): result.append(Vector2(cuts[i], cuts[i + 1]))
