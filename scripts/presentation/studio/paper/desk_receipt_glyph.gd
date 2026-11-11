@@ -22,6 +22,14 @@ static func draw(canvas: CanvasItem, rect: Rect2, kind: String, color: Color) ->
 		"topic":
 			for x in [9,16]: _line(canvas,[Vector2(x+1,4),Vector2(x-2,20)],color)
 			for y in [9,15]: _line(canvas,[Vector2(4,y),Vector2(20,y)],color)
+		"stance", "stance_token":
+			_line(canvas,[Vector2(12,3),Vector2(21,12),Vector2(12,21),Vector2(3,12),Vector2(12,3)],color)
+			_line(canvas,[Vector2(12,6),Vector2(12,18)],color)
+			_line(canvas,[Vector2(6,12),Vector2(18,12)],color)
+			canvas.draw_circle(Vector2(15,9),2,color)
+		"pragmatic", "pragmatic_token":
+			_line(canvas,[Vector2(4,4),Vector2(20,4),Vector2(20,16),Vector2(11,16),Vector2(6,21),Vector2(6,16),Vector2(4,16),Vector2(4,4)],color)
+			for x in [8,12,16]: canvas.draw_circle(Vector2(x,10),1,color)
 		"module", "patch":
 			var centre := Vector2(12,12)
 			for tip: Vector2 in [Vector2(5,5),Vector2(20,7),Vector2(18,20),Vector2(4,17)]:

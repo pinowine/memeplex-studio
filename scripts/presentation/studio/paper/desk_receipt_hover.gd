@@ -34,6 +34,7 @@ var _barcode_bars: Array[Rect2] = []
 var _barcode_digits := ""
 var _footer_rule := 0.0
 var _section_rules: Array[Dictionary] = []
+var _row_glyphs: Array[Dictionary] = []
 var _icon_rect := Rect2()
 var _badge_rect := Rect2()
 var _footer_number: TextParagraph
@@ -135,6 +136,7 @@ func _layout_content() -> void:
 	_text_blocks.clear()
 	_separators.clear()
 	_section_rules.clear()
+	_row_glyphs.clear()
 	_badge_rect = Rect2()
 	var width := _layout_width-PADDING.x*2.0
 	var y := PADDING.y
@@ -159,13 +161,19 @@ func _layout_content() -> void:
 		var row: Dictionary = _rows[index]
 		var category := str(row.get("category",""))
 		var value := str(row.get("value",""))
+		var row_height := 0.0
+		var value_x := PADDING.x
 		if not category.is_empty():
-			var accent := _section_color(str(row.get("kind","")))
-			y += _add_text(category,Vector2(PADDING.x,y),width,BOLD_FONT,12,ReceiptStyle.INK,"category")
-			_section_rules.append({"y":y+3,"color":accent})
-			y += ROW_GAP+2
-		y += _add_text(value,Vector2(PADDING.x,y),width,BODY_FONT,14,ReceiptStyle.INK,"value")
-		if index < _rows.size()-1: y += GROUP_GAP-4
+			var kind := str(row.get("kind","source"))
+			var label_width := width*.44
+			_row_glyphs.append({"rect":Rect2(PADDING.x,y+2,16,16),"kind":kind,"color":_section_color(kind)})
+			row_height = _add_text(category,Vector2(PADDING.x+24,y+2),label_width-24,BOLD_FONT,12,ReceiptStyle.SECONDARY_INK,"category")+2
+			value_x += label_width+ROW_GAP
+		row_height = maxf(row_height,_add_text(value,Vector2(value_x,y),PADDING.x+width-value_x,BODY_FONT,14,ReceiptStyle.INK,"value"))
+		y += maxf(20,row_height)
+		if index < _rows.size()-1:
+			_section_rules.append({"y":y+GROUP_GAP*.5,"color":ReceiptStyle.EDGE})
+			y += GROUP_GAP
 	if not _body.is_empty():
 		if not _rows.is_empty(): y = _add_separator(y)
 		y += _add_text(_body,Vector2(PADDING.x,y),width,BODY_FONT,14,ReceiptStyle.INK,"body")
@@ -194,6 +202,8 @@ func _draw() -> void:
 			x += 8
 	for rule: Dictionary in _section_rules:
 		draw_line(Vector2(PADDING.x,rule.y),Vector2(size.x-PADDING.x,rule.y),rule.color,1.2)
+	for glyph: Dictionary in _row_glyphs:
+		Glyph.draw(self,glyph.rect,glyph.kind,glyph.color)
 	var kind := str(_presentation.get("kind","source"))
 	var accent := _section_color(kind)
 	draw_rect(_icon_rect,Color(accent,.10))
@@ -221,5 +231,5 @@ func inspection() -> Dictionary:
 		"text_blocks":blocks,"text_fits":fits,"separators":_separators.duplicate(),"fit_bounds":_fit_bounds,
 		"pointer_following":_pointer_following,"pointer_viewport":_pointer_viewport,"layout_revision":_layout_revision,
 		"format":"portrait_receipt","barcode_rect":_barcode_rect,"barcode_digits":_barcode_digits,"barcode_bars":_barcode_bars.duplicate(),"footer_rule":_footer_rule,
-		"presentation":_presentation.duplicate(true),"icon_rect":_icon_rect,"badge_rect":_badge_rect,"section_rules":_section_rules.duplicate(true),
+		"presentation":_presentation.duplicate(true),"icon_rect":_icon_rect,"badge_rect":_badge_rect,"section_rules":_section_rules.duplicate(true),"row_glyphs":_row_glyphs.duplicate(true),
 		"mouse_filter":mouse_filter,"tooltip_text":tooltip_text,"content_format":"plain_text","serrated_edges":false}
