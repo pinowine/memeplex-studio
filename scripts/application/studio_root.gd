@@ -279,7 +279,9 @@ func _process(_delta: float) -> void:
 	camera.position = Vector3((pose.position.x - 800) / 1000, 3.0, (pose.position.y - 450) / 1000)
 	camera.basis = Basis(Vector3.UP, -float(pose.rotation)) * Basis.from_euler(Vector3(-PI / 2, 0, 0))
 	camera.size = 0.9 / pose.zoom.y
-	if page._shell.main_mode: camera.size *= .84
+	if page._shell.main_mode:
+		camera.size *= .82
+		camera.position += Vector3(.15,0,.06)
 	if studio_wide:
 		camera.position = Vector3(0,3,0)
 		camera.basis = Basis.from_euler(Vector3(-PI/2,0,0))
