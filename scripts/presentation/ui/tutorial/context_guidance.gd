@@ -2,6 +2,7 @@ extends Node
 
 const Tutorial = preload("res://scripts/presentation/ui/tutorial/tutorial.gd")
 const LESSONS := {"fax":"LOC_GUIDANCE_FIRST_FAX", "competition":"LOC_GUIDANCE_FIRST_COMPETITOR", "mutation":"LOC_GUIDANCE_FIRST_MUTATION"}
+const EMOTIONS := {"fax":"friendly", "competition":"concerned", "mutation":"curious"}
 var page: Node
 var shell: Node
 var mentor: Control
@@ -84,7 +85,7 @@ func _process(_delta: float) -> void:
 		if not _target(id).has_area(): continue
 		_fax_had_materials = id == "fax" and page._event_has_pending_material(_source_id)
 		if id == "fax" and _unique_card_pending() and _drag_targets("fax").is_empty(): continue
-		var steps: Array[Dictionary] = [{"id":id, "text":LESSONS[id], "action":"continue", "target":id, "contextual":true, "no_blur":true, "map_navigation":id == "competition", "contextual_drag":_fax_had_materials}]
+		var steps: Array[Dictionary] = [{"id":id, "text":LESSONS[id], "emotion":EMOTIONS[id], "action":"continue", "target":id, "contextual":true, "no_blur":true, "map_navigation":id == "competition", "contextual_drag":_fax_had_materials}]
 		mentor.configure(steps, _target, _reserved_areas)
 		mentor.set_interaction_blocked(false)
 		mentor.set_process_input(true)

@@ -11,6 +11,7 @@ signal overview_requested
 const OpeningSteps = preload("res://scripts/presentation/ui/tutorial/opening_steps.gd")
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const Portrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait.gd")
 const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
 const DragArrow = preload("res://scripts/presentation/ui/tutorial/tutorial_drag_arrow.gd")
 const CARD_MARGIN := 20.0
@@ -69,7 +70,6 @@ var _typewriter := TypewriterEffect.new()
 var _body_text := ""
 var _hover_target := ""
 var _hover_text := ""
-var _portrait_tween: Tween
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -347,20 +347,9 @@ func _present_step() -> void:
 	_animate_portrait()
 
 func _animate_portrait() -> void:
-	if _portrait_tween != null and _portrait_tween.is_valid(): _portrait_tween.kill()
-	var portrait: Control = _ui.get_node("Card/Portrait67")
-	portrait.pivot_offset = portrait.size * 0.5
-	portrait.rotation = 0.0
-	portrait.scale = Vector2.ONE
-	match str(_steps[_index].get("emotion", "")):
-		"rotate":
-			_portrait_tween = create_tween()
-			_portrait_tween.tween_property(portrait, "rotation", TAU, 0.75).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-			_portrait_tween.tween_callback(func(): portrait.rotation = 0.0)
-		"pulse":
-			_portrait_tween = create_tween()
-			_portrait_tween.tween_property(portrait, "scale", Vector2.ONE * 1.22, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-			_portrait_tween.tween_property(portrait, "scale", Vector2.ONE, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	var step := _steps[_index]
+	var text_key := _hover_text if not _hover_text.is_empty() else str(step.get("text", ""))
+	_ui.get_node("Card/Portrait67").set_emotion(Portrait.emotion_for(step, text_key))
 
 func _set_appearance(value: float) -> void:
 	_appearance = value
@@ -389,6 +378,7 @@ func _refresh() -> void:
 	body.set_meta(&"text_workbench_source", DeskLocalization.text_source(text_key))
 	if text != _body_text:
 		_body_text = text
+		_ui.get_node("Card/Portrait67").set_emotion(Portrait.emotion_for(step, text_key))
 		_typewriter.progress = 0.0
 		body.clear()
 		body.push_customfx(_typewriter, {})
