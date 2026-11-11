@@ -14,10 +14,16 @@ func _init(content: MemeDemoCatalog = null) -> void:
 	catalog = content
 	if content != null: rules = content.gameplay_rules
 
-func reset() -> void:
+func reset(world: RefCounted = null) -> void:
 	_fitness_cache.clear()
 	_state = {"competition_version":1,"policy_signature":rules.signature(),"world_seed":rules.reference_geometry_seed,"world":[],"countries":{},"registry":{},"hour":0,"active_seconds":0.0,"hour_credit":0.0,"equilibrium_hours":0,"equilibrium_candidate_hour":-1,"equilibrium_ranges":{},"autonomous_hours":0,"previous_shares":{},"victory":{}}
-	_set_world(_reference_world(int(rules.reference_geometry_seed)))
+	if world == null:
+		_set_world(_reference_world(int(rules.reference_geometry_seed)))
+	else:
+		_state.world_seed = int(world.seed_value)
+		var rows := _world_rows(world)
+		_geography_cache[_state.policy_signature+":"+str(world.seed_value)] = rows.duplicate(true)
+		_set_world(rows)
 
 func bind_world(world: RefCounted, settings: Resource) -> PackedStringArray:
 	if not _state.registry.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_TRANSMISSION_HAS_STARTED_WORLD_GEOGRAPHY_CANNOT_BE_D0B074A3")])
@@ -25,7 +31,6 @@ func bind_world(world: RefCounted, settings: Resource) -> PackedStringArray:
 	for index in settings.countries.size():
 		if str(settings.countries[index].id) != str(rules.countries[index].id): return PackedStringArray([DeskLocalization.source("LOC_COUNTRY_ORDER_MISMATCH_F1FBCDD0")])
 	var rows := _world_rows(world)
-	if _canonical(rows) != _canonical(_reference_world(int(world.seed_value))): return PackedStringArray([DeskLocalization.source("LOC_WORLD_GEOGRAPHY_CONFLICTS_WITH_CURRENT_TRANSMISSION_RULES_55095F93")])
 	_state.world_seed = int(world.seed_value)
 	_geography_cache[rules.signature()+":"+str(world.seed_value)] = rows.duplicate(true)
 	_set_world(rows)

@@ -9,6 +9,8 @@ const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.g
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
+var defer_label_layout := false
+var initial_seed := -1
 
 @export var settings: AtlasMapSettings
 @export var studio_settings: PressStudioSettings = preload("res://data/presentation/studio/studio_settings.tres")
@@ -83,7 +85,8 @@ func _ready() -> void:
 	var generated := false
 	if _valid_settings():
 		var generator := AtlasMapGenerator.new()
-		_generation_thread.start(generator.generate.bind(settings, _random.randi_range(1, 2147483647)))
+		var seed_value := initial_seed if initial_seed >= 0 else _random.randi_range(1, 2147483647)
+		_generation_thread.start(generator.generate.bind(settings, seed_value))
 		while _generation_thread.is_alive():
 			await get_tree().process_frame
 		generated = _apply_world(_generation_thread.wait_to_finish())
@@ -360,9 +363,13 @@ func fit_map() -> void:
 	target_zoom = overview_zoom
 	camera.position = settings.world_size * 0.5
 	camera.force_update_scroll()
-	_layout_country_labels()
+	if not defer_label_layout: _layout_country_labels()
 	_update_view()
 	_update_marker_positions()
+
+func finish_label_layout() -> void:
+	defer_label_layout = false
+	fit_map()
 
 func _update_view() -> void:
 	var ratio := camera.zoom.x / overview_zoom

@@ -1,6 +1,7 @@
 extends Node2D
 
 signal initialization_finished(error: Error)
+signal initialization_progress(stage: String)
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -33,16 +34,27 @@ var _context_trial_skills: Array = []
 
 func _ready() -> void:
 	set_process(false)
+	atlas.initial_seed = store.startup_world_seed(SAVE_PATH)
 	var localization_error := DeskLocalization.ensure_loaded()
 	if localization_error != OK:
 		_fail_initialization("Cannot load interface translations", localization_error)
 		return
 	atlas.process_priority = 20
+	await _initialization_stage("LOC_LOADING_WORLD")
+	if not atlas.initialization_complete:
+		await atlas.initialization_finished
+	if atlas.initialization_error != OK:
+		_fail_initialization(atlas.initialization_message, atlas.initialization_error)
+		return
+	_map_seed = atlas.world.seed_value
+	_clock_anchor = atlas.clock.utc_seconds
+	await _initialization_stage("LOC_LOADING_CONFIGURATION")
 	if not _load_catalog(): return
-	simulation = MemeDemoSimulation.new(catalog)
+	simulation = MemeDemoSimulation.new(catalog, atlas.world)
 	simulation.changed.connect(_render)
 	simulation.event_raised.connect(_on_event)
 	simulation.completed.connect(_complete_run)
+	await _initialization_stage("LOC_LOADING_INTERFACE")
 	hud.configure(catalog)
 	hud.draft_publish_requested.connect(_publish)
 	hud.country_selection_requested.connect(_choose_country)
@@ -63,13 +75,7 @@ func _ready() -> void:
 	atlas.set_process_input(false)
 	atlas.launch_confirmed.connect(_studio_selected)
 	atlas.get_node("%SpeedControl").pressed.connect(func(): _set_speed(atlas.clock.speed))
-	if not atlas.initialization_complete:
-		await atlas.initialization_finished
-	if atlas.initialization_error != OK:
-		_fail_initialization(atlas.initialization_message, atlas.initialization_error)
-		return
-	_map_seed = atlas.world.seed_value
-	_clock_anchor = atlas.clock.utc_seconds
+	await _initialization_stage("LOC_LOADING_DESK")
 	desk.configure(self)
 	spread.configure(atlas)
 	hud.layout_for_date(desk.clock_rect())
@@ -93,6 +99,10 @@ func _ready() -> void:
 	initialization_complete = true
 	initialization_finished.emit(OK)
 	print("MEME_DEMO_READY content=%d events=%d groups=%d kernels=%d" % [catalog.content_version, catalog.events.size(), catalog.groups.size(), catalog.kernels.size()])
+
+func _initialization_stage(stage: String) -> void:
+	initialization_progress.emit(stage)
+	await RenderingServer.frame_post_draw
 
 func _load_catalog() -> bool:
 	var path := "res://data/catalogs/catalog.tres"
@@ -122,7 +132,7 @@ func _process(delta: float) -> void:
 	atlas.workbench.hide()
 	if atlas.world.seed_value != _map_seed:
 		_map_seed = atlas.world.seed_value
-		simulation.reset(simulation.seed_value + 1)
+		simulation.reset(simulation.seed_value + 1, atlas.world)
 		if not _bind_world(): return
 		simulation.bind_country("", DeskLocalization.source("LOC_NO_DEPLOYMENT_COUNTRY_SELECTED_989E9AAC"))
 		_clock_anchor = atlas.clock.utc_seconds
@@ -434,7 +444,7 @@ func _load() -> bool:
 	return true
 
 func _restart() -> void:
-	await _shell.loading.present()
+	await _shell.loading.present("LOC_LOADING_STARTING")
 	if _shell != null: _shell.context_guidance.close()
 	if not _load_catalog():
 		_shell.loading.fail()
@@ -444,7 +454,7 @@ func _restart() -> void:
 	hud.set_menu("")
 	_menu_resume_speed = 0
 	simulation.catalog = catalog
-	simulation.reset(simulation.seed_value + 1)
+	simulation.reset(simulation.seed_value + 1, atlas.world)
 	if not _bind_world():
 		_shell.loading.fail()
 		return
@@ -458,7 +468,7 @@ func _restart() -> void:
 	desk.return_overview()
 	desk._monitor.set_mode("meme")
 	if _shell != null: _shell.enter_game(true)
-	_shell.loading.hide()
+	_shell.loading.finish()
 	_queue_startup_focus()
 
 func startup_ready() -> bool:
@@ -658,11 +668,11 @@ func _start_from_main() -> void:
 	await _restart()
 
 func _load_from_main() -> void:
-	await _shell.loading.present()
+	await _shell.loading.present("LOC_LOADING_SAVE")
 	if _load():
 		_shell.enter_game(false)
 		if simulation.phase == "complete": _complete_run(simulation.snapshot())
-	_shell.loading.hide()
+	_shell.loading.finish()
 
 func _return_to_main() -> void:
 	atlas.set_speed(0)

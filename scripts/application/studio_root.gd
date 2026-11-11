@@ -47,7 +47,8 @@ func _ready() -> void:
 	DeskLocalization.ensure_loaded()
 	var started := Time.get_ticks_msec()
 	add_child(_loading)
-	await _loading.present()
+	_setup_lighting()
+	await _loading.present("LOC_LOADING_ASSETS")
 	var paths := fbx_loader.loading_paths()
 	if paths.is_empty():
 		startup_error = "; ".join(fbx_loader.errors)
@@ -59,8 +60,8 @@ func _ready() -> void:
 		_loading.fail()
 		return
 	var assets_ready := Time.get_ticks_msec()
+	await _loading.present("LOC_LOADING_MODELS")
 	process_priority = 100
-	_setup_lighting()
 	assembly = fbx_loader.build()
 	if assembly == null:
 		startup_error = "Cannot construct studio from fullscene FBX"
@@ -91,7 +92,7 @@ func _ready() -> void:
 	logical.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	logical.transparent_bg = true
 	logical.handle_input_locally = true
-	logical.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	logical.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	add_child(logical)
 	var page_scene := load("res://scenes/studio/desk/game_page.tscn") as PackedScene
 	if page_scene == null:
@@ -100,6 +101,8 @@ func _ready() -> void:
 		_loading.fail()
 		return
 	page = page_scene.instantiate()
+	page.get_node("Atlas").defer_label_layout = true
+	page.initialization_progress.connect(_loading.set_stage)
 	var projection := ProjectionPort.new()
 	projection.minimum_camera_zoom = 0.9 / overview_height_m
 	projection.exit_measurement = paper_exit
@@ -115,6 +118,7 @@ func _ready() -> void:
 		push_error(startup_error)
 		_loading.fail()
 		return
+	await _loading.present("LOC_LOADING_CONTENT")
 	desktop = page.create_studio_adapter()
 	desktop.prepare()
 	_layout_equipment()
@@ -147,8 +151,12 @@ func _ready() -> void:
 		push_error(startup_error)
 		_loading.fail()
 		return
+	await _loading.present("LOC_LOADING_MAP_LABELS")
+	page.atlas.finish_label_layout()
+	logical.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	ready_3d = true
-	await RenderingServer.frame_post_draw
+	await _loading.prepare_rendering()
+	_loading.finish()
 	_loading.queue_free()
 	print("STUDIO_LOAD assets_ms=%d geometry_ms=%d content_ms=%d total_ms=%d" % [assets_ready - started, geometry_ready - assets_ready, Time.get_ticks_msec() - geometry_ready, Time.get_ticks_msec() - started])
 	print("STUDIO_3D_READY bindings=%d controls=%d projection=orthographic renderer=%s" % [content.bindings.size(),buttons.size(),RenderingServer.get_current_rendering_method()])
