@@ -61,6 +61,13 @@ custom_minimum_size = Vector2(288,56)
 size_flags_horizontal = 0
 text = "LOC_START_D2BB025A"
 
+[node name="NewGame" type="Button" parent="MenuPanel/Content"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(288,56)
+size_flags_horizontal = 0
+text = "LOC_MAIN_NEW_GAME"
+
 [node name="Load" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(288,56)
@@ -78,6 +85,12 @@ layout_mode = 2
 custom_minimum_size = Vector2(288,56)
 size_flags_horizontal = 0
 text = "LOC_QUIT_498E1D59"
+
+[node name="LoadError" type="Label" parent="MenuPanel/Content"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(420,0)
+autowrap_mode = 3
 
 [node name="Version" type="Label" parent="."]
 layout_mode = 1

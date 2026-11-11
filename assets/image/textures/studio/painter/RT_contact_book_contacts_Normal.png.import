@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://baecxb8e8tcdg"
 path.s3tc="res://.godot/imported/RT_contact_book_contacts_Normal.png-3c604d738ecdcef5ae94f6aab0a49fda.s3tc.ctex"
+path.etc2="res://.godot/imported/RT_contact_book_contacts_Normal.png-3c604d738ecdcef5ae94f6aab0a49fda.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/RT_contact_book_contacts_Normal.png"
-dest_files=["res://.godot/imported/RT_contact_book_contacts_Normal.png-3c604d738ecdcef5ae94f6aab0a49fda.s3tc.ctex"]
+dest_files=["res://.godot/imported/RT_contact_book_contacts_Normal.png-3c604d738ecdcef5ae94f6aab0a49fda.s3tc.ctex", "res://.godot/imported/RT_contact_book_contacts_Normal.png-3c604d738ecdcef5ae94f6aab0a49fda.etc2.ctex"]
 
 [params]
 

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cavq8n1a1h5em"
 path.s3tc="res://.godot/imported/SP_desk_Normal.png-daf8cce5acd5f830f5c097e0e506a0cc.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_desk_Normal.png-daf8cce5acd5f830f5c097e0e506a0cc.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_desk_Normal.png"
-dest_files=["res://.godot/imported/SP_desk_Normal.png-daf8cce5acd5f830f5c097e0e506a0cc.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_desk_Normal.png-daf8cce5acd5f830f5c097e0e506a0cc.s3tc.ctex", "res://.godot/imported/SP_desk_Normal.png-daf8cce5acd5f830f5c097e0e506a0cc.etc2.ctex"]
 
 [params]
 

@@ -2,6 +2,7 @@ class_name DeskMainMenu
 extends Control
 
 signal start_requested
+signal new_game_requested
 signal load_requested
 signal quit_requested
 signal settings_changed(settings: Dictionary)
@@ -13,7 +14,7 @@ const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd
 const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_MAIN_NEW_GAME", "LOC_MAIN_LOAD_GAME", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
-var _settings := {"language": "zh_CN", "music": 1.0, "effects": 1.0, "guide_enabled": true, "typewriter_enabled": true, "key_bindings": {}}
+var _settings := {"language": "en", "music": 1.0, "effects": 1.0, "guide_enabled": true, "typewriter_enabled": true, "key_bindings": {}}
 var _music_bus := "BGM"
 var _effect_buses := PackedStringArray(["SFX", "BGS", "MFX"])
 var _ui: Control
@@ -31,6 +32,7 @@ func _ready() -> void:
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
 	_ui.get_node("MenuPanel/Content/Start").pressed.connect(func(): start_requested.emit())
+	_ui.get_node("MenuPanel/Content/NewGame").pressed.connect(func(): new_game_requested.emit())
 	_ui.get_node("MenuPanel/Content/Load").pressed.connect(func():
 		if _load_available: load_requested.emit())
 	_ui.get_node("MenuPanel/Content/Quit").pressed.connect(func(): quit_requested.emit())
@@ -68,6 +70,7 @@ func show_menu() -> void:
 	_settings_in_game = false
 	show()
 	close_settings()
+	report_load_error("")
 	_ui.get_node("MenuPanel/Content/Start").grab_focus()
 
 func hide_menu() -> void:
@@ -81,16 +84,23 @@ func set_continue_available(value: bool) -> void:
 	_continue_available = value
 	_refresh_labels()
 
+func report_load_error(message: String) -> void:
+	var notice: Label = _ui.get_node("MenuPanel/Content/LoadError")
+	notice.text = message
+	notice.visible = not message.is_empty()
+	_layout()
+	_layout.call_deferred()
+
 func _style_desktop_menu() -> void:
 	# Ivory lettering keeps the title and actions legible on the wood.
 	var title: Label = _ui.get_node("MenuPanel/Content/Title")
 	title.add_theme_font_override("font", preload("res://assets/image/fonts/print_heading_font.tres"))
-	for label: Label in [title, _ui.get_node("Version")]:
+	for label: Label in [title, _ui.get_node("Version"), _ui.get_node("MenuPanel/Content/LoadError")]:
 		label.add_theme_color_override("font_color", ReceiptUI.Style.PAPER)
 		label.add_theme_color_override("font_shadow_color", ReceiptUI.Style.SECTION_BROWN)
 		label.add_theme_constant_override("shadow_offset_y", 2)
 	_ui.get_node("Version").text = "v" + str(ProjectSettings.get_setting("application/config/version"))
-	for id: String in ["Start", "Load", "Settings", "Quit"]:
+	for id: String in ["Start", "NewGame", "Load", "Settings", "Quit"]:
 		var button: Button = _ui.get_node("MenuPanel/Content/" + id)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -259,7 +269,7 @@ func load_settings() -> Error:
 	_settings.key_bindings = KeyBindings.bindings()
 	_last_error = OK if guide is bool else ERR_INVALID_DATA
 	if error == OK:
-		var locale := str(config.get_value("interface", "language", "zh_CN"))
+		var locale := str(config.get_value("interface", "language", "en"))
 		if locale in ["zh_CN", "en"]: _settings.language = locale
 		for kind: String in ["music", "effects"]:
 			var value: Variant = config.get_value("audio", kind, 1.0)
@@ -306,6 +316,7 @@ func _refresh_labels() -> void:
 	var keys := ["Title", "Start", "Load", "Settings", "Quit"]
 	for index in keys.size(): _ui.get_node("MenuPanel/Content/" + keys[index]).text = words[index]
 	_ui.get_node("MenuPanel/Content/Start").text = "LOC_CONTINUE_7C969119" if _continue_available else "LOC_MAIN_NEW_GAME"
+	_ui.get_node("MenuPanel/Content/NewGame").visible = _continue_available
 	for pair: Array in [["Title", 3], ["LanguageRow/LanguageLabel", 5], ["MusicRow/MusicLabel", 6], ["EffectsRow/EffectsLabel", 7], ["Back", 8]]:
 		_ui.get_node("SettingsPanel/Content/" + pair[0]).text = words[pair[1]]
 	var notice: Label = _ui.get_node("SettingsPanel/Content/Notice")
@@ -320,6 +331,7 @@ func _refresh_labels() -> void:
 	_refresh_binding_labels()
 	set_load_available(_load_available)
 	_layout()
+	_layout.call_deferred()
 
 func _layout() -> void:
 	if not is_instance_valid(_ui): return
@@ -333,7 +345,7 @@ func _layout() -> void:
 	content.position = Vector2.ZERO
 	content.size = content.get_combined_minimum_size()
 	menu.size = content.size
-	menu.position = Vector2(size.x * .30, size.y * .30)
+	menu.position = Vector2(size.x * .30, minf(size.y * .30, size.y - content.size.y * scale_factor - 32.0 * scale_factor))
 	for name: String in ["SettingsPanel", "KeysPanel"]:
 		var panel: Control = _ui.get_node(name)
 		ReceiptUI.layout_menu(panel, panel.get_node("Content"), size)

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://scmy5x5t8skd"
 path.s3tc="res://.godot/imported/SP_fax_paper_Roughness.png-8c0c0bc93d9bf7d1d29a0caf4a30b4d5.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_fax_paper_Roughness.png-8c0c0bc93d9bf7d1d29a0caf4a30b4d5.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_fax_paper_Roughness.png"
-dest_files=["res://.godot/imported/SP_fax_paper_Roughness.png-8c0c0bc93d9bf7d1d29a0caf4a30b4d5.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_fax_paper_Roughness.png-8c0c0bc93d9bf7d1d29a0caf4a30b4d5.s3tc.ctex", "res://.godot/imported/SP_fax_paper_Roughness.png-8c0c0bc93d9bf7d1d29a0caf4a30b4d5.etc2.ctex"]
 
 [params]
 

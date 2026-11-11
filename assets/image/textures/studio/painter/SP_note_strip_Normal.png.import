@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dlnt43vql0qah"
 path.s3tc="res://.godot/imported/SP_note_strip_Normal.png-0153899c6435575d0f27dfe40f84786f.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_note_strip_Normal.png-0153899c6435575d0f27dfe40f84786f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_note_strip_Normal.png"
-dest_files=["res://.godot/imported/SP_note_strip_Normal.png-0153899c6435575d0f27dfe40f84786f.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_note_strip_Normal.png-0153899c6435575d0f27dfe40f84786f.s3tc.ctex", "res://.godot/imported/SP_note_strip_Normal.png-0153899c6435575d0f27dfe40f84786f.etc2.ctex"]
 
 [params]
 

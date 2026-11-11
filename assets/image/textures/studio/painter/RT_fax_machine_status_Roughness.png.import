@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bcqai76w3duh2"
 path.s3tc="res://.godot/imported/RT_fax_machine_status_Roughness.png-a1aa8b3f1e0af338f40bc71c892c61a1.s3tc.ctex"
+path.etc2="res://.godot/imported/RT_fax_machine_status_Roughness.png-a1aa8b3f1e0af338f40bc71c892c61a1.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/RT_fax_machine_status_Roughness.png"
-dest_files=["res://.godot/imported/RT_fax_machine_status_Roughness.png-a1aa8b3f1e0af338f40bc71c892c61a1.s3tc.ctex"]
+dest_files=["res://.godot/imported/RT_fax_machine_status_Roughness.png-a1aa8b3f1e0af338f40bc71c892c61a1.s3tc.ctex", "res://.godot/imported/RT_fax_machine_status_Roughness.png-a1aa8b3f1e0af338f40bc71c892c61a1.etc2.ctex"]
 
 [params]
 
