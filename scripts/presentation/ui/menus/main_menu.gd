@@ -172,14 +172,7 @@ func _layout() -> void:
 	_ui.get_node("Background").visible = not _existing_background
 	for name: String in ["MenuPanel", "SettingsPanel"]:
 		var panel: Control = _ui.get_node(name)
-		var content: Control = panel.get_node("Content")
-		var width := minf(448, size.x - 32)
-		content.size.x = width - 64
-		var height := content.get_combined_minimum_size().y + 96
-		panel.size = Vector2(width, height)
-		panel.position = (size - panel.size) * 0.5
-		content.position = Vector2(32, 32)
-		content.size = panel.size - Vector2(64, 96)
+		ReceiptUI.layout_menu(panel, panel.get_node("Content"), size)
 
 func inspection() -> Dictionary:
 	var buses := {}
