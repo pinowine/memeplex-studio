@@ -10,7 +10,7 @@ signal overview_requested
 
 const OpeningSteps = preload("res://scripts/presentation/ui/tutorial/opening_steps.gd")
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
-const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const Portrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait.gd")
 const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
 const DragArrow = preload("res://scripts/presentation/ui/tutorial/tutorial_drag_arrow.gd")
@@ -75,7 +75,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# Read the card projection after the studio updates its camera and paper meshes.
 	process_priority = 101
-	if theme == null: theme = load("res://data/presentation/ui/demo_theme.tres")
+	theme = ReceiptUI.create_theme()
 	_focus = ColorRect.new()
 	_focus.name = "TutorialFocus"
 	_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -100,7 +100,7 @@ func _ready() -> void:
 	_ui.get_node("Card/Content/Actions/Continue").pressed.connect(advance)
 	_ui.get_node("Card/Content/Actions/Skip").pressed.connect(skip)
 	_ui.get_node("SilentSkip").pressed.connect(skip)
-	PaperStyle.apply_buttons(_ui)
+	ReceiptUI.primary(_ui.get_node("Card/Content/Actions/Continue"))
 	if _steps.is_empty(): _steps = default_steps()
 	resized.connect(_refresh)
 	resized.connect(_cancel_pointer)
@@ -442,31 +442,26 @@ func _refresh() -> void:
 		if side_width >= minimum_width: width = minf(width, side_width)
 	var portrait: Control = card.get_node("Portrait67")
 	portrait.visible = true
-	portrait.position = Vector2(14, 18) if compact else Vector2(18, 20)
+	portrait.position = Vector2(24, 24)
 	portrait.size = Vector2.ONE * (48 if compact else 64)
 	portrait.pivot_offset = portrait.size * 0.5
-	var speaker: Control = card.get_node("Speaker")
-	speaker.visible = true
-	speaker.position = portrait.position + Vector2(0, portrait.size.y + 6)
-	speaker.size.x = portrait.size.x
 	var title: Label = card.get_node("Content/Title")
 	var title_size := 18 if compact else 21
-	var body_size := 14 if compact else 17
+	var body_size := 16 if compact else 18
 	if title.get_theme_font_size("font_size") != title_size: title.add_theme_font_size_override("font_size", title_size)
 	if body.get_theme_font_size("normal_font_size") != body_size: body.add_theme_font_size_override("normal_font_size", body_size)
 	var waiting: Label = _ui.get_node("Card/Content/Waiting")
-	waiting.visible = not _blocked and (_return_overview or (requires_action and not compact))
+	waiting.visible = not _blocked and (_return_overview or str(step.get("action", "")) == "overview_returned")
 	if _return_overview or str(step.get("action", "")) == "overview_returned":
 		waiting.text = DeskLocalization.text("LOC_PRESS_ESC_TO_RETURN_TO_THE_MAIN_445EA13C")
-	else:
-		waiting.text = DeskLocalization.text("LOC_FOLLOW_THE_CURRENT_PROMPT_TO_FINISH_THE_40A63035")
-	var minimum_height := 128.0 if compact else 190.0
+	var minimum_height := 176.0 if compact else 192.0
 	card.size = Vector2(width, minimum_height)
 	var content: Control = card.get_node("Content")
-	content.position = Vector2(76, 14) if compact else Vector2(94, 18)
-	var separation := 6 if compact else 8
+	var narrow := width < 400
+	content.position = Vector2(24, 88) if narrow else Vector2(88 if compact else 112, 24)
+	var separation := 16
 	if content.get_theme_constant("separation") != separation: content.add_theme_constant_override("separation", separation)
-	var padding := Vector2(90, 28) if compact else Vector2(112, 36)
+	var padding := content.position + Vector2(24, 64)
 	content.size = card.size - padding
 	body.size.x = content.size.x
 	waiting.size.x = content.size.x

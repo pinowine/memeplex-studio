@@ -16,6 +16,7 @@ static func apply_to(root: Node) -> void:
 static func _apply(node: Node, themes: Dictionary) -> void:
 	if node is Control:
 		var control := node as Control
+		if control.theme != null and control.theme.get_type_variation_base("ReceiptHeading") == &"Label": return
 		if control.theme != null:
 			var key := control.theme.get_instance_id()
 			if not themes.has(key):

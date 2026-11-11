@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/desk_surface.png" id="1"]
-[ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/design_print_paper.png" id="2"]
+[ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_receipt_panel.gd" id="2"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/body_bold_font.tres" id="3"]
 
 [node name="MenuUI" type="Control"]
 layout_mode = 3
@@ -27,14 +28,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.04,0.05,0.04,0.20)
+color = Color(0.04,0.05,0.04,0.40)
 mouse_filter = 0
 
-[node name="MenuPanel" type="TextureRect" parent="."]
+[node name="MenuPanel" type="Panel" parent="."]
 mouse_filter = 0
-texture = ExtResource("2")
-expand_mode = 1
-stretch_mode = 0
+script = ExtResource("2")
+paper_margin = 32.0
 
 [node name="Content" type="VBoxContainer" parent="MenuPanel"]
 layout_mode = 0
@@ -46,10 +46,14 @@ theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="MenuPanel/Content"]
 layout_mode = 2
-theme_type_variation = &"DemoHeading"
 text = "LOC_MEMEPLEX_STUDIO_3D1D137F"
-theme_override_font_sizes/font_size = 30
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+theme_override_fonts/font = ExtResource("3")
+horizontal_alignment = 0
+
+[node name="TitleRule" type="HSeparator" parent="MenuPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 12)
 
 [node name="Start" type="Button" parent="MenuPanel/Content"]
 layout_mode = 2
@@ -71,12 +75,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(0,48)
 text = "LOC_QUIT_498E1D59"
 
-[node name="SettingsPanel" type="TextureRect" parent="."]
+[node name="SettingsPanel" type="Panel" parent="."]
 visible = false
 mouse_filter = 0
-texture = ExtResource("2")
-expand_mode = 1
-stretch_mode = 0
+script = ExtResource("2")
+paper_margin = 32.0
 
 [node name="Content" type="VBoxContainer" parent="SettingsPanel"]
 layout_mode = 0
@@ -84,13 +87,17 @@ offset_left = 48.0
 offset_top = 40.0
 offset_right = 472.0
 offset_bottom = 500.0
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
-theme_type_variation = &"DemoHeading"
 text = "LOC_SETTINGS_DF3D58C7"
-theme_override_font_sizes/font_size = 27
+theme_override_font_sizes/font_size = 28
+theme_override_fonts/font = ExtResource("3")
+
+[node name="TitleRule" type="HSeparator" parent="SettingsPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 12)
 
 [node name="LanguageLabel" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
@@ -98,16 +105,25 @@ text = "LOC_LANGUAGE_9F6FEE1A"
 
 [node name="Language" type="OptionButton" parent="SettingsPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0,38)
+custom_minimum_size = Vector2(0,44)
 item_count = 2
 popup/item_0/text = "中文"
 popup/item_0/id = 0
 popup/item_1/text = "English"
 popup/item_1/id = 1
 
-[node name="MusicLabel" type="Label" parent="SettingsPanel/Content"]
+[node name="MusicHeading" type="HBoxContainer" parent="SettingsPanel/Content"]
 layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="SettingsPanel/Content/MusicHeading"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "LOC_MUSIC_DB951421"
+
+[node name="MusicValue" type="Label" parent="SettingsPanel/Content/MusicHeading"]
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
 
 [node name="Music" type="HSlider" parent="SettingsPanel/Content"]
 layout_mode = 2
@@ -116,13 +132,18 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="MusicValue" type="Label" parent="SettingsPanel/Content"]
+[node name="EffectsHeading" type="HBoxContainer" parent="SettingsPanel/Content"]
+layout_mode = 2
+
+[node name="EffectsLabel" type="Label" parent="SettingsPanel/Content/EffectsHeading"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LOC_EFFECTS_5E9D80D0"
+
+[node name="EffectsValue" type="Label" parent="SettingsPanel/Content/EffectsHeading"]
 layout_mode = 2
 text = "100%"
-
-[node name="EffectsLabel" type="Label" parent="SettingsPanel/Content"]
-layout_mode = 2
-text = "LOC_EFFECTS_5E9D80D0"
+horizontal_alignment = 2
 
 [node name="Effects" type="HSlider" parent="SettingsPanel/Content"]
 layout_mode = 2
@@ -131,22 +152,19 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
-[node name="EffectsValue" type="Label" parent="SettingsPanel/Content"]
-layout_mode = 2
-text = "100%"
-
 [node name="Notice" type="Label" parent="SettingsPanel/Content"]
+visible = false
 layout_mode = 2
-text = "LOC_LANGUAGE_APPLIES_TO_THE_INTERFACE_AND_EXISTING_844A2439"
+text = ""
 autowrap_mode = 3
 
 [node name="GuideEnabled" type="CheckButton" parent="SettingsPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 42)
+custom_minimum_size = Vector2(0, 44)
 button_pressed = true
 text = "LOC_GUIDE_67_ENABLED"
 
 [node name="Back" type="Button" parent="SettingsPanel/Content"]
 layout_mode = 2
-custom_minimum_size = Vector2(0,42)
+custom_minimum_size = Vector2(0,48)
 text = "LOC_BACK_572CF45B"
