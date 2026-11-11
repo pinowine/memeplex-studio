@@ -983,6 +983,8 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 					return details_for_item(str(row.record.kind), str(row.record.id))
 			return {}
 	var key := String(_props._hit_prop(viewport_point))
+	if _cards.has(key) and bool(_cards[key].inventory_docked):
+		key = "stack/" + str(_cards[key].kind)
 	if key.begins_with("stack/"):
 		var details := stack_details(key.trim_prefix("stack/"))
 		details.hover_description = CardCopy.stack_description(str(details.kind))
