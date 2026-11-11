@@ -16,6 +16,7 @@ var _hover: Dictionary = {}
 var _has_hover := false
 var _heading := ""
 var _detail := ""
+var _receipt_presentation: Dictionary = {}
 var _lines: Array[Dictionary] = []
 var _truncated := false
 var _content_revision := 0
@@ -105,30 +106,31 @@ func _first_text(keys: Array[String]) -> String:
 		if value is String and not str(value).strip_edges().is_empty(): return _normalized(DeskLocalization.text(value))
 	return ""
 
-func _qualifiers() -> Array[String]:
-	var result: Array[String] = []
+func _presentation_details() -> Dictionary:
+	var kind := str(_hover.get("kind","source"))
+	kind = {"monitor_mode":"monitor","context_token":str(_hover.get("layer","source")),"meme_title":"source"}.get(kind,kind)
+	var result := {"kind":kind,"badge":_first_text(["status"]),"note":_first_text(["gesture"])}
 	for key in ["count", "available", "quantity"]:
 		var value: Variant = _hover.get(key)
 		if value is int and value >= 0:
-			result.append(DeskLocalization.format_text("LOC_AVAILABLE_D_7E88E6AF", value))
+			result.metric_label = DeskLocalization.text("LOC_AVAILABLE_DE69AA86")
+			result.metric_value = str(value)
 			break
 		if value is float and is_finite(value) and value >= 0.0 and value == floor(value) and value < 9223372036854775807.0:
-			result.append(DeskLocalization.format_text("LOC_AVAILABLE_D_7E88E6AF", int(value)))
+			result.metric_label = DeskLocalization.text("LOC_AVAILABLE_DE69AA86")
+			result.metric_value = str(int(value))
 			break
-	var status := _first_text(["status"])
-	if not status.is_empty(): result.append(status)
 	return result
 
 func _update_content(force_layout: bool = false) -> void:
 	var heading := _normalized(_default_text)
 	var detail := ""
+	var presentation := {}
 	if _has_hover:
 		heading = _first_text(["title", "name", "label", "id"])
-		var qualifiers := _qualifiers()
-		if not qualifiers.is_empty():
-			heading += (" · " if not heading.is_empty() else "") + " · ".join(qualifiers)
+		presentation = _presentation_details()
 		var pieces: Array[String] = []
-		for key in ["description", "hint", "gesture", "unlock_hint"]:
+		for key in ["description", "body", "hint", "unlock_hint"]:
 			var value: Variant = _hover.get(key)
 			if not value is String: continue
 			var clean := _normalized(DeskLocalization.text(value))
@@ -137,11 +139,12 @@ func _update_content(force_layout: bool = false) -> void:
 	if heading.is_empty() and not detail.is_empty():
 		heading = detail
 		detail = ""
-	if heading == _heading and detail == _detail:
+	if heading == _heading and detail == _detail and presentation == _receipt_presentation:
 		if force_layout: _layout()
 		return
 	_heading = heading
 	_detail = detail
+	_receipt_presentation = presentation
 	_content_revision += 1
 	_layout()
 
@@ -218,7 +221,7 @@ func _layout() -> void:
 			_receipt.set_pointer_source(pointer_source)
 			add_child(_receipt)
 		_receipt.set_width(size.x)
-		_receipt.set_content(_heading,[],_detail)
+		_receipt.set_content(_heading,[],_detail,_receipt_presentation)
 		_receipt.set_pointer_following(true)
 		queue_redraw()
 		return

@@ -193,14 +193,14 @@ func _update_hover_strip() -> void:
 	var info: Dictionary = _material_cards.hover_info(point) if _material_cards != null else {}
 	if info.is_empty(): info = _monitor.hover_info(point)
 	var fax_hint: String = _fax.hover_details(point)
-	if info.is_empty() and not fax_hint.is_empty(): info = {"title":DeskLocalization.source("LOC_FAX_INTELLIGENCE_214AFC92"),"hint":fax_hint}
+	if info.is_empty() and not fax_hint.is_empty(): info = {"kind":"fax","title":DeskLocalization.source("LOC_FAX_INTELLIGENCE_214AFC92"),"hint":fax_hint}
 	var board: Control = _page.hud.design_workbench().context_slice()
 	if info.is_empty() and board.is_visible_in_tree(): info = board.hover_info(point)
 	if info.is_empty():
 		var id: String = str(_props.inspection().get("hovered",""))
 		var labels := {"fax":DeskLocalization.source("LOC_FAX_MACHINE_347AFBA3"),"printer":DeskLocalization.source("LOC_LOG_PRINTER_CCF8EA8C"),"crt":DeskLocalization.source("LOC_MEME_MONITOR_09D96DD1"),"folder":DeskLocalization.source("LOC_ARCHIVE_AND_MATERIAL_STORAGE_0A932652"),"phonebook":DeskLocalization.source("LOC_CONTACTS_06657C27"),"clock":DeskLocalization.source("LOC_CLOCK_0F58FD2A"),"speed":DeskLocalization.source("LOC_PLAYBACK_SPEED_C114A632"),"sheet/map":DeskLocalization.source("LOC_WORLD_33650A36"),"sheet/edit":DeskLocalization.source("LOC_EDIT_05183656"),"sheet/cultivate":DeskLocalization.source("LOC_CULTIVATE_62025174"),"sheet/spread":DeskLocalization.source("LOC_SPREAD_1A2DA4D4")}
 		if labels.has(id):
-			info = {"title":labels[id],"hint":DeskLocalization.source("LOC_MOVE_ASIDE_TO_TAKE_MATERIALS_CLICK_TO_2A43CD1C") if id == "folder" else DeskLocalization.source("LOC_CLICK_TO_FOCUS_F860D57A")}
+			info = {"kind":"monitor" if id == "crt" else id,"title":labels[id],"hint":DeskLocalization.source("LOC_MOVE_ASIDE_TO_TAKE_MATERIALS_CLICK_TO_2A43CD1C") if id == "folder" else DeskLocalization.source("LOC_CLICK_TO_FOCUS_F860D57A")}
 	if info.has("text") and not info.has("description"): info.description = str(info.text)
 	if info.is_empty(): _hover_strip.clear_hover()
 	else: _hover_strip.show_hover(info)
