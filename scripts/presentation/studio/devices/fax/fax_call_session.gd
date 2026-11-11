@@ -15,7 +15,7 @@ var starter_options: Array[Dictionary] = []
 var starter_id := ""
 var pending_starter_id := ""
 var startup_done := false
-var diagnostic := DeskLocalization.source("LOC_LOCAL_CONNECTIONS_ONLY_NO_REAL_PHONE_CALLS_854E21C9")
+var diagnostic := ""
 var _context_event: Dictionary = {}
 
 func _init() -> void:

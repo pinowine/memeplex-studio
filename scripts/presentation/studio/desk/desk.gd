@@ -286,7 +286,6 @@ func configure(page: Node2D) -> void:
 	workbench.get_node("Column/Toolbar/Heading").text = DeskLocalization.source("LOC_MEME_DESIGN_PRINT_DRAFT_944F8221")
 	for id in ["Fullscreen", "SelectCountry", "Purchase"]: page.hud.get_node("%" + id).hide()
 	page.hud.get_node("%SettingsMenu").minimum_size_changed.connect(_fit_settings)
-	page.hud.get_node("%CodexPanel").minimum_size_changed.connect(_fit_codex)
 	_country_layer = CanvasLayer.new()
 	_country_layer.name = "CountryFileLayer"
 	_country_layer.layer = 31
@@ -685,7 +684,6 @@ func _layout() -> void:
 	_props.set_bounds(Rect2(-80,-100,1760,1100))
 	_update_prop_dependents()
 	_fit_settings()
-	_fit_codex()
 
 
 func _layout_token_inventory(_view: Vector2) -> void:
@@ -974,13 +972,6 @@ func _fit_settings() -> void:
 		return
 	var center := _camera.position if _camera != null else DESK_SIZE * 0.5
 	_place(_page.hud.get_node("%SettingsMenu"), Rect2(center-Vector2(215,295),Vector2(430,590)))
-
-
-func _fit_codex() -> void:
-	if _page != null and _page.has_meta("studio3d"):
-		_page.hud.layout_screen_modals()
-		return
-	if _page != null and _stack_rect.has_area(): _place(_page.hud.get_node("%CodexPanel"), _stack_rect)
 
 
 func clock_rect() -> Rect2:

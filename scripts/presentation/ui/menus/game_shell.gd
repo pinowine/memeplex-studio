@@ -54,7 +54,6 @@ func configure(owner_page: Node2D) -> void:
 	_sync_guide_settings({})
 	main_menu.start_requested.connect(page._start_from_main)
 	main_menu.load_requested.connect(page._load_from_main)
-	main_menu.codex_requested.connect(page._open_main_codex)
 	main_menu.quit_requested.connect(func(): get_tree().quit())
 	ending.return_menu_requested.connect(page._return_to_main)
 	show_main()

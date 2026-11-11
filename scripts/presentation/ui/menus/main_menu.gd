@@ -3,13 +3,12 @@ extends Control
 
 signal start_requested
 signal load_requested
-signal codex_requested
 signal quit_requested
 signal settings_changed(settings: Dictionary)
 
 const TEMPLATE = preload("res://scenes/ui/menus/main_menu.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
-const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_PRINTING_DOES_NOT_GUARANTEE_UNDERSTANDING_C623F385", "LOC_START_D2BB025A", "LOC_LOAD_534CB3FA", "LOC_MEME_CODEX_2F7C7F0C", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
+const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_START_D2BB025A", "LOC_LOAD_534CB3FA", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
 var _settings := {"language": "zh_CN", "music": 1.0, "effects": 1.0, "guide_enabled": true}
@@ -28,7 +27,6 @@ func _ready() -> void:
 	_ui.get_node("MenuPanel/Content/Start").pressed.connect(func(): start_requested.emit())
 	_ui.get_node("MenuPanel/Content/Load").pressed.connect(func():
 		if _load_available: load_requested.emit())
-	_ui.get_node("MenuPanel/Content/Codex").pressed.connect(func(): codex_requested.emit())
 	_ui.get_node("MenuPanel/Content/Quit").pressed.connect(func(): quit_requested.emit())
 	_ui.get_node("MenuPanel/Content/Settings").pressed.connect(open_settings)
 	_ui.get_node("SettingsPanel/Content/Back").pressed.connect(close_settings)
@@ -151,9 +149,9 @@ func _apply_audio() -> void:
 func _refresh_labels() -> void:
 	if not is_instance_valid(_ui): return
 	var words: Array = LABELS
-	var keys := ["Title", "Subtitle", "Start", "Load", "Codex", "Settings", "Quit"]
+	var keys := ["Title", "Start", "Load", "Settings", "Quit"]
 	for index in keys.size(): _ui.get_node("MenuPanel/Content/" + keys[index]).text = words[index]
-	for pair: Array in [["Title", 5], ["LanguageLabel", 7], ["MusicLabel", 8], ["EffectsLabel", 9], ["Back", 10], ["Notice", 11]]:
+	for pair: Array in [["Title", 3], ["LanguageLabel", 5], ["MusicLabel", 6], ["EffectsLabel", 7], ["Back", 8], ["Notice", 9]]:
 		_ui.get_node("SettingsPanel/Content/" + pair[0]).text = words[pair[1]]
 	if _last_error != OK: _ui.get_node("SettingsPanel/Content/Notice").text = error_string(_last_error)
 	_ui.get_node("SettingsPanel/Content/Language").select(0 if _settings.language == "zh_CN" else 1)
@@ -168,9 +166,10 @@ func _layout() -> void:
 	_ui.get_node("Background").visible = not _existing_background
 	for name: String in ["MenuPanel", "SettingsPanel"]:
 		var panel: Control = _ui.get_node(name)
-		panel.size = Vector2(minf(520, size.x - 40), minf(550, size.y - 32))
-		panel.position = (size - panel.size) * 0.5
 		var content: Control = panel.get_node("Content")
+		var height := content.get_combined_minimum_size().y + 80 if name == "MenuPanel" else 550.0
+		panel.size = Vector2(minf(520, size.x - 40), minf(height, size.y - 32))
+		panel.position = (size - panel.size) * 0.5
 		content.position = Vector2(48, 40)
 		content.size = panel.size - Vector2(96, 80)
 

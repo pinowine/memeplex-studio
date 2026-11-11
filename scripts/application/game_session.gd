@@ -54,7 +54,6 @@ func _ready() -> void:
 	hud.event_acknowledged.connect(_acknowledge)
 	hud.settings_requested.connect(func(): _toggle_menu("settings"))
 	hud.developer_requested.connect(func(): _toggle_menu("developer"))
-	hud.codex_requested.connect(func(): _toggle_menu("codex"))
 	hud.quit_requested.connect(func(): get_tree().quit())
 	hud.menu_close_requested.connect(_close_menu)
 	hud.design_action_requested.connect(_design_action)
@@ -639,10 +638,6 @@ func _load_from_main() -> void:
 	if _load():
 		_shell.enter_game(false)
 		if simulation.phase == "complete": _complete_run(simulation.snapshot())
-
-func _open_main_codex() -> void:
-	_shell.main_menu.hide_menu()
-	_toggle_menu("codex")
 
 func _return_to_main() -> void:
 	atlas.set_speed(0)
