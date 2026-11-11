@@ -189,7 +189,17 @@ func component_details(mode: String = "phone") -> Dictionary:
 
 func history_details() -> Dictionary:
 	var record: Dictionary = _archived_event if not _archived_event.is_empty() else _output.last_read
-	return {"title":str(record.get("title",DeskLocalization.source("LOC_EVENT_PAPER_STACK_4B19BEB5"))), "description":str(record.get("narrative",DeskLocalization.source("LOC_PRINTED_MESSAGES_STAY_HERE_CLICK_AN_EXPOSED_709BB20D"))),
+	var origin := str(record.get("origin", ""))
+	var origin_label := str({"world":"LOC_EVENT_ORIGIN_WORLD", "transmission":"LOC_EVENT_ORIGIN_TRANSMISSION", "environment_meme":"LOC_EVENT_ORIGIN_ENVIRONMENT"}.get(origin, "LOC_UNATTRIBUTED_9D4F610E"))
+	var sections: Array[Dictionary] = []
+	if not record.is_empty():
+		sections.append({"body":DeskLocalization.source_format("LOC_EVENT_DOCUMENT_META", [str(int(record.hour)), origin_label], [1]), "kind":"clock", "role":"metadata"})
+	sections.append({"body":str(record.get("narrative",DeskLocalization.source("LOC_PRINTED_MESSAGES_STAY_HERE_CLICK_AN_EXPOSED_709BB20D"))), "kind":"source", "role":"narrative"})
+	for field: Array in [["impact_text", "LOC_EVENT_DOCUMENT_IMPACT", "impact", "impact"], ["effect_text", "LOC_EVENT_DOCUMENT_EFFECTS", "effects", "effects"], ["reward_text", "LOC_EVENT_DOCUMENT_MATERIALS", "reward", "rewards"], ["mentor_comment", "67", "mentor", "commentary"]]:
+		var text := str(record.get(field[0], ""))
+		if not text.is_empty(): sections.append({"title":field[1], "body":text, "kind":field[2], "role":field[3]})
+	return {"title":str(record.get("title",DeskLocalization.source("LOC_EVENT_PAPER_STACK_4B19BEB5"))), "document_kind":"event", "sections":sections,
+		"description":str(record.get("narrative",DeskLocalization.source("LOC_PRINTED_MESSAGES_STAY_HERE_CLICK_AN_EXPOSED_709BB20D"))),
 		"instance_id":str(record.get("instance_id","")), "hour":str(record.get("hour","")),
 		"impact":str(record.get("impact_text","")), "effect":str(record.get("effect_text","")), "mentor":str(record.get("mentor_comment","")), "read_only":true,
 		"gesture":DeskLocalization.source("LOC_CLICK_EXPOSED_TABS_TO_BROWSE_SCROLL_TO_526015E9"),

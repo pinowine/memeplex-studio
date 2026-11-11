@@ -27,10 +27,10 @@ static func draw(canvas: CanvasItem, rect: Rect2, kind: String, color: Color) ->
 			_line(canvas,[Vector2(12,6),Vector2(12,18)],color)
 			_line(canvas,[Vector2(6,12),Vector2(18,12)],color)
 			canvas.draw_circle(Vector2(15,9),2,color)
-		"pragmatic", "pragmatic_token":
+		"pragmatic", "pragmatic_token", "mentor":
 			_line(canvas,[Vector2(4,4),Vector2(20,4),Vector2(20,16),Vector2(11,16),Vector2(6,21),Vector2(6,16),Vector2(4,16),Vector2(4,4)],color)
 			for x in [8,12,16]: canvas.draw_circle(Vector2(x,10),1,color)
-		"module", "patch":
+		"module", "patch", "reward":
 			var centre := Vector2(12,12)
 			for tip: Vector2 in [Vector2(5,5),Vector2(20,7),Vector2(18,20),Vector2(4,17)]:
 				_line(canvas,[centre,centre.lerp(tip,.55)+Vector2(1,-1),tip],color)
@@ -38,7 +38,11 @@ static func draw(canvas: CanvasItem, rect: Rect2, kind: String, color: Color) ->
 			canvas.draw_circle(centre,3.5,Color(color,color.a*.16))
 			canvas.draw_circle(centre,3.5,color,false,STROKE,true)
 			canvas.draw_circle(centre,1.2,color)
-		"device":
+		"impact":
+			_line(canvas,[Vector2(4,4),Vector2(4,20),Vector2(21,20)],color)
+			_line(canvas,[Vector2(7,16),Vector2(12,11),Vector2(15,14),Vector2(21,6)],color)
+			_line(canvas,[Vector2(16,6),Vector2(21,6),Vector2(21,11)],color)
+		"device", "effects":
 			canvas.draw_arc(Vector2(12,12),6,0,TAU,32,color,STROKE,true)
 			canvas.draw_arc(Vector2(12,12),2.5,0,TAU,24,color,STROKE,true)
 			for index in 8:
