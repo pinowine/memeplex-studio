@@ -1047,6 +1047,7 @@ func _show_source_hover(sources: Array, excerpt: String) -> void:
 	if not _interaction_enabled or _tab != "edit": return
 	_source_hover_records = sources.duplicate(true)
 	var rows: Array[Dictionary] = []
+	var grouped := {}
 	for source: Dictionary in sources:
 		var kind := str(source.kind)
 		var id := str(source.id)
@@ -1055,8 +1056,10 @@ func _show_source_hover(sources: Array, excerpt: String) -> void:
 		elif kind in ["stance", "pragmatic"]: title = _direction_title(id)
 		else: title = DeskLocalization.text(str(_rules.context_resource(id).get("title", "")))
 		var category := DeskLocalization.text({"patch":"LOC_EDIT_PATCHES", "language":"LOC_LANGUAGE_9F6FEE1A", "group":"LOC_EDIT_AUDIENCE", "topic":"LOC_EDIT_TOPICS", "stance":"LOC_WB_IDEOLOGY", "pragmatic":"LOC_PRAGMATICS_7063D1D8"}[kind])
-		var row := {"category":category, "value":title}
-		if row not in rows: rows.append(row)
+		if not grouped.has(kind): grouped[kind] = {"category":category,"kind":kind,"titles":[]}
+		if title not in grouped[kind].titles: grouped[kind].titles.append(title)
+	for group: Dictionary in grouped.values():
+		rows.append({"category":group.category,"value":"\n".join(group.titles),"kind":group.kind})
 	_source_hover.set_content(DeskLocalization.text("LOC_WB_CHANGED_BY"), rows)
 	_source_hover.set_meta("excerpt", excerpt)
 	_source_hover.set_width(ReceiptHover.DEFAULT_WIDTH)
