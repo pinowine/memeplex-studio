@@ -291,12 +291,23 @@ func _setup_postprocess() -> void:
 	half_tone.material = material
 	half_tone.visible = false
 	layer.add_child(half_tone)
+	# Keep desktop ink out of the texture composited over the 3D scene.
+	var modal_viewport := SubViewport.new()
+	modal_viewport.name = "ScreenSpaceModalViewport"
+	modal_viewport.size = logical.size
+	modal_viewport.size_2d_override = logical.size_2d_override
+	modal_viewport.size_2d_override_stretch = true
+	modal_viewport.disable_3d = true
+	modal_viewport.transparent_bg = true
+	modal_viewport.msaa_2d = logical.msaa_2d
+	add_child(modal_viewport)
+	page.hud.set_modal_viewport(modal_viewport)
 	var modal_layer := CanvasLayer.new()
 	modal_layer.layer = 80
 	add_child(modal_layer)
 	modal_image = TextureRect.new()
 	modal_image.name = "ScreenSpaceModalContent"
-	modal_image.texture = logical.get_texture()
+	modal_image.texture = modal_viewport.get_texture()
 	modal_image.mouse_filter = Control.MOUSE_FILTER_STOP
 	modal_image.gui_input.connect(_route_input)
 	modal_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

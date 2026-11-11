@@ -522,6 +522,10 @@ func _install_screen_modals() -> void:
 	_refresh_modal()
 
 
+func set_modal_viewport(viewport: Viewport) -> void:
+	_screen_modals.get_parent().custom_viewport = viewport
+
+
 func layout_screen_modals() -> void:
 	if _screen_modals == null: return
 	var view := get_viewport_rect().size
