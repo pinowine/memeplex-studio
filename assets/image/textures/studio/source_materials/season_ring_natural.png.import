@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cyaa3j4747bs"
 path.s3tc="res://.godot/imported/season_ring_natural.png-9ab7e10b82b5b201d2f56334c9bbe67a.s3tc.ctex"
+path.etc2="res://.godot/imported/season_ring_natural.png-9ab7e10b82b5b201d2f56334c9bbe67a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/source_materials/season_ring_natural.png"
-dest_files=["res://.godot/imported/season_ring_natural.png-9ab7e10b82b5b201d2f56334c9bbe67a.s3tc.ctex"]
+dest_files=["res://.godot/imported/season_ring_natural.png-9ab7e10b82b5b201d2f56334c9bbe67a.s3tc.ctex", "res://.godot/imported/season_ring_natural.png-9ab7e10b82b5b201d2f56334c9bbe67a.etc2.ctex"]
 
 [params]
 

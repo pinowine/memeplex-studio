@@ -75,6 +75,7 @@ func configure(owner_page: Node2D) -> void:
 	main_menu.settings_closed.connect(func(): page.hud.set_menu("settings"))
 	_sync_guide_settings({})
 	main_menu.start_requested.connect(_activate_main)
+	main_menu.new_game_requested.connect(page._start_from_main)
 	main_menu.load_requested.connect(page._load_from_main)
 	main_menu.quit_requested.connect(func(): get_tree().quit())
 	ending.return_menu_requested.connect(page._return_to_main)

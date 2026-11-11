@@ -411,7 +411,7 @@ func _save() -> void:
 func _load() -> bool:
 	var error := store.load_run(simulation, SAVE_PATH)
 	if error != OK:
-		simulation.status = DeskLocalization.source_format("LOC_LOAD_REJECTED_THE_CURRENT_RUN_IS_UNCHANGED_58D375FE", [error_string(error), "; ".join(store.last_errors)])
+		simulation.status = DeskLocalization.source_format("LOC_LOAD_REJECTED_THE_CURRENT_RUN_IS_UNCHANGED_58D375FE", [error_string(error), DeskLocalization.source_join("; ", store.last_errors)], [1])
 		_render()
 		return false
 	atlas.set_meta("demo_external_clock", true)
@@ -672,6 +672,8 @@ func _load_from_main() -> void:
 	if _load():
 		_shell.enter_game(false)
 		if simulation.phase == "complete": _complete_run(simulation.snapshot())
+	else:
+		_shell.main_menu.report_load_error(simulation.status)
 	_shell.loading.finish()
 
 func _return_to_main() -> void:

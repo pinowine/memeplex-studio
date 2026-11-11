@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c4rqw5766hbdu"
 path.s3tc="res://.godot/imported/SP_workpaper_map_BaseColor.png-3c8f127855e388472c24e8a4e9fac0e2.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_workpaper_map_BaseColor.png-3c8f127855e388472c24e8a4e9fac0e2.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_workpaper_map_BaseColor.png"
-dest_files=["res://.godot/imported/SP_workpaper_map_BaseColor.png-3c8f127855e388472c24e8a4e9fac0e2.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_workpaper_map_BaseColor.png-3c8f127855e388472c24e8a4e9fac0e2.s3tc.ctex", "res://.godot/imported/SP_workpaper_map_BaseColor.png-3c8f127855e388472c24e8a4e9fac0e2.etc2.ctex"]
 
 [params]
 

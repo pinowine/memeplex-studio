@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dp1020bkd0pt7"
 path.s3tc="res://.godot/imported/SP_storage_furniture_BaseColor.png-fe5dc84e2ae3d02b98a89f27665f67d6.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_storage_furniture_BaseColor.png-fe5dc84e2ae3d02b98a89f27665f67d6.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_storage_furniture_BaseColor.png"
-dest_files=["res://.godot/imported/SP_storage_furniture_BaseColor.png-fe5dc84e2ae3d02b98a89f27665f67d6.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_storage_furniture_BaseColor.png-fe5dc84e2ae3d02b98a89f27665f67d6.s3tc.ctex", "res://.godot/imported/SP_storage_furniture_BaseColor.png-fe5dc84e2ae3d02b98a89f27665f67d6.etc2.ctex"]
 
 [params]
 

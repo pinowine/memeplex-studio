@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b37ikgyehu2vd"
 path.s3tc="res://.godot/imported/SP_fax_machine_Normal.png-2402a2d44e5f5b1846950290a6c3e5d0.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_fax_machine_Normal.png-2402a2d44e5f5b1846950290a6c3e5d0.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_fax_machine_Normal.png"
-dest_files=["res://.godot/imported/SP_fax_machine_Normal.png-2402a2d44e5f5b1846950290a6c3e5d0.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_fax_machine_Normal.png-2402a2d44e5f5b1846950290a6c3e5d0.s3tc.ctex", "res://.godot/imported/SP_fax_machine_Normal.png-2402a2d44e5f5b1846950290a6c3e5d0.etc2.ctex"]
 
 [params]
 

@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cscdhfrsp2fk"
 path.s3tc="res://.godot/imported/RT_crt_terminal_screen_Normal.png-825619e8f3ef06cf4103665dd45257fc.s3tc.ctex"
+path.etc2="res://.godot/imported/RT_crt_terminal_screen_Normal.png-825619e8f3ef06cf4103665dd45257fc.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/RT_crt_terminal_screen_Normal.png"
-dest_files=["res://.godot/imported/RT_crt_terminal_screen_Normal.png-825619e8f3ef06cf4103665dd45257fc.s3tc.ctex"]
+dest_files=["res://.godot/imported/RT_crt_terminal_screen_Normal.png-825619e8f3ef06cf4103665dd45257fc.s3tc.ctex", "res://.godot/imported/RT_crt_terminal_screen_Normal.png-825619e8f3ef06cf4103665dd45257fc.etc2.ctex"]
 
 [params]
 
