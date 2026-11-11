@@ -5,7 +5,6 @@ const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_recei
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const BODY_FONT = preload("res://assets/image/fonts/development_font.tres")
 const DEFAULT_WIDTH := 224.0
-const MINIMUM_HEIGHT := 272.0
 const PADDING := Vector2(16,16)
 const BOTTOM_PADDING := 20.0
 const GROUP_GAP := 16.0
@@ -184,7 +183,7 @@ func _layout_content() -> void:
 	if not note.is_empty():
 		y += GROUP_GAP
 		y += _add_text(note,Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"note")
-	var height := maxf(MINIMUM_HEIGHT,y+GROUP_GAP+FOOTER_HEIGHT+BOTTOM_PADDING)
+	var height := y+GROUP_GAP+FOOTER_HEIGHT+BOTTOM_PADDING
 	_barcode_rect = Rect2(Vector2(PADDING.x,height-BOTTOM_PADDING-FOOTER_HEIGHT),Vector2(minf(88,width*.48),BARCODE_HEIGHT))
 	_footer_rule = _barcode_rect.position.y-GROUP_GAP*.5
 	_barcode_digits = "%08d" % posmod(content_text().hash(),100000000)
