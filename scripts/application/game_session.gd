@@ -443,7 +443,6 @@ func _restart() -> void:
 	simulation.catalog = catalog
 	simulation.reset(simulation.seed_value + 1)
 	if not _bind_world(): return
-	if _shell != null: _shell.enter_game(false)
 	hud.configure(catalog)
 	atlas.clock.reset()
 	atlas.close_drawer()
@@ -451,6 +450,10 @@ func _restart() -> void:
 	_clock_anchor = atlas.clock.utc_seconds
 	_begin_startup()
 	_render()
+	desk.return_overview()
+	desk._monitor.set_mode("meme")
+	if _shell != null: _shell.enter_game(true)
+	_queue_startup_focus()
 
 func startup_ready() -> bool:
 	return simulation != null and (simulation.publish_count > 0 or _startup_complete)
@@ -647,10 +650,6 @@ func _tutorial_observe(action: String, data: Dictionary = {}) -> void:
 
 func _start_from_main() -> void:
 	_restart()
-	desk.return_overview()
-	desk._monitor.set_mode("meme")
-	_shell.enter_game(true)
-	_queue_startup_focus()
 
 func _load_from_main() -> void:
 	if _load():
