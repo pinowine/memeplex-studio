@@ -180,9 +180,9 @@
     "en": "Language cards"
   },
   "LOC_OPENING_LANGUAGE_CARD_TEXT": {
-    "source": "这里列出了这一堆中的所有卡片，可以单独查看每个卡片。先点开第一张。",
-    "zh_CN": "这里列出了这一堆中的所有卡片，可以单独查看每个卡片。先点开第一张。",
-    "en": "All the cards in this stack are listed here. You can inspect them one at a time. Click the first card."
+    "source": "这一摞的语言卡都在这里。先选中第一张，再看看它的悬停说明。",
+    "zh_CN": "这一摞的语言卡都在这里。先选中第一张，再看看它的悬停说明。",
+    "en": "Here are the language cards in this stack. Select the first card, then read its hover note."
   },
   "LOC_OPENING_LANGUAGE_DETAIL_TITLE": {
     "source": "卡片详情",
@@ -190,9 +190,9 @@
     "en": "Card details"
   },
   "LOC_OPENING_LANGUAGE_DETAIL_TEXT": {
-    "source": "一种很有趣的语言……上半张纸写着它的详情。之后的工作中，你也有机会接触更多的语言。",
-    "zh_CN": "一种很有趣的语言……这里写着它的详情。之后的工作中，你也有机会接触更多的语言。",
-    "en": "An interesting language… The details are right here. You’ll get to work with more languages later."
+    "source": "把鼠标停在卡片上，旁边的票据会显示这门语言的详情。之后还会遇到更多语言，先记住这个查看方法。",
+    "zh_CN": "把鼠标停在卡片上，旁边的票据会显示这门语言的详情。之后还会遇到更多语言，先记住这个查看方法。",
+    "en": "Hover over the card to read its language details on the note beside it. You can inspect other languages the same way."
   },
   "LOC_OPENING_LANGUAGE_RETURN_TITLE": {
     "source": "还有很多东西要学",
@@ -300,9 +300,9 @@
     "en": "Final expression"
   },
   "LOC_OPENING_EXPRESSION_TEXT": {
-    "source": "这里写的是你的模因要说什么。旁边的形态和预览告诉你，它会以什么样子出现。别只顾好看，别人还得看得懂。",
-    "zh_CN": "这里显示装配后的最终表达。文字自动生成，不能直接输入；要改变表达，就去装配补丁。",
-    "en": "This is the final expression. It updates automatically and cannot be typed over. Fit patches to change what the meme says."
+    "source": "这里显示装配后的最终表达。把鼠标移到文字上，可以查看语言、群体、话题和补丁怎样影响了这句话。想改变说法，就去调整语境或补丁。",
+    "zh_CN": "这里显示装配后的最终表达。把鼠标移到文字上，可以查看语言、群体、话题和补丁怎样影响了这句话。想改变说法，就去调整语境或补丁。",
+    "en": "This is the final expression. Hover over the text to see how language, audience, topics and patches shaped it. Adjust the context or patches to change the wording."
   },
   "LOC_OPENING_PREVIEW_TITLE": {
     "source": "预览与指纹",
@@ -310,9 +310,9 @@
     "en": "Base meme diagram"
   },
   "LOC_OPENING_PREVIEW_TEXT": {
-    "source": "这里可以查看表达的预览和特征。改了内容再看看，别等投放以后才发现自己说错了话。",
-    "zh_CN": "神经元图展示基模的结构。点击节点查看内容，补丁装上去以后也会出现在图里。",
-    "en": "The neuron diagram shows the base meme structure. Click a node to inspect its content. Installed patches also appear in the diagram."
+    "source": "神经元图展示基模的结构。装上的补丁也会出现在图里，沿着连线就能看出它们接在什么位置。",
+    "zh_CN": "神经元图展示基模的结构。装上的补丁也会出现在图里，沿着连线就能看出它们接在什么位置。",
+    "en": "The neuron diagram shows the base meme structure. Installed patches appear here too; follow the connections to see where they fit."
   },
   "LOC_OPENING_MODULE_TITLE": {
     "source": "给它装个模组",
@@ -354,15 +354,25 @@
     "zh_CN": "拖动实心点调整立场或语用，可以沿轴走，也可以斜着走。每格 0.1；离开空心起点花对应方向筹码，退回时归还。",
     "en": "Drag the solid dot along either axis or diagonally. Each step is 0.1. Moving away from the hollow origin uses direction tokens; moving back returns them."
   },
+  "LOC_OPENING_CONTEXT_REMOVE_TITLE": {
+    "source": "取出话题卡",
+    "zh_CN": "取出话题卡",
+    "en": "Take out a topic card"
+  },
+  "LOC_OPENING_CONTEXT_REMOVE_TEXT": {
+    "source": "先练习换话题。把槽里已经装好的话题卡拖到箭头指向的桌面空处。槽位会空出来，卡片仍然在你手里。",
+    "zh_CN": "先练习换话题。把槽里已经装好的话题卡拖到箭头指向的桌面空处。槽位会空出来，卡片仍然在你手里。",
+    "en": "Let’s practise changing topics. Drag the installed topic card onto the clear desk space indicated by the arrow. Its slot becomes empty, and you keep the card."
+  },
   "LOC_OPENING_CONTEXT_ITEM_TITLE": {
-    "source": "补上一张语境卡",
-    "zh_CN": "补上一张语境卡",
-    "en": "Add some context"
+    "source": "装回话题卡",
+    "zh_CN": "装回话题卡",
+    "en": "Put the topic card back"
   },
   "LOC_OPENING_CONTEXT_ITEM_TEXT": {
-    "source": "从桌上挑一张可用的语言、群体或话题卡，拖到对应的空位。让你的模因有个能开口说话的场合。",
-    "zh_CN": "从桌上挑一张可用的语言、群体或话题卡，拖到对应的空位。让你的模因有个能开口说话的场合。",
-    "en": "Drag an available language, group or topic card from the desk into its matching empty slot. Give your meme somewhere it can speak."
+    "source": "再把刚取出的那张话题卡拖回话题区，任意一个空槽都可以。模因会按装入的话题重新组织表达。",
+    "zh_CN": "再把刚取出的那张话题卡拖回话题区，任意一个空槽都可以。模因会按装入的话题重新组织表达。",
+    "en": "Drag the topic card you just removed into any empty topic slot. The meme will use that topic to shape its expression."
   },
   "LOC_OPENING_SPREAD_TITLE": {
     "source": "传播页",
@@ -545,9 +555,9 @@
     "en": "Patched expression"
   },
   "LOC_OPENING_MODULE_RESULT_TEXT": {
-    "source": "装好了，再看看最终表达。比如 This is Fine 装上反问补丁，会变成 This is Fine?补丁的内容可以点开查看，不能手写替换。",
-    "zh_CN": "再看最终表达，比较补丁前后的说法和含义。对照补丁会把两种处境摆在一起，反问补丁会改变追问的方式。你选的模因只会接受兼容的补丁。",
-    "en": "Check the final expression and compare its wording and meaning before and after the patch. Comparison places two situations side by side; a rhetorical question changes how the point is challenged. Each meme only accepts compatible patches."
+    "source": "再看最终表达，比较补丁前后的说法和含义。把鼠标移到文字上，悬停票据会列出表达的来源，也能看出补丁改了哪里。",
+    "zh_CN": "再看最终表达，比较补丁前后的说法和含义。把鼠标移到文字上，悬停票据会列出表达的来源，也能看出补丁改了哪里。",
+    "en": "Compare the final expression before and after the patch. Hover over the text to see its sources and what the patch changed."
   },
   "LOC_OPENING_EDITOR_CONTEXT_TITLE": {
     "source": "当前语境",

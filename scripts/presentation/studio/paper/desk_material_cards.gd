@@ -24,6 +24,10 @@ const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_
 class CardInteraction extends DeskPropInteraction:
 	signal dropped_at(id: StringName, point: Vector2, origin: Vector2)
 	var loose_only := false
+	func _input(event: InputEvent) -> void:
+		if input_event(event):
+			get_viewport().set_input_as_handled()
+
 	func _live_prop(id: StringName) -> bool:
 		if not super._live_prop(id): return false
 		if String(id).begins_with("stack/"): return true
