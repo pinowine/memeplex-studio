@@ -209,7 +209,7 @@ func _logical_target(id: String) -> Variant:
 		"context/layers": return _context_regions_target(editor.context_slice(), ["language", "group", "topics"])
 		"spread/tree": return editor._spread_tree
 		"spread/details": return editor._skill_details
-		"map/details": return page.atlas.drawer
+		"map/details": return page.atlas.hover_note
 		"editor/clips":
 			if not editor._pages.edit.is_visible_in_tree(): return page.desk._stack.tab_control("edit")
 			var slots: Array = editor._design.get("module_slots", [])
@@ -471,6 +471,8 @@ func _tutorial_reserved_areas() -> Array:
 	if hover.is_visible_in_tree(): rectangles.append(hover._receipt.get_global_rect())
 	var source_hover: Control = page.hud.design_workbench()._source_hover
 	if source_hover.is_visible_in_tree(): rectangles.append(source_hover.get_global_rect())
+	if page.atlas.hover_note.is_visible_in_tree():
+		rectangles.append(_tutorial_project_rect(page.atlas.hover_note))
 	if page.atlas.drawer.is_visible_in_tree():
 		rectangles.append(_tutorial_project_rect(page.atlas.drawer))
 	var reader: Control = page.desk._slot_reader
