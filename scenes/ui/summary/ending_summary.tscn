@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/design_print_paper.png" id="1"]
-[ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/portrait_67.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/portrait_67.svg" id="2"]
 
 [node name="EndingUI" type="Control"]
 anchors_preset = 15
