@@ -39,6 +39,12 @@ const HOVER_DESCRIPTIONS := {
   "support": "LOC_RECEIPT_CARD_SUPPORT",
   "opposition": "LOC_RECEIPT_CARD_OPPOSITION"
 }
+const STACK_DESCRIPTIONS := {
+  "language": "LOC_RECEIPT_STACK_LANGUAGE",
+  "group": "LOC_RECEIPT_STACK_GROUP",
+  "topic": "LOC_RECEIPT_STACK_TOPIC",
+  "module": "LOC_RECEIPT_STACK_MODULE"
+}
 const COMMENTARY := {
   "language_ninghua": "LOC_CARD_LANGUAGE_NINGHUA_COMMENTARY",
   "language_shiohara": "LOC_CARD_LANGUAGE_SHIOHARA_COMMENTARY",
@@ -81,3 +87,6 @@ static func apply_to(details: Dictionary) -> void:
 
 static func hover_description(id: String) -> String:
  return DeskLocalization.source(str(HOVER_DESCRIPTIONS.get(id, "")))
+
+static func stack_description(kind: String) -> String:
+ return DeskLocalization.source(str(STACK_DESCRIPTIONS.get(kind, "")))

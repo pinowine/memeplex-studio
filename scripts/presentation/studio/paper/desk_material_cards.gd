@@ -970,6 +970,7 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	var key := String(_props._hit_prop(viewport_point))
 	if key.begins_with("stack/"):
 		var details := stack_details(key.trim_prefix("stack/"))
+		details.hover_description = CardCopy.stack_description(str(details.kind))
 		details.gesture = DeskLocalization.source("LOC_CLICK_TO_OPEN_STACK_97B40CE3")
 		return details
 	if not _cards.has(key): return {}

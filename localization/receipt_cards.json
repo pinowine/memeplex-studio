@@ -153,5 +153,25 @@
     "source": "对一个人、一种主张或一个行动持否定态度。",
     "zh_CN": "对一个人、一种主张或一个行动持否定态度。",
     "en": "Disagreement with a person, position or action."
+  },
+  "LOC_RECEIPT_STACK_LANGUAGE": {
+    "source": "由共同词语和语法组成的表达方式，让使用同一种语言的人彼此理解。",
+    "zh_CN": "由共同词语和语法组成的表达方式，让使用同一种语言的人彼此理解。",
+    "en": "Shared words and grammar through which speakers of the same language understand one another."
+  },
+  "LOC_RECEIPT_STACK_GROUP": {
+    "source": "因生活经历、身份或兴趣相近而形成的人群。",
+    "zh_CN": "因生活经历、身份或兴趣相近而形成的人群。",
+    "en": "People grouped by similar experiences, identities or interests."
+  },
+  "LOC_RECEIPT_STACK_TOPIC": {
+    "source": "一段谈话或表达所围绕的事情，例如工作、教育或日常开销。",
+    "zh_CN": "一段谈话或表达所围绕的事情，例如工作、教育或日常开销。",
+    "en": "The subject of a conversation or expression, such as work, education or everyday expenses."
+  },
+  "LOC_RECEIPT_STACK_MODULE": {
+    "source": "表达补丁包含反问、对照、释义、接话和退出等说话方式。",
+    "zh_CN": "表达补丁包含反问、对照、释义、接话和退出等说话方式。",
+    "en": "Expression patches represent ways of speaking, including rhetorical questions, comparisons, explanations, continuations and exits."
   }
 }
