@@ -45,6 +45,45 @@ const STACK_DESCRIPTIONS := {
   "topic": "LOC_RECEIPT_STACK_TOPIC",
   "module": "LOC_RECEIPT_STACK_MODULE"
 }
+const HOVER_NOTES := {
+  "language_ninghua": "LOC_RECEIPT_CARD_NOTE_LANGUAGE_NINGHUA",
+  "language_shiohara": "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SHIOHARA",
+  "language_seowon": "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SEOWON",
+  "group_commuters": "LOC_RECEIPT_CARD_NOTE_GROUP_COMMUTERS",
+  "group_students": "LOC_RECEIPT_CARD_NOTE_GROUP_STUDENTS",
+  "group_culture_fans": "LOC_RECEIPT_CARD_NOTE_GROUP_CULTURE_FANS",
+  "topic_policy": "LOC_RECEIPT_CARD_NOTE_TOPIC_POLICY",
+  "topic_cost_of_living": "LOC_RECEIPT_CARD_NOTE_TOPIC_COST_OF_LIVING",
+  "topic_work": "LOC_RECEIPT_CARD_NOTE_TOPIC_WORK",
+  "topic_platform_tools": "LOC_RECEIPT_CARD_NOTE_TOPIC_PLATFORM_TOOLS",
+  "topic_sport": "LOC_RECEIPT_CARD_NOTE_TOPIC_SPORT",
+  "topic_education": "LOC_RECEIPT_CARD_NOTE_TOPIC_EDUCATION",
+  "topic_identity": "LOC_RECEIPT_CARD_NOTE_TOPIC_IDENTITY",
+  "topic_language": "LOC_RECEIPT_CARD_NOTE_TOPIC_LANGUAGE",
+  "topic_entertainment": "LOC_RECEIPT_CARD_NOTE_TOPIC_ENTERTAINMENT",
+  "topic_archive": "LOC_RECEIPT_CARD_NOTE_TOPIC_ARCHIVE",
+  "topic_trust": "LOC_RECEIPT_CARD_NOTE_TOPIC_TRUST",
+  "topic_community": "LOC_RECEIPT_CARD_NOTE_TOPIC_COMMUNITY",
+  "module_stance": "LOC_RECEIPT_CARD_NOTE_MODULE_STANCE",
+  "module_relation": "LOC_RECEIPT_CARD_NOTE_MODULE_RELATION",
+  "module_ritual": "LOC_RECEIPT_CARD_NOTE_MODULE_RITUAL",
+  "module_boundary": "LOC_RECEIPT_CARD_NOTE_MODULE_BOUNDARY",
+  "module_shared_world": "LOC_RECEIPT_CARD_NOTE_MODULE_SHARED_WORLD",
+  "freedom": "LOC_RECEIPT_CARD_NOTE_FREEDOM",
+  "authority": "LOC_RECEIPT_CARD_NOTE_AUTHORITY",
+  "equality": "LOC_RECEIPT_CARD_NOTE_EQUALITY",
+  "hierarchy": "LOC_RECEIPT_CARD_NOTE_HIERARCHY",
+  "sincere": "LOC_RECEIPT_CARD_NOTE_SINCERE",
+  "ironic": "LOC_RECEIPT_CARD_NOTE_IRONIC",
+  "support": "LOC_RECEIPT_CARD_NOTE_SUPPORT",
+  "opposition": "LOC_RECEIPT_CARD_NOTE_OPPOSITION"
+}
+const STACK_NOTES := {
+  "language": "LOC_RECEIPT_STACK_NOTE_LANGUAGE",
+  "group": "LOC_RECEIPT_STACK_NOTE_GROUP",
+  "topic": "LOC_RECEIPT_STACK_NOTE_TOPIC",
+  "module": "LOC_RECEIPT_STACK_NOTE_MODULE"
+}
 const COMMENTARY := {
   "language_ninghua": "LOC_CARD_LANGUAGE_NINGHUA_COMMENTARY",
   "language_shiohara": "LOC_CARD_LANGUAGE_SHIOHARA_COMMENTARY",
@@ -84,9 +123,16 @@ static func apply_to(details: Dictionary) -> void:
  if DESCRIPTIONS.has(id): details.description = DESCRIPTIONS[id]
  details.commentary = COMMENTARY.get(id, "")
  details.hover_description = hover_description(id)
+ details.hover_note = hover_note(id)
 
 static func hover_description(id: String) -> String:
  return DeskLocalization.source(str(HOVER_DESCRIPTIONS.get(id, "")))
 
 static func stack_description(kind: String) -> String:
  return DeskLocalization.source(str(STACK_DESCRIPTIONS.get(kind, "")))
+
+static func hover_note(id: String) -> String:
+ return DeskLocalization.source(str(HOVER_NOTES.get(id, "")))
+
+static func stack_note(kind: String) -> String:
+ return DeskLocalization.source(str(STACK_NOTES.get(kind, "")))
