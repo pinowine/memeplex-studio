@@ -18,6 +18,7 @@ const MaterialCards := preload("res://scripts/presentation/studio/paper/desk_mat
 const FaxStation := preload("res://scripts/presentation/studio/devices/fax/desk_fax_station.gd")
 const PaperStyle := preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const FixedInk := preload("res://shaders/studio/desk_fixed_light.gdshader")
+const GrainShader := preload("res://shaders/studio/desk_grain.gdshader")
 const TornHover := preload("res://shaders/ui/desk_torn_hover.gdshader")
 const PRINTER_CROP := Rect2(90, 45, 1130, 930)
 const PRINTER_SLOT := Rect2(334, 932, 646, 4)
@@ -620,10 +621,8 @@ func _add_grain(panel: PanelContainer) -> void:
 	grain.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	grain.stretch_mode = TextureRect.STRETCH_TILE
 	grain.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	var shader := Shader.new()
-	shader.code = "shader_type canvas_item;\nvoid fragment() { COLOR = texture(TEXTURE, UV * 4.0) * COLOR; }"
 	var material := ShaderMaterial.new()
-	material.shader = shader
+	material.shader = GrainShader
 	grain.material = material
 	grain.modulate.a = 0.13
 	grain.mouse_filter = Control.MOUSE_FILTER_IGNORE
