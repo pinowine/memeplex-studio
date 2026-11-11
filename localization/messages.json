@@ -1,4 +1,39 @@
 {
+  "LOC_EVENT_DOCUMENT_META": {
+    "source": "助手收集 · H%s · %s",
+    "zh_CN": "助手收集 · H%s · %s",
+    "en": "Collected by assistant · H%s · %s"
+  },
+  "LOC_EVENT_DOCUMENT_IMPACT": {
+    "source": "影响方向",
+    "zh_CN": "影响方向",
+    "en": "Effect overview"
+  },
+  "LOC_EVENT_DOCUMENT_EFFECTS": {
+    "source": "具体影响",
+    "zh_CN": "具体影响",
+    "en": "Effects"
+  },
+  "LOC_EVENT_DOCUMENT_MATERIALS": {
+    "source": "附带材料",
+    "zh_CN": "附带材料",
+    "en": "Enclosed materials"
+  },
+  "LOC_EVENT_ORIGIN_WORLD": {
+    "source": "世界事件",
+    "zh_CN": "世界事件",
+    "en": "World event"
+  },
+  "LOC_EVENT_ORIGIN_TRANSMISSION": {
+    "source": "传播事件",
+    "zh_CN": "传播事件",
+    "en": "Transmission event"
+  },
+  "LOC_EVENT_ORIGIN_ENVIRONMENT": {
+    "source": "环境模因",
+    "zh_CN": "环境模因",
+    "en": "Environmental meme"
+  },
   "LOC_LOADING": {
     "source": "加载中…",
     "zh_CN": "加载中…",
@@ -336,13 +371,13 @@
   },
   "LOC_EXPAND_COLLAPSE_EXECUTION_DETAILS_57B235E9": {
     "source": "展开 / 收起执行详情",
-    "zh_CN": "展开 / 收起执行详情",
-    "en": "Expand / Collapse execution details"
+    "zh_CN": "具体影响",
+    "en": "Effects"
   },
   "LOC_READ_CONTINUE_OBSERVING_8DF4776D": {
     "source": "已阅读，继续观察",
-    "zh_CN": "已阅读，继续观察",
-    "en": "Read; continue observing"
+    "zh_CN": "已阅，继续观察",
+    "en": "Read and continue"
   },
   "LOC_CREATE_AGAIN_WITH_WHAT_YOU_LEARNED_D5522A23": {
     "source": "带着发现再创作",
@@ -1451,7 +1486,7 @@
   },
   "LOC_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_ADOPT_6CA6F2FB": {
     "source": "已曝光而未采用者新增采用 %d。",
-    "zh_CN": "已曝光而未采用者新增采用 %d。",
+    "zh_CN": "新增采用 %d 人（此前已曝光但尚未采用）。",
     "en": "%d previously exposed non-adopters now adopt."
   },
   "LOC_S_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_BA3D841D": {
@@ -1461,8 +1496,8 @@
   },
   "LOC_EXTERNAL_REWRITES_SEMANTIC_DRIFT_FROM_THE_FIXED_35C3A40D": {
     "source": "外部改写相对固定家族锚点的语义偏移设为 %.2f；下一次改写按分家规则处理。",
-    "zh_CN": "外部改写相对固定家族锚点的语义偏移设为 %.2f；下一次改写按分家规则处理。",
-    "en": "External rewrites' semantic drift from the fixed family anchor is set to %.2f. The next rewrite follows family-splitting rules."
+    "zh_CN": "外部改写相对固定家族锚点的语义偏移：%.2f。下一次改写按分家规则处理。",
+    "en": "External rewrite drift from the fixed family anchor: %.2f. The next rewrite follows the family-splitting rules."
   },
   "LOC_NO_VERSIONS_CREATED_BECAUSE_THE_REWRITE_COUNT_0A2A9637": {
     "source": "改写数量为零，不生成版本。",
@@ -1471,13 +1506,13 @@
   },
   "LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C": {
     "source": "再利用许可受限：这次规范内的重混未产生版本；许可不是对外部世界的强制控制。",
-    "zh_CN": "再利用许可受限：这次规范内的重混未产生版本；许可不是对外部世界的强制控制。",
-    "en": "Reuse permission is restricted: this rules-compliant remix produced no version. Permission does not grant enforced control over the outside world."
+    "zh_CN": "再利用许可受限，本次重混未生成版本；该许可不能强制约束外部世界。",
+    "en": "Reuse permission is restricted, so this remix produced no version. Permission cannot force the outside world to comply."
   },
   "LOC_S_FATIGUE_DECREASES_BY_F_AND_THE_40D510A3": {
     "source": "%s：疲劳降低 %.2f，旧表达重新进入使用；不恢复对外部分家的控制。",
-    "zh_CN": "%s：疲劳降低 %.2f，旧表达重新进入使用；不恢复对外部分家的控制。",
-    "en": "%s: fatigue decreases by %.2f and the old expression returns to use; control of external offshoot families is not restored."
+    "zh_CN": "%s：疲劳最多降低 %.2f；不会恢复对外部分家的控制。",
+    "en": "%s: fatigue decreases by up to %.2f. This does not restore control of external offshoot families."
   },
   "LOC_ERROR_UNREGISTERED_EFFECT_D26EA480": {
     "source": "错误：效果未登记。",
@@ -2746,8 +2781,8 @@
   },
   "LOC_CLICK_EXPOSED_TABS_TO_BROWSE_SCROLL_TO_526015E9": {
     "source": "点击露出的页签翻阅；滚轮继续翻更早或更新的来信。",
-    "zh_CN": "点击露出的页签翻阅；滚轮继续翻更早或更新的来信。",
-    "en": "Click exposed tabs to browse; scroll to older or newer messages."
+    "zh_CN": "点页签翻阅，或用滚轮查看前后各封来信。",
+    "en": "Choose a tab, or use the mouse wheel to browse older and newer messages."
   },
   "LOC_INTELLIGENCE_LACKS_INSTANCE_ID_TITLE_OR_BODY_3CDE1AF6": {
     "source": "情报缺少 instance_id、标题或正文。",
@@ -2916,8 +2951,8 @@
   },
   "LOC_INTELLIGENCE_EXCERPT_COLLECTED_BY_ASSISTANT_H_S_E1E0CBCC": {
     "source": "情报摘录 / 助手收集  ·  H%s / %s",
-    "zh_CN": "情报摘录 / 助手收集  ·  H%s / %s",
-    "en": "Intelligence excerpt / Collected by assistant  ·  H%s / %s"
+    "zh_CN": "助手收集 · H%s · %s",
+    "en": "Collected by assistant · H%s · %s"
   },
   "LOC_UNATTRIBUTED_9D4F610E": {
     "source": "未标出处",
@@ -2926,8 +2961,8 @@
   },
   "LOC_S_EFFECT_EXCERPT_S_ACTUAL_EFFECTS_S_108C4DB2": {
     "source": "%s\n\n作用摘录\n%s\n\n实际作用\n%s\n\n67：%s",
-    "zh_CN": "%s\n\n作用摘录\n%s\n\n实际作用\n%s\n\n67：%s",
-    "en": "%s\n\nEffect excerpt\n%s\n\nActual effects\n%s\n\n67: %s"
+    "zh_CN": "%s\n\n影响方向\n%s\n\n具体影响\n%s\n\n67：%s",
+    "en": "%s\n\nEffect overview\n%s\n\nEffects\n%s\n\n67: %s"
   },
   "LOC_NO_EFFECT_SUMMARY_PROVIDED_81137404": {
     "source": "未提供作用摘要",

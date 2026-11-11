@@ -12,6 +12,7 @@ const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwri
 
 const StarterContextCard = preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
 const PaperSurface = preload("res://scripts/presentation/studio/paper/desk_popup_paper.gd")
+const EventDocument = preload("res://scripts/presentation/studio/paper/desk_event_document.gd")
 
 class PencilRule extends Control:
 	func _init() -> void:
@@ -31,6 +32,7 @@ var _paper_holder: Control
 var _surface: Control
 var _title_label: Label
 var _body_label: RichTextLabel
+var _event_document: ScrollContainer
 var _rule: Control
 var _stack_host: Control
 var _stack_rule: Control
@@ -130,6 +132,7 @@ func inspection() -> Dictionary:
 		"mouse_filter":mouse_filter, "paper_mouse_filter":_paper_holder.mouse_filter if _built else Control.MOUSE_FILTER_IGNORE,
 		"body_rect":_viewport_bounds(_body_label) if _built else Rect2(), "body_plain_text":not _body_label.bbcode_enabled if _built else true, "structured_body":true, "section_count":_body_blocks.size(),
 		"scroll_active":_body_label.scroll_active if _built else false, "font_bound":_font != null, "paper_texture_bound":_paper != null,
+		"event_document":_event_document.inspection() if _built and _event_document.visible else {},
 		"source_pixels_per_world_unit":SOURCE_PIXELS_PER_UNIT, "slide_duration":SLIDE_DURATION}
 
 func _build() -> void:
@@ -168,6 +171,10 @@ func _build() -> void:
 	_body_label.add_theme_constant_override("line_separation", 6)
 	_body_label.add_theme_constant_override("paragraph_separation", 10)
 	_paper_holder.add_child(_body_label)
+	_event_document = EventDocument.new()
+	_event_document.name = "EventDocument"
+	_event_document.hide()
+	_paper_holder.add_child(_event_document)
 	_choice_scroll = ScrollContainer.new()
 	_choice_scroll.name = "PaperChoices"
 	_choice_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -197,7 +204,8 @@ func _layout_paper() -> void:
 	var margin := clampf(view.size.x * .018, 12.0, 28.0)
 	var top := clampf(view.size.y * .055, 18.0, 48.0)
 	var starter := bool(_details.get("starter_pending", false))
-	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
+	var event_document := str(_details.get("document_kind", "")) == "event"
+	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter or event_document else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
 	_target_rect = Rect2(Vector2(view.end.x - margin - dimensions.x, view.position.y + top).round(), dimensions)
 	_offscreen_rect = Rect2(Vector2(view.end.x + margin, _target_rect.position.y).round(), dimensions)
 	# This is a screen-layer paper: whole-pixel poses keep fibers and ink sharp.
@@ -242,6 +250,10 @@ func _layout_paper() -> void:
 	_choice_box.size = Vector2(content_width,natural_height)
 	_body_label.position = Vector2(padding,body_y)
 	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(34 if choice_height>0 else 28)))
+	_body_label.visible = not event_document
+	_event_document.visible = event_document
+	_event_document.position = _body_label.position
+	_event_document.size = _body_label.size
 	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
 	var stack_only := has_stack and _body.is_empty()
 	_stack_host.visible = has_stack
@@ -264,7 +276,7 @@ func _layout_paper() -> void:
 		if changed: stack_layout_changed.emit()
 
 func text_layout_inspection() -> Dictionary:
-	return {"complete_title":_title,"full_title_in_body":_full_title_in_body,"choices_scrollable":_choice_scroll != null and _choice_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_AUTO,"choice_count":_choice_buttons.size(),"rendered_body":_body_label.text if _built else ""}
+	return {"complete_title":_title,"full_title_in_body":_full_title_in_body,"choices_scrollable":_choice_scroll != null and _choice_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_AUTO,"choice_count":_choice_buttons.size(),"rendered_body":_body if str(_details.get("document_kind", "")) == "event" else (_body_label.text if _built else "")}
 
 
 func _animate_to(target: float) -> void:
@@ -374,6 +386,7 @@ func refresh_locale() -> void:
 
 func _refresh_translation(reset_scroll: bool) -> void:
 	var scroll := _body_label.get_v_scroll_bar().value
+	var document_scroll := _event_document.scroll_vertical
 	_title = DeskLocalization.text(_text(_details,"title"))
 	var paragraphs := PackedStringArray()
 	_body_blocks.clear()
@@ -386,10 +399,15 @@ func _refresh_translation(reset_scroll: bool) -> void:
 		if not section is Dictionary: continue
 		var heading := DeskLocalization.text(_text(section,"title"))
 		var content := _localized_block(_text(section,"body","text"))
+		if str(section.get("role", "")) == "impact": content = _localized_impact(_text(section,"body","text"))
 		var paragraph := heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content
 		if not paragraph.is_empty():
-			paragraphs.append(paragraph)
-			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", ""))})
+			if str(section.get("role", "")) == "effects":
+				for id: String in _details.get("display_terms", {}):
+					var term := RegEx.create_from_string("\\b" + id + "\\b")
+					content = term.sub(content, DeskLocalization.text(str(_details.display_terms[id])), true)
+			paragraphs.append(heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content)
+			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source"))})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""
@@ -398,13 +416,20 @@ func _refresh_translation(reset_scroll: bool) -> void:
 		if not _choice_buttons[index].has_node("StarterCard"):
 			_choice_buttons[index].text = _choice_text(_choice_rows[index],contacts)
 	_layout_paper()
-	if reset_scroll: _body_label.scroll_to_line(0)
-	else: _body_label.get_v_scroll_bar().set_deferred("value",scroll)
+	if reset_scroll:
+		_body_label.scroll_to_line(0)
+		_event_document.scroll_vertical = 0
+	else:
+		_body_label.get_v_scroll_bar().set_deferred("value",scroll)
+		_event_document.set_deferred("scroll_vertical", document_scroll)
 
 func _render_body() -> void:
-	var key := (_title if _full_title_in_body else "") + "\n" + _body
+	var key := str(_details.get("document_kind", "")) + "\n" + (_title if _full_title_in_body else "") + "\n" + _body
 	if _rendered_body_key == key: return
 	_rendered_body_key = key
+	if str(_details.get("document_kind", "")) == "event":
+		_event_document.set_blocks(_body_blocks, _title if _full_title_in_body else "")
+		return
 	_body_label.clear()
 	if _full_title_in_body:
 		_write_heading(_title)
@@ -457,3 +482,10 @@ func _localized_block(source: String) -> String:
 	var exact := str(TranslationServer.translate(StringName(source)))
 	if exact != source: return exact
 	return "\n".join(DeskLocalization.lines(Array(source.split("\n",true))))
+
+func _localized_impact(source: String) -> String:
+	var rows := PackedStringArray()
+	for part: String in source.split("  ", false):
+		var label := part.trim_suffix("↑↑").trim_suffix("↓↓").trim_suffix("↑").trim_suffix("↓").trim_suffix("—")
+		rows.append(DeskLocalization.text(label) + part.substr(label.length()) if label != part else _localized_block(part))
+	return "\n".join(rows)

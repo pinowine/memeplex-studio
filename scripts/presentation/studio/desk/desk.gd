@@ -1241,6 +1241,10 @@ func _component_details() -> Dictionary:
 		var mode := "archive" if _component_target == "fax/archive" else ("phonebook" if _component_target == "phonebook" else "phone")
 		var details: Dictionary = _fax.component_details(mode)
 		if bool(details.get("starter_pending", false)): return details
+		if str(details.get("document_kind", "")) == "event":
+			details.display_terms = {}
+			for group: Resource in _page.catalog.groups: details.display_terms[str(group.id)] = str(group.title)
+			return details
 		var paragraphs := PackedStringArray()
 		for key: String in ["description","npc_text","status","number","log","impact","effect","mentor","gesture"]:
 			var text := str(details.get(key,""))
