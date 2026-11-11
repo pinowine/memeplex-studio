@@ -29,3 +29,32 @@ Official source: https://github.com/lxgw/LxgwWenKai
 Bundled font: assets/image/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf
 The font is redistributed unchanged. Full copyright notices, Reserved Font Names,
 additional permission and licence: assets/image/fonts/lxgw-wenkai/OFL.txt
+
+Noto Sans SC Variable: Copyright 2014-2021 Adobe, with Reserved Font Name
+"Source".
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/notofonts/noto-cjk
+Bundled font: assets/image/fonts/noto-sans-sc/NotoSansSC-VF.ttf
+The font is redistributed unchanged. Full licence: assets/image/fonts/noto-sans-sc/OFL.txt
+
+Source Han Serif CN: Copyright 2017 Adobe Systems Incorporated, with Reserved
+Font Name "Source".
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/adobe-fonts/source-han-serif
+Bundled font: assets/image/fonts/source-han-serif-cn/SourceHanSerifCN-SemiBold.otf
+The font is redistributed unchanged. Full licence:
+assets/image/fonts/source-han-serif-cn/OFL.txt
+
+Noto Sans Variable: Copyright 2022 The Noto Project Authors.
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/notofonts/latin-greek-cyrillic
+Distribution: https://github.com/google/fonts/tree/main/ofl/notosans
+Bundled font: assets/image/fonts/noto-sans/NotoSans-VF.ttf
+The font is redistributed unchanged. Full licence: assets/image/fonts/noto-sans/OFL.txt
+
+Noto Emoji Variable: Copyright 2013 Google LLC.
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/googlefonts/noto-emoji
+Distribution: https://github.com/google/fonts/tree/main/ofl/notoemoji
+Bundled font: assets/image/fonts/noto-emoji/NotoEmoji-VF.ttf
+The font is redistributed unchanged. Full licence: assets/image/fonts/noto-emoji/OFL.txt

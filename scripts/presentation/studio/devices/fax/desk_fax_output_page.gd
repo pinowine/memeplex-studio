@@ -1,6 +1,7 @@
 extends Control
 
 const FiberTexture := preload("res://assets/image/textures/studio/desk/paper_texture.png")
+const PRINT_HEADING_FONT := preload("res://assets/image/fonts/print_heading_font.tres")
 const SOURCE_PIXELS_PER_UNIT := 3.0
 
 class FiberSurface extends Control:
@@ -57,6 +58,7 @@ func configure(value: Dictionary, ui_theme: Theme) -> void:
 		add_child(_rule)
 		_title = Label.new()
 		_title.name = "HandwrittenHeadline"
+		_title.add_theme_font_override("font", PRINT_HEADING_FONT)
 		_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		_title.add_theme_font_size_override("font_size", 12)

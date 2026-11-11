@@ -1,13 +1,11 @@
 extends RefCounted
 
 const FONT := preload("res://assets/image/fonts/handwritten_font.tres")
-static var BOLD_FONT: FontVariation = make_bold(FONT)
-
-static func make_bold(font: Font) -> FontVariation:
-	var result := FontVariation.new()
-	result.base_font = font
-	result.variation_embolden = 0.65
-	return result
+const BODY_FONT := preload("res://assets/image/fonts/development_font.tres")
+const MEDIUM_FONT := preload("res://assets/image/fonts/body_medium_font.tres")
+const SEMIBOLD_FONT := preload("res://assets/image/fonts/body_semibold_font.tres")
+const BOLD_FONT := preload("res://assets/image/fonts/body_bold_font.tres")
+const HEADING_FONT := preload("res://assets/image/fonts/print_heading_font.tres")
 
 static func apply_to(root: Node) -> void:
 	var themes := {}
@@ -22,17 +20,24 @@ static func _apply(node: Node, themes: Dictionary) -> void:
 			var key := control.theme.get_instance_id()
 			if not themes.has(key):
 				var paper_theme := control.theme.duplicate() as Theme
-				paper_theme.default_font = FONT
-				# Hover receipts keep their printed type while desk text uses handwriting.
+				paper_theme.default_font = BODY_FONT
 				for type_name in paper_theme.get_font_type_list():
 					if type_name == "TooltipLabel": continue
 					for font_name in paper_theme.get_font_list(type_name):
-						paper_theme.set_font(font_name, type_name, BOLD_FONT if "bold" in font_name else FONT)
+						var font: Font = BOLD_FONT if "bold" in font_name else BODY_FONT
+						if type_name in ["PrintHeading", "DemoHeading"]: font = HEADING_FONT
+						elif type_name in ["Button", "OptionButton"]: font = MEDIUM_FONT
+						elif type_name == "TabBar": font = SEMIBOLD_FONT
+						paper_theme.set_font(font_name, type_name, font)
 				themes[key] = paper_theme
 			control.theme = themes[key]
 		if control is RichTextLabel:
 			for name in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:
-				control.add_theme_font_override(name, BOLD_FONT if "bold" in name else FONT)
+				control.add_theme_font_override(name, BOLD_FONT if "bold" in name else BODY_FONT)
 		else:
-			control.add_theme_font_override("font", BOLD_FONT if bool(control.get_meta("paper_emphasis", false)) else FONT)
+			var font: Font = BODY_FONT
+			if control is TabBar: font = FONT
+			elif control is Button: font = MEDIUM_FONT
+			elif bool(control.get_meta("paper_emphasis", false)) or control.theme_type_variation in ["PrintHeading", "DemoHeading"]: font = HEADING_FONT
+			control.add_theme_font_override("font", font)
 	for child in node.get_children(): _apply(child, themes)

@@ -23,6 +23,9 @@ signal event_output_delivered(record: Dictionary, page: Control)
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
 const StarterContextCard := preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
+const BODY_FONT := preload("res://assets/image/fonts/development_font.tres")
+const BODY_BOLD_FONT := preload("res://assets/image/fonts/body_bold_font.tres")
+const BODY_SEMIBOLD_FONT := preload("res://assets/image/fonts/body_semibold_font.tres")
 
 const CallSession := preload("res://scripts/presentation/studio/devices/fax/fax_call_session.gd")
 const OutputController := preload("res://scripts/presentation/studio/devices/fax/fax_output_controller.gd")
@@ -240,12 +243,14 @@ func hover_details(viewport_point: Vector2) -> String:
 
 
 func _apply_handwriting() -> void:
-	var path := "res://assets/image/fonts/handwritten_font.tres"
-	if not ResourceLoader.exists(path): return
-	_handwritten_font = load(path) as Font
-	if _handwritten_font == null: return
+	_handwritten_font = preload("res://assets/image/fonts/handwritten_font.tres")
 	var paper_theme := theme.duplicate() as Theme if theme != null else Theme.new()
-	paper_theme.default_font = _handwritten_font
+	paper_theme.default_font = BODY_FONT
+	paper_theme.set_font("font", "Button", BODY_SEMIBOLD_FONT)
+	for slot in ["normal_font", "italics_font", "mono_font"]:
+		paper_theme.set_font(slot, "RichTextLabel", BODY_FONT)
+	for slot in ["bold_font", "bold_italics_font"]:
+		paper_theme.set_font(slot, "RichTextLabel", BODY_BOLD_FONT)
 	theme = paper_theme
 	_output.set_page_theme(paper_theme)
 

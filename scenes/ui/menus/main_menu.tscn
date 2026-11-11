@@ -46,6 +46,7 @@ theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="MenuPanel/Content"]
 layout_mode = 2
+theme_type_variation = &"DemoHeading"
 text = "LOC_MEMEPLEX_STUDIO_3D1D137F"
 theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
@@ -97,6 +98,7 @@ theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
+theme_type_variation = &"DemoHeading"
 text = "LOC_SETTINGS_DF3D58C7"
 theme_override_font_sizes/font_size = 27
 
