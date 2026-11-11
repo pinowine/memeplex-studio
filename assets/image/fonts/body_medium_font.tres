@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=3 format=3]
+
+[ext_resource type="FontFile" path="res://assets/image/fonts/noto-sans-sc/NotoSansSC-VF.ttf" id="1_font"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/text_fallback_font.tres" id="fallback"]
+
+[resource]
+base_font = ExtResource("1_font")
+variation_opentype = { 2003265652: 500.0 }
+fallbacks = Array[Font]([ExtResource("fallback")])

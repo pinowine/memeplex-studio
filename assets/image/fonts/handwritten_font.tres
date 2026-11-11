@@ -1,7 +1,9 @@
-[gd_resource type="FontVariation" load_steps=2 format=3]
+[gd_resource type="FontVariation" load_steps=3 format=3]
 
 [ext_resource type="FontFile" path="res://assets/image/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf" id="1_font"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/text_fallback_font.tres" id="fallback"]
 
 [resource]
 base_font = ExtResource("1_font")
 variation_embolden = 0.05
+fallbacks = Array[Font]([ExtResource("fallback")])

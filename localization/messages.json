@@ -11321,8 +11321,8 @@
   },
   "LOC_GUIDANCE_FIRST_FAX": {
     "source": "纸出来了。带来的材料有两种收法：按 Enter 快捷收取，或把纸上的卡片拖到卡片摞／工作纸。只读传真不会取走材料；先拿好，再继续传播。",
-    "zh_CN": "纸出来了。带卡片的事件打印出来后，游戏时间会暂停，等待你收取。\n↵ Enter：快捷收取材料。\n↗ 拖拽：沿箭头把卡片拖到对应卡片摞，也可拖到工作纸。\n收齐待领卡片后解除材料暂停；其他暂停状态仍保留。",
-    "en": "The fax is here. When an event with cards is printed, game time pauses until you collect them.\n↵ Enter: collect the materials quickly.\n↗ Drag: follow the arrow to the matching card stack, or drop a card onto a work sheet.\nCollecting all waiting cards releases this pause; other pause states still apply."
+    "zh_CN": "纸出来了。带卡片的事件打印出来后，游戏时间会暂停，等待你收取。\n⏎ Enter：快捷收取材料。\n↗ 拖拽：沿箭头把卡片拖到对应卡片摞，也可拖到工作纸。\n收齐待领卡片后解除材料暂停；其他暂停状态仍保留。",
+    "en": "The fax is here. When an event with cards is printed, game time pauses until you collect them.\n⏎ Enter: collect the materials quickly.\n↗ Drag: follow the arrow to the matching card stack, or drop a card onto a work sheet.\nCollecting all waiting cards releases this pause; other pause states still apply."
   },
   "LOC_GUIDANCE_FIRST_COMPETITOR": {
     "source": "地图上出现了别人的模因。它们也在争取注意力；不同颜色区分家族，空心圈表示出生或投放位置，实心点是各国采用人数的抽样。别把点的数量当成精确人数。",

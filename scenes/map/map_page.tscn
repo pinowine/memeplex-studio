@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/map/country_label.tscn" id="5"]
 [ext_resource type="Theme" uid="uid://c2ckoq3sb42ka" path="res://data/presentation/ui/map_theme.tres" id="6"]
 [ext_resource type="Material" path="res://materials/studio/clock_material.tres" id="clock"]
-[ext_resource type="SystemFont" path="res://assets/image/fonts/print_emoji_font.tres" id="emoji"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/print_emoji_font.tres" id="emoji"]
 [ext_resource type="Material" path="res://materials/map/map_finish_material.tres" id="finish"]
 [ext_resource type="Texture2D" uid="uid://ubsfiojhuia2" path="res://assets/image/ui/icons/season_autumn.svg" id="icon_season_autumn"]
 [ext_resource type="Texture2D" uid="uid://duw4omjavh8h1" path="res://assets/image/ui/icons/season_spring.svg" id="icon_season_spring"]

@@ -12,6 +12,8 @@ signal close_requested
 const A4_RATIO: float = 297.0 / 210.0
 const KEY_ZONES := [Rect2(800,536,52,50),Rect2(871,536,52,50),Rect2(943,536,52,50),Rect2(800,600,52,50),Rect2(871,600,52,50),Rect2(943,600,52,50),Rect2(800,665,52,50),Rect2(871,665,52,50),Rect2(943,665,52,50),Rect2(800,729,52,52),Rect2(871,729,52,52),Rect2(943,729,52,52)]
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
+const PRINT_HEADING_FONT := preload("res://assets/image/fonts/print_heading_font.tres")
+const HANDWRITTEN_FONT := preload("res://assets/image/fonts/handwritten_font.tres")
 static var REPLIES = preload("res://scripts/presentation/studio/devices/fax/fax_call_session.gd").REPLIES
 
 var shade: ColorRect
@@ -149,6 +151,7 @@ func build() -> void:
 	paper_meta = _label("SourceLine","",sheet,11)
 	paper_meta.add_theme_color_override("font_color",Color("777766"))
 	paper_title = _label("Headline","",sheet,22)
+	paper_title.add_theme_font_override("font", PRINT_HEADING_FONT)
 	paper_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	paper_rule = OutputPage.PencilRule.new()
 	paper_rule.name = "PrintRule"
@@ -163,6 +166,7 @@ func build() -> void:
 	body.add_theme_color_override("default_color",Color("292c26"))
 	sheet.add_child(body)
 	seal_guide = SealGuide.new()
+	seal_guide.add_theme_font_override("font", HANDWRITTEN_FONT)
 	seal_guide.name = "SealGuide"
 	seal_guide.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sheet.add_child(seal_guide)
@@ -172,13 +176,16 @@ func build() -> void:
 	add_child(reward_tray)
 	seal = _image("ReceivedSeal",sheet)
 	seal_text = _label("ReceivedSealFallback",DeskLocalization.source("LOC_ACKNOWLEDGED_836134F7"),sheet,18)
+	seal_text.add_theme_font_override("font", HANDWRITTEN_FONT)
 	seal_text.add_theme_color_override("font_color",Color("8c3029"))
 	book = _panel("TelephoneBook",self,Color("c4bda8"))
 	book_art = _image("BookAsset",book)
 	ruled_contacts = preload("res://scripts/presentation/studio/paper/desk_ruled_contacts.gd").new()
+	ruled_contacts.add_theme_font_override("font", HANDWRITTEN_FONT)
 	ruled_contacts.name = "RuledContacts"
 	book.add_child(ruled_contacts)
 	book_heading = _label("BookHeading",DeskLocalization.source("LOC_PHONE_BOOK_COLLECTED_D784C924"),book,14)
+	book_heading.add_theme_font_override("font", PRINT_HEADING_FONT)
 	contact_list = ItemList.new()
 	contact_list.name = "Contacts"
 	contact_list.item_selected.connect(contact_selected.emit)

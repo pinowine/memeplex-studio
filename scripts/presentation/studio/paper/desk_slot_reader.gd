@@ -67,14 +67,14 @@ func _exit_tree() -> void:
 
 func configure(hand_font: Font, paper: Texture2D) -> void:
 	_build()
-	_font = hand_font
+	_font = Handwriting.BODY_FONT
 	_paper = paper
 	_surface.paper = paper
 	_surface.queue_redraw()
 	if hand_font != null:
-		_title_label.add_theme_font_override("font", Handwriting.make_bold(hand_font))
+		_title_label.add_theme_font_override("font", Handwriting.HEADING_FONT)
 		for kind: String in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:
-			_body_label.add_theme_font_override(kind, Handwriting.make_bold(hand_font) if "bold" in kind else hand_font)
+			_body_label.add_theme_font_override(kind, Handwriting.BOLD_FONT if "bold" in kind else Handwriting.BODY_FONT)
 	else:
 		_title_label.remove_theme_font_override("font")
 		for kind: String in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:

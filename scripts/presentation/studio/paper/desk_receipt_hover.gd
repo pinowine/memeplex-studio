@@ -13,7 +13,7 @@ const SCREEN_MARGIN := 8.0
 const BARCODE_HEIGHT := 20.0
 const FOOTER_HEIGHT := 24.0
 
-static var BOLD_FONT: FontVariation = _bold_font()
+const BOLD_FONT = preload("res://assets/image/fonts/body_bold_font.tres")
 
 var _title := ""
 var _body := ""
@@ -37,12 +37,6 @@ var _row_glyphs: Array[Dictionary] = []
 var _icon_rect := Rect2()
 var _badge_rect := Rect2()
 var _footer_number: TextParagraph
-
-static func _bold_font() -> FontVariation:
-	var font := FontVariation.new()
-	font.base_font = BODY_FONT
-	font.variation_embolden = .6
-	return font
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE

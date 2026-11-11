@@ -1,9 +1,21 @@
-[gd_resource type="Theme" load_steps=3 format=3]
+[gd_resource type="Theme" load_steps=6 format=3]
 
 [ext_resource type="StyleBox" path="res://data/presentation/ui/receipt_tooltip_style.tres" id="1"]
-[ext_resource type="SystemFont" path="res://assets/image/fonts/development_font.tres" id="2"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/development_font.tres" id="2"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/body_bold_font.tres" id="bold"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/body_medium_font.tres" id="medium"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/body_semibold_font.tres" id="semibold"]
 
 [resource]
+default_font = ExtResource("2")
+Button/fonts/font = ExtResource("medium")
+OptionButton/fonts/font = ExtResource("medium")
+TabBar/fonts/font = ExtResource("semibold")
+RichTextLabel/fonts/normal_font = ExtResource("2")
+RichTextLabel/fonts/bold_font = ExtResource("bold")
+RichTextLabel/fonts/italics_font = ExtResource("2")
+RichTextLabel/fonts/bold_italics_font = ExtResource("bold")
+RichTextLabel/fonts/mono_font = ExtResource("2")
 TooltipPanel/styles/panel = ExtResource("1")
 TooltipLabel/colors/font_color = Color(0.247059, 0.262745, 0.219608, 1)
 TooltipLabel/colors/font_shadow_color = Color(0, 0, 0, 0)

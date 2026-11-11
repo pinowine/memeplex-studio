@@ -1,7 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://c42yqbofjkihk"]
 
-[ext_resource type="SystemFont" path="res://assets/image/fonts/development_font.tres" id="1"]
-[ext_resource type="SystemFont" path="res://assets/image/fonts/print_heading_font.tres" id="2"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/development_font.tres" id="1"]
+[ext_resource type="FontVariation" path="res://assets/image/fonts/print_heading_font.tres" id="2"]
 [ext_resource type="StyleBox" path="res://data/presentation/ui/receipt_tooltip_style.tres" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="Button"]
