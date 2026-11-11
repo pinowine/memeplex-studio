@@ -157,6 +157,10 @@ func _layout_content() -> void:
 		var label_height := _add_text(str(_presentation.get("metric_label","")),Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"metric_label")
 		y += label_height+4
 		y += _add_text(metric_value,Vector2(PADDING.x,y),width,BOLD_FONT,32,ReceiptStyle.INK,"metric_value")+GROUP_GAP
+	var label_width := 0.0
+	for row: Dictionary in _rows:
+		label_width = maxf(label_width,BOLD_FONT.get_string_size(str(row.get("category","")),HORIZONTAL_ALIGNMENT_LEFT,-1,12).x+24)
+	label_width = minf(label_width,width*.5)
 	for index in _rows.size():
 		var row: Dictionary = _rows[index]
 		var category := str(row.get("category",""))
@@ -165,7 +169,6 @@ func _layout_content() -> void:
 		var value_x := PADDING.x
 		if not category.is_empty():
 			var kind := str(row.get("kind","source"))
-			var label_width := width*.44
 			_row_glyphs.append({"rect":Rect2(PADDING.x,y+2,16,16),"kind":kind,"color":_section_color(kind)})
 			row_height = _add_text(category,Vector2(PADDING.x+24,y+2),label_width-24,BOLD_FONT,12,ReceiptStyle.SECONDARY_INK,"category")+2
 			value_x += label_width+ROW_GAP
