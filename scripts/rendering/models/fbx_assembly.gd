@@ -23,6 +23,14 @@ func _init() -> void:
 func inspection() -> Dictionary:
 	return {"authoring_source": AUTHORING_PATH, "source": FBX_PATH, "runtime": {"source": FBX_PATH}, "source_meshes": _sources.size(), "assembly": build_report.duplicate(true), "papers": paper_reports.duplicate(true), "painter_materials": painter_materials.inspection(), "errors": errors.duplicate()}
 
+func loading_paths() -> PackedStringArray:
+	var material_paths := painter_materials.loading_paths()
+	if material_paths.is_empty():
+		for message in painter_materials.errors:
+			_fail(message)
+		return PackedStringArray()
+	return PackedStringArray([FBX_PATH, ASSEMBLY_PATH]) + material_paths
+
 ## 返回独立工作室实例；源场景无法加载时返回 null。
 func build() -> Node3D:
 	if not _load_sources():

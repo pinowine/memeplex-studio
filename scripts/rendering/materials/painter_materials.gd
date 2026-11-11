@@ -19,12 +19,16 @@ var _bound_sources: Dictionary = {}
 var _bound_surfaces := 0
 var _loaded := false
 
-## 首次加载检查通道和网格映射，成功后复用本实例的材质缓存。
-func load_manifest() -> bool:
-	if _loaded:
-		return true
+func loading_paths() -> PackedStringArray:
+	if not _read_manifest():
+		return PackedStringArray()
+	return PackedStringArray(manifest["material_resources"].values())
+
+func _read_manifest() -> bool:
 	if not errors.is_empty():
 		return false
+	if not manifest.is_empty():
+		return true
 	if not FileAccess.file_exists(MANIFEST_PATH):
 		_fail("Missing Painter material manifest: " + MANIFEST_PATH)
 		return false
@@ -52,6 +56,16 @@ func load_manifest() -> bool:
 	if sets.is_empty() or meshes.is_empty():
 		_fail("Painter manifest contains empty texture sets or mesh mapping")
 		return false
+	return true
+
+func load_manifest() -> bool:
+	if _loaded:
+		return true
+	if not _read_manifest():
+		return false
+	var sets: Dictionary = manifest["sets"]
+	var meshes: Dictionary = manifest["meshes"]
+	var material_resources: Dictionary = manifest["material_resources"]
 	for set_key in sets:
 		var set_name := str(set_key)
 		if not sets[set_key] is Dictionary:

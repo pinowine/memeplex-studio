@@ -8,6 +8,7 @@ const ButtonFeedback := preload("res://scripts/rendering/feedback/button_feedbac
 const PaperMasks := preload("res://scripts/rendering/paper/paper_masks.gd")
 const PaperFeed := preload("res://scripts/rendering/paper/paper_feed.gd")
 const HoverOutline := preload("res://scripts/rendering/feedback/hover_outline.gd")
+const LoadingScreen := preload("res://scripts/presentation/ui/menus/loading_screen.gd")
 
 @export var whitebox := false
 @export_range(0.1, 3.0, 0.001) var overview_height_m := 0.914
@@ -39,20 +40,37 @@ var startup_error := ""
 var handset_cord: MeshInstance3D
 var handset_connected := false
 var cord_endpoints: Dictionary = {}
+var _loading := LoadingScreen.new()
 
 func _ready() -> void:
 	GameCursors.install()
 	DeskLocalization.ensure_loaded()
+	var started := Time.get_ticks_msec()
+	add_child(_loading)
+	await _loading.present()
+	var paths := fbx_loader.loading_paths()
+	if paths.is_empty():
+		startup_error = "; ".join(fbx_loader.errors)
+		_loading.fail()
+		return
+	paths.append_array(PackedStringArray(["res://scenes/studio/desk/game_page.tscn", "res://data/catalogs/catalog.tres"]))
+	if await _loading.load_resources(paths) != OK:
+		startup_error = "Cannot load studio resources"
+		_loading.fail()
+		return
+	var assets_ready := Time.get_ticks_msec()
 	process_priority = 100
 	_setup_lighting()
 	assembly = fbx_loader.build()
 	if assembly == null:
 		startup_error = "Cannot construct studio from fullscene FBX"
 		push_error(startup_error)
+		_loading.fail()
 		return
 	assembly.name = "StudioAssets"
 	add_child(assembly)
 	if whitebox: _apply_whitebox(assembly)
+	var geometry_ready := Time.get_ticks_msec()
 	camera = Camera3D.new()
 	camera.name = "OrthographicDeskCamera"
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
@@ -79,6 +97,7 @@ func _ready() -> void:
 	if page_scene == null:
 		startup_error = "Cannot load logical game scene"
 		push_error(startup_error)
+		_loading.fail()
 		return
 	page = page_scene.instantiate()
 	var projection := ProjectionPort.new()
@@ -94,6 +113,7 @@ func _ready() -> void:
 	if page.initialization_error != OK:
 		startup_error = page.initialization_message
 		push_error(startup_error)
+		_loading.fail()
 		return
 	desktop = page.create_studio_adapter()
 	desktop.prepare()
@@ -125,8 +145,12 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_resized)
 	if not startup_error.is_empty():
 		push_error(startup_error)
+		_loading.fail()
 		return
 	ready_3d = true
+	await RenderingServer.frame_post_draw
+	_loading.queue_free()
+	print("STUDIO_LOAD assets_ms=%d geometry_ms=%d content_ms=%d total_ms=%d" % [assets_ready - started, geometry_ready - assets_ready, Time.get_ticks_msec() - geometry_ready, Time.get_ticks_msec() - started])
 	print("STUDIO_3D_READY bindings=%d controls=%d projection=orthographic renderer=%s" % [content.bindings.size(),buttons.size(),RenderingServer.get_current_rendering_method()])
 
 func _layout_equipment() -> void:
