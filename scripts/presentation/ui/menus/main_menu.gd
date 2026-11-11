@@ -333,7 +333,7 @@ func _layout() -> void:
 	content.position = Vector2.ZERO
 	content.size = content.get_combined_minimum_size()
 	menu.size = content.size
-	menu.position = Vector2(size.x * .38, size.y * .30)
+	menu.position = Vector2(size.x * .26, size.y * .30)
 	for name: String in ["SettingsPanel", "KeysPanel"]:
 		var panel: Control = _ui.get_node(name)
 		ReceiptUI.layout_menu(panel, panel.get_node("Content"), size)
