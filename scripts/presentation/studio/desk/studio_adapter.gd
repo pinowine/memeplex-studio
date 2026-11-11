@@ -166,6 +166,8 @@ func return_overview() -> void:
 	_desk.return_overview()
 
 func sync_raster_presentation(viewport_rect: Rect2, can_interact: bool) -> void:
+	for sheet: Control in _desk._stack._sheets.values():
+		sheet.visible = not _desk._page._shell.main_mode
 	var reader: Control = _desk._slot_reader
 	if reader.is_visible_in_tree() and reader._viewport_rect != viewport_rect:
 		reader._on_viewport_resized()

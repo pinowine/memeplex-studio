@@ -519,9 +519,6 @@ func _show_direct_starters() -> void:
 			_shell.starter_dialog.hide()
 			desk.return_overview()
 		return
-	if str(desk._camera.inspection().state) != "overview":
-		desk.return_overview()
-		return
 	desk._fax.reset_station()
 	var options: Array[Dictionary] = []
 	var starters: Array = simulation.starter_options()
@@ -653,6 +650,7 @@ func _start_from_main() -> void:
 	desk.return_overview()
 	desk._monitor.set_mode("meme")
 	_shell.enter_game(true)
+	_queue_startup_focus()
 
 func _load_from_main() -> void:
 	if _load():
@@ -692,8 +690,7 @@ func _queue_startup_focus() -> void:
 
 func _focus_startup_call(_sheet: String = "") -> void:
 	if _shell == null or _shell.main_mode or startup_ready(): return
-	desk._sync_reader_blocks()
-	desk._fax.focus()
+	desk.focus_component("fax")
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and _ready_to_run:

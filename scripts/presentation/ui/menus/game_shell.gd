@@ -13,6 +13,7 @@ var starter_dialog: Control
 var context_guidance: Node
 var ending: Control
 var main_mode := true
+var _session_started := false
 var _tutorial_anchor: Control
 var _tutorial_drag_source_key := ""
 var _tutorial_drag_anchor: Control
@@ -68,7 +69,7 @@ func configure(owner_page: Node2D) -> void:
 	main_menu.settings_changed.connect(_sync_guide_settings)
 	main_menu.settings_closed.connect(func(): page.hud.set_menu("settings"))
 	_sync_guide_settings({})
-	main_menu.start_requested.connect(page._start_from_main)
+	main_menu.start_requested.connect(_activate_main)
 	main_menu.load_requested.connect(page._load_from_main)
 	main_menu.quit_requested.connect(func(): get_tree().quit())
 	ending.return_menu_requested.connect(page._return_to_main)
@@ -76,15 +77,26 @@ func configure(owner_page: Node2D) -> void:
 
 func show_main() -> void:
 	main_mode = true
+	page.desk.return_overview()
 	tutorial.skip()
 	starter_dialog.skip()
 	starter_dialog.hide()
 	if context_guidance != null: context_guidance.close()
 	ending.hide()
 	main_menu.set_load_available(FileAccess.file_exists(page.SAVE_PATH))
+	main_menu.set_continue_available(page.simulation.phase != "complete" if _session_started else FileAccess.file_exists(page.SAVE_PATH))
 	main_menu.show_menu()
 
+func _activate_main() -> void:
+	if _session_started and page.simulation.phase != "complete":
+		enter_game(false)
+	elif not _session_started and FileAccess.file_exists(page.SAVE_PATH):
+		page._load_from_main()
+	else:
+		page._start_from_main()
+
 func enter_game(guide: bool) -> void:
+	_session_started = true
 	main_mode = false
 	main_menu.hide_menu()
 	ending.hide()
