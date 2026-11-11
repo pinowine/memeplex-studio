@@ -125,6 +125,7 @@ func _rect(key: String, source: Control, rect: Rect2, cursor_shape: int = Input.
 	return _target(key, source, PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]), cursor_shape)
 
 func _target(key: String, source: Control, polygon: PackedVector2Array, cursor_shape: int = Input.CURSOR_POINTING_HAND) -> Dictionary:
+	if not source.get_meta("hover_outline", true): return {}
 	for mask: Control in _desk._stack._masks.values():
 		if mask == source or mask.is_ancestor_of(source): return {}
 	return {"key":key, "polygon":source.get_global_transform_with_canvas() * polygon, "source":source, "cursor_shape":cursor_shape}
