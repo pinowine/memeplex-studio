@@ -350,6 +350,8 @@ func _animate_portrait() -> void:
 	var step := _steps[_index]
 	var text_key := _hover_text if not _hover_text.is_empty() else str(step.get("text", ""))
 	_ui.get_node("Card/Portrait67").set_emotion(Portrait.emotion_for(step, text_key))
+	var motion := str(step.get("portrait_motion", ""))
+	if not motion.is_empty(): _ui.get_node("Card/Portrait67").play_motion(motion)
 
 func _set_appearance(value: float) -> void:
 	_appearance = value
