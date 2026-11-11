@@ -125,12 +125,15 @@ func _update_content(force_layout: bool = false) -> void:
 			detail = DeskLocalization.text(component_copy.description)
 			presentation.note = DeskLocalization.text(component_copy.note)
 		else:
+			var resource: Dictionary = _hover.get("resource",{})
+			var id := str(_hover.get("id",resource.get("id","")))
 			detail = _first_text(["hover_description"])
 			if detail.is_empty():
-				var resource: Dictionary = _hover.get("resource",{})
-				var id := str(_hover.get("id",resource.get("id","")))
 				detail = _normalized(DeskLocalization.text(CardCopy.hover_description(id)))
 			if detail.is_empty(): detail = _first_text(["description", "body"])
+			var note := _first_text(["hover_note"])
+			if note.is_empty(): note = DeskLocalization.text(CardCopy.hover_note(id))
+			if not note.is_empty(): presentation.note = note
 	if heading.is_empty() and not detail.is_empty():
 		heading = detail
 		detail = ""

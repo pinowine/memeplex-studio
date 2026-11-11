@@ -173,5 +173,180 @@
     "source": "表达补丁包含反问、对照、释义、接话和退出等说话方式。",
     "zh_CN": "表达补丁包含反问、对照、释义、接话和退出等说话方式。",
     "en": "Expression patches represent ways of speaking, including rhetorical questions, comparisons, explanations, continuations and exits."
+  },
+  "LOC_RECEIPT_CARD_NOTE_LANGUAGE_NINGHUA": {
+    "source": "*一页描红纸*，笔画压得很深。纸背还能摸到最后一个字。",
+    "zh_CN": "*一页描红纸*，笔画压得很深。纸背还能摸到最后一个字。",
+    "en": "*A page of traced characters*, pressed hard into the paper. You can feel the last one on the back."
+  },
+  "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SHIOHARA": {
+    "source": "*从面馆墙上揭下的菜单*。汤汁洇开了一个字，常客照样认得。",
+    "zh_CN": "*从面馆墙上揭下的菜单*。汤汁洇开了一个字，常客照样认得。",
+    "en": "*A menu peeled from a noodle-shop wall*. Broth has blurred one word. The regulars still know it."
+  },
+  "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SEOWON": {
+    "source": "*一页抄下来的歌词*，副歌旁边挤着小小的注音。折痕正好穿过歌名。",
+    "zh_CN": "*一页抄下来的歌词*，副歌旁边挤着小小的注音。折痕正好穿过歌名。",
+    "en": "*Hand-copied lyrics* with tiny pronunciation notes beside the chorus. A fold runs straight through the title."
+  },
+  "LOC_RECEIPT_CARD_NOTE_GROUP_COMMUTERS": {
+    "source": "*一张腱鞘炎保健品广告*，上面覆盖着*一张肩周炎保健品广告*。",
+    "zh_CN": "*一张腱鞘炎保健品广告*，上面覆盖着*一张肩周炎保健品广告*。",
+    "en": "*An ad for a tendonitis supplement*, covered by *an ad for a frozen-shoulder supplement*."
+  },
+  "LOC_RECEIPT_CARD_NOTE_GROUP_STUDENTS": {
+    "source": "*课程表*背面写满了重点。最后一行字很小：这个也考？",
+    "zh_CN": "*课程表*背面写满了重点。最后一行字很小：这个也考？",
+    "en": "The back of *a timetable* is covered in revision notes. The last line, in tiny letters: This is on the exam too?"
+  },
+  "LOC_RECEIPT_CARD_NOTE_GROUP_CULTURE_FANS": {
+    "source": "*一张演出票根*，票价被圆珠笔涂掉了。日期倒是描了两遍。",
+    "zh_CN": "*一张演出票根*，票价被圆珠笔涂掉了。日期倒是描了两遍。",
+    "en": "*A concert stub* with the price scribbled out in ballpoint. The date has been traced over twice."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_POLICY": {
+    "source": "*一份贴过又揭下的公告*。胶带换了三次，落款的章还是原来那个。",
+    "zh_CN": "*一份贴过又揭下的公告*。胶带换了三次，落款的章还是原来那个。",
+    "en": "*A notice posted and taken down again*. The tape has been replaced three times; the official stamp is the same."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_COST_OF_LIVING": {
+    "source": "*超市小票*已经褪色，房租催缴单的字还很清楚。两张纸订在一起。",
+    "zh_CN": "*超市小票*已经褪色，房租催缴单的字还很清楚。两张纸订在一起。",
+    "en": "*The supermarket receipt* has faded. The rent reminder is still perfectly legible. They are stapled together."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_WORK": {
+    "source": "*一张加班登记表*。咖啡杯留下的圆印，正好圈住了签名栏。",
+    "zh_CN": "*一张加班登记表*。咖啡杯留下的圆印，正好圈住了签名栏。",
+    "en": "*An overtime sheet*. A coffee-cup ring neatly encircles the signature box."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_PLATFORM_TOOLS": {
+    "source": "*旧版说明书*里夹着新版说明书。新版又附了一张更正。",
+    "zh_CN": "*旧版说明书*里夹着新版说明书。新版又附了一张更正。",
+    "en": "The new manual is tucked inside *the old one*. The new one comes with a correction slip."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_SPORT": {
+    "source": "*报纸*上的比分被圈了起来。旁边那行球员名字，几乎被指甲磨穿。",
+    "zh_CN": "*报纸*上的比分被圈了起来。旁边那行球员名字，几乎被指甲磨穿。",
+    "en": "A score is circled in *the sports pages*. Beside it, a fingernail has nearly worn through a player's name."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_EDUCATION": {
+    "source": "*试卷*的订书钉生了锈。有人把错题剪下来，贴到了另一张试卷上。",
+    "zh_CN": "*试卷*的订书钉生了锈。有人把错题剪下来，贴到了另一张试卷上。",
+    "en": "*The exam paper*'s staple has rusted. Someone cut out the questions they got wrong and pasted them onto another exam."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_IDENTITY": {
+    "source": "*证件照*背面写着一个名字，划掉以后又写了一个。脸还是那张脸。",
+    "zh_CN": "*证件照*背面写着一个名字，划掉以后又写了一个。脸还是那张脸。",
+    "en": "A name on the back of *an ID photo* has been crossed out and replaced. The face is the same."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_LANGUAGE": {
+    "source": "*双语菜单*上多了一行铅笔字。两种语言都被纠正了。",
+    "zh_CN": "*双语菜单*上多了一行铅笔字。两种语言都被纠正了。",
+    "en": "Someone has added a line in pencil to *a bilingual menu*. Both languages have been corrected."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_ENTERTAINMENT": {
+    "source": "*电影票*被折成小方块，放映时间磨没了，背面的剧透还在。",
+    "zh_CN": "*电影票*被折成小方块，放映时间磨没了，背面的剧透还在。",
+    "en": "*A cinema ticket* folded into a little square. The showtime has rubbed off; the spoiler on the back has survived."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_ARCHIVE": {
+    "source": "*索引卡*上留着取走文件的空号。抽屉拉开时，旧纸的味道先出来。",
+    "zh_CN": "*索引卡*上留着取走文件的空号。抽屉拉开时，旧纸的味道先出来。",
+    "en": "*An index card* still lists a file that was taken away. Open the drawer and the smell of old paper comes out first."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_TRUST": {
+    "source": "*一张手写借条*，金额旁边按着指印。还款日期被水洇开了。",
+    "zh_CN": "*一张手写借条*，金额旁边按着指印。还款日期被水洇开了。",
+    "en": "*A handwritten IOU* with a thumbprint beside the amount. Water has blurred the repayment date."
+  },
+  "LOC_RECEIPT_CARD_NOTE_TOPIC_COMMUNITY": {
+    "source": "*寻猫启事*的角落多了一行字：找到了，谢谢各位。胶带还粘得很牢。",
+    "zh_CN": "*寻猫启事*的角落多了一行字：找到了，谢谢各位。胶带还粘得很牢。",
+    "en": "A note in the corner of *a missing-cat poster*: Found her. Thanks, everyone. The tape is still holding."
+  },
+  "LOC_RECEIPT_CARD_NOTE_MODULE_STANCE": {
+    "source": "纸上*一个问号*被描得很粗，下面擦剩了半个感叹号。",
+    "zh_CN": "纸上*一个问号*被描得很粗，下面擦剩了半个感叹号。",
+    "en": "*A question mark* has been drawn over several times. Half an erased exclamation mark remains underneath."
+  },
+  "LOC_RECEIPT_CARD_NOTE_MODULE_RELATION": {
+    "source": "*两张复印件*并排贴着，连污渍都在同一个位置。左边写着“以前”。",
+    "zh_CN": "*两张复印件*并排贴着，连污渍都在同一个位置。左边写着“以前”。",
+    "en": "*Two photocopies* pasted side by side, stains in the same places. The one on the left is labelled 'Before'."
+  },
+  "LOC_RECEIPT_CARD_NOTE_MODULE_RITUAL": {
+    "source": "*一张离席留言*，字迹写到纸边就停了。椅子底下还压着半截纸。",
+    "zh_CN": "*一张离席留言*，字迹写到纸边就停了。椅子底下还压着半截纸。",
+    "en": "*A note left by someone who went home*. The writing stops at the edge; half the sheet is still trapped under the chair."
+  },
+  "LOC_RECEIPT_CARD_NOTE_MODULE_BOUNDARY": {
+    "source": "*薄薄的描图纸*盖在原稿上。铅笔批注很密，末尾沾了一点橡皮屑。",
+    "zh_CN": "*薄薄的描图纸*盖在原稿上。铅笔批注很密，末尾沾了一点橡皮屑。",
+    "en": "*Tracing paper* lies over a draft, dense with pencil notes. A few eraser crumbs cling to the end."
+  },
+  "LOC_RECEIPT_CARD_NOTE_MODULE_SHARED_WORLD": {
+    "source": "故事写到一半，纸边又粘上*一条纸*。新添的字迹换了个人。",
+    "zh_CN": "故事写到一半，纸边又粘上*一条纸*。新添的字迹换了个人。",
+    "en": "Halfway through the story, *another strip of paper* has been glued to the edge. The new writing is in a different hand."
+  },
+  "LOC_RECEIPT_CARD_NOTE_FREEDOM": {
+    "source": "*一张没填目的地的车票*。边缘撕了个小口，像是犹豫过要不要上车。",
+    "zh_CN": "*一张没填目的地的车票*。边缘撕了个小口，像是犹豫过要不要上车。",
+    "en": "*A train ticket with the destination left blank*. A small tear in the edge suggests someone hesitated before boarding."
+  },
+  "LOC_RECEIPT_CARD_NOTE_AUTHORITY": {
+    "source": "*公章*压得很重，印泥透到了纸背。签名只占了很小的地方。",
+    "zh_CN": "*公章*压得很重，印泥透到了纸背。签名只占了很小的地方。",
+    "en": "*An official stamp* was pressed so hard the ink reached the back. The signature takes up very little space."
+  },
+  "LOC_RECEIPT_CARD_NOTE_EQUALITY": {
+    "source": "*一张座次表*，主位被铅笔划掉了。每把椅子旁边都添了同样的小圆点。",
+    "zh_CN": "*一张座次表*，主位被铅笔划掉了。每把椅子旁边都添了同样的小圆点。",
+    "en": "*A seating plan* with the head of the table crossed out in pencil. Every chair has been given the same small dot."
+  },
+  "LOC_RECEIPT_CARD_NOTE_HIERARCHY": {
+    "source": "*座次表*贴了好几层。最上面那张留着金边，下面的名字只露出一半。",
+    "zh_CN": "*座次表*贴了好几层。最上面那张留着金边，下面的名字只露出一半。",
+    "en": "*Several seating plans* have been pasted over one another. The top sheet has a gold border; half the names beneath it still show."
+  },
+  "LOC_RECEIPT_CARD_NOTE_SINCERE": {
+    "source": "*一张写歪了的明信片*。称呼改过两次，正文一字没涂。",
+    "zh_CN": "*一张写歪了的明信片*。称呼改过两次，正文一字没涂。",
+    "en": "*A postcard written on a slant*. The greeting was changed twice; not a word of the message was crossed out."
+  },
+  "LOC_RECEIPT_CARD_NOTE_IRONIC": {
+    "source": "*剪下来的天气预报*写着晴。纸被雨淋透，太阳的图案还笑着。",
+    "zh_CN": "*剪下来的天气预报*写着晴。纸被雨淋透，太阳的图案还笑着。",
+    "en": "*A weather clipping* promises sunshine. The paper is soaked through, and the little sun is still smiling."
+  },
+  "LOC_RECEIPT_CARD_NOTE_SUPPORT": {
+    "source": "*一张签名纸*，名字一路挤到了背面。最后一个人把纸垫在掌心写完。",
+    "zh_CN": "*一张签名纸*，名字一路挤到了背面。最后一个人把纸垫在掌心写完。",
+    "en": "*A petition* with names spilling onto the back. The last person finished signing with the paper resting on their palm."
+  },
+  "LOC_RECEIPT_CARD_NOTE_OPPOSITION": {
+    "source": "*打印整齐的通知*旁边，有人重重写下“不同意”。笔尖划破了最后一笔。",
+    "zh_CN": "*打印整齐的通知*旁边，有人重重写下“不同意”。笔尖划破了最后一笔。",
+    "en": "Beside *a neatly printed notice*, someone wrote 'I disagree' with a heavy hand. The last stroke tore through the paper."
+  },
+  "LOC_RECEIPT_STACK_NOTE_LANGUAGE": {
+    "source": "*不同字迹的纸片*夹在一起。最下面那张，被翻得最软。",
+    "zh_CN": "*不同字迹的纸片*夹在一起。最下面那张，被翻得最软。",
+    "en": "*Scraps in different hands*, clipped together. The bottom sheet is the softest from handling."
+  },
+  "LOC_RECEIPT_STACK_NOTE_GROUP": {
+    "source": "*传单*上压着名片，名片下面还有一张合照。有人在照片边上补了个名字。",
+    "zh_CN": "*传单*上压着名片，名片下面还有一张合照。有人在照片边上补了个名字。",
+    "en": "Business cards lie on *a flyer*, with a group photo underneath. Someone has added a name along the photo's edge."
+  },
+  "LOC_RECEIPT_STACK_NOTE_TOPIC": {
+    "source": "*报纸剪角*露在便签外面。几张纸谈着同一件事，日期相差很远。",
+    "zh_CN": "*报纸剪角*露在便签外面。几张纸谈着同一件事，日期相差很远。",
+    "en": "*Newspaper corners* stick out from beneath sticky notes. Several sheets cover the same story, with dates far apart."
+  },
+  "LOC_RECEIPT_STACK_NOTE_MODULE": {
+    "source": "*剪下来的句子*码成一摞。最上面一条还粘着透明胶，边角有点卷。",
+    "zh_CN": "*剪下来的句子*码成一摞。最上面一条还粘着透明胶，边角有点卷。",
+    "en": "*Clipped sentences* in a small stack. Clear tape still clings to the top strip, its corners curling."
   }
 }
