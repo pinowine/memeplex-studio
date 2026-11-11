@@ -6,10 +6,13 @@ const PAPER := Color("eee6d3")
 const INK := Color("3f4338")
 const SECONDARY_INK := Color("68604f")
 const EDGE := Color("b8ad96")
+const SECTION_TEAL := Color("41675f")
+const SECTION_PURPLE := Color("716b92")
+const SECTION_BROWN := Color("594d3f")
 const FONT = preload("res://assets/image/fonts/development_font.tres")
 const SHADOW_OFFSET := Vector2(0,4)
-const TOOTH_PITCH := 8.0
-const TOOTH_DEPTH := 3.0
+const SHADOW_SPREAD := 3.0
+const CUT_INSET := 7.0
 const CODE39_PATTERNS := {
 	"0":"111221211", "1":"211211112", "2":"112211112", "3":"212211111",
 	"4":"111221112", "5":"211221111", "6":"112221111", "7":"111211212",
@@ -31,30 +34,25 @@ static func barcode_bars(rect: Rect2, digits: String) -> Array[Rect2]:
 	return bars
 
 func _get_draw_rect(rect: Rect2) -> Rect2:
-	return rect.expand(rect.end+SHADOW_OFFSET)
+	return rect.merge(Rect2(rect.position+SHADOW_OFFSET,rect.size).grow(SHADOW_SPREAD))
 
 func _outline(rect: Rect2) -> PackedVector2Array:
-	var points := PackedVector2Array()
-	var teeth := maxi(1,floori(rect.size.x/TOOTH_PITCH))
-	var step := rect.size.x/teeth
-	points.append(rect.position+Vector2(0,TOOTH_DEPTH))
-	for index in teeth:
-		points.append(rect.position+Vector2((index+.5)*step,0))
-		points.append(rect.position+Vector2((index+1)*step,TOOTH_DEPTH))
-	points.append(rect.position+Vector2(rect.size.x,rect.size.y-TOOTH_DEPTH))
-	for index in teeth:
-		points.append(rect.position+Vector2(rect.size.x-(index+.5)*step,rect.size.y))
-		points.append(rect.position+Vector2(rect.size.x-(index+1)*step,rect.size.y-TOOTH_DEPTH))
-	return points
+	return PackedVector2Array([rect.position,Vector2(rect.end.x,rect.position.y),rect.end,Vector2(rect.position.x,rect.end.y)])
 
 func _draw(canvas_item: RID, rect: Rect2) -> void:
-	var points := _outline(rect)
-	var shadow := PackedVector2Array()
-	for point: Vector2 in points: shadow.append(point+SHADOW_OFFSET)
-	RenderingServer.canvas_item_add_polygon(canvas_item,shadow,PackedColorArray([Color(0,0,0,.19)]))
-	RenderingServer.canvas_item_add_polygon(canvas_item,points,PackedColorArray([PAPER]))
-	points.append(points[0])
-	RenderingServer.canvas_item_add_polyline(canvas_item,points,PackedColorArray([EDGE]),.75,true)
+	var shadow := Rect2(rect.position+SHADOW_OFFSET,rect.size)
+	for spread in range(int(SHADOW_SPREAD),-1,-1):
+		RenderingServer.canvas_item_add_rect(canvas_item,shadow.grow(spread),Color(0,0,0,.025+.015*(SHADOW_SPREAD-spread)))
+	RenderingServer.canvas_item_add_polygon(canvas_item,_outline(rect),PackedColorArray([PAPER]))
+	for inset: float in [.5,3.0]:
+		var edge := _outline(rect.grow(-inset))
+		edge.append(edge[0])
+		RenderingServer.canvas_item_add_polyline(canvas_item,edge,PackedColorArray([Color(EDGE,.65 if inset<1 else .30)]),.75,true)
+	for y: float in [rect.position.y+CUT_INSET,rect.end.y-CUT_INSET]:
+		var x := rect.position.x+CUT_INSET
+		while x < rect.end.x-CUT_INSET:
+			RenderingServer.canvas_item_add_line(canvas_item,Vector2(x,y),Vector2(minf(x+4,rect.end.x-CUT_INSET),y),Color(SECONDARY_INK,.35),.75,true)
+			x += 8
 
 static func apply_tooltip_theme(target: Theme, font: Font = null, font_size: int = 14) -> void:
 	target.set_stylebox("panel","TooltipPanel",load("res://data/presentation/ui/receipt_tooltip_style.tres"))
