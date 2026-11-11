@@ -3,6 +3,7 @@ extends Control
 
 const CORNER_TAPE := preload("res://assets/image/textures/studio/desk/clear_tape.png")
 const ReceiptHover := preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
+const CardCopy := preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 
 @export var title_font_size: int = 20
 @export var detail_font_size: int = 18
@@ -109,18 +110,7 @@ func _first_text(keys: Array[String]) -> String:
 func _presentation_details() -> Dictionary:
 	var kind := str(_hover.get("kind","source"))
 	kind = {"monitor_mode":"monitor","context_token":str(_hover.get("layer","source")),"meme_title":"source"}.get(kind,kind)
-	var result := {"kind":kind,"badge":_first_text(["status"]),"note":_first_text(["gesture"])}
-	for key in ["count", "available", "quantity"]:
-		var value: Variant = _hover.get(key)
-		if value is int and value >= 0:
-			result.metric_label = DeskLocalization.text("LOC_AVAILABLE_DE69AA86")
-			result.metric_value = str(value)
-			break
-		if value is float and is_finite(value) and value >= 0.0 and value == floor(value) and value < 9223372036854775807.0:
-			result.metric_label = DeskLocalization.text("LOC_AVAILABLE_DE69AA86")
-			result.metric_value = str(int(value))
-			break
-	return result
+	return {"kind":kind}
 
 func _update_content(force_layout: bool = false) -> void:
 	var heading := _normalized(_default_text)
@@ -129,13 +119,12 @@ func _update_content(force_layout: bool = false) -> void:
 	if _has_hover:
 		heading = _first_text(["title", "name", "label", "id"])
 		presentation = _presentation_details()
-		var pieces: Array[String] = []
-		for key in ["description", "body", "hint", "unlock_hint"]:
-			var value: Variant = _hover.get(key)
-			if not value is String: continue
-			var clean := _normalized(DeskLocalization.text(value))
-			if not clean.is_empty() and clean not in pieces: pieces.append(clean)
-		detail = "；".join(pieces)
+		detail = _first_text(["hover_description"])
+		if detail.is_empty():
+			var resource: Dictionary = _hover.get("resource",{})
+			var id := str(_hover.get("id",resource.get("id","")))
+			detail = _normalized(DeskLocalization.text(CardCopy.hover_description(id)))
+		if detail.is_empty(): detail = _first_text(["description", "body"])
 	if heading.is_empty() and not detail.is_empty():
 		heading = detail
 		detail = ""
