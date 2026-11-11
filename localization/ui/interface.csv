@@ -5,17 +5,15 @@ MAP_GENERATE,按种子生成,Generate
 MAP_RANDOM,随机地图,Randomize
 MAP_RESET,重置视角,Reset view
 MAP_INSPECTOR,国家档案,COUNTRY PROFILE
-MAP_SELECT_HINT,点击陆地查看国家。国家面积不决定人口。,Select land to inspect a country. Territory size does not determine population.
+MAP_SELECT_HINT,点击陆地查看国家。,Select land to inspect a country.
 MAP_TOPICS,偏好话题,Preferred topics
 MAP_INTRODUCTION,简介,Introduction
 MAP_GROUPS,人群构成,Audience groups
 MAP_CULTURE,文化,Culture
 MAP_LANGUAGES,语言,Languages
 MAP_GROUPS_NOTE,群体可重叠，按内容适配程度排列。,Groups may overlap. Listed by content affinity.
-MAP_PROFILE_NOTICE,虚构世界；人口为游戏设定。,A fictional world. Population figures are game settings.
 MAP_EVENTS,候选事件池,Candidate event pool
 MAP_COMPETITORS,竞争性模因,Competing memes
-MAP_NOTICE,这是虚构地图，面积参考不表示文化或政治归属。城市和地理细节仅供显示；独立地图页不运行传播与事件。,This is a fictional map. Area references do not indicate cultural or political affiliation. Cities and geographical details are for display; the standalone map page does not run propagation or events.
 MAP_HOVER_HINT,将指针移到陆地上,Hover over land
 MAP_WORLD_SUMMARY,%d 国 · 总人口 %.0f 百万,%d countries · %.0f million people
 MAP_POPULATION,人口：%.0f 百万,Population: %.0f million

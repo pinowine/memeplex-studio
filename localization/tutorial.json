@@ -420,7 +420,7 @@
     "en": "Map sheet"
   },
   "LOC_OPENING_MAP_INTRO_TEXT": {
-    "source": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选址由你决定，我不替你做这份工作。",
+    "source": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选中一个国家试试。",
     "zh_CN": "这就是投放地图。单击国家查看情况，按住鼠标中键拖动，滚轮缩放。选中一个国家试试。",
     "en": "Here’s the launch map. Click a country to inspect it, hold the middle mouse button to pan, and use the wheel to zoom. Try selecting a country."
   },

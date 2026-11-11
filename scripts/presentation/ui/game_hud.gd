@@ -15,7 +15,6 @@ signal restart_requested
 signal event_acknowledged
 signal settings_requested
 signal developer_requested
-signal codex_requested
 signal quit_requested
 signal menu_close_requested
 signal design_action_requested(action: String, params: Dictionary)
@@ -67,11 +66,8 @@ func _ready() -> void:
 	%Save.pressed.connect(func() -> void: save_requested.emit())
 	%Load.pressed.connect(func() -> void: load_requested.emit())
 	%Restart.pressed.connect(func() -> void: restart_requested.emit())
-	%Codex.pressed.connect(func() -> void: codex_requested.emit())
 	%Quit.pressed.connect(func() -> void: quit_requested.emit())
 	%DeveloperClose.pressed.connect(func() -> void: menu_close_requested.emit())
-	%CodexClose.pressed.connect(func() -> void: menu_close_requested.emit())
-	%CodexList.item_selected.connect(_show_codex_entry)
 	%Fullscreen.pressed.connect(_toggle_fullscreen)
 	%Publish.pressed.connect(func() -> void: draft_publish_requested.emit(get_draft()))
 	%Pause.pressed.connect(func() -> void: speed_requested.emit(0))
@@ -114,7 +110,6 @@ func configure(catalog: MemeDemoCatalog) -> void:
 		var defaults := PackedStringArray(_field(preset,"default_values",[]))
 		var source_expression := DeskLocalization.source_join(" / ",defaults)
 		DeskLocalization.source_format("LOC_S_S_DCCB2F9E",[str(_field(preset,"title","")),source_expression],[0,1])
-	_fill_codex()
 	_fill_options(_kernel, _kernels)
 	var groups: Array = _values(catalog, "groups")
 	_fill_options(_group, groups)
@@ -372,8 +367,7 @@ func inspection() -> Dictionary:
 		"shade_visible": %ModalShade.visible, "shade_mouse_filter": %ModalShade.mouse_filter,
 		"history_rect": %History.get_global_rect(), "event_rect": %EventCard.get_global_rect(),
 		"create_rect": %Create.get_global_rect(), "point_balance_rect": %PointBalance.get_global_rect(),
-		"legend_count": %Legend.item_count, "codex_count": %CodexList.item_count,
-		"codex_details": %CodexDetails.text,
+		"legend_count": %Legend.item_count,
 		"event_visible": %EventCard.visible, "result_visible": %ResultCard.visible,
 		"map_hint_visible": %MapHintCard.visible, "point_cost_text": %PointCost.text,
 		"result_summary_text": %ResultSummary.text,
@@ -385,7 +379,7 @@ func inspection() -> Dictionary:
 		"preset_count": _presets.size(), "preset_options": _preset.item_count,
 		"preset_source_text": %PresetSource.text,
 		"root_mouse_filter": mouse_filter, "event_count": %EventLog.item_count,
-		"lineage_count": %Lineage.item_count, "sample_label": %SampleLabel.text,
+		"lineage_count": %Lineage.item_count,
 		"point_balance_text": %PointBalance.text, "attention_text": %Attention.text,
 		"economy_log_count": %EconomyLog.item_count, "purchase_disabled": %Purchase.disabled,
 		"phase": str(_last_state.get("phase", "draft")), "draft": get_draft(),
@@ -395,21 +389,18 @@ func inspection() -> Dictionary:
 
 
 func set_menu(mode: String) -> void:
-	if mode not in ["", "settings", "developer", "codex"]:
+	if mode not in ["", "settings", "developer"]:
 		push_error("Unknown demo menu: " + mode)
 		return
 	_menu_mode = mode
 	%SettingsMenu.visible = mode == "settings"
 	%DeveloperMenu.visible = mode == "developer"
-	%CodexPanel.visible = mode == "codex"
 	%DeveloperStatus.text = DeskLocalization.format_text("LOC_CURRENT_CONTENT_D_CASE_PRESETS_THE_EVENT_922995D7", _presets.size())
 	_refresh_modal()
 	if mode == "settings":
 		%Save.grab_focus()
 	elif mode == "developer":
 		%Tools.grab_focus()
-	elif mode == "codex":
-		%CodexList.grab_focus()
 	elif %EventCard.visible:
 		%EventContinue.grab_focus()
 
@@ -423,13 +414,6 @@ func set_guide_enabled(enabled: bool) -> void:
 
 func modal_visible() -> bool:
 	return not _menu_mode.is_empty() or %EventCard.visible or %ResultCard.visible
-
-
-func show_codex() -> void:
-	set_menu("codex")
-	if %CodexList.item_count > 0 and %CodexList.get_selected_items().is_empty():
-		%CodexList.select(0)
-		_show_codex_entry(0)
 
 
 func layout_for_date(date_rect: Rect2) -> void:
@@ -471,7 +455,6 @@ func _refresh_modal() -> void:
 		%ModalShade.move_to_front()
 		%SettingsMenu.move_to_front()
 		%DeveloperMenu.move_to_front()
-		%CodexPanel.move_to_front()
 	else:
 		%ModalShade.z_index = 10
 		var index := mini(%EventCard.get_index(), %ResultCard.get_index())
@@ -511,9 +494,7 @@ func _desk_place(node: Control, rect: Rect2) -> void:
 func _layout_desk(_view: Vector2) -> void:
 	for panel in [%History, %Instruments, %MapHintCard, %ResultCard, get_node("QuickActions"), get_node("LegendPanel")]: panel.hide()
 	if _desk_controller == null: _desk_place(_workbench, _desk_plate)
-	if _screen_modals == null:
-		_desk_place(%CodexPanel, Rect2(_desk_plate.position, _desk_plate.size))
-	else:
+	if _screen_modals != null:
 		layout_screen_modals()
 
 
@@ -530,7 +511,7 @@ func _install_screen_modals() -> void:
 	_screen_modals.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(_screen_modals)
 	_screen_modals.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	for panel: Control in [%ModalShade,%EventCard,%ResultCard,%SettingsMenu,%DeveloperMenu,%CodexPanel]:
+	for panel: Control in [%ModalShade,%EventCard,%ResultCard,%SettingsMenu,%DeveloperMenu]:
 		panel.reparent(_screen_modals,false)
 	%ModalShade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	layout_screen_modals()
@@ -543,39 +524,10 @@ func layout_screen_modals() -> void:
 	_screen_modals.position = Vector2.ZERO
 	_screen_modals.size = view
 	var available := (view-Vector2(96,96)).max(Vector2(1,1))
-	for panel: Control in [%SettingsMenu,%DeveloperMenu,%CodexPanel]:
+	for panel: Control in [%SettingsMenu,%DeveloperMenu]:
 		var desired := Vector2(600,650)
-		if panel == %CodexPanel: desired = view-Vector2(192,144)
 		var dimensions := desired.max(panel.get_combined_minimum_size()).min(available)
 		_desk_place(panel,Rect2((view-dimensions)*.5,dimensions))
-
-
-func _fill_codex() -> void:
-	%CodexList.clear()
-	for preset in _presets:
-		var index: int = %CodexList.add_item(DeskLocalization.text(str(_field(preset, "title", _field(preset, "id", DeskLocalization.source("LOC_EXPRESSION_0476B565"))))))
-		%CodexList.set_item_metadata(index, preset)
-		%CodexList.set_item_tooltip(index, "%s / %s" % [DeskLocalization.text(str(_field(preset, "title", ""))), DeskLocalization.text("LOC_COLLECTED_EXPRESSION_F1ECA4D4")])
-		PaperStyle.suppress_item_tooltip(%CodexList, index)
-	%CodexDetails.text = DeskLocalization.source("LOC_AN_ARCHIVE_OF_EXPRESSIONS_THAT_HAVE_CIRCULATED_2B501899")
-	if %CodexList.item_count > 0:
-		%CodexList.select(0)
-		_show_codex_entry(0)
-
-
-func _show_codex_entry(index: int) -> void:
-	if index < 0 or index >= %CodexList.item_count:
-		return
-	var preset: Variant = %CodexList.get_item_metadata(index)
-	var slot_ids := PackedStringArray(_field(preset, "required_slots", []))
-	var prompts := PackedStringArray(_field(preset, "slot_prompts", []))
-	var values := PackedStringArray(_field(preset, "default_values", []))
-	var slots := PackedStringArray()
-	for slot_index in slot_ids.size():
-		var prompt: String = DeskLocalization.text(prompts[slot_index]) if slot_index < prompts.size() else slot_ids[slot_index]
-		var value: String = DeskLocalization.text(values[slot_index]) if slot_index < values.size() else ""
-		slots.append("%s: %s" % [DeskLocalization.text(prompt), DeskLocalization.text(value)])
-	%CodexDetails.text = "%s\n\n%s" % [DeskLocalization.text(str(_field(preset, "title", ""))), "\n".join(slots)]
 
 
 func _on_kernel_selected(index: int) -> void:
@@ -744,10 +696,5 @@ func refresh_localization() -> void:
 				var item: Variant = option.get_item_metadata(index)
 				var source: String = str(item) if item is String or item is StringName else str(_field(item,"title",_field(item,"id","")))
 				option.set_item_text(index,DeskLocalization.text(source))
-		var selected_codex: PackedInt32Array = %CodexList.get_selected_items()
-		_fill_codex()
-		if not selected_codex.is_empty() and selected_codex[0] < %CodexList.item_count:
-			%CodexList.select(selected_codex[0])
-			_show_codex_entry(selected_codex[0])
 	_refresh_preview()
 	_layout_panels()

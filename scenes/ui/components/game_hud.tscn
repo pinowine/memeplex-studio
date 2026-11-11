@@ -472,13 +472,6 @@ mouse_filter = 2
 text = "LOC_TRANSMISSION_OBSERVATION_7E3F4ADE"
 theme_type_variation = "DemoHeading"
 
-[node name="SampleLabel" type="Label" parent="Instruments/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-text = "LOC_SYNTHETIC_SAMPLE_NOT_REAL_NATIONAL_POPULATIONS_DEF5DDEF"
-theme_type_variation = "DemoCaption"
-
 [node name="Metrics" type="Label" parent="Instruments/Column"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -872,12 +865,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 54)
 text = "LOC_NEW_RUN_19518C53"
 
-[node name="Codex" type="Button" parent="SettingsMenu/Column/Buttons"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-text = "LOC_MEME_CODEX_2F7C7F0C"
-
 [node name="Quit" type="Button" parent="SettingsMenu/Column/Buttons"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -936,65 +923,4 @@ unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 text = "LOC_CLOSE_DEVELOPER_MENU_5DA46C6E"
-
-[node name="CodexPanel" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchor_left = 0.08
-anchor_top = 0.09
-anchor_right = 0.92
-anchor_bottom = 0.92
-grow_horizontal = 2
-grow_vertical = 2
-z_index = 30
-visible = false
-
-[node name="Column" type="VBoxContainer" parent="CodexPanel"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Toolbar" type="HBoxContainer" parent="CodexPanel/Column"]
-layout_mode = 2
-
-[node name="Heading" type="Label" parent="CodexPanel/Column/Toolbar"]
-layout_mode = 2
-mouse_filter = 2
-size_flags_horizontal = 3
-text = "LOC_MEME_CODEX_CASE_STRUCTURES_AND_SOURCES_83D1CF1C"
-theme_type_variation = "DemoHeading"
-
-[node name="CodexClose" type="Button" parent="CodexPanel/Column/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "LOC_CLOSE_CODEX_0F11283B"
-
-[node name="Notice" type="Label" parent="CodexPanel/Column"]
-layout_mode = 2
-mouse_filter = 2
-text = "LOC_THE_CASE_INDEX_IS_FOR_REFERENCE_ONLY_4DBAAC8A"
-autowrap_mode = 2
-theme_type_variation = "DemoCaption"
-
-[node name="Split" type="HSplitContainer" parent="CodexPanel/Column"]
-layout_mode = 2
-size_flags_vertical = 3
-split_offset = 300
-
-[node name="CodexList" type="ItemList" parent="CodexPanel/Column/Split"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-custom_minimum_size = Vector2(300, 0)
-clip_contents = true
-
-[node name="CodexDetails" type="RichTextLabel" parent="CodexPanel/Column/Split"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_minimum_size = Vector2(300, 0)
-bbcode_enabled = false
-selection_enabled = true
-scroll_active = true
-text = ""
 
