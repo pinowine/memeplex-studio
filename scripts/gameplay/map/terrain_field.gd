@@ -625,9 +625,10 @@ func _water_parts(polygon: PackedVector2Array) -> Array[PackedVector2Array]:
 	var origin := polygon[0]
 	var local := Transform2D(0.0, -origin)
 	for territory in _world.territories:
-		if not territory.bounds().intersects(box):
-			continue
-		for outline in territory.outlines:
+		for outline_index in territory.outlines.size():
+			if not territory.outline_bounds[outline_index].intersects(box):
+				continue
+			var outline := territory.outlines[outline_index]
 			for part in Geometry2D.intersect_polygons(local * polygon, local * outline):
 				var normalized := _water_ring(Transform2D(0.0, origin) * part)
 				if AtlasMapGenerator.polygon_area(normalized) > 0.00001:

@@ -4,6 +4,7 @@ const MainMenu = preload("res://scripts/presentation/ui/menus/main_menu.gd")
 const Tutorial = preload("res://scripts/presentation/ui/tutorial/tutorial.gd")
 const ContextGuidance = preload("res://scripts/presentation/ui/tutorial/context_guidance.gd")
 const Summary = preload("res://scripts/presentation/ui/summary/ending_summary.gd")
+const LoadingScreen = preload("res://scripts/presentation/ui/menus/loading_screen.gd")
 const CONTEXT_RETURN_AREA := Rect2(920, 62, 160, 86)
 
 var page: Node2D
@@ -12,6 +13,7 @@ var tutorial: Control
 var starter_dialog: Control
 var context_guidance: Node
 var ending: Control
+var loading: CanvasLayer
 var main_mode := true
 var _session_started := false
 var _tutorial_anchor: Control
@@ -26,6 +28,9 @@ var _tutorial_context_card_key := ""
 func configure(owner_page: Node2D) -> void:
 	page = owner_page
 	layer = 70
+	loading = LoadingScreen.new()
+	loading.hide()
+	add_child(loading)
 	main_menu = MainMenu.new()
 	main_menu.name = "MainMenu"
 	main_menu.configure({"existing_background":true,"settings_path":"user://meme_interface.cfg"})
@@ -107,7 +112,7 @@ func enter_game(guide: bool) -> void:
 	if page._direct_starter_selection: page._show_direct_starters()
 
 func blocks_input() -> bool:
-	return main_mode or main_menu.visible or ending.visible
+	return main_mode or main_menu.visible or ending.visible or loading.visible
 
 func _sync_guide_settings(_settings: Dictionary) -> void:
 	var enabled: bool = main_menu.guide_enabled()

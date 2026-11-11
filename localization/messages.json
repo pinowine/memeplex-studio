@@ -1,4 +1,14 @@
 {
+  "LOC_LOADING": {
+    "source": "加载中…",
+    "zh_CN": "加载中…",
+    "en": "Loading…"
+  },
+  "LOC_LOADING_FAILED": {
+    "source": "无法加载游戏",
+    "zh_CN": "无法加载游戏",
+    "en": "Could not load the game"
+  },
   "LOC_AFTER_CONFIRMING_YOUR_MEME_SELECT_A_COUNTRY_90EFDC41": {
     "source": "确认模因后点击地图国家，再投放并进入游戏。",
     "zh_CN": "确认模因后点击地图国家，再投放并进入游戏。",

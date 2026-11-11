@@ -96,7 +96,7 @@ func _ready() -> void:
 
 func _load_catalog() -> bool:
 	var path := "res://data/catalogs/catalog.tres"
-	var candidate := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP) as MemeDemoCatalog
+	var candidate := load(path) as MemeDemoCatalog
 	if candidate == null:
 		_catalog_error("Cannot load demo catalog: " + path)
 		return false
@@ -434,15 +434,20 @@ func _load() -> bool:
 	return true
 
 func _restart() -> void:
+	await _shell.loading.present()
 	if _shell != null: _shell.context_guidance.close()
-	if not _load_catalog(): return
+	if not _load_catalog():
+		_shell.loading.fail()
+		return
 	_pending_read_id = ""
 	get_node("DeskLayer/Desk").reset_journal()
 	hud.set_menu("")
 	_menu_resume_speed = 0
 	simulation.catalog = catalog
 	simulation.reset(simulation.seed_value + 1)
-	if not _bind_world(): return
+	if not _bind_world():
+		_shell.loading.fail()
+		return
 	hud.configure(catalog)
 	atlas.clock.reset()
 	atlas.close_drawer()
@@ -453,6 +458,7 @@ func _restart() -> void:
 	desk.return_overview()
 	desk._monitor.set_mode("meme")
 	if _shell != null: _shell.enter_game(true)
+	_shell.loading.hide()
 	_queue_startup_focus()
 
 func startup_ready() -> bool:
@@ -649,12 +655,14 @@ func _tutorial_observe(action: String, data: Dictionary = {}) -> void:
 	if _shell != null: _shell.observe(action,data)
 
 func _start_from_main() -> void:
-	_restart()
+	await _restart()
 
 func _load_from_main() -> void:
+	await _shell.loading.present()
 	if _load():
 		_shell.enter_game(false)
 		if simulation.phase == "complete": _complete_run(simulation.snapshot())
+	_shell.loading.hide()
 
 func _return_to_main() -> void:
 	atlas.set_speed(0)

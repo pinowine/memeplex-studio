@@ -48,6 +48,7 @@ var overview_zoom: float = 1.0
 var _zoom_anchor := Vector2.ZERO
 var _pointer := Vector2.ZERO
 var _random := RandomNumberGenerator.new()
+var _generation_thread := Thread.new()
 var _drawer_offset: float
 var _drawer_tween: Tween
 var _focus_tween: Tween
@@ -79,18 +80,34 @@ func _ready() -> void:
 	map_input.mouse_exited.connect(_on_map_exited)
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	await get_tree().process_frame
-	var generated := regenerate(_random.randi_range(1, 2147483647))
+	var generated := false
+	if _valid_settings():
+		var generator := AtlasMapGenerator.new()
+		_generation_thread.start(generator.generate.bind(settings, _random.randi_range(1, 2147483647)))
+		while _generation_thread.is_alive():
+			await get_tree().process_frame
+		generated = _apply_world(_generation_thread.wait_to_finish())
 	initialization_error = OK if generated else ERR_INVALID_DATA
 	initialization_message = "" if generated else "Cannot generate the configured map"
 	initialization_complete = true
 	initialization_finished.emit(initialization_error)
 	set_process(generated)
 
-func regenerate(seed_value: int) -> bool:
+func _exit_tree() -> void:
+	if _generation_thread.is_started(): _generation_thread.wait_to_finish()
+
+func _valid_settings() -> bool:
 	if settings == null or settings.countries.is_empty() or not settings.world_size.is_finite() or settings.world_size.x <= 0 or settings.world_size.y <= 0:
 		push_error("Map settings require countries and finite positive dimensions")
 		return false
-	world = AtlasMapGenerator.new().generate(settings, seed_value)
+	return true
+
+func regenerate(seed_value: int) -> bool:
+	if not _valid_settings(): return false
+	return _apply_world(AtlasMapGenerator.new().generate(settings, seed_value))
+
+func _apply_world(value: AtlasWorldData) -> bool:
+	world = value
 	if world == null: return false
 	terrain.set_world(world)
 	clock.reset()
@@ -104,7 +121,7 @@ func regenerate(seed_value: int) -> bool:
 	launch_marker.hide()
 	terrain.set_highlight(-1, -1)
 	refresh_localization()
-	print("MAP_READY seed=%d countries=%d land_groups=%d geometry=vector fingerprint=%s" % [seed_value, settings.countries.size(), world.groups.size(), world.fingerprint()])
+	print("MAP_READY seed=%d countries=%d land_groups=%d geometry=vector fingerprint=%s" % [world.seed_value, settings.countries.size(), world.groups.size(), world.fingerprint()])
 	return true
 
 func _process(delta: float) -> void:
