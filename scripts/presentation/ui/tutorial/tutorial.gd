@@ -7,6 +7,9 @@ signal focus_changed(active: bool)
 signal pointer_cancelled
 signal drag_cancelled
 signal overview_requested
+signal starter_preview_requested(index: int)
+signal starter_confirm_requested
+signal skip_requested
 
 const OpeningSteps = preload("res://scripts/presentation/ui/tutorial/opening_steps.gd")
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
@@ -70,6 +73,9 @@ var _typewriter := TypewriterEffect.new()
 var _body_text := ""
 var _hover_target := ""
 var _hover_text := ""
+var _starter_options: Array = []
+var _starter_selected := -1
+var _actions: HBoxContainer
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -87,6 +93,7 @@ func _ready() -> void:
 	_focus.hide()
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
+	_actions = _ui.get_node("Card/Content/Actions")
 	_ui.get_node("Card/Content/Body").install_effect(_typewriter)
 	_arrow = Arrow.new()
 	_arrow.name = "GuideArrow"
@@ -97,10 +104,12 @@ func _ready() -> void:
 	add_child(_drag_arrow)
 	move_child(_drag_arrow, 1)
 	_drag_arrow.hide()
-	_ui.get_node("Card/Content/Actions/Continue").pressed.connect(advance)
-	_ui.get_node("Card/Content/Actions/Skip").pressed.connect(skip)
-	_ui.get_node("SilentSkip").pressed.connect(skip)
-	ReceiptUI.primary(_ui.get_node("Card/Content/Actions/Continue"))
+	_actions.get_node("Continue").pressed.connect(_continue_pressed)
+	_actions.get_node("Skip").pressed.connect(_skip_pressed)
+	_ui.get_node("SilentSkip").pressed.connect(_skip_pressed)
+	ReceiptUI.primary(_actions.get_node("Continue"))
+	_ui.get_node("Card/StarterChoices").preview_requested.connect(func(index: int): starter_preview_requested.emit(index))
+	_ui.get_node("Card/StarterChoices").hovered.connect(_hover_starter)
 	if _steps.is_empty(): _steps = default_steps()
 	resized.connect(_refresh)
 	resized.connect(_cancel_pointer)
@@ -126,6 +135,31 @@ func set_drag_target_provider(provider: Callable) -> void:
 func set_input_target_provider(provider: Callable, point_test := Callable()) -> void:
 	_input_provider = provider
 	_input_point_test = point_test
+
+func is_choosing_starter() -> bool:
+	return _active and bool(_steps[_index].get("starter_choices", false))
+
+func set_starter_options(options: Array, selected_index: int = -1) -> void:
+	_starter_options = options.duplicate(true)
+	_starter_selected = selected_index
+	_ui.get_node("Card/StarterChoices").set_options(_starter_options, selected_index)
+	_refresh()
+
+func _hover_starter(index: int) -> void:
+	if index < 0:
+		clear_hover()
+	else:
+		set_hover("starter/%d" % index, str(_starter_options[index].context_hint))
+
+func _continue_pressed() -> void:
+	if bool(_steps[_index].get("starter_choices", false)):
+		starter_confirm_requested.emit()
+	else:
+		advance()
+
+func _skip_pressed() -> void:
+	skip()
+	skip_requested.emit()
 
 func set_hover(target_id: String, text_key: String = "") -> void:
 	if not _active or not bool(_steps[_index].get("hover", false)): return
@@ -159,6 +193,7 @@ func allows_hover(viewport_point: Vector2) -> bool:
 
 func allows_input(event: InputEvent) -> bool:
 	if not _active or _hint_only: return true
+	if _blocked and is_choosing_starter(): return true
 	if _pointer_mode == "guide" and event is InputEventMouse:
 		if event is InputEventMouseMotion: return true
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -166,12 +201,15 @@ func allows_input(event: InputEvent) -> bool:
 			return true
 	if event is InputEventMouse and handles_viewport_point(event.position) and _pointer_mode.is_empty():
 		if event is InputEventMouseMotion: return true
+		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN] and bool(_steps[_index].get("starter_choices", false)): return true
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed: _pointer_mode = "guide"
 			return true
 	if _blocked or _transitioning: return false
 	if event is InputEventKey:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+		if key == KEY_ESCAPE and bool(_steps[_index].get("starter_choices", false)): return true
+		if bool(_steps[_index].get("starter_choices", false)) and key in [KEY_TAB, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_SPACE, KEY_ENTER, KEY_KP_ENTER]: return true
 		if key == KEY_ESCAPE and bool(_steps[_index].get("contextual", false)):
 			if event.pressed and not event.echo: skip()
 			return false
@@ -372,11 +410,18 @@ func _refresh() -> void:
 	if not is_instance_valid(_ui) or _steps.is_empty(): return
 	_display_index = clampi(_display_index, 0, _steps.size() - 1)
 	var step := _steps[_display_index]
+	var choosing := bool(step.get("starter_choices", false))
+	var choices: Control = _ui.get_node("Card/StarterChoices")
+	choices.visible = choosing
+	choices.set_enabled(_active and not _blocked and not _transitioning)
+	var action_parent: Node = _ui.get_node("Card") if choosing else _ui.get_node("Card/Content")
+	if _actions.get_parent() != action_parent: _actions.reparent(action_parent, false)
 	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
 	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title", "")))
 	var text_key := _hover_text if _display_index == _index and not _hover_text.is_empty() else str(step.get("text", ""))
 	var text := DeskLocalization.text(text_key)
 	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
+	body.custom_minimum_size.y = 72 if choosing else 0
 	body.set_meta(&"text_workbench_source", DeskLocalization.text_source(text_key))
 	if text != _body_text:
 		_body_text = text
@@ -386,13 +431,17 @@ func _refresh() -> void:
 		body.push_customfx(_typewriter, {})
 		body.add_text(text)
 		body.pop()
-	var next: Button = _ui.get_node("Card/Content/Actions/Continue")
+	var next: Button = _actions.get_node("Continue")
 	next.text = DeskLocalization.text("LOC_GUIDANCE_GOT_IT") if bool(step.get("contextual", false)) else ((DeskLocalization.text("LOC_HIDE_HINT_FC06733C")) if _hint_only else (DeskLocalization.text("LOC_CONTINUE_7C969119")))
 	var requires_action := not _hint_only and str(step.get("action", "continue")) != "continue"
-	next.disabled = not _active or _blocked or _transitioning or requires_action
-	_ui.get_node("Card/Content/Actions/Skip").text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
-	_ui.get_node("Card/Content/Actions/Skip").disabled = not _active or _blocked
-	_ui.get_node("Card/Content/Actions/Skip").visible = not bool(step.get("contextual", false))
+	if choosing:
+		next.text = DeskLocalization.text("LOC_GUIDE_CONFIRM_CHOICE")
+		next.disabled = not _active or _blocked or _transitioning or _starter_selected < 0
+	else:
+		next.disabled = not _active or _blocked or _transitioning or requires_action
+	_actions.get_node("Skip").text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
+	_actions.get_node("Skip").disabled = not _active or _blocked
+	_actions.get_node("Skip").visible = not choosing and not bool(step.get("contextual", false))
 	var silent := bool(step.get("silent", false))
 	_ui.get_node("Card").visible = not silent
 	var silent_skip: Button = _ui.get_node("SilentSkip")
@@ -434,6 +483,7 @@ func _refresh() -> void:
 	var card: Control = _ui.get_node("Card")
 	var compact := size.x < 900 or size.y < 560
 	var width := minf(600 if bool(step.get("centered", false)) else 500, size.x - CARD_MARGIN * 2.0)
+	if choosing: width = minf(1040, size.x - CARD_MARGIN * 2.0)
 	var minimum_width := minf(344.0, size.x - CARD_MARGIN * 2.0)
 	# The live phone paper reserves the right side, including while it slides in.
 	for rectangle: Rect2 in _avoid_rects:
@@ -469,6 +519,22 @@ func _refresh() -> void:
 	waiting.size.x = content.size.x
 	card.size.y = maxf(minimum_height, content.get_combined_minimum_size().y + padding.y)
 	content.size = card.size - padding
+	if choosing:
+		var options_top := maxf(112, content.position.y + body.get_combined_minimum_size().y + 24)
+		var choices_height: float = choices.fit_width(width - 48)
+		choices_height = minf(choices_height, size.y - CARD_MARGIN * 2.0 - options_top - 128)
+		choices.position = Vector2(24, options_top)
+		choices.size = Vector2(width - 48, choices_height)
+		card.size.y = options_top + choices_height + 128
+		content.size.y = card.size.y - padding.y
+		body.size_flags_vertical = Control.SIZE_FILL
+		content.size.y = body.get_combined_minimum_size().y
+		_actions.position = Vector2(24, card.size.y - 112)
+		_actions.size = Vector2(width - 48, 48)
+		_actions.alignment = BoxContainer.ALIGNMENT_END
+	else:
+		body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		_actions.alignment = BoxContainer.ALIGNMENT_BEGIN
 	_card_destination = _place_card(card.size)
 	if not _card_placed:
 		_card_position = _card_destination
@@ -589,8 +655,8 @@ func _update_arrow(card: Rect2) -> void:
 
 func handles_viewport_point(point: Vector2) -> bool:
 	if not _active or not is_visible_in_tree() or not point.is_finite(): return false
-	for path: String in ["Card/Content/Actions/Continue", "Card/Content/Actions/Skip", "SilentSkip"]:
-		var button: Button = _ui.get_node(path)
+	if _ui.get_node("Card/StarterChoices").handles_viewport_point(point): return true
+	for button: Button in [_actions.get_node("Continue"), _actions.get_node("Skip"), _ui.get_node("SilentSkip")]:
 		if not button.is_visible_in_tree(): continue
 		var local := button.get_global_transform_with_canvas().affine_inverse() * point
 		if Rect2(Vector2.ZERO, button.size).has_point(local): return true
