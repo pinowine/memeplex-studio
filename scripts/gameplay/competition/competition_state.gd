@@ -71,9 +71,10 @@ func _set_world(rows: Array) -> void:
 func has_country(id: String) -> bool:
 	return _state.countries.has(id)
 
-func adoption_pulse(variant_id: String, amount: float) -> int:
+func adoption_pulse(variant_id: String, amount: float, country_id: String = "") -> int:
 	var added := 0
 	for row: Dictionary in _state.world:
+		if not country_id.is_empty() and str(row.id) != country_id: continue
 		var country: Dictionary = _state.countries[str(row.id)]
 		var adopted := int(country.adopted.get(variant_id,0))
 		var eligible := maxi(0,int(country.exposed.get(variant_id,0))-adopted)
@@ -137,6 +138,10 @@ func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionar
 	if variant.get("flow_draft") is Dictionary:
 		# The child draft contains its patch changes and the parent's unmodified skill inputs.
 		var derived := profile(variant.flow_draft)
+		derived.text = str(variant.text)
+		var distinct := {}
+		for character in str(variant.text): distinct[character] = true
+		derived.expression = clampf(float(distinct.size()) / rules.expression_character_scale, rules.expression_floor, 1.0)
 		derived.reach = maxf(1.0,float(derived.reach))
 		return derived
 	var source: Dictionary = _state.registry.get(parent_id,{}).get("profile",{}).duplicate(true)
@@ -144,6 +149,7 @@ func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionar
 	source.language_id = str(variant.language_id)
 	source.erase("language_ids")
 	source.topic_ids = Array(variant.get("topic_ids",[]))
+	if variant.has("political_known"): source.political_known = bool(variant.political_known)
 	if variant.has("political_position") and not variant.political_position.is_empty(): source.political_position = _pair(variant.political_position)
 	if variant.has("pragmatic_position"): source.pragmatic_position = _pair(variant.pragmatic_position)
 	source.text = str(variant.text)
@@ -237,7 +243,8 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 			var refresh: float = rules.controlled_refresh_hours if bool(variant.controlled) else rules.community_refresh_hours
 			var novelty: float = exp(-float(age) / refresh)
 			var reuse: float = reuse_factors[id]
-			weights[id] = maxf(0.0,pressure * float(fit.score) * float(fit.reach) * novelty * reuse * float(modifier_factors.get(id,1.0)))
+			var local_factors: Dictionary = modifier_factors.get(cid, modifier_factors)
+			weights[id] = maxf(0.0,pressure * float(fit.score) * float(fit.reach) * novelty * reuse * float(local_factors.get(id,1.0)))
 		var budget := floori(population * rules.attention_fraction)
 		var demand := 0.0
 		for value in weights.values(): demand += float(value)

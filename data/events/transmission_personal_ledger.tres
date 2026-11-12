@@ -1,36 +1,10 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="2_effect"]
 
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 7.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 13.0
-
-[sub_resource type="Resource" id="Condition_3"]
-script = ExtResource("2_condition")
-field = &"exposed"
-operator = &"ge"
-value = 200.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"semantic_shift"
-amount = 0.2
-duration_hours = 0.0
-group_ids = PackedStringArray()
-
-[sub_resource type="Resource" id="Effect_2"]
-script = ExtResource("3_effect")
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_effect")
 effect_id = &"remix"
 amount = 1.0
 duration_hours = 0.0
@@ -39,24 +13,28 @@ group_ids = PackedStringArray("commuters")
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_personal_ledger"
-title = "LOC_AN_OFFICE_WORKER_PROPOSES_FILLING_THE_ORIGINAL_9D8E086B"
-narrative = "LOC_AN_OFFICE_WORKER_PROPOSES_FILLING_THE_ORIGINAL_DDE1D781"
-mentor_comment = "LOC_THE_READERS_BROUGHT_THEIR_OWN_BILLS_YOUR_8D7B8D60"
+category = &"mutate"
 origin = &"transmission"
-topic_ids = PackedStringArray("cost_of_living", "work")
-operation_ids = PackedStringArray("remix")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
-trigger_mode = &"random"
-start_hour = 7.0
-weight = 1.2
-occurrence_chance = 0.035
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 2.0
-attention_duration_hours = 0.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("relation")
-evidence_status = &"design"
+title = "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_TITLE"
+narrative = "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_NARRATIVE"
+mentor_comment = "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_COMMENT"
+topic_ids = PackedStringArray("work", "community")
+response_profile = {"attention": 0.35, "spread": 0.2, "production": 0.0, "sentiment": 0.0, "authority_affinity": 0.0, "freedom_affinity": 0.05, "equality_affinity": 0.05, "hierarchy_affinity": 0.0, "controversy": 0.65, "positive_frames": ["LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_POSITIVE"], "negative_frames": ["LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_0")])
+mutation_kind = &"confluence"
+mutation_topic_ids = PackedStringArray("work")
+mutation_stance_delta = Vector2(-0.1, -0.15)
+mutation_pragmatic_delta = Vector2(0.2, 0.15)
+operation_ids = PackedStringArray("remix")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 0.85
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"

@@ -1,69 +1,40 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="2_effect"]
 
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 45.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 48.0
-
-[sub_resource type="Resource" id="Condition_3"]
-script = ExtResource("2_condition")
-field = &"adopted"
-operator = &"ge"
-value = 160.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"semantic_shift"
-amount = 0.25
-duration_hours = 0.0
-group_ids = PackedStringArray()
-
-[sub_resource type="Resource" id="Effect_2"]
-script = ExtResource("3_effect")
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_effect")
 effect_id = &"remix"
 amount = 1.0
 duration_hours = 0.0
-group_ids = PackedStringArray("students")
-
-[sub_resource type="Resource" id="Effect_3"]
-script = ExtResource("3_effect")
-effect_id = &"fatigue"
-amount = -0.03
-duration_hours = 0.0
-group_ids = PackedStringArray("students")
+group_ids = PackedStringArray()
 
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_exit_phrase"
-title = "LOC_STUDENTS_PROPOSE_ADDING_AN_EXIT_PHRASE_TO_76DB60D1"
-narrative = "LOC_STUDENTS_IN_A_RESPONSE_CHAIN_PROPOSE_A_BC7BF7F2"
-mentor_comment = "LOC_THE_EXIT_PHRASE_FINALLY_ADMITS_ONE_THING_3EA99628"
+category = &"mutate"
 origin = &"transmission"
+title = "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_TITLE"
+narrative = "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_NARRATIVE"
+mentor_comment = "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_COMMENT"
 topic_ids = PackedStringArray("community", "language")
-operation_ids = PackedStringArray("remix", "revive")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2"), SubResource("Effect_3")])
-trigger_mode = &"random"
-start_hour = 45.0
-weight = 0.9
-occurrence_chance = 0.035
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 2.0
-attention_duration_hours = 0.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("ritual")
-evidence_status = &"design"
+response_profile = {"attention": 0.35, "spread": 0.2, "production": 0.0, "sentiment": 0.0, "authority_affinity": 0.0, "freedom_affinity": 0.05, "equality_affinity": 0.05, "hierarchy_affinity": 0.0, "controversy": 0.65, "positive_frames": ["LOC_EVENT_TRANSMISSION_EXIT_PHRASE_POSITIVE"], "negative_frames": ["LOC_EVENT_TRANSMISSION_EXIT_PHRASE_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_0")])
+mutation_kind = &"semantic"
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.25, 0.2)
+operation_ids = PackedStringArray("remix")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 0.85
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"

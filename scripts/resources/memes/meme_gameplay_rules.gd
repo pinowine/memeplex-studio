@@ -5,6 +5,7 @@ extends Resource
 @export var horizon_hours: int = 1440
 @export var hours_per_active_second: float = 1.2
 @export var event_time_scale: float = 20.0
+@export var event_generation_interval_hours: float = 240.0
 @export var attention_fraction: float = 0.025
 @export var attention_activation: float = 4.0
 @export var adoption_response: float = 0.006
@@ -43,7 +44,6 @@ extends Resource
 @export var equilibrium_min_side_share: float = 0.01
 @export var milestone_population_fraction: float = 0.01
 @export var countries: Array[Dictionary] = []
-@export var event_presets: Dictionary = {}
 @export var map_settings: AtlasMapSettings
 @export var evidence_status: StringName = &"game_policy"
 
@@ -54,7 +54,7 @@ func validate() -> PackedStringArray:
 		var value: float = float(get(key))
 		if not is_finite(value) or value <= 0.0 or value > 1.0: errors.append("Invalid gameplay fraction: " + key)
 	if seed_hours <= 0 or controlled_refresh_hours <= 0.0 or community_refresh_hours <= 0.0 or autonomous_survival_hours <= 0 or equilibrium_window_hours <= 0 or sea_neighbors < 0: errors.append("Invalid gameplay timing")
-	for key in ["attention_activation","event_time_scale","controlled_refresh_hours","community_refresh_hours","expression_character_scale","occupancy_multiplier","travel_distance_scale","network_contact_multiplier"]:
+	for key in ["attention_activation","event_time_scale","event_generation_interval_hours","controlled_refresh_hours","community_refresh_hours","expression_character_scale","occupancy_multiplier","travel_distance_scale","network_contact_multiplier"]:
 		if not is_finite(float(get(key))) or float(get(key)) <= 0.0: errors.append("Invalid gameplay scale: " + key)
 	if network_contact_multiplier < 1.0 or network_contact_multiplier > 1000.0: errors.append("Invalid network contact multiplier")
 	for id in skill_reach:

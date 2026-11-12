@@ -1,57 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 34.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 40.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"channel_reach"
-amount = 0.16
-duration_hours = 6.0
-group_ids = PackedStringArray("students")
-
-[sub_resource type="Resource" id="Effect_2"]
-script = ExtResource("3_effect")
-effect_id = &"trust"
-amount = 0.04
-duration_hours = 0.0
-group_ids = PackedStringArray("students")
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_language_help_desk"
-title = "LOC_A_COMMUNITY_CENTER_OPENS_A_BILINGUAL_INFORMATION_7A3D8B9E"
-narrative = "LOC_A_COMMUNITY_SERVICE_CENTER_OPENS_A_BILINGUAL_C74B43FC"
-mentor_comment = "LOC_THE_ORIGINAL_IS_STILL_THERE_DO_NOT_FA5D5E5A"
+category = &"internet"
 origin = &"world"
-topic_ids = PackedStringArray("language", "education", "trust")
-operation_ids = PackedStringArray("platform_change", "contest")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
-trigger_mode = &"random"
-start_hour = 34.0
-weight = 0.85
-occurrence_chance = 0.03
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 6.0
-attention_duration_hours = 6.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("relation")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_TITLE"
+narrative = "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_COMMENT"
+topic_ids = PackedStringArray("work", "community", "entertainment")
+response_profile = {"attention": 0.7, "spread": 0.32, "production": 0.8, "sentiment": 0.4, "authority_affinity": 0.0, "freedom_affinity": 0.1, "equality_affinity": 0.4, "hierarchy_affinity": -0.2, "controversy": 0.35, "positive_frames": ["LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_NEGATIVE"], "group_reactions": {"commuters": 0.25, "culture_fans": 0.15}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 9.6
+max_occurrences = 0
+physical_duration_hours = 1.2
+attention_duration_hours = 4.8
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
 design_rewards = Array[Dictionary]([{"kind": "language", "id": "language_ninghua", "count": 1}])

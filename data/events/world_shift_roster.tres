@@ -1,49 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 4.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 10.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"attention"
-amount = 0.22
-duration_hours = 5.0
-group_ids = PackedStringArray("commuters")
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_shift_roster"
-title = "LOC_HARBOR_DISPATCH_PUBLISHES_STAGGERED_SHIFT_SCHEDULES_CE0749FD"
-narrative = "LOC_HARBOR_DISPATCH_PUBLISHES_STAGGERED_SHIFTS_SO_THAT_21EB5BD9"
-mentor_comment = "LOC_STAGGERING_SEPARATED_THE_WORKERS_BUT_LEFT_THE_947676E1"
+category = &"nature"
 origin = &"world"
-topic_ids = PackedStringArray("work", "cost_of_living")
-operation_ids = PackedStringArray("attention_shift")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 4.0
-weight = 1.2
-occurrence_chance = 0.04
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 8.0
-attention_duration_hours = 5.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("relation")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_SHIFT_ROSTER_TITLE"
+narrative = "LOC_EVENT_WORLD_SHIFT_ROSTER_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_SHIFT_ROSTER_COMMENT"
+topic_ids = PackedStringArray("work", "community", "policy")
+response_profile = {"attention": 0.6, "spread": 0.2, "production": 0.6, "sentiment": -0.45, "authority_affinity": 0.1, "freedom_affinity": -0.1, "equality_affinity": 0.3, "hierarchy_affinity": -0.2, "controversy": 0.75, "positive_frames": ["LOC_EVENT_WORLD_SHIFT_ROSTER_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_SHIFT_ROSTER_NEGATIVE"], "group_reactions": {"commuters": -0.3, "students": -0.05}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 12.0
+max_occurrences = 0
+physical_duration_hours = 6.0
+attention_duration_hours = 8.4
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind":"topic", "id":"topic_work", "count":1}])

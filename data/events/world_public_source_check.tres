@@ -1,49 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 42.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 48.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"trust"
-amount = 0.05
-duration_hours = 0.0
-group_ids = PackedStringArray("commuters", "students")
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_public_source_check"
-title = "LOC_A_PUBLIC_BRIEFING_ADDS_QUESTIONS_ABOUT_SOURCES_BDBCAA25"
-narrative = "LOC_A_PUBLIC_BRIEFING_ADDS_A_SOURCE_CHECKING_D0BDB7C2"
-mentor_comment = "LOC_WE_DON_T_KNOW_FINALLY_MADE_THE_29FD075F"
+category = &"internet"
 origin = &"world"
-topic_ids = PackedStringArray("policy", "trust")
-operation_ids = PackedStringArray("contest")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 42.0
-weight = 0.8
-occurrence_chance = 0.03
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 3.0
-attention_duration_hours = 0.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("stance")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_TITLE"
+narrative = "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_COMMENT"
+topic_ids = PackedStringArray("archive", "identity", "trust")
+response_profile = {"attention": 0.6, "spread": 0.3, "production": 0.65, "sentiment": -0.2, "authority_affinity": 0.05, "freedom_affinity": -0.05, "equality_affinity": 0.0, "hierarchy_affinity": 0.0, "controversy": 0.8, "positive_frames": ["LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 7.2
+max_occurrences = 0
+physical_duration_hours = 2.4
+attention_duration_hours = 3.6
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind":"topic", "id":"topic_archive", "count":1}])

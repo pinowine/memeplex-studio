@@ -1,62 +1,31 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 24.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 30.0
-
-[sub_resource type="Resource" id="Condition_3"]
-script = ExtResource("2_condition")
-field = &"exposed"
-operator = &"ge"
-value = 500.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"semantic_shift"
-amount = 0.72
-duration_hours = 0.0
-group_ids = PackedStringArray()
-
-[sub_resource type="Resource" id="Effect_2"]
-script = ExtResource("3_effect")
-effect_id = &"remix"
-amount = 1.0
-duration_hours = 0.0
-group_ids = PackedStringArray("culture_fans")
 
 [resource]
 script = ExtResource("1_event")
 id = &"environment_rule_reversal"
-title = "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_USING_THE_ORIGINAL_4699A441"
-narrative = "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_APPLYING_THE_ORIGINAL_541E242F"
-mentor_comment = "LOC_A_RULE_CAN_WORK_IN_REVERSE_CHECK_0F53AD2A"
+category = &"discovery"
 origin = &"environment_meme"
-topic_ids = PackedStringArray("identity", "language")
-operation_ids = PackedStringArray("split", "remix")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
+title = "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_TITLE"
+narrative = "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_NARRATIVE"
+mentor_comment = "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_COMMENT"
+topic_ids = PackedStringArray("work", "cost_of_living", "community")
+response_profile = {"attention": 0.25, "spread": 0.12, "production": 0.25, "sentiment": 0.05, "authority_affinity": 0.05, "freedom_affinity": 0.1, "equality_affinity": 0.1, "hierarchy_affinity": 0, "controversy": 0.45, "positive_frames": ["LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_POSITIVE"], "negative_frames": ["LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_NEGATIVE"], "group_reactions": {}}
+external_preset_id = &"case_r01"
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("emerge")
 trigger_mode = &"random"
-start_hour = 24.0
-weight = 1.2
-occurrence_chance = 0.035
-cooldown_hours = 18.0
+start_hour = 0.0
+weight = 0.65
+occurrence_chance = 1.0
+cooldown_hours = 24.0
 max_occurrences = 1
-physical_duration_hours = 2.0
-attention_duration_hours = 0.0
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
 attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("boundary")
+discovery_ids = PackedStringArray()
 evidence_status = &"design"
-external_preset_id = &""
