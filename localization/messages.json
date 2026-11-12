@@ -151,8 +151,8 @@
   },
   "LOC_EVENT_ORIGIN_WORLD_NOTE": {
     "source": "“天地不仁，以万物为刍狗。”——老子《道德经》第五章",
-    "zh_CN": "“天地不仁，以万物为刍狗。”——老子《道德经》第五章",
-    "en": "“Heaven and earth do not act from (the impulse of) any wish to be benevolent; they deal with all things as the dogs of grass are dealt with.” — Laozi, Tao Te Ching, Chapter 5"
+    "zh_CN": "“天地不仁，以万物为刍狗。”\n老子《道德经》第五章",
+    "en": "“Heaven and earth do not act from (the impulse of) any wish to be benevolent; they deal with all things as the dogs of grass are dealt with.”\nLaozi, Tao Te Ching, Chapter 5"
   },
   "LOC_EVENT_ORIGIN_TRANSMISSION_HELP": {
     "source": "由模因的传播、采用或改写触发的事件。",
@@ -161,8 +161,8 @@
   },
   "LOC_EVENT_ORIGIN_TRANSMISSION_NOTE": {
     "source": "“述而不作，信而好古。”——《论语·述而》",
-    "zh_CN": "“述而不作，信而好古。”——《论语·述而》",
-    "en": "“A transmitter and not a maker, believing in and loving the ancients” — The Analects, Shu Er"
+    "zh_CN": "“述而不作，信而好古。”\n《论语·述而》",
+    "en": "“A transmitter and not a maker, believing in and loving the ancients”\nThe Analects, Shu Er"
   },
   "LOC_EVENT_ORIGIN_ENVIRONMENT_HELP": {
     "source": "世界中的其他人创造并传播的模因。",
@@ -171,53 +171,53 @@
   },
   "LOC_EVENT_ORIGIN_ENVIRONMENT_NOTE": {
     "source": "“有物混成，先天地生。”——老子《道德经》第二十五章",
-    "zh_CN": "“有物混成，先天地生。”——老子《道德经》第二十五章",
-    "en": "“There was something undefined and complete, coming into existence before Heaven and Earth.” — Laozi, Tao Te Ching, Chapter 25"
+    "zh_CN": "“有物混成，先天地生。”\n老子《道德经》第二十五章",
+    "en": "“There was something undefined and complete, coming into existence before Heaven and Earth.”\nLaozi, Tao Te Ching, Chapter 25"
   },
   "LOC_EVENT_NOTE_ATTRACTION": {
     "source": "“乐与饵，过客止。”——老子《道德经》第三十五章",
-    "zh_CN": "“乐与饵，过客止。”——老子《道德经》第三十五章",
-    "en": "“Music and dainties will make the passing guest stop (for a time).” — Laozi, Tao Te Ching, Chapter 35"
+    "zh_CN": "“乐与饵，过客止。”\n老子《道德经》第三十五章",
+    "en": "“Music and dainties will make the passing guest stop (for a time).”\nLaozi, Tao Te Ching, Chapter 35"
   },
   "LOC_EVENT_NOTE_REACH": {
     "source": "“近者说，远者来。”——《论语·子路》",
-    "zh_CN": "“近者说，远者来。”——《论语·子路》",
-    "en": "“those who are near are made happy, and those who are far off are attracted.” — The Analects, Zi Lu"
+    "zh_CN": "“近者说，远者来。”\n《论语·子路》",
+    "en": "“those who are near are made happy, and those who are far off are attracted.”\nThe Analects, Zi Lu"
   },
   "LOC_EVENT_NOTE_TRUST": {
     "source": "“人而无信，不知其可也。”——《论语·为政》",
-    "zh_CN": "“人而无信，不知其可也。”——《论语·为政》",
-    "en": "“I do not know how a man without truthfulness is to get on.” — The Analects, Wei Zheng"
+    "zh_CN": "“人而无信，不知其可也。”\n《论语·为政》",
+    "en": "“I do not know how a man without truthfulness is to get on.”\nThe Analects, Wei Zheng"
   },
   "LOC_EVENT_NOTE_FATIGUE": {
     "source": "“知止不殆，可以长久。”——老子《道德经》第四十四章",
-    "zh_CN": "“知止不殆，可以长久。”——老子《道德经》第四十四章",
-    "en": "“Who knows to stop / Incurs no blame. / From danger free / Long live shall he.” — Laozi, Tao Te Ching, Chapter 44"
+    "zh_CN": "“知止不殆，可以长久。”\n老子《道德经》第四十四章",
+    "en": "“Who knows to stop / Incurs no blame. / From danger free / Long live shall he.”\nLaozi, Tao Te Ching, Chapter 44"
   },
   "LOC_EVENT_NOTE_ADOPTION": {
     "source": "“千里之行，始于足下。”——老子《道德经》第六十四章",
-    "zh_CN": "“千里之行，始于足下。”——老子《道德经》第六十四章",
-    "en": "“the journey of a thousand li commenced with a single step.” — Laozi, Tao Te Ching, Chapter 64"
+    "zh_CN": "“千里之行，始于足下。”\n老子《道德经》第六十四章",
+    "en": "“the journey of a thousand li commenced with a single step.”\nLaozi, Tao Te Ching, Chapter 64"
   },
   "LOC_EVENT_NOTE_REMIX": {
     "source": "“温故而知新，可以为师矣。”——《论语·为政》",
-    "zh_CN": "“温故而知新，可以为师矣。”——《论语·为政》",
-    "en": "“If a man keeps cherishing his old knowledge, so as continually to be acquiring new, he may be a teacher of others.” — The Analects, Wei Zheng"
+    "zh_CN": "“温故而知新，可以为师矣。”\n《论语·为政》",
+    "en": "“If a man keeps cherishing his old knowledge, so as continually to be acquiring new, he may be a teacher of others.”\nThe Analects, Wei Zheng"
   },
   "LOC_EVENT_NOTE_DRIFT": {
     "source": "“名可名，非常名。”——老子《道德经》第一章",
-    "zh_CN": "“名可名，非常名。”——老子《道德经》第一章",
-    "en": "“The name that can be named is not the enduring and unchanging name.” — Laozi, Tao Te Ching, Chapter 1"
+    "zh_CN": "“名可名，非常名。”\n老子《道德经》第一章",
+    "en": "“The name that can be named is not the enduring and unchanging name.”\nLaozi, Tao Te Ching, Chapter 1"
   },
   "LOC_EVENT_NOTE_INDEPENDENT": {
     "source": "“道生一，一生二，二生三，三生万物。”——老子《道德经》第四十二章",
-    "zh_CN": "“道生一，一生二，二生三，三生万物。”——老子《道德经》第四十二章",
-    "en": "“The Tao produced One; One produced Two; Two produced Three; Three produced All things.” — Laozi, Tao Te Ching, Chapter 42"
+    "zh_CN": "“道生一，一生二，二生三，三生万物。”\n老子《道德经》第四十二章",
+    "en": "“The Tao produced One; One produced Two; Two produced Three; Three produced All things.”\nLaozi, Tao Te Ching, Chapter 42"
   },
   "LOC_EVENT_NOTE_ALL_GROUPS": {
     "source": "“四海之内皆兄弟也。”——《论语·颜渊》",
-    "zh_CN": "“四海之内皆兄弟也。”——《论语·颜渊》",
-    "en": "“then all within the four seas will be his brothers.” — The Analects, Yan Yuan"
+    "zh_CN": "“四海之内皆兄弟也。”\n《论语·颜渊》",
+    "en": "“then all within the four seas will be his brothers.”\nThe Analects, Yan Yuan"
   },
   "LOC_LOADING": {
     "source": "加载中…",

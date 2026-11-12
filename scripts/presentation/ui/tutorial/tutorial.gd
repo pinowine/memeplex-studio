@@ -14,6 +14,7 @@ signal skip_requested
 const OpeningSteps = preload("res://scripts/presentation/ui/tutorial/opening_steps.gd")
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
+const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 const Portrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait.gd")
 const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
@@ -449,7 +450,10 @@ func _refresh() -> void:
 		_typewriter.progress = 0.0 if _typewriter_enabled else text.length() + 3.0
 		body.clear()
 		body.push_customfx(_typewriter, {})
-		body.add_text(text)
+		if _display_index == _index and not _hover_text.is_empty():
+			_add_hover_text(body, text)
+		else:
+			body.add_text(text)
 		body.pop()
 	var next: Button = _actions.get_node("Continue")
 	next.text = DeskLocalization.text("LOC_GUIDANCE_GOT_IT") if bool(step.get("contextual", false)) else ((DeskLocalization.text("LOC_HIDE_HINT_FC06733C")) if _hint_only else (DeskLocalization.text("LOC_CONTINUE_7C969119")))
@@ -568,6 +572,17 @@ func _refresh() -> void:
 	# Card and pointer follow their projected destinations without changing scale.
 	_update_arrow(Rect2(_card_position, card.size))
 	queue_redraw()
+
+func _add_hover_text(body: RichTextLabel, text: String) -> void:
+	var paragraphs := text.split("\n\n", true, 1)
+	body.add_text(paragraphs[0])
+	if paragraphs.size() == 1: return
+	body.add_text("\n\n")
+	body.push_font_size(12)
+	body.push_color(ReceiptStyle.SECONDARY_INK)
+	body.add_text(paragraphs[1])
+	body.pop()
+	body.pop()
 
 func _update_focus() -> void:
 	var map_navigation := not _steps.is_empty() and bool(_steps[_index].get("map_navigation", false))
