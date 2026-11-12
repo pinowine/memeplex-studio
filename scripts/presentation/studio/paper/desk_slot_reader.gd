@@ -402,7 +402,7 @@ func _refresh_translation(reset_scroll: bool) -> void:
 		var segments: Array[Dictionary] = []
 		for source_segment: Dictionary in section.get("segments", []):
 			var segment := source_segment.duplicate(true)
-			for key: String in ["text", "tooltip_title", "tooltip_body"]:
+			for key: String in ["text", "tooltip_title", "tooltip_body", "tooltip_note"]:
 				if segment.has(key): segment[key] = _localized_block(str(segment[key]))
 			segments.append(segment)
 		if not segments.is_empty():
@@ -417,7 +417,8 @@ func _refresh_translation(reset_scroll: bool) -> void:
 					content = term.sub(content, DeskLocalization.text(str(_details.display_terms[id])), true)
 			paragraphs.append(heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content)
 			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source")),
-				"event_type":_localized_block(str(section.get("event_type", ""))), "timestamp":_localized_block(str(section.get("timestamp", ""))), "segments":segments})
+				"event_type":_localized_block(str(section.get("event_type", ""))), "event_type_help":_localized_block(str(section.get("event_type_help", ""))),
+				"event_type_note":_localized_block(str(section.get("event_type_note", ""))), "timestamp":_localized_block(str(section.get("timestamp", ""))), "segments":segments})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""

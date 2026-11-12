@@ -15,7 +15,8 @@ const FIELD_COLORS := {
 	"module":CardFace.PALETTES.module.ink,
 	"topic":CardFace.PALETTES.topic.ink,
 	"stance_token":Style.SECTION_PURPLE,
-	"pragmatic_token":Style.SECTION_PURPLE
+	"pragmatic_token":Style.SECTION_PURPLE,
+	"event_type":Style.SECTION_TEAL
 }
 
 class SectionIcon extends Control:
@@ -33,7 +34,8 @@ class SectionIcon extends Control:
 var _column: VBoxContainer
 var _blocks: Array[Dictionary] = []
 var _headline := ""
-var _impact: RichTextLabel
+var _impact: VBoxContainer
+var _impact_labels: Array[RichTextLabel] = []
 var _portrait: TextureRect
 var _hover: PanelContainer
 var _numbers := RegEx.create_from_string("[-+]?[0-9]+(?:[.,][0-9]+)*(?:%|％)?")
@@ -61,6 +63,7 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 	_headline = full_title
 	_hide_hover()
 	_impact = null
+	_impact_labels.clear()
 	_portrait = null
 	for child in _column.get_children():
 		_column.remove_child(child)
@@ -83,10 +86,15 @@ func _add_metadata(block: Dictionary) -> void:
 	row.add_theme_constant_override("separation", 16)
 	_column.add_child(row)
 	row.add_child(_icon(str(block.get("kind", "clock"))))
-	var event_type := _label(str(block.get("event_type", "")), 14, Style.SECONDARY_INK)
+	var event_type := _body(14, Style.SECONDARY_INK)
+	event_type.name = "EventType"
 	event_type.autowrap_mode = TextServer.AUTOWRAP_OFF
 	event_type.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(event_type)
+	var field := {"text":str(block.get("event_type", "")), "tooltip_title":str(block.get("event_type", "")),
+		"tooltip_body":str(block.get("event_type_help", "")), "tooltip_note":str(block.get("event_type_note", "")), "field_kind":"event_type"}
+	_write_field(event_type, field, 0)
+	_bind_fields(event_type, [field])
 	var timestamp := _label(str(block.get("timestamp", "")), 14, Style.SECONDARY_INK)
 	timestamp.autowrap_mode = TextServer.AUTOWRAP_OFF
 	row.add_child(timestamp)
@@ -130,34 +138,58 @@ func _add_narrative(block: Dictionary) -> void:
 func _add_impact(block: Dictionary) -> void:
 	_add_rule()
 	var content := _section(str(block.get("kind", "impact")), "Impact")
-	content.add_child(_label(str(block.heading), 14, Style.SECONDARY_INK))
-	_impact = _body(16, Style.INK)
+	_impact = VBoxContainer.new()
 	_impact.name = "ImpactFields"
-	_impact.meta_underlined = false
+	_impact.add_theme_constant_override("separation", 8)
 	content.add_child(_impact)
 	var segments: Array = block.get("segments", [])
 	_impact.set_meta("segments", segments)
-	_impact.push_list(1, RichTextLabel.LIST_DOTS, false)
+	var body: RichTextLabel
 	for index in segments.size():
 		var segment: Dictionary = segments[index]
-		var annotated := not str(segment.get("tooltip_body", "")).is_empty()
-		if annotated:
-			_impact.push_meta(index, RichTextLabel.META_UNDERLINE_NEVER)
-			_impact.push_color(FIELD_COLORS[str(segment.field_kind)])
-			_impact.push_bold()
-		_write_content(_impact, str(segment.text))
-		if annotated:
-			_impact.pop()
-			_impact.pop()
-			_impact.pop()
-	_impact.pop()
-	_impact.meta_hover_started.connect(func(meta: Variant):
+		if str(segment.text) == "\n":
+			body = null
+			continue
+		if body == null:
+			var row := HBoxContainer.new()
+			row.add_theme_constant_override("separation", 8)
+			_impact.add_child(row)
+			var bullet := _body(16, Style.INK)
+			bullet.name = "Bullet"
+			bullet.autowrap_mode = TextServer.AUTOWRAP_OFF
+			bullet.custom_minimum_size.x = 12
+			bullet.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+			bullet.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+			row.add_child(bullet)
+			bullet.add_text("•")
+			body = _body(16, Style.INK)
+			body.name = "ImpactText"
+			body.meta_underlined = false
+			row.add_child(body)
+			_impact_labels.append(body)
+			_bind_fields(body, segments)
+		_write_field(body, segment, index)
+
+func _write_field(label: RichTextLabel, field: Dictionary, index: int) -> void:
+	var annotated := not str(field.get("tooltip_body", "")).is_empty()
+	if annotated:
+		label.push_meta(index, RichTextLabel.META_UNDERLINE_NEVER)
+		label.push_color(FIELD_COLORS[str(field.field_kind)])
+		label.push_bold()
+	_write_content(label, str(field.text))
+	if annotated:
+		label.pop()
+		label.pop()
+		label.pop()
+
+func _bind_fields(label: RichTextLabel, segments: Array) -> void:
+	label.meta_hover_started.connect(func(meta: Variant):
 		var field: Dictionary = segments[int(meta)]
-		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind)})
+		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
 		_hover.show()
 		_hover.fit_at(get_viewport().get_mouse_position(), get_viewport().get_visible_rect()))
-	_impact.meta_hover_ended.connect(func(_meta: Variant): _hide_hover())
-	_impact.mouse_exited.connect(_hide_hover)
+	label.meta_hover_ended.connect(func(_meta: Variant): _hide_hover())
+	label.mouse_exited.connect(_hide_hover)
 
 func _add_comment(block: Dictionary) -> void:
 	_add_rule()
@@ -224,9 +256,11 @@ func _hide_hover() -> void:
 	_hover.hide()
 
 func inspection() -> Dictionary:
+	var impact_text := PackedStringArray()
+	for label: RichTextLabel in _impact_labels: impact_text.append(label.get_parsed_text())
 	return {"blocks":_blocks.duplicate(true), "headline":_headline, "scrollable":true,
 		"content_height":_column.size.y, "viewport_height":size.y, "columns":1,
-		"impact_text":_impact.get_parsed_text() if _impact != null else "",
+		"impact_text":"\n".join(impact_text), "impact_count":_impact_labels.size(),
 		"impact_segments":_impact.get_meta("segments") if _impact != null else [],
 		"portrait":_portrait.inspection() if _portrait != null else {},
 		"field_hover_visible":_hover.visible, "field_hover_text":_hover.content_text(),

@@ -1243,11 +1243,17 @@ func _component_details() -> Dictionary:
 		var details: Dictionary = _fax.component_details(mode)
 		if bool(details.get("starter_pending", false)): return details
 		if str(details.get("document_kind", "")) == "event":
+			if not details.event_record.is_empty():
+				var seconds: float = _page.atlas.clock.local_seconds() + (float(details.hour) - _page.simulation.elapsed_hours()) * 3600.0
+				var date := Time.get_datetime_dict_from_unix_time(floori(seconds))
+				var timestamp := "%04d-%02d-%02d %02d:%02d:%02d" % [date.year, date.month, date.day, date.hour, date.minute, date.second]
+				details.sections[0].timestamp = timestamp
+				details.sections[0].body = DeskLocalization.source_format("%s · %s", [details.sections[0].event_type, timestamp], [0])
 			var segments := EventImpactText.build(details.event_record, _page.catalog, _page.simulation.variants)
 			if not segments.is_empty():
 				var content := PackedStringArray()
 				for segment: Dictionary in segments: content.append(str(segment.text))
-				var section := {"title":"LOC_EVENT_DOCUMENT_IMPACT", "body":"".join(content), "segments":segments, "kind":"impact", "role":"impact"}
+				var section := {"body":"".join(content), "segments":segments, "kind":"impact", "role":"impact"}
 				if str(details.sections.back().get("role", "")) == "commentary": details.sections.insert(details.sections.size() - 1, section)
 				else: details.sections.append(section)
 			return details
