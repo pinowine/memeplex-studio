@@ -1,43 +1,43 @@
 {
   "LOC_MENTOR_FREEDOM": {
     "source": "自由点数。往这边走，你的模因会更倾向于自由。至于大家会不会自由地曲解它……那是另一回事。",
-    "zh_CN": "自由点数。往这边走，你的模因会更倾向于自由。至于大家会不会自由地曲解它……那是另一回事。",
-    "en": "Liberty points. Spend these to move your meme toward liberty. Whether people freely misinterpret it is another matter."
+    "zh_CN": "自由点数。往这边走，你的模因会更倾向于自由。\n\n“上帝啊！倘不是因为我有了恶梦，那么即使把我关在一个果壳里，我也会把自己当作一个拥有着无限空间的君王的。”\n《哈姆雷特》第二幕，威廉·莎士比亚",
+    "en": "Liberty points. Spend these to move your meme toward liberty.\n\n“O God, I could be bounded in a nutshell, and count myself a king of infinite space, were it not that I have bad dreams.”\nHamlet, Act II, William Shakespeare"
   },
   "LOC_MENTOR_AUTHORITY": {
     "source": "威权点数。它能让你的模因往威权那边靠。提醒一下，有人听你的，不代表你说得对。",
-    "zh_CN": "威权点数。它能让你的模因往威权那边靠。提醒一下，有人听你的，不代表你说得对。",
-    "en": "Authority points move your meme toward authority. Having people listen does not necessarily make you right."
+    "zh_CN": "威权点数。它能让你的模因往威权那边靠。\n\n“谁有力量损害人而不这样干”\n《十四行诗》第94首，威廉·莎士比亚",
+    "en": "Authority points move your meme toward authority.\n\n“They that have power to hurt, and will do none”\nSonnet 94, William Shakespeare"
   },
   "LOC_MENTOR_EQUALITY": {
     "source": "平等点数。把模因往平等的方向推一点。至少在转发按钮面前，大家暂时都是一样的。",
-    "zh_CN": "平等点数。把模因往平等的方向推一点。至少在转发按钮面前，大家暂时都是一样的。",
-    "en": "Equality points push the meme toward equality. At least everyone gets the same share button."
+    "zh_CN": "平等点数。把模因往平等的方向推一点。\n\n“胖胖的国王跟瘦瘦的乞丐是一个桌子上两道不同的菜”\n《哈姆雷特》第四幕，威廉·莎士比亚",
+    "en": "Equality points push the meme toward equality.\n\n“Your fat king and your lean beggar is but variable service,—two dishes, but to one table.”\nHamlet, Act IV, William Shakespeare"
   },
   "LOC_MENTOR_HIERARCHY": {
     "source": "等级点数。它会把你的模因推向等级。谁在上面、谁在下面……通常正是大家争论的部分。",
-    "zh_CN": "等级点数。它会把你的模因推向等级。谁在上面、谁在下面……通常正是大家争论的部分。",
-    "en": "Hierarchy points move your meme toward hierarchy. Who belongs above whom is usually what starts the argument."
+    "zh_CN": "等级点数。它会把你的模因推向等级。\n\n“有人夸耀门第”\n《十四行诗》第91首，威廉·莎士比亚",
+    "en": "Hierarchy points move your meme toward hierarchy.\n\n“Some glory in their birth”\nSonnet 91, William Shakespeare"
   },
   "LOC_MENTOR_SINCERE": {
     "source": "真诚点数。让你的模因更像是在认真说话。别笑，有时候真诚反而是最难让人相信的。",
-    "zh_CN": "真诚点数。让你的模因更像是在认真说话。别笑，有时候真诚反而是最难让人相信的。",
-    "en": "Sincerity points make your meme sound more earnest. Do not laugh. Sometimes sincerity is the hardest thing to believe."
+    "zh_CN": "真诚点数。让你的模因更像是在认真说话。\n\n“因为我值得”\n巴黎欧莱雅「Because I’m Worth It」广告",
+    "en": "Sincerity points make your meme sound more earnest.\n\n“Because I’m Worth It”\nL’Oréal Paris: Because I’m Worth It campaign"
   },
   "LOC_MENTOR_IRONIC": {
     "source": "反讽点数。给你的模因添一点话外音。记住，别人没听懂，不一定是别人的问题。",
-    "zh_CN": "反讽点数。给你的模因添一点话外音。记住，别人没听懂，不一定是别人的问题。",
-    "en": "Irony points add a little meaning between the lines. If nobody gets it, the problem may not be theirs."
+    "zh_CN": "反讽点数。给你的模因添一点话外音。\n\n“这样挺好。”\nGunshow《着火了》，KC Green",
+    "en": "Irony points add a little meaning between the lines.\n\n“This is fine.”\nGunshow: On Fire, KC Green"
   },
   "LOC_MENTOR_SUPPORT": {
     "source": "支持点数。让你的模因更倾向于站在某件事这边。站队之前，最好先看看队伍朝哪儿走。",
-    "zh_CN": "支持点数。让你的模因更倾向于站在某件事这边。站队之前，最好先看看队伍朝哪儿走。",
-    "en": "Support points make your meme lean in favor of something. Before joining a side, check where it is headed."
+    "zh_CN": "支持点数。让你的模因更倾向于站在某件事这边。\n\n“你能行。”\n《蔚蓝》商店介绍，Maddy Makes Games",
+    "en": "Support points make your meme lean in favor of something.\n\n“You can do this.”\nCeleste store description, Maddy Makes Games"
   },
   "LOC_MENTOR_OPPOSITION": {
     "source": "反对点数。它让你的模因更倾向于说“不”。很好，不过反对什么，最好还是讲清楚。",
-    "zh_CN": "反对点数。它让你的模因更倾向于说“不”。很好，不过反对什么，最好还是讲清楚。",
-    "en": "Opposition points make your meme more inclined to say no. Fine, but do try to make clear what it is opposing."
+    "zh_CN": "反对点数。它让你的模因更倾向于说“不”。\n\n“你刚才说的那些差不多就是些疯话罢了...”\n《军团要塞2：过期失效》，Valve",
+    "en": "Opposition points make your meme more inclined to say no.\n\n“Everything you just said was insane...”\nTeam Fortress 2: Expiration Date, Valve"
   },
   "LOC_HANDSET_HINT": {
     "source": "有来电时点击听筒接听，再次点击可以挂断。",
