@@ -1,7 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
-const MATERIAL_STORAGE_RECT := Rect2(672, 64, 568, 104)
+const MATERIAL_STORAGE_RECT := Rect2(672, 64, 540, 104)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
