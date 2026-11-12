@@ -1,352 +1,352 @@
 {
   "LOC_RECEIPT_CARD_LANGUAGE_NINGHUA": {
     "source": "宁华的官方语言，有悠久的象形文字传统，语法逐渐转向依靠词序和虚词。",
-    "zh_CN": "宁华的官方语言，有悠久的象形文字传统，语法逐渐转向依靠词序和虚词。",
-    "en": "The official language of Ninghua, with an old pictographic writing tradition. Its grammar increasingly relies on word order and function words."
+    "zh_CN": "“都是些空话，空话，空话。”",
+    "en": "“Words, words, words.”"
   },
   "LOC_RECEIPT_CARD_LANGUAGE_SHIOHARA": {
     "source": "汐原通行的语言，日常寒暄和街头传闻都用它表达。",
-    "zh_CN": "汐原通行的语言，日常寒暄和街头传闻都用它表达。",
-    "en": "The common language of Shiohara, heard in everyday greetings and street gossip."
+    "zh_CN": "“读缄默的爱的情书”",
+    "en": "“read what silent love hath writ”"
   },
   "LOC_RECEIPT_CARD_LANGUAGE_SEOWON": {
     "source": "瑞原通行的语言，城市里的人用它讲述经历，也听取彼此的故事。",
-    "zh_CN": "瑞原通行的语言，城市里的人用它讲述经历，也听取彼此的故事。",
-    "en": "The common language of Seowon, used by city residents to share experiences and listen to one another's stories."
+    "zh_CN": "“你的名字将从这诗里得永生”",
+    "en": "“Your name from hence immortal life shall have”"
   },
   "LOC_RECEIPT_CARD_GROUP_COMMUTERS": {
     "source": "一群需要定时上班打卡、下班打卡、请假审批的成年人。",
-    "zh_CN": "一群需要定时上班打卡、下班打卡、请假审批的成年人。",
-    "en": "Adults who must clock in and out at set times and obtain approval to take leave."
+    "zh_CN": "“我们的光阴息息奔赴着终点”",
+    "en": "“So do our minutes hasten to their end”"
   },
   "LOC_RECEIPT_CARD_GROUP_STUDENTS": {
     "source": "一群日常围着课程、作业和考试安排生活的人。",
-    "zh_CN": "一群日常围着课程、作业和考试安排生活的人。",
-    "en": "People whose daily lives revolve around classes, assignments and exams."
+    "zh_CN": "“你是今天那一万个幸运儿之一。”",
+    "en": "“You're one of today's lucky 10,000.”"
   },
   "LOC_RECEIPT_CARD_GROUP_CULTURE_FANS": {
     "source": "一群因电影、音乐或其他文化爱好聚在一起的人，常常讨论作品、交流收藏。",
-    "zh_CN": "一群因电影、音乐或其他文化爱好聚在一起的人，常常讨论作品、交流收藏。",
-    "en": "People brought together by films, music or other cultural interests, often discussing works and sharing their collections."
+    "zh_CN": "“推陈出新”",
+    "en": "“dressing old words new”"
   },
   "LOC_RECEIPT_CARD_TOPIC_POLICY": {
     "source": "公共事务怎么决定、规则由谁制定，以及这些决定如何影响日常生活。",
-    "zh_CN": "公共事务怎么决定、规则由谁制定，以及这些决定如何影响日常生活。",
-    "en": "How public decisions are made, who sets the rules and how those decisions affect daily life."
+    "zh_CN": "“丹麦国里恐怕有些不可告人的坏事。”",
+    "en": "“Something is rotten in the state of Denmark.”"
   },
   "LOC_RECEIPT_CARD_TOPIC_COST_OF_LIVING": {
     "source": "维持日常生活所需的开销，包括住房、吃饭和出行。",
-    "zh_CN": "维持日常生活所需的开销，包括住房、吃饭和出行。",
-    "en": "The expense of everyday life, including housing, food and travel."
+    "zh_CN": "“你太宝贵了，我无法高攀”",
+    "en": "“thou art too dear for my possessing”"
   },
   "LOC_RECEIPT_CARD_TOPIC_WORK": {
     "source": "人们为了谋生或完成职责付出的劳动，以及工作中的待遇与关系。",
-    "zh_CN": "人们为了谋生或完成职责付出的劳动，以及工作中的待遇与关系。",
-    "en": "The work people do to earn a living or fulfil their duties, along with their working conditions and relationships."
+    "zh_CN": "“我解决的是实际问题。”",
+    "en": "“I solve practical problems.”"
   },
   "LOC_RECEIPT_CARD_TOPIC_PLATFORM_TOOLS": {
     "source": "人们发布、查找和分享内容时使用的平台与工具。",
-    "zh_CN": "人们发布、查找和分享内容时使用的平台与工具。",
-    "en": "The platforms and tools people use to publish, find and share content."
+    "zh_CN": "“代码如诗”",
+    "en": "“Code is Poetry”"
   },
   "LOC_RECEIPT_CARD_TOPIC_SPORT": {
     "source": "围绕体育运动、比赛和运动员的活动与讨论。",
-    "zh_CN": "围绕体育运动、比赛和运动员的活动与讨论。",
-    "en": "Activities and conversations about sports, competitions and athletes."
+    "zh_CN": "“保持呼吸。”",
+    "en": "“Just breathe.”"
   },
   "LOC_RECEIPT_CARD_TOPIC_EDUCATION": {
     "source": "人们学习知识和技能的过程，也包括学校里的教学、考试与升学。",
-    "zh_CN": "人们学习知识和技能的过程，也包括学校里的教学、考试与升学。",
-    "en": "How people gain knowledge and skills, including teaching, exams and progression through school."
+    "zh_CN": "“霍拉旭，天地之间有许多事情，是你们的哲学里所没有梦想到的呢。”",
+    "en": "“There are more things in heaven and earth, Horatio, Than are dreamt of in your philosophy.”"
   },
   "LOC_RECEIPT_CARD_TOPIC_IDENTITY": {
     "source": "人们怎样看待自己属于哪个群体，以及别人用什么称呼辨认他们。",
-    "zh_CN": "人们怎样看待自己属于哪个群体，以及别人用什么称呼辨认他们。",
-    "en": "How people understand their group membership and the labels others use to identify them."
+    "zh_CN": "“我就是我”",
+    "en": "“I am that I am”"
   },
   "LOC_RECEIPT_CARD_TOPIC_LANGUAGE": {
     "source": "人们表达和理解意思的方式，包括词语、语气和不同语言之间的翻译。",
-    "zh_CN": "人们表达和理解意思的方式，包括词语、语气和不同语言之间的翻译。",
-    "en": "How people express and understand meaning through words, tone and translation between languages."
+    "zh_CN": "“自己做事要审慎，接纳他人要宽容。”",
+    "en": "“be conservative in what you do, be liberal in what you accept from others.”"
   },
   "LOC_RECEIPT_CARD_TOPIC_ENTERTAINMENT": {
     "source": "人们观看、聆听或参与的文化娱乐活动，例如电影、音乐和演出。",
-    "zh_CN": "人们观看、聆听或参与的文化娱乐活动，例如电影、音乐和演出。",
-    "en": "Cultural and leisure activities people watch, listen to or take part in, such as films, music and performances."
+    "zh_CN": "“热闹场结束了。”",
+    "en": "“Our revels now are ended.”"
   },
   "LOC_RECEIPT_CARD_TOPIC_ARCHIVE": {
     "source": "为以后查阅而保存的文字、影像和其他记录，也包括整理这些记录的工作。",
-    "zh_CN": "为以后查阅而保存的文字、影像和其他记录，也包括整理这些记录的工作。",
-    "en": "Writing, images and other records kept for future reference, along with the work of organising them."
+    "zh_CN": "“这诗将长存”",
+    "en": "“So long lives this”"
   },
   "LOC_RECEIPT_CARD_TOPIC_TRUST": {
     "source": "相信一个人、一种说法或一份信息可靠，并愿意据此作判断。",
-    "zh_CN": "相信一个人、一种说法或一份信息可靠，并愿意据此作判断。",
-    "en": "Belief that a person, a claim or a piece of information is reliable enough to base a judgement on."
+    "zh_CN": "“爱不受时光的播弄”",
+    "en": "“Love’s not Time’s fool”"
   },
   "LOC_RECEIPT_CARD_TOPIC_COMMUNITY": {
     "source": "因共同生活的地方或共同兴趣而保持来往的人群，以及他们之间的关系。",
-    "zh_CN": "因共同生活的地方或共同兴趣而保持来往的人群，以及他们之间的关系。",
-    "en": "People who keep in touch through a shared place or interest, and the relationships among them."
+    "zh_CN": "“粗略共识，运行代码。”",
+    "en": "“Rough consensus and running code”"
   },
   "LOC_RECEIPT_CARD_MODULE_STANCE": {
     "source": "用问句表达已经有答案的态度，往往是在赞叹、质疑或讽刺。",
-    "zh_CN": "用问句表达已经有答案的态度，往往是在赞叹、质疑或讽刺。",
-    "en": "A question whose answer is already implied, often expressing admiration, doubt or mockery."
+    "zh_CN": "“网上有人说错了。”",
+    "en": "“Someone is WRONG on the internet.”"
   },
   "LOC_RECEIPT_CARD_MODULE_RELATION": {
     "source": "把不同人物或处境放在一起，借相同处和差别说清想法。",
-    "zh_CN": "把不同人物或处境放在一起，借相同处和差别说清想法。",
-    "en": "Placing people or situations side by side to make a point through their similarities and differences."
+    "zh_CN": "“现在有十五种相互竞争的标准了。”",
+    "en": "“There are 15 competing standards.”"
   },
   "LOC_RECEIPT_CARD_MODULE_RITUAL": {
     "source": "结束一段对话或表演，也让参与者可以选择不加入或先离开。",
-    "zh_CN": "结束一段对话或表演，也让参与者可以选择不加入或先离开。",
-    "en": "Ending a conversation or performance while allowing people to sit it out or leave."
+    "zh_CN": "“我就喜欢”",
+    "en": "“i’m lovin’ it”"
   },
   "LOC_RECEIPT_CARD_MODULE_BOUNDARY": {
     "source": "交代一件事为什么发生，或一句话为什么这样说。",
-    "zh_CN": "交代一件事为什么发生，或一句话为什么这样说。",
-    "en": "An account of why something happened or why someone chose to say it that way."
+    "zh_CN": "“他可以是我们中的任何人...”",
+    "en": "“he could be any one of us...”"
   },
   "LOC_RECEIPT_CARD_MODULE_SHARED_WORLD": {
     "source": "在一段话里留下接话的空间，让别人也能讲自己的经历或想法。",
-    "zh_CN": "在一段话里留下接话的空间，让别人也能讲自己的经历或想法。",
-    "en": "Leaving room in a conversation for others to add their experiences or ideas."
+    "zh_CN": "“在这个角色扮演游戏里，你不必杀死任何人。”",
+    "en": "“In this RPG, you don't have to kill anyone.”"
   },
   "LOC_RECEIPT_CARD_FREEDOM": {
     "source": "看重个人按自己意愿选择生活、表达意见和行动的权利。",
-    "zh_CN": "看重个人按自己意愿选择生活、表达意见和行动的权利。",
-    "en": "Valuing a person's right to choose how to live, speak and act."
+    "zh_CN": "“上帝啊！倘不是因为我有了恶梦，那么即使把我关在一个果壳里，我也会把自己当作一个拥有着无限空间的君王的。”",
+    "en": "“O God, I could be bounded in a nutshell, and count myself a king of infinite space, were it not that I have bad dreams.”"
   },
   "LOC_RECEIPT_CARD_AUTHORITY": {
     "source": "认可规则制定者或组织的指挥权，重视服从共同秩序。",
-    "zh_CN": "认可规则制定者或组织的指挥权，重视服从共同秩序。",
-    "en": "Accepting the authority of rule-makers or organisations and valuing obedience to a shared order."
+    "zh_CN": "“谁有力量损害人而不这样干”",
+    "en": "“They that have power to hurt, and will do none”"
   },
   "LOC_RECEIPT_CARD_EQUALITY": {
     "source": "认为每个人都应得到同等尊重，权利和机会不应由身份高低决定。",
-    "zh_CN": "认为每个人都应得到同等尊重，权利和机会不应由身份高低决定。",
-    "en": "The belief that everyone deserves equal respect and that status should not determine rights or opportunities."
+    "zh_CN": "“胖胖的国王跟瘦瘦的乞丐是一个桌子上两道不同的菜”",
+    "en": "“Your fat king and your lean beggar is but variable service,—two dishes, but to one table.”"
   },
   "LOC_RECEIPT_CARD_HIERARCHY": {
     "source": "认可身份、资历或成就带来的高低次序，以及相应的权力和待遇差别。",
-    "zh_CN": "认可身份、资历或成就带来的高低次序，以及相应的权力和待遇差别。",
-    "en": "Accepting ranks based on status, seniority or achievement, with corresponding differences in power and treatment."
+    "zh_CN": "“有人夸耀门第”",
+    "en": "“Some glory in their birth”"
   },
   "LOC_RECEIPT_CARD_SINCERE": {
     "source": "说话人直接表达自己的真实想法，希望听的人按字面理解。",
-    "zh_CN": "说话人直接表达自己的真实想法，希望听的人按字面理解。",
-    "en": "Speaking one's true thoughts directly and expecting the listener to take the words at face value."
+    "zh_CN": "“因为我值得”",
+    "en": "“Because I’m Worth It”"
   },
   "LOC_RECEIPT_CARD_IRONIC": {
     "source": "借字面意思与真实态度之间的反差表达想法，常带着调侃或讽刺。",
-    "zh_CN": "借字面意思与真实态度之间的反差表达想法，常带着调侃或讽刺。",
-    "en": "Expressing a view through the contrast between literal words and the speaker's attitude, often with humour or sarcasm."
+    "zh_CN": "“这样挺好。”",
+    "en": "“This is fine.”"
   },
   "LOC_RECEIPT_CARD_SUPPORT": {
     "source": "对一个人、一种主张或一个行动表示认同，愿意站在这一边。",
-    "zh_CN": "对一个人、一种主张或一个行动表示认同，愿意站在这一边。",
-    "en": "Agreeing with a person, position or action and being willing to take that side."
+    "zh_CN": "“你能行。”",
+    "en": "“You can do this.”"
   },
   "LOC_RECEIPT_CARD_OPPOSITION": {
     "source": "对一个人、一种主张或一个行动持否定态度。",
-    "zh_CN": "对一个人、一种主张或一个行动持否定态度。",
-    "en": "Disagreement with a person, position or action."
+    "zh_CN": "“你刚才说的那些差不多就是些疯话罢了...”",
+    "en": "“Everything you just said was insane...”"
   },
   "LOC_RECEIPT_STACK_LANGUAGE": {
     "source": "由共同词语和语法组成的表达方式，让使用同一种语言的人彼此理解。",
-    "zh_CN": "由共同词语和语法组成的表达方式，让使用同一种语言的人彼此理解。",
-    "en": "Shared words and grammar through which speakers of the same language understand one another."
+    "zh_CN": "“我还是把话说得简单一些吧。”",
+    "en": "“I will be brief.”"
   },
   "LOC_RECEIPT_STACK_GROUP": {
     "source": "因生活经历、身份或兴趣相近而形成的人群。",
-    "zh_CN": "因生活经历、身份或兴趣相近而形成的人群。",
-    "en": "People grouped by similar experiences, identities or interests."
+    "zh_CN": "“原都是一些精灵”",
+    "en": "“were all spirits”"
   },
   "LOC_RECEIPT_STACK_TOPIC": {
     "source": "一段谈话或表达所围绕的事情，例如工作、教育或日常开销。",
-    "zh_CN": "一段谈话或表达所围绕的事情，例如工作、教育或日常开销。",
-    "en": "The subject of a conversation or expression, such as work, education or everyday expenses."
+    "zh_CN": "“这是一个桶。”",
+    "en": "“This is a bucket.”"
   },
   "LOC_RECEIPT_STACK_MODULE": {
     "source": "表达补丁包含反问、对照、释义、接话和退出等说话方式。",
-    "zh_CN": "表达补丁包含反问、对照、释义、接话和退出等说话方式。",
-    "en": "Expression patches represent ways of speaking, including rhetorical questions, comparisons, explanations, continuations and exits."
+    "zh_CN": "“做人们想要的东西。”",
+    "en": "“Make something people want.”"
   },
   "LOC_RECEIPT_CARD_NOTE_LANGUAGE_NINGHUA": {
     "source": "*一页描红纸*，笔画压得很深。纸背还能摸到最后一个字。",
-    "zh_CN": "*一页描红纸*，笔画压得很深。纸背还能摸到最后一个字。",
-    "en": "*A page of traced characters*, pressed hard into the paper. You can feel the last one on the back."
+    "zh_CN": "《哈姆雷特》，威廉·莎士比亚",
+    "en": "Hamlet, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SHIOHARA": {
     "source": "*从面馆墙上揭下的菜单*。汤汁洇开了一个字，常客照样认得。",
-    "zh_CN": "*从面馆墙上揭下的菜单*。汤汁洇开了一个字，常客照样认得。",
-    "en": "*A menu peeled from a noodle-shop wall*. Broth has blurred one word. The regulars still know it."
+    "zh_CN": "《十四行诗》第23首，威廉·莎士比亚",
+    "en": "Sonnet 23, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SEOWON": {
     "source": "*一页抄下来的歌词*，副歌旁边挤着小小的注音。折痕正好穿过歌名。",
-    "zh_CN": "*一页抄下来的歌词*，副歌旁边挤着小小的注音。折痕正好穿过歌名。",
-    "en": "*Hand-copied lyrics* with tiny pronunciation notes beside the chorus. A fold runs straight through the title."
+    "zh_CN": "《十四行诗》第81首，威廉·莎士比亚",
+    "en": "Sonnet 81, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_GROUP_COMMUTERS": {
     "source": "*一张腱鞘炎保健品广告*，上面覆盖着*一张肩周炎保健品广告*。",
-    "zh_CN": "*一张腱鞘炎保健品广告*，上面覆盖着*一张肩周炎保健品广告*。",
-    "en": "*An ad for a tendonitis supplement*, covered by *an ad for a frozen-shoulder supplement*."
+    "zh_CN": "《十四行诗》第60首，威廉·莎士比亚",
+    "en": "Sonnet 60, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_GROUP_STUDENTS": {
     "source": "*课程表*背面写满了重点。最后一行字很小：这个也考？",
-    "zh_CN": "*课程表*背面写满了重点。最后一行字很小：这个也考？",
-    "en": "The back of *a timetable* is covered in revision notes. The last line, in tiny letters: This is on the exam too?"
+    "zh_CN": "xkcd《一万人》，兰德尔·门罗",
+    "en": "xkcd: Ten Thousand, Randall Munroe"
   },
   "LOC_RECEIPT_CARD_NOTE_GROUP_CULTURE_FANS": {
     "source": "*一张演出票根*，票价被圆珠笔涂掉了。日期倒是描了两遍。",
-    "zh_CN": "*一张演出票根*，票价被圆珠笔涂掉了。日期倒是描了两遍。",
-    "en": "*A concert stub* with the price scribbled out in ballpoint. The date has been traced over twice."
+    "zh_CN": "《十四行诗》第76首，威廉·莎士比亚",
+    "en": "Sonnet 76, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_POLICY": {
     "source": "*一份贴过又揭下的公告*。胶带换了三次，落款的章还是原来那个。",
-    "zh_CN": "*一份贴过又揭下的公告*。胶带换了三次，落款的章还是原来那个。",
-    "en": "*A notice posted and taken down again*. The tape has been replaced three times; the official stamp is the same."
+    "zh_CN": "《哈姆雷特》第一幕，威廉·莎士比亚",
+    "en": "Hamlet, Act I, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_COST_OF_LIVING": {
     "source": "*超市小票*已经褪色，房租催缴单的字还很清楚。两张纸订在一起。",
-    "zh_CN": "*超市小票*已经褪色，房租催缴单的字还很清楚。两张纸订在一起。",
-    "en": "*The supermarket receipt* has faded. The rent reminder is still perfectly legible. They are stapled together."
+    "zh_CN": "《十四行诗》第87首，威廉·莎士比亚",
+    "en": "Sonnet 87, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_WORK": {
     "source": "*一张加班登记表*。咖啡杯留下的圆印，正好圈住了签名栏。",
-    "zh_CN": "*一张加班登记表*。咖啡杯留下的圆印，正好圈住了签名栏。",
-    "en": "*An overtime sheet*. A coffee-cup ring neatly encircles the signature box."
+    "zh_CN": "《军团要塞2：拜见工程师》，Valve",
+    "en": "Team Fortress 2: Meet the Engineer, Valve"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_PLATFORM_TOOLS": {
     "source": "*旧版说明书*里夹着新版说明书。新版又附了一张更正。",
-    "zh_CN": "*旧版说明书*里夹着新版说明书。新版又附了一张更正。",
-    "en": "The new manual is tucked inside *the old one*. The new one comes with a correction slip."
+    "zh_CN": "WordPress 官网标语",
+    "en": "WordPress website motto"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_SPORT": {
     "source": "*报纸*上的比分被圈了起来。旁边那行球员名字，几乎被指甲磨穿。",
-    "zh_CN": "*报纸*上的比分被圈了起来。旁边那行球员名字，几乎被指甲磨穿。",
-    "en": "A score is circled in *the sports pages*. Beside it, a fingernail has nearly worn through a player's name."
+    "zh_CN": "《蔚蓝》商店介绍，Maddy Makes Games",
+    "en": "Celeste store description, Maddy Makes Games"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_EDUCATION": {
     "source": "*试卷*的订书钉生了锈。有人把错题剪下来，贴到了另一张试卷上。",
-    "zh_CN": "*试卷*的订书钉生了锈。有人把错题剪下来，贴到了另一张试卷上。",
-    "en": "*The exam paper*'s staple has rusted. Someone cut out the questions they got wrong and pasted them onto another exam."
+    "zh_CN": "《哈姆雷特》第一幕，威廉·莎士比亚",
+    "en": "Hamlet, Act I, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_IDENTITY": {
     "source": "*证件照*背面写着一个名字，划掉以后又写了一个。脸还是那张脸。",
-    "zh_CN": "*证件照*背面写着一个名字，划掉以后又写了一个。脸还是那张脸。",
-    "en": "A name on the back of *an ID photo* has been crossed out and replaced. The face is the same."
+    "zh_CN": "《十四行诗》第121首，威廉·莎士比亚",
+    "en": "Sonnet 121, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_LANGUAGE": {
     "source": "*双语菜单*上多了一行铅笔字。两种语言都被纠正了。",
-    "zh_CN": "*双语菜单*上多了一行铅笔字。两种语言都被纠正了。",
-    "en": "Someone has added a line in pencil to *a bilingual menu*. Both languages have been corrected."
+    "zh_CN": "《传输控制协议》RFC 793，乔恩·波斯特尔",
+    "en": "Transmission Control Protocol, RFC 793, Jon Postel"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_ENTERTAINMENT": {
     "source": "*电影票*被折成小方块，放映时间磨没了，背面的剧透还在。",
-    "zh_CN": "*电影票*被折成小方块，放映时间磨没了，背面的剧透还在。",
-    "en": "*A cinema ticket* folded into a little square. The showtime has rubbed off; the spoiler on the back has survived."
+    "zh_CN": "《暴风雨》第四幕，威廉·莎士比亚",
+    "en": "The Tempest, Act IV, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_ARCHIVE": {
     "source": "*索引卡*上留着取走文件的空号。抽屉拉开时，旧纸的味道先出来。",
-    "zh_CN": "*索引卡*上留着取走文件的空号。抽屉拉开时，旧纸的味道先出来。",
-    "en": "*An index card* still lists a file that was taken away. Open the drawer and the smell of old paper comes out first."
+    "zh_CN": "《十四行诗》第18首，威廉·莎士比亚",
+    "en": "Sonnet 18, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_TRUST": {
     "source": "*一张手写借条*，金额旁边按着指印。还款日期被水洇开了。",
-    "zh_CN": "*一张手写借条*，金额旁边按着指印。还款日期被水洇开了。",
-    "en": "*A handwritten IOU* with a thumbprint beside the amount. Water has blurred the repayment date."
+    "zh_CN": "《十四行诗》第116首，威廉·莎士比亚",
+    "en": "Sonnet 116, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_COMMUNITY": {
     "source": "*寻猫启事*的角落多了一行字：找到了，谢谢各位。胶带还粘得很牢。",
-    "zh_CN": "*寻猫启事*的角落多了一行字：找到了，谢谢各位。胶带还粘得很牢。",
-    "en": "A note in the corner of *a missing-cat poster*: Found her. Thanks, everyone. The tape is still holding."
+    "zh_CN": "《IETF 简介》，互联网工程任务组",
+    "en": "Introduction to the IETF, Internet Engineering Task Force"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_STANCE": {
     "source": "纸上*一个问号*被描得很粗，下面擦剩了半个感叹号。",
-    "zh_CN": "纸上*一个问号*被描得很粗，下面擦剩了半个感叹号。",
-    "en": "*A question mark* has been drawn over several times. Half an erased exclamation mark remains underneath."
+    "zh_CN": "xkcd《职责在召唤》，兰德尔·门罗",
+    "en": "xkcd: Duty Calls, Randall Munroe"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_RELATION": {
     "source": "*两张复印件*并排贴着，连污渍都在同一个位置。左边写着“以前”。",
-    "zh_CN": "*两张复印件*并排贴着，连污渍都在同一个位置。左边写着“以前”。",
-    "en": "*Two photocopies* pasted side by side, stains in the same places. The one on the left is labelled 'Before'."
+    "zh_CN": "xkcd《标准》，兰德尔·门罗",
+    "en": "xkcd: Standards, Randall Munroe"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_RITUAL": {
     "source": "*一张离席留言*，字迹写到纸边就停了。椅子底下还压着半截纸。",
-    "zh_CN": "*一张离席留言*，字迹写到纸边就停了。椅子底下还压着半截纸。",
-    "en": "*A note left by someone who went home*. The writing stops at the edge; half the sheet is still trapped under the chair."
+    "zh_CN": "麦当劳「i’m lovin’ it 我就喜欢」广告",
+    "en": "McDonald’s: i’m lovin’ it campaign"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_BOUNDARY": {
     "source": "*薄薄的描图纸*盖在原稿上。铅笔批注很密，末尾沾了一点橡皮屑。",
-    "zh_CN": "*薄薄的描图纸*盖在原稿上。铅笔批注很密，末尾沾了一点橡皮屑。",
-    "en": "*Tracing paper* lies over a draft, dense with pencil notes. A few eraser crumbs cling to the end."
+    "zh_CN": "《军团要塞2：拜见间谍》，Valve",
+    "en": "Team Fortress 2: Meet the Spy, Valve"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_SHARED_WORLD": {
     "source": "故事写到一半，纸边又粘上*一条纸*。新添的字迹换了个人。",
-    "zh_CN": "故事写到一半，纸边又粘上*一条纸*。新添的字迹换了个人。",
-    "en": "Halfway through the story, *another strip of paper* has been glued to the edge. The new writing is in a different hand."
+    "zh_CN": "《传说之下》官网介绍，托比·福克斯",
+    "en": "UNDERTALE website introduction, Toby Fox"
   },
   "LOC_RECEIPT_CARD_NOTE_FREEDOM": {
     "source": "*一张没填目的地的车票*。边缘撕了个小口，像是犹豫过要不要上车。",
-    "zh_CN": "*一张没填目的地的车票*。边缘撕了个小口，像是犹豫过要不要上车。",
-    "en": "*A train ticket with the destination left blank*. A small tear in the edge suggests someone hesitated before boarding."
+    "zh_CN": "《哈姆雷特》第二幕，威廉·莎士比亚",
+    "en": "Hamlet, Act II, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_AUTHORITY": {
     "source": "*公章*压得很重，印泥透到了纸背。签名只占了很小的地方。",
-    "zh_CN": "*公章*压得很重，印泥透到了纸背。签名只占了很小的地方。",
-    "en": "*An official stamp* was pressed so hard the ink reached the back. The signature takes up very little space."
+    "zh_CN": "《十四行诗》第94首，威廉·莎士比亚",
+    "en": "Sonnet 94, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_EQUALITY": {
     "source": "*一张座次表*，主位被铅笔划掉了。每把椅子旁边都添了同样的小圆点。",
-    "zh_CN": "*一张座次表*，主位被铅笔划掉了。每把椅子旁边都添了同样的小圆点。",
-    "en": "*A seating plan* with the head of the table crossed out in pencil. Every chair has been given the same small dot."
+    "zh_CN": "《哈姆雷特》第四幕，威廉·莎士比亚",
+    "en": "Hamlet, Act IV, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_HIERARCHY": {
     "source": "*座次表*贴了好几层。最上面那张留着金边，下面的名字只露出一半。",
-    "zh_CN": "*座次表*贴了好几层。最上面那张留着金边，下面的名字只露出一半。",
-    "en": "*Several seating plans* have been pasted over one another. The top sheet has a gold border; half the names beneath it still show."
+    "zh_CN": "《十四行诗》第91首，威廉·莎士比亚",
+    "en": "Sonnet 91, William Shakespeare"
   },
   "LOC_RECEIPT_CARD_NOTE_SINCERE": {
     "source": "*一张写歪了的明信片*。称呼改过两次，正文一字没涂。",
-    "zh_CN": "*一张写歪了的明信片*。称呼改过两次，正文一字没涂。",
-    "en": "*A postcard written on a slant*. The greeting was changed twice; not a word of the message was crossed out."
+    "zh_CN": "巴黎欧莱雅「Because I’m Worth It」广告",
+    "en": "L’Oréal Paris: Because I’m Worth It campaign"
   },
   "LOC_RECEIPT_CARD_NOTE_IRONIC": {
     "source": "*剪下来的天气预报*写着晴。纸被雨淋透，太阳的图案还笑着。",
-    "zh_CN": "*剪下来的天气预报*写着晴。纸被雨淋透，太阳的图案还笑着。",
-    "en": "*A weather clipping* promises sunshine. The paper is soaked through, and the little sun is still smiling."
+    "zh_CN": "Gunshow《着火了》，KC Green",
+    "en": "Gunshow: On Fire, KC Green"
   },
   "LOC_RECEIPT_CARD_NOTE_SUPPORT": {
     "source": "*一张签名纸*，名字一路挤到了背面。最后一个人把纸垫在掌心写完。",
-    "zh_CN": "*一张签名纸*，名字一路挤到了背面。最后一个人把纸垫在掌心写完。",
-    "en": "*A petition* with names spilling onto the back. The last person finished signing with the paper resting on their palm."
+    "zh_CN": "《蔚蓝》商店介绍，Maddy Makes Games",
+    "en": "Celeste store description, Maddy Makes Games"
   },
   "LOC_RECEIPT_CARD_NOTE_OPPOSITION": {
     "source": "*打印整齐的通知*旁边，有人重重写下“不同意”。笔尖划破了最后一笔。",
-    "zh_CN": "*打印整齐的通知*旁边，有人重重写下“不同意”。笔尖划破了最后一笔。",
-    "en": "Beside *a neatly printed notice*, someone wrote 'I disagree' with a heavy hand. The last stroke tore through the paper."
+    "zh_CN": "《军团要塞2：过期失效》，Valve",
+    "en": "Team Fortress 2: Expiration Date, Valve"
   },
   "LOC_RECEIPT_STACK_NOTE_LANGUAGE": {
     "source": "*不同字迹的纸片*夹在一起。最下面那张，被翻得最软。",
-    "zh_CN": "*不同字迹的纸片*夹在一起。最下面那张，被翻得最软。",
-    "en": "*Scraps in different hands*, clipped together. The bottom sheet is the softest from handling."
+    "zh_CN": "《哈姆雷特》，威廉·莎士比亚",
+    "en": "Hamlet, William Shakespeare"
   },
   "LOC_RECEIPT_STACK_NOTE_GROUP": {
     "source": "*传单*上压着名片，名片下面还有一张合照。有人在照片边上补了个名字。",
-    "zh_CN": "*传单*上压着名片，名片下面还有一张合照。有人在照片边上补了个名字。",
-    "en": "Business cards lie on *a flyer*, with a group photo underneath. Someone has added a name along the photo's edge."
+    "zh_CN": "《暴风雨》第四幕，威廉·莎士比亚",
+    "en": "The Tempest, Act IV, William Shakespeare"
   },
   "LOC_RECEIPT_STACK_NOTE_TOPIC": {
     "source": "*报纸剪角*露在便签外面。几张纸谈着同一件事，日期相差很远。",
-    "zh_CN": "*报纸剪角*露在便签外面。几张纸谈着同一件事，日期相差很远。",
-    "en": "*Newspaper corners* stick out from beneath sticky notes. Several sheets cover the same story, with dates far apart."
+    "zh_CN": "《军团要塞2：过期失效》，Valve",
+    "en": "Team Fortress 2: Expiration Date, Valve"
   },
   "LOC_RECEIPT_STACK_NOTE_MODULE": {
     "source": "*剪下来的句子*码成一摞。最上面一条还粘着透明胶，边角有点卷。",
-    "zh_CN": "*剪下来的句子*码成一摞。最上面一条还粘着透明胶，边角有点卷。",
-    "en": "*Clipped sentences* in a small stack. Clear tape still clings to the top strip, its corners curling."
+    "zh_CN": "Y Combinator 官网标语",
+    "en": "Y Combinator website motto"
   }
 }

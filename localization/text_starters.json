@@ -26,8 +26,8 @@
   },
   "LOC_TEXT_STARTER_VERSAILLES_HINT": {
     "source": "把成绩说成轻松得来，等别人听出炫耀。期末考试是游戏编写的文字例子。",
-    "zh_CN": "把成绩说成轻松得来，等别人听出炫耀。",
-    "en": "Makes success sound effortless and leaves others to notice the brag."
+    "zh_CN": "把成绩说成轻松得来，等别人听出炫耀。\n\n“推陈出新”\n《十四行诗》第76首，威廉·莎士比亚",
+    "en": "Makes success sound effortless and leaves others to notice the brag.\n\n“dressing old words new”\nSonnet 76, William Shakespeare"
   },
   "LOC_TEXT_STARTER_NOBODY_TITLE": {
     "source": "Nobody：没人问起",
@@ -56,8 +56,8 @@
   },
   "LOC_TEXT_STARTER_NOBODY_HINT": {
     "source": "先留一句无人发问的空白，再写谁忍不住说了什么。剧集话题是游戏改编。",
-    "zh_CN": "先留一句无人发问的空白，再写谁忍不住说了什么。",
-    "en": "Leave the opening silent, then show who speaks without being asked."
+    "zh_CN": "先留一句无人发问的空白，再写谁忍不住说了什么。\n\n“我还是把话说得简单一些吧。”\n《哈姆雷特》，威廉·莎士比亚",
+    "en": "Leave the opening silent, then show who speaks without being asked.\n\n“I will be brief.”\nHamlet, William Shakespeare"
   },
   "LOC_TEXT_STARTER_BOOMER_TITLE": {
     "source": "OK boomer：结束说教",
@@ -86,7 +86,7 @@
   },
   "LOC_TEXT_STARTER_BOOMER_HINT": {
     "source": "用一句短回复打断代际说教。学校里的对话是游戏编写的情境。",
-    "zh_CN": "用一句短回复打断代际说教。",
-    "en": "Cuts off a generational lecture with a short reply."
+    "zh_CN": "用一句短回复打断代际说教。\n\n“我就喜欢”\n麦当劳「i’m lovin’ it 我就喜欢」广告",
+    "en": "Cuts off a generational lecture with a short reply.\n\n“i’m lovin’ it”\nMcDonald’s: i’m lovin’ it campaign"
   }
 }
