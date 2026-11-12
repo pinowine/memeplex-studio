@@ -6,6 +6,7 @@ signal launch_confirmed
 const COUNTRY_RULES = preload("res://data/rules/gameplay_rules.tres")
 const CONTEXT_DEFINITIONS = preload("res://data/context/context_resources.tres")
 const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
+const ReceiptStyle := preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -27,8 +28,10 @@ var initial_seed := -1
 @onready var country_name: Label = %CountryName
 @onready var population: Label = %Population
 @onready var conditions: Label = %Conditions
+@onready var conditions_note: Label = %ConditionsNote
 @onready var groups: Label = %Groups
 @onready var culture: Label = %Culture
+@onready var culture_note: Label = %CultureNote
 @onready var languages: Label = %Languages
 @onready var topics: Label = %Topics
 @onready var drawer: Control = %CountryDrawer
@@ -80,6 +83,8 @@ func _ready() -> void:
 	map_input.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	map_input.gui_input.connect(_on_map_input)
 	map_input.mouse_exited.connect(_on_map_exited)
+	for note: Label in [conditions_note, culture_note]:
+		note.add_theme_color_override("font_color", ReceiptStyle.SECONDARY_INK)
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	await get_tree().process_frame
 	var generated := false
@@ -214,8 +219,10 @@ func _update_details() -> void:
 	country_name.text = tr(country.official_name_key)
 	population.text = tr("MAP_POPULATION") % (int(profile.population) / 1000000.0)
 	conditions.text = tr(country.description_key)
+	conditions_note.text = tr(str(country.description_key) + "_NOTE")
 	groups.text = _profile_labels(profile.groups, "group")
 	culture.text = tr(country.culture_key)
+	culture_note.text = tr(str(country.culture_key) + "_NOTE")
 	languages.text = _profile_labels(profile.languages, "language")
 	topics.text = _profile_labels(profile.topics, "topic", 4)
 
@@ -247,7 +254,8 @@ func _update_hover() -> void:
 	hover_note.set_width(360)
 	hover_note.set_content(tr(country.official_name_key), rows,
 		tr(country.description_key)+"\n\n"+tr(country.culture_key),
-		{"kind":"language", "badge":tr("MAP_POPULATION") % (int(profile.population)/1000000.0)})
+		{"kind":"language", "badge":tr("MAP_POPULATION") % (int(profile.population)/1000000.0),
+		"note":tr(str(country.description_key) + "_NOTE") + "\n\n" + tr(str(country.culture_key) + "_NOTE")})
 
 func establish_studio() -> void:
 	clock.establish(selected_country, world.seed_value, settings.latitude_at(world.territories[selected_country].anchor))

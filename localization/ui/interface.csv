@@ -22,72 +22,90 @@ MAP_INVALID_SEED,种子必须是 1 至 2147483647 的整数。,Seed must be an i
 C01_SHORT,宁华,Ninghua
 C01_NAME,宁华共和国,Republic of Ninghua
 C01_PROTOTYPE,本土大众网络,Domestic mass internet
-C01_DESCRIPTION,"“有朋自远方来，不亦乐乎？”（《论语·学而》）","“Is it not delightful to have friends coming from distant quarters?” (The Analects, Xue Er)"
-C01_CULTURE,"“温故而知新，可以为师矣。”（《论语·为政》）","“If a man keeps cherishing his old knowledge, so as continually to be acquiring new, he may be a teacher of others.” (The Analects, Wei Zheng)"
+C01_DESCRIPTION,宁华的大型平台把各地的生活消息汇到一起。工作日的讨论常从通勤群聊开始，午休时已经传到了别的城市。,Large platforms carry everyday news across Ninghua. A conversation in a commuter chat can reach another city by lunchtime.
+C01_DESCRIPTION_NOTE,"“有朋自远方来，不亦乐乎？”（《论语·学而》）","“Is it not delightful to have friends coming from distant quarters?” (The Analects, Xue Er)"
+C01_CULTURE,熟悉的口头禅常被换上新情境。外来的笑话要交代来龙去脉，才容易接进本地的聊天。,Familiar catchphrases get reused in new situations. Imported jokes travel more easily when someone explains where they came from.
+C01_CULTURE_NOTE,"“温故而知新，可以为师矣。”（《论语·为政》）","“If a man keeps cherishing his old knowledge, so as continually to be acquiring new, he may be a teacher of others.” (The Analects, Wei Zheng)"
 C01_TOPICS,工作与教育、消费、游戏、生活反差,Work and education; consumption; games; everyday contrasts
 C01_EVENTS,审核、自发性解构、品牌节庆,Moderation; spontaneous deconstruction; branded festivals
 C01_COMPETITORS,压力口头禅、消费笑话、粉圈图像,Stress catchphrases; consumer jokes; fandom images
 C02_SHORT,汐原,Shiohara
 C02_NAME,汐原国,State of Shiohara
 C02_PROTOTYPE,作品与引用社群,Works and reference communities
-C02_DESCRIPTION,"“会桃李之芳园，序天伦之乐事。”（李白《春夜宴桃李园序》）","“Forth to the fragrant-bowered nectarine, Where my dear friends abide, a careless band.” (Li Bai, Preface to a Spring Night Banquet in the Peach and Plum Garden)"
-C02_CULTURE,"“奇文共欣赏，疑义相与析。”（陶渊明《移居二首·其一》）","“Rare writings we read together and praise: Doubtful meanings we examine together and settle.” (Tao Yuanming, Moving House, I)"
+C02_DESCRIPTION,汐原的创作社群围着作品聚散。新作发布后，学生论坛很快就会贴出截图；旧作也有人持续整理和讨论。,Creative communities in Shiohara gather around particular works. Student forums share screenshots of new releases while fans keep cataloguing and discussing older ones.
+C02_DESCRIPTION_NOTE,"“会桃李之芳园，序天伦之乐事。”（李白《春夜宴桃李园序》）","“Forth to the fragrant-bowered nectarine, Where my dear friends abide, a careless band.” (Li Bai, Preface to a Spring Night Banquet in the Peach and Plum Garden)"
+C02_CULTURE,一句台词或一张反应图，往往带着整段剧情。改编者会留下熟悉的细节，方便同好认出出处。,"A line or reaction image can carry a whole scene. People leave recognizable details in their adaptations, giving fellow fans a way to trace the source."
+C02_CULTURE_NOTE,"“奇文共欣赏，疑义相与析。”（陶渊明《移居二首·其一》）","“Rare writings we read together and praise: Doubtful meanings we examine together and settle.” (Tao Yuanming, Moving House, I)"
 C02_TOPICS,角色与剧情、日常观察、游戏,Characters and stories; daily observations; games
 C02_EVENTS,新作上线、连载休止、社群争论,New releases; publication hiatus; community disputes
 C02_COMPETITORS,角色反应图、旧作引用、日常四格,Character reactions; older works; everyday comic panels
 C03_SHORT,瑞原,Seowon
 C03_NAME,瑞原共和国,Republic of Seowon
 C03_PROTOTYPE,粉丝协作网络,Coordinated fan networks
-C03_DESCRIPTION,"“投我以桃，报之以李。”（《诗经·大雅·抑》）","“When one throws to me a peach, I return to him a plum.” (The Book of Songs, Yi)"
-C03_CULTURE,"“无言不雠，无德不报。”（《诗经·大雅·抑》）","“Every word finds its answer; Every good deed has its recompense.” (The Book of Songs, Yi)"
+C03_DESCRIPTION,瑞原的文化社群联系紧密。有人整理素材，有人接力翻译，一场约好的线上活动就能让许多小群同时热闹起来。,Cultural communities in Seowon stay closely connected. Members collect material and translate it for one another; a planned online event can draw many small groups together.
+C03_DESCRIPTION_NOTE,"“投我以桃，报之以李。”（《诗经·大雅·抑》）","“When one throws to me a peach, I return to him a plum.” (The Book of Songs, Yi)"
+C03_CULTURE,应援和二次创作讲究配合。圈内暗语能迅速认出同好，传到圈外时则常要补上一段解释。,Fan projects and adaptations depend on coordination. Insider phrases help fans recognize one another and often need explaining when they reach other audiences.
+C03_CULTURE_NOTE,"“无言不雠，无德不报。”（《诗经·大雅·抑》）","“Every word finds its answer; Every good deed has its recompense.” (The Book of Songs, Yi)"
 C03_TOPICS,娱乐身份、审美、群体归属,Entertainment identity; aesthetics; belonging
 C03_EVENTS,应援接力、同步活动、解释分裂,Fan relays; coordinated events; divided interpretations
 C03_COMPETITORS,应援口号、反应图、圈内暗语,Fan slogans; reaction images; insider language
 C04_SHORT,阿尔登,Alden
 C04_NAME,阿尔登合众国,United States of Alden
 C04_PROTOTYPE,英语趋势市场,English-language trend markets
-C04_DESCRIPTION,"“五色令人目盲，五音令人耳聋。”（《道德经·第十二章》）","“Colour's five hues from th' eyes their sight will take; Music's five notes the ears as deaf can make;” (Tao Te Ching, Chapter 12)"
-C04_CULTURE,"“名可名，非常名。”（《道德经·第一章》）","“The name that can be named is not the enduring and unchanging name.” (Tao Te Ching, Chapter 1)"
+C04_DESCRIPTION,阿尔登的商业平台每天涌入大量新内容。热榜换得快，上班途中看到的笑话，晚上可能已经被改成了另一种说法。,Alden's commercial platforms receive a steady stream of new material. Trends move fast: a joke seen on the way to work may have a different meaning by evening.
+C04_DESCRIPTION_NOTE,"“五色令人目盲，五音令人耳聋。”（《道德经·第十二章》）","“Colour's five hues from th' eyes their sight will take; Music's five notes the ears as deaf can make;” (Tao Te Ching, Chapter 12)"
+C04_CULTURE,通用模板容易被不同社群接走。品牌和个人都在争取关注，同一张图也常被用来表达相反的态度。,Different communities readily adopt familiar templates. Brands and individuals compete for attention and often use the same image to express opposing views.
+C04_CULTURE_NOTE,"“名可名，非常名。”（《道德经·第一章》）","“The name that can be named is not the enduring and unchanging name.” (Tao Te Ching, Chapter 1)"
 C04_TOPICS,工作关系、消费、技术、公共议题,Work and relationships; consumption; technology; public issues
 C04_EVENTS,热榜助推、品牌借用、争议循环,Trending boosts; brand appropriation; controversy cycles
 C04_COMPETITORS,通用模板、愤怒诱饵、名人反应图,Generic templates; outrage bait; celebrity reactions
 C05_SHORT,韦列斯克,Veresk
 C05_NAME,韦列斯克联邦,Federation of Veresk
 C05_PROTOTYPE,反讽再诠释网络,Ironic reinterpretation networks
-C05_DESCRIPTION,"“满纸荒唐言，一把辛酸泪！”（曹雪芹《红楼梦·第一回》）","“Pages full of silly litter, Tears a handful sour and bitter;” (Cao Xueqin, Dream of the Red Chamber, Chapter 1)"
-C05_CULTURE,"“都云作者痴，谁解其中味？”（曹雪芹《红楼梦·第一回》）","“All a fool the author hold, But their zest who can unfold?” (Cao Xueqin, Dream of the Red Chamber, Chapter 1)"
+C05_DESCRIPTION,韦列斯克的学生论坛里，老图片常配上新的烦心事。租金、身份和平台变化，都能成为下一轮改图的题材。,On Veresk's student forums old images return with new grievances. Rent and questions of identity sit alongside complaints about changing platforms.
+C05_DESCRIPTION_NOTE,"“满纸荒唐言，一把辛酸泪！”（曹雪芹《红楼梦·第一回》）","“Pages full of silly litter, Tears a handful sour and bitter;” (Cao Xueqin, Dream of the Red Chamber, Chapter 1)"
+C05_CULTURE,荒诞台词和一本正经的反话很常见。理解一段玩笑，往往得知道大家正在抱怨什么。,Absurd dialogue and deadpan irony are common. Understanding the joke often means knowing what people have been complaining about.
+C05_CULTURE_NOTE,"“都云作者痴，谁解其中味？”（曹雪芹《红楼梦·第一回》）","“All a fool the author hold, But their zest who can unfold?” (Cao Xueqin, Dream of the Red Chamber, Chapter 1)"
 C05_TOPICS,日常挫折、荒诞错位、语言游戏,Everyday setbacks; absurd juxtapositions; wordplay
 C05_EVENTS,旧梗复兴、反讽直译、集体改名,Old meme revival; literalized irony; collective renaming
 C05_COMPETITORS,旧图新字、荒诞台词、本地双关,Recaptioned images; absurd dialogue; local puns
 C06_SHORT,林达尔,Lindal
 C06_NAME,林达尔王国,Kingdom of Lindal
 C06_PROTOTYPE,小型双语公共网络,Small bilingual public networks
-C06_DESCRIPTION,"“闻多素心人，乐与数晨夕。”（陶渊明《移居二首·其一》）","“But I heard it was a place of simple-minded men With whom it were a joy to spend the mornings and evenings.” (Tao Yuanming, Moving House, I)"
-C06_CULTURE,"“德不孤，必有邻。”（《论语·里仁》）","“Virtue is not left to stand alone. He who practises it will have neighbors.” (The Analects, Li Ren)"
+C06_DESCRIPTION,林达尔的公共网络规模较小，居民联系方便。外地消息来得快，关于学校或公共服务的讨论却常绕着具体的社区展开。,Lindal has a small and well-connected public network. News arrives quickly from elsewhere; discussions about schools and public services often stay close to particular communities.
+C06_DESCRIPTION_NOTE,"“闻多素心人，乐与数晨夕。”（陶渊明《移居二首·其一》）","“But I heard it was a place of simple-minded men With whom it were a joy to spend the mornings and evenings.” (Tao Yuanming, Moving House, I)"
+C06_CULTURE,人们习惯给外地读者补充背景，也爱拿熟悉的日常开玩笑。机构借用网络表达时，同样会被居民拿来评说。,People explain local context to visitors and joke about familiar routines. Institutions that borrow online expressions become part of the conversation too.
+C06_CULTURE_NOTE,"“德不孤，必有邻。”（《论语·里仁》）","“Virtue is not left to stand alone. He who practises it will have neighbors.” (The Analects, Li Ren)"
 C06_TOPICS,公共服务、工作生活、地方日常,Public services; work-life balance; local life
 C06_EVENTS,地方议题、语境解释、机构借用,Local issues; contextual explanation; institutional appropriation
 C06_COMPETITORS,日常自嘲、公共服务图、双语笑话,Everyday self-irony; public-service images; bilingual jokes
 C07_SHORT,马拉苏,Marasu
 C07_NAME,马拉苏联邦,Federation of Marasu
 C07_PROTOTYPE,多语种桥接网络,Multilingual bridge networks
-C07_DESCRIPTION,"“同是天涯沦落人，相逢何必曾相识。”（白居易《琵琶行》）","“we are companions in misfortune, and need no ceremony to be friends.” (Bai Juyi, Song of the Pipa)"
-C07_CULTURE,"“我闻琵琶已叹息，又闻此语重唧唧。”（白居易《琵琶行》）","“The sweet melody of the lute had already moved my soul to pity, and now these words pierced me to the heart again.” (Bai Juyi, Song of the Pipa)"
+C07_DESCRIPTION,马拉苏的城市与跨境社群来往频繁。通勤途中，人们聊比赛、交换省钱办法；各地接入网络的条件仍有差别。,Marasu's cities have frequent contact with communities across the border. Commuters discuss matches and exchange ways to save money. Network access varies between places.
+C07_DESCRIPTION_NOTE,"“同是天涯沦落人，相逢何必曾相识。”（白居易《琵琶行》）","“we are companions in misfortune, and need no ceremony to be friends.” (Bai Juyi, Song of the Pipa)"
+C07_CULTURE,同一段话里可以夹着不同语言。双关语和家庭反应图传得很快，翻译接力也会带出新的意思。,Several languages can appear in the same exchange. Puns and family reaction images travel quickly and gain new meanings as people translate them.
+C07_CULTURE_NOTE,"“我闻琵琶已叹息，又闻此语重唧唧。”（白居易《琵琶行》）","“The sweet melody of the lute had already moved my soul to pity, and now these words pierced me to the heart again.” (Bai Juyi, Song of the Pipa)"
 C07_TOPICS,生活成本、家庭、城市、旅行,Living costs; family; cities; travel
 C07_EVENTS,语码混用、翻译漂移、节庆热点,Code-switching; translation drift; festival trends
 C07_COMPETITORS,多语双关、家庭反应图、城市段子,Multilingual puns; family reactions; city jokes
 C08_SHORT,塞拉诺瓦,Serranova
 C08_NAME,塞拉诺瓦联邦共和国,Federative Republic of Serranova
 C08_PROTOTYPE,南美参考圈 · 聊天转发网络,South America reference · chat relays
-C08_DESCRIPTION,"“举杯邀明月，对影成三人。”（李白《月下独酌四首·其一》）","“Raising my cup I beckon the bright moon, For he, with my shadow, will make three men.” (Li Bai, Drinking Alone by Moonlight, I)"
-C08_CULTURE,"“三人行，必有我师焉。”（《论语·述而》）","“When I walk along with two others, they may serve me as my teachers.” (The Analects, Shu Er)"
+C08_DESCRIPTION,塞拉诺瓦的消息常沿群聊传开。学生把课堂和社区的见闻发进聊天，熟人接着转发，也会追问消息的出处。,News in Serranova often travels through group chats. Students share what they hear in class and around their neighbourhoods. Friends pass it on and ask where it came from.
+C08_DESCRIPTION_NOTE,"“举杯邀明月，对影成三人。”（李白《月下独酌四首·其一》）","“Raising my cup I beckon the bright moon, For he, with my shadow, will make three men.” (Li Bai, Drinking Alone by Moonlight, I)"
+C08_CULTURE,比赛片段和连续剧表情常被截成贴图。一张贴图换个聊天场合，就能从助兴变成吐槽。,Match clips and television reactions become chat stickers. A change of conversation can turn the same sticker from a cheer into a complaint.
+C08_CULTURE_NOTE,"“三人行，必有我师焉。”（《论语·述而》）","“When I walk along with two others, they may serve me as my teachers.” (The Analects, Shu Er)"
 C08_TOPICS,体育、影视、家庭、消费,Sports; film and television; family; consumption
 C08_EVENTS,群聊接力、贴图截取、赛事热点,Group-chat relays; sticker extraction; sporting trends
 C08_COMPETITORS,体育口号、连续剧反应图、聊天贴图,Sports slogans; television reactions; chat stickers
 C09_SHORT,奥鲁维亚,Oruvia
 C09_NAME,奥鲁维亚联邦共和国,Federal Republic of Oruvia
 C09_PROTOTYPE,撒哈拉以南非洲 · 多语创作网络,Sub-Saharan Africa · multilingual creation
-C09_DESCRIPTION,"“随风潜入夜，润物细无声。”（杜甫《春夜喜雨》）","“She wanders with a friendly wind through silent nights unseen, The furrows feel her happy tears, and lo! the land is green.” (Du Fu, Welcome Rain on a Spring Night)"
-C09_CULTURE,"“曲则全，枉则直，洼则盈，敝则新。”（《道德经·第二十二章》）","“The partial becomes complete; the crooked, straight; the empty, full; the worn out, new.” (Tao Te Ching, Chapter 22)"
+C09_DESCRIPTION,奥鲁维亚的城市创作者常从街头见闻取材。交通、物价和工作里的小事被写成对白，再传到别处接着改编。,Oruvia's urban creators draw on what they see in the street. Everyday stories about transport and prices become dialogue that people elsewhere adapt to their own working lives.
+C09_DESCRIPTION_NOTE,"“随风潜入夜，润物细无声。”（杜甫《春夜喜雨》）","“She wanders with a friendly wind through silent nights unseen, The furrows feel her happy tears, and lo! the land is green.” (Du Fu, Welcome Rain on a Spring Night)"
+C09_CULTURE,本地口语让影视截帧和短对白更亲切。跨地区转发时，创作者会把人物的说法改成自己熟悉的声音。,Local speech makes film stills and short dialogues feel familiar. Creators adapt the voices to their own surroundings as material moves between regions.
+C09_CULTURE_NOTE,"“曲则全，枉则直，洼则盈，敝则新。”（《道德经·第二十二章》）","“The partial becomes complete; the crooked, straight; the empty, full; the worn out, new.” (Tao Te Ching, Chapter 22)"
 C09_TOPICS,交通服务、物价、工作、家庭、影视,Transport and services; prices; work; family; film
 C09_EVENTS,接入改善、本地对白、跨区域改写,Improved access; local dialogue; cross-regional rewriting
 C09_COMPETITORS,城市日常对白、影视截帧、物价段子,Urban dialogue; film stills; price jokes
@@ -101,8 +119,10 @@ MAP_LOD2,城市与地理细节,Cities and geography
 C10_SHORT,纳希尔,Nashir
 C10_NAME,纳希尔联邦共和国,Federal Republic of Nashir
 C10_PROTOTYPE,北非参考圈 · 机制待访谈,North Africa reference · mechanisms pending review
-C10_DESCRIPTION,"“嘤其鸣矣，求其友声。”（《诗经·小雅·伐木》）","“Ying goes its cry, Seeking with its voice its companion.” (The Book of Songs, Fa Mu)"
-C10_CULTURE,"“听其言而观其行。”（《论语·公冶长》）","“Now my way is to hear their words, and look at their conduct.” (The Analects, Gong Ye Chang)"
+C10_DESCRIPTION,纳希尔城与萨法港之间往返的人，把沿途消息带进邻里群。社区生活和公共安排，是下班后仍会继续的话题。,People travelling between Nashir City and Safa Port bring news into neighbourhood chats. Conversations about community life and public arrangements continue after work.
+C10_DESCRIPTION_NOTE,"“嘤其鸣矣，求其友声。”（《诗经·小雅·伐木》）","“Ying goes its cry, Seeking with its voice its companion.” (The Book of Songs, Fa Mu)"
+C10_CULTURE,消息常附着具体的人和地点。居民习惯追问是谁说的，再用短对白复述身边发生的事。,Messages often name a person and a place. Residents ask who said it before retelling everyday events as short conversations.
+C10_CULTURE_NOTE,"“听其言而观其行。”（《论语·公冶长》）","“Now my way is to hear their words, and look at their conduct.” (The Analects, Gong Ye Chang)"
 C10_TOPICS,待访谈,Pending review
 C10_EVENTS,待访谈,Pending review
 C10_COMPETITORS,待访谈,Pending review
@@ -159,8 +179,10 @@ C10_GEO,晨光高原,Dawn Plateau
 C11_SHORT,索莱里亚,Soleria
 C11_NAME,索莱里亚共和国,Republic of Soleria
 C11_PROTOTYPE,南欧参考圈 · 机制待访谈,Southern Europe reference · mechanisms pending review
-C11_DESCRIPTION,"“大弦嘈嘈如急雨，小弦切切如私语。”（白居易《琵琶行》）","“Now loudly with the crash of falling rain, Now soft as the leaf whispering of words” (Bai Juyi, Song of the Pipa)"
-C11_CULTURE,"“关雎，乐而不淫，哀而不伤。”（《论语·八佾》）","“The Kwan Tsu is expressive of enjoyment without being licentious, and of grief without being hurtfully excessive.” (The Analects, Ba Yi)"
+C11_DESCRIPTION,索莱里亚的学生社群常把课余演出和比赛聊到深夜。关于打工的抱怨，也会混进同一串热闹的讨论。,Soleria's student communities discuss performances and matches late into the night. Complaints about part-time jobs find their way into the same conversations.
+C11_DESCRIPTION_NOTE,"“大弦嘈嘈如急雨，小弦切切如私语。”（白居易《琵琶行》）","“Now loudly with the crash of falling rain, Now soft as the leaf whispering of words” (Bai Juyi, Song of the Pipa)"
+C11_CULTURE,影视对白会被改成日常问答，比赛中的动作也能成为表情。熟悉的场面让一群人很快接上话。,Film dialogue becomes everyday conversation and gestures from matches become reactions. Familiar scenes give people an easy way to join in.
+C11_CULTURE_NOTE,"“关雎，乐而不淫，哀而不伤。”（《论语·八佾》）","“The Kwan Tsu is expressive of enjoyment without being licentious, and of grief without being hurtfully excessive.” (The Analects, Ba Yi)"
 C11_TOPICS,待访谈,Pending review
 C11_EVENTS,待访谈,Pending review
 C11_COMPETITORS,待访谈,Pending review
@@ -172,8 +194,10 @@ C11_GEO,金橄榄丘陵,Golden Olive Hills
 C12_SHORT,阿文顿,Avendon
 C12_NAME,阿文顿联合王国,United Kingdom of Avendon
 C12_PROTOTYPE,西欧及英爱参考圈 · 机制待访谈,Western Europe and Britain–Ireland reference · mechanisms pending review
-C12_DESCRIPTION,"“夫天地者，万物之逆旅也；光阴者，百代之过客也。”（李白《春夜宴桃李园序》）","“The universe is but a tenement Of all things visible. Darkness and day The passing guests of Time.” (Li Bai, Preface to a Spring Night Banquet in the Peach and Plum Garden)"
-C12_CULTURE,"“不有佳咏，何伸雅怀？”（李白《春夜宴桃李园序》）","“Then as without the touch of verse divine There is no outlet for the pent-up soul,” (Li Bai, Preface to a Spring Night Banquet in the Peach and Plum Garden)"
+C12_DESCRIPTION,阿文顿的文化社群分布在城镇与港口。新说法常从一处传到另一处，随之而来的问题是：这句话在那里是什么意思？,Avendon's cultural communities are spread across towns and ports. New expressions travel between them and prompt a recurring question: what does that phrase mean where you live?
+C12_DESCRIPTION_NOTE,"“夫天地者，万物之逆旅也；光阴者，百代之过客也。”（李白《春夜宴桃李园序》）","“The universe is but a tenement Of all things visible. Darkness and day The passing guests of Time.” (Li Bai, Preface to a Spring Night Banquet in the Peach and Plum Garden)"
+C12_CULTURE,双语转述和地方自嘲很常见。讨论公共议题时，人们会引用旧报道，也会为一句话的语气争论很久。,Bilingual retellings and jokes about local life are common. Discussions of public issues draw on old reports and can linger over the tone of a single sentence.
+C12_CULTURE_NOTE,"“不有佳咏，何伸雅怀？”（李白《春夜宴桃李园序》）","“Then as without the touch of verse divine There is no outlet for the pent-up soul,” (Li Bai, Preface to a Spring Night Banquet in the Peach and Plum Garden)"
 C12_TOPICS,待访谈,Pending review
 C12_EVENTS,待访谈,Pending review
 C12_COMPETITORS,待访谈,Pending review
@@ -185,8 +209,10 @@ C12_GEO,灰石高地,Greystone Uplands
 C13_SHORT,莱茵维亚,Rhenivia
 C13_NAME,莱茵维亚联邦共和国,Federal Republic of Rhenivia
 C13_PROTOTYPE,中欧参考圈 · 机制待访谈,Central Europe reference · mechanisms pending review
-C13_DESCRIPTION,"“阁中帝子今何在，槛外长江空自流。”（王勃《滕王阁诗》）","“And yet where is that prince? where is he?--No reply, Save the plash of the stream rolling ceaselessly by.” (Wang Bo, Poem on the Pavilion of Prince Teng)"
-C13_CULTURE,"“述而不作，信而好古。”（《论语·述而》）","“A transmitter and not a maker, believing in and loving the ancients” (The Analects, Shu Er)"
+C13_DESCRIPTION,莱茵维亚的通勤群聊里，经常有人翻出旧海报或老节目。过去的片段被拿来评论眼下的工作，也能引出一场关于原作的闲聊。,Commuter chats in Rhenivia often turn up old posters and programmes. People use those fragments to comment on work or start a conversation about the original.
+C13_DESCRIPTION_NOTE,"“阁中帝子今何在，槛外长江空自流。”（王勃《滕王阁诗》）","“And yet where is that prince? where is he?--No reply, Save the plash of the stream rolling ceaselessly by.” (Wang Bo, Poem on the Pavilion of Prince Teng)"
+C13_CULTURE,整理出处和重新配字都有各自的爱好者。一个旧片段可以反复使用，每次留下不同的注解。,Some people enjoy tracing sources; others prefer rewriting captions. The same old clip can return many times with a different commentary.
+C13_CULTURE_NOTE,"“述而不作，信而好古。”（《论语·述而》）","“A transmitter and not a maker, believing in and loving the ancients” (The Analects, Shu Er)"
 C13_TOPICS,待访谈,Pending review
 C13_EVENTS,待访谈,Pending review
 C13_COMPETITORS,待访谈,Pending review
@@ -198,8 +224,10 @@ C13_GEO,杉岭山地,Fircrest Highlands
 C14_SHORT,米赫兰,Mehran
 C14_NAME,米赫兰共和国,Republic of Mehran
 C14_PROTOTYPE,中东—西亚参考圈 · 机制待访谈,Middle East–West Asia reference · mechanisms pending review
-C14_DESCRIPTION,"“知足不辱，知止不殆。”（《道德经·第四十四章》）","“Who is content Needs fear no shame. Who knows to stop Incurs no blame.” (Tao Te Ching, Chapter 44)"
-C14_CULTURE,"“千里之行，始于足下。”（《道德经·第六十四章》）","“the journey of a thousand li commenced with a single step.” (Tao Te Ching, Chapter 64)"
+C14_DESCRIPTION,米赫兰的学生论坛常交换生活开支和上网工具的消息。达里亚港带来的新说法，也会在这些讨论里被解释、试用和改写。,Mehran's student forums exchange advice on living costs and online tools. New expressions arriving through Darya Port get explained and tried out in these conversations.
+C14_DESCRIPTION_NOTE,"“知足不辱，知止不殆。”（《道德经·第四十四章》）","“Who is content Needs fear no shame. Who knows to stop Incurs no blame.” (Tao Te Ching, Chapter 44)"
+C14_CULTURE,省钱办法容易被编成便于转发的短句。不同社群借用同一句话时，会换上自己的称呼和日常细节。,Money-saving tips become short phrases that are easy to forward. Communities reuse them with their own names and details from daily life.
+C14_CULTURE_NOTE,"“千里之行，始于足下。”（《道德经·第六十四章》）","“the journey of a thousand li commenced with a single step.” (Tao Te Ching, Chapter 64)"
 C14_TOPICS,待访谈,Pending review
 C14_EVENTS,待访谈,Pending review
 C14_COMPETITORS,待访谈,Pending review
@@ -211,8 +239,10 @@ C14_GEO,赭石山地,Ochre Highlands
 C15_SHORT,坎塔利亚,Cantalia
 C15_NAME,坎塔利亚联邦,Commonwealth of Cantalia
 C15_PROTOTYPE,澳洲及新西兰参考圈 · 机制待访谈,Australia and New Zealand reference · mechanisms pending review
-C15_DESCRIPTION,"“告诸往而知来者。”（《论语·学而》）","“I told him one point, and he knew its proper sequence.” (The Analects, Xue Er)"
-C15_CULTURE,"“邻曲时时来，抗言谈在昔。”（陶渊明《移居二首·其一》）","“Often and often the neighbours come to see me And with brave words discuss the things of old.” (Tao Yuanming, Moving House, I)"
+C15_DESCRIPTION,坎塔利亚各地的文化小组通过网络交换讲座、旧照片和演出消息。学校与工作的经历，给这些材料添上新的话题。,Cultural groups across Cantalia exchange talks and performance notices online. Old photographs circulate too and prompt stories about school and work.
+C15_DESCRIPTION_NOTE,"“告诸往而知来者。”（《论语·学而》）","“I told him one point, and he knew its proper sequence.” (The Analects, Xue Er)"
+C15_CULTURE,地方故事常和远处传来的流行表达放在一起。有人补记出处，有人改写成自己的经历，留下的版本各有不同。,Local stories meet expressions arriving from elsewhere. Some people add source notes; others recast the story around their own experience.
+C15_CULTURE_NOTE,"“邻曲时时来，抗言谈在昔。”（陶渊明《移居二首·其一》）","“Often and often the neighbours come to see me And with brave words discuss the things of old.” (Tao Yuanming, Moving House, I)"
 C15_TOPICS,待访谈,Pending review
 C15_EVENTS,待访谈,Pending review
 C15_COMPETITORS,待访谈,Pending review
@@ -224,8 +254,10 @@ C15_GEO,赤岩高地,Redrock Uplands
 C16_SHORT,维沙拉,Vishara
 C16_NAME,维沙拉共和国,Republic of Vishara
 C16_PROTOTYPE,南亚参考圈 · 机制待访谈,South Asia reference · mechanisms pending review
-C16_DESCRIPTION,"“邻国相望，鸡犬之声相闻。”（《道德经·第八十章》）","“There should be a neighbouring state within sight, and the voices of the fowls and dogs should be heard all the way from it to us” (Tao Te Ching, Chapter 80)"
-C16_CULTURE,"“性相近也，习相远也。”（《论语·阳货》）","“By nature, men are nearly alike; by practice, they get to be wide apart.” (The Analects, Yang Huo)"
+C16_DESCRIPTION,维沙拉的通勤职员常在路上交换生活消息。物价和平台工具的变化，很快会变成办公室里能听懂的笑话。,Vishara's commuters exchange everyday news on the way to work. Changes in prices or online tools quickly become jokes people recognize around the office.
+C16_DESCRIPTION_NOTE,"“邻国相望，鸡犬之声相闻。”（《道德经·第八十章》）","“There should be a neighbouring state within sight, and the voices of the fowls and dogs should be heard all the way from it to us” (Tao Te Ching, Chapter 80)"
+C16_CULTURE,社群会用称呼和暗语标记彼此的关系。一段表达传到新圈子后，措辞常被改得更贴近当地人的生活。,Communities use familiar names and shorthand to mark their relationships. An expression reaching a new circle often gets rewritten around local routines.
+C16_CULTURE_NOTE,"“性相近也，习相远也。”（《论语·阳货》）","“By nature, men are nearly alike; by practice, they get to be wide apart.” (The Analects, Yang Huo)"
 C16_TOPICS,待访谈,Pending review
 C16_EVENTS,待访谈,Pending review
 C16_COMPETITORS,待访谈,Pending review
