@@ -2,17 +2,17 @@
   "LOC_TEXT_STARTER_VERSAILLES_TITLE": {
     "source": "凡尔赛式自述",
     "zh_CN": "凡尔赛式自述",
-    "en": "A humblebrag"
+    "en": "凡尔赛式自述"
   },
   "LOC_TEXT_STARTER_VERSAILLES_A": {
     "source": "我这次期末考都没念书。",
     "zh_CN": "我这次期末考都没念书。",
-    "en": "I didn't even study for these finals."
+    "en": "我这次期末考都没念书。"
   },
   "LOC_TEXT_STARTER_VERSAILLES_B": {
     "source": "成绩出来又是满分。",
     "zh_CN": "成绩出来又是满分。",
-    "en": "The results came out: full marks again."
+    "en": "成绩出来又是满分。"
   },
   "LOC_TEXT_STARTER_VERSAILLES_RELATION": {
     "source": "嘴上淡化努力，话里展示成绩。",
@@ -36,12 +36,12 @@
   },
   "LOC_TEXT_STARTER_NOBODY_A": {
     "source": "Nobody：",
-    "zh_CN": "Nobody：",
+    "zh_CN": "Nobody:",
     "en": "Nobody:"
   },
   "LOC_TEXT_STARTER_NOBODY_B": {
     "source": "我：让我再讲一遍这部剧哪里好看。",
-    "zh_CN": "我：让我再讲一遍这部剧哪里好看。",
+    "zh_CN": "Me: let me explain once more why this show is so good.",
     "en": "Me: let me explain once more why this show is so good."
   },
   "LOC_TEXT_STARTER_NOBODY_RELATION": {

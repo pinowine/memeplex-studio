@@ -271,7 +271,7 @@ func _draw_surface(canvas: Control) -> void:
 	var ink := Color(0.09, 0.17, 0.13, 0.95)
 	var pale := Color(0.90, 0.88, 0.78, 0.94)
 	canvas.draw_polyline(PackedVector2Array([Vector2(2, 2), Vector2(638, 2), Vector2(638, 638), Vector2(2, 638), Vector2(2, 2)]), Color(0.20, 0.34, 0.28, 0.42), 2, true)
-	canvas.draw_string(font, PLANE_SIZE * Vector2(0.16, 0.09), TITLES[LAYERS.find(_layer)], HORIZONTAL_ALIGNMENT_LEFT, -1, 27, ink)
+	canvas.draw_string(font, PLANE_SIZE * Vector2(0.16, 0.09), DeskLocalization.text(TITLES[LAYERS.find(_layer)]), HORIZONTAL_ALIGNMENT_LEFT, -1, 27, ink)
 	if _layer in ["stance", "pragmatic"]:
 		var data: Dictionary = _layers().get(_layer, {})
 		var labels: Dictionary = data.get("axis_labels", {"x_negative": DeskLocalization.source("LOC_FREEDOM_D1047EED") if _layer == "stance" else DeskLocalization.source("LOC_SINCERITY_8BB7FF57"), "x_positive": DeskLocalization.source("LOC_AUTHORITY_E9D827BA") if _layer == "stance" else DeskLocalization.source("LOC_IRONY_06D9BA32"), "y_negative": DeskLocalization.source("LOC_EQUALITY_14DD2491") if _layer == "stance" else DeskLocalization.source("LOC_SUPPORT_D93373F8"), "y_positive": DeskLocalization.source("LOC_HIERARCHY_33771717") if _layer == "stance" else DeskLocalization.source("LOC_OPPOSITION_454F03C9")})
@@ -282,7 +282,7 @@ func _draw_surface(canvas: Control) -> void:
 			canvas.draw_line(PLANE_SIZE * Vector2(step, 0.51), PLANE_SIZE * Vector2(step, 0.53), pale, 1, true)
 			canvas.draw_line(PLANE_SIZE * Vector2(0.49, step + 0.02), PLANE_SIZE * Vector2(0.51, step + 0.02), pale, 1, true)
 		for entry: Array in [["x_negative", Vector2(0.06, 0.53)], ["x_positive", Vector2(0.82, 0.53)], ["y_negative", Vector2(0.45, 0.18)], ["y_positive", Vector2(0.45, 0.90)]]:
-			canvas.draw_string(font, PLANE_SIZE * entry[1], str(labels.get(entry[0], "")), HORIZONTAL_ALIGNMENT_LEFT, -1, 22, ink)
+			canvas.draw_string(font, PLANE_SIZE * entry[1], DeskLocalization.text(str(labels.get(entry[0], ""))), HORIZONTAL_ALIGNMENT_LEFT, -1, 22, ink)
 		canvas.draw_arc(_axis_origin() * PLANE_SIZE, 11, 0, TAU, 32, pale, 2, true)
 		canvas.draw_circle(_axis_point() * PLANE_SIZE, 9, ink if _enabled else Color(0.4, 0.4, 0.4))
 	else:
@@ -521,7 +521,9 @@ func _input(event: InputEvent) -> void:
 	if not _native_plane.is_empty() and event is InputEventMouseMotion: _last_pointer = event.position
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_DRAG_END and not _native_plane.is_empty():
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		_refresh()
+	elif what == NOTIFICATION_DRAG_END and not _native_plane.is_empty():
 		var record := _native_plane
 		_native_plane = {}
 		if not bool(_layers().get(str(record.layer),{}).get("attached",true)): context_layer_detached.emit(record,_last_pointer)

@@ -155,7 +155,7 @@ static func source_value(value: Variant) -> Variant:
 static func text(key: String) -> String:
 	ensure_loaded()
 	var translated := str(TranslationServer.translate(StringName(key)))
-	if TranslationServer.get_locale().begins_with("en") and translated == key and not _messages.has(key) and not (_dynamic_messages.has(key) and _dynamic_messages[key] != key) and (_contains_han(key) or key.begins_with("LOC_")):
+	if TranslationServer.get_locale().begins_with("en") and translated == key and not _messages.has(key) and not _dynamic_messages.has(key) and (_contains_han(key) or key.begins_with("LOC_")):
 		_missing[key] = true
 	else:
 		_missing.erase(key)
@@ -176,9 +176,7 @@ static func _locale_text(key: String, locale: String) -> String:
 	var dynamic: Dictionary = _dynamic_messages if locale == "en" else _dynamic_chinese
 	var messages: Dictionary = _messages if locale == "en" else _chinese_messages
 	if dynamic.has(key):
-		var translated := str(dynamic[key])
-		if locale == "en" and translated == key and not messages.has(key) and _contains_han(key): _missing[key] = true
-		return translated
+		return str(dynamic[key])
 	if messages.has(key): return str(messages[key])
 	if locale == "en" and (_contains_han(key) or key.begins_with("LOC_")): _missing[key] = true
 	return key
@@ -263,10 +261,15 @@ static func prime_system_history(catalog: Resource, payload: Dictionary) -> void
 	for preset: Resource in catalog.presets: domains.preset[str(preset.title)] = true
 	for id: String in payload.get("families",{}): domains.family[id] = true
 	for variant: Dictionary in payload.get("variants",[]): domains.variant[str(variant.id)] = true
+	var event_definitions := {}
+	for definition: Resource in catalog.events: event_definitions[str(definition.id)] = definition
 	var records: Array = []
 	for key: String in ["events","pending_events"]: records.append_array(payload.get(key,[]))
 	if not (payload.get("active_event",{}) as Dictionary).is_empty(): records.append(payload.active_event)
 	for record: Dictionary in records:
+		var definition: Resource = event_definitions[str(record.definition_id)]
+		definition.impact_summary()
+		definition.impact_summary(false)
 		var source := str(record.get("effect_text",""))
 		if not source.is_empty():
 			var canonical_lines := source.split("\n",true)
@@ -282,9 +285,14 @@ static func prime_system_history(catalog: Resource, payload: Dictionary) -> void
 		_history_known_format(status,DeskLocalization.source("LOC_NEW_RUN_D_MEME_MEME_TRADING_IS_74CC0B27"),["number"],domains)
 		_history_known_format(status,DeskLocalization.source("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B"),["number","number"],domains)
 		_history_known_format(status,DeskLocalization.source("LOC_NOT_ENOUGH_MEME_RESERVE_D_FOR_FIRST_FE60303F"),["number"],domains)
+		_history_known_format(status,DeskLocalization.source("LOC_RECEIVED_D_MESSAGES_B3820ECB"),["number"],domains)
+	var rules: Resource = load("res://data/rules/design_rules.tres")
 	for entry: Dictionary in (payload.get("economy",{}) as Dictionary).get("transactions",[]):
 		var reason := str(entry.get("reason",""))
 		_history_known_format(reason,DeskLocalization.source("LOC_AUTHOR_OWNED_ADOPTION_MILESTONE_D_85F3EA92"),["number"],domains)
+		for skill: Dictionary in rules.skills:
+			if reason == DeskLocalization.source("LOC_SKILL_UNLOCKED_811EF328") + str(skill.id):
+				source_format("%s%s",["LOC_SKILL_UNLOCKED_811EF328",str(skill.id)],[0])
 		source_format("H%d  %s%d Meme  %s → %d",[entry.hour,"+" if entry.delta >= 0 else "",entry.delta,reason,entry.balance],[3])
 
 static func _history_effect_line(source: String, domains: Dictionary) -> String:

@@ -151,7 +151,7 @@ func _draw() -> void:
 	if plot.size.x <= 0.0 or plot.size.y <= 0.0:
 		return
 	_draw_plot(plot)
-	var time_text := DeskLocalization.source("LOC_WAITING_FOR_A_BALANCE_SNAPSHOT_0C681C27")
+	var time_text := DeskLocalization.text("LOC_WAITING_FOR_A_BALANCE_SNAPSHOT_0C681C27")
 	if not _history.is_empty():
 		time_text = DeskLocalization.format_text("LOC_H_D_H_D_NET_S_1AB49822", [int(_history[0].hour), int(_history[-1].hour), _signed(_balance - _origin_balance)])
 		if _x_mode() == "change_index_same_hour":
@@ -298,7 +298,8 @@ func _mono_text_width(font: Font, text: String, fs: int) -> float:
 func _title_text_layout() -> Dictionary:
 	var font := get_theme_font("font", "Label")
 	var fs := 11 if _compact() else _font_size()
-	var text := _title.replace("\n", " ").replace("\r", " ")
+	var title := DeskLocalization.text(_title) if _title_source == "none" else _title
+	var text := title.replace("\n", " ").replace("\r", " ")
 	if not _compact(): text = DeskLocalization.text("LOC_MEME_40BDE4F6") + text
 	var rect := _title_rect()
 	var truncated := _mono_text_width(font, text, fs) > rect.size.x
@@ -312,14 +313,15 @@ func _title_text_layout() -> Dictionary:
 				if _mono_text_width(font, visible + character + "…", fs) > rect.size.x: break
 				visible += character
 			visible += "…"
-	return {"text":visible, "full_text":_title, "truncated":truncated, "font_size":fs, "width":_mono_text_width(font, visible, fs), "rect":rect}
+	return {"text":visible, "full_text":title, "truncated":truncated, "font_size":fs, "width":_mono_text_width(font, visible, fs), "rect":rect}
 
 
 func title_hover_info(viewport_point: Vector2) -> Dictionary:
 	if not is_visible_in_tree(): return {}
 	var local := get_global_transform_with_canvas().affine_inverse() * viewport_point
 	if not _title_rect().has_point(local): return {}
-	return {"kind":"meme_title", "title":_title, "description":_title, "truncated":_title_text_layout().truncated}
+	var layout := _title_text_layout()
+	return {"kind":"meme_title", "title":layout.full_text, "description":layout.full_text, "truncated":layout.truncated}
 
 
 func _draw_mono(font: Font, text: String, baseline: Vector2, fs: int, color: Color) -> void:

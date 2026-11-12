@@ -3,7 +3,7 @@ extends Control
 
 const MINIMUM := Vector2(108, 72)
 const TOPIC_MINIMUM := Vector2(144, 74)
-const TITLES := {"language":"LANG", "group":"GROUP", "module":"PATCH", "topic":"TOPIC"}
+const TITLES := {"language":"LOC_LANGUAGE_9F6FEE1A", "group":"LOC_AUDIENCE_D14FC4B5", "module":"LOC_PATCH_70F56533", "topic":"LOC_TOPICS_A2C81C5A"}
 const SHAPES := {"language":"double_layer_laminated_round", "group":"clipped_identity_card", "module":"notched_expansion_board", "topic":"notched_horizontal_ticket"}
 const PALETTES := {
 	"language":{"edge":Color("354d59"), "body":Color("8da5ac"), "panel":Color("d6dfd9"), "ink":Color("263e49"), "light":Color("eff4e8")},
@@ -139,7 +139,7 @@ func _word_lines(text: String, width: float, point_size: int) -> Array[String]:
 func _header_layout(body: Rect2) -> Dictionary:
 	var face := _font if _font != null else ThemeDB.fallback_font
 	var number := str(_count_value())
-	var category := str(TITLES[_kind])
+	var category := DeskLocalization.text(TITLES[_kind])
 	var left := body.position.x + 25.0
 	var right := body.end.x - 8.0
 	for number_size: int in [11, 10]:
@@ -169,7 +169,7 @@ func _build_layout() -> Dictionary:
 	var text := {
 		"title":_fit_text(title, sections.title, 15, 12, 2),
 		"source":_fit_text(_source_text(), sections.source, 9, 8, 1),
-		"category":_fit_text(str(TITLES[_kind]), sections.category, header.category_size, header.category_size, 1),
+		"category":_fit_text(DeskLocalization.text(TITLES[_kind]), sections.category, header.category_size, header.category_size, 1),
 		"count":_fit_text(header.count_text, sections.count.grow(-1), header.count_size, header.count_size, 1)
 	}
 	text.count.original = str(_count_value())
