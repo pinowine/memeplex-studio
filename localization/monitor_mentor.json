@@ -1,23 +1,23 @@
 {
   "LOC_MENTOR_FREEDOM": {
     "source": "自由点数。往这边走，你的模因会更倾向于自由。至于大家会不会自由地曲解它……那是另一回事。",
-    "zh_CN": "自由点数。往这边走，你的模因会更倾向于自由。\n\n“上帝啊！倘不是因为我有了恶梦，那么即使把我关在一个果壳里，我也会把自己当作一个拥有着无限空间的君王的。”\n《哈姆雷特》第二幕，威廉·莎士比亚",
-    "en": "Liberty points. Spend these to move your meme toward liberty.\n\n“O God, I could be bounded in a nutshell, and count myself a king of infinite space, were it not that I have bad dreams.”\nHamlet, Act II, William Shakespeare"
+    "zh_CN": "自由点数。往这边走，你的模因会更倾向于自由。\n\n“对于他自己，对于他自己的身心，个人拥有主权。”\n约翰·斯图亚特·密尔《论自由》第一章（1859）",
+    "en": "Liberty points. Spend these to move your meme toward liberty.\n\n“Over himself, over his own body and mind, the individual is sovereign.”\nJohn Stuart Mill, On Liberty, chapter 1 (1859)"
   },
   "LOC_MENTOR_AUTHORITY": {
     "source": "威权点数。它能让你的模因往威权那边靠。提醒一下，有人听你的，不代表你说得对。",
-    "zh_CN": "威权点数。它能让你的模因往威权那边靠。\n\n“谁有力量损害人而不这样干”\n《十四行诗》第94首，威廉·莎士比亚",
-    "en": "Authority points move your meme toward authority.\n\n“They that have power to hurt, and will do none”\nSonnet 94, William Shakespeare"
+    "zh_CN": "威权点数。它能让你的模因往威权那边靠。\n\n“合法使用暴力的垄断权”\n马克斯·韦伯《以政治为业》（1919）",
+    "en": "Authority points move your meme toward authority.\n\n“the monopoly of the legitimate use of physical force”\nMax Weber, Politics as a Vocation (1919)"
   },
   "LOC_MENTOR_EQUALITY": {
     "source": "平等点数。把模因往平等的方向推一点。至少在转发按钮面前，大家暂时都是一样的。",
-    "zh_CN": "平等点数。把模因往平等的方向推一点。\n\n“胖胖的国王跟瘦瘦的乞丐是一个桌子上两道不同的菜”\n《哈姆雷特》第四幕，威廉·莎士比亚",
-    "en": "Equality points push the meme toward equality.\n\n“Your fat king and your lean beggar is but variable service,—two dishes, but to one table.”\nHamlet, Act IV, William Shakespeare"
+    "zh_CN": "平等点数。把模因往平等的方向推一点。\n\n“人人生而平等”\n马丁·路德·金《我有一个梦想》（1963）",
+    "en": "Equality points push the meme toward equality.\n\n“all men are created equal”\nMartin Luther King Jr., I Have a Dream (1963)"
   },
   "LOC_MENTOR_HIERARCHY": {
     "source": "等级点数。它会把你的模因推向等级。谁在上面、谁在下面……通常正是大家争论的部分。",
-    "zh_CN": "等级点数。它会把你的模因推向等级。\n\n“有人夸耀门第”\n《十四行诗》第91首，威廉·莎士比亚",
-    "en": "Hierarchy points move your meme toward hierarchy.\n\n“Some glory in their birth”\nSonnet 91, William Shakespeare"
+    "zh_CN": "等级点数。它会把你的模因推向等级。\n\n“所有动物一律平等，但有些动物比其他动物更加平等。”\n乔治·奥威尔《动物农场》第10章（1945）",
+    "en": "Hierarchy points move your meme toward hierarchy.\n\n“All animals are equal, but some animals are more equal than others.”\nGeorge Orwell, Animal Farm, chapter 10 (1945)"
   },
   "LOC_MENTOR_SINCERE": {
     "source": "真诚点数。让你的模因更像是在认真说话。别笑，有时候真诚反而是最难让人相信的。",

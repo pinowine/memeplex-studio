@@ -6,8 +6,8 @@
   },
   "LOC_RECEIPT_FAX_NOTE": {
     "source": "细细的电流声。远处发生的事，抵达这里时只剩一张温热的纸。",
-    "zh_CN": "“每台电脑都该有它！”\n《Zork I》传单",
-    "en": "“No computer should be without one!”\nZork I, leaflet"
+    "zh_CN": "“通信的基本问题，是在一点精确或近似地复现另一点所选取的消息。”\n克劳德·香农《通信的数学理论》（1948）",
+    "en": "“The fundamental problem of communication is that of reproducing at one point either exactly or approximately a message selected at another point.”\nClaude Shannon, A Mathematical Theory of Communication (1948)"
   },
   "LOC_RECEIPT_PRINTER_PURPOSE": {
     "source": "记录你的操作、点数收支与机器日志。",
@@ -16,8 +16,8 @@
   },
   "LOC_RECEIPT_PRINTER_NOTE": {
     "source": "纸卷又短了一截。墨迹还湿着，今天已经有了凭据。",
-    "zh_CN": "“述而不作。”\n《论语·述而》",
-    "en": "“A transmitter and not a maker”\nThe Analects, book 7"
+    "zh_CN": "“忘却的救主快要降临了罢，我正有写一点东西的必要了。”\n鲁迅《为了忘却的记念》（1933）",
+    "en": "“The saviour of oblivion must soon be coming; I need to write something down.”\nLu Xun, For the Sake of Forgetting (1933)"
   },
   "LOC_RECEIPT_MONITOR_PURPOSE": {
     "source": "追踪模因点数的收支，以及可用的意识形态和语用资源。",
@@ -26,8 +26,8 @@
   },
   "LOC_RECEIPT_MONITOR_NOTE": {
     "source": "屏幕泛着绿光，数字在里面轻轻跳了一下。那一点变化，够你盯上很久。",
-    "zh_CN": "“丹麦国里恐怕有些不可告人的坏事。”\n莎士比亚《哈姆莱特》第一幕第四场",
-    "en": "“Something is rotten in the state of Denmark.”\nShakespeare, Hamlet, Act I, scene iv"
+    "zh_CN": "“信息就是信息，既不是物质，也不是能量。”\n诺伯特·维纳《控制论》（1948）",
+    "en": "“Information is information, not matter or energy.”\nNorbert Wiener, Cybernetics (1948)"
   },
   "LOC_RECEIPT_FOLDER_PURPOSE": {
     "source": "收存语言、群体、话题和补丁卡片。",
@@ -36,8 +36,8 @@
   },
   "LOC_RECEIPT_FOLDER_NOTE": {
     "source": "纸页被压得很平。那些还没用上的念头，在夹层里挨着彼此。",
-    "zh_CN": "“学而时习之，不亦说乎？”\n《论语·学而》",
-    "en": "“Is it not pleasant to learn with a constant perseverance and application?”\nThe Analects, book 1"
+    "zh_CN": "“书是一种独特的、可以随身携带的魔法。”\n斯蒂芬·金《写作这回事》（2000）",
+    "en": "“Books are a uniquely portable magic.”\nStephen King, On Writing (2000)"
   },
   "LOC_RECEIPT_PHONEBOOK_PURPOSE": {
     "source": "保存联络号码，记下可以接通的联系人。",
@@ -46,8 +46,8 @@
   },
   "LOC_RECEIPT_PHONEBOOK_NOTE": {
     "source": "名字排成一列，号码缩在旁边。合上本子，声音就留在薄薄的纸后。",
-    "zh_CN": "“有朋自远方来，不亦乐乎？”\n《论语·学而》",
-    "en": "“Is it not delightful to have friends coming from distant quarters?”\nThe Analects, book 1"
+    "zh_CN": "“只要联结！”\nE. M. 福斯特《霍华德庄园》第22章",
+    "en": "“Only connect!”\nE. M. Forster, Howards End, chapter 22"
   },
   "LOC_RECEIPT_CLOCK_PURPOSE": {
     "source": "观察你的时间，现在是什么季节？",
@@ -66,8 +66,8 @@
   },
   "LOC_RECEIPT_SPEED_NOTE": {
     "source": "几枚按键安静地并排躺着。窗外的日子正等你发话。",
-    "zh_CN": "“逝者如斯夫！不舍昼夜。”\n《论语·子罕》",
-    "en": "“It passes on just like this, not ceasing day or night!”\nThe Analects, book 9"
+    "zh_CN": "“现在的时间和过去的时间，或许都存在于未来的时间里。”\nT. S. 艾略特《烧毁的诺顿》第一节（1936）",
+    "en": "“Time present and time past / Are both perhaps present in time future”\nT. S. Eliot, Burnt Norton, part I (1936)"
   },
   "LOC_RECEIPT_MAP_PURPOSE": {
     "source": "查看各地的受众、语言与文化偏好，为模因寻找投放地点。",
@@ -76,8 +76,8 @@
   },
   "LOC_RECEIPT_MAP_NOTE": {
     "source": "国境是一道细线。越过它，同一句话就有了另一种回声。",
-    "zh_CN": "“不出户，知天下。”\n《道德经》第四十七章",
-    "en": "“Without going outside his door, one understands (all that takes place) under the sky”\nTao Te Ching, chapter 47"
+    "zh_CN": "“地图并非它所代表的疆域。”\n阿尔弗雷德·柯日布斯基《科学与理智》第58页（1933）",
+    "en": "“A map is not the territory it represents”\nAlfred Korzybski, Science and Sanity, p. 58 (1933)"
   },
   "LOC_RECEIPT_EDIT_PURPOSE": {
     "source": "查看基模、装配表达补丁，辨认成品的说法和含义。",
@@ -96,8 +96,8 @@
   },
   "LOC_RECEIPT_CULTIVATE_NOTE": {
     "source": "一张空椅子，一句没说完的话。先有人坐下来，意思才慢慢长出来。",
-    "zh_CN": "“道生一，一生二，二生三，三生万物。”\n《道德经》第四十二章",
-    "en": "“The Tao produced One; One produced Two; Two produced Three; Three produced All things.”\nTao Te Ching, chapter 42"
+    "zh_CN": "“从如此简单的开端，已经并正在演化出无穷无尽、极其美丽而又奇妙的形态。”\n查尔斯·达尔文《物种起源》第14章（1859）",
+    "en": "“from so simple a beginning endless forms most beautiful and most wonderful have been, and are being, evolved.”\nCharles Darwin, On the Origin of Species, chapter 14 (1859)"
   },
   "LOC_RECEIPT_SPREAD_PURPOSE": {
     "source": "解锁传播能力，让模因更容易被接触、转述和再创作。",
@@ -106,7 +106,7 @@
   },
   "LOC_RECEIPT_SPREAD_NOTE": {
     "source": "隔壁的声音已经传到街角。你的话还在门口，等一阵顺路的风。",
-    "zh_CN": "“德不孤，必有邻。”\n《论语·里仁》",
-    "en": "“Virtue is not left to stand alone. He who practises it will have neighbors.”\nThe Analects, book 4"
+    "zh_CN": "“其实地上本没有路，走的人多了，也便成了路。”\n鲁迅《故乡》（1921）",
+    "en": "“There was no road on the ground; as more people walked, a road came into being.”\nLu Xun, My Old Home (1921)"
   }
 }
