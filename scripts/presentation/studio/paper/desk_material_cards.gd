@@ -19,6 +19,7 @@ const NeuronGraphic := preload("res://scripts/presentation/studio/design/desk_ne
 const STACK_KINDS := ["group", "language", "module", "topic"]
 static var STACK_TITLES := {"group":DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"), "language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), "module":DeskLocalization.source("LOC_PATCH_70F56533"), "topic":DeskLocalization.source("LOC_TOPICS_A2C81C5A")}
 const STACK_ANGLES := {"group":-3.0, "language":2.0, "module":-2.0, "topic":3.0}
+const STACK_PLACEMENT := {"group":Vector2(0, .5), "language":Vector2(.31, 0), "module":Vector2(.62, 1), "topic":Vector2(1, .3)}
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 
 class CardInteraction extends DeskPropInteraction:
@@ -270,13 +271,10 @@ func _storage_ids(kind: String) -> Array[String]:
 func _build_storage_slots() -> void:
 	_storage_sections.clear()
 	_storage_slots.clear()
-	var cell_size := _spawn_area.size / Vector2(2,2)
-	for index in STACK_KINDS.size():
-		var kind: String = STACK_KINDS[index]
+	for kind: String in STACK_KINDS:
 		var dimensions := CardFace.minimum_card_size(kind)
 		var stack_size := dimensions + Vector2(6, 8)
-		var cell := Vector2(floori(index / 2.0), index % 2)
-		var section := Rect2(_spawn_area.position + cell * cell_size + (cell_size - stack_size) * .5, stack_size)
+		var section := Rect2(_spawn_area.position + (_spawn_area.size - stack_size) * STACK_PLACEMENT[kind], stack_size)
 		if not _stack_surfaces.has(kind):
 			var surface := StackSurface.new()
 			surface.name = "CardStack" + kind.capitalize()

@@ -1,7 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
-const MATERIAL_STORAGE_RECT := Rect2(400, 20, 256, 172)
+const MATERIAL_STORAGE_RECT := Rect2(672, 64, 568, 104)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
@@ -647,7 +647,7 @@ func _layout() -> void:
 	_environment.layout_area()
 	_light.position = Vector2(560,-180)
 	_prop(_art.crt,Rect2(24,-24,365,315),-0.06)
-	_place(_clock,Rect2(664,4,224,224))
+	_place(_clock,Rect2(408,-24,224,224))
 	_clock.scale = Vector2.ONE
 	_prop(_art.printer,Rect2(1335,-5,265,225),0.12)
 	_prop(_art.fax,Rect2(1288,645,312,255),-0.23)
