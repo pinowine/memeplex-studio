@@ -2,11 +2,21 @@ extends ScrollContainer
 
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
-const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 const MentorPortrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait.gd")
 const PORTRAIT = preload("res://assets/image/textures/studio/desk/portrait_67.svg")
 const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
+const FIELD_COLORS := {
+	"group":Style.SECTION_TEAL,
+	"metric":Style.SECTION_PURPLE,
+	"meme":Style.SECTION_BROWN,
+	"language":CardFace.PALETTES.language.ink,
+	"module":CardFace.PALETTES.module.ink,
+	"topic":CardFace.PALETTES.topic.ink,
+	"stance_token":Style.SECTION_PURPLE,
+	"pragmatic_token":Style.SECTION_PURPLE
+}
 
 class SectionIcon extends Control:
 	var kind := "source"
@@ -109,12 +119,12 @@ func _section(kind: String, section_name: String) -> VBoxContainer:
 
 func _add_narrative(block: Dictionary) -> void:
 	var content := _section(str(block.get("kind", "source")), "Article")
-	var body := _body(18, Style.INK)
+	var body := _body(16, Style.INK)
 	body.name = "ArticleText"
 	body.add_theme_constant_override("paragraph_separation", 16)
 	content.add_child(body)
 	body.push_paragraph(HORIZONTAL_ALIGNMENT_FILL)
-	body.add_text("　　" + str(block.content).strip_edges().replace("\n", "\n　　"))
+	body.add_text(str(block.content).strip_edges())
 	body.pop()
 
 func _add_impact(block: Dictionary) -> void:
@@ -127,19 +137,21 @@ func _add_impact(block: Dictionary) -> void:
 	content.add_child(_impact)
 	var segments: Array = block.get("segments", [])
 	_impact.set_meta("segments", segments)
+	_impact.push_list(1, RichTextLabel.LIST_DOTS, false)
 	for index in segments.size():
 		var segment: Dictionary = segments[index]
 		var annotated := not str(segment.get("tooltip_body", "")).is_empty()
 		if annotated:
 			_impact.push_meta(index, RichTextLabel.META_UNDERLINE_NEVER)
-			_impact.push_color(PaperStyle.ACCENT)
+			_impact.push_color(FIELD_COLORS[str(segment.field_kind)])
 		_write_content(_impact, str(segment.text))
 		if annotated:
 			_impact.pop()
 			_impact.pop()
+	_impact.pop()
 	_impact.meta_hover_started.connect(func(meta: Variant):
 		var field: Dictionary = segments[int(meta)]
-		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body))
+		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind)})
 		_hover.show()
 		_hover.fit_at(get_viewport().get_mouse_position(), get_viewport().get_visible_rect()))
 	_impact.meta_hover_ended.connect(func(_meta: Variant): _hide_hover())
