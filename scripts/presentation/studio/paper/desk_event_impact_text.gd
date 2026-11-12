@@ -36,7 +36,7 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 			for topic_id: String in definition.topic_ids:
 				topics.append(str(catalog.DESIGN_RULES.context_resource("topic_" + topic_id).title))
 			help = DeskLocalization.source_format("LOC_EVENT_IMPACT_TOPIC_HELP", [help, DeskLocalization.source_join("LOC_EVENT_IMPACT_LIST_SEPARATOR", topics)], [0, 1])
-		clause.append(_field(str(metric[0]), help))
+		clause.append(_field(str(metric[0]), help, "metric"))
 		match kind:
 			"attention", "channel_reach":
 				clause.append(_text(" " + _signed((maxf(0.05, 1.0 + effect.amount) - 1.0) * 100.0) + "%"))
@@ -53,29 +53,30 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 				clause.append(_text(" +%d" % int(created.remix)))
 		_append_clause(segments, clause)
 	if int(created.independent) > 0:
-		_append_clause(segments, [_field("LOC_EVENT_IMPACT_INDEPENDENT", "LOC_EVENT_IMPACT_INDEPENDENT_HELP"), _text(" +%d" % int(created.independent))])
+		_append_clause(segments, [_field("LOC_EVENT_IMPACT_INDEPENDENT", "LOC_EVENT_IMPACT_INDEPENDENT_HELP", "meme"), _text(" +%d" % int(created.independent))])
 	for reward: Dictionary in record.design_rewards:
 		var entry: Dictionary = catalog.DESIGN_RULES.reward_resource(str(reward.kind), str(reward.id))
-		_append_clause(segments, [_field(str(entry.title), str(entry.description)), _text(" +%d" % int(reward.count))])
+		var description := CardCopy.hover_description(str(reward.id)) if str(reward.kind) == "group" else str(entry.description)
+		_append_clause(segments, [_field(str(entry.title), description, str(reward.kind)), _text(" +%d" % int(reward.count))])
 	return segments
 
 static func _groups(ids: PackedStringArray, catalog: MemeDemoCatalog) -> Array[Dictionary]:
 	var segments: Array[Dictionary] = []
 	if ids.is_empty():
-		segments.append(_field("LOC_EVENT_IMPACT_GROUP_ALL", "LOC_EVENT_IMPACT_GROUP_ALL_HELP"))
+		segments.append(_field("LOC_EVENT_IMPACT_GROUP_ALL", "LOC_EVENT_IMPACT_GROUP_ALL_HELP", "group"))
 	else:
 		for id: String in ids:
 			if not segments.is_empty(): segments.append(_text("LOC_EVENT_IMPACT_LIST_SEPARATOR"))
 			var group: Dictionary = catalog.DESIGN_RULES.context_resource("group_" + id)
-			segments.append(_field(str(group.title), CardCopy.hover_description("group_" + id)))
+			segments.append(_field(str(group.title), CardCopy.hover_description("group_" + id), "group"))
 	return segments
 
 static func _append_clause(segments: Array[Dictionary], clause: Array[Dictionary]) -> void:
-	if not segments.is_empty(): segments.append(_text("LOC_EVENT_IMPACT_SEPARATOR"))
+	if not segments.is_empty(): segments.append(_text("\n"))
 	segments.append_array(clause)
 
-static func _field(title: String, body: String) -> Dictionary:
-	return {"text":title, "tooltip_title":title, "tooltip_body":body}
+static func _field(title: String, body: String, kind: String) -> Dictionary:
+	return {"text":title, "tooltip_title":title, "tooltip_body":body, "field_kind":kind}
 
 static func _text(value: String) -> Dictionary:
 	return {"text":value}
