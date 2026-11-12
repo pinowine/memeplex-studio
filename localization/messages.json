@@ -1,13 +1,123 @@
 {
+  "LOC_EVENT_IMPACT_POSSESSIVE": {
+    "source": "的",
+    "zh_CN": "的",
+    "en": "' "
+  },
+  "LOC_EVENT_IMPACT_SEPARATOR": {
+    "source": "；",
+    "zh_CN": "；",
+    "en": "; "
+  },
+  "LOC_EVENT_IMPACT_LIST_SEPARATOR": {
+    "source": "、",
+    "zh_CN": "、",
+    "en": ", "
+  },
+  "LOC_EVENT_IMPACT_GROUP_ALL": {
+    "source": "所有群体",
+    "zh_CN": "所有群体",
+    "en": "All audiences"
+  },
+  "LOC_EVENT_IMPACT_GROUP_ALL_HELP": {
+    "source": "本次影响覆盖所有群体。",
+    "zh_CN": "本次影响覆盖所有群体。",
+    "en": "This effect applies to all audiences."
+  },
+  "LOC_EVENT_IMPACT_POINTS": {
+    "source": "%s 个百分点",
+    "zh_CN": "%s 个百分点",
+    "en": "%s pp"
+  },
+  "LOC_EVENT_IMPACT_DURATION": {
+    "source": "（%s 小时）",
+    "zh_CN": "（%s 小时）",
+    "en": " (%s h)"
+  },
+  "LOC_EVENT_IMPACT_TOPIC_HELP": {
+    "source": "%s\n适用于含有任一相关主题的模因：%s",
+    "zh_CN": "%s\n适用于含有任一相关主题的模因：%s",
+    "en": "%s\nApplies to memes with any of these topics: %s"
+  },
+  "LOC_EVENT_IMPACT_ATTRACTION": {
+    "source": "吸引力",
+    "zh_CN": "吸引力",
+    "en": "Attraction"
+  },
+  "LOC_EVENT_IMPACT_ATTRACTION_HELP": {
+    "source": "相关主题吸引力的倍率调整。",
+    "zh_CN": "相关主题吸引力的倍率调整。",
+    "en": "Changes the attraction multiplier for the affected topics."
+  },
+  "LOC_EVENT_IMPACT_REACH": {
+    "source": "渠道触达",
+    "zh_CN": "渠道触达",
+    "en": "Channel reach"
+  },
+  "LOC_EVENT_IMPACT_REACH_HELP": {
+    "source": "渠道触达对相关主题吸引力的倍率调整。",
+    "zh_CN": "渠道触达对相关主题吸引力的倍率调整。",
+    "en": "Changes attraction to the affected topics through channel reach."
+  },
+  "LOC_EVENT_IMPACT_TRUST_HELP": {
+    "source": "群体的信任程度。按标示百分点调整，结果限制在 0% 至 100%。",
+    "zh_CN": "群体的信任程度。按标示百分点调整，结果限制在 0% 至 100%。",
+    "en": "Audience trust. Applies the listed percentage point adjustment, bounded to 0%-100%."
+  },
+  "LOC_EVENT_IMPACT_FATIGUE_HELP": {
+    "source": "群体的疲劳程度；疲劳越高，吸引力越低。按标示百分点调整，结果限制在 0% 至 100%。",
+    "zh_CN": "群体的疲劳程度；疲劳越高，吸引力越低。按标示百分点调整，结果限制在 0% 至 100%。",
+    "en": "Higher audience fatigue lowers attraction. Applies the listed percentage point adjustment, bounded to 0%-100%."
+  },
+  "LOC_EVENT_IMPACT_ADOPTION": {
+    "source": "采用转化率",
+    "zh_CN": "采用转化率",
+    "en": "Adoption conversion"
+  },
+  "LOC_EVENT_IMPACT_ADOPTION_HELP": {
+    "source": "已接触但尚未采用者中，本次开始采用的比例。",
+    "zh_CN": "已接触但尚未采用者中，本次开始采用的比例。",
+    "en": "Share of exposed non-adopters converted by this event."
+  },
+  "LOC_EVENT_IMPACT_REMIX": {
+    "source": "重混版本",
+    "zh_CN": "重混版本",
+    "en": "Remix versions"
+  },
+  "LOC_EVENT_IMPACT_REMIX_HELP": {
+    "source": "本次事件实际产生的改写版本数量。",
+    "zh_CN": "本次事件实际产生的改写版本数量。",
+    "en": "Remix versions created by this event."
+  },
+  "LOC_EVENT_IMPACT_DRIFT": {
+    "source": "语义偏移",
+    "zh_CN": "语义偏移",
+    "en": "Semantic drift"
+  },
+  "LOC_EVENT_IMPACT_DRIFT_HELP": {
+    "source": "设置后续改写相对家族锚点的语义偏移程度。",
+    "zh_CN": "设置后续改写相对家族锚点的语义偏移程度。",
+    "en": "Sets semantic distance from the family anchor for subsequent rewrites."
+  },
+  "LOC_EVENT_IMPACT_INDEPENDENT": {
+    "source": "独立模因",
+    "zh_CN": "独立模因",
+    "en": "Independent memes"
+  },
+  "LOC_EVENT_IMPACT_INDEPENDENT_HELP": {
+    "source": "本次事件实际产生的独立环境模因数量。",
+    "zh_CN": "本次事件实际产生的独立环境模因数量。",
+    "en": "Independent environmental memes created by this event."
+  },
   "LOC_EVENT_DOCUMENT_META": {
     "source": "助手收集 · H%s · %s",
     "zh_CN": "助手收集 · H%s · %s",
     "en": "Collected by assistant · H%s · %s"
   },
   "LOC_EVENT_DOCUMENT_IMPACT": {
-    "source": "影响方向",
-    "zh_CN": "影响方向",
-    "en": "Effect overview"
+    "source": "影响",
+    "zh_CN": "影响",
+    "en": "Impact"
   },
   "LOC_EVENT_DOCUMENT_EFFECTS": {
     "source": "具体影响",
