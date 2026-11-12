@@ -118,6 +118,11 @@ static func _expression_segments(draft: Dictionary, modules: Array[String], lang
 		if mask == 0: body_sources.clear()
 		body_sources.append_array(language_sources)
 		result.append(_reply_segment("B_FORM_"+str(mask),values,body_sources))
+	# Meme expressions keep their own language while meanings follow the interface.
+	for segment: Dictionary in result:
+		var native_text := DeskLocalization.chinese_text(segment.text) if seed == "V" else DeskLocalization.english_text(segment.text)
+		DeskLocalization.register_display(native_text,native_text,native_text)
+		segment.text = native_text
 	return result
 
 static func _context_segments(draft: Dictionary) -> Array[Dictionary]:
