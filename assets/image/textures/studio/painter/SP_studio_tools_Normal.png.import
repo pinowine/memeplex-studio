@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://brt2ig4bch8ps"
 path.s3tc="res://.godot/imported/SP_studio_tools_Normal.png-2a3de44a100c23ce8a83b06028077c6f.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_studio_tools_Normal.png-2a3de44a100c23ce8a83b06028077c6f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_studio_tools_Normal.png"
-dest_files=["res://.godot/imported/SP_studio_tools_Normal.png-2a3de44a100c23ce8a83b06028077c6f.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_studio_tools_Normal.png-2a3de44a100c23ce8a83b06028077c6f.s3tc.ctex", "res://.godot/imported/SP_studio_tools_Normal.png-2a3de44a100c23ce8a83b06028077c6f.etc2.ctex"]
 
 [params]
 

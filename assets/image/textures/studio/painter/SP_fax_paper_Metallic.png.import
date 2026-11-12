@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dwted3y18of4j"
 path.s3tc="res://.godot/imported/SP_fax_paper_Metallic.png-318f55cfa790c0784d6170c1a07f7579.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_fax_paper_Metallic.png-318f55cfa790c0784d6170c1a07f7579.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_fax_paper_Metallic.png"
-dest_files=["res://.godot/imported/SP_fax_paper_Metallic.png-318f55cfa790c0784d6170c1a07f7579.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_fax_paper_Metallic.png-318f55cfa790c0784d6170c1a07f7579.s3tc.ctex", "res://.godot/imported/SP_fax_paper_Metallic.png-318f55cfa790c0784d6170c1a07f7579.etc2.ctex"]
 
 [params]
 

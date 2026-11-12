@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://1pkln7yr1fwi"
 path.s3tc="res://.godot/imported/Print_DayRing_BaseColor.png-193b7eb17bfa1f4bf7a48217c96cc556.s3tc.ctex"
+path.etc2="res://.godot/imported/Print_DayRing_BaseColor.png-193b7eb17bfa1f4bf7a48217c96cc556.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/Print_DayRing_BaseColor.png"
-dest_files=["res://.godot/imported/Print_DayRing_BaseColor.png-193b7eb17bfa1f4bf7a48217c96cc556.s3tc.ctex"]
+dest_files=["res://.godot/imported/Print_DayRing_BaseColor.png-193b7eb17bfa1f4bf7a48217c96cc556.s3tc.ctex", "res://.godot/imported/Print_DayRing_BaseColor.png-193b7eb17bfa1f4bf7a48217c96cc556.etc2.ctex"]
 
 [params]
 
