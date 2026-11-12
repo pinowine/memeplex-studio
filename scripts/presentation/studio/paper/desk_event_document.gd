@@ -144,8 +144,10 @@ func _add_impact(block: Dictionary) -> void:
 		if annotated:
 			_impact.push_meta(index, RichTextLabel.META_UNDERLINE_NEVER)
 			_impact.push_color(FIELD_COLORS[str(segment.field_kind)])
+			_impact.push_bold()
 		_write_content(_impact, str(segment.text))
 		if annotated:
+			_impact.pop()
 			_impact.pop()
 			_impact.pop()
 	_impact.pop()
