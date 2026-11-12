@@ -176,23 +176,23 @@
   },
   "LOC_RECEIPT_CARD_NOTE_LANGUAGE_NINGHUA": {
     "source": "*一页描红纸*，笔画压得很深。纸背还能摸到最后一个字。",
-    "zh_CN": "“都是些空话，空话，空话。”\n《哈姆雷特》，威廉·莎士比亚",
-    "en": "“Words, words, words.”\nHamlet, William Shakespeare"
+    "zh_CN": "“不避俗语俗字。”\n胡适《文学改良刍议》（1917）",
+    "en": "“Do not shun vernacular words and expressions.”\nHu Shi, A Preliminary Discussion of Literary Reform (1917)"
   },
   "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SHIOHARA": {
     "source": "*从面馆墙上揭下的菜单*。汤汁洇开了一个字，常客照样认得。",
-    "zh_CN": "“读缄默的爱的情书”\n《十四行诗》第23首，威廉·莎士比亚",
-    "en": "“read what silent love hath writ”\nSonnet 23, William Shakespeare"
+    "zh_CN": "“我是猫。还没有名字。”\n夏目漱石《我是猫》第一章（1905）",
+    "en": "“I am a cat. I have no name yet.”\nNatsume Soseki, I Am a Cat, chapter 1 (1905)"
   },
   "LOC_RECEIPT_CARD_NOTE_LANGUAGE_SEOWON": {
     "source": "*一页抄下来的歌词*，副歌旁边挤着小小的注音。折痕正好穿过歌名。",
-    "zh_CN": "“你的名字将从这诗里得永生”\n《十四行诗》第81首，威廉·莎士比亚",
-    "en": "“Your name from hence immortal life shall have”\nSonnet 81, William Shakespeare"
+    "zh_CN": "“当我呼唤他的名字时，他向我走来，成为一朵花。”\n金春洙《花》",
+    "en": "“When I called his name, he came to me and became a flower.”\nKim Chun-su, Flower"
   },
   "LOC_RECEIPT_CARD_NOTE_GROUP_COMMUTERS": {
     "source": "*一张腱鞘炎保健品广告*，上面覆盖着*一张肩周炎保健品广告*。",
-    "zh_CN": "“我们的光阴息息奔赴着终点”\n《十四行诗》第60首，威廉·莎士比亚",
-    "en": "“So do our minutes hasten to their end”\nSonnet 60, William Shakespeare"
+    "zh_CN": "“我选的职业是多么累人啊！”\n弗兰茨·卡夫卡《变形记》第一节（1915）",
+    "en": "“what a strenuous career it is that I’ve chosen!”\nFranz Kafka, The Metamorphosis, part I (1915)"
   },
   "LOC_RECEIPT_CARD_NOTE_GROUP_STUDENTS": {
     "source": "*课程表*背面写满了重点。最后一行字很小：这个也考？",
@@ -201,18 +201,18 @@
   },
   "LOC_RECEIPT_CARD_NOTE_GROUP_CULTURE_FANS": {
     "source": "*一张演出票根*，票价被圆珠笔涂掉了。日期倒是描了两遍。",
-    "zh_CN": "“推陈出新”\n《十四行诗》第76首，威廉·莎士比亚",
-    "en": "“dressing old words new”\nSonnet 76, William Shakespeare"
+    "zh_CN": "“一切艺术都是毫无用处的。”\n奥斯卡·王尔德《道林·格雷的画像》序言（1891）",
+    "en": "“All art is quite useless.”\nOscar Wilde, The Picture of Dorian Gray, preface (1891)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_POLICY": {
     "source": "*一份贴过又揭下的公告*。胶带换了三次，落款的章还是原来那个。",
-    "zh_CN": "“丹麦国里恐怕有些不可告人的坏事。”\n《哈姆雷特》第一幕，威廉·莎士比亚",
-    "en": "“Something is rotten in the state of Denmark.”\nHamlet, Act I, William Shakespeare"
+    "zh_CN": "“民有、民治、民享的政府”\n亚伯拉罕·林肯《葛底斯堡演说》（1863）",
+    "en": "“government of the people, by the people, for the people”\nAbraham Lincoln, Gettysburg Address (1863)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_COST_OF_LIVING": {
     "source": "*超市小票*已经褪色，房租催缴单的字还很清楚。两张纸订在一起。",
-    "zh_CN": "“你太宝贵了，我无法高攀”\n《十四行诗》第87首，威廉·莎士比亚",
-    "en": "“thou art too dear for my possessing”\nSonnet 87, William Shakespeare"
+    "zh_CN": "“一个女人要写小说，必须有钱，还要有一间自己的房间。”\n弗吉尼亚·伍尔夫《一间自己的房间》第一章（1929）",
+    "en": "“a woman must have money and a room of her own if she is to write fiction”\nVirginia Woolf, A Room of One’s Own, chapter 1 (1929)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_WORK": {
     "source": "*一张加班登记表*。咖啡杯留下的圆印，正好圈住了签名栏。",
@@ -231,13 +231,13 @@
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_EDUCATION": {
     "source": "*试卷*的订书钉生了锈。有人把错题剪下来，贴到了另一张试卷上。",
-    "zh_CN": "“霍拉旭，天地之间有许多事情，是你们的哲学里所没有梦想到的呢。”\n《哈姆雷特》第一幕，威廉·莎士比亚",
-    "en": "“There are more things in heaven and earth, Horatio, Than are dreamt of in your philosophy.”\nHamlet, Act I, William Shakespeare"
+    "zh_CN": "“一种主动的、建设性的过程”\n约翰·杜威《民主主义与教育》第12章（1916）",
+    "en": "“an active and constructive process”\nJohn Dewey, Democracy and Education, chapter 12 (1916)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_IDENTITY": {
     "source": "*证件照*背面写着一个名字，划掉以后又写了一个。脸还是那张脸。",
-    "zh_CN": "“我就是我”\n《十四行诗》第121首，威廉·莎士比亚",
-    "en": "“I am that I am”\nSonnet 121, William Shakespeare"
+    "zh_CN": "“我博大宽广，我包容万象。”\n沃尔特·惠特曼《自我之歌》第51节（1891—1892年版）",
+    "en": "“I am large, I contain multitudes.”\nWalt Whitman, Song of Myself, section 51 (1891–1892 edition)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_LANGUAGE": {
     "source": "*双语菜单*上多了一行铅笔字。两种语言都被纠正了。",
@@ -246,18 +246,18 @@
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_ENTERTAINMENT": {
     "source": "*电影票*被折成小方块，放映时间磨没了，背面的剧透还在。",
-    "zh_CN": "“热闹场结束了。”\n《暴风雨》第四幕，威廉·莎士比亚",
-    "en": "“Our revels now are ended.”\nThe Tempest, Act IV, William Shakespeare"
+    "zh_CN": "“人生就是一场卡巴莱，老朋友。”\n约翰·坎德作曲、弗雷德·埃布作词，《Cabaret》同名歌曲（1966）",
+    "en": "“Life is a cabaret, old chum”\nJohn Kander (music) and Fred Ebb (lyrics), Cabaret, title song (1966)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_ARCHIVE": {
     "source": "*索引卡*上留着取走文件的空号。抽屉拉开时，旧纸的味道先出来。",
-    "zh_CN": "“这诗将长存”\n《十四行诗》第18首，威廉·莎士比亚",
-    "en": "“So long lives this”\nSonnet 18, William Shakespeare"
+    "zh_CN": "“手稿是烧不毁的。”\n米哈伊尔·布尔加科夫《大师与玛格丽特》第24章",
+    "en": "“Manuscripts don’t burn.”\nMikhail Bulgakov, The Master and Margarita, chapter 24"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_TRUST": {
     "source": "*一张手写借条*，金额旁边按着指印。还款日期被水洇开了。",
-    "zh_CN": "“爱不受时光的播弄”\n《十四行诗》第116首，威廉·莎士比亚",
-    "en": "“Love’s not Time’s fool”\nSonnet 116, William Shakespeare"
+    "zh_CN": "“首要原则是别欺骗自己，而你恰恰是最容易被自己欺骗的人。”\n理查德·费曼《草包族科学》，加州理工学院毕业演讲（1974）",
+    "en": "“The first principle is that you must not fool yourself—and you are the easiest person to fool.”\nRichard Feynman, Cargo Cult Science, Caltech commencement address (1974)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_COMMUNITY": {
     "source": "*寻猫启事*的角落多了一行字：找到了，谢谢各位。胶带还粘得很牢。",
@@ -291,23 +291,23 @@
   },
   "LOC_RECEIPT_CARD_NOTE_FREEDOM": {
     "source": "*一张没填目的地的车票*。边缘撕了个小口，像是犹豫过要不要上车。",
-    "zh_CN": "“上帝啊！倘不是因为我有了恶梦，那么即使把我关在一个果壳里，我也会把自己当作一个拥有着无限空间的君王的。”\n《哈姆雷特》第二幕，威廉·莎士比亚",
-    "en": "“O God, I could be bounded in a nutshell, and count myself a king of infinite space, were it not that I have bad dreams.”\nHamlet, Act II, William Shakespeare"
+    "zh_CN": "“对于他自己，对于他自己的身心，个人拥有主权。”\n约翰·斯图亚特·密尔《论自由》第一章（1859）",
+    "en": "“Over himself, over his own body and mind, the individual is sovereign.”\nJohn Stuart Mill, On Liberty, chapter 1 (1859)"
   },
   "LOC_RECEIPT_CARD_NOTE_AUTHORITY": {
     "source": "*公章*压得很重，印泥透到了纸背。签名只占了很小的地方。",
-    "zh_CN": "“谁有力量损害人而不这样干”\n《十四行诗》第94首，威廉·莎士比亚",
-    "en": "“They that have power to hurt, and will do none”\nSonnet 94, William Shakespeare"
+    "zh_CN": "“合法使用暴力的垄断权”\n马克斯·韦伯《以政治为业》（1919）",
+    "en": "“the monopoly of the legitimate use of physical force”\nMax Weber, Politics as a Vocation (1919)"
   },
   "LOC_RECEIPT_CARD_NOTE_EQUALITY": {
     "source": "*一张座次表*，主位被铅笔划掉了。每把椅子旁边都添了同样的小圆点。",
-    "zh_CN": "“胖胖的国王跟瘦瘦的乞丐是一个桌子上两道不同的菜”\n《哈姆雷特》第四幕，威廉·莎士比亚",
-    "en": "“Your fat king and your lean beggar is but variable service,—two dishes, but to one table.”\nHamlet, Act IV, William Shakespeare"
+    "zh_CN": "“人人生而平等”\n马丁·路德·金《我有一个梦想》（1963）",
+    "en": "“all men are created equal”\nMartin Luther King Jr., I Have a Dream (1963)"
   },
   "LOC_RECEIPT_CARD_NOTE_HIERARCHY": {
     "source": "*座次表*贴了好几层。最上面那张留着金边，下面的名字只露出一半。",
-    "zh_CN": "“有人夸耀门第”\n《十四行诗》第91首，威廉·莎士比亚",
-    "en": "“Some glory in their birth”\nSonnet 91, William Shakespeare"
+    "zh_CN": "“所有动物一律平等，但有些动物比其他动物更加平等。”\n乔治·奥威尔《动物农场》第10章（1945）",
+    "en": "“All animals are equal, but some animals are more equal than others.”\nGeorge Orwell, Animal Farm, chapter 10 (1945)"
   },
   "LOC_RECEIPT_CARD_NOTE_SINCERE": {
     "source": "*一张写歪了的明信片*。称呼改过两次，正文一字没涂。",
@@ -331,13 +331,13 @@
   },
   "LOC_RECEIPT_STACK_NOTE_LANGUAGE": {
     "source": "*不同字迹的纸片*夹在一起。最下面那张，被翻得最软。",
-    "zh_CN": "“我还是把话说得简单一些吧。”\n《哈姆雷特》，威廉·莎士比亚",
-    "en": "“I will be brief.”\nHamlet, William Shakespeare"
+    "zh_CN": "“我的语言的界限意味着我的世界的界限。”\n路德维希·维特根斯坦《逻辑哲学论》5.6（1921）",
+    "en": "“The limits of my language mean the limits of my world.”\nLudwig Wittgenstein, Tractatus Logico-Philosophicus, 5.6 (1921)"
   },
   "LOC_RECEIPT_STACK_NOTE_GROUP": {
     "source": "*传单*上压着名片，名片下面还有一张合照。有人在照片边上补了个名字。",
-    "zh_CN": "“原都是一些精灵”\n《暴风雨》第四幕，威廉·莎士比亚",
-    "en": "“were all spirits”\nThe Tempest, Act IV, William Shakespeare"
+    "zh_CN": "“它是一个想象的政治共同体”\n本尼迪克特·安德森《想象的共同体》导论（1983）",
+    "en": "“It is an imagined political community”\nBenedict Anderson, Imagined Communities, introduction (1983)"
   },
   "LOC_RECEIPT_STACK_NOTE_TOPIC": {
     "source": "*报纸剪角*露在便签外面。几张纸谈着同一件事，日期相差很远。",
