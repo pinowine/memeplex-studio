@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://basd4bcipk1tu"
 path.s3tc="res://.godot/imported/SP_receipt_paper_Roughness.png-c8db4b3c925e970428255cba829085c6.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_receipt_paper_Roughness.png-c8db4b3c925e970428255cba829085c6.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_receipt_paper_Roughness.png"
-dest_files=["res://.godot/imported/SP_receipt_paper_Roughness.png-c8db4b3c925e970428255cba829085c6.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_receipt_paper_Roughness.png-c8db4b3c925e970428255cba829085c6.s3tc.ctex", "res://.godot/imported/SP_receipt_paper_Roughness.png-c8db4b3c925e970428255cba829085c6.etc2.ctex"]
 
 [params]
 

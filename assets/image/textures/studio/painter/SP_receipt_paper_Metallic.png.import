@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://urdgkonsravf"
 path.s3tc="res://.godot/imported/SP_receipt_paper_Metallic.png-4e9458ae6b7354d787c2745bf31649e7.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_receipt_paper_Metallic.png-4e9458ae6b7354d787c2745bf31649e7.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_receipt_paper_Metallic.png"
-dest_files=["res://.godot/imported/SP_receipt_paper_Metallic.png-4e9458ae6b7354d787c2745bf31649e7.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_receipt_paper_Metallic.png-4e9458ae6b7354d787c2745bf31649e7.s3tc.ctex", "res://.godot/imported/SP_receipt_paper_Metallic.png-4e9458ae6b7354d787c2745bf31649e7.etc2.ctex"]
 
 [params]
 

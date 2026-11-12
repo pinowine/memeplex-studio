@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ca47ui32dmaje"
 path.s3tc="res://.godot/imported/SP_receipt_paper_BaseColor.png-baaaa6f4c815610b1be8ac378dd07bff.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_receipt_paper_BaseColor.png-baaaa6f4c815610b1be8ac378dd07bff.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_receipt_paper_BaseColor.png"
-dest_files=["res://.godot/imported/SP_receipt_paper_BaseColor.png-baaaa6f4c815610b1be8ac378dd07bff.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_receipt_paper_BaseColor.png-baaaa6f4c815610b1be8ac378dd07bff.s3tc.ctex", "res://.godot/imported/SP_receipt_paper_BaseColor.png-baaaa6f4c815610b1be8ac378dd07bff.etc2.ctex"]
 
 [params]
 

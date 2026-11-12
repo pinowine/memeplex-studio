@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://1dxdxl555j85"
 path.s3tc="res://.godot/imported/SP_power_cable_Roughness.png-8029d0e2af07a6f44684db32e251f405.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_power_cable_Roughness.png-8029d0e2af07a6f44684db32e251f405.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_power_cable_Roughness.png"
-dest_files=["res://.godot/imported/SP_power_cable_Roughness.png-8029d0e2af07a6f44684db32e251f405.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_power_cable_Roughness.png-8029d0e2af07a6f44684db32e251f405.s3tc.ctex", "res://.godot/imported/SP_power_cable_Roughness.png-8029d0e2af07a6f44684db32e251f405.etc2.ctex"]
 
 [params]
 

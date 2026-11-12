@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bx6hlwpgf7iwh"
 path.s3tc="res://.godot/imported/SP_speed_controls_Metallic.png-ab4df461479ea3a379325028dc4cc1ea.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_speed_controls_Metallic.png-ab4df461479ea3a379325028dc4cc1ea.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_speed_controls_Metallic.png"
-dest_files=["res://.godot/imported/SP_speed_controls_Metallic.png-ab4df461479ea3a379325028dc4cc1ea.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_speed_controls_Metallic.png-ab4df461479ea3a379325028dc4cc1ea.s3tc.ctex", "res://.godot/imported/SP_speed_controls_Metallic.png-ab4df461479ea3a379325028dc4cc1ea.etc2.ctex"]
 
 [params]
 

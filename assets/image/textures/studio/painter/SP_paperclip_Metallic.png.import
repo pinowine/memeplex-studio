@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bvp8c3ii3cfpi"
 path.s3tc="res://.godot/imported/SP_paperclip_Metallic.png-5f1b7100cd8e9a3bd6bddcb01ee8c580.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_paperclip_Metallic.png-5f1b7100cd8e9a3bd6bddcb01ee8c580.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_paperclip_Metallic.png"
-dest_files=["res://.godot/imported/SP_paperclip_Metallic.png-5f1b7100cd8e9a3bd6bddcb01ee8c580.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_paperclip_Metallic.png-5f1b7100cd8e9a3bd6bddcb01ee8c580.s3tc.ctex", "res://.godot/imported/SP_paperclip_Metallic.png-5f1b7100cd8e9a3bd6bddcb01ee8c580.etc2.ctex"]
 
 [params]
 

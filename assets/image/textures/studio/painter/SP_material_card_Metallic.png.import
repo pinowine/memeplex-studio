@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bm8g14l432chd"
 path.s3tc="res://.godot/imported/SP_material_card_Metallic.png-2b2030ba783c591a59e5073c25535c8d.s3tc.ctex"
+path.etc2="res://.godot/imported/SP_material_card_Metallic.png-2b2030ba783c591a59e5073c25535c8d.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/image/textures/studio/painter/SP_material_card_Metallic.png"
-dest_files=["res://.godot/imported/SP_material_card_Metallic.png-2b2030ba783c591a59e5073c25535c8d.s3tc.ctex"]
+dest_files=["res://.godot/imported/SP_material_card_Metallic.png-2b2030ba783c591a59e5073c25535c8d.s3tc.ctex", "res://.godot/imported/SP_material_card_Metallic.png-2b2030ba783c591a59e5073c25535c8d.etc2.ctex"]
 
 [params]
 
