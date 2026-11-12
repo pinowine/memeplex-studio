@@ -5,7 +5,6 @@ const Tutorial = preload("res://scripts/presentation/ui/tutorial/tutorial.gd")
 const ContextGuidance = preload("res://scripts/presentation/ui/tutorial/context_guidance.gd")
 const Summary = preload("res://scripts/presentation/ui/summary/ending_summary.gd")
 const LoadingScreen = preload("res://scripts/presentation/ui/menus/loading_screen.gd")
-const CONTEXT_RETURN_AREA := Rect2(920, 62, 160, 86)
 
 var page: Node2D
 var main_menu: Control
@@ -206,7 +205,7 @@ func _logical_target(id: String) -> Variant:
 		"desktop/monitor": return page.desk._art.crt
 		"desktop/clock": return page.desk._clock
 		"desktop/language": return page.desk._material_cards._stack_surfaces.language
-		"desktop/stacks": return _targets_bounds(["desktop/language", "desktop/stack/group", "desktop/stack/topic", "desktop/stack/module"])
+		"desktop/stacks": return page.desk._material_cards._stack_surfaces.group
 		"desktop/fax_output":
 			if page.has_meta("studio3d"): return {"equipment_part":"fax_machine__RearOutputSlot"}
 			var mouth: Dictionary = fax._mouth_geometry()
@@ -316,7 +315,7 @@ func _tutorial_context_remove_targets(board: Control) -> Dictionary:
 	var source := _context_current_topic(board)
 	if source == null: return {}
 	var source_rect := _tutorial_project_rect(source)
-	var target_rect := _tutorial_project_rect(_area_target(page.desk, CONTEXT_RETURN_AREA))
+	var target_rect := _tutorial_project_rect(page.desk._material_cards._stack_surfaces.topic)
 	return {"source":source_rect, "source_point":source_rect.get_center(), "target":target_rect,
 		"accepts_point":_tutorial_context_remove_contains, "accepts_drop":_tutorial_context_return_contains}
 
@@ -328,7 +327,7 @@ func _tutorial_context_remove_contains(point: Vector2) -> bool:
 
 func _tutorial_context_return_contains(point: Vector2) -> bool:
 	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
-	return CONTEXT_RETURN_AREA.has_point(page.desk.get_global_transform_with_canvas().affine_inverse() * point)
+	return page.desk._material_cards._stack_at(point) == "topic"
 
 func _tutorial_drag_targets(step_id: String) -> Dictionary:
 	if step_id not in ["module", "context_remove", "context_item"]: return {}
