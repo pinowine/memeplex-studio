@@ -733,6 +733,12 @@ unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
+[node name="ConditionsNote" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Introduction"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+
 [node name="Audience" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
 layout_mode = 2
 theme_override_constants/separation = 4
@@ -759,6 +765,12 @@ text = "MAP_CULTURE"
 [node name="Culture" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/CulturalLife"]
 unique_name_in_owner = true
 layout_mode = 2
+autowrap_mode = 3
+
+[node name="CultureNote" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/CulturalLife"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
 autowrap_mode = 3
 
 [node name="LanguageUse" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
