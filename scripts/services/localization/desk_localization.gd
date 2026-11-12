@@ -1,7 +1,7 @@
 class_name DeskLocalization
 extends RefCounted
 
-const DEFAULT_TABLES := ["res://localization/messages.json", "res://localization/tutorial.json", "res://localization/starter_cards.json", "res://localization/monitor_mentor.json", "res://localization/composition.json", "res://localization/mutations.json", "res://localization/workbench_composition.json", "res://localization/text_composition.json", "res://localization/text_starters.json", "res://localization/receipt_cards.json", "res://localization/receipt_components.json"]
+const DEFAULT_TABLES := ["res://localization/messages.json", "res://localization/tutorial.json", "res://localization/starter_cards.json", "res://localization/monitor_mentor.json", "res://localization/composition.json", "res://localization/mutations.json", "res://localization/workbench_composition.json", "res://localization/text_composition.json", "res://localization/text_starters.json", "res://localization/receipt_cards.json", "res://localization/receipt_components.json", "res://localization/events.json", "res://localization/event_ui.json"]
 const EDIT_META := &"desk_localization_edit"
 const EDIT_CONNECTED_META := &"desk_localization_edit_connected"
 
@@ -178,6 +178,9 @@ static func _locale_text(key: String, locale: String) -> String:
 	if dynamic.has(key):
 		return str(dynamic[key])
 	if messages.has(key): return str(messages[key])
+	for translation: Translation in TranslationServer.find_translations(locale, false):
+		var message := str(translation.get_message(StringName(key)))
+		if not message.is_empty(): return message
 	if locale == "en" and (_contains_han(key) or key.begins_with("LOC_")): _missing[key] = true
 	return key
 

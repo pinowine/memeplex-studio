@@ -2,7 +2,7 @@
 class_name MemeDemoCatalog
 extends Resource
 
-const CURRENT_CONTENT_VERSION := 13
+const CURRENT_CONTENT_VERSION := 14
 const OPERATION_IDS := ["attention_shift", "remix", "platform_change", "emerge", "split", "fatigue", "contest", "amplify", "revive"]
 const DESIGN_RULES = preload("res://data/rules/design_rules.tres")
 
@@ -38,8 +38,6 @@ func validate() -> PackedStringArray:
 	if gameplay_rules != null:
 		errors.append_array(gameplay_rules.validate())
 		if run_hours != gameplay_rules.horizon_hours: errors.append("Gameplay horizon must match catalog")
-		for event_id in gameplay_rules.event_presets:
-			if find_preset(str(gameplay_rules.event_presets[event_id])) == null: errors.append("Unknown competitor preset: " + str(event_id))
 	var topic_lookup: Dictionary = {}
 	for topic in topics:
 		if topic.strip_edges().is_empty() or topic_lookup.has(topic):
@@ -53,12 +51,14 @@ func validate() -> PackedStringArray:
 	_validate_collection(channels, "channel", errors)
 	_validate_collection(events, "event", errors)
 	if gameplay_rules != null:
-		var environment_ids := {}
+		var environment_presets := {}
+		var environment_count := 0
 		for event: MemeDemoEvent in events:
-			if event != null and event.origin == &"environment_meme": environment_ids[str(event.id)] = true
-			if event != null and event.origin == &"environment_meme" and not gameplay_rules.event_presets.has(str(event.id)): errors.append("Environment event lacks a competition source: " + str(event.id))
-		for id in gameplay_rules.event_presets:
-			if not environment_ids.has(str(id)): errors.append("Competition source references a non-environment event: " + str(id))
+			if event != null and event.origin == &"environment_meme":
+				environment_count += 1
+				if environment_presets.has(str(event.external_preset_id)): errors.append("Environment candidates must use distinct library memes")
+				environment_presets[str(event.external_preset_id)] = true
+		if environment_count < 10 or environment_count > 15: errors.append("Environment discovery requires 10 to 15 candidates")
 	for preset in presets:
 		if preset == null:
 			continue
@@ -87,6 +87,8 @@ func validate() -> PackedStringArray:
 		for topic in event.topic_ids:
 			if not topic_lookup.has(topic):
 				errors.append("Event %s references unknown topic %s" % [event.id, topic])
+		for topic in event.mutation_topic_ids:
+			if not topic_lookup.has(topic): errors.append("Event %s references unknown confluence topic %s" % [event.id, topic])
 		for operation in event.operation_ids:
 			if not operation in OPERATION_IDS:
 				errors.append("Event %s references unknown operation %s" % [event.id, operation])

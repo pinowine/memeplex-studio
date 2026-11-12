@@ -68,11 +68,11 @@ entries = Array[Dictionary]([{
 "title": "LOC_LABOUR_E82F854C",
 "value": "work"
 }, {
-"description": "LOC_CONNECT_THE_EXPRESSION_TO_PLATFORM_TOOLS_8AE6C9C9",
+"description": "LOC_EVENT_TOPIC_TECHNOLOGY_HELP",
 "id": "topic_platform_tools",
 "initial_count": 0,
 "kind": "topic",
-"title": "LOC_PLATFORM_TOOLS_8C108BA1",
+"title": "LOC_EVENT_TOPIC_TECHNOLOGY",
 "value": "platform_tools"
 }, {
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_SPORTS_8C701C37",

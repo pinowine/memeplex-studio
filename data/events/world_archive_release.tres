@@ -1,50 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 29.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 35.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"attention"
-amount = 0.24
-duration_hours = 6.0
-group_ids = PackedStringArray("culture_fans")
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_archive_release"
-title = "LOC_THE_HARBOR_MUSEUM_RELEASES_OLD_STREET_PHOTOGRAPHS_36E8BEAE"
-narrative = "LOC_THE_HARBOR_HISTORY_MUSEUM_RELEASES_A_CATALOGED_8BC39464"
-mentor_comment = "LOC_PHOTOGRAPHS_HAVE_DATES_NOSTALGIA_USUALLY_DOES_NOT_623AB42E"
+category = &"political"
 origin = &"world"
-topic_ids = PackedStringArray("archive", "identity")
-operation_ids = PackedStringArray("attention_shift")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 29.0
-weight = 1.0
-occurrence_chance = 0.04
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 24.0
-attention_duration_hours = 6.0
-attention_decay = &"exponential"
-decay_parameter_hours = 3.0
-discovery_ids = PackedStringArray("shared_world")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_ARCHIVE_RELEASE_TITLE"
+narrative = "LOC_EVENT_WORLD_ARCHIVE_RELEASE_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_ARCHIVE_RELEASE_COMMENT"
+topic_ids = PackedStringArray("policy", "identity", "archive")
+response_profile = {"attention": 0.65, "spread": 0.2, "production": 0.55, "sentiment": -0.1, "authority_affinity": -0.4, "freedom_affinity": 0.45, "equality_affinity": 0.15, "hierarchy_affinity": -0.2, "controversy": 0.9, "positive_frames": ["LOC_EVENT_WORLD_ARCHIVE_RELEASE_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_ARCHIVE_RELEASE_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
 design_rewards = Array[Dictionary]([{"kind": "topic", "id": "topic_archive", "count": 1}])

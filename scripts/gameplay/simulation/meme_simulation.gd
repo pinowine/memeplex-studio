@@ -11,6 +11,8 @@ const SaveCodec = preload("res://scripts/services/persistence/save_codec.gd")
 const EventScheduler = preload("res://scripts/gameplay/events/event_scheduler.gd")
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
 const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
+const EventResponse = preload("res://scripts/gameplay/events/event_response.gd")
+const EventMutation = preload("res://scripts/gameplay/events/event_mutation.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 
 var catalog: MemeDemoCatalog
@@ -478,6 +480,7 @@ func step_hour() -> bool:
 		return false
 	hour += 1
 	_expire_modifiers()
+	_produce_event_memes()
 	_spread_world()
 	_schedule_events()
 	_open_next_event()
@@ -493,9 +496,14 @@ func _expire_modifiers() -> void:
 
 func _spread_world() -> void:
 	var factors := {}
-	for variant: Dictionary in variants:
-		var entry: Dictionary = competition._state.registry[str(variant.id)]
-		factors[str(variant.id)] = _audience_factor(entry.profile)
+	for country: Dictionary in catalog.gameplay_rules.countries:
+		var cid := str(country.id)
+		factors[cid] = {}
+		for variant: Dictionary in variants:
+			var entry: Dictionary = competition._state.registry[str(variant.id)]
+			var profile: Dictionary = entry.profile.duplicate(true)
+			profile.topic_ids = Array(competition.active_topics(profile))
+			factors[cid][str(variant.id)] = _audience_factor(entry.profile) * EffectRules.country_factor(modifiers, hour, cid, str(variant.id), profile)
 	competition.step(hour,variants,factors)
 	var view: Dictionary = competition.snapshot(variants,false)
 	attention = view.attention
@@ -520,11 +528,12 @@ func _audience_factor(profile: Dictionary) -> float:
 		total += EffectRules.attraction_factor(modifiers, hour, id, competition.active_topics(profile)) * maxf(0.05, float(state.trust)) * maxf(0.05, 1.0 - float(state.fatigue))
 	return total / seen.size()
 
-func _register_external_world(variant: Dictionary) -> void:
+func _register_external_world(variant: Dictionary, event_country: String = "") -> void:
 	var parent_id: String = str(variant.parent_ids[0]) if not variant.parent_ids.is_empty() else ""
 	var profile_data: Dictionary = competition.inherited_profile(variant,parent_id)
 	variant.flow_profile = profile_data.duplicate(true)
 	var origin: String = str(competition._state.registry.get(parent_id,{}).get("origin_country",""))
+	if not event_country.is_empty(): origin = event_country
 	competition.register(variant,profile_data,origin,hour)
 
 func _reward_milestones() -> void:
@@ -557,38 +566,190 @@ func _schedule_events() -> void:
 		var definition := EventScheduler.choose_event(catalog.events, hour, catalog.gameplay_rules.event_time_scale,
 			event_counts, last_event_hours, _event_condition_values(), _rng)
 		if definition == null: return
+		var previous_count := events.size()
 		_execute_event(definition)
+		if events.size() == previous_count: return
 
 ## 统一创建事件身份、应用效果并登记来源，界面只接收记录副本。
-func _execute_event(definition: MemeDemoEvent) -> void:
+func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -> void:
 	var id := str(definition.id)
+	var cid := occurring_country if not occurring_country.is_empty() else _event_country(definition)
+	var country: Dictionary = catalog.gameplay_rules.country(cid)
+	var title := _event_country_title(cid)
+	var response := EventResponse.resolve(definition, country, catalog.groups)
+	var target := _event_target(cid, definition) if definition.origin == &"transmission" else {}
+	if definition.origin == &"transmission" and target.is_empty(): return
+	if definition.origin == &"transmission": response.topic_ids = Array(target.topic_ids)
 	var event_id := _new_id("event")
 	var first_variant: int = variants.size()
 	var observed := PackedStringArray()
-	for effect in definition.effects:
-		observed.append(_apply_effect(effect, event_id, definition))
-	if id == "competitor_birth":
-		var preset_event: MemeDemoEvent = definition.duplicate(true)
-		preset_event.external_preset_id = StringName(catalog.gameplay_rules.event_presets[id])
-		observed.append(_spawn_external_preset(event_id,preset_event))
-	elif not definition.external_preset_id.is_empty() and definition.origin == &"environment_meme" and &"emerge" in definition.operation_ids:
+	var applied: Array[Dictionary] = []
+	var duration := maxf(1.0, _event_hours(definition.attention_duration_hours))
+	var response_modifier := _event_modifier(event_id, definition, cid, duration)
+	response_modifier.effect_id = "response"
+	response_modifier.response = response.duplicate(true)
+	if definition.origin == &"transmission":
+		response_modifier.variant_ids = [str(target.id)]
+		response_modifier.topics = []
+	modifiers.append(response_modifier)
+	for effect: MemeDemoEffect in definition.effects:
+		var row := {"effect_id":str(effect.effect_id), "amount":effect.amount, "duration_hours":maxf(1.0, _event_hours(effect.duration_hours)), "group_ids":Array(effect.group_ids), "country_id":cid, "target_variant_id":str(target.get("id", ""))}
+		applied.append(row)
+		var modifier := _event_modifier(event_id, definition, cid, float(row.duration_hours))
+		modifier.effect_id = str(effect.effect_id)
+		modifier.amount = -effect.amount if effect.effect_id == &"fatigue" else effect.amount
+		modifier.groups = Array(effect.group_ids)
+		modifier.variant_ids = [str(target.id)]
+		modifier.topics = []
+		match str(effect.effect_id):
+			"remix":
+				if effect.amount > 0.0: observed.append(_spawn_remix(event_id, str(effect.group_ids[0]) if not effect.group_ids.is_empty() else str(target.flow_profile.group_id), id, str(target.id), cid))
+			"adoption": competition.adoption_pulse(str(target.id), effect.amount, cid)
+			"revival":
+				modifier.amount = effect.amount
+				modifiers.append(modifier)
+			_: modifiers.append(modifier)
+	if definition.origin == &"environment_meme":
 		observed.append(_spawn_external_preset(event_id, definition))
-	if definition.origin == &"environment_meme" and variants.size() == first_variant:
-		var independent: MemeDemoEvent = definition.duplicate(true)
-		independent.external_preset_id = StringName(catalog.gameplay_rules.event_presets[id])
-		observed.append(_spawn_external_preset(event_id,independent))
 	var remix_created := false
 	for index in range(first_variant,variants.size()):
-		_register_external_world(variants[index])
+		if variants[index].parent_ids.is_empty(): _assign_event_context(variants[index], country, response)
+		_register_external_world(variants[index], cid)
 		remix_created = remix_created or not variants[index].parent_ids.is_empty()
 	event_counts[id] = int(event_counts.get(id, 0)) + 1
 	last_event_hours[id] = hour
 	var rewards := design_state.unique_event_rewards(definition.design_rewards, events)
-	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(remix_created), "mentor_comment":definition.mentor_comment, "effect_text":DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
+	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(remix_created), "mentor_comment":definition.mentor_comment, "effect_text":definition.title if observed.is_empty() else DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
+	record.merge({"country_id":cid, "country_title":title, "category":str(definition.category), "response":response, "response_duration_hours":duration, "applied_effects":applied, "target_variant_id":str(target.get("id", "")), "target_variant_text":str(target.get("text", ""))})
+	var response_text := EventResponse.summary(response)
+	if not response_text.is_empty(): record.impact_text = response_text
+	record.narrative = DeskLocalization.source_format(definition.narrative, title, [0]) if "%s" in definition.narrative else definition.narrative
+	if record.impact_text.is_empty(): record.impact_text = definition.title
 	record.competition_variant_ids = []
 	for index in range(first_variant,variants.size()): record.competition_variant_ids.append(str(variants[index].id))
 	events.append(record)
 	pending_events.append(record)
+
+func _event_modifier(event_id: String, definition: MemeDemoEvent, cid: String, duration: float) -> Dictionary:
+	return {"source":event_id, "country_id":cid, "variant_ids":[], "effect_id":"response", "amount":0.0, "groups":[], "starts":hour, "expires":hour + duration, "topics":Array(definition.topic_ids), "decay":str(definition.attention_decay), "decay_parameter":maxf(1.0, _event_hours(definition.decay_parameter_hours))}
+
+func _event_country_title(cid: String) -> String:
+	for country: MapCountryDefinition in catalog.gameplay_rules.map_settings.countries:
+		if str(country.id) == cid: return str(country.short_name_key)
+	return cid
+
+func _event_country(definition: MemeDemoEvent) -> String:
+	var weights: Array[float] = []
+	var total := 0.0
+	for country: Dictionary in catalog.gameplay_rules.countries:
+		var weight := sqrt(float(country.population))
+		if definition.origin == &"transmission":
+			weight = 0.0
+			for item: Dictionary in _event_candidates(str(country.id), definition): weight += float(item.weight)
+		weights.append(weight)
+		total += weight
+	var cursor := _rng.randf() * total
+	for index in weights.size():
+		cursor -= weights[index]
+		if cursor < 0.0: return str(catalog.gameplay_rules.countries[index].id)
+	return country_id
+
+func _event_target(cid: String, definition: MemeDemoEvent = null) -> Dictionary:
+	var candidates := _event_candidates(cid, definition)
+	var total := 0.0
+	for item: Dictionary in candidates: total += float(item.weight)
+	var cursor := _rng.randf() * total
+	for item: Dictionary in candidates:
+		cursor -= float(item.weight)
+		if cursor < 0.0: return item.variant
+	return {}
+
+func _event_candidates(cid: String, definition: MemeDemoEvent = null) -> Array[Dictionary]:
+	var candidates: Array[Dictionary] = []
+	var reacting_groups: Array[String] = []
+	var requires_rewrite := false
+	if definition != null:
+		for effect: MemeDemoEffect in definition.effects:
+			requires_rewrite = requires_rewrite or (effect.effect_id == &"remix" and effect.amount > 0.0)
+			for id: String in effect.group_ids:
+				if id not in reacting_groups: reacting_groups.append(id)
+	for variant: Dictionary in variants:
+		if variant.origin_ids.is_empty() or not competition._state.registry.has(str(variant.id)): continue
+		var entry: Dictionary = competition._state.registry[str(variant.id)]
+		if not reacting_groups.is_empty():
+			var target_groups: Array = entry.profile.get("group_ids", [str(entry.profile.group_id)])
+			var matches_group := false
+			for id: String in target_groups: matches_group = matches_group or id in reacting_groups
+			if not matches_group: continue
+		if requires_rewrite:
+			if not variant.get("flow_draft") is Dictionary or variant.flow_draft.get("reuse_permission", "unknown") == "restricted": continue
+			var rewrite: Dictionary = EventMutation.candidate(catalog, variant, definition) if not definition.mutation_kind.is_empty() else MutationRules.candidate(catalog, variant, str(definition.id))
+			if rewrite.is_empty(): continue
+			if definition.mutation_kind == &"confluence" and _confluence_companion(variant, definition, cid).is_empty(): continue
+		var weight := float(competition._state.countries[cid].exposed[str(variant.id)])
+		if str(entry.origin_country) == cid: weight += 1.0
+		if weight > 0.0:
+			candidates.append({"variant":variant, "weight":weight})
+	return candidates
+
+func _confluence_companion(parent: Dictionary, definition: MemeDemoEvent, cid: String) -> Dictionary:
+	var selected: Dictionary = {}
+	var shared_reach := 0.0
+	var parent_exposed := float(competition._state.countries[cid].exposed[str(parent.id)])
+	for candidate: Dictionary in variants:
+		if str(candidate.family_id) == str(parent.family_id) or not competition._state.registry.has(str(candidate.id)): continue
+		var relevant := false
+		for topic: String in competition.active_topics(candidate.flow_profile): relevant = relevant or topic in definition.mutation_topic_ids
+		if not relevant: continue
+		var overlap := minf(parent_exposed, float(competition._state.countries[cid].exposed[str(candidate.id)]))
+		if overlap > shared_reach:
+			selected = candidate
+			shared_reach = overlap
+	return selected
+
+func _assign_event_context(variant: Dictionary, country: Dictionary, response: Dictionary) -> void:
+	var cursor := _rng.randf()
+	var cohort: Dictionary = response.cohorts.back()
+	for candidate: Dictionary in response.cohorts:
+		cursor -= float(candidate.share)
+		if cursor < 0.0:
+			cohort = candidate
+			break
+	variant.political_known = true
+	variant.political_position = cohort.stance.duplicate()
+	variant.pragmatic_position = cohort.pragmatic.duplicate()
+	variant.event_reading = {"cohort_id":str(cohort.id), "sentiment":float(cohort.sentiment), "frames":cohort.frames.duplicate()}
+	if not cohort.frames.is_empty():
+		variant.event_reading.frame = str(cohort.frames[_rng.randi_range(0, cohort.frames.size() - 1)])
+		variant.text = DeskLocalization.source_join("\n", [variant.text, variant.event_reading.frame])
+	var language := ""
+	var language_share := -1.0
+	for id: String in country.languages:
+		if float(country.languages[id]) > language_share:
+			language = id
+			language_share = float(country.languages[id])
+	variant.language_id = language
+
+func _produce_event_memes() -> void:
+	for modifier: Dictionary in modifiers:
+		if str(modifier.get("effect_id", "")) != "response" or not modifier.variant_ids.is_empty(): continue
+		var response: Dictionary = modifier.response
+		var probability := (1.0 + float(response.production)) * EffectRules.decay_weight(modifier, hour) / catalog.gameplay_rules.event_generation_interval_hours
+		if _rng.randf() >= probability: continue
+		var candidates: Array[MemeDemoEvent] = []
+		for definition: MemeDemoEvent in catalog.events:
+			if definition.origin == &"environment_meme": candidates.append(definition)
+		var source: MemeDemoEvent = candidates[_rng.randi_range(0, candidates.size() - 1)].duplicate(true)
+		source.topic_ids = PackedStringArray(modifier.topics)
+		_spawn_external_preset(str(modifier.source), source)
+		var variant: Dictionary = variants.back()
+		_assign_event_context(variant, catalog.gameplay_rules.country(str(modifier.country_id)), response)
+		_register_external_world(variant, str(modifier.country_id))
+		for record: Dictionary in events:
+			if str(record.instance_id) == str(modifier.source): record.competition_variant_ids.append(str(variant.id))
+		for record: Dictionary in pending_events:
+			if str(record.instance_id) == str(modifier.source) and str(variant.id) not in record.competition_variant_ids: record.competition_variant_ids.append(str(variant.id))
+		if str(active_event.get("instance_id", "")) == str(modifier.source) and str(variant.id) not in active_event.competition_variant_ids: active_event.competition_variant_ids.append(str(variant.id))
 
 func _event_hours(value: float) -> float:
 	return value * catalog.gameplay_rules.event_time_scale
@@ -633,8 +794,10 @@ func _apply_effect(effect: MemeDemoEffect, event_id: String, definition: MemeDem
 	push_error("Invalid effect reached simulation: " + str(effect.effect_id))
 	return DeskLocalization.source("LOC_ERROR_UNREGISTERED_EFFECT_D26EA480")
 
-func _spawn_remix(event_id: String, creator: String, definition_id: String = "", parent_id: String = "") -> String:
+func _spawn_remix(event_id: String, creator: String, definition_id: String = "", parent_id: String = "", event_country: String = "") -> String:
 	var parent := variant_by_id(current_variant_id if parent_id.is_empty() else parent_id)
+	var event_definition := _event_definition(definition_id)
+	var event_mutation := event_definition != null and not event_definition.mutation_kind.is_empty()
 	if parent.is_empty():
 		return DeskLocalization.source("LOC_NO_DEPLOYED_VERSION_IS_AVAILABLE_TO_REWRITE_151CB474")
 	var mutation: Dictionary = {}
@@ -645,7 +808,7 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "",
 			var source: Dictionary = variants[index]
 			if source.origin_ids != origins or not competition._state.registry.has(str(source.id)): continue
 			if not source.get("flow_draft") is Dictionary or source.flow_draft.get("reuse_permission", "unknown") == "restricted": continue
-			mutation = MutationRules.candidate(catalog, source, definition_id)
+			mutation = EventMutation.candidate(catalog, source, event_definition) if event_mutation else MutationRules.candidate(catalog, source, definition_id)
 			if not mutation.is_empty():
 				parent = source
 				break
@@ -653,13 +816,18 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "",
 		if not parent.get("flow_draft") is Dictionary: return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
 		if parent.flow_draft.get("reuse_permission", "unknown") == "restricted":
 			return DeskLocalization.source("LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C")
-		if parent.patch_ids.size() >= catalog.DESIGN_RULES.module_slots:
+		if parent.patch_ids.size() >= catalog.DESIGN_RULES.module_slots and (not event_mutation or event_definition.mutation_kind != &"expression"):
 			return DeskLocalization.source("LOC_MUTATION_PATCHES_FULL")
-		mutation = MutationRules.candidate(catalog, parent, definition_id)
+		mutation = EventMutation.candidate(catalog, parent, event_definition) if event_mutation else MutationRules.candidate(catalog, parent, definition_id)
 	if mutation.is_empty(): return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
+	if event_mutation and event_definition.mutation_kind == &"confluence":
+		var cid := event_country if not event_country.is_empty() else str(competition._state.registry[str(parent.id)].origin_country)
+		var companion := _confluence_companion(parent, event_definition, cid)
+		if companion.is_empty(): return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
+		mutation = EventMutation.merge_with(mutation, companion)
 	var composed: Dictionary = mutation.composition
 	var family_id: String = parent.family_id
-	var distance := draft_distance if bool(mutation.meaning_changed) else 0.0
+	var distance := (0.7 if event_mutation and event_definition.mutation_kind == &"confluence" else (0.45 if event_mutation else draft_distance)) if bool(mutation.meaning_changed) else 0.0
 	var split := distance >= float(families[family_id].split_threshold)
 	if split:
 		var previous := family_id
@@ -672,6 +840,12 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "",
 		float(source_draft.remix_cost), float(source_draft.context_dependency))
 	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":bool(parent.owned) and not split, "controlled":false, "text":str(composed.expression), "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":distance, "language_id":str(source_draft.language_id), "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor, "patch_ids":mutation.patch_ids.duplicate(), "flow_draft":mutation.flow_draft.duplicate(true)})
 	for field: String in ["meaning", "meaning_id", "language_versions"]: variants.back()[field] = composed[field]
+	if event_mutation:
+		variants.back().mutation_definition_id = definition_id
+		variants.back().mutation_patch_id = str(mutation.patch_id)
+		variants.back().topic_ids = Array(mutation.flow_draft.topic_ids)
+		variants.back().language_id = str(mutation.flow_draft.language_id)
+		if mutation.has("companion_id"): variants.back().confluence_source_id = str(mutation.companion_id)
 	return DeskLocalization.source_format("LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714", [DeskLocalization.source("LOC_NEW_FAMILY_A5AC4668") if split else DeskLocalization.source("LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C"), family_id, id, creator], [0])
 
 func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> String:

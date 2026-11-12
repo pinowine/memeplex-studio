@@ -1,0 +1,1612 @@
+{
+  "LOC_EVENT_TOPIC_TECHNOLOGY": {
+    "source": "科技",
+    "zh_CN": "科技",
+    "en": "Technology"
+  },
+  "LOC_EVENT_TOPIC_TECHNOLOGY_HELP": {
+    "source": "将表达关联到科学发现、新技术、人工智能与网络工具。",
+    "zh_CN": "将表达关联到科学发现、新技术、人工智能与网络工具。",
+    "en": "Connect the expression to scientific discoveries, new technologies, artificial intelligence and network tools."
+  },
+  "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_POSITIVE": {
+    "source": "选票让长期执政者交出了席位",
+    "zh_CN": "选票让长期执政者交出了席位",
+    "en": "Voters made a long-serving government give up seats"
+  },
+  "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_NEGATIVE": {
+    "source": "新的联盟仍要争夺财政分配权",
+    "zh_CN": "新的联盟仍要争夺财政分配权",
+    "en": "The new coalition will still fight over public money"
+  },
+  "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_TITLE": {
+    "source": "执政联盟在议会选举中失去多数",
+    "zh_CN": "执政联盟在议会选举中失去多数",
+    "en": "Governing coalition loses its majority"
+  },
+  "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_NARRATIVE": {
+    "source": "%s公布议会选举结果：海岸联盟失去连续掌握三届的多数席位，改革党以降低住房税为条件开启组阁谈判。",
+    "zh_CN": "%s公布议会选举结果：海岸联盟失去连续掌握三届的多数席位，改革党以降低住房税为条件开启组阁谈判。",
+    "en": "%s announces its parliamentary results. The Coast Coalition loses its majority after three terms, and the Reform Party makes lower housing taxes a condition of coalition talks."
+  },
+  "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_COMMENT": {
+    "source": "组阁之前，每一票都像可以兑换的筹码。",
+    "zh_CN": "组阁之前，每一票都像可以兑换的筹码。",
+    "en": "Before a coalition forms, every vote looks like a bargaining chip."
+  },
+  "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_POSITIVE": {
+    "source": "公开账目让挪用经费有了可追索的证据",
+    "zh_CN": "公开账目让挪用经费有了可追索的证据",
+    "en": "Public records leave evidence of diverted funds"
+  },
+  "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_NEGATIVE": {
+    "source": "账目公开后才知道被公开的钱去了哪里",
+    "zh_CN": "账目公开后才知道被公开的钱去了哪里",
+    "en": "The public finally learns where the missing money went"
+  },
+  "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_TITLE": {
+    "source": "财政部公开逐笔采购账目",
+    "zh_CN": "财政部公开逐笔采购账目",
+    "en": "Treasury publishes itemized procurement records"
+  },
+  "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_NARRATIVE": {
+    "source": "%s财政部开放过去五年的采购明细，民间会计发现三所学校向同一家空壳公司采购了相同编号的实验设备。",
+    "zh_CN": "%s财政部开放过去五年的采购明细，民间会计发现三所学校向同一家空壳公司采购了相同编号的实验设备。",
+    "en": "%s's treasury releases five years of procurement records. Volunteer accountants find three schools bought laboratory equipment with identical serial numbers from one shell company."
+  },
+  "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_COMMENT": {
+    "source": "数字本身很安静，重复的设备编号就不一样了。",
+    "zh_CN": "数字本身很安静，重复的设备编号就不一样了。",
+    "en": "Numbers are quiet until the same serial number appears twice."
+  },
+  "LOC_EVENT_WORLD_ARCHIVE_RELEASE_POSITIVE": {
+    "source": "地方居民终于能决定自己的议会",
+    "zh_CN": "地方居民终于能决定自己的议会",
+    "en": "Residents can finally choose their own parliaments"
+  },
+  "LOC_EVENT_WORLD_ARCHIVE_RELEASE_NEGATIVE": {
+    "source": "边界画完了，养老金还没画完",
+    "zh_CN": "边界画完了，养老金还没画完",
+    "en": "The borders are settled; the pensions are not"
+  },
+  "LOC_EVENT_WORLD_ARCHIVE_RELEASE_TITLE": {
+    "source": "旧联邦签署解体协议",
+    "zh_CN": "旧联邦签署解体协议",
+    "en": "Old federation signs dissolution agreement"
+  },
+  "LOC_EVENT_WORLD_ARCHIVE_RELEASE_NARRATIVE": {
+    "source": "%s的三个自治地区签署《白港协议》，约定一年内分别建立议会。共同货币暂留十八个月，跨区养老金的归属仍未谈妥。",
+    "zh_CN": "%s的三个自治地区签署《白港协议》，约定一年内分别建立议会。共同货币暂留十八个月，跨区养老金的归属仍未谈妥。",
+    "en": "Three autonomous regions in %s sign the Whiteharbor Agreement to establish separate parliaments within a year. Their common currency stays for eighteen months, while pension obligations remain disputed."
+  },
+  "LOC_EVENT_WORLD_ARCHIVE_RELEASE_COMMENT": {
+    "source": "人们会先用新国旗讨论旧账单。",
+    "zh_CN": "人们会先用新国旗讨论旧账单。",
+    "en": "People will discuss old bills under new flags."
+  },
+  "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_POSITIVE": {
+    "source": "恢复秩序让公共空间可以重新开放",
+    "zh_CN": "恢复秩序让公共空间可以重新开放",
+    "en": "Restoring order allows public spaces to reopen"
+  },
+  "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_NEGATIVE": {
+    "source": "十一个人合影也算局势复杂",
+    "zh_CN": "十一个人合影也算局势复杂",
+    "en": "Eleven people in a photo apparently constitute unrest"
+  },
+  "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_TITLE": {
+    "source": "临时内阁宣布紧急集会令",
+    "zh_CN": "临时内阁宣布紧急集会令",
+    "en": "Interim cabinet imposes emergency assembly rules"
+  },
+  "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_NARRATIVE": {
+    "source": "%s临时内阁以港口骚乱为由，要求超过十人的户外集会提前报备。大学社团发现毕业合影也被列入审批范围。",
+    "zh_CN": "%s临时内阁以港口骚乱为由，要求超过十人的户外集会提前报备。大学社团发现毕业合影也被列入审批范围。",
+    "en": "%s's interim cabinet requires advance approval for outdoor gatherings of more than ten people after unrest at a port. University clubs learn graduation photos also need permission."
+  },
+  "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_COMMENT": {
+    "source": "限制越具体，反话越容易找到落脚点。",
+    "zh_CN": "限制越具体，反话越容易找到落脚点。",
+    "en": "A precise restriction gives sarcasm something precise to point at."
+  },
+  "LOC_EVENT_TRANSIT_FARE_POSITIVE": {
+    "source": "远郊居民终于不用为距离支付额外代价",
+    "zh_CN": "远郊居民终于不用为距离支付额外代价",
+    "en": "Outer suburbs no longer pay a penalty for distance"
+  },
+  "LOC_EVENT_TRANSIT_FARE_NEGATIVE": {
+    "source": "统一票价把两站路也统一成了远途",
+    "zh_CN": "统一票价把两站路也统一成了远途",
+    "en": "A flat fare turns two stops into a long journey"
+  },
+  "LOC_EVENT_TRANSIT_FARE_TITLE": {
+    "source": "新公共交通票价法案通过",
+    "zh_CN": "新公共交通票价法案通过",
+    "en": "New transit fare law passes"
+  },
+  "LOC_EVENT_TRANSIT_FARE_NARRATIVE": {
+    "source": "%s议会取消按里程计费，改为每程固定收费。远郊通勤者省下月票钱，短途乘客的单程支出却增加近一半。",
+    "zh_CN": "%s议会取消按里程计费，改为每程固定收费。远郊通勤者省下月票钱，短途乘客的单程支出却增加近一半。",
+    "en": "%s's parliament replaces distance-based transit fares with one flat fare per trip. Outer-suburb commuters save on monthly passes, while short-trip riders pay almost half again as much."
+  },
+  "LOC_EVENT_TRANSIT_FARE_COMMENT": {
+    "source": "同一张票，远处的人和近处的人算出的账不同。",
+    "zh_CN": "同一张票，远处的人和近处的人算出的账不同。",
+    "en": "People near and far read different numbers on the same ticket."
+  },
+  "LOC_EVENT_WORLD_BORDER_WAR_POSITIVE": {
+    "source": "边防部队称行动能阻止下一轮越境袭击",
+    "zh_CN": "边防部队称行动能阻止下一轮越境袭击",
+    "en": "Border forces say the operation prevents another cross-border attack"
+  },
+  "LOC_EVENT_WORLD_BORDER_WAR_NEGATIVE": {
+    "source": "火车运走了货，也运走了回家的日期",
+    "zh_CN": "火车运走了货，也运走了回家的日期",
+    "en": "The trains carried away goods and any date for going home"
+  },
+  "LOC_EVENT_WORLD_BORDER_WAR_TITLE": {
+    "source": "河谷停火协议在黎明破裂",
+    "zh_CN": "河谷停火协议在黎明破裂",
+    "en": "River-valley ceasefire breaks at dawn"
+  },
+  "LOC_EVENT_WORLD_BORDER_WAR_NARRATIVE": {
+    "source": "%s边境河谷的停火协议在生效第九天破裂，双方关闭两处口岸并征用货运列车。当地救援站开始登记失散家庭。",
+    "zh_CN": "%s边境河谷的停火协议在生效第九天破裂，双方关闭两处口岸并征用货运列车。当地救援站开始登记失散家庭。",
+    "en": "A ceasefire in %s's border valley breaks on its ninth day. Both sides close two crossings and requisition freight trains. Relief stations begin registering separated families."
+  },
+  "LOC_EVENT_WORLD_BORDER_WAR_COMMENT": {
+    "source": "战争新闻里的地名，会变成普通人的去向。",
+    "zh_CN": "战争新闻里的地名，会变成普通人的去向。",
+    "en": "Place names in war reports become the destinations of ordinary people."
+  },
+  "LOC_EVENT_WORLD_ROOFTOP_MATCH_POSITIVE": {
+    "source": "重力反转让老战术失灵，新玩家有了机会",
+    "zh_CN": "重力反转让老战术失灵，新玩家有了机会",
+    "en": "Reversing gravity breaks old tactics and gives newcomers a chance"
+  },
+  "LOC_EVENT_WORLD_ROOFTOP_MATCH_NEGATIVE": {
+    "source": "买了对战游戏，先练两小时排队",
+    "zh_CN": "买了对战游戏，先练两小时排队",
+    "en": "Buy a fighting game and practice queuing for two hours"
+  },
+  "LOC_EVENT_WORLD_ROOFTOP_MATCH_TITLE": {
+    "source": "竞技游戏《玻璃海》正式发售",
+    "zh_CN": "竞技游戏《玻璃海》正式发售",
+    "en": "Competitive game Glass Sea launches"
+  },
+  "LOC_EVENT_WORLD_ROOFTOP_MATCH_NARRATIVE": {
+    "source": "%s的灯塔工作室发布竞技游戏《玻璃海》，主打可改变重力的三人对战。首日服务器排队超过两小时，赛事方已宣布秋季邀请赛。",
+    "zh_CN": "%s的灯塔工作室发布竞技游戏《玻璃海》，主打可改变重力的三人对战。首日服务器排队超过两小时，赛事方已宣布秋季邀请赛。",
+    "en": "Lighthouse Studio in %s releases Glass Sea, a three-player competitive game with reversible gravity. Launch queues exceed two hours, and an autumn invitational is announced."
+  },
+  "LOC_EVENT_WORLD_ROOFTOP_MATCH_COMMENT": {
+    "source": "排队的截图常常比第一场比赛先传出去。",
+    "zh_CN": "排队的截图常常比第一场比赛先传出去。",
+    "en": "The queue screenshot often travels before the first match does."
+  },
+  "LOC_EVENT_WORLD_COURTYARD_MARKET_POSITIVE": {
+    "source": "五代租客让一间房容下了不同的人生",
+    "zh_CN": "五代租客让一间房容下了不同的人生",
+    "en": "Five generations of tenants put different lives in one room"
+  },
+  "LOC_EVENT_WORLD_COURTYARD_MARKET_NEGATIVE": {
+    "source": "十七分钟谢幕，也比等房东修水管快",
+    "zh_CN": "十七分钟谢幕，也比等房东修水管快",
+    "en": "Seventeen minutes of applause is faster than a landlord fixing a pipe"
+  },
+  "LOC_EVENT_WORLD_COURTYARD_MARKET_TITLE": {
+    "source": "索娜《空房间》巡演抵达新一站",
+    "zh_CN": "索娜《空房间》巡演抵达新一站",
+    "en": "Sona takes Empty Rooms to another tour stop"
+  },
+  "LOC_EVENT_WORLD_COURTYARD_MARKET_NARRATIVE": {
+    "source": "%s演员索娜带着独角戏《空房间》完成新一站演出。她不换布景便扮演五代租客，本场谢幕持续十七分钟，下一站门票也开始加售。",
+    "zh_CN": "%s演员索娜带着独角戏《空房间》完成新一站演出。她不换布景便扮演五代租客，本场谢幕持续十七分钟，下一站门票也开始加售。",
+    "en": "Actor Sona takes her solo play Empty Rooms to another stop in %s. She plays five generations of tenants without changing the set. The curtain call lasts seventeen minutes, and more tickets go on sale for the next stop."
+  },
+  "LOC_EVENT_WORLD_COURTYARD_MARKET_COMMENT": {
+    "source": "观众会把舞台上的房间带回自己的日常。",
+    "zh_CN": "观众会把舞台上的房间带回自己的日常。",
+    "en": "Audiences bring the room on stage back into their own lives."
+  },
+  "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_POSITIVE": {
+    "source": "不可靠叙述给读者留下了共同推理的空间",
+    "zh_CN": "不可靠叙述给读者留下了共同推理的空间",
+    "en": "An unreliable narrator gives readers a mystery to solve together"
+  },
+  "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_NEGATIVE": {
+    "source": "叙述者可能不存在，预售尾款肯定存在",
+    "zh_CN": "叙述者可能不存在，预售尾款肯定存在",
+    "en": "The narrator may not exist; the preorder balance certainly does"
+  },
+  "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_TITLE": {
+    "source": "小说《第七码头》提前售罄",
+    "zh_CN": "小说《第七码头》提前售罄",
+    "en": "Novel The Seventh Pier sells out early"
+  },
+  "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_NARRATIVE": {
+    "source": "%s作家艾缇的新小说《第七码头》在发行前售罄，故事从一封寄错地址的遗嘱展开。书店安排通宵签售，读者争论叙述者是否存在。",
+    "zh_CN": "%s作家艾缇的新小说《第七码头》在发行前售罄，故事从一封寄错地址的遗嘱展开。书店安排通宵签售，读者争论叙述者是否存在。",
+    "en": "Writer Aeti's The Seventh Pier sells out before release in %s. Its story begins with a will sent to the wrong address. Bookshops plan overnight signings as readers dispute whether its narrator exists."
+  },
+  "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_COMMENT": {
+    "source": "一本书的争论，会写出书外的另一段故事。",
+    "zh_CN": "一本书的争论，会写出书外的另一段故事。",
+    "en": "An argument about a book writes another story outside it."
+  },
+  "LOC_EVENT_WORLD_CAPTION_GUIDELINE_POSITIVE": {
+    "source": "小制作也能让观众围绕一句台词共同创作",
+    "zh_CN": "小制作也能让观众围绕一句台词共同创作",
+    "en": "A small production gives audiences one line to build on"
+  },
+  "LOC_EVENT_WORLD_CAPTION_GUIDELINE_NEGATIVE": {
+    "source": "看完电影后，所有告别都开始需要查票",
+    "zh_CN": "看完电影后，所有告别都开始需要查票",
+    "en": "After that film, every farewell needs its ticket checked"
+  },
+  "LOC_EVENT_WORLD_CAPTION_GUIDELINE_TITLE": {
+    "source": "电影《纸月车站》刷新本土票房纪录",
+    "zh_CN": "电影《纸月车站》刷新本土票房纪录",
+    "en": "Paper Moon Station breaks the local box office record"
+  },
+  "LOC_EVENT_WORLD_CAPTION_GUIDELINE_NARRATIVE": {
+    "source": "%s上映的低成本电影《纸月车站》连续三周登顶票房。片中售票员每次说完同一句告别语，就有一位乘客从照片中消失。",
+    "zh_CN": "%s上映的低成本电影《纸月车站》连续三周登顶票房。片中售票员每次说完同一句告别语，就有一位乘客从照片中消失。",
+    "en": "Low-budget film Paper Moon Station leads %s's box office for three weeks. Each time its ticket clerk repeats a farewell, another passenger vanishes from a photograph."
+  },
+  "LOC_EVENT_WORLD_CAPTION_GUIDELINE_COMMENT": {
+    "source": "重复的台词给不同场景留出了入口。",
+    "zh_CN": "重复的台词给不同场景留出了入口。",
+    "en": "A repeated line leaves room for many different scenes."
+  },
+  "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_POSITIVE": {
+    "source": "旧船坞成了普通人能走进去的公共记忆",
+    "zh_CN": "旧船坞成了普通人能走进去的公共记忆",
+    "en": "An old dock becomes a shared memory visitors can enter"
+  },
+  "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_NEGATIVE": {
+    "source": "未来的自己先收到今天的门票账单",
+    "zh_CN": "未来的自己先收到今天的门票账单",
+    "en": "Your future self first receives today's ticket bill"
+  },
+  "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_TITLE": {
+    "source": "云鲸主题公园开放夜间园区",
+    "zh_CN": "云鲸主题公园开放夜间园区",
+    "en": "Cloud Whale theme park opens at night"
+  },
+  "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_NARRATIVE": {
+    "source": "%s的云鲸主题公园完成七年建设，开放沿旧船坞铺设的夜间园区。最受关注的项目要求游客在一小时内寄出给未来自己的明信片。",
+    "zh_CN": "%s的云鲸主题公园完成七年建设，开放沿旧船坞铺设的夜间园区。最受关注的项目要求游客在一小时内寄出给未来自己的明信片。",
+    "en": "After seven years of construction, Cloud Whale opens a night district along an old dock in %s. Its most discussed attraction gives visitors one hour to mail a postcard to their future selves."
+  },
+  "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_COMMENT": {
+    "source": "景点越有仪式感，游客越会带走一套动作。",
+    "zh_CN": "景点越有仪式感，游客越会带走一套动作。",
+    "en": "A ritual at an attraction gives visitors an action to repeat elsewhere."
+  },
+  "LOC_EVENT_CITY_TOURNAMENT_POSITIVE": {
+    "source": "业余球队让冠军与普通劳动者连在一起",
+    "zh_CN": "业余球队让冠军与普通劳动者连在一起",
+    "en": "An amateur title connects the championship to ordinary workers"
+  },
+  "LOC_EVENT_CITY_TOURNAMENT_NEGATIVE": {
+    "source": "职业球队输给了一群还要赶晚班的人",
+    "zh_CN": "职业球队输给了一群还要赶晚班的人",
+    "en": "Professionals lost to people who still had an evening shift"
+  },
+  "LOC_EVENT_CITY_TOURNAMENT_TITLE": {
+    "source": "屋顶联赛决赛由业余球队夺冠",
+    "zh_CN": "屋顶联赛决赛由业余球队夺冠",
+    "en": "Amateur team wins Rooftop League final"
+  },
+  "LOC_EVENT_CITY_TOURNAMENT_NARRATIVE": {
+    "source": "%s屋顶联赛的决赛中，由快递员组成的灰鸥队在补时反超职业球队。夺冠奖金将用来修复他们长期借用的学校球场。",
+    "zh_CN": "%s屋顶联赛的决赛中，由快递员组成的灰鸥队在补时反超职业球队。夺冠奖金将用来修复他们长期借用的学校球场。",
+    "en": "In %s's Rooftop League final, the Grey Gulls, a team of delivery riders, beat a professional side in added time. Their prize will repair the school pitch they have long borrowed."
+  },
+  "LOC_EVENT_CITY_TOURNAMENT_COMMENT": {
+    "source": "人们会记住最后一球，也会记住谁明天还要上班。",
+    "zh_CN": "人们会记住最后一球，也会记住谁明天还要上班。",
+    "en": "People remember the last goal and who still has work tomorrow."
+  },
+  "LOC_EVENT_WORLD_BRIDGE_DETOUR_POSITIVE": {
+    "source": "救援队和民间车队正在共同疏散居民",
+    "zh_CN": "救援队和民间车队正在共同疏散居民",
+    "en": "Rescue teams and volunteer drivers evacuate residents together"
+  },
+  "LOC_EVENT_WORLD_BRIDGE_DETOUR_NEGATIVE": {
+    "source": "百年一遇的洪水又赶上了今年",
+    "zh_CN": "百年一遇的洪水又赶上了今年",
+    "en": "Another once-in-a-century flood found this year convenient"
+  },
+  "LOC_EVENT_WORLD_BRIDGE_DETOUR_TITLE": {
+    "source": "持续暴雨中断北岭铁路运输",
+    "zh_CN": "持续暴雨中断北岭铁路运输",
+    "en": "Persistent rain disrupts North Ridge rail services"
+  },
+  "LOC_EVENT_WORLD_BRIDGE_DETOUR_NARRATIVE": {
+    "source": "%s北岭流域连续五天降雨，落石与涨水使铁路再度停运。气象局称预警模型仍低估上游汇水，救援车辆沿山路转运受困居民。",
+    "zh_CN": "%s北岭流域连续五天降雨，落石与涨水使铁路再度停运。气象局称预警模型仍低估上游汇水，救援车辆沿山路转运受困居民。",
+    "en": "Five days of rain bring rockfalls and rising water, disrupting North Ridge rail services again in %s. The weather service says its warning model still underestimates upstream runoff. Rescue vehicles evacuate stranded residents along mountain roads."
+  },
+  "LOC_EVENT_WORLD_BRIDGE_DETOUR_COMMENT": {
+    "source": "灾情里传播得快的，往往是求助地点和一句问责。",
+    "zh_CN": "灾情里传播得快的，往往是求助地点和一句问责。",
+    "en": "Locations needing help and questions of responsibility travel quickly during floods."
+  },
+  "LOC_EVENT_WORLD_SHIFT_ROSTER_POSITIVE": {
+    "source": "停工令承认高温下劳动者需要保护",
+    "zh_CN": "停工令承认高温下劳动者需要保护",
+    "en": "The suspension recognizes workers need protection in extreme heat"
+  },
+  "LOC_EVENT_WORLD_SHIFT_ROSTER_NEGATIVE": {
+    "source": "太阳已经下班，计时器还在加班",
+    "zh_CN": "太阳已经下班，计时器还在加班",
+    "en": "Even the sun gets to clock off; the delivery timer does not"
+  },
+  "LOC_EVENT_WORLD_SHIFT_ROSTER_TITLE": {
+    "source": "热浪触发新一轮户外停工令",
+    "zh_CN": "热浪触发新一轮户外停工令",
+    "en": "Heatwave triggers another outdoor work suspension"
+  },
+  "LOC_EVENT_WORLD_SHIFT_ROSTER_NARRATIVE": {
+    "source": "%s南部连续九天气温超过四十度，劳动部门宣布新一轮午后露天停工令。送货平台仍按原时限考核，骑手开始公开晒出这轮高温中的超时罚单。",
+    "zh_CN": "%s南部连续九天气温超过四十度，劳动部门宣布新一轮午后露天停工令。送货平台仍按原时限考核，骑手开始公开晒出这轮高温中的超时罚单。",
+    "en": "After nine days above forty degrees in southern %s, officials announce another suspension of afternoon outdoor work. Delivery platforms keep their deadlines, and riders publish the late-delivery penalties received during this heatwave."
+  },
+  "LOC_EVENT_WORLD_SHIFT_ROSTER_COMMENT": {
+    "source": "天气会变成劳动议题，因为有人无法躲进室内。",
+    "zh_CN": "天气会变成劳动议题，因为有人无法躲进室内。",
+    "en": "Weather becomes a labor issue when some people cannot go indoors."
+  },
+  "LOC_EVENT_WORLD_BLUE_COMET_POSITIVE": {
+    "source": "公共空间短暂让位给所有人都能看的天空",
+    "zh_CN": "公共空间短暂让位给所有人都能看的天空",
+    "en": "Public space briefly gives way to a sky everyone can see"
+  },
+  "LOC_EVENT_WORLD_BLUE_COMET_NEGATIVE": {
+    "source": "彗星路过两小时，广告屏终于休息两小时",
+    "zh_CN": "彗星路过两小时，广告屏终于休息两小时",
+    "en": "A passing comet gives billboards their first two-hour break"
+  },
+  "LOC_EVENT_WORLD_BLUE_COMET_TITLE": {
+    "source": "蓝尾彗星将在周末掠过近地轨道",
+    "zh_CN": "蓝尾彗星将在周末掠过近地轨道",
+    "en": "Blue-tail comet passes near Earth this weekend"
+  },
+  "LOC_EVENT_WORLD_BLUE_COMET_NARRATIVE": {
+    "source": "%s穹顶天文台公布蓝尾彗星的观测窗口，周末凌晨可用肉眼看见。市政部门同意熄灭河岸广告屏两小时，学校借出望远镜。",
+    "zh_CN": "%s穹顶天文台公布蓝尾彗星的观测窗口，周末凌晨可用肉眼看见。市政部门同意熄灭河岸广告屏两小时，学校借出望远镜。",
+    "en": "The Dome Observatory in %s announces a blue-tail comet will be visible before dawn this weekend. Riverside advertising screens go dark for two hours, and schools lend telescopes."
+  },
+  "LOC_EVENT_WORLD_BLUE_COMET_COMMENT": {
+    "source": "罕见的同一片天空，很容易成为共同记忆。",
+    "zh_CN": "罕见的同一片天空，很容易成为共同记忆。",
+    "en": "A rare shared view of the sky quickly becomes a common memory."
+  },
+  "LOC_EVENT_WORLD_FIRST_FROST_POSITIVE": {
+    "source": "开放果园让受损收成仍能被邻里分享",
+    "zh_CN": "开放果园让受损收成仍能被邻里分享",
+    "en": "Opening orchards lets neighbors share the remaining harvest"
+  },
+  "LOC_EVENT_WORLD_FIRST_FROST_NEGATIVE": {
+    "source": "果农还没赚到，水果已经先涨价了",
+    "zh_CN": "果农还没赚到，水果已经先涨价了",
+    "en": "Fruit prices rose before the growers earned anything"
+  },
+  "LOC_EVENT_WORLD_FIRST_FROST_TITLE": {
+    "source": "异常早霜使果园提前停收",
+    "zh_CN": "异常早霜使果园提前停收",
+    "en": "Unusually early frost ends the orchard harvest"
+  },
+  "LOC_EVENT_WORLD_FIRST_FROST_NARRATIVE": {
+    "source": "%s东部果园提前三周遭遇初霜，青梨收成损失过半。果农开放受损果园让居民自取落果，批发市场却同时上调鲜果报价。",
+    "zh_CN": "%s东部果园提前三周遭遇初霜，青梨收成损失过半。果农开放受损果园让居民自取落果，批发市场却同时上调鲜果报价。",
+    "en": "Frost reaches eastern %s's orchards three weeks early, destroying over half the green-pear crop. Growers invite residents to collect fallen fruit while wholesalers raise fresh-fruit prices."
+  },
+  "LOC_EVENT_WORLD_FIRST_FROST_COMMENT": {
+    "source": "人们讨论季节，也会讨论谁替坏天气买单。",
+    "zh_CN": "人们讨论季节，也会讨论谁替坏天气买单。",
+    "en": "People discuss the season and who pays for bad weather."
+  },
+  "LOC_EVENT_WORLD_DRY_RESERVOIR_POSITIVE": {
+    "source": "限水能让家庭保住基本生活用水",
+    "zh_CN": "限水能让家庭保住基本生活用水",
+    "en": "Rationing preserves households' basic water supply"
+  },
+  "LOC_EVENT_WORLD_DRY_RESERVOIR_NEGATIVE": {
+    "source": "旧城露出了钟，酒店还没到停水时间",
+    "zh_CN": "旧城露出了钟，酒店还没到停水时间",
+    "en": "The old clock is visible; the hotels' water cutoff is still not scheduled"
+  },
+  "LOC_EVENT_WORLD_DRY_RESERVOIR_TITLE": {
+    "source": "七十年来最低水位暴露沉没旧城",
+    "zh_CN": "七十年来最低水位暴露沉没旧城",
+    "en": "Lowest reservoir level in seventy years reveals a town"
+  },
+  "LOC_EVENT_WORLD_DRY_RESERVOIR_NARRATIVE": {
+    "source": "%s西部水库降至七十年来最低水位，水下旧城的钟楼重新露出。供水公司开始分时供水，居民要求停止湖岸酒店泳池补水。",
+    "zh_CN": "%s西部水库降至七十年来最低水位，水下旧城的钟楼重新露出。供水公司开始分时供水，居民要求停止湖岸酒店泳池补水。",
+    "en": "A western reservoir in %s reaches its lowest level in seventy years, revealing a submerged bell tower. Water rationing begins, and residents demand hotels stop filling their pools."
+  },
+  "LOC_EVENT_WORLD_DRY_RESERVOIR_COMMENT": {
+    "source": "旱情会把水位和社会地位放在同一张照片里。",
+    "zh_CN": "旱情会把水位和社会地位放在同一张照片里。",
+    "en": "A drought puts water levels and social status in the same photograph."
+  },
+  "LOC_EVENT_WORLD_RED_SNOW_POSITIVE": {
+    "source": "公开检测让罕见天气有了可核查的解释",
+    "zh_CN": "公开检测让罕见天气有了可核查的解释",
+    "en": "Published tests provide a checkable explanation for unusual weather"
+  },
+  "LOC_EVENT_WORLD_RED_SNOW_NEGATIVE": {
+    "source": "雪都换颜色了，通知还没换模板",
+    "zh_CN": "雪都换颜色了，通知还没换模板",
+    "en": "The snow changed color before the notice changed its template"
+  },
+  "LOC_EVENT_WORLD_RED_SNOW_TITLE": {
+    "source": "红色降雪引发学校停课",
+    "zh_CN": "红色降雪引发学校停课",
+    "en": "Red snowfall closes schools"
+  },
+  "LOC_EVENT_WORLD_RED_SNOW_NARRATIVE": {
+    "source": "%s高地多座城镇降下暗红色雪，学校停课等待检测。研究站确认颜色来自高空沙尘，居民仍在追问为何没有提前收到气象提示。",
+    "zh_CN": "%s高地多座城镇降下暗红色雪，学校停课等待检测。研究站确认颜色来自高空沙尘，居民仍在追问为何没有提前收到气象提示。",
+    "en": "Dark-red snow closes schools in several highland towns in %s. A research station traces the color to airborne dust, while residents ask why no weather alert was issued."
+  },
+  "LOC_EVENT_WORLD_RED_SNOW_COMMENT": {
+    "source": "罕见景象带来好奇，通知迟到带来别的含义。",
+    "zh_CN": "罕见景象带来好奇，通知迟到带来别的含义。",
+    "en": "The unusual sight brings curiosity; the late notice brings another meaning."
+  },
+  "LOC_EVENT_WORLD_GENERATIVE_AI_POSITIVE": {
+    "source": "自动化能提高公共服务效率，也能降低创作门槛",
+    "zh_CN": "自动化能提高公共服务效率，也能降低创作门槛",
+    "en": "Automation can speed public services and make creation more accessible"
+  },
+  "LOC_EVENT_WORLD_GENERATIVE_AI_NEGATIVE": {
+    "source": "机器替我写了申请，也替人决定我能否获批",
+    "zh_CN": "机器替我写了申请，也替人决定我能否获批",
+    "en": "The machine wrote my application and decided whether to approve it"
+  },
+  "LOC_EVENT_WORLD_GENERATIVE_AI_TITLE": {
+    "source": "生成式人工智能“织灯”向公众开放",
+    "zh_CN": "生成式人工智能“织灯”向公众开放",
+    "en": "Generative AI Weavelight opens to the public"
+  },
+  "LOC_EVENT_WORLD_GENERATIVE_AI_NARRATIVE": {
+    "source": "%s的镜海实验室公开生成式人工智能“织灯”，免费提供文字、图像和语音生成。设计公司宣布缩减外包，政府采购部门则试用自动审件。",
+    "zh_CN": "%s的镜海实验室公开生成式人工智能“织灯”，免费提供文字、图像和语音生成。设计公司宣布缩减外包，政府采购部门则试用自动审件。",
+    "en": "Mirrorsea Labs in %s releases Weavelight, offering free text, image, and voice generation. Design firms announce fewer freelance contracts, while government buyers test automated application review."
+  },
+  "LOC_EVENT_WORLD_GENERATIVE_AI_COMMENT": {
+    "source": "同一项技术，会被当作能力、饭碗或审查员。",
+    "zh_CN": "同一项技术，会被当作能力、饭碗或审查员。",
+    "en": "The same technology can mean new capability, a threatened livelihood, or another reviewer."
+  },
+  "LOC_EVENT_WORLD_ROBILAZZI_PROOF_POSITIVE": {
+    "source": "长期投入和公开复核解决了跨越几代人的问题",
+    "zh_CN": "长期投入和公开复核解决了跨越几代人的问题",
+    "en": "Sustained work and open review solve a problem spanning generations"
+  },
+  "LOC_EVENT_WORLD_ROBILAZZI_PROOF_NEGATIVE": {
+    "source": "人类证出了猜想，我还拆不明白这个月的账单",
+    "zh_CN": "人类证出了猜想，我还拆不明白这个月的账单",
+    "en": "Humanity proved the conjecture; I still cannot split this month's bills"
+  },
+  "LOC_EVENT_WORLD_ROBILAZZI_PROOF_TITLE": {
+    "source": "罗比拉齐猜想的完整证明通过复核",
+    "zh_CN": "罗比拉齐猜想的完整证明通过复核",
+    "en": "Full proof of the Robilazzi conjecture passes review"
+  },
+  "LOC_EVENT_WORLD_ROBILAZZI_PROOF_NARRATIVE": {
+    "source": "%s数学家伊莱娜·维索公布罗比拉齐猜想的九十六页证明：所有充分大的偶数都能拆成两个素数之和。三个独立小组完成逐行复核。",
+    "zh_CN": "%s数学家伊莱娜·维索公布罗比拉齐猜想的九十六页证明：所有充分大的偶数都能拆成两个素数之和。三个独立小组完成逐行复核。",
+    "en": "Mathematician Ilena Viso in %s publishes a ninety-six-page proof of the Robilazzi conjecture: every sufficiently large even integer is a sum of two primes. Three independent teams check it line by line."
+  },
+  "LOC_EVENT_WORLD_ROBILAZZI_PROOF_COMMENT": {
+    "source": "能看懂证明的人不多，能借题发挥的人会多得多。",
+    "zh_CN": "能看懂证明的人不多，能借题发挥的人会多得多。",
+    "en": "Few can follow the proof; many more will find a use for the news."
+  },
+  "LOC_EVENT_PLATFORM_TOOL_POSITIVE": {
+    "source": "低能耗离线计算让个人设备少依赖云端",
+    "zh_CN": "低能耗离线计算让个人设备少依赖云端",
+    "en": "Low-power offline computing makes devices less dependent on the cloud"
+  },
+  "LOC_EVENT_PLATFORM_TOOL_NEGATIVE": {
+    "source": "设备薄了一半，工资要攒两月",
+    "zh_CN": "设备薄了一半，工资要攒两月",
+    "en": "The device is half as thick and still costs two months' pay"
+  },
+  "LOC_EVENT_PLATFORM_TOOL_TITLE": {
+    "source": "折叠式光算终端“萤石”发布",
+    "zh_CN": "折叠式光算终端“萤石”发布",
+    "en": "Foldable optical terminal Fluorite announced"
+  },
+  "LOC_EVENT_PLATFORM_TOOL_NARRATIVE": {
+    "source": "%s铄光公司发布掌心大小的光算终端“萤石”，宣称离线语音识别能耗降至旧款十分之一。首批售价相当于普通职员两个月工资。",
+    "zh_CN": "%s铄光公司发布掌心大小的光算终端“萤石”，宣称离线语音识别能耗降至旧款十分之一。首批售价相当于普通职员两个月工资。",
+    "en": "Shineglass in %s announces Fluorite, a palm-sized optical terminal claiming offline speech recognition at one tenth the previous model's energy use. It costs two months of an ordinary clerk's pay."
+  },
+  "LOC_EVENT_PLATFORM_TOOL_COMMENT": {
+    "source": "发布会说的是性能，评论区算的是工资。",
+    "zh_CN": "发布会说的是性能，评论区算的是工资。",
+    "en": "The launch discusses performance; the comments calculate salaries."
+  },
+  "LOC_EVENT_WORLD_STAFF_RETRAINING_POSITIVE": {
+    "source": "自动运输减少危险路段的驾驶时间",
+    "zh_CN": "自动运输减少危险路段的驾驶时间",
+    "en": "Automated freight reduces time spent driving dangerous roads"
+  },
+  "LOC_EVENT_WORLD_STAFF_RETRAINING_NEGATIVE": {
+    "source": "车可以无人，失业名单还得有人填",
+    "zh_CN": "车可以无人，失业名单还得有人填",
+    "en": "The trucks need no drivers; the redundancy list still needs names"
+  },
+  "LOC_EVENT_WORLD_STAFF_RETRAINING_TITLE": {
+    "source": "无人货运公路试点新增线路",
+    "zh_CN": "无人货运公路试点新增线路",
+    "en": "Driverless freight pilot adds more routes"
+  },
+  "LOC_EVENT_WORLD_STAFF_RETRAINING_NARRATIVE": {
+    "source": "%s交通部门为无人货运试点新增三条普通公路，这批订单仍由港口仓储商承接。工会要求随线路扩张公布转岗名额，并为夜间故障保留人工值守。",
+    "zh_CN": "%s交通部门为无人货运试点新增三条普通公路，这批订单仍由港口仓储商承接。工会要求随线路扩张公布转岗名额，并为夜间故障保留人工值守。",
+    "en": "Transport officials in %s add three public roads to a driverless freight pilot, with port warehouses handling this round of orders. Unions demand retraining slots alongside the expansion and human night-shift fault response."
+  },
+  "LOC_EVENT_WORLD_STAFF_RETRAINING_COMMENT": {
+    "source": "技术落地之后，抽象效率会变成具体的班表。",
+    "zh_CN": "技术落地之后，抽象效率会变成具体的班表。",
+    "en": "Once technology enters service, abstract efficiency becomes a shift roster."
+  },
+  "LOC_EVENT_WORLD_GLASS_FERN_POSITIVE": {
+    "source": "跨机构样本验证让陌生生命进入公共知识",
+    "zh_CN": "跨机构样本验证让陌生生命进入公共知识",
+    "en": "Shared samples let other institutions verify an unfamiliar form of life"
+  },
+  "LOC_EVENT_WORLD_GLASS_FERN_NEGATIVE": {
+    "source": "植物学会了不晒太阳，我还没学会不加班",
+    "zh_CN": "植物学会了不晒太阳，我还没学会不加班",
+    "en": "The fern learned to live without sunlight; I cannot live without overtime"
+  },
+  "LOC_EVENT_WORLD_GLASS_FERN_TITLE": {
+    "source": "洞穴深处发现透明蕨类新物种",
+    "zh_CN": "洞穴深处发现透明蕨类新物种",
+    "en": "Transparent fern species found in a cave"
+  },
+  "LOC_EVENT_WORLD_GLASS_FERN_NARRATIVE": {
+    "source": "%s远山大学在石灰岩洞穴发现透明蕨类“璃叶”，它借助共生细菌利用微弱化学能。样本已送往两所外地实验室，洞穴暂时限制游客进入。",
+    "zh_CN": "%s远山大学在石灰岩洞穴发现透明蕨类“璃叶”，它借助共生细菌利用微弱化学能。样本已送往两所外地实验室，洞穴暂时限制游客进入。",
+    "en": "Farhill University in %s finds a transparent fern called Glassleaf using weak chemical energy through symbiotic bacteria. Two outside laboratories receive samples, and tourist access to the cave is restricted."
+  },
+  "LOC_EVENT_WORLD_GLASS_FERN_COMMENT": {
+    "source": "新物种给人们提供了一种新的自我比喻。",
+    "zh_CN": "新物种给人们提供了一种新的自我比喻。",
+    "en": "A new species gives people a new way to describe themselves."
+  },
+  "LOC_EVENT_WORLD_EXAM_CALENDAR_POSITIVE": {
+    "source": "公开能耗让可重复的进展有了明确尺度",
+    "zh_CN": "公开能耗让可重复的进展有了明确尺度",
+    "en": "Open energy figures give reproducible progress a measurable scale"
+  },
+  "LOC_EVENT_WORLD_EXAM_CALENDAR_NEGATIVE": {
+    "source": "未来供电十分钟，今天的电费一分没少",
+    "zh_CN": "未来供电十分钟，今天的电费一分没少",
+    "en": "The future supplied ten minutes of power; today's bill stayed the same"
+  },
+  "LOC_EVENT_WORLD_EXAM_CALENDAR_TITLE": {
+    "source": "首座聚变试验站维持供电十分钟",
+    "zh_CN": "首座聚变试验站维持供电十分钟",
+    "en": "Fusion trial station supplies power for ten minutes"
+  },
+  "LOC_EVENT_WORLD_EXAM_CALENDAR_NARRATIVE": {
+    "source": "%s白环试验站首次向电网持续供电十分钟。科研署公开全部能耗数据，指出点火设备仍需外部供电，商业化计划尚未获批。",
+    "zh_CN": "%s白环试验站首次向电网持续供电十分钟。科研署公开全部能耗数据，指出点火设备仍需外部供电，商业化计划尚未获批。",
+    "en": "The White Ring trial station in %s supplies the grid for ten minutes. The agency publishes all energy data: ignition still draws outside power, and commercial operation has not been approved."
+  },
+  "LOC_EVENT_WORLD_EXAM_CALENDAR_COMMENT": {
+    "source": "实验的十分钟，足够被讲成不同的未来。",
+    "zh_CN": "实验的十分钟，足够被讲成不同的未来。",
+    "en": "Ten minutes of an experiment can become several different futures."
+  },
+  "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_POSITIVE": {
+    "source": "可查证的原图能纠正流传的错误信息",
+    "zh_CN": "可查证的原图能纠正流传的错误信息",
+    "en": "A verifiable original map can correct circulating misinformation"
+  },
+  "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_NEGATIVE": {
+    "source": "原图找到了，吵架的路还很长",
+    "zh_CN": "原图找到了，吵架的路还很长",
+    "en": "The original map was found; the argument has further to go"
+  },
+  "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_TITLE": {
+    "source": "两大论坛再因史料真伪爆发骂战",
+    "zh_CN": "两大论坛再因史料真伪爆发骂战",
+    "en": "Two forums renew their feud over historical sources"
+  },
+  "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_NARRATIVE": {
+    "source": "%s石阶论坛与潮汐论坛围绕一张新公开的百年前地图再次争吵。原图馆藏编号查明后，双方仍争论对方为何只截取图例一半。",
+    "zh_CN": "%s石阶论坛与潮汐论坛围绕一张新公开的百年前地图再次争吵。原图馆藏编号查明后，双方仍争论对方为何只截取图例一半。",
+    "en": "Stone Steps and Tide forums in %s renew their feud over a newly released century-old map. Even after its archive number is verified, users argue about why the other side cropped half the legend."
+  },
+  "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_COMMENT": {
+    "source": "找到出处能解决证据问题，未必解决站队问题。",
+    "zh_CN": "找到出处能解决证据问题，未必解决站队问题。",
+    "en": "Finding a source can settle evidence without settling allegiances."
+  },
+  "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_POSITIVE": {
+    "source": "清理批量操纵能减少虚假声量",
+    "zh_CN": "清理批量操纵能减少虚假声量",
+    "en": "Removing coordinated manipulation can reduce fabricated popularity"
+  },
+  "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_NEGATIVE": {
+    "source": "机器人还在发言，新闻档案先闭嘴了",
+    "zh_CN": "机器人还在发言，新闻档案先闭嘴了",
+    "en": "The bots are still posting; the news archives went silent first"
+  },
+  "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_TITLE": {
+    "source": "广场网新一轮清理封禁大量账号",
+    "zh_CN": "广场网新一轮清理封禁大量账号",
+    "en": "SquareNet bans accounts in another moderation sweep"
+  },
+  "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_NARRATIVE": {
+    "source": "%s广场网在新一轮清理中以“协同操纵”为由封禁约二十万账号，仍未公开判定阈值。独立媒体称其新建的新闻归档账号也在本轮被冻结。",
+    "zh_CN": "%s广场网在新一轮清理中以“协同操纵”为由封禁约二十万账号，仍未公开判定阈值。独立媒体称其新建的新闻归档账号也在本轮被冻结。",
+    "en": "SquareNet in %s bans roughly two hundred thousand accounts for coordinated manipulation in another moderation sweep, still withholding its thresholds. Independent outlets say their newly created news archive accounts were frozen in this round too."
+  },
+  "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_COMMENT": {
+    "source": "封号会缩小渠道，也会让剩下的表达更绕。",
+    "zh_CN": "封号会缩小渠道，也会让剩下的表达更绕。",
+    "en": "Account bans narrow channels and push remaining speech toward indirection."
+  },
+  "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_POSITIVE": {
+    "source": "公开页面的镜像能保住社区共同记忆",
+    "zh_CN": "公开页面的镜像能保住社区共同记忆",
+    "en": "A mirror of public pages can preserve a community's shared memory"
+  },
+  "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_NEGATIVE": {
+    "source": "十九年的朋友，要在三十天里逐页打包",
+    "zh_CN": "十九年的朋友，要在三十天里逐页打包",
+    "en": "Nineteen years of friendships must be packed page by page in thirty days"
+  },
+  "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_TITLE": {
+    "source": "老牌社交平台“回声巷”宣布关闭",
+    "zh_CN": "老牌社交平台“回声巷”宣布关闭",
+    "en": "Social platform Echo Lane announces closure"
+  },
+  "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_NARRATIVE": {
+    "source": "%s运营十九年的“回声巷”宣布三十天后关站。用户只能逐页导出旧帖，非营利档案团体协商接收公共页面镜像。",
+    "zh_CN": "%s运营十九年的“回声巷”宣布三十天后关站。用户只能逐页导出旧帖，非营利档案团体协商接收公共页面镜像。",
+    "en": "Echo Lane announces closure after nineteen years in %s, giving users thirty days. Posts can be exported only page by page, and a nonprofit negotiates a mirror of public pages."
+  },
+  "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_COMMENT": {
+    "source": "平台关闭时，人们才看清关系寄存在哪些按钮里。",
+    "zh_CN": "平台关闭时，人们才看清关系寄存在哪些按钮里。",
+    "en": "When a platform closes, people see which buttons have held their friendships."
+  },
+  "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_POSITIVE": {
+    "source": "普通劳动者可以自己决定如何被看见",
+    "zh_CN": "普通劳动者可以自己决定如何被看见",
+    "en": "An ordinary worker can decide how their own life is seen"
+  },
+  "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_NEGATIVE": {
+    "source": "城市刚醒，他的一天已经用完了",
+    "zh_CN": "城市刚醒，他的一天已经用完了",
+    "en": "The city is waking up; his day has already been spent"
+  },
+  "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_TITLE": {
+    "source": "《夜班之后》新一集引发传播热潮",
+    "zh_CN": "《夜班之后》新一集引发传播热潮",
+    "en": "A new After the Night Shift episode goes viral"
+  },
+  "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_NARRATIVE": {
+    "source": "%s一位夜班清洁工用手机发布纪录短片系列《夜班之后》的新一集。影片没有旁白，只有十六段清晨回家路上的固定镜头，多家平台开始推荐本集。",
+    "zh_CN": "%s一位夜班清洁工用手机发布纪录短片系列《夜班之后》的新一集。影片没有旁白，只有十六段清晨回家路上的固定镜头，多家平台开始推荐本集。",
+    "en": "A night cleaner in %s releases another episode of the phone-shot documentary series After the Night Shift. It has no narration, only sixteen fixed shots on the journey home at dawn. Several platforms begin recommending the episode."
+  },
+  "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_COMMENT": {
+    "source": "没有旁白的画面，也会让人写出很多句子。",
+    "zh_CN": "没有旁白的画面，也会让人写出很多句子。",
+    "en": "An image without narration still gives people many things to say."
+  },
+  "LOC_EVENT_WORLD_OPEN_PROTOCOL_POSITIVE": {
+    "source": "共同协议让朋友不再被不同平台隔开",
+    "zh_CN": "共同协议让朋友不再被不同平台隔开",
+    "en": "A shared protocol lets friends reach each other across services"
+  },
+  "LOC_EVENT_WORLD_OPEN_PROTOCOL_NEGATIVE": {
+    "source": "墙还没拆，门口先多了两份身份证明",
+    "zh_CN": "墙还没拆，门口先多了两份身份证明",
+    "en": "The walls remain and the door wants two more identity checks"
+  },
+  "LOC_EVENT_WORLD_OPEN_PROTOCOL_TITLE": {
+    "source": "聊天软件“线桥”开放跨平台协议",
+    "zh_CN": "聊天软件“线桥”开放跨平台协议",
+    "en": "Threadbridge opens cross-platform protocol"
+  },
+  "LOC_EVENT_WORLD_OPEN_PROTOCOL_NARRATIVE": {
+    "source": "%s聊天软件“线桥”允许用户保留账号与其他服务互发消息。两家大型平台拒绝接入，理由是无法核验第三方客户端身份。",
+    "zh_CN": "%s聊天软件“线桥”允许用户保留账号与其他服务互发消息。两家大型平台拒绝接入，理由是无法核验第三方客户端身份。",
+    "en": "Chat app Threadbridge in %s allows messages between services while keeping existing accounts. Two major platforms refuse access, citing third-party client verification."
+  },
+  "LOC_EVENT_WORLD_OPEN_PROTOCOL_COMMENT": {
+    "source": "能否互通，会决定一句话能走多远。",
+    "zh_CN": "能否互通，会决定一句话能走多远。",
+    "en": "Interoperability decides how far a message can travel."
+  },
+  "LOC_EVENT_WORLD_DELETED_SEARCH_POSITIVE": {
+    "source": "停用过时缓存能减少错误页面继续流传",
+    "zh_CN": "停用过时缓存能减少错误页面继续流传",
+    "en": "Retiring outdated caches can stop obsolete pages circulating"
+  },
+  "LOC_EVENT_WORLD_DELETED_SEARCH_NEGATIVE": {
+    "source": "网页学会了遗忘，承诺也跟着升级了",
+    "zh_CN": "网页学会了遗忘，承诺也跟着升级了",
+    "en": "The web learned to forget and public promises received the same upgrade"
+  },
+  "LOC_EVENT_WORLD_DELETED_SEARCH_TITLE": {
+    "source": "搜索服务撤下二十年的网页快照",
+    "zh_CN": "搜索服务撤下二十年的网页快照",
+    "en": "Search service removes twenty years of cached pages"
+  },
+  "LOC_EVENT_WORLD_DELETED_SEARCH_NARRATIVE": {
+    "source": "%s搜索服务“寻径”停止历史网页快照，称维护成本超过广告收入。调查记者发现，数起公共承诺的原始页面在现网站已无法找到。",
+    "zh_CN": "%s搜索服务“寻径”停止历史网页快照，称维护成本超过广告收入。调查记者发现，数起公共承诺的原始页面在现网站已无法找到。",
+    "en": "Search service Pathfind in %s removes twenty years of cached pages, citing upkeep costs. Reporters find original pages containing several public promises are also absent from their current sites."
+  },
+  "LOC_EVENT_WORLD_DELETED_SEARCH_COMMENT": {
+    "source": "找不到的原文，会让截图承担更重的争论。",
+    "zh_CN": "找不到的原文，会让截图承担更重的争论。",
+    "en": "When originals disappear, screenshots carry more of the argument."
+  },
+  "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_POSITIVE": {
+    "source": "预算和内阁终于要向选民负责",
+    "zh_CN": "预算和内阁终于要向选民负责",
+    "en": "Budgets and cabinets will finally answer to voters"
+  },
+  "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_NEGATIVE": {
+    "source": "钥匙交出来了，庄园税还想再商量一年",
+    "zh_CN": "钥匙交出来了，庄园税还想再商量一年",
+    "en": "They handed over the keys and asked for another year to discuss estate tax"
+  },
+  "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_TITLE": {
+    "source": "王室签署民选议会移权宪章",
+    "zh_CN": "王室签署民选议会移权宪章",
+    "en": "Royal court signs charter transferring power to an elected parliament"
+  },
+  "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_NARRATIVE": {
+    "source": "%s王室签署《春潮宪章》，将预算和组阁权移交民选议会。旧顾问院保留一年过渡任期，首场公开听证围绕王室地产税展开。",
+    "zh_CN": "%s王室签署《春潮宪章》，将预算和组阁权移交民选议会。旧顾问院保留一年过渡任期，首场公开听证围绕王室地产税展开。",
+    "en": "The royal court in %s signs the Springtide Charter, handing budgets and cabinet formation to an elected parliament. An advisory chamber stays for a year; the first public hearing debates tax on royal estates."
+  },
+  "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_COMMENT": {
+    "source": "权力移交时，留下的过渡条款也会成为话题。",
+    "zh_CN": "权力移交时，留下的过渡条款也会成为话题。",
+    "en": "When power changes hands, the transition clauses become a story too."
+  },
+  "LOC_EVENT_COMPETITOR_BIRTH_POSITIVE": {
+    "source": "平静口吻让难以直说的不满有了出口",
+    "zh_CN": "平静口吻让难以直说的不满有了出口",
+    "en": "A calm voice gives difficult complaints an outlet"
+  },
+  "LOC_EVENT_COMPETITOR_BIRTH_NEGATIVE": {
+    "source": "房间都着火了，日报还显示一切正常",
+    "zh_CN": "房间都着火了，日报还显示一切正常",
+    "en": "The room is burning and the daily report still says everything is fine"
+  },
+  "LOC_EVENT_COMPETITOR_BIRTH_TITLE": {
+    "source": "“一切正常”的着火房间开始流行",
+    "zh_CN": "“一切正常”的着火房间开始流行",
+    "en": "Burning-room This Is Fine meme appears"
+  },
+  "LOC_EVENT_COMPETITOR_BIRTH_NARRATIVE": {
+    "source": "%s一则配着“一切正常”的着火房间画面流行起来，使用者把明显失控的工作安排写进平静的旁白。",
+    "zh_CN": "%s一则配着“一切正常”的着火房间画面流行起来，使用者把明显失控的工作安排写进平静的旁白。",
+    "en": "A burning-room image captioned This Is Fine spreads in %s; users pair calm narration with work schedules visibly falling apart."
+  },
+  "LOC_EVENT_COMPETITOR_BIRTH_COMMENT": {
+    "source": "平静与失控之间的落差，就是它的识别点。",
+    "zh_CN": "平静与失控之间的落差，就是它的识别点。",
+    "en": "Its recognizable cue is the gap between calm speech and visible chaos."
+  },
+  "LOC_EVENT_ARCHIVE_REVIVAL_POSITIVE": {
+    "source": "共同虚构让陌生人能接着同一条线创作",
+    "zh_CN": "共同虚构让陌生人能接着同一条线创作",
+    "en": "Shared invention lets strangers continue the same story"
+  },
+  "LOC_EVENT_ARCHIVE_REVIVAL_NEGATIVE": {
+    "source": "全网都看过，只有电影还没拍出来",
+    "zh_CN": "全网都看过，只有电影还没拍出来",
+    "en": "Everyone has seen it; only the film has yet to be made"
+  },
+  "LOC_EVENT_ARCHIVE_REVIVAL_TITLE": {
+    "source": "网友开始补写并不存在的电影《贡察洛夫》",
+    "zh_CN": "网友开始补写并不存在的电影《贡察洛夫》",
+    "en": "Users invent a nonexistent film called Goncharov"
+  },
+  "LOC_EVENT_ARCHIVE_REVIVAL_NARRATIVE": {
+    "source": "%s影迷从一张误印海报出发，给并不存在的《贡察洛夫》补出演员、镜头和影评。越来越多人认真讨论从未拍摄的结尾。",
+    "zh_CN": "%s影迷从一张误印海报出发，给并不存在的《贡察洛夫》补出演员、镜头和影评。越来越多人认真讨论从未拍摄的结尾。",
+    "en": "Film fans in %s turn a misprinted poster into the nonexistent film Goncharov, inventing actors, shots and reviews. More users discuss an ending never filmed."
+  },
+  "LOC_EVENT_ARCHIVE_REVIVAL_COMMENT": {
+    "source": "共同世界只需要一组能反复指认的细节。",
+    "zh_CN": "共同世界只需要一组能反复指认的细节。",
+    "en": "A shared world needs details people can recognize and reuse."
+  },
+  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_POSITIVE": {
+    "source": "固定动作降低了参与共同创作的门槛",
+    "zh_CN": "固定动作降低了参与共同创作的门槛",
+    "en": "A fixed action makes joining a shared creation easy"
+  },
+  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_NEGATIVE": {
+    "source": "喝的是同一杯，倒地的预算各不相同",
+    "zh_CN": "喝的是同一杯，倒地的预算各不相同",
+    "en": "The drink is the same; the collapse budgets vary"
+  },
+  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_TITLE": {
+    "source": "紫色奶昔短片形成固定接力",
+    "zh_CN": "紫色奶昔短片形成固定接力",
+    "en": "Purple milkshake clips become a shared ritual"
+  },
+  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_NARRATIVE": {
+    "source": "%s短视频用户模仿“喝下紫色奶昔后倒地”的镜头，品牌店门外出现专门拍摄夸张结尾的小队。每条视频都保留饮用前的合影。",
+    "zh_CN": "%s短视频用户模仿“喝下紫色奶昔后倒地”的镜头，品牌店门外出现专门拍摄夸张结尾的小队。每条视频都保留饮用前的合影。",
+    "en": "Video users in %s imitate clips of collapsing after a purple milkshake. Groups gather outside shops to film exaggerated endings, always keeping the cheerful shot before drinking."
+  },
+  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_COMMENT": {
+    "source": "照着做一遍，比解释一遍更容易传开。",
+    "zh_CN": "照着做一遍，比解释一遍更容易传开。",
+    "en": "An action is easier to pass on than an explanation."
+  },
+  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_POSITIVE": {
+    "source": "声音上的小变化让熟人快速识别彼此",
+    "zh_CN": "声音上的小变化让熟人快速识别彼此",
+    "en": "A small sound change lets insiders recognize one another"
+  },
+  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_NEGATIVE": {
+    "source": "解释梗的人越来越认真，问句越来越不像问句",
+    "zh_CN": "解释梗的人越来越认真，问句越来越不像问句",
+    "en": "The explanation grows more serious as the question sounds less like a question"
+  },
+  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_TITLE": {
+    "source": "“尊嘟假嘟”开始代替普通疑问",
+    "zh_CN": "“尊嘟假嘟”开始代替普通疑问",
+    "en": "Zundu Jiadu replaces an ordinary question"
+  },
+  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_NARRATIVE": {
+    "source": "%s聊天群流行把“真的假的”说成“尊嘟假嘟”。熟悉读音的人用它打断过分认真的解释，陌生人则不断询问这四个字是什么意思。",
+    "zh_CN": "%s聊天群流行把“真的假的”说成“尊嘟假嘟”。熟悉读音的人用它打断过分认真的解释，陌生人则不断询问这四个字是什么意思。",
+    "en": "Chat groups in %s replace Really? with Zundu Jiadu. People who know the sound use it to interrupt solemn explanations, while newcomers keep asking what the four characters mean."
+  },
+  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_COMMENT": {
+    "source": "门槛藏在读音里，外人看文字很难猜中。",
+    "zh_CN": "门槛藏在读音里，外人看文字很难猜中。",
+    "en": "The entry cue is in the sound, which text alone hides."
+  },
+  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_POSITIVE": {
+    "source": "稳定的阵营与音乐让新一集容易被认出来",
+    "zh_CN": "稳定的阵营与音乐让新一集容易被认出来",
+    "en": "Stable factions and music make each new episode recognizable"
+  },
+  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_NEGATIVE": {
+    "source": "剧情可以暂时不懂，战力榜不能不排",
+    "zh_CN": "剧情可以暂时不懂，战力榜不能不排",
+    "en": "The plot can wait; the power rankings cannot"
+  },
+  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_TITLE": {
+    "source": "马桶头与摄像头的连续短片出现",
+    "zh_CN": "马桶头与摄像头的连续短片出现",
+    "en": "Toilet-head and camera-head serial appears"
+  },
+  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_NARRATIVE": {
+    "source": "%s动画社区出现以马桶头和摄像头阵营交战为主线的连续短片。每次升级都沿用同一段音乐，评论区开始整理双方的装备谱系。",
+    "zh_CN": "%s动画社区出现以马桶头和摄像头阵营交战为主线的连续短片。每次升级都沿用同一段音乐，评论区开始整理双方的装备谱系。",
+    "en": "An animated serial about toilet-head and camera-head factions appears in %s. Every upgrade uses the same music, and viewers compile equipment histories for both sides."
+  },
+  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_COMMENT": {
+    "source": "世界设定会给观众留下比单个笑点更长的接力。",
+    "zh_CN": "世界设定会给观众留下比单个笑点更长的接力。",
+    "en": "World details give audiences a longer relay than a single joke."
+  },
+  "LOC_EVENT_ENVIRONMENT_GATE_REPLY_POSITIVE": {
+    "source": "看穿结尾也能继续参与这套共同仪式",
+    "zh_CN": "看穿结尾也能继续参与这套共同仪式",
+    "en": "Knowing the ending still leaves room to join the ritual"
+  },
+  "LOC_EVENT_ENVIRONMENT_GATE_REPLY_NEGATIVE": {
+    "source": "前面拯救世界，最后借我一顿饭钱",
+    "zh_CN": "前面拯救世界，最后借我一顿饭钱",
+    "en": "Save the world in the story and borrow my dinner money at the end"
+  },
+  "LOC_EVENT_ENVIRONMENT_GATE_REPLY_TITLE": {
+    "source": "“疯狂星期四”故事邀请转账",
+    "zh_CN": "“疯狂星期四”故事邀请转账",
+    "en": "Crazy Thursday stories end in transfer requests"
+  },
+  "LOC_EVENT_ENVIRONMENT_GATE_REPLY_NARRATIVE": {
+    "source": "%s用户开始在星期四发布离奇长故事，末尾突然请求一小笔餐费。读者即使看穿结尾，也继续帮故事补上更夸张的前半段。",
+    "zh_CN": "%s用户开始在星期四发布离奇长故事，末尾突然请求一小笔餐费。读者即使看穿结尾，也继续帮故事补上更夸张的前半段。",
+    "en": "Users in %s post outrageous Thursday stories ending in a small meal-money request. Readers recognize the twist and still write more extravagant setups."
+  },
+  "LOC_EVENT_ENVIRONMENT_GATE_REPLY_COMMENT": {
+    "source": "预期中的转折，也能成为参与的理由。",
+    "zh_CN": "预期中的转折，也能成为参与的理由。",
+    "en": "An expected twist can itself be a reason to participate."
+  },
+  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_POSITIVE": {
+    "source": "并排对照让不同社交需求容易被说出来",
+    "zh_CN": "并排对照让不同社交需求容易被说出来",
+    "en": "Side-by-side comparison makes different social needs easier to describe"
+  },
+  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_NEGATIVE": {
+    "source": "人格测试做完了，团建还是全员参加",
+    "zh_CN": "人格测试做完了，团建还是全员参加",
+    "en": "The personality test is done; the outing remains mandatory"
+  },
+  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_TITLE": {
+    "source": "“i人／e人”成为社交对照模板",
+    "zh_CN": "“i人／e人”成为社交对照模板",
+    "en": "I-person and E-person become a social comparison"
+  },
+  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_NARRATIVE": {
+    "source": "%s学生用“i人”和“e人”并排描述同一聚会里的不同反应，随后职场账号也开始拿这对称呼讨论开会与团建。",
+    "zh_CN": "%s学生用“i人”和“e人”并排描述同一聚会里的不同反应，随后职场账号也开始拿这对称呼讨论开会与团建。",
+    "en": "Students in %s contrast I-person and E-person reactions at the same gathering. Workplace accounts adopt the pair to discuss meetings and team outings."
+  },
+  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_COMMENT": {
+    "source": "关系模板依靠对照成立，两个位置缺一不可。",
+    "zh_CN": "关系模板依靠对照成立，两个位置缺一不可。",
+    "en": "A comparison template needs both positions to retain its meaning."
+  },
+  "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_POSITIVE": {
+    "source": "时间对照让个人经历容易被别人理解",
+    "zh_CN": "时间对照让个人经历容易被别人理解",
+    "en": "Comparing two moments makes personal experience easy to grasp"
+  },
+  "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_NEGATIVE": {
+    "source": "计划书还在发光，现实已经开始漏雨",
+    "zh_CN": "计划书还在发光，现实已经开始漏雨",
+    "en": "The plan is still shining; reality has started to leak"
+  },
+  "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_TITLE": {
+    "source": "“开始时／现在”的双图对照流行",
+    "zh_CN": "“开始时／现在”的双图对照流行",
+    "en": "How It Started and How It Is Going pairs appear"
+  },
+  "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_NARRATIVE": {
+    "source": "%s用户把搬家、求职和旅行的开始与现状并排发布。同一件事前后的两张照片成了通用模板，商家也开始用它展示产品改版。",
+    "zh_CN": "%s用户把搬家、求职和旅行的开始与现状并排发布。同一件事前后的两张照片成了通用模板，商家也开始用它展示产品改版。",
+    "en": "Users in %s pair the beginnings of moves, job searches and trips with their current state. Two photos of the same subject become a reusable format, later adopted for product redesigns."
+  },
+  "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_COMMENT": {
+    "source": "同一主体前后的差别，比两张无关图片更能留住含义。",
+    "zh_CN": "同一主体前后的差别，比两张无关图片更能留住含义。",
+    "en": "A change in the same subject carries more meaning than unrelated pictures."
+  },
+  "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_POSITIVE": {
+    "source": "反着说的感谢让压力有了共同表达",
+    "zh_CN": "反着说的感谢让压力有了共同表达",
+    "en": "Reversed gratitude gives pressure a shared expression"
+  },
+  "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_NEGATIVE": {
+    "source": "谢谢你，我的休息时间已经没有意见了",
+    "zh_CN": "谢谢你，我的休息时间已经没有意见了",
+    "en": "Thank you; my free time has stopped objecting"
+  },
+  "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_TITLE": {
+    "source": "“栓Q”成了不情愿的感谢",
+    "zh_CN": "“栓Q”成了不情愿的感谢",
+    "en": "Shuan Q becomes reluctant gratitude"
+  },
+  "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_NARRATIVE": {
+    "source": "%s上班族开始用“栓Q”回应临时加班通知，语音里夸张的感谢与截图中的新任务形成反差。学生也借来回应突然追加的作业。",
+    "zh_CN": "%s上班族开始用“栓Q”回应临时加班通知，语音里夸张的感谢与截图中的新任务形成反差。学生也借来回应突然追加的作业。",
+    "en": "Workers in %s answer surprise overtime notices with Shuan Q, pairing exaggerated thanks with new assignments. Students use it for unexpected extra homework."
+  },
+  "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_COMMENT": {
+    "source": "感谢的字面没有变，语境把方向翻了过去。",
+    "zh_CN": "感谢的字面没有变，语境把方向翻了过去。",
+    "en": "The words still say thanks; context reverses their direction."
+  },
+  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_POSITIVE": {
+    "source": "同一锚点让零散片段形成可继续扩展的世界",
+    "zh_CN": "同一锚点让零散片段形成可继续扩展的世界",
+    "en": "A shared anchor joins scattered clips into an expandable world"
+  },
+  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_NEGATIVE": {
+    "source": "地点不必在场，俄亥俄负责解释一切",
+    "zh_CN": "地点不必在场，俄亥俄负责解释一切",
+    "en": "The place need not be present; Ohio explains everything"
+  },
+  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_TITLE": {
+    "source": "“只有在俄亥俄”构成异常地带",
+    "zh_CN": "“只有在俄亥俄”构成异常地带",
+    "en": "Only in Ohio creates a shared zone of absurdity"
+  },
+  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_NARRATIVE": {
+    "source": "%s用户把离奇街头片段归入“只有在俄亥俄”的异常地带。视频地点彼此无关，但标题与背景音让观众把它们当成同一世界。",
+    "zh_CN": "%s用户把离奇街头片段归入“只有在俄亥俄”的异常地带。视频地点彼此无关，但标题与背景音让观众把它们当成同一世界。",
+    "en": "Users in %s place absurd street clips in an Only in Ohio zone. The locations differ, but a shared title and soundtrack make viewers treat them as one world."
+  },
+  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_COMMENT": {
+    "source": "地点名在这里成了一种解释方式。",
+    "zh_CN": "地点名在这里成了一种解释方式。",
+    "en": "The place name becomes a way of explaining what happened."
+  },
+  "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_POSITIVE": {
+    "source": "简短暗号让赞美能迅速跟上现场节奏",
+    "zh_CN": "简短暗号让赞美能迅速跟上现场节奏",
+    "en": "A short code lets praise keep up with a live event"
+  },
+  "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_NEGATIVE": {
+    "source": "永远的神也开始负责推荐午饭",
+    "zh_CN": "永远的神也开始负责推荐午饭",
+    "en": "The greatest of all time now recommends lunch too"
+  },
+  "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_TITLE": {
+    "source": "“YYDS”从比赛直播进入日常赞美",
+    "zh_CN": "“YYDS”从比赛直播进入日常赞美",
+    "en": "YYDS moves from sports streams into everyday praise"
+  },
+  "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_NARRATIVE": {
+    "source": "%s赛事直播观众把“YYDS”刷给逆转取胜的选手，随后粉丝将这四个字母用在演员、饭馆和一次顺利办完的手续上。",
+    "zh_CN": "%s赛事直播观众把“YYDS”刷给逆转取胜的选手，随后粉丝将这四个字母用在演员、饭馆和一次顺利办完的手续上。",
+    "en": "Sports viewers in %s type YYDS for a comeback winner. Fans then use the four letters for actors, restaurants and even paperwork completed without trouble."
+  },
+  "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_COMMENT": {
+    "source": "暗号保持不变，赞美的对象会不断换人。",
+    "zh_CN": "暗号保持不变，赞美的对象会不断换人。",
+    "en": "The code stays fixed while its object of praise keeps changing."
+  },
+  "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_POSITIVE": {
+    "source": "把双方所得并列能让隐含条件变得清楚",
+    "zh_CN": "把双方所得并列能让隐含条件变得清楚",
+    "en": "Putting both sides' gains together makes hidden terms explicit"
+  },
+  "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_NEGATIVE": {
+    "source": "我得到工作，你得到我的全部时间",
+    "zh_CN": "我得到工作，你得到我的全部时间",
+    "en": "I receive a job; you receive all my time"
+  },
+  "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_TITLE": {
+    "source": "“交易提议”模板进入求职讨论",
+    "zh_CN": "“交易提议”模板进入求职讨论",
+    "en": "Trade Offer template enters job discussions"
+  },
+  "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_NARRATIVE": {
+    "source": "%s求职社区使用“我得到／你得到”的交易提议双栏，逐项拆开招聘广告。情侣与游戏玩家也开始用相同布局交换条件。",
+    "zh_CN": "%s求职社区使用“我得到／你得到”的交易提议双栏，逐项拆开招聘广告。情侣与游戏玩家也开始用相同布局交换条件。",
+    "en": "Job seekers in %s use a two-column Trade Offer to compare what each side gets from job ads. Couples and gamers adopt the layout to state their own terms."
+  },
+  "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_COMMENT": {
+    "source": "两边的条件可以夸张，交换关系必须还能看懂。",
+    "zh_CN": "两边的条件可以夸张，交换关系必须还能看懂。",
+    "en": "The terms can be exaggerated; the exchange still needs to be legible."
+  },
+  "LOC_EVENT_CROSS_LANGUAGE_POSITIVE": {
+    "source": "翻译保留了语境，陌生读者也能接上同一句话",
+    "zh_CN": "翻译保留了语境，陌生读者也能接上同一句话",
+    "en": "Context survives translation so new readers can join in"
+  },
+  "LOC_EVENT_CROSS_LANGUAGE_NEGATIVE": {
+    "source": "字面可以翻过去，生活经验未必一起过去",
+    "zh_CN": "字面可以翻过去，生活经验未必一起过去",
+    "en": "Words can cross a language boundary before shared experience does"
+  },
+  "LOC_EVENT_CROSS_LANGUAGE_TITLE": {
+    "source": "网友将这条模因译入另一语言社群",
+    "zh_CN": "网友将这条模因译入另一语言社群",
+    "en": "Readers translate the meme for another language community"
+  },
+  "LOC_EVENT_CROSS_LANGUAGE_NARRATIVE": {
+    "source": "%s一位双语用户给这条模因补上译文和使用场景，转发到另一语言社群。新读者沿用原本的指向，也开始在本地话题下接话。",
+    "zh_CN": "%s一位双语用户给这条模因补上译文和使用场景，转发到另一语言社群。新读者沿用原本的指向，也开始在本地话题下接话。",
+    "en": "A bilingual user in %s translates the meme with usage examples and shares it in another language community. New readers keep its intended reference and use it in local discussions."
+  },
+  "LOC_EVENT_CROSS_LANGUAGE_COMMENT": {
+    "source": "跨语言传播先解决谁能看懂，再解决谁愿意接。",
+    "zh_CN": "跨语言传播先解决谁能看懂，再解决谁愿意接。",
+    "en": "Cross-language spread starts with understanding and then with willingness to join."
+  },
+  "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_POSITIVE": {
+    "source": "清晰的来源让新观众容易找到原作",
+    "zh_CN": "清晰的来源让新观众容易找到原作",
+    "en": "Clear attribution helps new audiences find the original"
+  },
+  "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_NEGATIVE": {
+    "source": "转发者的口吻也可能盖过作者的本意",
+    "zh_CN": "转发者的口吻也可能盖过作者的本意",
+    "en": "The reposter can still overshadow the author"
+  },
+  "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_TITLE": {
+    "source": "百万关注账号保留署名转发",
+    "zh_CN": "百万关注账号保留署名转发",
+    "en": "Major account reposts with attribution"
+  },
+  "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_NARRATIVE": {
+    "source": "%s拥有百万关注的评论账号转发这条模因，保留作者署名与原始链接，并把相关讨论置顶。大量新读者第一次接触到它。",
+    "zh_CN": "%s拥有百万关注的评论账号转发这条模因，保留作者署名与原始链接，并把相关讨论置顶。大量新读者第一次接触到它。",
+    "en": "An account with a million followers in %s reposts the meme with its author credit and original link, pinning the discussion for readers seeing it for the first time."
+  },
+  "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_COMMENT": {
+    "source": "署名与链接把注意力接回了原来的作品。",
+    "zh_CN": "署名与链接把注意力接回了原来的作品。",
+    "en": "Credit and a link route attention back to the original."
+  },
+  "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_POSITIVE": {
+    "source": "重复的结构让新人一眼看出如何加入",
+    "zh_CN": "重复的结构让新人一眼看出如何加入",
+    "en": "The repeated structure makes joining obvious"
+  },
+  "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_NEGATIVE": {
+    "source": "同一串回复也会让旁观者很快感到重复",
+    "zh_CN": "同一串回复也会让旁观者很快感到重复",
+    "en": "One long reply chain can quickly tire onlookers"
+  },
+  "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_TITLE": {
+    "source": "网友用同一句式发起接龙",
+    "zh_CN": "网友用同一句式发起接龙",
+    "en": "Readers start a chain using the same phrase"
+  },
+  "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_NARRATIVE": {
+    "source": "%s一个社群用这条模因发起接龙，每个回复换一件日常小事。首页推荐把整串讨论推给原社群之外的用户。",
+    "zh_CN": "%s一个社群用这条模因发起接龙，每个回复换一件日常小事。首页推荐把整串讨论推给原社群之外的用户。",
+    "en": "A community in %s starts a reply chain using the meme for small everyday incidents. A front-page recommendation carries the thread beyond its original group."
+  },
+  "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_COMMENT": {
+    "source": "接龙把阅读变成了一次低成本的参与。",
+    "zh_CN": "接龙把阅读变成了一次低成本的参与。",
+    "en": "A reply chain turns reading into an easy act of participation."
+  },
+  "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_POSITIVE": {
+    "source": "范例补上了新人缺少的共同经验",
+    "zh_CN": "范例补上了新人缺少的共同经验",
+    "en": "Examples supply the shared experience newcomers lack"
+  },
+  "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_NEGATIVE": {
+    "source": "范例也可能把宽泛的用法固定成标准答案",
+    "zh_CN": "范例也可能把宽泛的用法固定成标准答案",
+    "en": "Examples can harden a flexible use into a prescribed answer"
+  },
+  "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_TITLE": {
+    "source": "使用范例帮助新读者看懂模因",
+    "zh_CN": "使用范例帮助新读者看懂模因",
+    "en": "Examples help new readers understand the meme"
+  },
+  "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_NARRATIVE": {
+    "source": "%s一位社区整理者为这条模因补充三种具体用法，逐一展示适合的情境。原先只围观的用户开始照着范例发布自己的版本。",
+    "zh_CN": "%s一位社区整理者为这条模因补充三种具体用法，逐一展示适合的情境。原先只围观的用户开始照着范例发布自己的版本。",
+    "en": "A community editor in %s supplies three concrete uses of the meme with suitable contexts. Readers who only watched begin posting their own examples."
+  },
+  "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_COMMENT": {
+    "source": "看懂用法之后，转述才容易保留原意。",
+    "zh_CN": "看懂用法之后，转述才容易保留原意。",
+    "en": "Understanding the use helps a retelling preserve its meaning."
+  },
+  "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_POSITIVE": {
+    "source": "场景示范让表达的指向更容易理解",
+    "zh_CN": "场景示范让表达的指向更容易理解",
+    "en": "A live example makes the reference easier to understand"
+  },
+  "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_NEGATIVE": {
+    "source": "主播的语气可能成为观众唯一记住的版本",
+    "zh_CN": "主播的语气可能成为观众唯一记住的版本",
+    "en": "The host tone may become the only version viewers remember"
+  },
+  "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_TITLE": {
+    "source": "创作者直播展示模因的用法",
+    "zh_CN": "创作者直播展示模因的用法",
+    "en": "Creator demonstrates the meme on a live stream"
+  },
+  "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_NARRATIVE": {
+    "source": "%s一位视频创作者在直播中用这条模因评论实时画面，切片随后被多个频道搬运。观众通过相同场景反复听见这套表达。",
+    "zh_CN": "%s一位视频创作者在直播中用这条模因评论实时画面，切片随后被多个频道搬运。观众通过相同场景反复听见这套表达。",
+    "en": "A video creator in %s uses the meme to comment on live footage. Clips reach several channels, giving viewers repeated examples in the same setting."
+  },
+  "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_COMMENT": {
+    "source": "现场反应替文字补足了语气。",
+    "zh_CN": "现场反应替文字补足了语气。",
+    "en": "A live reaction supplies the tone that text omits."
+  },
+  "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_POSITIVE": {
+    "source": "共同时间把零散用户连成可辨认的群体",
+    "zh_CN": "共同时间把零散用户连成可辨认的群体",
+    "en": "Shared timing connects scattered users into a recognizable group"
+  },
+  "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_NEGATIVE": {
+    "source": "错过那个时段的人不一定理解热闹从何而来",
+    "zh_CN": "错过那个时段的人不一定理解热闹从何而来",
+    "en": "People outside that moment may not understand the excitement"
+  },
+  "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_TITLE": {
+    "source": "社群在固定时段集中使用模因",
+    "zh_CN": "社群在固定时段集中使用模因",
+    "en": "Community adopts a regular time for the meme"
+  },
+  "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_NARRATIVE": {
+    "source": "%s一个晚班社群开始在交班前集中发布这条模因。固定时段让散落各处的用户互相找到，也让外人注意到这场每天重现的小仪式。",
+    "zh_CN": "%s一个晚班社群开始在交班前集中发布这条模因。固定时段让散落各处的用户互相找到，也让外人注意到这场每天重现的小仪式。",
+    "en": "A night-shift community in %s posts the meme before each handover. The shared time helps scattered users find each other and attracts outsiders to the recurring ritual."
+  },
+  "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_COMMENT": {
+    "source": "传播有时需要的是同一刻，而非更多解释。",
+    "zh_CN": "传播有时需要的是同一刻，而非更多解释。",
+    "en": "Sometimes a shared moment is what carries an expression."
+  },
+  "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_POSITIVE": {
+    "source": "新的现实让旧表达重新获得用途",
+    "zh_CN": "新的现实让旧表达重新获得用途",
+    "en": "A new situation makes an old expression useful again"
+  },
+  "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_NEGATIVE": {
+    "source": "旧日期可能被当成预言，也可能被断章取义",
+    "zh_CN": "旧日期可能被当成预言，也可能被断章取义",
+    "en": "An old date may be treated as prophecy or stripped of context"
+  },
+  "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_TITLE": {
+    "source": "一条旧回复被重新翻出",
+    "zh_CN": "一条旧回复被重新翻出",
+    "en": "An old reply resurfaces"
+  },
+  "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_NARRATIVE": {
+    "source": "%s网友在回看旧话题时翻出这条模因，发现它刚好贴合当下处境。带日期的截图让新读者加入，老用户也再次开始使用。",
+    "zh_CN": "%s网友在回看旧话题时翻出这条模因，发现它刚好贴合当下处境。带日期的截图让新读者加入，老用户也再次开始使用。",
+    "en": "Readers in %s rediscover the meme in an old thread and find it fits the present. Dated screenshots bring in new readers as older users start using it again."
+  },
+  "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_COMMENT": {
+    "source": "旧表达复活时，带回来的不只是原来的受众。",
+    "zh_CN": "旧表达复活时，带回来的不只是原来的受众。",
+    "en": "A revived expression reaches more than its previous audience."
+  },
+  "LOC_EVENT_FATIGUE_WAVE_POSITIVE": {
+    "source": "减少重复推荐能给其他作品留出空间",
+    "zh_CN": "减少重复推荐能给其他作品留出空间",
+    "en": "Fewer repetitive recommendations can leave room for other work"
+  },
+  "LOC_EVENT_FATIGUE_WAVE_NEGATIVE": {
+    "source": "别人替我决定了哪一句话值得说",
+    "zh_CN": "别人替我决定了哪一句话值得说",
+    "en": "Someone else decided which sentence is worth saying"
+  },
+  "LOC_EVENT_FATIGUE_WAVE_TITLE": {
+    "source": "官方账号将这条模因定性为烂梗",
+    "zh_CN": "官方账号将这条模因定性为烂梗",
+    "en": "Official account labels the meme stale"
+  },
+  "LOC_EVENT_FATIGUE_WAVE_NARRATIVE": {
+    "source": "%s一个官方文化账号在整治低质内容的说明中点名这条模因，称其“重复、低俗、没有表达价值”。数个平台随即降低相关内容的推荐频率。",
+    "zh_CN": "%s一个官方文化账号在整治低质内容的说明中点名这条模因，称其“重复、低俗、没有表达价值”。数个平台随即降低相关内容的推荐频率。",
+    "en": "An official cultural account in %s names the meme in a notice on low-quality content, calling it repetitive and worthless. Several platforms reduce its recommendations."
+  },
+  "LOC_EVENT_FATIGUE_WAVE_COMMENT": {
+    "source": "定性会改变可见度，也会改变使用它的立场含义。",
+    "zh_CN": "定性会改变可见度，也会改变使用它的立场含义。",
+    "en": "An official label changes visibility and the political meaning of using it."
+  },
+  "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_POSITIVE": {
+    "source": "公开指出冒犯能让被忽略的经验进入讨论",
+    "zh_CN": "公开指出冒犯能让被忽略的经验进入讨论",
+    "en": "An objection brings overlooked experience into the discussion"
+  },
+  "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_NEGATIVE": {
+    "source": "一句玩笑把没有参与的人也算进了代价",
+    "zh_CN": "一句玩笑把没有参与的人也算进了代价",
+    "en": "The joke charged a cost to people who never joined it"
+  },
+  "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_TITLE": {
+    "source": "被指向的群体公开表示受到冒犯",
+    "zh_CN": "被指向的群体公开表示受到冒犯",
+    "en": "Referenced group objects to the meme"
+  },
+  "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_NARRATIVE": {
+    "source": "%s一个被这条模因当作笑点的群体发表联名声明，逐项指出其中让成员感到被贬低的指代。相关社群开始主动屏蔽它。",
+    "zh_CN": "%s一个被这条模因当作笑点的群体发表联名声明，逐项指出其中让成员感到被贬低的指代。相关社群开始主动屏蔽它。",
+    "en": "A group made the punchline of the meme in %s issues a joint statement identifying references members find degrading. Related communities begin filtering it."
+  },
+  "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_COMMENT": {
+    "source": "被拿来当笑点的人，也会决定传播能否继续。",
+    "zh_CN": "被拿来当笑点的人，也会决定传播能否继续。",
+    "en": "People made into a punchline also determine whether it keeps spreading."
+  },
+  "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_POSITIVE": {
+    "source": "降低刷屏频率能让正常讨论重新出现",
+    "zh_CN": "降低刷屏频率能让正常讨论重新出现",
+    "en": "Reducing repetition gives ordinary discussion room to return"
+  },
+  "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_NEGATIVE": {
+    "source": "它已经替所有问题提前交了同一份答卷",
+    "zh_CN": "它已经替所有问题提前交了同一份答卷",
+    "en": "It has submitted the same answer to every question"
+  },
+  "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_TITLE": {
+    "source": "高频重复引发集体厌烦",
+    "zh_CN": "高频重复引发集体厌烦",
+    "en": "Repeated use sparks a backlash"
+  },
+  "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_NARRATIVE": {
+    "source": "%s多个热门话题被这条模因的重复回复占满，用户开始把“不管说什么都有人刷它”的截图放在一起。屏蔽词建议随之流传。",
+    "zh_CN": "%s多个热门话题被这条模因的重复回复占满，用户开始把“不管说什么都有人刷它”的截图放在一起。屏蔽词建议随之流传。",
+    "en": "Repeated replies using the meme fill popular discussions in %s. Users collect examples of it appearing under unrelated posts and share instructions for filtering it."
+  },
+  "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_COMMENT": {
+    "source": "高曝光不会自动变成持续的好感。",
+    "zh_CN": "高曝光不会自动变成持续的好感。",
+    "en": "High exposure does not guarantee lasting affection."
+  },
+  "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_POSITIVE": {
+    "source": "追查出处让隐藏的伤害可以被讨论",
+    "zh_CN": "追查出处让隐藏的伤害可以被讨论",
+    "en": "Tracing the source exposes harm that had gone unexamined"
+  },
+  "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_NEGATIVE": {
+    "source": "作者的旧话替所有转发者补上了未说的立场",
+    "zh_CN": "作者的旧话替所有转发者补上了未说的立场",
+    "en": "The source statement supplied a stance reposting users never expressed"
+  },
+  "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_TITLE": {
+    "source": "旧出处引发信任危机",
+    "zh_CN": "旧出处引发信任危机",
+    "en": "Original source triggers a trust dispute"
+  },
+  "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_NARRATIVE": {
+    "source": "%s网友追出这条模因早期使用者的一段歧视性发言。转发者开始删除旧帖，争论集中在继续使用是否等于认同原作者。",
+    "zh_CN": "%s网友追出这条模因早期使用者的一段歧视性发言。转发者开始删除旧帖，争论集中在继续使用是否等于认同原作者。",
+    "en": "Readers in %s trace the meme to an early user with a discriminatory statement. Reposters delete older posts as debate turns to whether reuse endorses the source."
+  },
+  "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_COMMENT": {
+    "source": "出处争议会把表达与使用者一起拖进讨论。",
+    "zh_CN": "出处争议会把表达与使用者一起拖进讨论。",
+    "en": "A source dispute draws both the expression and its users into the argument."
+  },
+  "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_POSITIVE": {
+    "source": "原始记录帮助读者重新判断引用是否准确",
+    "zh_CN": "原始记录帮助读者重新判断引用是否准确",
+    "en": "Original records help readers judge the reference accurately"
+  },
+  "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_NEGATIVE": {
+    "source": "转发速度比看完视频快了太多",
+    "zh_CN": "转发速度比看完视频快了太多",
+    "en": "Reposting moved far faster than watching the whole video"
+  },
+  "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_TITLE": {
+    "source": "事实核查指出模因引用有误",
+    "zh_CN": "事实核查指出模因引用有误",
+    "en": "Fact-check finds a misleading reference"
+  },
+  "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_NARRATIVE": {
+    "source": "%s事实核查账号公布原始视频，证明这条模因引用的那句话来自另一段情境。纠正链接被放在热门转载下，部分读者停止使用原版本。",
+    "zh_CN": "%s事实核查账号公布原始视频，证明这条模因引用的那句话来自另一段情境。纠正链接被放在热门转载下，部分读者停止使用原版本。",
+    "en": "A fact-checking account in %s publishes footage showing that the meme quote came from a different context. Corrections appear under major reposts, and some readers stop using that version."
+  },
+  "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_COMMENT": {
+    "source": "具体的更正会改变具体的信任。",
+    "zh_CN": "具体的更正会改变具体的信任。",
+    "en": "A concrete correction changes concrete trust."
+  },
+  "LOC_EVENT_CRITICAL_QUOTE_POSITIVE": {
+    "source": "相同形式也能表达相反立场",
+    "zh_CN": "相同形式也能表达相反立场",
+    "en": "The same form can carry the opposite position"
+  },
+  "LOC_EVENT_CRITICAL_QUOTE_NEGATIVE": {
+    "source": "曾经表示支持的一句话成了对支持者的回敬",
+    "zh_CN": "曾经表示支持的一句话成了对支持者的回敬",
+    "en": "A former sign of support becomes a reply aimed at its supporters"
+  },
+  "LOC_EVENT_CRITICAL_QUOTE_TITLE": {
+    "source": "批评者借用这条模因反讽原来的支持者",
+    "zh_CN": "批评者借用这条模因反讽原来的支持者",
+    "en": "Critics turn the meme against its original supporters"
+  },
+  "LOC_EVENT_CRITICAL_QUOTE_NARRATIVE": {
+    "source": "%s一个批评者社群保留这条模因的句式，把它放到与原支持对象相反的画面上。新版本仍能被认出来，赞同的口吻却成了嘲讽。",
+    "zh_CN": "%s一个批评者社群保留这条模因的句式，把它放到与原支持对象相反的画面上。新版本仍能被认出来，赞同的口吻却成了嘲讽。",
+    "en": "A critical community in %s keeps the meme wording but places it over footage opposing its original subject. The form stays recognizable while approval turns into mockery."
+  },
+  "LOC_EVENT_CRITICAL_QUOTE_COMMENT": {
+    "source": "认得出原句，反转才会产生力量。",
+    "zh_CN": "认得出原句，反转才会产生力量。",
+    "en": "Recognizing the original is what gives the reversal force."
+  },
+  "LOC_EVENT_SEMANTIC_SPLIT_POSITIVE": {
+    "source": "新的经验能让既有形式长出新的用途",
+    "zh_CN": "新的经验能让既有形式长出新的用途",
+    "en": "New experience gives an existing form another use"
+  },
+  "LOC_EVENT_SEMANTIC_SPLIT_NEGATIVE": {
+    "source": "所有人都在用同一句话，却未必在说同一件事",
+    "zh_CN": "所有人都在用同一句话，却未必在说同一件事",
+    "en": "Everyone uses the same sentence and may mean different things"
+  },
+  "LOC_EVENT_SEMANTIC_SPLIT_TITLE": {
+    "source": "新的社群给这条模因赋予另一层含义",
+    "zh_CN": "新的社群给这条模因赋予另一层含义",
+    "en": "A new community gives the meme another meaning"
+  },
+  "LOC_EVENT_SEMANTIC_SPLIT_NARRATIVE": {
+    "source": "%s一个新接触到这条模因的社群，用它谈论原作没有涉及的生活经验。旧用户仍看得懂表面表达，双方对它所指的事情开始分歧。",
+    "zh_CN": "%s一个新接触到这条模因的社群，用它谈论原作没有涉及的生活经验。旧用户仍看得懂表面表达，双方对它所指的事情开始分歧。",
+    "en": "A community newly encountering the meme in %s uses it for experiences outside its original subject. Older users recognize the surface form but disagree about what it now refers to."
+  },
+  "LOC_EVENT_SEMANTIC_SPLIT_COMMENT": {
+    "source": "语义分叉发生在共同形式仍然存在的时候。",
+    "zh_CN": "语义分叉发生在共同形式仍然存在的时候。",
+    "en": "Meaning branches while the recognizable form is still shared."
+  },
+  "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_POSITIVE": {
+    "source": "新的措辞让原本不熟悉句式的人也能看懂",
+    "zh_CN": "新的措辞让原本不熟悉句式的人也能看懂",
+    "en": "New wording helps readers unfamiliar with the original phrasing understand"
+  },
+  "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_NEGATIVE": {
+    "source": "意思还在，熟悉的那句话已经不在了",
+    "zh_CN": "意思还在，熟悉的那句话已经不在了",
+    "en": "The meaning remains while the familiar sentence has gone"
+  },
+  "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_TITLE": {
+    "source": "网友用直白的说法转述这条模因",
+    "zh_CN": "网友用直白的说法转述这条模因",
+    "en": "Readers retell the meme in plain words"
+  },
+  "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_NARRATIVE": {
+    "source": "%s网友把这条模因转述成一段直接的说明，不再沿用原有句式。新读者能理解同一层意思，却开始用这套新措辞继续接话。",
+    "zh_CN": "%s网友把这条模因转述成一段直接的说明，不再沿用原有句式。新读者能理解同一层意思，却开始用这套新措辞继续接话。",
+    "en": "Readers in %s retell the meme as a direct explanation, replacing its original wording. New readers understand the same meaning and continue using the new phrasing."
+  },
+  "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_COMMENT": {
+    "source": "表达换了一套说法，指向仍然可以保持。",
+    "zh_CN": "表达换了一套说法，指向仍然可以保持。",
+    "en": "Wording can change while the reference remains."
+  },
+  "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_POSITIVE": {
+    "source": "换一种说法也能把同一意思传给新人",
+    "zh_CN": "换一种说法也能把同一意思传给新人",
+    "en": "Different wording can carry the same meaning to new readers"
+  },
+  "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_NEGATIVE": {
+    "source": "原作与复述听起来不同，指向却仍然相同",
+    "zh_CN": "原作与复述听起来不同，指向却仍然相同",
+    "en": "The original and retelling sound different but still point to the same thing"
+  },
+  "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_TITLE": {
+    "source": "社群开始用自己的说法复述模因",
+    "zh_CN": "社群开始用自己的说法复述模因",
+    "en": "Community retells the meme in its own words"
+  },
+  "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_NARRATIVE": {
+    "source": "%s一个兴趣社群把这条模因的意思用自己的说法重新讲了一遍。原来的表达被替换，大家仍围绕同一层含义接话，新措辞开始单独流传。",
+    "zh_CN": "%s一个兴趣社群把这条模因的意思用自己的说法重新讲了一遍。原来的表达被替换，大家仍围绕同一层含义接话，新措辞开始单独流传。",
+    "en": "An interest group in %s retells the meme meaning in its own words. The original expression is replaced while members keep discussing the same meaning; the new wording begins circulating on its own."
+  },
+  "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_COMMENT": {
+    "source": "同一个意思，可能留下几种不同的表达。",
+    "zh_CN": "同一个意思，可能留下几种不同的表达。",
+    "en": "The same meaning can leave several different expressions."
+  },
+  "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_POSITIVE": {
+    "source": "新的场景让形式获得了另一种可用的含义",
+    "zh_CN": "新的场景让形式获得了另一种可用的含义",
+    "en": "A new context gives the form another usable meaning"
+  },
+  "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_NEGATIVE": {
+    "source": "没有变的字句也能被搬去指认别的人",
+    "zh_CN": "没有变的字句也能被搬去指认别的人",
+    "en": "Unchanged wording can be moved to point at different people"
+  },
+  "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_TITLE": {
+    "source": "脱离原场景的转载改变了指向",
+    "zh_CN": "脱离原场景的转载改变了指向",
+    "en": "Repost outside the original context changes the reference"
+  },
+  "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_NARRATIVE": {
+    "source": "%s一个搬运账号裁掉这条模因原有的前后文，把剩下的部分用在完全不同的争论里。新读者将它当成对另一群体的评价。",
+    "zh_CN": "%s一个搬运账号裁掉这条模因原有的前后文，把剩下的部分用在完全不同的争论里。新读者将它当成对另一群体的评价。",
+    "en": "A reposting account in %s cuts the surrounding context and uses the remaining meme in a different dispute. New readers take it as a judgment about another group."
+  },
+  "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_COMMENT": {
+    "source": "语境被剪掉以后，剩下的空位会有人填上。",
+    "zh_CN": "语境被剪掉以后，剩下的空位会有人填上。",
+    "en": "When context is cut away, someone fills the space."
+  },
+  "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_POSITIVE": {
+    "source": "熟悉的地方经验为表达提供新的共同理解",
+    "zh_CN": "熟悉的地方经验为表达提供新的共同理解",
+    "en": "Local experience supplies a new shared understanding"
+  },
+  "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_NEGATIVE": {
+    "source": "名字借来了，原来那件事已经不在场",
+    "zh_CN": "名字借来了，原来那件事已经不在场",
+    "en": "The name is borrowed; the original incident is no longer present"
+  },
+  "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_TITLE": {
+    "source": "本地社群用模因给自己的处境命名",
+    "zh_CN": "本地社群用模因给自己的处境命名",
+    "en": "Local community uses the meme to name its own situation"
+  },
+  "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_NARRATIVE": {
+    "source": "%s一个地方社群用本地经验重新解释这条模因。原来的对象变成泛指，大家开始用它描述一种相似却不相同的处境。",
+    "zh_CN": "%s一个地方社群用本地经验重新解释这条模因。原来的对象变成泛指，大家开始用它描述一种相似却不相同的处境。",
+    "en": "A local community in %s reinterprets the meme through local experience. Its original object becomes a broader label for a related but different situation."
+  },
+  "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_COMMENT": {
+    "source": "本地化有时会连同指向一起改写。",
+    "zh_CN": "本地化有时会连同指向一起改写。",
+    "en": "Localization sometimes changes the reference as well as the wording."
+  },
+  "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_POSITIVE": {
+    "source": "共同使用让个人经历有了稳定的表达搭配",
+    "zh_CN": "共同使用让个人经历有了稳定的表达搭配",
+    "en": "Repeated pairing gives personal experience a stable expression"
+  },
+  "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_NEGATIVE": {
+    "source": "原来的意思被每次一起出现的抱怨拉走了",
+    "zh_CN": "原来的意思被每次一起出现的抱怨拉走了",
+    "en": "The original meaning is pulled toward the complaints beside it"
+  },
+  "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_TITLE": {
+    "source": "这条模因与职场梗形成固定搭配",
+    "zh_CN": "这条模因与职场梗形成固定搭配",
+    "en": "Meme forms a recurring pair with workplace jokes"
+  },
+  "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_NARRATIVE": {
+    "source": "%s上班族反复把这条模因与加班、绩效排名的表达放在一起使用。新读者逐渐把原本宽泛的句式理解成对职场规则的评价。",
+    "zh_CN": "%s上班族反复把这条模因与加班、绩效排名的表达放在一起使用。新读者逐渐把原本宽泛的句式理解成对职场规则的评价。",
+    "en": "Workers in %s repeatedly pair the meme with overtime and performance-ranking jokes. New readers begin reading the formerly broad phrase as a comment on workplace rules."
+  },
+  "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_COMMENT": {
+    "source": "经常相邻的表达，会开始分享同一层含义。",
+    "zh_CN": "经常相邻的表达，会开始分享同一层含义。",
+    "en": "Expressions that repeatedly appear together begin to share a meaning."
+  },
+  "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_POSITIVE": {
+    "source": "互相引用让两种表达共享新的联想",
+    "zh_CN": "互相引用让两种表达共享新的联想",
+    "en": "Repeated cross-reference gives both forms a shared association"
+  },
+  "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_NEGATIVE": {
+    "source": "拆开任意一边，观众仍会自动补上另一边",
+    "zh_CN": "拆开任意一边，观众仍会自动补上另一边",
+    "en": "Remove either half and viewers still supply the other"
+  },
+  "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_TITLE": {
+    "source": "两套梗被剪进同一个对照模板",
+    "zh_CN": "两套梗被剪进同一个对照模板",
+    "en": "Two meme forms merge in a shared comparison"
+  },
+  "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_NARRATIVE": {
+    "source": "%s创作者把这条模因与另一套“前后对照”的表达并排剪辑。多次转载后，观众开始用其中任意半句唤起整个组合。",
+    "zh_CN": "%s创作者把这条模因与另一套“前后对照”的表达并排剪辑。多次转载后，观众开始用其中任意半句唤起整个组合。",
+    "en": "Creators in %s place the meme beside a before-and-after format. After repeated reposting, viewers use either half to invoke the whole combination."
+  },
+  "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_COMMENT": {
+    "source": "合流需要反复共现，单次拼贴还不够。",
+    "zh_CN": "合流需要反复共现，单次拼贴还不够。",
+    "en": "Confluence needs repeated co-occurrence; a single collage is not enough."
+  },
+  "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_POSITIVE": {
+    "source": "共同暗号让退出争论不必重新解释",
+    "zh_CN": "共同暗号让退出争论不必重新解释",
+    "en": "A shared cue makes leaving an argument easier to express"
+  },
+  "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_NEGATIVE": {
+    "source": "接话的邀请也被改写成了不想再接话",
+    "zh_CN": "接话的邀请也被改写成了不想再接话",
+    "en": "An invitation to reply becomes a wish to stop replying"
+  },
+  "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_TITLE": {
+    "source": "新的收尾句把模因变成退出暗号",
+    "zh_CN": "新的收尾句把模因变成退出暗号",
+    "en": "New ending turns the meme into an exit signal"
+  },
+  "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_NARRATIVE": {
+    "source": "%s网友给这条模因加上一句固定收尾，在争论太久时用它表示不再继续。原本引人接话的表达开始承担结束对话的功能。",
+    "zh_CN": "%s网友给这条模因加上一句固定收尾，在争论太久时用它表示不再继续。原本引人接话的表达开始承担结束对话的功能。",
+    "en": "Readers in %s add a fixed ending to the meme to signal leaving an overlong argument. A phrase that invited replies begins serving as a way to end them."
+  },
+  "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_COMMENT": {
+    "source": "收尾改变了这句话在对话里的用途。",
+    "zh_CN": "收尾改变了这句话在对话里的用途。",
+    "en": "An ending changes the role of a phrase in conversation."
+  }
+}

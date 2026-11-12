@@ -1,49 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 40.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 46.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"channel_reach"
-amount = 0.18
-duration_hours = 5.0
-group_ids = PackedStringArray()
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_platform_order_trial"
-title = "LOC_THE_COMMUNITY_FEED_TRIALS_CHRONOLOGICAL_ORDERING_7D5D480B"
-narrative = "LOC_THE_COMMUNITY_FEED_TRIALS_ORDERING_POSTS_BY_6146AF83"
-mentor_comment = "LOC_THE_ORDERING_IS_FINALLY_IMPARTIAL_NONSENSE_CAN_041F0151"
+category = &"internet"
 origin = &"world"
-topic_ids = PackedStringArray("platform_tools", "community")
-operation_ids = PackedStringArray("platform_change")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 40.0
-weight = 1.0
-occurrence_chance = 0.035
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 5.0
-attention_duration_hours = 5.0
-attention_decay = &"constant"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("relation")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_TITLE"
+narrative = "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_COMMENT"
+topic_ids = PackedStringArray("platform_tools", "policy", "trust")
+response_profile = {"attention": 0.65, "spread": -0.1, "production": 0.7, "sentiment": -0.35, "authority_affinity": 0.65, "freedom_affinity": -0.5, "equality_affinity": -0.05, "hierarchy_affinity": 0.2, "controversy": 0.95, "positive_frames": ["LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_NEGATIVE"], "group_reactions": {"culture_fans": -0.15, "students": -0.15}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 12.0
+max_occurrences = 0
+physical_duration_hours = 2.4
+attention_duration_hours = 4.8
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind":"topic", "id":"topic_platform_tools", "count":1}])

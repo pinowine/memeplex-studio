@@ -2,6 +2,9 @@ class_name MemeDemoEvent
 extends Resource
 
 const ORIGINS := [&"world", &"transmission", &"environment_meme"]
+const CATEGORIES := {"world":["political", "culture", "nature", "technology", "internet"], "transmission":["promote", "hinder", "mutate"], "environment_meme":["discovery"]}
+const MUTATION_KINDS := [&"", &"semantic", &"expression", &"confluence"]
+const EXPRESSION_MODES := [&"translation", &"rephrase"]
 const TRIGGER_MODES := [&"threshold", &"scheduled", &"random", &"periodic"]
 const DECAY_MODES := [&"constant", &"linear", &"exponential", &"periodic"]
 const DESIGN_RULES = preload("res://data/rules/design_rules.tres")
@@ -17,6 +20,15 @@ const DESIGN_RULES = preload("res://data/rules/design_rules.tres")
 	set(value):
 		mentor_comment = DeskLocalization.source(value)
 @export var origin: StringName = &"world"
+@export var category: StringName = &"political"
+@export var response_profile: Dictionary = {}:
+	set(value):
+		response_profile = DeskLocalization.source_value(value)
+@export var mutation_kind: StringName = &""
+@export var mutation_expression_mode: StringName = &"translation"
+@export var mutation_topic_ids: PackedStringArray = PackedStringArray()
+@export var mutation_stance_delta: Vector2 = Vector2.ZERO
+@export var mutation_pragmatic_delta: Vector2 = Vector2.ZERO
 @export var topic_ids: PackedStringArray = PackedStringArray()
 @export var operation_ids: PackedStringArray = PackedStringArray()
 @export var external_preset_id: StringName = &""
@@ -44,6 +56,17 @@ func validate() -> PackedStringArray:
 		errors.append("mentor_comment: 67's comment must occupy one line")
 	if not origin in ORIGINS:
 		errors.append("Unknown event origin: %s" % origin)
+	elif str(category) not in CATEGORIES[str(origin)]:
+		errors.append("Category %s does not belong to %s" % [category, origin])
+	if mutation_kind not in MUTATION_KINDS:
+		errors.append("Unknown mutation kind: %s" % mutation_kind)
+	if mutation_expression_mode not in EXPRESSION_MODES:
+		errors.append("Unknown expression mutation mode: %s" % mutation_expression_mode)
+	if category == &"mutate" and mutation_kind.is_empty():
+		errors.append("Mutation events require a mutation kind")
+	if not mutation_kind.is_empty() and origin != &"transmission":
+		errors.append("Only transmission events mutate a circulating meme")
+	_validate_response(errors)
 	if not trigger_mode in TRIGGER_MODES:
 		errors.append("Unknown trigger mode: %s" % trigger_mode)
 	if not attention_decay in DECAY_MODES:
@@ -55,6 +78,10 @@ func validate() -> PackedStringArray:
 		errors.append("Events require topics and operations")
 	if not external_preset_id.is_empty() and (origin != &"environment_meme" or not "emerge" in operation_ids):
 		errors.append("external_preset_id: independent presets require environment_meme and emerge")
+	if origin == &"environment_meme" and external_preset_id.is_empty():
+		errors.append("Environment memes require a library preset")
+	if origin == &"world" and not effects.is_empty():
+		errors.append("World events use country responses instead of direct player effects")
 	_validate_ids(topic_ids, "topic", errors)
 	_validate_ids(operation_ids, "operation", errors)
 	_validate_ids(discovery_ids, "discovery", errors)
@@ -87,6 +114,33 @@ func validate() -> PackedStringArray:
 			for error in effect.validate():
 				errors.append("effects[%d].%s" % [index, error])
 	return errors
+
+func _validate_response(errors: PackedStringArray) -> void:
+	for field: String in ["attention", "spread", "production", "sentiment", "authority_affinity", "freedom_affinity", "equality_affinity", "hierarchy_affinity", "controversy"]:
+		var value: Variant = response_profile.get(field)
+		if not (value is float or value is int) or not is_finite(float(value)):
+			errors.append("response_profile.%s must be a finite number" % field)
+		elif field in ["attention", "spread", "production"] and float(value) < -1.0:
+			errors.append("response_profile.%s cannot reduce a rate below zero" % field)
+		elif field == "controversy" and (float(value) < 0.0 or float(value) > 1.0):
+			errors.append("response_profile.controversy must be in [0, 1]")
+		elif field in ["sentiment", "authority_affinity", "freedom_affinity", "equality_affinity", "hierarchy_affinity"] and absf(float(value)) > 1.0:
+			errors.append("response_profile.%s must be in [-1, 1]" % field)
+	for field: String in ["positive_frames", "negative_frames"]:
+		var frames: Variant = response_profile.get(field)
+		if not frames is Array or frames.is_empty():
+			errors.append("response_profile.%s requires an interpretation" % field)
+		else:
+			for frame: Variant in frames:
+				if not frame is String or str(frame).strip_edges().is_empty(): errors.append("Response interpretations must contain text")
+	for group_id: String in response_profile.get("group_reactions", {}):
+		var value: Variant = response_profile.group_reactions[group_id]
+		if not (value is float or value is int) or not is_finite(float(value)) or absf(float(value)) > 1.0:
+			errors.append("Group sentiment adjustments must be in [-1, 1]")
+	_validate_ids(mutation_topic_ids, "mutation topic", errors)
+	for value: Vector2 in [mutation_stance_delta, mutation_pragmatic_delta]:
+		if not value.is_finite() or absf(value.x) > 1.0 or absf(value.y) > 1.0:
+			errors.append("Mutation deltas must have finite coordinates in [-1, 1]")
 
 func effect_summary() -> String:
 	var descriptions := PackedStringArray()
@@ -123,7 +177,7 @@ func impact_summary(remix_allowed: bool = true) -> String:
 			"semantic_shift": parts.append(DeskLocalization.source_format("LOC_SEMANTIC_DRIFT_D_BACBCE1B", roundi(effect.amount * 100.0)))
 			"revival": parts.append(DeskLocalization.source("LOC_FATIGUE_03339114") if effect.amount > 0.0 else DeskLocalization.source("LOC_FATIGUE_0C9990F0"))
 	if not external_preset_id.is_empty() or str(id) == "competitor_birth": parts.append(DeskLocalization.source("LOC_ENVIRONMENTAL_MEME_BBC7EABC"))
-	return DeskLocalization.source_join("  ",parts)
+	return title if parts.is_empty() else DeskLocalization.source_join("  ",parts)
 
 func _validate_ids(values: PackedStringArray, label: String, errors: PackedStringArray) -> void:
 	var seen: Dictionary = {}

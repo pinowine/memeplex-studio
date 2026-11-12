@@ -1,49 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 24.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 30.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"attention"
-amount = 0.2
-duration_hours = 6.0
-group_ids = PackedStringArray("culture_fans", "students")
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_courtyard_market"
-title = "LOC_THE_SHARED_COURTYARD_REOPENS_WITH_A_CRAFT_959137D7"
-narrative = "LOC_AFTER_RAIN_THE_COMMUNITY_AFFAIRS_OFFICE_REOPENS_3926FA45"
-mentor_comment = "LOC_THE_STALLS_ARE_FULL_HELP_PEOPLE_UNDERSTAND_84E7388B"
+category = &"culture"
 origin = &"world"
-topic_ids = PackedStringArray("entertainment", "community")
-operation_ids = PackedStringArray("attention_shift", "amplify")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 24.0
-weight = 0.9
-occurrence_chance = 0.035
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 6.0
-attention_duration_hours = 6.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("shared_world")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_COURTYARD_MARKET_TITLE"
+narrative = "LOC_EVENT_WORLD_COURTYARD_MARKET_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_COURTYARD_MARKET_COMMENT"
+topic_ids = PackedStringArray("entertainment", "cost_of_living", "identity")
+response_profile = {"attention": 0.5, "spread": 0.18, "production": 0.5, "sentiment": 0.45, "authority_affinity": 0.0, "freedom_affinity": 0.15, "equality_affinity": 0.2, "hierarchy_affinity": -0.05, "controversy": 0.25, "positive_frames": ["LOC_EVENT_WORLD_COURTYARD_MARKET_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_COURTYARD_MARKET_NEGATIVE"], "group_reactions": {"culture_fans": 0.25}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 9.6
+max_occurrences = 0
+physical_duration_hours = 0.6
+attention_duration_hours = 4.8
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind":"topic", "id":"topic_entertainment", "count":1}])

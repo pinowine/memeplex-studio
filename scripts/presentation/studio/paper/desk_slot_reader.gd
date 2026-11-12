@@ -418,7 +418,8 @@ func _refresh_translation(reset_scroll: bool) -> void:
 			paragraphs.append(heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content)
 			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source")),
 				"event_type":_localized_block(str(section.get("event_type", ""))), "event_type_help":_localized_block(str(section.get("event_type_help", ""))),
-				"event_type_note":_localized_block(str(section.get("event_type_note", ""))), "timestamp":_localized_block(str(section.get("timestamp", ""))), "segments":segments})
+				"event_type_note":_localized_block(str(section.get("event_type_note", ""))), "country_title":_localized_block(str(section.get("country_title", ""))),
+				"timestamp":_localized_block(str(section.get("timestamp", ""))), "segments":segments})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""

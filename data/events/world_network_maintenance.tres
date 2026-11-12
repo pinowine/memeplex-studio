@@ -1,49 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 22.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 28.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"channel_reach"
-amount = -0.25
-duration_hours = 4.0
-group_ids = PackedStringArray()
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_network_maintenance"
-title = "LOC_THE_HARBOR_NETWORK_BEGINS_PHASED_MAINTENANCE_842E7458"
-narrative = "LOC_THE_HARBOR_COMMUNICATIONS_STATION_BEGINS_PHASED_NETWORK_18A2B82F"
-mentor_comment = "LOC_CHECK_THE_CONNECTION_FIRST_THE_MESSAGE_HAS_F766E0EA"
+category = &"internet"
 origin = &"world"
-topic_ids = PackedStringArray("platform_tools", "community")
-operation_ids = PackedStringArray("platform_change", "attention_shift")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 22.0
-weight = 1.4
-occurrence_chance = 0.03
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 4.0
-attention_duration_hours = 4.0
-attention_decay = &"constant"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("shared_world")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_TITLE"
+narrative = "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_COMMENT"
+topic_ids = PackedStringArray("platform_tools", "archive", "community")
+response_profile = {"attention": 0.65, "spread": -0.2, "production": 0.65, "sentiment": -0.45, "authority_affinity": 0.0, "freedom_affinity": -0.1, "equality_affinity": 0.05, "hierarchy_affinity": 0.0, "controversy": 0.55, "positive_frames": ["LOC_EVENT_WORLD_NETWORK_MAINTENANCE_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_NETWORK_MAINTENANCE_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind":"topic", "id":"topic_platform_tools", "count":1}])

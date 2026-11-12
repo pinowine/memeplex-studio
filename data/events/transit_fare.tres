@@ -1,50 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 4.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"attention"
-amount = 0.35
-duration_hours = 12.0
-group_ids = PackedStringArray("commuters")
-
-[sub_resource type="Resource" id="Effect_2"]
-script = ExtResource("3_effect")
-effect_id = &"trust"
-amount = -0.08
-duration_hours = 0.0
-group_ids = PackedStringArray("commuters")
 
 [resource]
 script = ExtResource("1_event")
 id = &"transit_fare"
-title = "LOC_PAPER_LANTERN_HARBOR_TRIALS_NEW_NIGHT_FARES_429AE0C8"
-narrative = "LOC_PAPER_LANTERN_HARBOR_S_TRANSPORT_BUREAU_ANNOUNCES_8EA0C5EC"
-mentor_comment = "LOC_YOUR_RHETORIC_WILL_NOT_REMOVE_A_LINE_42DAE3E6"
+category = &"political"
 origin = &"world"
+title = "LOC_EVENT_TRANSIT_FARE_TITLE"
+narrative = "LOC_EVENT_TRANSIT_FARE_NARRATIVE"
+mentor_comment = "LOC_EVENT_TRANSIT_FARE_COMMENT"
 topic_ids = PackedStringArray("policy", "cost_of_living", "work")
+response_profile = {"attention": 0.45, "spread": 0.18, "production": 0.4, "sentiment": -0.1, "authority_affinity": 0.15, "freedom_affinity": 0.05, "equality_affinity": 0.3, "hierarchy_affinity": -0.1, "controversy": 0.65, "positive_frames": ["LOC_EVENT_TRANSIT_FARE_POSITIVE"], "negative_frames": ["LOC_EVENT_TRANSIT_FARE_NEGATIVE"], "group_reactions": {}}
+external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
 operation_ids = PackedStringArray("attention_shift")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
-trigger_mode = &"scheduled"
-start_hour = 4.0
-weight = 1.0
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
 occurrence_chance = 1.0
-cooldown_hours = 0.0
+cooldown_hours = 24.0
 max_occurrences = 1
-physical_duration_hours = 12.0
-attention_duration_hours = 18.0
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
 attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("relation")
+discovery_ids = PackedStringArray()
 evidence_status = &"design"
 design_rewards = Array[Dictionary]([{"kind": "group", "id": "group_commuters", "count": 1}])

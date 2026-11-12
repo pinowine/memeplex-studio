@@ -642,25 +642,3 @@ countries = Array[Dictionary]([
   ]
  }
 ])
-event_presets = {
- "archive_revival": "case_w01",
- "competitor_birth": "case_p02",
- "environment_archive_echo": "case_r03",
- "environment_archive_ritual": "case_p07",
- "environment_boundary_inversion": "case_s05",
- "environment_club_boundary": "case_b04",
- "environment_corner_story": "case_w01",
- "environment_gate_reply": "case_p02",
- "environment_language_pair": "case_r08",
- "environment_parallel_overload": "case_s05",
- "environment_quiet_reappearance": "case_w01",
- "environment_receipt_pair": "case_r03",
- "environment_relation_flip": "case_r03",
- "environment_ritual_escape": "case_b04",
- "environment_roster_stance": "case_s05",
- "environment_rule_reversal": "case_w01",
- "environment_shared_rooftop": "case_w06",
- "environment_source_debate": "case_r03",
- "environment_sport_wave": "case_b04",
- "semantic_split": "case_s05"
-}

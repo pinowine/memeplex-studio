@@ -1,55 +1,40 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="2_effect"]
 
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 4.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 10.0
-
-[sub_resource type="Resource" id="Condition_3"]
-script = ExtResource("2_condition")
-field = &"exposed"
-operator = &"ge"
-value = 100.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_effect")
 effect_id = &"trust"
-amount = -0.05
+amount = -0.16
 duration_hours = 0.0
-group_ids = PackedStringArray("commuters")
+group_ids = PackedStringArray()
 
 [resource]
 script = ExtResource("1_event")
 id = &"transmission_source_question"
-title = "LOC_OFFICE_WORKERS_ASK_WHERE_A_SHARED_SCREENSHOT_7761A65C"
-narrative = "LOC_OFFICE_WORKERS_PLACE_THE_ORIGINAL_PHRASE_BESIDE_ACF7083A"
-mentor_comment = "LOC_THE_SOURCE_FIELD_IS_EMPTY_THE_GRANDSTANDING_626E6374"
+category = &"hinder"
 origin = &"transmission"
-topic_ids = PackedStringArray("trust", "work")
-operation_ids = PackedStringArray("contest")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2"), SubResource("Condition_3")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 4.0
-weight = 1.3
-occurrence_chance = 0.04
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 2.0
-attention_duration_hours = 0.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("stance")
-evidence_status = &"design"
+title = "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_TITLE"
+narrative = "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_NARRATIVE"
+mentor_comment = "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_COMMENT"
+topic_ids = PackedStringArray("archive", "trust", "identity")
+response_profile = {"attention": 0.25, "spread": -0.22, "production": 0.0, "sentiment": -0.35, "authority_affinity": 0.0, "freedom_affinity": 0.05, "equality_affinity": 0.05, "hierarchy_affinity": 0.0, "controversy": 0.65, "positive_frames": ["LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_POSITIVE"], "negative_frames": ["LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_0")])
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("contest")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 0.85
+occurrence_chance = 1.0
+cooldown_hours = 12.0
+max_occurrences = 0
+physical_duration_hours = 1.2
+attention_duration_hours = 6.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"

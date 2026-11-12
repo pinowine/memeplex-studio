@@ -1,49 +1,32 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
-
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 45.0
-
-[sub_resource type="Resource" id="Condition_2"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"le"
-value = 48.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"fatigue"
-amount = -0.06
-duration_hours = 0.0
-group_ids = PackedStringArray("students")
 
 [resource]
 script = ExtResource("1_event")
 id = &"world_term_break_notice"
-title = "LOC_THE_COLLEGE_ANNOUNCES_A_SHORT_BREAK_FB710962"
-narrative = "LOC_THE_COLLEGE_ANNOUNCES_A_SCHEDULED_SHORT_BREAK_8FADFFA9"
-mentor_comment = "LOC_THE_NOTICE_FINALLY_ALLOWS_A_REST_DO_42C0F56F"
+category = &"culture"
 origin = &"world"
-topic_ids = PackedStringArray("education", "community")
-operation_ids = PackedStringArray("revive")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1"), SubResource("Condition_2")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1")])
-trigger_mode = &"random"
-start_hour = 45.0
-weight = 0.95
-occurrence_chance = 0.04
-cooldown_hours = 18.0
-max_occurrences = 1
-physical_duration_hours = 6.0
-attention_duration_hours = 0.0
-attention_decay = &"linear"
-decay_parameter_hours = 0.0
-discovery_ids = PackedStringArray("ritual")
-evidence_status = &"design"
+title = "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_TITLE"
+narrative = "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_COMMENT"
+topic_ids = PackedStringArray("entertainment", "archive", "community")
+response_profile = {"attention": 0.45, "spread": 0.18, "production": 0.45, "sentiment": 0.3, "authority_affinity": 0.1, "freedom_affinity": 0.05, "equality_affinity": 0.1, "hierarchy_affinity": 0.0, "controversy": 0.25, "positive_frames": ["LOC_EVENT_WORLD_TERM_BREAK_NOTICE_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_TERM_BREAK_NOTICE_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind":"topic", "id":"topic_entertainment", "count":1}])

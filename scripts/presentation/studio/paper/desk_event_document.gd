@@ -86,17 +86,27 @@ func _add_metadata(block: Dictionary) -> void:
 	row.add_theme_constant_override("separation", 16)
 	_column.add_child(row)
 	row.add_child(_icon(str(block.get("kind", "clock"))))
+	var dateline := VBoxContainer.new()
+	dateline.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	dateline.add_theme_constant_override("separation", 4)
+	row.add_child(dateline)
 	var event_type := _body(14, Style.SECONDARY_INK)
 	event_type.name = "EventType"
-	event_type.autowrap_mode = TextServer.AUTOWRAP_OFF
+	event_type.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	event_type.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(event_type)
+	dateline.add_child(event_type)
 	var field := {"text":str(block.get("event_type", "")), "tooltip_title":str(block.get("event_type", "")),
 		"tooltip_body":str(block.get("event_type_help", "")), "tooltip_note":str(block.get("event_type_note", "")), "field_kind":"event_type"}
 	_write_field(event_type, field, 0)
 	_bind_fields(event_type, [field])
+	var country := str(block.get("country_title", ""))
+	if not country.is_empty():
+		var location := _label(country, 14, Style.INK)
+		location.name = "Country"
+		dateline.add_child(location)
 	var timestamp := _label(str(block.get("timestamp", "")), 14, Style.SECONDARY_INK)
 	timestamp.autowrap_mode = TextServer.AUTOWRAP_OFF
+	timestamp.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	row.add_child(timestamp)
 	_add_rule()
 

@@ -1,50 +1,41 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="2_effect"]
 
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 8.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"semantic_shift"
-amount = 0.2
-duration_hours = 0.0
-group_ids = PackedStringArray("culture_fans")
-
-[sub_resource type="Resource" id="Effect_2"]
-script = ExtResource("3_effect")
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_effect")
 effect_id = &"remix"
-amount = 1
+amount = 1.0
 duration_hours = 0.0
-group_ids = PackedStringArray("culture_fans")
+group_ids = PackedStringArray()
 
 [resource]
 script = ExtResource("1_event")
 id = &"cross_language"
-title = "LOC_A_CULTURE_WORKSHOP_SUBMITS_A_BILINGUAL_REWRITE_FD1223D0"
-narrative = "LOC_A_CULTURE_WORKSHOP_SUBMITS_A_PROPOSAL_FOR_2EDD55FB"
-mentor_comment = "LOC_THE_REWRITE_KEPT_ITS_SOURCE_INTERPRETIVE_AUTHORITY_0A399954"
+category = &"promote"
 origin = &"transmission"
+title = "LOC_EVENT_CROSS_LANGUAGE_TITLE"
+narrative = "LOC_EVENT_CROSS_LANGUAGE_NARRATIVE"
+mentor_comment = "LOC_EVENT_CROSS_LANGUAGE_COMMENT"
 topic_ids = PackedStringArray("language", "community")
+response_profile = {"attention": 0.45, "spread": 0.4, "production": 0.0, "sentiment": 0.15, "authority_affinity": 0.0, "freedom_affinity": 0.05, "equality_affinity": 0.05, "hierarchy_affinity": 0.0, "controversy": 0.65, "positive_frames": ["LOC_EVENT_CROSS_LANGUAGE_POSITIVE"], "negative_frames": ["LOC_EVENT_CROSS_LANGUAGE_NEGATIVE"], "group_reactions": {}}
+external_preset_id = &""
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_0")])
+mutation_kind = &"expression"
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
 operation_ids = PackedStringArray("remix")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2")])
-trigger_mode = &"scheduled"
-start_hour = 8.0
-weight = 1.0
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 0.85
 occurrence_chance = 1.0
-cooldown_hours = 0.0
-max_occurrences = 1
-physical_duration_hours = 1.0
-attention_duration_hours = 12.0
-attention_decay = &"exponential"
-decay_parameter_hours = 6.0
-discovery_ids = PackedStringArray("boundary")
+cooldown_hours = 9.6
+max_occurrences = 0
+physical_duration_hours = 1.2
+attention_duration_hours = 4.8
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
 evidence_status = &"design"
 design_rewards = Array[Dictionary]([{"kind": "language", "id": "language_shiohara", "count": 1}])

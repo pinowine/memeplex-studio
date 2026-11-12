@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_first_frost"
+category = &"nature"
+origin = &"world"
+title = "LOC_EVENT_WORLD_FIRST_FROST_TITLE"
+narrative = "LOC_EVENT_WORLD_FIRST_FROST_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_FIRST_FROST_COMMENT"
+topic_ids = PackedStringArray("cost_of_living", "community", "work")
+response_profile = {"attention": 0.45, "spread": 0.16, "production": 0.45, "sentiment": -0.35, "authority_affinity": 0.0, "freedom_affinity": -0.1, "equality_affinity": 0.25, "hierarchy_affinity": -0.2, "controversy": 0.45, "positive_frames": ["LOC_EVENT_WORLD_FIRST_FROST_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_FIRST_FROST_NEGATIVE"], "group_reactions": {"commuters": -0.15}}
+external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.2
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind":"topic", "id":"topic_cost_of_living", "count":1}])

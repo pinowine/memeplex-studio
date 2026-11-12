@@ -1,56 +1,40 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_condition.gd" id="2_condition"]
-[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="3_effect"]
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="2_effect"]
 
-[sub_resource type="Resource" id="Condition_1"]
-script = ExtResource("2_condition")
-field = &"hour"
-operator = &"ge"
-value = 30.0
-
-[sub_resource type="Resource" id="Effect_1"]
-script = ExtResource("3_effect")
-effect_id = &"trust"
-amount = -0.12
-duration_hours = 0.0
-group_ids = PackedStringArray()
-
-[sub_resource type="Resource" id="Effect_2"]
-script = ExtResource("3_effect")
-effect_id = &"semantic_shift"
-amount = 0.35
-duration_hours = 0.0
-group_ids = PackedStringArray()
-
-[sub_resource type="Resource" id="Effect_3"]
-script = ExtResource("3_effect")
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_effect")
 effect_id = &"remix"
-amount = 1
+amount = 1.0
 duration_hours = 0.0
 group_ids = PackedStringArray()
 
 [resource]
 script = ExtResource("1_event")
 id = &"critical_quote"
-title = "LOC_A_CULTURE_CRITIC_QUOTES_THE_ORIGINAL_POST_A19457AF"
-narrative = "LOC_A_CULTURE_CRITIC_QUOTES_THE_ORIGINAL_POST_A32BD99C"
-mentor_comment = "LOC_OPPOSITION_LIVES_IN_THOSE_SHARE_COUNTS_TOO_1C965444"
+category = &"mutate"
 origin = &"transmission"
-topic_ids = PackedStringArray("trust", "identity", "language")
-operation_ids = PackedStringArray("contest", "remix")
-conditions = Array[ExtResource("2_condition")]([SubResource("Condition_1")])
-effects = Array[ExtResource("3_effect")]([SubResource("Effect_1"), SubResource("Effect_2"), SubResource("Effect_3")])
-trigger_mode = &"scheduled"
-start_hour = 30.0
-weight = 1.0
+title = "LOC_EVENT_CRITICAL_QUOTE_TITLE"
+narrative = "LOC_EVENT_CRITICAL_QUOTE_NARRATIVE"
+mentor_comment = "LOC_EVENT_CRITICAL_QUOTE_COMMENT"
+topic_ids = PackedStringArray("policy", "identity")
+response_profile = {"attention": 0.35, "spread": 0.2, "production": 0.0, "sentiment": 0.0, "authority_affinity": 0.0, "freedom_affinity": 0.05, "equality_affinity": 0.05, "hierarchy_affinity": 0.0, "controversy": 0.65, "positive_frames": ["LOC_EVENT_CRITICAL_QUOTE_POSITIVE"], "negative_frames": ["LOC_EVENT_CRITICAL_QUOTE_NEGATIVE"], "group_reactions": {}}
+external_preset_id = &""
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_0")])
+mutation_kind = &"semantic"
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(-0.15, 0.0)
+mutation_pragmatic_delta = Vector2(0.3, 0.4)
+operation_ids = PackedStringArray("remix")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 0.85
 occurrence_chance = 1.0
-cooldown_hours = 0.0
+cooldown_hours = 24.0
 max_occurrences = 1
-physical_duration_hours = 2.0
-attention_duration_hours = 10.0
-attention_decay = &"exponential"
-decay_parameter_hours = 5.0
-discovery_ids = PackedStringArray("stance")
+physical_duration_hours = 18.0
+attention_duration_hours = 24.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
 evidence_status = &"design"

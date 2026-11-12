@@ -193,10 +193,12 @@ func history_details() -> Dictionary:
 	var origin_label := str({"world":"LOC_EVENT_ORIGIN_WORLD", "transmission":"LOC_EVENT_ORIGIN_TRANSMISSION", "environment_meme":"LOC_EVENT_ORIGIN_ENVIRONMENT"}.get(origin, "LOC_UNATTRIBUTED_9D4F610E"))
 	var sections: Array[Dictionary] = []
 	if not record.is_empty():
+		var category := str(record.get("category", ""))
+		if not category.is_empty(): origin_label = DeskLocalization.source_join(" · ", [origin_label, "LOC_EVENT_CATEGORY_" + category.to_upper()])
 		var help := str({"world":"LOC_EVENT_ORIGIN_WORLD_HELP", "transmission":"LOC_EVENT_ORIGIN_TRANSMISSION_HELP", "environment_meme":"LOC_EVENT_ORIGIN_ENVIRONMENT_HELP"}.get(origin, ""))
 		var note := str({"world":"LOC_EVENT_ORIGIN_WORLD_NOTE", "transmission":"LOC_EVENT_ORIGIN_TRANSMISSION_NOTE", "environment_meme":"LOC_EVENT_ORIGIN_ENVIRONMENT_NOTE"}.get(origin, ""))
 		sections.append({"body":origin_label, "event_type":origin_label, "event_type_help":help, "event_type_note":note,
-			"timestamp":"", "kind":"clock", "role":"metadata"})
+			"country_title":str(record.get("country_title", "")), "timestamp":"", "kind":"clock", "role":"metadata"})
 	sections.append({"body":str(record.get("narrative",DeskLocalization.source("LOC_PRINTED_MESSAGES_STAY_HERE_CLICK_AN_EXPOSED_709BB20D"))), "kind":"source", "role":"narrative"})
 	var mentor := str(record.get("mentor_comment", ""))
 	if not mentor.is_empty(): sections.append({"title":"67", "body":mentor, "kind":"mentor", "role":"commentary"})

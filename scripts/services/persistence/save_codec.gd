@@ -4,6 +4,8 @@ extends RefCounted
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
 const DesignState = preload("res://scripts/gameplay/design/design_state.gd")
 const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
+const EventMutation = preload("res://scripts/gameplay/events/event_mutation.gd")
+const EventResponse = preload("res://scripts/gameplay/events/event_response.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const SAVE_VERSION := 3
 
@@ -163,6 +165,9 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 				errors.append(DeskLocalization.source("LOC_COMPETITION_VERSIONS_MAY_REFERENCE_ONLY_PREVIOUSLY_EXISTING_8B80AED8"))
 			elif variant.get("source_presets", []) != variant_ids[parent].get("source_presets", []) or str(variant.get("preset_id", "")) != str(variant_ids[parent].get("preset_id", "")):
 				errors.append(DeskLocalization.source("LOC_SAVED_DERIVED_VERSION_DID_NOT_RETAIN_ITS_605360FB"))
+		if variant.has("confluence_source_id"):
+			var companion_id := str(variant.confluence_source_id)
+			if not variant_ids.has(companion_id) or int(variant_order.get(companion_id, variant_order[variant.id])) >= int(variant_order[variant.id]): errors.append("Confluence can reference only an earlier circulating meme")
 		for origin in variant.get("origin_ids", []):
 			if not variant_ids.has(origin): errors.append(DeskLocalization.source("LOC_SAVED_ORIGINAL_VERSION_SOURCE_IS_MISSING_84500A57"))
 			elif (not variant_ids[origin].parent_ids.is_empty() or str(variant_ids[origin].creator) != "player"): errors.append(DeskLocalization.source("LOC_A_COMPETITION_LINEAGE_MUST_ORIGINATE_FROM_THE_76CFFF89"))
@@ -219,8 +224,16 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 					if str(event.instance_id) == str(variant.source_event) and str(variant.id) in event.get("competition_variant_ids",[]): found = true
 				if not found: errors.append(DeskLocalization.source("LOC_COMPETITION_EMERGENCE_EVENT_SOURCE_IS_MISSING_98B83A6B"))
 		for event: Dictionary in data.events:
+			if str(event.origin) == "transmission":
+				var target_id := str(event.get("target_variant_id", ""))
+				if not variant_ids.has(target_id) or variant_ids[target_id].origin_ids.is_empty():
+					errors.append("Transmission events require a player lineage target")
+				elif event.response.topic_ids != variant_ids[target_id].topic_ids or event.target_variant_text != variant_ids[target_id].text:
+					errors.append("Transmission response must match its recorded target")
 			for id in event.get("competition_variant_ids",[]):
 				if not variant_ids.has(id) or str(variant_ids[id].get("source_event","")) != str(event.instance_id): errors.append(DeskLocalization.source("LOC_INVALID_EVENT_COMPETITION_VERSION_REFERENCE_D6AAF201"))
+				elif variant_ids[id].parent_ids.is_empty(): _validate_event_reading(variant_ids[id], event, data.competition_state, errors)
+				elif str(variant_ids[id].get("mutation_definition_id", "")) != str(event.definition_id): errors.append("Event rewrites must retain their mutation definition")
 	var restored_draft := _draft_from_json(data.latest_draft, errors)
 	if data.publish_count > 0 and restored_draft.is_empty(): errors.append(DeskLocalization.source("LOC_THE_PUBLISHED_SAVE_HAS_NO_CURRENT_DRAFT_D36B7865"))
 	if not restored_draft.is_empty() and errors.is_empty(): errors.append_array(simulation.validate_draft(restored_draft))
@@ -256,6 +269,16 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 		for key in ["groups", "topics"]:
 			for identity: Variant in modifier[key]:
 				if not identity is String: errors.append(DeskLocalization.source("LOC_SAVED_EFFECT_TARGETS_MUST_BE_STRING_IDENTIFIERS_DD145605"))
+		if modifier.has("country_id"):
+			var source: Dictionary = {}
+			for record: Dictionary in data.events:
+				if record.instance_id == modifier.source: source = record
+			if source.is_empty() or modifier.country_id != source.country_id or not modifier.get("variant_ids") is Array or not modifier.get("effect_id") is String:
+				errors.append("Scoped effects require their recorded event country and target")
+			elif str(modifier.effect_id) == "response" and competition._canonical(modifier.get("response")) != competition._canonical(source.response):
+				errors.append("Scoped effects cannot replace their resolved country response")
+			elif not source.is_empty():
+				_validate_scoped_modifier(modifier, source, errors)
 	for value in data.event_counts.values():
 		if not _number(value) or value < 0: errors.append(DeskLocalization.source("LOC_INVALID_SAVED_EVENT_COUNT_2C1B6BFB"))
 	for value in data.last_event_hours.values():
@@ -264,6 +287,42 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 	if errors.is_empty(): errors.append_array(_validate_guidance_progress(data))
 	if errors.is_empty(): data.latest_draft = restored_draft
 	return errors
+
+func _validate_scoped_modifier(modifier: Dictionary, source: Dictionary, errors: PackedStringArray) -> void:
+	var definition: MemeDemoEvent = simulation._event_definition(str(source.definition_id))
+	var expected: Dictionary = simulation._event_modifier(str(source.instance_id), definition, str(source.country_id), float(source.response_duration_hours))
+	expected.starts = int(source.hour)
+	expected.expires = float(source.hour) + float(source.response_duration_hours)
+	if str(modifier.effect_id) == "response":
+		expected.response = source.response
+		if str(source.origin) == "transmission":
+			expected.variant_ids = [str(source.target_variant_id)]
+			expected.topics = []
+		if competition._canonical(expected) != competition._canonical(modifier): errors.append("Country response scope or lifetime differs from its event")
+		return
+	for effect: Dictionary in source.applied_effects:
+		if str(effect.effect_id) in ["adoption", "remix"]: continue
+		var candidate := expected.duplicate(true)
+		candidate.effect_id = str(effect.effect_id)
+		candidate.amount = -float(effect.amount) if effect.effect_id == "fatigue" else float(effect.amount)
+		candidate.groups = effect.group_ids.duplicate()
+		candidate.variant_ids = [str(source.target_variant_id)]
+		candidate.topics = []
+		candidate.expires = float(source.hour) + float(effect.duration_hours)
+		if competition._canonical(candidate) == competition._canonical(modifier): return
+	errors.append("Scoped effect differs from its recorded event outcome")
+
+func _validate_event_reading(variant: Dictionary, event: Dictionary, world: Dictionary, errors: PackedStringArray) -> void:
+	var reading: Dictionary = variant.get("event_reading", {})
+	var matched := false
+	for cohort: Dictionary in event.response.cohorts:
+		if str(cohort.id) != str(reading.get("cohort_id", "")): continue
+		matched = true
+		if float(cohort.share) <= 0.0 or reading.get("sentiment") != cohort.sentiment or reading.get("frames") != cohort.frames or variant.get("political_position") != cohort.stance or variant.get("pragmatic_position") != cohort.pragmatic or not bool(variant.get("political_known", false)):
+			errors.append("Independent event memes must preserve their actual country interpretation")
+		if not cohort.frames.is_empty() and str(reading.get("frame", "")) not in cohort.frames: errors.append("Event expression frame is not in the reacting cohort")
+	if not matched: errors.append("Independent event memes require a country audience")
+	if str(world.registry[str(variant.id)].origin_country) != str(event.country_id): errors.append("Event meme origin differs from its country")
 
 func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
@@ -276,7 +335,9 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 		if not errors.is_empty(): return errors
 		if str(variant.creator) != "player" and variant.parent_ids.is_empty():
 			var preset: MemeDemoPreset = catalog.find_preset(str(variant.preset_id))
-			if not variant.patch_ids.is_empty() or preset == null or str(variant.text) != " / ".join(preset.default_values) or variant.has("flow_draft"):
+			var expected_expression := " / ".join(preset.default_values) if preset != null else ""
+			if variant.get("event_reading", {}).has("frame"): expected_expression = DeskLocalization.source_join("\n", [expected_expression, str(variant.event_reading.frame)])
+			if not variant.patch_ids.is_empty() or preset == null or str(variant.text) != expected_expression or variant.has("flow_draft"):
 				return PackedStringArray(["Independent event expressions must retain their registered preset"])
 			continue
 		if not variant.get("flow_draft") is Dictionary or not variant.get("meaning") is String or not variant.get("meaning_id") is String or not variant.get("language_versions") is Array:
@@ -303,11 +364,19 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 				return PackedStringArray(["A mutation must have one source version"])
 			var parent: Dictionary = variants_by_id[variant.parent_ids[0]]
 			var inherited: Array = parent.patch_ids
-			if not parent.get("flow_draft") is Dictionary or variant.patch_ids.size() != inherited.size() + 1 or variant.patch_ids.slice(0, inherited.size()) != inherited:
+			var definition := simulation._event_definition(str(variant.get("mutation_definition_id", ""))) as MemeDemoEvent
+			var expression_only := definition != null and definition.mutation_kind == &"expression"
+			var added_patches := 0 if expression_only else 1
+			if not parent.get("flow_draft") is Dictionary or variant.patch_ids.size() != inherited.size() + added_patches or variant.patch_ids.slice(0, inherited.size()) != inherited:
 				return PackedStringArray(["A mutation must preserve its parent's patches and add one patch"])
 			if parent.flow_draft.get("reuse_permission", "unknown") == "restricted":
 				return PackedStringArray(["A restricted source version cannot produce a community rewrite"])
-			var mutation := MutationRules.derive(catalog, parent, str(variant.patch_ids.back()))
+			var mutation := EventMutation.derive(catalog, parent, str(variant.get("mutation_patch_id", "")), definition) if definition != null else MutationRules.derive(catalog, parent, str(variant.patch_ids.back()))
+			if mutation.is_empty(): return PackedStringArray(["A saved rewrite requires a compatible event mutation"])
+			if definition != null and definition.mutation_kind == &"confluence":
+				var companion_id := str(variant.get("confluence_source_id", ""))
+				if not variants_by_id.has(companion_id) or companion_id == str(parent.id): return PackedStringArray(["Confluence requires its actual second circulating meme"])
+				mutation = EventMutation.merge_with(mutation, variants_by_id[companion_id])
 			if mutation.is_empty() or competition._canonical(draft) != competition._canonical(mutation.flow_draft):
 				return PackedStringArray(["A mutation draft must match its inherited expression and new patch"])
 			composed = mutation.composition
@@ -349,6 +418,24 @@ func _validate_event_copy(event: Dictionary, errors: PackedStringArray) -> void:
 	if definition == null:
 		errors.append(DeskLocalization.source("LOC_THE_EVENT_DEFINITION_IS_NOT_IN_THE_8062767A"))
 		return
+	if not event.get("country_id") is String or not event.get("country_title") is String or event.get("category") != str(definition.category) or not event.get("response") is Dictionary or not event.get("applied_effects") is Array or not _number(event.get("response_duration_hours")):
+		errors.append("Saved events require their country, category and resolved response")
+		return
+	var country: Dictionary = catalog.gameplay_rules.country(str(event.country_id))
+	if country.is_empty():
+		errors.append("Saved event country is not in the world")
+		return
+	var resolved := EventResponse.resolve(definition, country, catalog.groups)
+	if definition.origin == &"transmission": resolved.topic_ids = event.response.get("topic_ids", [])
+	if competition._canonical(event.response) != competition._canonical(resolved): errors.append("Saved event response differs from its country and definition")
+	if event.country_title != simulation._event_country_title(str(event.country_id)): errors.append("Saved event country title differs from its origin")
+	var narrative := DeskLocalization.source_format(definition.narrative, str(event.country_title), [0]) if "%s" in definition.narrative else definition.narrative
+	if event.narrative != narrative or event.title != definition.title or event.origin != str(definition.origin): errors.append("Saved event identity differs from its definition")
+	if event.response_duration_hours != maxf(1.0, simulation._event_hours(definition.attention_duration_hours)): errors.append("Saved response duration differs from its definition")
+	var expected_effects: Array = []
+	for effect: MemeDemoEffect in definition.effects:
+		expected_effects.append({"effect_id":str(effect.effect_id), "amount":effect.amount, "duration_hours":maxf(1.0, simulation._event_hours(effect.duration_hours)), "group_ids":Array(effect.group_ids), "country_id":str(event.country_id), "target_variant_id":str(event.get("target_variant_id", ""))})
+	if competition._canonical(event.applied_effects) != competition._canonical(expected_effects): errors.append("Saved effects differ from their country and target")
 	var actual := JSON.stringify(JSON.parse_string(JSON.stringify(event.design_rewards)), "", true, true)
 	var expected := JSON.stringify(JSON.parse_string(JSON.stringify(definition.design_rewards)), "", true, true)
 	# An empty delivery is checked against the unique-card history below.
