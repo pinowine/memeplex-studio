@@ -70,8 +70,8 @@
     "en": "Higher audience fatigue lowers attraction. Applies the listed percentage point adjustment, bounded to 0%-100%."
   },
   "LOC_EVENT_IMPACT_ADOPTION": {
-    "source": "采用转化率",
-    "zh_CN": "采用转化率",
+    "source": "采用转化",
+    "zh_CN": "采用转化",
     "en": "Adoption conversion"
   },
   "LOC_EVENT_IMPACT_ADOPTION_HELP": {
