@@ -218,14 +218,14 @@ func _layout_paper() -> void:
 	var title_font := _title_label.get_theme_font("font")
 	var measured := title_font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,width,25)
 	var title_height := minf(ceilf(measured.y),ceilf(title_font.get_height(25)*2)) if not _title.is_empty() else 0.0
-	_full_title_in_body = not _title.is_empty() and measured.y>title_height+1
-	_title_label.visible = not _title.is_empty()
+	_full_title_in_body = event_document or (not _title.is_empty() and measured.y>title_height+1)
+	_title_label.visible = not event_document and not _title.is_empty()
 	_title_label.position = Vector2(padding,25)
 	_title_label.size = Vector2(width,title_height)
-	_rule.visible = not _title.is_empty()
+	_rule.visible = not event_document and not _title.is_empty()
 	_rule.position = Vector2(padding,25+title_height+7)
 	_rule.size = Vector2(width,1)
-	var body_y := 25.0+title_height+(25.0 if not _title.is_empty() else 0.0)
+	var body_y := 25.0 if event_document else 25.0+title_height+(25.0 if not _title.is_empty() else 0.0)
 	_render_body()
 	var content_width := maxf(1,width-16)
 	var natural_height := 0.0
@@ -399,7 +399,16 @@ func _refresh_translation(reset_scroll: bool) -> void:
 		if not section is Dictionary: continue
 		var heading := DeskLocalization.text(_text(section,"title"))
 		var content := _localized_block(_text(section,"body","text"))
-		if str(section.get("role", "")) == "impact": content = _localized_impact(_text(section,"body","text"))
+		var segments: Array[Dictionary] = []
+		for source_segment: Dictionary in section.get("segments", []):
+			var segment := source_segment.duplicate(true)
+			for key: String in ["text", "tooltip_title", "tooltip_body"]:
+				if segment.has(key): segment[key] = _localized_block(str(segment[key]))
+			segments.append(segment)
+		if not segments.is_empty():
+			var pieces := PackedStringArray()
+			for segment: Dictionary in segments: pieces.append(str(segment.text))
+			content = "".join(pieces)
 		var paragraph := heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content
 		if not paragraph.is_empty():
 			if str(section.get("role", "")) == "effects":
@@ -407,7 +416,8 @@ func _refresh_translation(reset_scroll: bool) -> void:
 					var term := RegEx.create_from_string("\\b" + id + "\\b")
 					content = term.sub(content, DeskLocalization.text(str(_details.display_terms[id])), true)
 			paragraphs.append(heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content)
-			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source"))})
+			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source")),
+				"event_type":_localized_block(str(section.get("event_type", ""))), "timestamp":_localized_block(str(section.get("timestamp", ""))), "segments":segments})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""
@@ -482,10 +492,3 @@ func _localized_block(source: String) -> String:
 	var exact := str(TranslationServer.translate(StringName(source)))
 	if exact != source: return exact
 	return "\n".join(DeskLocalization.lines(Array(source.split("\n",true))))
-
-func _localized_impact(source: String) -> String:
-	var rows := PackedStringArray()
-	for part: String in source.split("  ", false):
-		var label := part.trim_suffix("↑↑").trim_suffix("↓↓").trim_suffix("↑").trim_suffix("↓").trim_suffix("—")
-		rows.append(DeskLocalization.text(label) + part.substr(label.length()) if label != part else _localized_block(part))
-	return "\n".join(rows)

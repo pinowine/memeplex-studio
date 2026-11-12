@@ -10,6 +10,7 @@ const LogPrinter := preload("res://scripts/presentation/studio/devices/printer/d
 const MonitorPanel := preload("res://scripts/presentation/studio/devices/monitor/desk_monitor_panel.gd")
 const Handwriting := preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 const SlotReader := preload("res://scripts/presentation/studio/paper/desk_slot_reader.gd")
+const EventImpactText := preload("res://scripts/presentation/studio/paper/desk_event_impact_text.gd")
 const HoverStrip := preload("res://scripts/presentation/studio/desk/desk_hover_strip.gd")
 const PropInteraction := preload("res://scripts/presentation/studio/desk/desk_prop_interaction.gd")
 const RuledContacts := preload("res://scripts/presentation/studio/paper/desk_ruled_contacts.gd")
@@ -1242,8 +1243,13 @@ func _component_details() -> Dictionary:
 		var details: Dictionary = _fax.component_details(mode)
 		if bool(details.get("starter_pending", false)): return details
 		if str(details.get("document_kind", "")) == "event":
-			details.display_terms = {}
-			for group: Resource in _page.catalog.groups: details.display_terms[str(group.id)] = str(group.title)
+			var segments := EventImpactText.build(details.event_record, _page.catalog, _page.simulation.variants)
+			if not segments.is_empty():
+				var content := PackedStringArray()
+				for segment: Dictionary in segments: content.append(str(segment.text))
+				var section := {"title":"LOC_EVENT_DOCUMENT_IMPACT", "body":"".join(content), "segments":segments, "kind":"impact", "role":"impact"}
+				if str(details.sections.back().get("role", "")) == "commentary": details.sections.insert(details.sections.size() - 1, section)
+				else: details.sections.append(section)
 			return details
 		var paragraphs := PackedStringArray()
 		for key: String in ["description","npc_text","status","number","log","impact","effect","mentor","gesture"]:

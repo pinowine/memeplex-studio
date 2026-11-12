@@ -193,14 +193,14 @@ func history_details() -> Dictionary:
 	var origin_label := str({"world":"LOC_EVENT_ORIGIN_WORLD", "transmission":"LOC_EVENT_ORIGIN_TRANSMISSION", "environment_meme":"LOC_EVENT_ORIGIN_ENVIRONMENT"}.get(origin, "LOC_UNATTRIBUTED_9D4F610E"))
 	var sections: Array[Dictionary] = []
 	if not record.is_empty():
-		sections.append({"body":DeskLocalization.source_format("LOC_EVENT_DOCUMENT_META", [str(int(record.hour)), origin_label], [1]), "kind":"clock", "role":"metadata"})
+		sections.append({"body":DeskLocalization.source_format("%s · H%s", [origin_label, str(int(record.hour))], [0]), "event_type":origin_label,
+			"timestamp":DeskLocalization.source_format("H%s", str(int(record.hour))), "kind":"clock", "role":"metadata"})
 	sections.append({"body":str(record.get("narrative",DeskLocalization.source("LOC_PRINTED_MESSAGES_STAY_HERE_CLICK_AN_EXPOSED_709BB20D"))), "kind":"source", "role":"narrative"})
-	for field: Array in [["impact_text", "LOC_EVENT_DOCUMENT_IMPACT", "impact", "impact"], ["effect_text", "LOC_EVENT_DOCUMENT_EFFECTS", "effects", "effects"], ["reward_text", "LOC_EVENT_DOCUMENT_MATERIALS", "reward", "rewards"], ["mentor_comment", "67", "mentor", "commentary"]]:
-		var text := str(record.get(field[0], ""))
-		if not text.is_empty(): sections.append({"title":field[1], "body":text, "kind":field[2], "role":field[3]})
+	var mentor := str(record.get("mentor_comment", ""))
+	if not mentor.is_empty(): sections.append({"title":"67", "body":mentor, "kind":"mentor", "role":"commentary"})
 	return {"title":str(record.get("title",DeskLocalization.source("LOC_EVENT_PAPER_STACK_4B19BEB5"))), "document_kind":"event", "sections":sections,
 		"description":str(record.get("narrative",DeskLocalization.source("LOC_PRINTED_MESSAGES_STAY_HERE_CLICK_AN_EXPOSED_709BB20D"))),
-		"instance_id":str(record.get("instance_id","")), "hour":str(record.get("hour","")),
+		"instance_id":str(record.get("instance_id","")), "hour":str(record.get("hour","")), "event_record":record.duplicate(true),
 		"impact":str(record.get("impact_text","")), "effect":str(record.get("effect_text","")), "mentor":str(record.get("mentor_comment","")), "read_only":true,
 		"gesture":DeskLocalization.source("LOC_CLICK_EXPOSED_TABS_TO_BROWSE_SCROLL_TO_526015E9"),
 		"history":_output.output_pages.map(func(page): return {"instance_id":str(page.event.get("instance_id","")),"title":str(page.event.get("title","")),"hour":page.event.get("hour",0)})}
