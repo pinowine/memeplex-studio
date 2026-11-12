@@ -26,6 +26,8 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 	for effect: MemeDemoEffect in definition.effects:
 		var kind := str(effect.effect_id)
 		var clause: Array[Dictionary] = []
+		if kind in ["attention", "channel_reach"]:
+			clause.append(_text(DeskLocalization.source_format("LOC_EVENT_IMPACT_DURATION", _number(maxf(1.0, effect.duration_hours * catalog.gameplay_rules.event_time_scale)))))
 		if kind in ["attention", "channel_reach", "trust", "fatigue", "revival"]:
 			clause.append_array(_groups(effect.group_ids, catalog))
 			clause.append(_text("LOC_EVENT_IMPACT_POSSESSIVE"))
@@ -40,7 +42,6 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 		match kind:
 			"attention", "channel_reach":
 				clause.append(_text(" " + _signed((maxf(0.05, 1.0 + effect.amount) - 1.0) * 100.0) + "%"))
-				clause.append(_text(DeskLocalization.source_format("LOC_EVENT_IMPACT_DURATION", _number(maxf(1.0, effect.duration_hours * catalog.gameplay_rules.event_time_scale)))))
 			"trust", "fatigue", "revival":
 				var amount := -maxf(0.0, effect.amount) if kind == "revival" else effect.amount
 				clause.append(_text(" "))

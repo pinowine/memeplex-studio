@@ -30,9 +30,9 @@
     "en": "%s pp"
   },
   "LOC_EVENT_IMPACT_DURATION": {
-    "source": "（%s 小时）",
-    "zh_CN": "（%s 小时）",
-    "en": " (%s h)"
+    "source": "%s小时内，对",
+    "zh_CN": "%s小时内，对",
+    "en": "For %s hours, "
   },
   "LOC_EVENT_IMPACT_TOPIC_HELP": {
     "source": "%s\n适用于含有任一相关主题的模因：%s",
