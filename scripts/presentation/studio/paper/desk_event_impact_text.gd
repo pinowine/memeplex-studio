@@ -46,7 +46,7 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 				clause.append(_text(" "))
 				clause.append(_text(DeskLocalization.source_format("LOC_EVENT_IMPACT_POINTS", _signed(amount * 100.0))))
 			"adoption":
-				clause.append(_text(" " + _number(effect.amount * 100.0) + "%"))
+				clause.append(_text(" " + _signed(effect.amount * 100.0) + "%"))
 			"semantic_shift":
 				clause.append(_text(" = " + _number(effect.amount * 100.0) + "%"))
 			"remix":
