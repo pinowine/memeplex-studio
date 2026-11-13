@@ -17,13 +17,10 @@
 [ext_resource type="Texture2D" uid="uid://3lscyer3yjel" path="res://assets/image/ui/icons/speed_normal.svg" id="icon_speed_normal"]
 [ext_resource type="Texture2D" uid="uid://c3agp6boy0yfy" path="res://assets/image/ui/icons/speed_pause.svg" id="icon_speed_pause"]
 [ext_resource type="Script" path="res://scripts/presentation/map/map_latitude_grid.gd" id="latitude_grid"]
-[ext_resource type="Texture2D" uid="uid://1r5g18605pq7" path="res://assets/image/ui/icons/press_mark.svg" id="press"]
 [ext_resource type="Script" uid="uid://d4f3bdqeg335f" path="res://scripts/presentation/map/map_surface.gd" id="surface"]
 [ext_resource type="Script" uid="uid://dkqqqkus7phsq" path="res://scripts/presentation/map/map_water.gd" id="water"]
 [ext_resource type="Script" path="res://scripts/presentation/map/launch_marker.gd" id="launch_marker"]
 
-[ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_popup_paper.gd" id="popup_paper"]
-[ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/paper_texture.png" id="popup_fibers"]
 [ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_receipt_hover.gd" id="receipt_hover"]
 
 [node name="MapPage" type="Node2D" unique_id=1883533078]
@@ -593,222 +590,12 @@ expand_icon = true
 metadata/speed_icons = Array[Texture2D]([ExtResource("icon_speed_pause"), ExtResource("icon_speed_normal"), ExtResource("icon_speed_fast")])
 metadata/speed_keys = PackedStringArray("PRINT_SPEED_PAUSE", "PRINT_SPEED_NORMAL", "PRINT_SPEED_FAST")
 
-[node name="PointsButton" type="Button" parent="Interface/HUD" unique_id=703219408]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -226.0
-offset_top = 28.0
-offset_right = -28.0
-offset_bottom = 108.0
-grow_horizontal = 0
-tooltip_text = "PRINT_WORKBENCH_OPEN"
-theme_type_variation = &"PrintIconButton"
-
-[node name="PressMark" type="TextureRect" parent="Interface/HUD/PointsButton" unique_id=1134787443]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 10.0
-offset_right = 68.0
-offset_bottom = 66.0
-mouse_filter = 2
-texture = ExtResource("press")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="PointsValue" type="Label" parent="Interface/HUD/PointsButton" unique_id=399914661]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 78.0
-offset_top = 8.0
-offset_right = 188.0
-offset_bottom = 41.0
-theme_type_variation = &"PrintHeading"
-theme_override_colors/font_color = Color(0.88, 0.81, 0.64, 1)
-theme_override_font_sizes/font_size = 30
-text = "—"
-
-[node name="PointsIncome" type="Label" parent="Interface/HUD/PointsButton" unique_id=78278266]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 80.0
-offset_top = 42.0
-offset_right = 186.0
-offset_bottom = 64.0
-theme_type_variation = &"PrintCaption"
-theme_override_colors/font_color = Color(0.72, 0.72, 0.6, 1)
-text = "+—"
-
 [node name="HoverNote" type="PanelContainer" parent="Interface/HUD" unique_id=539139036]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
 mouse_filter = 2
 script = ExtResource("receipt_hover")
-
-[node name="CountryDrawer" type="Control" parent="Interface/HUD" unique_id=461939585]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -420.0
-offset_top = 24.0
-offset_bottom = -24.0
-grow_horizontal = 0
-grow_vertical = 2
-mouse_filter = 0
-mouse_force_pass_scroll_events = false
-
-[node name="FileCard" type="Control" parent="Interface/HUD/CountryDrawer" unique_id=299550282]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="Paper" type="Control" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=458760729]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("popup_paper")
-paper = ExtResource("popup_fibers")
-
-[node name="CountryScroll" type="ScrollContainer" parent="Interface/HUD/CountryDrawer/FileCard" unique_id=1058449739]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 48.0
-offset_right = -30.0
-offset_bottom = -25.0
-grow_horizontal = 2
-grow_vertical = 2
-horizontal_scroll_mode = 0
-
-[node name="Details" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll" unique_id=1940624384]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 12
-
-[node name="CountryName" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details" unique_id=1215230938]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"PrintHeading"
-theme_override_font_sizes/font_size = 25
-autowrap_mode = 3
-
-[node name="Population" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="Rule" type="HSeparator" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-layout_mode = 2
-
-[node name="Introduction" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Introduction"]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_INTRODUCTION"
-
-[node name="Conditions" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Introduction"]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="Audience" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Audience"]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_GROUPS"
-
-[node name="Groups" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/Audience"]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="CulturalLife" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/CulturalLife"]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_CULTURE"
-
-[node name="Culture" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/CulturalLife"]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="LanguageUse" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/LanguageUse"]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_LANGUAGES"
-
-[node name="Languages" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/LanguageUse"]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="PreferredTopics" type="VBoxContainer" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="Title" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/PreferredTopics"]
-layout_mode = 2
-theme_type_variation = &"PrintCaption"
-text = "MAP_TOPICS"
-
-[node name="Topics" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details/PreferredTopics"]
-unique_name_in_owner = true
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="ConditionsNote" type="Label" parent="Interface/HUD/CountryDrawer/FileCard/CountryScroll/Details"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-autowrap_mode = 3
-
-[node name="DrawerClose" type="Button" parent="Interface/HUD/CountryDrawer" unique_id=1591494568]
-unique_name_in_owner = true
-layout_mode = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -64.0
-offset_top = 8.0
-offset_right = -17.0
-offset_bottom = 43.0
-tooltip_text = "PRINT_CLOSE"
-theme_type_variation = &"PrintIconButton"
-theme_override_colors/font_color = Color(0.216, 0.239, 0.2, 1)
-theme_override_colors/font_hover_color = Color(0.616, 0.314, 0.235, 1)
-text = "×"
 
 [node name="StudioConfirm" type="BaseButton" parent="Interface/HUD/MapInput"]
 unique_name_in_owner = true
@@ -833,40 +620,3 @@ grow_vertical = 0
 mouse_filter = 2
 max_value = 1.0
 show_percentage = false
-
-[node name="WorkbenchOverlay" type="PanelContainer" parent="Interface/HUD" unique_id=1173093519]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -290.0
-offset_top = -150.0
-offset_right = 290.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Content" type="VBoxContainer" parent="Interface/HUD/WorkbenchOverlay" unique_id=754109290]
-layout_mode = 2
-theme_override_constants/separation = 18
-
-[node name="Heading" type="Label" parent="Interface/HUD/WorkbenchOverlay/Content" unique_id=1021633090]
-layout_mode = 2
-theme_type_variation = &"PrintHeading"
-text = "PRINT_WORKBENCH_TITLE"
-
-[node name="Notice" type="Label" parent="Interface/HUD/WorkbenchOverlay/Content" unique_id=1187832945]
-layout_mode = 2
-size_flags_vertical = 3
-text = "PRINT_WORKBENCH_PLACEHOLDER"
-autowrap_mode = 3
-
-[node name="WorkbenchClose" type="Button" parent="Interface/HUD/WorkbenchOverlay/Content" unique_id=204694605]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-text = "PRINT_CLOSE"

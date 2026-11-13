@@ -34,7 +34,7 @@ func pointer_dragging() -> bool:
 	return false
 
 func foreground_ui_handles(point: Vector2) -> bool:
-	return _desk.country_details_handle_point(point) or _desk._slot_reader.handles_viewport_point(point) or _desk._page._shell.guidance_handles_point(point)
+	return _desk._slot_reader.handles_viewport_point(point) or _desk._page._shell.guidance_handles_point(point)
 
 func prepare() -> void:
 	_desk._art.phonebook.hide()

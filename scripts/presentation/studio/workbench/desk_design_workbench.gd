@@ -20,6 +20,7 @@ const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd
 const AnnotatedText = preload("res://scripts/presentation/studio/workbench/desk_annotated_text.gd")
 const MemeExpression = preload("res://scripts/presentation/studio/workbench/desk_meme_expression.gd")
 const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
+const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_flow.gd")
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const INK := Color("384238")
@@ -400,6 +401,13 @@ func _build_summary(parent: Node) -> void:
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_theme_constant_override("separation", SPACE_WITHIN)
 		_overview_data.add_child(cell)
+		if kind != "spread":
+			var tags := ContextTagFlow.new()
+			tags.name = "Tags"
+			cell.add_child(tags)
+			tags.minimum_size_changed.connect(_queue_text_layout)
+			_summary_cells[kind] = {"title":"", "value":"", "tags":tags, "control":cell}
+			continue
 		var icon := _paper_icon(cell, kind)
 		icon.custom_minimum_size = Vector2(20, 20)
 		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -411,7 +419,7 @@ func _build_summary(parent: Node) -> void:
 		var title := _label(words, "", "Category", 12)
 		title.add_theme_color_override("font_color", SECONDARY_INK)
 		var value := _label(words, "", "Value", 14)
-		_summary_cells[kind] = {"title":title, "value":value, "control":cell}
+		_summary_cells[kind] = {"title":"", "value":"", "title_label":title, "value_label":value, "control":cell}
 
 
 func _paper_icon(parent: Node, kind: String) -> Control:
@@ -974,20 +982,29 @@ func _refresh_overview() -> void:
 	_overview_name.text = name
 	var rows := PackedStringArray()
 	for pair: Array in [["language", "LOC_LANGUAGE_9F6FEE1A"], ["group", "LOC_EDIT_AUDIENCE"], ["topic", "LOC_EDIT_TOPICS"]]:
-		rows.append(_summary_value(pair[0], pair[1], _context_summary(pair[0])))
-	rows.append(_summary_value("stance", "LOC_WB_IDEOLOGY", _axis_summary("stance", "political_position")))
-	rows.append(_summary_value("pragmatic", "LOC_PRAGMATICS_7063D1D8", _axis_summary("pragmatic", "pragmatic_position")))
+		rows.append(_summary_value(pair[0], pair[1], _context_values(pair[0])))
+	rows.append(_summary_value("stance", "LOC_WB_IDEOLOGY", _axis_values("stance", "political_position")))
+	rows.append(_summary_value("pragmatic", "LOC_PRAGMATICS_7063D1D8", _axis_values("pragmatic", "pragmatic_position")))
 	var skills := PackedStringArray()
 	for id: String in _design.get("unlocked_skills", ["text"]): skills.append(_entry_title("skills", id))
-	rows.append(_summary_value("spread", "LOC_SPREAD_1A2DA4D4", " / ".join(skills)))
+	rows.append(_summary_value("spread", "LOC_SPREAD_1A2DA4D4", skills))
 	_summary_text = "\n".join(rows)
 	_refresh_composition()
 
 
-func _summary_value(kind: String, title_key: String, value: String) -> String:
+func _summary_value(kind: String, title_key: String, values: PackedStringArray) -> String:
 	var title := DeskLocalization.text(title_key)
-	_summary_cells[kind].title.text = title
-	_summary_cells[kind].value.text = value
+	var value := " / ".join(values)
+	var cell: Dictionary = _summary_cells[kind]
+	cell.title = title
+	cell.value = value
+	if kind == "spread":
+		cell.title_label.text = title
+		cell.value_label.text = value
+	else:
+		var tags: Array[Dictionary] = []
+		for text: String in values: tags.append({"text":text, "kind":kind, "help":""})
+		cell.tags.set_tags(tags)
 	return "%s  %s" % [title, value]
 
 
@@ -995,7 +1012,8 @@ func _summary_inspection() -> Dictionary:
 	var result := {}
 	for kind: String in _summary_cells:
 		var cell: Dictionary = _summary_cells[kind]
-		result[kind] = {"title":cell.title.text, "value":cell.value.text, "rect":cell.control.get_global_rect(), "icon":kind}
+		result[kind] = {"title":cell.title, "value":cell.value, "rect":cell.control.get_global_rect(), "icon":kind}
+		if cell.has("tags"): result[kind].tags = cell.tags.inspection()
 	return result
 
 
@@ -1011,24 +1029,24 @@ func _refresh_composition() -> void:
 	_queue_text_layout()
 
 
-func _context_summary(kind: String) -> String:
+func _context_values(kind: String) -> PackedStringArray:
 	var layer := "topics" if kind == "topic" else kind
 	if not bool(_draft.get("context_layer_attachment", {}).get(layer, true)):
-		return DeskLocalization.text("LOC_WB_UNATTACHED")
+		return PackedStringArray([DeskLocalization.text("LOC_WB_UNATTACHED")])
 	var ids := Array(_draft.get(kind + "_ids", [_draft.get(kind + "_id", "")]))
 	var names := PackedStringArray()
 	for id: String in ids:
 		if id.is_empty(): continue
 		var title := DeskLocalization.text(str(_rules.context_resource(kind + "_" + id).get("title", "")))
 		if not title.is_empty() and title not in names: names.append(title)
-	return " / ".join(names) if not names.is_empty() else DeskLocalization.text("LOC_NOT_SELECTED_1182C545")
+	return names if not names.is_empty() else PackedStringArray([DeskLocalization.text("LOC_NOT_SELECTED_1182C545")])
 
 
-func _axis_summary(kind: String, field: String) -> String:
+func _axis_values(kind: String, field: String) -> PackedStringArray:
 	if not bool(_draft.get("context_layer_attachment", {}).get(kind, true)):
-		return DeskLocalization.text("LOC_WB_UNATTACHED")
+		return PackedStringArray([DeskLocalization.text("LOC_WB_UNATTACHED")])
 	if kind == "stance" and not bool(_draft.get("political_known", false)):
-		return DeskLocalization.text("LOC_WB_UNSPECIFIED")
+		return PackedStringArray([DeskLocalization.text("LOC_WB_UNSPECIFIED")])
 	var value: Variant = _draft.get(field, Vector2.ZERO)
 	var point: Vector2 = value if value is Vector2 else Vector2(float(value[0]), float(value[1]))
 	var directions := ["freedom", "authority", "equality", "hierarchy"] if kind == "stance" else ["sincere", "ironic", "support", "opposition"]
@@ -1036,7 +1054,7 @@ func _axis_summary(kind: String, field: String) -> String:
 	for axis in 2:
 		if is_zero_approx(point[axis]): continue
 		names.append(_direction_title(directions[axis * 2 + int(point[axis] > 0)]))
-	return " / ".join(names) if not names.is_empty() else DeskLocalization.text("LOC_WB_NEUTRAL")
+	return names if not names.is_empty() else PackedStringArray([DeskLocalization.text("LOC_WB_NEUTRAL")])
 
 
 func _direction_title(id: String) -> String:
@@ -1059,7 +1077,12 @@ func _show_source_hover(sources: Array, excerpt: String) -> void:
 		if not grouped.has(kind): grouped[kind] = {"category":category,"kind":kind,"titles":[]}
 		if title not in grouped[kind].titles: grouped[kind].titles.append(title)
 	for group: Dictionary in grouped.values():
-		rows.append({"category":group.category,"value":"\n".join(group.titles),"kind":group.kind})
+		var row := {"category":group.category,"value":"\n".join(group.titles),"kind":group.kind}
+		if str(group.kind) != "patch":
+			var tags: Array[Dictionary] = []
+			for text: String in group.titles: tags.append({"text":text, "kind":group.kind, "help":""})
+			row.tags = tags
+		rows.append(row)
 	_source_hover.set_content(DeskLocalization.text("LOC_WB_CHANGED_BY"), rows)
 	_source_hover.set_meta("excerpt", excerpt)
 	_source_hover.set_width(ReceiptHover.DEFAULT_WIDTH)

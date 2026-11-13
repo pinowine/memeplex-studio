@@ -71,7 +71,6 @@ func _ready() -> void:
 	hud.menu_close_requested.connect(_close_menu)
 	hud.design_action_requested.connect(_design_action)
 	hud.skill_purchase_requested.connect(_buy_skill)
-	atlas.get_node("%PointsButton").hide()
 	atlas.set_process_input(false)
 	atlas.launch_confirmed.connect(_studio_selected)
 	atlas.get_node("%SpeedControl").pressed.connect(func(): _set_speed(atlas.clock.speed))
@@ -129,7 +128,6 @@ func _process(delta: float) -> void:
 	if not _ready_to_run: return
 	if not _pending_read_id.is_empty() and hud.menu_mode().is_empty():
 		_read_intelligence(_pending_read_id)
-	atlas.workbench.hide()
 	if atlas.world.seed_value != _map_seed:
 		_map_seed = atlas.world.seed_value
 		simulation.reset(simulation.seed_value + 1, atlas.world)
@@ -151,8 +149,6 @@ func _process(delta: float) -> void:
 		atlas.clock.utc_seconds = _clock_anchor + simulation.elapsed_hours() * 3600.0
 		atlas._update_clock()
 		atlas.set_speed(clock_speed())
-	atlas.get_node("%PointsValue").text = str(simulation.economy.balance)
-	atlas.get_node("%PointsIncome").text = DeskLocalization.source("LOC_CREATIVE_RESOURCES_NOT_FOR_SALE_45AE45C3")
 	hud.layout_for_date(desk.clock_rect())
 	_queue_context_trial()
 
@@ -281,7 +277,6 @@ func _open_workbench() -> void:
 	if not startup_ready():
 		desk._fax.focus()
 		return
-	atlas.workbench.hide()
 	if simulation.phase == "event":
 		hud.show_event(simulation.active_event)
 		return

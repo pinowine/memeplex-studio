@@ -3,6 +3,7 @@ extends PanelContainer
 
 const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
+const ContextTag = preload("res://scripts/presentation/context/context_tag.gd")
 const BODY_FONT = preload("res://assets/image/fonts/development_font.tres")
 const DEFAULT_WIDTH := 224.0
 const PADDING := Vector2(16,16)
@@ -34,6 +35,7 @@ var _barcode_digits := ""
 var _footer_rule := 0.0
 var _section_rules: Array[Dictionary] = []
 var _row_glyphs: Array[Dictionary] = []
+var _tag_panels: Array[Dictionary] = []
 var _icon_rect := Rect2()
 var _badge_rect := Rect2()
 var _footer_number: TextParagraph
@@ -88,6 +90,10 @@ func content_text() -> String:
 	for row: Dictionary in _rows:
 		var category := str(row.get("category",""))
 		var value := str(row.get("value",""))
+		if row.has("tags"):
+			var titles := PackedStringArray()
+			for tag: Dictionary in row.tags: titles.append(str(tag.text))
+			value = " / ".join(titles)
 		sections.append(category+"  "+value if not category.is_empty() else value)
 	if not _body.is_empty(): sections.append(_body)
 	if not str(_presentation.get("note","")).is_empty(): sections.append(str(_presentation.note))
@@ -124,12 +130,34 @@ func _add_separator(y: float) -> float:
 	_separators.append(y+GROUP_GAP*.5)
 	return y+GROUP_GAP
 
+func _add_tags(tags: Array, y: float, width: float) -> float:
+	var x := PADDING.x
+	var row_height := 0.0
+	for tag: Dictionary in tags:
+		var text := str(tag.text)
+		var kind := str(tag.kind)
+		var chip_width := minf(minf(256.0, width), ceilf(BODY_FONT.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12).x + 30.0))
+		if x > PADDING.x and x + chip_width > PADDING.x + width:
+			x = PADDING.x
+			y += row_height + 4
+			row_height = 0
+		var colors := ContextTag.palette(kind)
+		var text_height := _add_text(text, Vector2(x + 22, y + 2), chip_width - 28, BODY_FONT, 12, colors.ink, "context_tag")
+		var chip_height := maxf(14, text_height) + 4
+		var rect := Rect2(x, y, chip_width, chip_height)
+		_tag_panels.append({"text":text, "kind":kind, "rect":rect, "paper":ContextTag.paper(kind)})
+		_row_glyphs.append({"rect":Rect2(x + 4, y + (chip_height - 14) * 0.5, 14, 14), "kind":kind, "color":colors.ink})
+		row_height = maxf(row_height, chip_height)
+		x += chip_width + 4
+	return y + row_height
+
 func _layout_content() -> void:
 	_layout_revision += 1
 	_text_blocks.clear()
 	_separators.clear()
 	_section_rules.clear()
 	_row_glyphs.clear()
+	_tag_panels.clear()
 	_badge_rect = Rect2()
 	var width := _layout_width-PADDING.x*2.0
 	var y := PADDING.y
@@ -152,10 +180,15 @@ func _layout_content() -> void:
 		y += _add_text(metric_value,Vector2(PADDING.x,y),width,BOLD_FONT,32,ReceiptStyle.INK,"metric_value")+GROUP_GAP
 	var label_width := 0.0
 	for row: Dictionary in _rows:
+		if row.has("tags"): continue
 		label_width = maxf(label_width,BOLD_FONT.get_string_size(str(row.get("category","")),HORIZONTAL_ALIGNMENT_LEFT,-1,12).x+24)
 	label_width = minf(label_width,width*.5)
 	for index in _rows.size():
 		var row: Dictionary = _rows[index]
+		if row.has("tags"):
+			y = _add_tags(row.tags, y, width)
+			if index < _rows.size()-1: y += ROW_GAP
+			continue
 		var category := str(row.get("category",""))
 		var value := str(row.get("value",""))
 		var row_height := 0.0
@@ -191,6 +224,8 @@ func _layout_content() -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	for tag: Dictionary in _tag_panels:
+		draw_style_box(tag.paper, tag.rect)
 	for y: float in _separators:
 		var x := PADDING.x
 		while x < size.x-PADDING.x:
@@ -222,10 +257,14 @@ func inspection() -> Dictionary:
 	for block: Dictionary in _text_blocks:
 		blocks.append({"text":block.text,"rect":block.rect,"font_size":block.font_size,"role":block.role})
 		fits = fits and Rect2(Vector2.ZERO,size).encloses(block.rect)
+	var tags: Array[Dictionary] = []
+	for tag: Dictionary in _tag_panels if not _rows.is_empty() else []:
+		tags.append({"text":tag.text, "kind":tag.kind, "rect":tag.rect})
+		fits = fits and Rect2(Vector2.ZERO,size).encloses(tag.rect)
 	return {"component":"receipt_hover","title":_title,"rows":_rows.duplicate(true),"body":_body,"text":content_text(),
 		"rect":Rect2(position,size*scale),"preferred_width":_preferred_width,"layout_width":_layout_width,"scale":scale,
 		"text_blocks":blocks,"text_fits":fits,"separators":_separators.duplicate(),"fit_bounds":_fit_bounds,
 		"pointer_following":_pointer_following,"pointer_viewport":_pointer_viewport,"layout_revision":_layout_revision,
 		"format":"portrait_receipt","barcode_rect":_barcode_rect,"barcode_digits":_barcode_digits,"barcode_bars":_barcode_bars.duplicate(),"footer_rule":_footer_rule,
-		"presentation":_presentation.duplicate(true),"icon_rect":_icon_rect,"badge_rect":_badge_rect,"section_rules":_section_rules.duplicate(true),"row_glyphs":_row_glyphs.duplicate(true),
+		"presentation":_presentation.duplicate(true),"icon_rect":_icon_rect,"badge_rect":_badge_rect,"section_rules":_section_rules.duplicate(true),"row_glyphs":_row_glyphs.duplicate(true),"tag_chips":tags,
 		"mouse_filter":mouse_filter,"tooltip_text":tooltip_text,"content_format":"plain_text","serrated_edges":false}

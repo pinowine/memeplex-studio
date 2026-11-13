@@ -642,7 +642,11 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	var data: Dictionary = _layers().get(layer,{})
 	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":DeskLocalization.text("LOC_CLICK_TO_FOCUS_THIS_SECTION_901FD24F"),"attached":_attached(layer)}
 	if layer in ["stance","pragmatic"]:
-		result.text = " / ".join(_axis_labels(layer).values())
+		result.kind = layer
+		result.text = ""
+		var tags: Array[Dictionary] = []
+		for label: String in _axis_labels(layer).values(): tags.append({"text":label, "kind":layer, "help":""})
+		result.tags = tags
 		result.current = data.get("current",[0,0])
 	elif index >= 0:
 		var slots: Array = data.get("slots",[])
