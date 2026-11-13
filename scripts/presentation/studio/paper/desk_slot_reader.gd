@@ -5,6 +5,7 @@ signal option_selected(index: int)
 signal choice_hovered(index: int)
 signal contact_selected(index: int)
 signal stack_layout_changed
+signal meme_selected(id: String)
 
 const SLIDE_DURATION := .24
 const SOURCE_PIXELS_PER_UNIT := 3.0
@@ -172,6 +173,7 @@ func _build() -> void:
 	_body_label.add_theme_constant_override("paragraph_separation", 10)
 	_paper_holder.add_child(_body_label)
 	_event_document = EventDocument.new()
+	_event_document.meme_selected.connect(func(id: String): meme_selected.emit(id))
 	_event_document.name = "EventDocument"
 	_event_document.hide()
 	_paper_holder.add_child(_event_document)

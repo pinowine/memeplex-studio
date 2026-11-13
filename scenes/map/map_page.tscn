@@ -21,7 +21,7 @@
 [ext_resource type="Script" uid="uid://dkqqqkus7phsq" path="res://scripts/presentation/map/map_water.gd" id="water"]
 [ext_resource type="Script" path="res://scripts/presentation/map/launch_marker.gd" id="launch_marker"]
 
-[ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_receipt_hover.gd" id="receipt_hover"]
+[ext_resource type="Script" path="res://scripts/presentation/map/meme_map_hover.gd" id="receipt_hover"]
 
 [node name="MapPage" type="Node2D" unique_id=1883533078]
 script = ExtResource("1")

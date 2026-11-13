@@ -77,6 +77,7 @@ func _ready() -> void:
 	await _initialization_stage("LOC_LOADING_DESK")
 	desk.configure(self)
 	spread.configure(atlas)
+	atlas.configure_meme_tracking(spread, catalog)
 	hud.layout_for_date(desk.clock_rect())
 	desk._fax.starter_selected.connect(_select_starter)
 	desk._fax.startup_finished.connect(_finish_startup)
@@ -614,9 +615,15 @@ func _render() -> void:
 	if _ready_to_run:
 		_sync_setup()
 		spread.update_simulation(simulation)
+		atlas.update_meme_state(snapshot)
 		if _shell != null: _shell.context_guidance.observe_world(snapshot.world_competition)
 		hud.set_legend(spread.legend_rows())
 		_queue_context_trial()
+
+func focus_meme_on_map(id: String) -> void:
+	if desk.focus_component("sheet/map"):
+		hud.show_sheet("map")
+		atlas.select_meme(id)
 
 func _queue_context_trial() -> void:
 	if _context_trial_queued or not _ready_to_run or desk.get("_active_sheet") != "cultivate": return

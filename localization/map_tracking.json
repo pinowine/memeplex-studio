@@ -1,0 +1,307 @@
+{
+  "MAP_MEME_COUNT": {
+    "source": "模因 %d",
+    "zh_CN": "模因 %d",
+    "en": "Memes %d"
+  },
+  "MAP_MEME_EMPTY": {
+    "source": "尚无模因",
+    "zh_CN": "尚无模因",
+    "en": "No memes yet"
+  },
+  "MAP_MEME_OWN": {
+    "source": "作者版本",
+    "zh_CN": "作者版本",
+    "en": "Your version"
+  },
+  "MAP_MEME_REMIX": {
+    "source": "外部改写",
+    "zh_CN": "外部改写",
+    "en": "External remix"
+  },
+  "MAP_MEME_INDEPENDENT": {
+    "source": "独立竞争",
+    "zh_CN": "独立竞争",
+    "en": "Independent rival"
+  },
+  "MM_COUNTRIES": {
+    "source": "传播国家",
+    "zh_CN": "传播国家",
+    "en": "Spread countries"
+  },
+  "MM_CONTEXT": {
+    "source": "语境",
+    "zh_CN": "语境",
+    "en": "Context"
+  },
+  "MM_LANGUAGE": {
+    "source": "语言",
+    "zh_CN": "语言",
+    "en": "Language"
+  },
+  "MM_GROUP": {
+    "source": "人群",
+    "zh_CN": "人群",
+    "en": "Audience"
+  },
+  "MM_TOPICS": {
+    "source": "话题",
+    "zh_CN": "话题",
+    "en": "Topics"
+  },
+  "MM_STANCE": {
+    "source": "立场",
+    "zh_CN": "立场",
+    "en": "Stance"
+  },
+  "MM_PRAGMATICS": {
+    "source": "语用",
+    "zh_CN": "语用",
+    "en": "Pragmatics"
+  },
+  "MM_TRANSMISSION": {
+    "source": "传播数据",
+    "zh_CN": "传播数据",
+    "en": "Transmission"
+  },
+  "MM_NO_SPREAD": {
+    "source": "尚未传播",
+    "zh_CN": "尚未传播",
+    "en": "Not yet spreading"
+  },
+  "MM_GLOBAL_ADOPTION": {
+    "source": "全球采用",
+    "zh_CN": "全球采用",
+    "en": "Global adoption"
+  },
+  "MM_GLOBAL_EXPOSURE": {
+    "source": "全球曝光",
+    "zh_CN": "全球曝光",
+    "en": "Global exposure"
+  },
+  "MM_GLOBAL_ATTENTION": {
+    "source": "全球注意力",
+    "zh_CN": "全球注意力",
+    "en": "Global attention"
+  },
+  "MM_SPREAD": {
+    "source": "传播度",
+    "zh_CN": "传播度",
+    "en": "Spread"
+  },
+  "MM_CHANNEL": {
+    "source": "渠道",
+    "zh_CN": "渠道",
+    "en": "Channel"
+  },
+  "MM_REACH": {
+    "source": "触达系数",
+    "zh_CN": "触达系数",
+    "en": "Reach factor"
+  },
+  "MM_LANGUAGE_ACCESS": {
+    "source": "语言可达性",
+    "zh_CN": "语言可达性",
+    "en": "Language access"
+  },
+  "MM_RECOGNIZABILITY": {
+    "source": "可识别度",
+    "zh_CN": "可识别度",
+    "en": "Recognizability"
+  },
+  "MM_CONTEXT_DEPENDENCY": {
+    "source": "语境依赖",
+    "zh_CN": "语境依赖",
+    "en": "Context dependence"
+  },
+  "MM_REMIX_COST": {
+    "source": "改写成本",
+    "zh_CN": "改写成本",
+    "en": "Remix cost"
+  },
+  "MM_EXPRESSION": {
+    "source": "表达强度",
+    "zh_CN": "表达强度",
+    "en": "Expression strength"
+  },
+  "MM_CONTENT": {
+    "source": "模因内容",
+    "zh_CN": "模因内容",
+    "en": "Meme content"
+  },
+  "MM_EXPRESSION_TEXT": {
+    "source": "表达",
+    "zh_CN": "表达",
+    "en": "Expression"
+  },
+  "MM_MEANING": {
+    "source": "含义",
+    "zh_CN": "含义",
+    "en": "Meaning"
+  },
+  "MM_ADOPTION": {
+    "source": "采用人数",
+    "zh_CN": "采用人数",
+    "en": "Adoption"
+  },
+  "MM_EXPOSURE": {
+    "source": "曝光人数",
+    "zh_CN": "曝光人数",
+    "en": "Exposure"
+  },
+  "MM_ATTENTION": {
+    "source": "注意力",
+    "zh_CN": "注意力",
+    "en": "Attention"
+  },
+  "MM_HELP_NAME": {
+    "source": "该版本所属模因的概括性名称。完整表达和实际含义在详情中分别显示。",
+    "zh_CN": "该版本所属模因的概括性名称。完整表达和实际含义在详情中分别显示。",
+    "en": "The short name of the meme behind this version. Details show its expression and meaning separately."
+  },
+  "MM_HELP_ORIGIN": {
+    "source": "该版本第一次发布或诞生的国家。后续传播不会改变起源国。",
+    "zh_CN": "该版本第一次发布或诞生的国家。后续传播不会改变起源国。",
+    "en": "The country where this version was first published or born. Later spread does not change its origin."
+  },
+  "MM_HELP_ADOPTION": {
+    "source": "当前全球采用这个版本的人数。各版本的采用人数互不重复。",
+    "zh_CN": "当前全球采用这个版本的人数。各版本的采用人数互不重复。",
+    "en": "People currently adopting this version worldwide. Adoption counts are disjoint across versions."
+  },
+  "MM_HELP_EXPOSURE": {
+    "source": "当前全球接触这个版本的人数，包含采用者。",
+    "zh_CN": "当前全球接触这个版本的人数，包含采用者。",
+    "en": "People currently exposed to this version worldwide, including adopters."
+  },
+  "MM_HELP_ATTENTION": {
+    "source": "当前分配给这个版本的全球注意力规模。它影响后续曝光和采用。",
+    "zh_CN": "当前分配给这个版本的全球注意力规模。它影响后续曝光和采用。",
+    "en": "The current worldwide attention allocation for this version. It affects later exposure and adoption."
+  },
+  "MM_HELP_SPREAD": {
+    "source": "全球采用人数占世界人口的百分比。",
+    "zh_CN": "全球采用人数占世界人口的百分比。",
+    "en": "The percentage of the world population currently adopting this version."
+  },
+  "MM_HELP_COUNTRY_SPREAD": {
+    "source": "该国采用这个版本的人数占该国人口的百分比。",
+    "zh_CN": "该国采用这个版本的人数占该国人口的百分比。",
+    "en": "The percentage of this country's population currently adopting this version."
+  },
+  "MM_HELP_LOCAL_ADOPTION": {
+    "source": "当前在这个国家采用该版本的人数。",
+    "zh_CN": "当前在这个国家采用该版本的人数。",
+    "en": "People currently adopting this version in this country."
+  },
+  "MM_HELP_LOCAL_EXPOSURE": {
+    "source": "当前在这个国家接触该版本的人数，包含采用者。",
+    "zh_CN": "当前在这个国家接触该版本的人数，包含采用者。",
+    "en": "People currently exposed to this version in this country, including adopters."
+  },
+  "MM_HELP_LOCAL_ATTENTION": {
+    "source": "当前该国分配给这个版本的注意力规模。",
+    "zh_CN": "当前该国分配给这个版本的注意力规模。",
+    "en": "The current attention allocation for this version in this country."
+  },
+  "MM_HELP_EXPRESSION_TEXT": {
+    "source": "该版本实际传播的文字。语境和改写可能让它与最初版本不同。",
+    "zh_CN": "该版本实际传播的文字。语境和改写可能让它与最初版本不同。",
+    "en": "The words actually circulating in this version. Context and remixing can change them from the original."
+  },
+  "MM_HELP_MEANING": {
+    "source": "该版本记录的含义。事件产生的模因会显示事件中的解读。",
+    "zh_CN": "该版本记录的含义。事件产生的模因会显示事件中的解读。",
+    "en": "The version's recorded meaning. Event memes show their recorded reading."
+  },
+  "MM_HELP_CONTENT": {
+    "source": "这个版本的完整表达和记录含义。",
+    "zh_CN": "这个版本的完整表达和记录含义。",
+    "en": "The actual expression and recorded meaning of this version."
+  },
+  "MM_HELP_COUNTRIES": {
+    "source": "当前已有采用者或曝光者的国家，按采用人数排列。",
+    "zh_CN": "当前已有采用者或曝光者的国家，按采用人数排列。",
+    "en": "Countries with current adoption or exposure, ordered by adoption."
+  },
+  "MM_HELP_CONTEXT": {
+    "source": "该版本发布或诞生时确定的语境。之后编辑草稿不会改写已传播版本。",
+    "zh_CN": "该版本发布或诞生时确定的语境。之后编辑草稿不会改写已传播版本。",
+    "en": "The context fixed when this version was published or born. Later draft edits do not rewrite a circulating version."
+  },
+  "MM_HELP_TRANSMISSION": {
+    "source": "当前传播规模，以及这个版本实际使用的传播参数。",
+    "zh_CN": "当前传播规模，以及这个版本实际使用的传播参数。",
+    "en": "Current spread and the transmission parameters used by this version."
+  },
+  "MM_HELP_LANGUAGE": {
+    "source": "该版本使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
+    "zh_CN": "该版本使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
+    "en": "Languages used by this version to match each country's language distribution. Multiple languages use the strongest match."
+  },
+  "MM_HELP_GROUP": {
+    "source": "该版本面向的人群。多个人群取匹配最强者，不叠加人口。",
+    "zh_CN": "该版本面向的人群。多个人群取匹配最强者，不叠加人口。",
+    "en": "Audiences addressed by this version. Multiple audiences use the strongest match without adding population."
+  },
+  "MM_HELP_TOPICS": {
+    "source": "该版本涉及的话题，按所在国家对这些话题的偏好计算匹配。",
+    "zh_CN": "该版本涉及的话题，按所在国家对这些话题的偏好计算匹配。",
+    "en": "Topics addressed by this version, matched against each country's topic preferences."
+  },
+  "MM_HELP_STANCE": {
+    "source": "该版本在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
+    "zh_CN": "该版本在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
+    "en": "The version's stance on liberty and authority, and equality and hierarchy, used to match country context."
+  },
+  "MM_HELP_PRAGMATICS": {
+    "source": "该版本表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
+    "zh_CN": "该版本表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
+    "en": "How this version conveys sincerity or irony, and support or opposition, used to match country context."
+  },
+  "MM_HELP_DETACHED": {
+    "source": "这一层已经脱离表达，在传播适配中使用中性匹配值。",
+    "zh_CN": "这一层已经脱离表达，在传播适配中使用中性匹配值。",
+    "en": "This layer is detached from the expression and uses a neutral match in transmission fitness."
+  },
+  "MM_HELP_CHANNEL": {
+    "source": "发布这个版本时使用的渠道，决定基础触达系数。",
+    "zh_CN": "发布这个版本时使用的渠道，决定基础触达系数。",
+    "en": "The channel used to publish this version, which determines its base reach factor."
+  },
+  "MM_HELP_REACH": {
+    "source": "渠道触达系数结合已学习传播技能后的实际倍数，用来放大传播压力。",
+    "zh_CN": "渠道触达系数结合已学习传播技能后的实际倍数，用来放大传播压力。",
+    "en": "The actual reach multiplier after channel reach and learned transmission skills, used to scale transmission pressure."
+  },
+  "MM_HELP_LANGUAGE_ACCESS": {
+    "source": "语言可达性是可理解性计算的一部分，与可识别度和语境依赖共同作用。",
+    "zh_CN": "语言可达性是可理解性计算的一部分，与可识别度和语境依赖共同作用。",
+    "en": "Language access contributes to comprehension together with recognizability and context dependence."
+  },
+  "MM_HELP_RECOGNIZABILITY": {
+    "source": "表达被识别的程度，与语言可达性共同影响可理解性。",
+    "zh_CN": "表达被识别的程度，与语言可达性共同影响可理解性。",
+    "en": "How recognizable the expression is, contributing to comprehension alongside language access."
+  },
+  "MM_HELP_CONTEXT_DEPENDENCY": {
+    "source": "对特定人群语境的依赖。依赖越高，人群不匹配时可理解性降低越多。",
+    "zh_CN": "对特定人群语境的依赖。依赖越高，人群不匹配时可理解性降低越多。",
+    "en": "Dependence on a particular audience context. Higher dependence reduces comprehension more when that audience does not match."
+  },
+  "MM_HELP_REMIX_COST": {
+    "source": "外部群体继续传播和改写的成本，用于计算群体复用系数，进而影响传播压力。",
+    "zh_CN": "外部群体继续传播和改写的成本，用于计算群体复用系数，进而影响传播压力。",
+    "en": "The cost of community reuse and remixing. It contributes to the reuse factor that scales transmission pressure."
+  },
+  "MM_HELP_EXPRESSION": {
+    "source": "根据实际表达中不同字符数计算的表达强度，用于竞争适配。",
+    "zh_CN": "根据实际表达中不同字符数计算的表达强度，用于竞争适配。",
+    "en": "Expression strength calculated from distinct characters in the actual text, used in competition fitness."
+  },
+  "MM_HELP_LEGEND": {
+    "source": "同一颜色表示同一家族。空心点标记起源位置，实心点按各国采用人数抽样。",
+    "zh_CN": "同一颜色表示同一家族。空心点标记起源位置，实心点按各国采用人数抽样。",
+    "en": "One color represents one family. Hollow markers show origins, and filled dots sample adoption within countries."
+  }
+}

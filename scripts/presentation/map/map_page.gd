@@ -6,6 +6,8 @@ signal launch_confirmed
 const COUNTRY_RULES = preload("res://data/rules/gameplay_rules.tres")
 const CONTEXT_DEFINITIONS = preload("res://data/context/context_resources.tres")
 const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
+const MemeLedger = preload("res://scripts/presentation/map/meme_map_ledger.gd")
+const MemeDetails = preload("res://scripts/presentation/map/meme_map_details.gd")
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -39,6 +41,7 @@ var target_zoom: float = 1.0
 var overview_zoom: float = 1.0
 var _zoom_anchor := Vector2.ZERO
 var _pointer := Vector2.ZERO
+var _pointer_inside_map := false
 var _random := RandomNumberGenerator.new()
 var _generation_thread := Thread.new()
 var _focus_tween: Tween
@@ -52,6 +55,10 @@ var _clock_presentation_updates := 0
 var _marker_projection_updates := 0
 var _marker_projection_cache_hits := 0
 var _hover_profile_signature: Array = []
+var _meme_overlay: Control
+var _meme_ledger: Control
+var _meme_snapshot: Dictionary = {}
+var _meme_catalog: MemeDemoCatalog
 
 func _ready() -> void:
 	set_process(false)
@@ -129,6 +136,12 @@ func _process(delta: float) -> void:
 		_update_view()
 	_update_marker_positions()
 	_update_launch_marker()
+	if _meme_overlay != null and _pointer_inside_map:
+		var country_index := world.country_at(_world_position(_pointer))
+		if country_index != hovered_country:
+			hovered_country = country_index
+			terrain.set_highlight(hovered_country, selected_country)
+		_update_hover()
 
 func refresh_localization() -> void:
 	_clock_presentation_signature.clear()
@@ -151,10 +164,13 @@ func select_country(index: int) -> void:
 	_update_hover()
 
 func focus_country(index: int) -> void:
+	_focus_world_position(world.territories[index].anchor, 1.4)
+
+func _focus_world_position(point: Vector2, zoom_factor: float) -> void:
 	_stop_country_focus()
-	target_zoom = clampf(maxf(camera.zoom.x, overview_zoom * 1.4), minimum_zoom, maximum_zoom)
+	target_zoom = clampf(maxf(camera.zoom.x, overview_zoom * zoom_factor), minimum_zoom, maximum_zoom)
 	var zoom := Vector2.ONE * target_zoom
-	var destination := world.territories[index].anchor + Vector2(map_input.size.x * 0.12, 0.0) / zoom
+	var destination := point + Vector2(map_input.size.x * 0.12, 0.0) / zoom
 	_focus_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_focus_tween.tween_property(camera, "position", destination, 0.32)
 	_focus_tween.tween_property(camera, "zoom", zoom, 0.32)
@@ -183,12 +199,21 @@ func _profile_tags(weights: Dictionary, kind: String, limit: int = 0) -> Array[D
 	return tags
 
 func _update_hover() -> void:
-	hover_note.visible = map_input.is_visible_in_tree() and hovered_country >= 0 and not panning
+	var available := _pointer_inside_map and map_input.is_visible_in_tree() and not panning
+	if _meme_ledger != null and _meme_ledger.handles_point(_pointer): available = false
+	var hits: Array[Dictionary] = []
+	if available and _meme_overlay != null: hits = _meme_overlay.hit_at(_pointer)
+	hover_note.visible = available and (hovered_country >= 0 or not hits.is_empty())
 	hover_note.set_pointer_following(hover_note.visible)
+	if _meme_overlay != null:
+		_meme_overlay.set_hovered_variants(PackedStringArray([str(hits[0].variant_id)]) if not hits.is_empty() else PackedStringArray())
 	if not hover_note.visible: return
-	var signature: Array = [hovered_country, TranslationServer.get_locale(), world.seed_value]
+	var signature: Array = [hovered_country, TranslationServer.get_locale(), world.seed_value, hits.map(func(hit: Dictionary): return [str(hit.variant_id), str(hit.country_id), int(hit.country_adopted)]), _meme_snapshot.get("hour", -1)]
 	if signature == _hover_profile_signature: return
 	_hover_profile_signature = signature
+	if not hits.is_empty():
+		hover_note.set_meme_details(MemeDetails.build_hover(_meme_snapshot, _meme_catalog, str(hits[0].variant_id)))
+		return
 	var country := settings.countries[hovered_country]
 	var profile := COUNTRY_RULES.country(str(country.id))
 	var tags := _profile_tags(profile.groups, "group")
@@ -200,6 +225,43 @@ func _update_hover() -> void:
 		tr(country.description_key)+"\n\n"+tr(country.culture_key),
 		{"kind":"language", "badge":tr("MAP_POPULATION") % (int(profile.population)/1000000.0),
 		"note":tr(str(country.description_key) + "_NOTE")})
+
+func configure_meme_tracking(overlay: Control, catalog: MemeDemoCatalog) -> void:
+	_meme_overlay = overlay
+	_meme_catalog = catalog
+	_meme_ledger = MemeLedger.new()
+	_meme_ledger.name = "MemeMapLedger"
+	overlay.add_child(_meme_ledger)
+	_meme_ledger.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_meme_ledger.configure(catalog)
+	_meme_ledger.variant_selected.connect(select_meme)
+	_meme_ledger.country_focus_requested.connect(focus_meme_country)
+	_meme_ledger.details_changed.connect(func(_id: String, _expanded: bool): _on_map_exited())
+
+func update_meme_state(snapshot: Dictionary) -> void:
+	_meme_snapshot = snapshot
+	if not snapshot.world_competition.variants_by_id.has(_meme_overlay.selected_variant_id):
+		_meme_overlay.set_selected_variant("")
+	_meme_ledger.sync_state(snapshot, _meme_overlay.colors())
+	_meme_ledger.set_selected_variant(_meme_overlay.selected_variant_id)
+	_update_hover()
+
+func select_meme(id: String) -> void:
+	_meme_overlay.set_selected_variant(id)
+	_meme_ledger.set_selected_variant(id)
+	_on_map_exited()
+	_focus_world_position(_meme_overlay.origin_position(id), 1.8)
+	_hover_profile_signature.clear()
+	_update_hover()
+
+func focus_meme_country(id: String) -> void:
+	for index in settings.countries.size():
+		if str(settings.countries[index].id) == id:
+			focus_country(index)
+			return
+
+func meme_field_hover_info(point: Vector2) -> Dictionary:
+	return _meme_ledger.hover_info(point) if _meme_ledger != null else {}
 
 func establish_studio() -> void:
 	clock.establish(selected_country, world.seed_value, settings.latitude_at(world.territories[selected_country].anchor))
@@ -392,6 +454,7 @@ func _on_map_input(event: InputEvent) -> void:
 	if launch_marker.popping:
 		map_input.accept_event()
 		return
+	if event is InputEventMouse: _pointer_inside_map = true
 	if event is InputEventMouseButton:
 		var screen_position: Vector2 = map_input.get_global_transform_with_canvas() * event.position
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
@@ -402,7 +465,18 @@ func _on_map_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _launch_selection_active:
 			var index := world.country_at(_world_position(screen_position))
 			select_country(index)
+		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _meme_overlay != null:
+			var hits: Array[Dictionary] = _meme_overlay.hit_at(screen_position)
+			if hits.size() == 1:
+				select_meme(str(hits[0].variant_id))
+			elif hits.size() > 1:
+				var ids := PackedStringArray()
+				for hit: Dictionary in hits: ids.append(str(hit.variant_id))
+				_meme_ledger.show_candidates(ids)
 		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+			if hover_note.visible and hover_note.scroll_details(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1):
+				map_input.accept_event()
+				return
 			_stop_country_focus()
 			_zoom_anchor = screen_position
 			var factor := zoom_step if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / zoom_step
@@ -418,6 +492,7 @@ func _on_map_input(event: InputEvent) -> void:
 		_update_hover()
 
 func _on_map_exited() -> void:
+	_pointer_inside_map = false
 	hovered_country = -1
 	panning = false
 	terrain.set_highlight(-1, selected_country)

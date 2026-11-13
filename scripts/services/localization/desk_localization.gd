@@ -1,7 +1,7 @@
 class_name DeskLocalization
 extends RefCounted
 
-const DEFAULT_TABLES := ["res://localization/messages.json", "res://localization/tutorial.json", "res://localization/starter_cards.json", "res://localization/monitor_mentor.json", "res://localization/composition.json", "res://localization/mutations.json", "res://localization/workbench_composition.json", "res://localization/text_composition.json", "res://localization/text_starters.json", "res://localization/receipt_cards.json", "res://localization/receipt_components.json", "res://localization/events.json", "res://localization/event_ui.json"]
+const DEFAULT_TABLES := ["res://localization/messages.json", "res://localization/tutorial.json", "res://localization/starter_cards.json", "res://localization/monitor_mentor.json", "res://localization/composition.json", "res://localization/mutations.json", "res://localization/workbench_composition.json", "res://localization/text_composition.json", "res://localization/text_starters.json", "res://localization/receipt_cards.json", "res://localization/receipt_components.json", "res://localization/events.json", "res://localization/event_ui.json", "res://localization/map_tracking.json", "res://localization/meme_names.json"]
 const EDIT_META := &"desk_localization_edit"
 const EDIT_CONNECTED_META := &"desk_localization_edit_connected"
 

@@ -1,6 +1,7 @@
 extends RefCounted
 
 const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
+const Identity = preload("res://scripts/presentation/memes/meme_identity.gd")
 
 const METRICS := {
 	"attention":["LOC_EVENT_IMPACT_ATTRACTION", "LOC_EVENT_IMPACT_ATTRACTION_HELP", "LOC_EVENT_NOTE_ATTRACTION"],
@@ -24,15 +25,20 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 	var segments: Array[Dictionary] = []
 	if record.is_empty(): return segments
 	if not str(record.get("target_variant_id", "")).is_empty():
-		_append_clause(segments, [_field("LOC_EVENT_RESPONSE_TARGET", "LOC_EVENT_RESPONSE_TARGET_HELP", "meme", ""), _text("  " + str(record.target_variant_text))])
+		var name := str(record.target_variant_text)
+		for variant: Dictionary in variants:
+			if str(variant.id) == str(record.target_variant_id):
+				name = Identity.name(catalog, variant)
+				break
+		_append_clause(segments, [_field("LOC_EVENT_RESPONSE_TARGET", "LOC_EVENT_RESPONSE_TARGET_HELP", "meme", ""), _meme_text(str(record.target_variant_id), name)])
 	var response: Dictionary = record.get("response", {})
 	if not response.is_empty(): _append_response(segments, response, record, catalog)
 	var created := {"remix":0, "independent":0}
-	var independent: Array[Dictionary] = []
+	var produced: Array[Dictionary] = []
 	for variant: Dictionary in variants:
 		if str(variant.id) in record.competition_variant_ids:
 			created["independent" if variant.parent_ids.is_empty() else "remix"] += 1
-			if variant.parent_ids.is_empty(): independent.append(variant)
+			produced.append(variant)
 	for effect: Dictionary in record.get("applied_effects", []):
 		var kind := str(effect.effect_id)
 		var clause: Array[Dictionary] = []
@@ -59,8 +65,9 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 			"remix":
 				clause.append(_text(" +%d" % int(created.remix)))
 		_append_clause(segments, clause)
-	for variant: Dictionary in independent:
-		_append_clause(segments, [_field("LOC_EVENT_IMPACT_INDEPENDENT", "LOC_EVENT_IMPACT_INDEPENDENT_HELP", "meme", "LOC_EVENT_NOTE_INDEPENDENT"), _text("  " + str(variant.text))])
+	for variant: Dictionary in produced:
+		var kind := "INDEPENDENT" if variant.parent_ids.is_empty() else "REMIX"
+		_append_clause(segments, [_field("LOC_EVENT_IMPACT_" + kind, "LOC_EVENT_IMPACT_" + kind + "_HELP", "meme", "LOC_EVENT_NOTE_" + kind), _meme_text(str(variant.id), Identity.name(catalog, variant))])
 	for reward: Dictionary in record.design_rewards:
 		var entry: Dictionary = catalog.DESIGN_RULES.reward_resource(str(reward.kind), str(reward.id))
 		var description := str(entry.get("hover_description", CardCopy.hover_description(str(reward.id))))
@@ -125,6 +132,9 @@ static func _field(title: String, body: String, kind: String, note: String) -> D
 
 static func _text(value: String) -> Dictionary:
 	return {"text":value}
+
+static func _meme_text(id: String, value: String) -> Dictionary:
+	return {"text":"  " + value, "variant_id":id, "field_kind":"meme"}
 
 static func _number(value: float) -> String:
 	return ("%.3f" % value).trim_suffix("000").trim_suffix("00").trim_suffix("0").trim_suffix(".")
