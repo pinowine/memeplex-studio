@@ -37,6 +37,8 @@ func validate() -> PackedStringArray:
 			errors.append("event_clock: " + error)
 	if gameplay_rules != null:
 		errors.append_array(gameplay_rules.validate())
+		for skill_id in gameplay_rules.skill_reach:
+			if DESIGN_RULES.find("skills", str(skill_id)).is_empty(): errors.append("Unknown propagation skill reach: " + str(skill_id))
 		if run_hours != gameplay_rules.horizon_hours: errors.append("Gameplay horizon must match catalog")
 	var topic_lookup: Dictionary = {}
 	for topic in topics:

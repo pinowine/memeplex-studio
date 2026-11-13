@@ -58,7 +58,7 @@ func validate() -> PackedStringArray:
 		if not is_finite(float(get(key))) or float(get(key)) <= 0.0: errors.append("Invalid gameplay scale: " + key)
 	if network_contact_multiplier < 1.0 or network_contact_multiplier > 1000.0: errors.append("Invalid network contact multiplier")
 	for id in skill_reach:
-		if id not in ["text","image","translation","remix","network"] or not _number(skill_reach[id]) or float(skill_reach[id]) < 0.0 or float(skill_reach[id]) > 1.0: errors.append("Invalid propagation skill reach")
+		if not id is String or str(id).is_empty() or not _number(skill_reach[id]) or float(skill_reach[id]) < 0.0 or float(skill_reach[id]) > 1.0: errors.append("Invalid propagation skill reach")
 	var total := 0.0
 	for key in ["language","group","topics","stance","pragmatic","expression","access"]:
 		var value: Variant = fitness_weights.get(key)
