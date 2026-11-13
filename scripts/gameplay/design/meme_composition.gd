@@ -9,28 +9,22 @@ const EXIT := "module_ritual"
 const SEEDS := ["versailles_2020", "nobody_2020", "ok_boomer_2020"]
 const LANGUAGES := ["ninghua", "shiohara", "seowon"]
 const GROUPS := ["commuters", "students", "culture_fans"]
-const SCENES := {
-	"versailles_2020": {"":"exam", "education":"exam", "community+education":"class_chat", "education+work":"qualification", "education+entertainment":"trivia"},
-	"nobody_2020": {"":"film", "entertainment":"film", "community+entertainment":"fan_chat", "work":"office", "platform_tools+work":"software", "education":"lesson"},
-	"ok_boomer_2020": {"":"school", "education":"school", "education+work":"first_job", "work":"overtime", "cost_of_living+work":"rent", "community":"neighborhood"}
-}
+static var SCENES: Dictionary = load("res://data/rules/composition_profiles.tres").scenes
+static var profile_overrides: Dictionary = {}
+static var authoring_chinese_preview := false
 
 static func supports(preset_id: String) -> bool:
 	return preset_id in SEEDS
 
 static func definition(preset_id: String) -> Dictionary:
-	var definitions := {
-		"versailles_2020":{"compatible_modules":[QUESTION,COMPARISON,EXPLANATION], "requires":{}, "default_context":{"language_id":"ninghua","group_id":"students","topic_ids":["education"],"political_position":[0.0,0.3],"political_known":true,"pragmatic_position":[0.8,0.1]}, "meaning_bounds":{"political_position":[-0.5,0.5,-0.3,1.0],"pragmatic_position":[0.2,1.0,-0.5,1.0]}},
-		"nobody_2020":{"compatible_modules":[COMPARISON,EXPLANATION,CONTINUATION,EXIT], "requires":{EXIT:[CONTINUATION]}, "default_context":{"language_id":"shiohara","group_id":"culture_fans","topic_ids":["entertainment"],"political_position":[0.0,0.0],"political_known":true,"pragmatic_position":[0.7,0.1]}, "meaning_bounds":{"political_position":[-0.6,0.6,-0.6,0.6],"pragmatic_position":[0.2,1.0,-0.6,0.8]}},
-		"ok_boomer_2020":{"compatible_modules":[QUESTION,COMPARISON,EXPLANATION,EXIT], "requires":{}, "default_context":{"language_id":"seowon","group_id":"students","topic_ids":["education"],"political_position":[-0.4,-0.2],"political_known":true,"pragmatic_position":[0.6,0.7]}, "meaning_bounds":{"political_position":[-1.0,0.2,-1.0,0.3],"pragmatic_position":[0.1,1.0,0.2,1.0]}}
-	}
 	if not supports(preset_id): return {}
-	var result: Dictionary = definitions[preset_id]
+	var profiles: Resource = load("res://data/rules/composition_profiles.tres")
+	var result: Dictionary = profile_overrides.get(preset_id, profiles.definitions[preset_id]).duplicate(true)
 	result.max_modules = 4
 	result.title = _text(_seed(preset_id)+"_TITLE")
 	result.media = DeskLocalization.source("LOC_COMPOSE_MEDIA_TEXT")
 	result.illustration = ""
-	result.scenes = SCENES[preset_id].duplicate()
+	result.scenes = profiles.scenes[preset_id].duplicate()
 	return result
 
 static func validate(draft: Dictionary, module_ids: Array) -> PackedStringArray:
@@ -118,9 +112,8 @@ static func _expression_segments(draft: Dictionary, modules: Array[String], lang
 		if mask == 0: body_sources.clear()
 		body_sources.append_array(language_sources)
 		result.append(_reply_segment("B_FORM_"+str(mask),values,body_sources))
-	# Meme expressions keep their own language while meanings follow the interface.
 	for segment: Dictionary in result:
-		var native_text := DeskLocalization.chinese_text(segment.text) if seed == "V" else DeskLocalization.english_text(segment.text)
+		var native_text := DeskLocalization.chinese_text(segment.text) if seed == "V" or authoring_chinese_preview else DeskLocalization.english_text(segment.text)
 		DeskLocalization.register_display(native_text,native_text,native_text)
 		segment.text = native_text
 	return result
@@ -238,7 +231,7 @@ static func _reply_segment(key: String, values: Array, sources: Array) -> Dictio
 	return result
 
 static func _scene(draft: Dictionary) -> String:
-	return str(SCENES[str(draft.preset_id)].get("+".join(_topics(draft)),""))
+	return str(definition(str(draft.preset_id)).scenes.get("+".join(_topics(draft)),""))
 
 static func _scene_sources(draft: Dictionary) -> Array[Dictionary]:
 	var baseline: Dictionary = definition(str(draft.preset_id)).default_context.duplicate(true)
