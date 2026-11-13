@@ -19,6 +19,7 @@ var _has_hover := false
 var _heading := ""
 var _detail := ""
 var _receipt_presentation: Dictionary = {}
+var _receipt_rows: Array[Dictionary] = []
 var _lines: Array[Dictionary] = []
 var _truncated := false
 var _content_revision := 0
@@ -117,9 +118,11 @@ func _update_content(force_layout: bool = false) -> void:
 	var heading := _normalized(_default_text)
 	var detail := ""
 	var presentation := {}
+	var rows: Array[Dictionary] = []
 	if _has_hover:
 		heading = _first_text(["title", "name", "label", "id"])
 		presentation = _presentation_details()
+		if _hover.has("tags"): rows.append({"tags":_hover.tags.duplicate(true)})
 		var component_copy := ComponentCopy.for_kind(str(_hover.get("kind","")))
 		if not component_copy.is_empty():
 			detail = DeskLocalization.text(component_copy.description)
@@ -137,12 +140,13 @@ func _update_content(force_layout: bool = false) -> void:
 	if heading.is_empty() and not detail.is_empty():
 		heading = detail
 		detail = ""
-	if heading == _heading and detail == _detail and presentation == _receipt_presentation:
+	if heading == _heading and detail == _detail and presentation == _receipt_presentation and rows == _receipt_rows:
 		if force_layout: _layout()
 		return
 	_heading = heading
 	_detail = detail
 	_receipt_presentation = presentation
+	_receipt_rows = rows
 	_content_revision += 1
 	_layout()
 
@@ -219,7 +223,7 @@ func _layout() -> void:
 			_receipt.set_pointer_source(pointer_source)
 			add_child(_receipt)
 		_receipt.set_width(size.x)
-		_receipt.set_content(_heading,[],_detail,_receipt_presentation)
+		_receipt.set_content(_heading,_receipt_rows,_detail,_receipt_presentation)
 		_receipt.set_pointer_following(true)
 		queue_redraw()
 		return

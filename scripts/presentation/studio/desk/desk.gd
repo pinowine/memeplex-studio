@@ -275,8 +275,6 @@ func configure(page: Node2D) -> void:
 	_country_layer.name = "CountryFileLayer"
 	_country_layer.layer = 60
 	page.atlas.add_child(_country_layer)
-	page.atlas.drawer.theme = page.atlas.get_node("Interface/HUD").theme
-	page.atlas.drawer.reparent(_country_layer, false)
 	page.atlas.hover_note.reparent(_country_layer, false)
 	page.atlas.hover_note.set_pointer_source(_hover_pointer_position)
 	_stack = load("res://scripts/presentation/studio/paper/desk_sheet_stack.gd").new()
@@ -488,7 +486,6 @@ func focus_component(id: String) -> bool:
 	if _camera == null or _page.hud.modal_visible(): return false
 	if _page._shell != null and _page._shell.blocks_input(): return false
 	if _stack.is_switching() or id == "folder": return false
-	if id != "sheet/map": _page.atlas.hide_country_details()
 	if slot_details_active(): _cancel_slot_details()
 	if _fax.inspection().focused: _fax.close_focus()
 	_restore_occluders()
@@ -533,7 +530,6 @@ func _camera_arrived(id: String) -> void:
 
 func _fax_camera_requested(mode: String) -> void:
 	if _camera == null: return
-	_page.atlas.hide_country_details()
 	if not _occluder_positions.is_empty(): _restore_occluders()
 	_component_target = "fax/"+mode
 	_revealed_focus = ""
@@ -547,7 +543,6 @@ func _fax_camera_requested(mode: String) -> void:
 
 
 func _camera_overview_arrived() -> void:
-	_page.atlas.hide_country_details()
 	_cancel_slot_details()
 	_component_target = ""
 	_layout_receipt(DESK_SIZE)
@@ -563,7 +558,6 @@ func return_overview() -> void:
 	if slot_details_active():
 		close_slot_details()
 		return
-	_page.atlas.hide_country_details()
 	_component_target = ""
 	_revealed_focus = ""
 	_pending_sheet = ""
@@ -850,7 +844,6 @@ func _focus_material_stack(kind: String) -> void:
 	if not _page.startup_ready() or _page.hud.modal_visible(): return
 	if _camera.inspection().state in ["travelling","returning"]: return
 	_page.atlas._on_map_exited()
-	_page.atlas.hide_country_details()
 	if _fax.inspection().focused:
 		_fax.close_focus()
 		_camera.return_overview(false)
@@ -989,8 +982,7 @@ func sheet_changed(id: String) -> void:
 	if _stack != null: _stack.select_sheet(id)
 
 
-func _sheet_started(id: String) -> void:
-	if id != "map": _page.atlas.hide_country_details()
+func _sheet_started(_id: String) -> void:
 	if _props != null: _props.cancel_drag()
 
 
@@ -1316,13 +1308,8 @@ func _hover_pointer_position() -> Vector2:
 
 func _foreground_ui_handles(point: Vector2) -> bool:
 	point = _foreground_point(point)
-	if country_details_handle_point(point): return true
 	if _slot_reader != null and _slot_reader.handles_viewport_point(point): return true
 	return _page._shell != null and _page._shell.guidance_handles_point(point)
-
-
-func country_details_handle_point(point: Vector2) -> bool:
-	return _page.atlas.drawer.is_visible_in_tree() and _page.atlas.drawer.get_global_rect().has_point(point)
 
 
 func _desktop_pointer_guard(event: InputEvent) -> bool:

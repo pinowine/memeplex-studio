@@ -6,7 +6,6 @@ signal launch_confirmed
 const COUNTRY_RULES = preload("res://data/rules/gameplay_rules.tres")
 const CONTEXT_DEFINITIONS = preload("res://data/context/context_resources.tres")
 const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
-const ReceiptStyle := preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -25,19 +24,8 @@ var initial_seed := -1
 @onready var camera: Camera2D = $MapCamera
 @onready var map_input: Control = %MapInput
 @onready var markers: Node2D = %MapInput/Labels
-@onready var country_name: Label = %CountryName
-@onready var population: Label = %Population
-@onready var conditions: Label = %Conditions
-@onready var conditions_note: Label = %ConditionsNote
-@onready var groups: Label = %Groups
-@onready var culture: Label = %Culture
-@onready var languages: Label = %Languages
-@onready var topics: Label = %Topics
-@onready var drawer: Control = %CountryDrawer
-@onready var country_scroll: ScrollContainer = %CountryScroll
 @onready var hover_note: DeskReceiptHover = %HoverNote
 @onready var launch_marker: BaseButton = %StudioConfirm
-@onready var workbench: PanelContainer = %WorkbenchOverlay
 @onready var restart_progress: ProgressBar = %RestartProgress
 
 var world: AtlasWorldData
@@ -53,8 +41,6 @@ var _zoom_anchor := Vector2.ZERO
 var _pointer := Vector2.ZERO
 var _random := RandomNumberGenerator.new()
 var _generation_thread := Thread.new()
-var _drawer_offset: float
-var _drawer_tween: Tween
 var _focus_tween: Tween
 var _restart_held: bool = false
 var _restart_elapsed: float = 0.0
@@ -71,18 +57,12 @@ func _ready() -> void:
 	set_process(false)
 	_random.randomize()
 	clock = PressStudioClock.new(studio_settings)
-	_drawer_offset = drawer.offset_left
 	%SpeedControl.pressed.connect(_cycle_speed)
 	launch_marker.confirmed.connect(func(): launch_confirmed.emit())
-	%DrawerClose.pressed.connect(hide_country_details)
-	%PointsButton.pressed.connect(open_workbench)
-	%WorkbenchClose.pressed.connect(close_workbench)
-	for button: BaseButton in [%SpeedControl, %DrawerClose, %PointsButton, %WorkbenchClose]:
-		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	%SpeedControl.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	map_input.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	map_input.gui_input.connect(_on_map_input)
 	map_input.mouse_exited.connect(_on_map_exited)
-	conditions_note.add_theme_color_override("font_color", ReceiptStyle.SECONDARY_INK)
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	await get_tree().process_frame
 	var generated := false
@@ -120,9 +100,7 @@ func _apply_world(value: AtlasWorldData) -> bool:
 	selected_country = -1
 	hovered_country = -1
 	panning = false
-	drawer.visible = false
 	hover_note.visible = false
-	workbench.visible = false
 	launch_marker.reset()
 	launch_marker.hide()
 	terrain.set_highlight(-1, -1)
@@ -161,7 +139,6 @@ func refresh_localization() -> void:
 		for j in 4:
 			markers.get_node("%s_Site%d/Name" % [country.id, j]).text = tr(country.site_name_keys[j])
 		markers.get_node("%s_Geo/Name" % country.id).text = tr(country.geography_name_key)
-	_update_details()
 	_update_hover()
 	_update_clock()
 	fit_map()
@@ -170,7 +147,6 @@ func select_country(index: int) -> void:
 	if launch_marker.popping: return
 	selected_country = index
 	terrain.set_highlight(hovered_country, selected_country)
-	_update_details()
 	_update_launch_marker()
 	_update_hover()
 
@@ -189,54 +165,25 @@ func focus_country(index: int) -> void:
 func _stop_country_focus() -> void:
 	if _focus_tween != null and _focus_tween.is_running(): _focus_tween.kill()
 
-func _animate_drawer(left: float, right: float) -> void:
-	if _drawer_tween != null and _drawer_tween.is_running():
-		_drawer_tween.kill()
-	_drawer_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	_drawer_tween.tween_property(drawer, "offset_left", left, 0.28)
-	_drawer_tween.tween_property(drawer, "offset_right", right, 0.28)
-
 func close_drawer() -> void:
 	selected_country = -1
 	terrain.set_highlight(hovered_country, -1)
-	_update_details()
 	_update_launch_marker()
-	hide_country_details()
 
-func hide_country_details() -> void:
-	if not drawer.visible:
-		return
-	_animate_drawer(0.0, -_drawer_offset)
-	_drawer_tween.chain().tween_callback(drawer.hide)
-
-func _update_details() -> void:
-	if selected_country < 0:
-		return
-	var country := settings.countries[selected_country]
-	var profile := COUNTRY_RULES.country(str(country.id))
-	country_name.text = tr(country.official_name_key)
-	population.text = tr("MAP_POPULATION") % (int(profile.population) / 1000000.0)
-	conditions.text = tr(country.description_key)
-	groups.text = _profile_labels(profile.groups, "group")
-	culture.text = tr(country.culture_key)
-	languages.text = _profile_labels(profile.languages, "language")
-	topics.text = _profile_labels(profile.topics, "topic", 4)
-	conditions_note.text = tr(str(country.description_key) + "_NOTE")
-
-func _profile_labels(weights: Dictionary, kind: String, limit: int = 0) -> String:
+func _profile_tags(weights: Dictionary, kind: String, limit: int = 0) -> Array[Dictionary]:
 	var ids := weights.keys()
 	ids.sort_custom(func(a: String, b: String): return float(weights[a]) > float(weights[b]))
-	var labels := PackedStringArray()
+	var tags: Array[Dictionary] = []
 	for id: String in ids:
 		for entry: Dictionary in CONTEXT_DEFINITIONS.entries:
 			if str(entry.kind) == kind and str(entry.get("value", "")) == id:
-				labels.append(DeskLocalization.text(str(entry.title)))
+				tags.append({"text":DeskLocalization.text(str(entry.title)), "kind":kind, "help":""})
 				break
-		if limit > 0 and labels.size() == limit: break
-	return (", " if TranslationServer.get_locale().begins_with("en") else "、").join(labels)
+		if limit > 0 and tags.size() == limit: break
+	return tags
 
 func _update_hover() -> void:
-	hover_note.visible = map_input.is_visible_in_tree() and hovered_country >= 0 and not panning and not workbench.visible
+	hover_note.visible = map_input.is_visible_in_tree() and hovered_country >= 0 and not panning
 	hover_note.set_pointer_following(hover_note.visible)
 	if not hover_note.visible: return
 	var signature: Array = [hovered_country, TranslationServer.get_locale(), world.seed_value]
@@ -244,10 +191,10 @@ func _update_hover() -> void:
 	_hover_profile_signature = signature
 	var country := settings.countries[hovered_country]
 	var profile := COUNTRY_RULES.country(str(country.id))
-	var rows := [
-		{"category":tr("MAP_GROUPS"), "value":_profile_labels(profile.groups,"group"), "kind":"group"},
-		{"category":tr("MAP_LANGUAGES"), "value":_profile_labels(profile.languages,"language"), "kind":"language"},
-		{"category":tr("MAP_TOPICS"), "value":_profile_labels(profile.topics,"topic",4), "kind":"topic"}]
+	var tags := _profile_tags(profile.groups, "group")
+	tags.append_array(_profile_tags(profile.languages, "language"))
+	tags.append_array(_profile_tags(profile.topics, "topic", 4))
+	var rows := [{"tags":tags}]
 	hover_note.set_width(360)
 	hover_note.set_content(tr(country.official_name_key), rows,
 		tr(country.description_key)+"\n\n"+tr(country.culture_key),
@@ -321,13 +268,6 @@ func _update_season_icons(phase: float) -> void:
 	var keys: PackedStringArray = %CurrentSeason.get_meta("season_keys")
 	%CurrentSeason.text = tr(keys[current])
 
-func open_workbench() -> void:
-	workbench.visible = true
-	hover_note.visible = false
-
-func close_workbench() -> void:
-	workbench.visible = false
-
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey or event.echo:
 		return
@@ -351,9 +291,6 @@ func _input(event: InputEvent) -> void:
 	elif KeyBindings.matches(event, "pause"):
 		clock.toggle_pause()
 		_update_clock()
-	elif key == KEY_ESCAPE:
-		if workbench.visible: close_workbench()
-		else: hide_country_details()
 	elif KeyBindings.matches(event, "slower"): set_speed(maxi(clock.speed - 1, 0))
 	elif KeyBindings.matches(event, "faster"): set_speed(mini(clock.speed + 1, 2))
 	else: return
@@ -387,7 +324,7 @@ func _update_marker_positions() -> void:
 	if world == null: return
 	var transform := _local_map_view()
 	var time_hud: Control = %DateLabel.get_parent()
-	var signature: Array = [world, transform, map_input.size, map_input.get_global_transform_with_canvas(), camera.zoom, overview_zoom, detail_level, time_hud.get_global_rect(), %PointsButton.get_global_rect(), TranslationServer.get_locale()]
+	var signature: Array = [world, transform, map_input.size, map_input.get_global_transform_with_canvas(), camera.zoom, overview_zoom, detail_level, time_hud.get_global_rect(), TranslationServer.get_locale()]
 	if signature == _marker_projection_signature:
 		_marker_projection_cache_hits += 1
 		return
@@ -429,7 +366,7 @@ func _update_latitude_labels(view: Transform2D) -> void:
 		var caption_bounds := label.get_global_rect()
 		var inside_map := map_input.get_global_rect().encloses(caption_bounds)
 		var time_hud: Control = %DateLabel.get_parent()
-		var clear_of_stamps := not caption_bounds.intersects(time_hud.get_global_rect()) and not caption_bounds.intersects(%PointsButton.get_global_rect())
+		var clear_of_stamps := not caption_bounds.intersects(time_hud.get_global_rect())
 		label.visible = inside_map and clear_of_stamps and y >= line_offset and y < map_input.size.y and map_right > padding and map_left < map_input.size.x - padding
 
 func _on_viewport_resized() -> void:
@@ -508,8 +445,8 @@ func geometry_inspection() -> Dictionary:
 func inspection_state() -> Dictionary:
 	return {"marker_projection_updates":_marker_projection_updates, "marker_projection_cache_hits":_marker_projection_cache_hits, "clock_presentation_updates":_clock_presentation_updates, "seed":world.seed_value, "countries":settings.countries.size(), "groups":world.groups.size(), "fingerprint":world.fingerprint(),
 		"selected":selected_country, "hovered":hovered_country, "zoom":camera.zoom.x, "target_zoom":target_zoom, "detail_level":detail_level,
-		"camera":camera.position, "locale":TranslationServer.get_locale(), "map_rect":map_input.get_global_rect(), "details_visible":drawer.visible,
-		"clock":clock.inspection(), "launch_selection_active":_launch_selection_active, "launch_marker_visible":launch_marker.visible, "launch_marker_popping":launch_marker.popping, "workbench_visible":workbench.visible, "economy":"unconnected placeholder", "water_opacity":terrain.water_opacity}
+		"camera":camera.position, "locale":TranslationServer.get_locale(), "map_rect":map_input.get_global_rect(),
+		"clock":clock.inspection(), "launch_selection_active":_launch_selection_active, "launch_marker_visible":launch_marker.visible, "launch_marker_popping":launch_marker.popping, "water_opacity":terrain.water_opacity}
 
 func _label_rect(label: Label) -> Rect2:
 	var font := label.get_theme_font("font")

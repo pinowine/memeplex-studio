@@ -421,7 +421,6 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 		areas.append(_tutorial_project_rect(page.atlas.map_input))
 		if bool(step.get("allow_launch", false)) and page.atlas.launch_marker.is_visible_in_tree():
 			areas.append(_tutorial_project_rect(page.atlas.launch_marker))
-		if page.atlas.drawer.is_visible_in_tree(): areas.append(_tutorial_project_rect(page.atlas.drawer))
 		if page.desk._revealed_focus != "sheet/map": areas.append(_tutorial_project_rect(page.desk._stack.tab_control("map")))
 	elif id == "speed":
 		for button: Button in page.desk._speed_strip._buttons:
@@ -451,7 +450,6 @@ func _tutorial_input_contains(step: Dictionary, point: Vector2) -> bool:
 	var marker: Control = page.atlas.launch_marker
 	if marker.is_visible_in_tree() and _tutorial_project_rect(marker).has_point(point):
 		return bool(step.get("allow_launch", false))
-	if page.atlas.drawer.is_visible_in_tree() and _tutorial_project_rect(page.atlas.drawer).has_point(point): return true
 	if page.desk._revealed_focus != "sheet/map" and _tutorial_project_rect(page.desk._stack.tab_control("map")).has_point(point): return true
 	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
 	var desk: Control = page.desk
@@ -490,8 +488,6 @@ func _tutorial_reserved_areas() -> Array:
 	if source_hover.is_visible_in_tree(): rectangles.append(source_hover.get_global_rect())
 	if page.atlas.hover_note.is_visible_in_tree():
 		rectangles.append(_tutorial_project_rect(page.atlas.hover_note))
-	if page.atlas.drawer.is_visible_in_tree():
-		rectangles.append(_tutorial_project_rect(page.atlas.drawer))
 	var reader: Control = page.desk._slot_reader
 	if reader != null and reader.is_visible_in_tree():
 		rectangles.append(reader.inspection().target_rect)

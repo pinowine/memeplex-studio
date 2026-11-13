@@ -2,10 +2,12 @@ extends VBoxContainer
 
 const Rules = preload("res://data/rules/design_rules.tres")
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
+const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_flow.gd")
 const INK := Color("40463b")
 var _record := {}
 var _font: Font
 var _localized: Array[Dictionary] = []
+var _tag_fields: Array[Dictionary] = []
 
 static func sample_text(record: Dictionary) -> String:
 	var preset_id := str(record.get("id",""))
@@ -20,34 +22,6 @@ static func sample_text(record: Dictionary) -> String:
 	parts.append(str(composed.expression))
 	return DeskLocalization.source_join("\n",parts)
 
-class ContextIcon extends Control:
-	var kind := ""
-	func _init() -> void:
-		custom_minimum_size = Vector2(18, 18)
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
-	func _draw() -> void:
-		var color := Color("737958")
-		match kind:
-			"language":
-				draw_arc(Vector2(9,9), 7, 0, TAU, 24, color, 1.2, true)
-				draw_line(Vector2(2,9),Vector2(16,9),color,1.2,true)
-				draw_line(Vector2(9,2),Vector2(9,16),color,1.2,true)
-			"group":
-				draw_arc(Vector2(6,5), 2.5, 0, TAU, 12, color, 1.2, true)
-				draw_arc(Vector2(13,6), 2, 0, TAU, 12, color, 1.2, true)
-				draw_arc(Vector2(6,15), 5, PI, TAU, 12, color, 1.2, true)
-				draw_arc(Vector2(13,15), 4, PI, TAU, 12, color, 1.2, true)
-			"topic":
-				draw_polyline(PackedVector2Array([Vector2(2,3),Vector2(9,3),Vector2(16,10),Vector2(10,16),Vector2(2,8),Vector2(2,3)]),color,1.2,true)
-				draw_circle(Vector2(5,6),1.2,color)
-			"stance":
-				draw_line(Vector2(2,9),Vector2(16,9),color,1.2,true)
-				draw_line(Vector2(9,2),Vector2(9,16),color,1.2,true)
-				draw_colored_polygon(PackedVector2Array([Vector2(9,3),Vector2(12,11),Vector2(6,11)]),color)
-			"pragmatic":
-				draw_polyline(PackedVector2Array([Vector2(2,3),Vector2(16,3),Vector2(16,12),Vector2(8,12),Vector2(4,16),Vector2(4,12),Vector2(2,12),Vector2(2,3)]),color,1.2,true)
-				draw_line(Vector2(5,7),Vector2(13,7),color,1.2,true)
-
 func configure(record: Dictionary, font: Font, show_description: bool = true) -> void:
 	_record = record.duplicate(true)
 	_font = font
@@ -60,21 +34,19 @@ func configure(record: Dictionary, font: Font, show_description: bool = true) ->
 		sample_label.name = "StarterSample"
 		add_child(sample_label)
 	if show_description: add_child(_label(str(record.description), 13))
-	var grid := GridContainer.new()
+	var grid := VBoxContainer.new()
 	grid.name = "DefaultContext"
-	grid.columns = 2
 	grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	grid.add_theme_constant_override("h_separation", 12)
-	grid.add_theme_constant_override("v_separation", 4)
+	grid.add_theme_constant_override("separation", 4)
 	add_child(grid)
 	var defaults: Dictionary = record.default_context
 	var topics: Array[String] = []
 	for id: String in defaults.topic_ids: topics.append(_context_title("topic", id))
-	_field(grid, "topic", "LOC_STARTER_FIELD_TOPIC", topics)
-	_field(grid, "language", "LOC_STARTER_FIELD_LANGUAGE", [_context_title("language", defaults.language_id)])
-	_field(grid, "group", "LOC_STARTER_FIELD_GROUP", [_context_title("group", defaults.group_id)])
-	_field(grid, "stance", "LOC_STARTER_FIELD_STANCE", _axis_words("stance", defaults.political_position) if bool(defaults.political_known) else ["LOC_STARTER_STANCE_UNSET"])
-	_field(grid, "pragmatic", "LOC_STARTER_FIELD_PRAGMATICS", _axis_words("pragmatic", defaults.pragmatic_position))
+	_field(grid, "topic", topics)
+	_field(grid, "language", [_context_title("language", defaults.language_id)])
+	_field(grid, "group", [_context_title("group", defaults.group_id)])
+	_field(grid, "stance", _axis_words("stance", defaults.political_position) if bool(defaults.political_known) else ["LOC_STARTER_STANCE_UNSET"])
+	_field(grid, "pragmatic", _axis_words("pragmatic", defaults.pragmatic_position))
 
 func _axis_words(layer: String, point: Array) -> Array[String]:
 	var axes := [["freedom", "authority"], ["equality", "hierarchy"]] if layer == "stance" else [["sincere", "ironic"], ["support", "opposition"]]
@@ -92,36 +64,19 @@ func _context_title(kind: String, value: String) -> String:
 			return str(definition.title)
 	return value
 
-func _field(grid: GridContainer, kind: String, heading: String, values: Array) -> void:
-	var row := HBoxContainer.new()
-	row.name = kind.capitalize()
-	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override("separation", 5)
-	var icon := ContextIcon.new()
-	icon.kind = kind
-	row.add_child(icon)
-	var content := VBoxContainer.new()
-	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	content.add_theme_constant_override("separation", 0)
-	row.add_child(content)
-	var title := _label(heading, 11)
-	title.modulate = Color("747864")
-	content.add_child(title)
-	if values.size() > 1:
-		var tags := HFlowContainer.new()
-		tags.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		tags.add_theme_constant_override("h_separation", 8)
-		tags.add_theme_constant_override("v_separation", 0)
-		content.add_child(tags)
-		for value: String in values:
-			var tag := _label(value, 13)
-			tag.autowrap_mode = TextServer.AUTOWRAP_OFF
-			tags.add_child(tag)
-	else:
-		for value: String in values: content.add_child(_label(value, 13))
-	grid.add_child(row)
+func _field(grid: VBoxContainer, kind: String, values: Array) -> void:
+	var tags := ContextTagFlow.new()
+	tags.name = kind.capitalize()
+	tags.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tags.set_tags(_context_tags(kind, values))
+	grid.add_child(tags)
+	_tag_fields.append({"flow":tags, "kind":kind, "values":values.duplicate()})
+
+func _context_tags(kind: String, values: Array) -> Array[Dictionary]:
+	var tags: Array[Dictionary] = []
+	for value: String in values:
+		tags.append({"text":DeskLocalization.text(value), "kind":kind, "help":""})
+	return tags
 
 func _label(key_or_source: String, font_size: int) -> Label:
 	var label := Label.new()
@@ -139,12 +94,16 @@ func _label(key_or_source: String, font_size: int) -> Label:
 	return label
 
 func fit_width(width: float) -> void:
+	for field: Dictionary in _tag_fields: field.flow.fit_width(width)
 	size = Vector2(width, get_combined_minimum_size().y)
 	for child: Control in get_children(): child.size.x = width
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED:
 		for item: Dictionary in _localized: item.label.text = DeskLocalization.text(item.key)
+		for field: Dictionary in _tag_fields: field.flow.set_tags(_context_tags(str(field.kind), field["values"]))
 
 func inspection() -> Dictionary:
-	return {"preset_id":_record.get("id", ""), "default_context":_record.get("default_context", {}).duplicate(true), "fields":5, "separate_labels":_localized.size()}
+	var tags: Array = []
+	for field: Dictionary in _tag_fields: tags.append(field.flow.inspection())
+	return {"preset_id":_record.get("id", ""), "default_context":_record.get("default_context", {}).duplicate(true), "fields":5, "separate_labels":_localized.size(), "context_tags":tags}
