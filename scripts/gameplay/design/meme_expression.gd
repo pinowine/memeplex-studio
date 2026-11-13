@@ -12,7 +12,7 @@ static func compose(catalog: MemeDemoCatalog, draft: Dictionary) -> Dictionary:
 	return {"expression":render(catalog, draft), "meaning":"", "meaning_id":"", "language_versions":[], "media":"", "illustration":""}
 
 static func preset_name(preset: MemeDemoPreset, localized: bool = false) -> String:
-	var key: String = {"case_s01":"LOC_STARTER_NAME_FINE", "case_s16":"LOC_STARTER_NAME_PEAK", "case_p11":"LOC_STARTER_NAME_67"}.get(str(preset.id), preset.title)
+	var key := "MN_" + str(preset.id).to_upper()
 	return DeskLocalization.text(key) if localized else DeskLocalization.source(key)
 
 ## The ledger suffixes stay internal; base nodes retain their original expression.

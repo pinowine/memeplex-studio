@@ -12,6 +12,7 @@ const Handwriting := preload("res://scripts/presentation/studio/desk/desk_handwr
 const SlotReader := preload("res://scripts/presentation/studio/paper/desk_slot_reader.gd")
 const EventImpactText := preload("res://scripts/presentation/studio/paper/desk_event_impact_text.gd")
 const HoverStrip := preload("res://scripts/presentation/studio/desk/desk_hover_strip.gd")
+const MemeIdentity := preload("res://scripts/presentation/memes/meme_identity.gd")
 const PropInteraction := preload("res://scripts/presentation/studio/desk/desk_prop_interaction.gd")
 const RuledContacts := preload("res://scripts/presentation/studio/paper/desk_ruled_contacts.gd")
 const SpeedStrip := preload("res://scripts/presentation/studio/devices/clock/desk_speed_strip.gd")
@@ -176,7 +177,8 @@ func _update_hover_strip() -> void:
 		_hover_strip.clear_hover()
 		return
 	var point := get_viewport().get_mouse_position()
-	var info: Dictionary = _material_cards.hover_info(point) if _material_cards != null else {}
+	var info: Dictionary = _page.atlas.meme_field_hover_info(point)
+	if info.is_empty() and _material_cards != null: info = _material_cards.hover_info(point)
 	if info.is_empty(): info = _monitor.hover_info(point)
 	var fax_hint: String = _fax.hover_details(point)
 	if info.is_empty() and not fax_hint.is_empty(): info = {"kind":"fax","title":DeskLocalization.source("LOC_FAX_INTELLIGENCE_214AFC92"),"hint":fax_hint}
@@ -432,6 +434,7 @@ func configure(page: Node2D) -> void:
 	_slot_reader.name = "SlotExplanationPaper"
 	controls.add_child(_slot_reader)
 	_slot_reader.configure(Handwriting.FONT, _textures.paper_texture)
+	_slot_reader.meme_selected.connect(page.focus_meme_on_map)
 	_slot_reader.stack_layout_changed.connect(_layout_focused_stack)
 	_slot_reader.option_selected.connect(_reader_choice_selected)
 	_slot_reader.choice_hovered.connect(_reader_choice_hovered)
@@ -1025,12 +1028,14 @@ func sync_state(state: Dictionary) -> void:
 	_fax.restore_output_history(state.get("events",[]))
 	_fax.sync_reward_state(state.get("event_materials",state.get("design_state",{}).get("event_materials",[])))
 	_sync_reward_input()
-	_monitor.sync_state(state)
+	var current: Dictionary = state.get("design_state",{}).get("context_draft",{})
+	var current_name := MemeIdentity.name(_page.catalog, current)
+	var monitor_state := state.duplicate()
+	monitor_state.latest_draft = {"title":current_name}
+	_monitor.sync_state(monitor_state)
 	if _hover_strip != null:
 		var monitor_info: Dictionary = _monitor.inspection()
-		var current: Dictionary = state.get("design_state",{}).get("context_draft",{})
-		var current_text := str(current.get("text",""))
-		if current_text.is_empty(): current_text = str(current.get("target",""))
+		var current_text := current_name
 		if current_text.is_empty() and str(monitor_info.title_source) != "none": current_text = str(monitor_info.title)
 		_hover_strip.set_default_text(current_text)
 	_event_archive.clear()

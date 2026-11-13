@@ -4,6 +4,7 @@ extends Control
 const MAX_FAMILY_DOTS := 80
 const MAX_TOTAL_DOTS := 640
 const SAMPLE_ATTEMPTS := 24
+const Identity = preload("res://scripts/presentation/memes/meme_identity.gd")
 static var EXPLANATION := DeskLocalization.source("LOC_SOLID_DOTS_SAMPLE_ADOPTION_IN_EACH_COUNTRY_741CDCE6")
 const PLAYER_COLORS := [Color("ad4438"), Color("bc852c")]
 const EXTERNAL_COLORS := [Color("326f91"), Color("438476"), Color("756095"), Color("3e8c96"), Color("7d7841"), Color("53699d"), Color("578950"), Color("955c83")]
@@ -27,6 +28,8 @@ var _overlay_transform := Transform2D.IDENTITY
 var _map_rect := Rect2()
 var _geometry_rebuilds: int = 0
 var _projection_updates: int = 0
+var selected_variant_id := ""
+var hovered_variant_ids := PackedStringArray()
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -52,6 +55,51 @@ func update_simulation(simulation: MemeDemoSimulation) -> void:
 		_state_signature = ""
 	_simulation = simulation
 	_update_competition(simulation)
+
+func set_selected_variant(id: String) -> void:
+	if selected_variant_id == id: return
+	selected_variant_id = id
+	_state_signature = ""
+	if _simulation != null: _update_competition(_simulation)
+	queue_redraw()
+
+func set_hovered_variants(ids: PackedStringArray) -> void:
+	if hovered_variant_ids == ids: return
+	hovered_variant_ids = ids.duplicate()
+	queue_redraw()
+
+func origin_position(id: String) -> Vector2:
+	var world: Dictionary = _simulation.competition.snapshot(_simulation.variants)
+	var variant: Dictionary = world.variants_by_id[id]
+	return _land_positions(str(variant.family_id), str(variant.origin_country))[0]
+
+func _active_highlights() -> PackedStringArray:
+	if not hovered_variant_ids.is_empty(): return hovered_variant_ids
+	return PackedStringArray([selected_variant_id]) if not selected_variant_id.is_empty() else PackedStringArray()
+
+func hit_at(logical_viewport_point: Vector2, radius: float = 8.0) -> Array[Dictionary]:
+	_refresh_projection_if_changed()
+	var matches := {}
+	for index in _screen_points.size():
+		var point: Dictionary = _screen_points[index]
+		if not bool(point.visible): continue
+		var distance := logical_viewport_point.distance_to(Vector2(point.screen_position))
+		if distance > radius: continue
+		var key := str(point.variant_id) + "/" + str(point.country_id)
+		if matches.has(key) and float(matches[key].distance) <= distance: continue
+		var hit := point.duplicate(true)
+		hit.distance = distance
+		hit.draw_order = index
+		matches[key] = hit
+	var hits: Array[Dictionary] = []
+	hits.assign(matches.values())
+	hits.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var a_selected := str(a.variant_id) == selected_variant_id
+		var b_selected := str(b.variant_id) == selected_variant_id
+		if a_selected != b_selected: return a_selected
+		if not is_equal_approx(float(a.distance), float(b.distance)): return float(a.distance) < float(b.distance)
+		return int(a.draw_order) > int(b.draw_order))
+	return hits
 
 func _family_color(family_id: String, player: bool) -> Color:
 	var serial: int = absi(family_id.hash())
@@ -135,24 +183,27 @@ func _project_points() -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	var highlights := _active_highlights()
 	for point in _screen_points:
 		if not bool(point.visible): continue
 		var position: Vector2 = point.local_position
 		var color: Color = point.color
+		var opacity := 0.4 if not highlights.is_empty() and str(point.variant_id) not in highlights else 1.0
+		color.a *= opacity
 		if str(point.kind) == "presence":
 			draw_arc(position, 4.7, 0.0, TAU, 18, color, 1.8, true)
 		else:
-			draw_circle(position, 3.4, Color("f3eddd"), true, -1.0, true)
+			draw_circle(position, 3.4, Color(Color("f3eddd"), opacity), true, -1.0, true)
 			draw_circle(position, 2.6, color, true, -1.0, true)
+	for point in _screen_points:
+		if not bool(point.visible) or str(point.variant_id) not in highlights: continue
+		draw_arc(Vector2(point.local_position), 7.0, 0.0, TAU, 24, Color(point.color), 1.8, true)
 
 func legend_rows() -> Array[Dictionary]:
-	var filled_families: Dictionary = {}
-	for point in _points:
-		if str(point.kind) == "adoption": filled_families[str(point.family_id)] = true
-	for row in _rows:
-		row.kind = "adoption" if filled_families.has(str(row.family_id)) else "presence"
-		row.scope = "country_adoption_sample" if row.kind == "adoption" else "deployment"
 	return _rows.duplicate(true)
+
+func colors() -> Dictionary:
+	return _colors.duplicate()
 
 func inspection() -> Dictionary:
 	_refresh_projection_if_changed()
@@ -177,7 +228,7 @@ func inspection() -> Dictionary:
 		var family: String = point.family_id
 		if not family_counts.has(family): representative.append(point.duplicate(true))
 		family_counts[family] = int(family_counts.get(family, 0)) + 1
-	return {"dot_count":_points.size(), "drawn_dot_count":drawn, "family_count":family_counts.size(), "colors":_colors.duplicate(), "countries":countries, "family_dot_counts":family_counts, "representative_points":representative, "points":_screen_points.duplicate(true), "adoption_sample_count":filled, "presence_marker_count":hollow, "observed_totals":_metrics.duplicate(), "mode":"world_competition", "metric_explanation":EXPLANATION, "explanation":EXPLANATION, "legend_rows":legend_rows(), "max_per_family":MAX_FAMILY_DOTS, "max_total":MAX_TOTAL_DOTS, "sampling_attempts_per_point":SAMPLE_ATTEMPTS, "geometry_rebuilds":_geometry_rebuilds, "projection_updates":_projection_updates, "mouse_filter":mouse_filter, "map_rect":_map_rect, "view_transform":_view_transform}
+	return {"dot_count":_points.size(), "drawn_dot_count":drawn, "family_count":family_counts.size(), "colors":_colors.duplicate(), "countries":countries, "family_dot_counts":family_counts, "representative_points":representative, "points":_screen_points.duplicate(true), "adoption_sample_count":filled, "presence_marker_count":hollow, "observed_totals":_metrics.duplicate(), "mode":"world_competition", "metric_explanation":EXPLANATION, "explanation":EXPLANATION, "legend_rows":legend_rows(), "selected_variant_id":selected_variant_id, "hovered_variant_ids":hovered_variant_ids.duplicate(), "highlighted_variant_ids":_active_highlights().duplicate(), "max_per_family":MAX_FAMILY_DOTS, "max_total":MAX_TOTAL_DOTS, "sampling_attempts_per_point":SAMPLE_ATTEMPTS, "geometry_rebuilds":_geometry_rebuilds, "projection_updates":_projection_updates, "mouse_filter":mouse_filter, "map_rect":_map_rect, "view_transform":_view_transform}
 
 
 func _update_competition(simulation: MemeDemoSimulation) -> void:
@@ -193,12 +244,18 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 	_points.clear()
 	_metrics = {"owned":float(world.owned_adopted),"external":float(world.adopted)-float(world.owned_adopted),"adopted":float(world.adopted)}
 	var population: float = maxf(1.0,float(world.world_population))
-	var variants: Array = world.variants
+	var variants: Array = world.variants.duplicate()
+	for index in variants.size():
+		if str(variants[index].id) == selected_variant_id:
+			variants.push_front(variants.pop_at(index))
+			break
+	var rows_by_id := {}
+	var raw_by_id := {}
+	for raw: Dictionary in simulation.variants: raw_by_id[str(raw.id)] = raw
 	var units: float = population / float(MAX_TOTAL_DOTS)
 	for variant: Dictionary in variants:
 		var id := str(variant.id)
 		var family := str(variant.family_id)
-		var controlled: bool = bool(variant.controlled) and str(variant.creator) == "player"
 		var color := _family_color(family,bool(variant.owned))
 		_colors[family] = color.to_html(false)
 		var countries := PackedStringArray()
@@ -218,6 +275,11 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 			var cid := str(variant.origin_country)
 			var positions := _land_positions(family,cid)
 			if not positions.is_empty(): _points.append({"family_id":family,"variant_id":id,"country_id":cid,"world_position":positions[0],"color":color,"kind":"presence","scope":"origin_country","pool":"owned" if variant.owned else "external","adoption_count_known":true,"country_adopted":0})
-		if controlled: _rows.append({"id":id,"title":str(variant.title).left(48),"color":color,"family_id":family,"country_ids":countries,"controlled":true,"kind":"adoption" if int(variant.adopted)>0 else "presence","scope":"country_adoption_sample","tooltip":""})
+		var row := variant.duplicate(true)
+		row.title = Identity.name(simulation.catalog, raw_by_id[id])
+		row.merge({"color":color,"country_ids":countries,"kind":"adoption" if int(variant.adopted)>0 else "presence","scope":"country_adoption_sample" if int(variant.adopted)>0 else "origin_country","tooltip":""})
+		rows_by_id[id] = row
+	for variant: Dictionary in world.variants:
+		_rows.append(rows_by_id[str(variant.id)])
 	_geometry_rebuilds += 1
 	_project_points()

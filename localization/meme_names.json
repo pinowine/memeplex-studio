@@ -1,0 +1,517 @@
+{
+  "MN_CASE_B01": {
+    "source": "YYDS",
+    "zh_CN": "YYDS",
+    "en": "YYDS"
+  },
+  "MN_CASE_B02": {
+    "source": "集美",
+    "zh_CN": "集美",
+    "en": "集美"
+  },
+  "MN_CASE_B03": {
+    "source": "绝绝子",
+    "zh_CN": "绝绝子",
+    "en": "绝绝子"
+  },
+  "MN_CASE_B04": {
+    "source": "尊嘟假嘟",
+    "zh_CN": "尊嘟假嘟",
+    "en": "尊嘟假嘟"
+  },
+  "MN_CASE_B05": {
+    "source": "哈基米",
+    "zh_CN": "哈基米",
+    "en": "哈基米"
+  },
+  "MN_CASE_B06": {
+    "source": "city不city",
+    "zh_CN": "city不city",
+    "en": "city不city"
+  },
+  "MN_CASE_B07": {
+    "source": "班味",
+    "zh_CN": "班味",
+    "en": "班味"
+  },
+  "MN_CASE_B08": {
+    "source": "Rizz",
+    "zh_CN": "Rizz",
+    "en": "Rizz"
+  },
+  "MN_CASE_B09": {
+    "source": "Brainrot",
+    "zh_CN": "Brainrot",
+    "en": "Brainrot"
+  },
+  "MN_CASE_B10": {
+    "source": "No Cap",
+    "zh_CN": "No Cap",
+    "en": "No Cap"
+  },
+  "MN_CASE_B11": {
+    "source": "Delulu",
+    "zh_CN": "Delulu",
+    "en": "Delulu"
+  },
+  "MN_CASE_B12": {
+    "source": "Bro",
+    "zh_CN": "Bro",
+    "en": "Bro"
+  },
+  "MN_CASE_B13": {
+    "source": "Gyatt",
+    "zh_CN": "Gyatt",
+    "en": "Gyatt"
+  },
+  "MN_CASE_B14": {
+    "source": "包的",
+    "zh_CN": "包的",
+    "en": "包的"
+  },
+  "MN_CASE_B15": {
+    "source": "已老实",
+    "zh_CN": "已老实",
+    "en": "已老实"
+  },
+  "MN_CASE_B16": {
+    "source": "Hawk Tuah",
+    "zh_CN": "Hawk Tuah",
+    "en": "Hawk Tuah"
+  },
+  "MN_CASE_B17": {
+    "source": "Fanum Tax",
+    "zh_CN": "Fanum Tax",
+    "en": "Fanum Tax"
+  },
+  "MN_CASE_B18": {
+    "source": "Quoicoubeh",
+    "zh_CN": "Quoicoubeh",
+    "en": "Quoicoubeh"
+  },
+  "MN_CASE_B19": {
+    "source": "Sigma Boy",
+    "zh_CN": "Sigma Boy",
+    "en": "Sigma Boy"
+  },
+  "MN_CASE_B20": {
+    "source": "IJBOL",
+    "zh_CN": "IJBOL",
+    "en": "IJBOL"
+  },
+  "MN_CASE_P01": {
+    "source": "秋日奶茶",
+    "zh_CN": "秋日奶茶",
+    "en": "秋日奶茶"
+  },
+  "MN_CASE_P02": {
+    "source": "疯狂星期四",
+    "zh_CN": "疯狂星期四",
+    "en": "疯狂星期四"
+  },
+  "MN_CASE_P03": {
+    "source": "退退退",
+    "zh_CN": "退退退",
+    "en": "退退退"
+  },
+  "MN_CASE_P04": {
+    "source": "质疑理解成为",
+    "zh_CN": "质疑理解成为",
+    "en": "质疑理解成为"
+  },
+  "MN_CASE_P05": {
+    "source": "不说也懂",
+    "zh_CN": "不说也懂",
+    "en": "Tell Me Without Telling Me"
+  },
+  "MN_CASE_P06": {
+    "source": "NPC直播",
+    "zh_CN": "NPC直播",
+    "en": "NPC Live"
+  },
+  "MN_CASE_P07": {
+    "source": "Grimace Shake",
+    "zh_CN": "Grimace Shake",
+    "en": "Grimace Shake"
+  },
+  "MN_CASE_P08": {
+    "source": "Roman Empire",
+    "zh_CN": "Roman Empire",
+    "en": "Roman Empire"
+  },
+  "MN_CASE_P09": {
+    "source": "English or Spanish",
+    "zh_CN": "English or Spanish",
+    "en": "English or Spanish"
+  },
+  "MN_CASE_P10": {
+    "source": "只听不评",
+    "zh_CN": "只听不评",
+    "en": "We Listen"
+  },
+  "MN_CASE_P11": {
+    "source": "67",
+    "zh_CN": "67",
+    "en": "67"
+  },
+  "MN_CASE_P12": {
+    "source": "Wednesday Dance",
+    "zh_CN": "Wednesday Dance",
+    "en": "Wednesday Dance"
+  },
+  "MN_CASE_P13": {
+    "source": "传递手机",
+    "zh_CN": "传递手机",
+    "en": "Pass the Phone"
+  },
+  "MN_CASE_P14": {
+    "source": "会员制餐厅",
+    "zh_CN": "会员制餐厅",
+    "en": "会员制餐厅"
+  },
+  "MN_CASE_P15": {
+    "source": "Chicken Jockey",
+    "zh_CN": "Chicken Jockey",
+    "en": "Chicken Jockey"
+  },
+  "MN_CASE_P16": {
+    "source": "Jet2 Holiday",
+    "zh_CN": "Jet2 Holiday",
+    "en": "Jet2 Holiday"
+  },
+  "MN_CASE_P17": {
+    "source": "Pikki Pikki",
+    "zh_CN": "Pikki Pikki",
+    "en": "Pikki Pikki"
+  },
+  "MN_CASE_P18": {
+    "source": "Pedro",
+    "zh_CN": "Pedro",
+    "en": "Pedro"
+  },
+  "MN_CASE_P19": {
+    "source": "Montoya",
+    "zh_CN": "Montoya",
+    "en": "Montoya"
+  },
+  "MN_CASE_P20": {
+    "source": "快乐小猫",
+    "zh_CN": "快乐小猫",
+    "en": "Happy Cat"
+  },
+  "MN_CASE_R01": {
+    "source": "交易提议",
+    "zh_CN": "交易提议",
+    "en": "Trade Offer"
+  },
+  "MN_CASE_R02": {
+    "source": "会更好吧",
+    "zh_CN": "会更好吧",
+    "en": "For the Better"
+  },
+  "MN_CASE_R03": {
+    "source": "今昔对比",
+    "zh_CN": "今昔对比",
+    "en": "How It's Going"
+  },
+  "MN_CASE_R04": {
+    "source": "侮辱性极强",
+    "zh_CN": "侮辱性极强",
+    "en": "侮辱性极强"
+  },
+  "MN_CASE_R05": {
+    "source": "小镇做题家",
+    "zh_CN": "小镇做题家",
+    "en": "小镇做题家"
+  },
+  "MN_CASE_R06": {
+    "source": "内卷",
+    "zh_CN": "内卷",
+    "en": "内卷"
+  },
+  "MN_CASE_R07": {
+    "source": "搭子",
+    "zh_CN": "搭子",
+    "en": "搭子"
+  },
+  "MN_CASE_R08": {
+    "source": "i人e人",
+    "zh_CN": "i人e人",
+    "en": "i人e人"
+  },
+  "MN_CASE_R09": {
+    "source": "Girl Math",
+    "zh_CN": "Girl Math",
+    "en": "Girl Math"
+  },
+  "MN_CASE_R10": {
+    "source": "Flag",
+    "zh_CN": "Flag",
+    "en": "Flag"
+  },
+  "MN_CASE_R11": {
+    "source": "Situationship",
+    "zh_CN": "Situationship",
+    "en": "Situationship"
+  },
+  "MN_CASE_R12": {
+    "source": "NPC",
+    "zh_CN": "NPC",
+    "en": "NPC"
+  },
+  "MN_CASE_R13": {
+    "source": "Pick-me",
+    "zh_CN": "Pick-me",
+    "en": "Pick-me"
+  },
+  "MN_CASE_R14": {
+    "source": "Looksmaxxing",
+    "zh_CN": "Looksmaxxing",
+    "en": "Looksmaxxing"
+  },
+  "MN_CASE_R15": {
+    "source": "把薯条装好",
+    "zh_CN": "把薯条装好",
+    "en": "Fries in the Bag"
+  },
+  "MN_CASE_R16": {
+    "source": "百人对大猩猩",
+    "zh_CN": "百人对大猩猩",
+    "en": "100 Men vs. Gorilla"
+  },
+  "MN_CASE_R17": {
+    "source": "男人还是熊",
+    "zh_CN": "男人还是熊",
+    "en": "Man or Bear"
+  },
+  "MN_CASE_R18": {
+    "source": "Gen Z Stare",
+    "zh_CN": "Gen Z Stare",
+    "en": "Gen Z Stare"
+  },
+  "MN_CASE_R19": {
+    "source": "女性闯男界",
+    "zh_CN": "女性闯男界",
+    "en": "Women in Men's Fields"
+  },
+  "MN_CASE_R20": {
+    "source": "Standing on Business",
+    "zh_CN": "Standing on Business",
+    "en": "Standing on Business"
+  },
+  "MN_CASE_S01": {
+    "source": "一切都好",
+    "zh_CN": "一切都好",
+    "en": "This Is Fine"
+  },
+  "MN_CASE_S02": {
+    "source": "岂能轻易",
+    "zh_CN": "岂能轻易",
+    "en": "One Does Not Simply"
+  },
+  "MN_CASE_S03": {
+    "source": "大受震撼",
+    "zh_CN": "大受震撼",
+    "en": "大受震撼"
+  },
+  "MN_CASE_S04": {
+    "source": "躺平",
+    "zh_CN": "躺平",
+    "en": "躺平"
+  },
+  "MN_CASE_S05": {
+    "source": "栓Q",
+    "zh_CN": "栓Q",
+    "en": "栓Q"
+  },
+  "MN_CASE_S06": {
+    "source": "让他发挥",
+    "zh_CN": "让他发挥",
+    "en": "Let Him Cook"
+  },
+  "MN_CASE_S07": {
+    "source": "Girl Dinner",
+    "zh_CN": "Girl Dinner",
+    "en": "Girl Dinner"
+  },
+  "MN_CASE_S08": {
+    "source": "端庄得体",
+    "zh_CN": "端庄得体",
+    "en": "Very Demure"
+  },
+  "MN_CASE_S09": {
+    "source": "Brat Summer",
+    "zh_CN": "Brat Summer",
+    "en": "Brat Summer"
+  },
+  "MN_CASE_S10": {
+    "source": "Chill Guy",
+    "zh_CN": "Chill Guy",
+    "en": "Chill Guy"
+  },
+  "MN_CASE_S11": {
+    "source": "Kevin James",
+    "zh_CN": "Kevin James",
+    "en": "Kevin James"
+  },
+  "MN_CASE_S12": {
+    "source": "羽绒服教皇",
+    "zh_CN": "羽绒服教皇",
+    "en": "Puffer Pope"
+  },
+  "MN_CASE_S13": {
+    "source": "Rage Bait",
+    "zh_CN": "Rage Bait",
+    "en": "Rage Bait"
+  },
+  "MN_CASE_S14": {
+    "source": "说点不知道的",
+    "zh_CN": "说点不知道的",
+    "en": "说点不知道的"
+  },
+  "MN_CASE_S15": {
+    "source": "海里发现水",
+    "zh_CN": "海里发现水",
+    "en": "Water in the Sea"
+  },
+  "MN_CASE_S16": {
+    "source": "巅峰之作",
+    "zh_CN": "巅峰之作",
+    "en": "Peak Fiction"
+  },
+  "MN_CASE_S17": {
+    "source": "绝对电影",
+    "zh_CN": "绝对电影",
+    "en": "Absolute Cinema"
+  },
+  "MN_CASE_S18": {
+    "source": "我会赢的",
+    "zh_CN": "我会赢的",
+    "en": "Nah, I'd Win"
+  },
+  "MN_CASE_S19": {
+    "source": "我们回来了",
+    "zh_CN": "我们回来了",
+    "en": "We're So Back"
+  },
+  "MN_CASE_S20": {
+    "source": "我没有敌人",
+    "zh_CN": "我没有敌人",
+    "en": "I Have No Enemies"
+  },
+  "MN_CASE_W01": {
+    "source": "Skibidi Toilet",
+    "zh_CN": "Skibidi Toilet",
+    "en": "Skibidi Toilet"
+  },
+  "MN_CASE_W02": {
+    "source": "Italian Brainrot",
+    "zh_CN": "Italian Brainrot",
+    "en": "Italian Brainrot"
+  },
+  "MN_CASE_W03": {
+    "source": "Goncharov",
+    "zh_CN": "Goncharov",
+    "en": "Goncharov"
+  },
+  "MN_CASE_W04": {
+    "source": "Balenciaga魔法",
+    "zh_CN": "Balenciaga魔法",
+    "en": "Balenciaga Potter"
+  },
+  "MN_CASE_W05": {
+    "source": "Barbenheimer",
+    "zh_CN": "Barbenheimer",
+    "en": "Barbenheimer"
+  },
+  "MN_CASE_W06": {
+    "source": "Only in Ohio",
+    "zh_CN": "Only in Ohio",
+    "en": "Only in Ohio"
+  },
+  "MN_CASE_W07": {
+    "source": "Aura Points",
+    "zh_CN": "Aura Points",
+    "en": "Aura Points"
+  },
+  "MN_CASE_W08": {
+    "source": "Sigma Grindset",
+    "zh_CN": "Sigma Grindset",
+    "en": "Sigma Grindset"
+  },
+  "MN_CASE_W09": {
+    "source": "Amogus",
+    "zh_CN": "Amogus",
+    "en": "Amogus"
+  },
+  "MN_CASE_W10": {
+    "source": "主角光环",
+    "zh_CN": "主角光环",
+    "en": "Main Character"
+  },
+  "MN_CASE_W11": {
+    "source": "Canon Event",
+    "zh_CN": "Canon Event",
+    "en": "Canon Event"
+  },
+  "MN_CASE_W12": {
+    "source": "后室",
+    "zh_CN": "后室",
+    "en": "Backrooms"
+  },
+  "MN_CASE_W13": {
+    "source": "Moo Deng",
+    "zh_CN": "Moo Deng",
+    "en": "Moo Deng"
+  },
+  "MN_CASE_W14": {
+    "source": "酸黄瓜跳舞",
+    "zh_CN": "酸黄瓜跳舞",
+    "en": "酸黄瓜跳舞"
+  },
+  "MN_CASE_W15": {
+    "source": "万能永乐大典",
+    "zh_CN": "万能永乐大典",
+    "en": "万能永乐大典"
+  },
+  "MN_CASE_W16": {
+    "source": "地平说",
+    "zh_CN": "地平说",
+    "en": "Flat Earth"
+  },
+  "MN_CASE_W17": {
+    "source": "Lobotomy Kaisen",
+    "zh_CN": "Lobotomy Kaisen",
+    "en": "Lobotomy Kaisen"
+  },
+  "MN_CASE_W18": {
+    "source": "Those Who Know",
+    "zh_CN": "Those Who Know",
+    "en": "Those Who Know"
+  },
+  "MN_CASE_W19": {
+    "source": "Tung Sahur",
+    "zh_CN": "Tung Sahur",
+    "en": "Tung Sahur"
+  },
+  "MN_CASE_W20": {
+    "source": "Smurf Cat",
+    "zh_CN": "Smurf Cat",
+    "en": "Smurf Cat"
+  },
+  "MN_NOBODY_2020": {
+    "source": "Nobody Me",
+    "zh_CN": "Nobody Me",
+    "en": "Nobody Me"
+  },
+  "MN_OK_BOOMER_2020": {
+    "source": "OK boomer",
+    "zh_CN": "OK boomer",
+    "en": "OK boomer"
+  },
+  "MN_VERSAILLES_2020": {
+    "source": "Versailles",
+    "zh_CN": "凡尔赛",
+    "en": "Versailles"
+  }
+}

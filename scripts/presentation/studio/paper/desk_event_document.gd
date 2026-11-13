@@ -1,5 +1,7 @@
 extends ScrollContainer
 
+signal meme_selected(id: String)
+
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
@@ -182,22 +184,29 @@ func _add_impact(block: Dictionary) -> void:
 
 func _write_field(label: RichTextLabel, field: Dictionary, index: int) -> void:
 	var annotated := not str(field.get("tooltip_body", "")).is_empty()
-	if annotated:
-		label.push_meta(index, RichTextLabel.META_UNDERLINE_NEVER)
+	var linked := not str(field.get("variant_id", "")).is_empty()
+	if annotated or linked:
+		label.push_meta(index, RichTextLabel.META_UNDERLINE_ALWAYS if linked else RichTextLabel.META_UNDERLINE_NEVER)
 		label.push_color(FIELD_COLORS[str(field.field_kind)])
-		label.push_bold()
 	_write_content(label, str(field.text))
-	if annotated:
-		label.pop()
+	if annotated or linked:
 		label.pop()
 		label.pop()
 
 func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 	label.meta_hover_started.connect(func(meta: Variant):
 		var field: Dictionary = segments[int(meta)]
+		if str(field.get("tooltip_body", "")).is_empty():
+			_hide_hover()
+			return
 		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
 		_hover.show()
 		_hover.fit_at(get_viewport().get_mouse_position(), get_viewport().get_visible_rect()))
+	label.meta_clicked.connect(func(meta: Variant):
+		var id := str(segments[int(meta)].get("variant_id", ""))
+		if not id.is_empty():
+			_hide_hover()
+			meme_selected.emit(id))
 	label.meta_hover_ended.connect(func(_meta: Variant): _hide_hover())
 	label.mouse_exited.connect(_hide_hover)
 
