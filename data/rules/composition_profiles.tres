@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_composition_profiles.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+definitions = {
+		"versailles_2020":{"compatible_modules":["module_stance","module_relation","module_boundary"], "requires":{}, "default_context":{"language_id":"ninghua","group_id":"students","topic_ids":["education"],"political_position":[0.0,0.3],"political_known":true,"pragmatic_position":[0.8,0.1]}, "meaning_bounds":{"political_position":[-0.5,0.5,-0.3,1.0],"pragmatic_position":[0.2,1.0,-0.5,1.0]}},
+		"nobody_2020":{"compatible_modules":["module_relation","module_boundary","module_shared_world","module_ritual"], "requires":{"module_ritual":["module_shared_world"]}, "default_context":{"language_id":"shiohara","group_id":"culture_fans","topic_ids":["entertainment"],"political_position":[0.0,0.0],"political_known":true,"pragmatic_position":[0.7,0.1]}, "meaning_bounds":{"political_position":[-0.6,0.6,-0.6,0.6],"pragmatic_position":[0.2,1.0,-0.6,0.8]}},
+		"ok_boomer_2020":{"compatible_modules":["module_stance","module_relation","module_boundary","module_ritual"], "requires":{}, "default_context":{"language_id":"seowon","group_id":"students","topic_ids":["education"],"political_position":[-0.4,-0.2],"political_known":true,"pragmatic_position":[0.6,0.7]}, "meaning_bounds":{"political_position":[-1.0,0.2,-1.0,0.3],"pragmatic_position":[0.1,1.0,0.2,1.0]}}
+	}
+scenes = {
+	"versailles_2020": {"":"exam", "education":"exam", "community+education":"class_chat", "education+work":"qualification", "education+entertainment":"trivia"},
+	"nobody_2020": {"":"film", "entertainment":"film", "community+entertainment":"fan_chat", "work":"office", "platform_tools+work":"software", "education":"lesson"},
+	"ok_boomer_2020": {"":"school", "education":"school", "education+work":"first_job", "work":"overtime", "cost_of_living+work":"rent", "community":"neighborhood"}
+}
