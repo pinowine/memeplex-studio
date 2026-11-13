@@ -1037,6 +1037,8 @@ func details_for_item(kind: String,id: String) -> Dictionary:
 	if str(card.id) == "module_boundary": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_LANGUAGE_SLOT_WHEN_INSTALLED_39520ED9")
 	elif str(card.id) == "module_relation": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_AUDIENCE_SLOT_WHEN_INSTALLED_D65F6334")
 	if kind in ["stance_token", "pragmatic_token"]: details.gesture = DeskLocalization.source("LOC_DRAG_TO_THE_MATCHING_AXIS_TO_USE_0068EEBC")
+	for field: String in ["hover_description", "hover_note", "commentary"]:
+		if definition.has(field): details[field] = definition[field]
 	CardCopy.apply_to(details)
 	return details
 

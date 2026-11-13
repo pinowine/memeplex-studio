@@ -63,8 +63,9 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 		_append_clause(segments, [_field("LOC_EVENT_IMPACT_INDEPENDENT", "LOC_EVENT_IMPACT_INDEPENDENT_HELP", "meme", "LOC_EVENT_NOTE_INDEPENDENT"), _text("  " + str(variant.text))])
 	for reward: Dictionary in record.design_rewards:
 		var entry: Dictionary = catalog.DESIGN_RULES.reward_resource(str(reward.kind), str(reward.id))
-		var description := CardCopy.hover_description(str(reward.id))
-		_append_clause(segments, [_field(str(entry.title), description, str(reward.kind), CardCopy.hover_note(str(reward.id))), _text(" +%d" % int(reward.count))])
+		var description := str(entry.get("hover_description", CardCopy.hover_description(str(reward.id))))
+		var note := str(entry.get("hover_note", CardCopy.hover_note(str(reward.id))))
+		_append_clause(segments, [_field(str(entry.title), description, str(reward.kind), note), _text(" +%d" % int(reward.count))])
 	return segments
 
 static func _append_response(segments: Array[Dictionary], response: Dictionary, record: Dictionary, catalog: MemeDemoCatalog) -> void:
@@ -112,7 +113,7 @@ static func _groups(ids: PackedStringArray, catalog: MemeDemoCatalog) -> Array[D
 		for id: String in ids:
 			if not segments.is_empty(): segments.append(_text("LOC_EVENT_IMPACT_LIST_SEPARATOR"))
 			var group: Dictionary = catalog.DESIGN_RULES.context_resource("group_" + id)
-			segments.append(_field(str(group.title), CardCopy.hover_description("group_" + id), "group", CardCopy.hover_note("group_" + id)))
+			segments.append(_field(str(group.title), str(group.get("hover_description", CardCopy.hover_description("group_" + id))), "group", str(group.get("hover_note", CardCopy.hover_note("group_" + id)))))
 	return segments
 
 static func _append_clause(segments: Array[Dictionary], clause: Array[Dictionary]) -> void:

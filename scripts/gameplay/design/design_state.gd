@@ -42,6 +42,8 @@ func _preset_context_base(id: String) -> Dictionary:
 	return _canonical(preset.to_draft(base))
 
 func _context_id(kind: String, value: String) -> String:
+	var canonical: Dictionary = rules.context_resource(kind + "_" + value)
+	if not canonical.is_empty(): return str(canonical.id)
 	for entry: Dictionary in rules.context_definitions.entries:
 		if str(entry.kind) == kind and str(entry.value) == value: return str(entry.id)
 	return ""
@@ -494,7 +496,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 				_state.inventory_sources.append(provenance.duplicate(true))
 				match kind:
 					"module":
-						for index in count: _grant_module(str(rules.find("modules", reward_id).kernel_id))
+						_state.module_inventory[reward_id] = count
 					_:
 						_state.context_resource_inventory[reward_id] = int(_state.context_resource_inventory.get(reward_id,0)) + count
 				labels.append("%s ×%d" % [str(rules.reward_resource(kind, reward_id).title), count])
@@ -504,7 +506,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			if source.is_empty() or not source.get("controlled", false) or not source.get("owned", false) or source.get("creator", "") != "player": return PackedStringArray([DeskLocalization.source("LOC_ONLY_PLAYER_PUBLISHED_VERSIONS_MAY_REGISTER_MODULES_C45E35C2")])
 			errors = _current_patch_errors(source)
 			if not errors.is_empty(): return errors
-			_grant_module(str(source.kernel_id))
+			_grant_module("module_" + str(source.kernel_id))
 			if str(_state.core_kernel_id).is_empty():
 				_state.core_kernel_id = str(source.kernel_id)
 				_state.core_preset_id = str(source.get("preset_id", ""))
@@ -539,21 +541,20 @@ func _grant_starter_context(base: Dictionary) -> void:
 		_state.context_resource_inventory[id] = int(_state.context_resource_inventory.get(id,0)) + 1
 
 func _grant_starter_module(preset_id: String) -> void:
-	var kernel_id := str(catalog.find_preset(preset_id).kernel_id)
+	var module_id := "module_" + str(catalog.find_preset(preset_id).kernel_id)
 	if Composition.supports(preset_id):
 		var definition: Dictionary = Composition.definition(preset_id)
-		var preferred := "module_" + kernel_id
-		if preferred not in definition.compatible_modules or not definition.requires.get(preferred,[]).is_empty():
+		if module_id not in definition.compatible_modules or not definition.requires.get(module_id,[]).is_empty():
 			for id: String in definition.compatible_modules:
 				if definition.requires.get(id,[]).is_empty():
-					kernel_id = str(rules.find("modules",id).kernel_id)
+					module_id = id
 					break
-	_grant_module(kernel_id)
+	_grant_module(module_id)
 
-func _grant_module(kernel_id: String) -> void:
-	var id := "module_" + kernel_id
-	if rules.find("modules", id).is_empty(): return
-	_state.module_inventory[id] = 1
+func _grant_module(id: String) -> void:
+	var module: Dictionary = rules.find("modules",id)
+	if module.is_empty(): return
+	_state.module_inventory[str(module.id)] = 1
 
 func card_owned(kind: String, id: String) -> bool:
 	if kind == "module": return int(_state.module_inventory.get(id,0)) > 0
@@ -732,7 +733,7 @@ func snapshot(variants: Array = []) -> Dictionary:
 	for variant: Dictionary in variants:
 		lineage.append({"id":variant.id, "family_id":variant.family_id, "parent_ids":variant.parent_ids.duplicate(),
 			"origin_ids":variant.get("origin_ids", []).duplicate(), "source_presets":variant.get("source_presets", []).duplicate(true),
-			"kernel_id":variant.kernel_id, "module_id":"module_" + str(variant.kernel_id), "creator":variant.creator,
+			"kernel_id":variant.kernel_id, "module_id":str(rules.find("modules","module_" + str(variant.kernel_id)).get("id","")), "creator":variant.creator,
 			"owned":variant.owned, "controlled":variant.controlled, "text":variant.text, "semantic_distance":variant.semantic_distance,
 			"meaning":variant.get("meaning", ""), "patch_ids":variant.get("patch_ids", []).duplicate(),
 			"language_versions":variant.get("language_versions", []).duplicate(true)})
