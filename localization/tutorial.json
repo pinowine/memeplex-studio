@@ -4,16 +4,6 @@
     "zh_CN": "账本摊开不等于账已结清，先核对那些看起来最安静的数字。",
     "en": "Opening the books is not the same as settling them. Check the quiet-looking numbers first."
   },
-  "LOC_OPENING_FAX_OPEN_TITLE": {
-    "source": "来电话了",
-    "zh_CN": "来电话了",
-    "en": "Incoming call"
-  },
-  "LOC_OPENING_FAX_OPEN_TEXT": {
-    "source": "先点开传真机。",
-    "zh_CN": "点击传真机机身，拉近看看。",
-    "en": "Click the fax body to bring it into focus."
-  },
   "LOC_OPENING_PICKUP_TITLE": {
     "source": "接听",
     "zh_CN": "接听",
@@ -414,16 +404,6 @@
     "zh_CN": "选一项你买得起、也已经满足前提的能力，然后购买。",
     "en": "Choose an affordable ability whose prerequisites you meet, then buy it. Reading the description alone won’t teach it to you, I’m afraid."
   },
-  "LOC_OPENING_PUBLISH_TITLE": {
-    "source": "确认模因",
-    "zh_CN": "确认模因",
-    "en": "Confirm the meme"
-  },
-  "LOC_OPENING_PUBLISH_TEXT": {
-    "source": "回到编辑页，确认这份模因。确认只是把它送上待投放的清单，真正开始还差最后一步。",
-    "zh_CN": "回到编辑页，确认这份模因。确认只是把它送上待投放的清单，真正开始还差最后一步。",
-    "en": "Return to Edit and confirm the meme. That only puts it on the deployment list. There’s one last step before work really begins."
-  },
   "LOC_OPENING_MAP_INTRO_TITLE": {
     "source": "地图页",
     "zh_CN": "地图页",
@@ -498,21 +478,6 @@
     "source": "确定选择",
     "zh_CN": "确定选择",
     "en": "Confirm selection"
-  },
-  "LOC_GUIDE_MEANING_FINE": {
-    "source": "身边已经着火了，还在说一切都好。",
-    "zh_CN": "身边已经着火了，还在说一切都好。",
-    "en": "Everything is on fire. Everything is fine."
-  },
-  "LOC_GUIDE_MEANING_PEAK": {
-    "source": "把眼前的东西捧成巅峰，认真还是反讽都行。",
-    "zh_CN": "把眼前的东西捧成巅峰，认真还是反讽都行。",
-    "en": "Call something the absolute peak, sincerely or otherwise."
-  },
-  "LOC_GUIDE_MEANING_67": {
-    "source": "没什么固定含义，懂的人自然会接上。",
-    "zh_CN": "没什么固定含义，懂的人自然会接上。",
-    "en": "No fixed meaning. Those in on it know the response."
   },
   "LOC_GUIDE_STARTER_CONFIRMED": {
     "source": "选好了？按Esc可以回到桌面。",

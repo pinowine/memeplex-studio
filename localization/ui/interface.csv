@@ -1,24 +1,10 @@
 keys,zh_CN,en
-MAP_TITLE,模因世界,Meme world
-MAP_SEED,种子,Seed
-MAP_GENERATE,按种子生成,Generate
-MAP_RANDOM,随机地图,Randomize
-MAP_RESET,重置视角,Reset view
-MAP_INSPECTOR,国家档案,COUNTRY PROFILE
-MAP_SELECT_HINT,点击陆地查看国家。,Select land to inspect a country.
 MAP_TOPICS,偏好话题,Preferred topics
 MAP_INTRODUCTION,简介,Introduction
 MAP_GROUPS,人群构成,Audience groups
 MAP_CULTURE,文化,Culture
 MAP_LANGUAGES,语言,Languages
-MAP_GROUPS_NOTE,群体可重叠，按内容适配程度排列。,Groups may overlap. Listed by content affinity.
-MAP_EVENTS,候选事件池,Candidate event pool
-MAP_COMPETITORS,竞争性模因,Competing memes
-MAP_HOVER_HINT,将指针移到陆地上,Hover over land
-MAP_WORLD_SUMMARY,%d 国 · 总人口 %.0f 百万,%d countries · %.0f million people
 MAP_POPULATION,人口：%.0f 百万,Population: %.0f million
-MAP_CONTROLS,左键选择 · 中键或空格＋左键平移 · 滚轮平滑缩放 · 放大显示城市与地理细节,Select: left-click · Pan: middle / Space + drag · Smooth zoom: wheel · Zoom in for cities and geography
-MAP_INVALID_SEED,种子必须是 1 至 2147483647 的整数。,Seed must be an integer between 1 and 2147483647.
 C01_SHORT,宁华,Ninghua
 C01_NAME,宁华共和国,Republic of Ninghua
 C01_PROTOTYPE,本土大众网络,Domestic mass internet
@@ -118,13 +104,6 @@ C09_CULTURE,本地口语让影视截帧和短对白更亲切。跨地区转发�
 C09_TOPICS,交通服务、物价、工作、家庭、影视,Transport and services; prices; work; family; film
 C09_EVENTS,接入改善、本地对白、跨区域改写,Improved access; local dialogue; cross-regional rewriting
 C09_COMPETITORS,城市日常对白、影视截帧、物价段子,Urban dialogue; film stills; price jokes
-MAP_POPULATION_PENDING,人口：待配置,Population: not configured
-MAP_WORLD_PENDING,%d 国 · 人口数据待补全,%d countries · population data incomplete
-MAP_AREA,参考陆地面积：%.2f 百万 km²,Reference land: %.2f million km²
-MAP_ZOOM,缩放 %.1f× · %s,Zoom %.1f× · %s
-MAP_LOD0,国家,Countries
-MAP_LOD1,首都与河流,Capitals and rivers
-MAP_LOD2,城市与地理细节,Cities and geography
 C10_SHORT,纳希尔,Nashir
 C10_NAME,纳希尔联邦共和国,Federal Republic of Nashir
 C10_PROTOTYPE,北非参考圈 · 机制待访谈,North Africa reference · mechanisms pending review
@@ -287,11 +266,7 @@ PRINT_SPEED_PAUSE,暂停 · F1,Pause · F1
 PRINT_SPEED_NORMAL,常速 · F2 · 5秒/天,Normal · F2 · 5s/day
 PRINT_SPEED_FAST,加速 · F3 · 2秒/天,Fast · F3 · 2s/day
 PRINT_WORKBENCH_OPEN,打开模因工作台,Open meme workbench
-PRINT_ARCHIVE_LABEL,地下印刷厂 · 国家档案,UNDERGROUND PRESS / COUNTRY FILE
 PRINT_CLOSE,关闭,Close
-PRINT_STUDIO_PICK,点击一个国家，选定工作室所在地。,Click a country to locate your studio.
-PRINT_STUDIO_UNSELECTED,尚未选择国家,No country selected
-PRINT_STUDIO_CONFIRM,设立工作室,Establish studio
 PRINT_WORKBENCH_TITLE,模因工作台,Meme workbench
 PRINT_WORKBENCH_PLACEHOLDER,独立地图页不提供模因编辑，Meme点数与收入也未接入。请从游戏主界面使用工作台。,"This standalone map page does not provide meme editing, meme points or income. Use the workbench in the main game."
 PRINT_DATE_FORMAT,%d年%d月%d日,%04d-%02d-%02d
@@ -300,9 +275,7 @@ PRINT_SEASON_SUMMER,夏季,Summer
 PRINT_SEASON_AUTUMN,秋季,Autumn
 PRINT_SEASON_WINTER,冬季,Winter
 MAP_LATITUDE_ARCTIC,北极圈 · 66.56°N,Arctic Circle · 66.56°N
-MAP_LATITUDE_NORTH_TEMPERATE,北温带中线 · 45°N,North temperate midline · 45°N
 MAP_LATITUDE_CANCER,北回归线 · 23.44°N,Tropic of Cancer · 23.44°N
 MAP_LATITUDE_EQUATOR,赤道 · 0°,Equator · 0°
 MAP_LATITUDE_CAPRICORN,南回归线 · 23.44°S,Tropic of Capricorn · 23.44°S
-MAP_LATITUDE_SOUTH_TEMPERATE,南温带中线 · 45°S,South temperate midline · 45°S
 MAP_LATITUDE_ANTARCTIC,南极圈 · 66.56°S,Antarctic Circle · 66.56°S

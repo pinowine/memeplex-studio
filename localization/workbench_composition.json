@@ -4,11 +4,6 @@
     "zh_CN": "含义",
     "en": "Meaning"
   },
-  "LOC_WB_EXPRESSION": {
-    "source": "表达",
-    "zh_CN": "表达",
-    "en": "Expression"
-  },
   "LOC_WB_IDEOLOGY": {
     "source": "意识形态",
     "zh_CN": "意识形态",
@@ -33,16 +28,6 @@
     "source": "这段表达来自",
     "zh_CN": "来源",
     "en": "Sources"
-  },
-  "LOC_WB_LANGUAGE_GLOSS": {
-    "source": "%s版 · 中文释义",
-    "zh_CN": "%s版 · 中文释义",
-    "en": "%s version · English gloss"
-  },
-  "LOC_WB_UNSPECIFIED_LANGUAGE": {
-    "source": "未指定语言",
-    "zh_CN": "未指定语言",
-    "en": "Unspecified language"
   },
   "LOC_WB_NO_COMPOSITION": {
     "source": "当前语境与补丁尚不能组成完整表达。",
