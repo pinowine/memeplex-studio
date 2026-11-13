@@ -109,26 +109,6 @@
     "zh_CN": "本次事件实际产生的独立环境模因数量。",
     "en": "Independent environmental memes created by this event."
   },
-  "LOC_EVENT_DOCUMENT_META": {
-    "source": "助手收集 · H%s · %s",
-    "zh_CN": "助手收集 · H%s · %s",
-    "en": "Collected by assistant · H%s · %s"
-  },
-  "LOC_EVENT_DOCUMENT_IMPACT": {
-    "source": "影响",
-    "zh_CN": "影响",
-    "en": "Impact"
-  },
-  "LOC_EVENT_DOCUMENT_EFFECTS": {
-    "source": "具体影响",
-    "zh_CN": "具体影响",
-    "en": "Effects"
-  },
-  "LOC_EVENT_DOCUMENT_MATERIALS": {
-    "source": "附带材料",
-    "zh_CN": "附带材料",
-    "en": "Enclosed materials"
-  },
   "LOC_EVENT_ORIGIN_WORLD": {
     "source": "世界事件",
     "zh_CN": "世界事件",
@@ -288,11 +268,6 @@
     "source": "无法加载游戏",
     "zh_CN": "无法加载游戏",
     "en": "Could not load the game"
-  },
-  "LOC_AFTER_CONFIRMING_YOUR_MEME_SELECT_A_COUNTRY_90EFDC41": {
-    "source": "确认模因后点击地图国家，再投放并进入游戏。",
-    "zh_CN": "确认模因后点击地图国家，再投放并进入游戏。",
-    "en": "After confirming your meme, select a country on the map, then deploy it to start the game."
   },
   "LOC_PAPER_WORKBENCH_1C2F271C": {
     "source": "01 / 纸张创作台",
@@ -574,11 +549,6 @@
     "zh_CN": "重新开始",
     "en": "Restart"
   },
-  "LOC_ESC_TO_RETURN_OPENING_THE_MENU_DOES_31A34A86": {
-    "source": "ESC 返回；打开菜单不会确认待阅读事件。",
-    "zh_CN": "ESC 返回；打开菜单不会确认待阅读事件。",
-    "en": "ESC to return. Opening the menu does not acknowledge unread events."
-  },
   "LOC_SAVE_A3030BF8": {
     "source": "保存",
     "zh_CN": "保存",
@@ -614,286 +584,6 @@
     "zh_CN": "关闭开发菜单",
     "en": "Close developer menu"
   },
-  "LOC_EVENT_POOL_CONTENT_EDITOR_5823D4E3": {
-    "source": "事件池 · 内容编辑器",
-    "zh_CN": "事件池 · 内容编辑器",
-    "en": "Event pool · Content editor"
-  },
-  "LOC_CLOSE_RETURN_D102499D": {
-    "source": "关闭 / 返回",
-    "zh_CN": "关闭 / 返回",
-    "en": "Close / Return"
-  },
-  "LOC_DEVELOPER_TOOL_EDITING_A_DRAFT_DOES_NOT_DCDAA558": {
-    "source": "编辑事件草稿；保存时验证并写入 .tres，然后重新加载。",
-    "zh_CN": "编辑事件草稿；保存时验证并写入 .tres，然后重新加载。",
-    "en": "Edit an event draft. Saving validates it, writes a .tres file and reloads it."
-  },
-  "LOC_SEARCH_BY_ID_OR_EVENT_NAME_D462B70F": {
-    "source": "搜索 ID 或事件名称",
-    "zh_CN": "搜索 ID 或事件名称",
-    "en": "Search by ID or event name"
-  },
-  "LOC_CREATE_EVENT_07CE780C": {
-    "source": "创建事件",
-    "zh_CN": "创建事件",
-    "en": "Create event"
-  },
-  "LOC_DUPLICATE_EVENT_489D73BD": {
-    "source": "复制事件",
-    "zh_CN": "复制事件",
-    "en": "Duplicate event"
-  },
-  "LOC_NEW_DUPLICATE_CREATES_DRAFTS_ONLY_EVENT_FILES_2FAB0E94": {
-    "source": "新建 / 复制仅创建草稿。\n事件文件在 content/demo/events 内。\n原 catalog 不会被此工具自动覆盖。",
-    "zh_CN": "新建 / 复制仅创建草稿。\n事件文件在 content/demo/events 内。\n原 catalog 不会被此工具自动覆盖。",
-    "en": "New / Duplicate creates drafts only.\nEvent files are in content/demo/events.\nThis tool does not automatically overwrite the original catalog."
-  },
-  "LOC_BASICS_25C2FD63": {
-    "source": "基本",
-    "zh_CN": "基本",
-    "en": "Basics"
-  },
-  "LOC_EVENT_ID_35D3B090": {
-    "source": "事件 ID",
-    "zh_CN": "事件 ID",
-    "en": "Event ID"
-  },
-  "LOC_EVENT_TITLE_EE1099DD": {
-    "source": "事件标题",
-    "zh_CN": "事件标题",
-    "en": "Event title"
-  },
-  "LOC_SOURCE_TYPE_38E1E77B": {
-    "source": "来源类型",
-    "zh_CN": "来源类型",
-    "en": "Source type"
-  },
-  "LOC_COMMA_SEPARATED_TOPIC_IDS_8AC3FC44": {
-    "source": "主题 ID（逗号分隔）",
-    "zh_CN": "主题 ID（逗号分隔）",
-    "en": "Comma-separated topic IDs"
-  },
-  "LOC_COMMA_SEPARATED_OPERATION_IDS_672996D2": {
-    "source": "操作 ID（逗号分隔）",
-    "zh_CN": "操作 ID（逗号分隔）",
-    "en": "Comma-separated operation IDs"
-  },
-  "LOC_INDEPENDENT_ENVIRONMENTAL_FAMILY_PRESET_ID_6F8D5EDF": {
-    "source": "独立环境家族预设 ID",
-    "zh_CN": "独立环境家族预设 ID",
-    "en": "Independent environmental-family preset ID"
-  },
-  "LOC_FOR_EXAMPLE_CASE_W01_ONLY_FOR_ENVIRONMENT_CDF04F05": {
-    "source": "如 case_w01；仅 environment_meme + emerge，其他事件留空",
-    "zh_CN": "如 case_w01；仅 environment_meme + emerge，其他事件留空",
-    "en": "For example, case_w01. Only for environment_meme + emerge; leave blank for other events."
-  },
-  "LOC_WORLD_WORLD_ENVIRONMENT_TRANSMISSION_PLAYER_RELATED_TRANSMISSION_731761F6": {
-    "source": "world = 世界环境；transmission = 玩家传播相关；environment_meme = 环境模因。\n同一事件可标记多个主题和操作；它们不等同于来源类型。",
-    "zh_CN": "world = 世界环境；transmission = 玩家传播相关；environment_meme = 环境模因。\n同一事件可标记多个主题和操作；它们不等同于来源类型。",
-    "en": "world = world environment; transmission = player-related transmission; environment_meme = environmental meme.\nAn event can have multiple topics and operations; these are distinct from its source type."
-  },
-  "LOC_CONTENT_DICTIONARY_REFERENCE_EA77EBEB": {
-    "source": "内容字典参考",
-    "zh_CN": "内容字典参考",
-    "en": "Content dictionary reference"
-  },
-  "LOC_TRIGGER_AND_TIMING_F126A7B4": {
-    "source": "触发与时序",
-    "zh_CN": "触发与时序",
-    "en": "Trigger and timing"
-  },
-  "LOC_TRIGGER_MODE_3C7B79B7": {
-    "source": "触发方式",
-    "zh_CN": "触发方式",
-    "en": "Trigger mode"
-  },
-  "LOC_EARLIEST_TIME_SIMULATION_HOURS_C1D71860": {
-    "source": "最早时间（仿真小时）",
-    "zh_CN": "最早时间（仿真小时）",
-    "en": "Earliest time (simulation hours)"
-  },
-  "LOC_RELATIVE_POOL_WEIGHT_0F8F5257": {
-    "source": "候选池相对权重",
-    "zh_CN": "候选池相对权重",
-    "en": "Relative pool weight"
-  },
-  "LOC_CANDIDATE_OCCURRENCE_PROBABILITY_6335C05D": {
-    "source": "候选发生概率 [0, 1]",
-    "zh_CN": "候选发生概率 [0, 1]",
-    "en": "Candidate occurrence probability [0, 1]"
-  },
-  "LOC_REPEAT_COOLDOWN_HOURS_F3EBF54B": {
-    "source": "重复触发冷却（小时）",
-    "zh_CN": "重复触发冷却（小时）",
-    "en": "Repeat cooldown (hours)"
-  },
-  "LOC_MAXIMUM_OCCURRENCES_UNLIMITED_A1F23264": {
-    "source": "最大次数（0 = 无上限）",
-    "zh_CN": "最大次数（0 = 无上限）",
-    "en": "Maximum occurrences (0 = unlimited)"
-  },
-  "LOC_PHYSICAL_DURATION_HOURS_02265ED3": {
-    "source": "物理持续（小时）",
-    "zh_CN": "物理持续（小时）",
-    "en": "Physical duration (hours)"
-  },
-  "LOC_ATTENTION_EFFECT_DURATION_HOURS_25979F48": {
-    "source": "注意力影响持续（小时）",
-    "zh_CN": "注意力影响持续（小时）",
-    "en": "Attention-effect duration (hours)"
-  },
-  "LOC_ATTENTION_DECAY_MODEL_8DAA2685": {
-    "source": "注意力衰减模型",
-    "zh_CN": "注意力衰减模型",
-    "en": "Attention-decay model"
-  },
-  "LOC_DECAY_PARAMETER_HOURS_E110237C": {
-    "source": "衰减参数（小时）",
-    "zh_CN": "衰减参数（小时）",
-    "en": "Decay parameter (hours)"
-  },
-  "LOC_NUMERIC_CONTROLS_ACCEPT_INVALID_VALUES_FOR_DIAGNOSTICS_D09EAF2B": {
-    "source": "草稿通过验证后才能保存，时间单位为仿真小时。",
-    "zh_CN": "草稿通过验证后才能保存，时间单位为仿真小时。",
-    "en": "Drafts must pass validation before saving. Time is measured in simulation hours."
-  },
-  "LOC_CONDITIONS_16BB1D2B": {
-    "source": "条件",
-    "zh_CN": "条件",
-    "en": "Conditions"
-  },
-  "LOC_ADD_CONDITION_236878C0": {
-    "source": "添加条件",
-    "zh_CN": "添加条件",
-    "en": "Add condition"
-  },
-  "LOC_DELETE_SELECTED_CONDITION_9E1A8FBA": {
-    "source": "删除选中条件",
-    "zh_CN": "删除选中条件",
-    "en": "Delete selected condition"
-  },
-  "LOC_STATE_FIELD_B811C764": {
-    "source": "状态字段",
-    "zh_CN": "状态字段",
-    "en": "State field"
-  },
-  "LOC_COMPARISON_9C17B4A6": {
-    "source": "比较运算",
-    "zh_CN": "比较运算",
-    "en": "Comparison"
-  },
-  "LOC_THRESHOLD_D35480D7": {
-    "source": "阈值",
-    "zh_CN": "阈值",
-    "en": "Threshold"
-  },
-  "LOC_ALL_CONDITIONS_MUST_BE_MET_BEFORE_ENTERING_9E29F9C3": {
-    "source": "条件全部满足才允许进入候选池；条件选择与抽样权重 / 发生概率分开。",
-    "zh_CN": "条件全部满足才允许进入候选池；条件选择与抽样权重 / 发生概率分开。",
-    "en": "All conditions must be met before entering the candidate pool. Eligibility is separate from sampling weight and occurrence probability."
-  },
-  "LOC_EFFECTS_86A00CF7": {
-    "source": "效果",
-    "zh_CN": "效果",
-    "en": "Effects"
-  },
-  "LOC_ADD_EFFECT_6D7B873C": {
-    "source": "添加效果",
-    "zh_CN": "添加效果",
-    "en": "Add effect"
-  },
-  "LOC_DELETE_SELECTED_EFFECT_BA260AC1": {
-    "source": "删除选中效果",
-    "zh_CN": "删除选中效果",
-    "en": "Delete selected effect"
-  },
-  "LOC_EFFECT_TYPE_8C1A153C": {
-    "source": "效果类型",
-    "zh_CN": "效果类型",
-    "en": "Effect type"
-  },
-  "LOC_EFFECT_AMOUNT_5AE6480E": {
-    "source": "效果参数 amount",
-    "zh_CN": "效果参数 amount",
-    "en": "Effect amount"
-  },
-  "LOC_EFFECT_DURATION_HOURS_INSTANT_6C207D70": {
-    "source": "效果持续（小时，0 = 即时）",
-    "zh_CN": "效果持续（小时，0 = 即时）",
-    "en": "Effect duration (hours; 0 = instant)"
-  },
-  "LOC_COMMA_SEPARATED_AUDIENCE_IDS_46BD3131": {
-    "source": "目标群体 ID（逗号分隔）",
-    "zh_CN": "目标群体 ID（逗号分隔）",
-    "en": "Comma-separated audience IDs"
-  },
-  "LOC_AUDIENCE_REFERENCE_59525607": {
-    "source": "群体参考",
-    "zh_CN": "群体参考",
-    "en": "Audience reference"
-  },
-  "LOC_FOR_ATTENTION_CHANNEL_REACH_AMOUNT_IS_A_2D754F72": {
-    "source": "attention / channel_reach 的 amount 是乘数增量（0.2 → ×1.2），不是免费注意力预算。\n其他效果的有效范围由对应数据规则验证；空 group_ids 表示全部合成群体。",
-    "zh_CN": "attention / channel_reach 的 amount 是乘数增量（0.2 → ×1.2），不是免费注意力预算。\n其他效果的有效范围由对应数据规则验证；空 group_ids 表示全部合成群体。",
-    "en": "For attention / channel_reach, amount is a multiplier change (0.2 → ×1.2), not free attention.\nOther effects are validated against their own data rules. Empty group_ids means all synthetic audiences."
-  },
-  "LOC_NARRATIVE_C8192978": {
-    "source": "叙事",
-    "zh_CN": "叙事",
-    "en": "Narrative"
-  },
-  "LOC_NEWS_BODY_ACTORS_CHANGES_MEASURES_OR_CONSEQUENCES_684F82A2": {
-    "source": "新闻正文（主体、变化、措施或后果；不夹入机制说明）",
-    "zh_CN": "新闻正文（主体、变化、措施或后果；不夹入机制说明）",
-    "en": "News body (actors, changes, measures or consequences; no mechanics explanations)"
-  },
-  "LOC_S_COMMENT_MENTOR_AND_ASSISTANT_A_SEPARATE_525002C9": {
-    "source": "67的评价（独立一句）",
-    "zh_CN": "67的评价（独立一句）",
-    "en": "67's comment (one sentence)"
-  },
-  "LOC_COMMA_SEPARATED_UNLOCKED_BASE_FORM_IDS_1E6F2C43": {
-    "source": "解锁基模 ID（逗号分隔）",
-    "zh_CN": "解锁基模 ID（逗号分隔）",
-    "en": "Comma-separated unlocked base-form IDs"
-  },
-  "LOC_EVIDENCE_STATUS_CURRENT_DEMO_DESIGN_7E766AB5": {
-    "source": "依据状态（当前 demo = design）",
-    "zh_CN": "依据状态（当前 demo = design）",
-    "en": "Evidence status (current demo = design)"
-  },
-  "LOC_ALL_TOPIC_OPERATION_AUDIENCE_AND_BASE_FORM_95D02EC2": {
-    "source": "所有主题、操作、群体和基模引用须属于当前 catalog。",
-    "zh_CN": "所有主题、操作、群体和基模引用须属于当前 catalog。",
-    "en": "All topic, operation, audience and base-form references must belong to the current catalog."
-  },
-  "LOC_VALIDATION_RESULTS_C43F6FBA": {
-    "source": "验证结果",
-    "zh_CN": "验证结果",
-    "en": "Validation results"
-  },
-  "LOC_VALIDATE_AND_SAVE_TRES_716E1DAC": {
-    "source": "验证并保存 .tres",
-    "zh_CN": "验证并保存 .tres",
-    "en": "Validate and save .tres"
-  },
-  "LOC_RELOAD_DISCARD_DRAFT_97C651E9": {
-    "source": "重新加载 / 丢弃草稿",
-    "zh_CN": "重新加载 / 丢弃草稿",
-    "en": "Reload / Discard draft"
-  },
-  "LOC_SAVE_DEVELOPER_CATALOG_COPY_D2B32F37": {
-    "source": "保存开发 catalog 副本",
-    "zh_CN": "保存开发 catalog 副本",
-    "en": "Save developer catalog copy"
-  },
-  "LOC_READY_CB1AE7EB": {
-    "source": "就绪。",
-    "zh_CN": "就绪。",
-    "en": "Ready."
-  },
   "LOC_CHINESE_72726D88": {
     "source": "中文",
     "zh_CN": "中文",
@@ -903,16 +593,6 @@
     "source": "你是工作室的印刷编辑。",
     "zh_CN": "你是工作室的印刷编辑。",
     "en": "You are the studio's print editor."
-  },
-  "LOC_AUDIENCE_4F93A315": {
-    "source": "人群",
-    "zh_CN": "人群",
-    "en": "Audience"
-  },
-  "LOC_POLITICAL_STANCE_D0299CB8": {
-    "source": "政治立场",
-    "zh_CN": "政治立场",
-    "en": "Political stance"
   },
   "LOC_TOPICS_A2C81C5A": {
     "source": "话题",
@@ -928,36 +608,6 @@
     "source": "语言",
     "zh_CN": "语言",
     "en": "Language"
-  },
-  "LOC_LANGUAGE_DETERMINES_WHICH_LANGUAGE_THE_EXPRESSION_USES_798C3F4A": {
-    "source": "语言决定表达使用的语言。默认一个槽，释义补丁可增加第二个。至少保留一个来源有效且已挂接的语言，才能发布。",
-    "zh_CN": "语言决定表达使用的语言。默认一个槽，释义补丁可增加第二个。至少保留一个来源有效且已挂接的语言，才能发布。",
-    "en": "Language determines which language the expression uses. There is one slot by default; a paraphrase patch adds a second. At least one attached language with a valid source is required to publish."
-  },
-  "LOC_AUDIENCE_DETERMINES_WHO_THE_EXPRESSION_ADDRESSES_THERE_691D68FC": {
-    "source": "人群决定表达面向的群体。默认一个槽，对照补丁可增加第二个。至少保留一个来源有效且已挂接的人群，才能发布。",
-    "zh_CN": "人群决定表达面向的群体。默认一个槽，对照补丁可增加第二个。至少保留一个来源有效且已挂接的人群，才能发布。",
-    "en": "Audience determines who the expression addresses. There is one slot by default; a contrast patch adds a second. At least one attached audience with a valid source is required to publish."
-  },
-  "LOC_INSTALL_TOPICS_AS_HORIZONTAL_SLIPS_PULL_THE_C770454E": {
-    "source": "话题用横向纸条安装；抓取纸舌移出。空位不会凭空产生材料。",
-    "zh_CN": "话题用横向纸条安装；抓取纸舌移出。空位不会凭空产生材料。",
-    "en": "Install topics as horizontal slips; pull the paper tab to remove them. Empty slots do not create materials."
-  },
-  "LOC_HORIZONTAL_FREEDOM_AUTHORITY_VERTICAL_EQUALITY_HIERARCHY_THE_3F9038E0": {
-    "source": "横轴：自由—威权；纵轴：平等—等级。空心点是起点，实心点是当前位置。一次沿一个轴移动，每步0.1；离开起点使用对应筹码，返回归还。",
-    "zh_CN": "横轴：自由—威权；纵轴：平等—等级。空心点是起点，实心点是当前位置。一次沿一个轴移动，每步0.1；离开起点使用对应筹码，返回归还。",
-    "en": "Horizontal: freedom–authority; vertical: equality–hierarchy. The hollow dot is the starting point; the solid dot is the current position. Move one axis at a time in steps of 0.1. Moving away spends the matching token; returning refunds it."
-  },
-  "LOC_HORIZONTAL_SINCERITY_IRONY_VERTICAL_SUPPORT_OPPOSITION_MOVE_15B127DA": {
-    "source": "横轴：真诚—反讽；纵轴：支持—反对。一次沿一个轴移动，每步0.1。对应筹码数量可在显示器的语用模式查看。",
-    "zh_CN": "横轴：真诚—反讽；纵轴：支持—反对。一次沿一个轴移动，每步0.1。对应筹码数量可在显示器的语用模式查看。",
-    "en": "Horizontal: sincerity–irony; vertical: support–opposition. Move one axis at a time in steps of 0.1. View your matching tokens in the monitor's pragmatics mode."
-  },
-  "LOC_CURRENT_CAPACITY_D_VIEWING_SLOT_D_790C02F5": {
-    "source": "\n\n当前容量：%d；本次查看第%d槽。",
-    "zh_CN": "\n\n当前容量：%d；本次查看第%d槽。",
-    "en": "\n\nCurrent capacity: %d; viewing slot %d."
   },
   "LOC_FAX_INTELLIGENCE_214AFC92": {
     "source": "传真情报",
@@ -1034,11 +684,6 @@
     "zh_CN": "模因设计 / 印前稿",
     "en": "Meme design / Print draft"
   },
-  "LOC_THIS_FAX_HAS_NOT_BEEN_ACKNOWLEDGED_ITS_81CB597A": {
-    "source": "当前传真尚未收阅；完整历史已显示在右页，先盖戳再打开情报纸。",
-    "zh_CN": "当前传真尚未收阅；完整历史已显示在右页，先盖戳再打开情报纸。",
-    "en": "This fax has not been acknowledged. Its full history is on the right-hand page. Stamp it before opening the intelligence sheet."
-  },
   "LOC_THE_PURCHASING_SYSTEM_HAS_NOT_BEEN_DESIGNED_427E491E": {
     "source": "; 购买系统尚未设计。",
     "zh_CN": "; 购买系统尚未设计。",
@@ -1064,55 +709,10 @@
     "zh_CN": "H%d / %s\nMeme %d · 注意力 %d\n曝光 %d · 采用 %d",
     "en": "H%d / %s\nMeme %d · Attention %d\nExposure %d · Adoption %d"
   },
-  "LOC_THE_THREE_KEYS_BELOW_SWITCH_BETWEEN_MEME_20D0119B": {
-    "source": "下方三个键切换 Meme、政治立场和语用点数。Meme页保留变化曲线；其余两页显示四个方向已有的筹码。抓取方向格中的筹码，可拖到培养纸的对应坐标轴。",
-    "zh_CN": "下方三个键切换 Meme、政治立场和语用点数。Meme页保留变化曲线；其余两页显示四个方向已有的筹码。抓取方向格中的筹码，可拖到培养纸的对应坐标轴。",
-    "en": "The three keys below switch between Meme, stance and pragmatic tokens. The Meme page retains the balance curve; the other pages show tokens in four directions. Drag a directional token onto its matching axis on the cultivate sheet."
-  },
-  "LOC_THE_PRINTER_KEEPS_PRODUCING_THE_MEME_LEDGER_BDC9A3A3": {
-    "source": "点数流水和事件摘要会继续打印。单击纸上的事件记录，可查看对应的原始事件。",
-    "zh_CN": "点数流水和事件摘要会继续打印。单击纸上的事件记录，可查看对应的原始事件。",
-    "en": "The printer keeps producing the Meme ledger and event summaries. Click an event on the paper to inspect its original record."
-  },
-  "LOC_TIME_COMPASS_BB6E1B5D": {
-    "source": "时间罗盘",
-    "zh_CN": "时间罗盘",
-    "en": "Time compass"
-  },
-  "LOC_THE_COMPASS_SHOWS_THE_CURRENT_DATE_SEASON_C7931AB4": {
-    "source": "罗盘显示当前日期、季节与天气。时间推进遵守当前播放速度；查看说明不会改变模因与材料。",
-    "zh_CN": "罗盘显示当前日期、季节与天气。时间推进遵守当前播放速度；查看说明不会改变模因与材料。",
-    "en": "The compass shows the current date, season and weather. Time follows the selected playback speed; reading explanations does not change memes or materials."
-  },
-  "LOC_THE_THREE_PHYSICAL_KEYS_PAUSE_PLAY_NORMALLY_262AD9F1": {
-    "source": "三个实体键控制暂停、正常播放和加速。翻页与普通传真打印不会暂停；附带物资的传真会等待你取出纸片。",
-    "zh_CN": "三个实体键控制暂停、正常播放和加速。翻页与普通传真打印不会暂停；附带物资的传真会等待你取出纸片。",
-    "en": "The three physical keys pause, play normally and speed up time. Turning pages and printing ordinary faxes keep time moving; a fax with materials waits until you take its card off the page."
-  },
   "LOC_THIS_FAX_INCLUDES_MATERIALS_MOVE_THE_CARD_4D9E87DA": {
     "source": "传真附有物资：将纸片移出事件纸张后继续。",
     "zh_CN": "传真附有物资：将纸片移出事件纸张后继续。",
     "en": "This fax includes materials. Move the card off its event page to continue."
-  },
-  "LOC_PRESS_ESC_TO_RETURN_TO_THE_DESK_4D921FE1": {
-    "source": "按 Esc，回到桌面。",
-    "zh_CN": "按 Esc，回到桌面。",
-    "en": "Press Esc to return to the desk."
-  },
-  "LOC_WORKBENCH_F9E02D3C": {
-    "source": "工作台",
-    "zh_CN": "工作台",
-    "en": "Workbench"
-  },
-  "LOC_AVAILABLE_DE69AA86": {
-    "source": "可用数量：",
-    "zh_CN": "可用数量：",
-    "en": "Available: "
-  },
-  "LOC_SOURCE_6181ED6F": {
-    "source": "来源：",
-    "zh_CN": "来源：",
-    "en": "Source: "
   },
   "LOC_REUSE_ALLOWED_AD9E7D8B": {
     "source": "允许再利用",
@@ -1173,16 +773,6 @@
     "source": "写一份新版，让这句话继续走下去。",
     "zh_CN": "写一份新版，让这句话继续走下去。",
     "en": "Write a new version and let this expression keep going."
-  },
-  "LOC_MAKE_THE_RECEIVED_MEME_YOUR_OWN_THEN_3D6A7BC5": {
-    "source": "把收到的模因写成自己的表达，再选一处地方投放。",
-    "zh_CN": "把收到的模因写成自己的表达，再选一处地方投放。",
-    "en": "Make the received meme your own, then choose somewhere to deploy it."
-  },
-  "LOC_MEME_CONFIRMED_SELECT_A_COUNTRY_ON_THE_B6B9DAC3": {
-    "source": "02 / 模因已确认。点击地图选择投放国家，再点击下方“投放并进入游戏”。",
-    "zh_CN": "02 / 模因已确认。点击地图选择投放国家，再点击下方“投放并进入游戏”。",
-    "en": "02 / Meme confirmed. Select a country on the map, then click Deploy and start below."
   },
   "LOC_CLICK_THE_MAP_TO_INSPECT_COUNTRIES_OPEN_9876DE16": {
     "source": "点击地图查看国家；翻开左侧稿纸继续创作。",
@@ -1354,11 +944,6 @@
     "zh_CN": "收到 %d 条消息。",
     "en": "Received %d messages."
   },
-  "LOC_NEW_EXPRESSIONS_OUTSIDE_ARE_COMPETING_FOR_PEOPLE_BAC49EFD": {
-    "source": "外面的新表达也在争取人们的目光。",
-    "zh_CN": "外面的新表达也在争取人们的目光。",
-    "en": "New expressions outside are competing for people's attention too."
-  },
   "LOC_SELECT_A_DEPLOYMENT_COUNTRY_ON_THE_MAP_18ADCDE2": {
     "source": "请先在地图选择投放国家，再确认进入游戏。",
     "zh_CN": "请先在地图选择投放国家，再确认进入游戏。",
@@ -1368,11 +953,6 @@
     "source": "请先接听 67 来电，选择起始模因并结束通话。",
     "zh_CN": "请先接听 67 来电，选择起始模因并结束通话。",
     "en": "Answer 67's call, select a starting meme and finish the call first."
-  },
-  "LOC_YOUR_DRAFT_IS_READY_CHOOSE_SOMEWHERE_TO_BF7D7A29": {
-    "source": "稿子已准备好。选一处地方，让它开始流传。",
-    "zh_CN": "稿子已准备好。选一处地方，让它开始流传。",
-    "en": "Your draft is ready. Choose somewhere to let it circulate."
   },
   "LOC_RETURN_TO_THE_WORKBENCH_AND_CREATE_YOUR_1A4056D3": {
     "source": "请先返回创作台，建立自己的新版本。",
@@ -1389,30 +969,10 @@
     "zh_CN": "请先在地图选择投放国家。",
     "en": "Select a deployment country on the map first."
   },
-  "LOC_DEPLOY_AND_START_87663D2B": {
-    "source": "投放并进入游戏",
-    "zh_CN": "投放并进入游戏",
-    "en": "Deploy and start"
-  },
-  "LOC_CHOOSE_A_PLACE_DEPLOY_THIS_DRAFT_AND_BD015D1D": {
-    "source": "选一处地方 · 投放这份稿子并开始游戏",
-    "zh_CN": "选一处地方 · 投放这份稿子并开始游戏",
-    "en": "Choose a place · Deploy this draft and start the game"
-  },
-  "LOC_DEVELOPER_EVENT_COPY_CLOSED_THE_SAVED_CATALOG_841A0D6B": {
-    "source": "事件开发副本已关闭；保存目录在下一次新局加载，不改变当前运行。",
-    "zh_CN": "事件开发副本已关闭；保存目录在下一次新局加载，不改变当前运行。",
-    "en": "Developer event copy closed. The saved catalog loads with the next new run and does not alter the current run."
-  },
   "LOC_SAVE_FAILED_S_S_81E5BCAD": {
     "source": "保存失败 %s：%s",
     "zh_CN": "保存失败 %s：%s",
     "en": "Save failed %s: %s"
-  },
-  "LOC_SAVED_CFE6F505": {
-    "source": "已保存：",
-    "zh_CN": "已保存：",
-    "en": "Saved: "
   },
   "LOC_LOAD_REJECTED_THE_CURRENT_RUN_IS_UNCHANGED_58D375FE": {
     "source": "读档被拒绝，当前局未改变：%s %s",
@@ -1453,11 +1013,6 @@
     "source": "首发后不能替换世界。",
     "zh_CN": "首发后不能替换世界。",
     "en": "The world cannot be replaced after first publication."
-  },
-  "LOC_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_F983CFC2": {
-    "source": "请先确认当前事件。",
-    "zh_CN": "请先确认当前事件。",
-    "en": "Acknowledge the current event first."
   },
   "LOC_A_DEPLOYED_RUN_CANNOT_SELECT_A_DIFFERENT_1172A7D4": {
     "source": "已投放的运行不能重选开局预设。",
@@ -1589,11 +1144,6 @@
     "zh_CN": "话题未登记：",
     "en": "Unregistered topic: "
   },
-  "LOC_A_SOLID_MUST_ORIGINATE_FROM_AN_EVENT_041E3159": {
-    "source": "固体来源必须来自本局已应用的事件材料。",
-    "zh_CN": "固体来源必须来自本局已应用的事件材料。",
-    "en": "A solid must originate from an event material applied in this run."
-  },
   "LOC_EXPRESSION_PATCHES_AND_ABILITY_RECORDS_MUST_COME_2C544266": {
     "source": "表达补丁与能力记录必须来自本局的作者操作。",
     "zh_CN": "表达补丁与能力记录必须来自本局的作者操作。",
@@ -1638,11 +1188,6 @@
     "source": "作者归属采用里程碑 %d",
     "zh_CN": "作者归属采用里程碑 %d",
     "en": "Author-owned adoption milestone %d"
-  },
-  "LOC_AN_INDEPENDENT_ENVIRONMENTAL_MEME_FAMILY_EMERGES_AND_0D3D7CBF": {
-    "source": "产生一个独立环境模因家族，与玩家共同争夺同一注意力预算。",
-    "zh_CN": "产生一个独立环境模因家族，与玩家共同争夺同一注意力预算。",
-    "en": "An independent environmental meme family emerges and competes with the player for the same attention budget."
   },
   "LOC_CLAIM_AFTER_COLLECTING_008ABC0C": {
     "source": "收录后领取：",
@@ -1764,16 +1309,6 @@
     "zh_CN": "%s 正被其他人接续传播；发声者没有署名，你还无法接管它。",
     "en": "%s is being carried on by others. Its speaker is unnamed, so you cannot take control of it yet."
   },
-  "LOC_THE_STREET_CORNER_WORLD_THAT_LOST_A_D9590664": {
-    "source": "漏掉一分钟的街角世界",
-    "zh_CN": "漏掉一分钟的街角世界",
-    "en": "The street-corner world that lost a minute"
-  },
-  "LOC_A_MISSING_MINUTE_THE_STREET_CORNER_CLOCK_DBCE8C51": {
-    "source": "漏掉一分钟：街角时钟不等人，一群人共同填补消失的那一分钟。",
-    "zh_CN": "漏掉一分钟：街角时钟不等人，一群人共同填补消失的那一分钟。",
-    "en": "A missing minute: the street-corner clock waits for no one, and a crowd fills the missing minute together."
-  },
   "LOC_EVENT_PAUSE_NARRATIVE_AND_ACTUAL_EFFECTS_ARE_C7BD1B68": {
     "source": "事件暂停：叙事描述与实际作用分别显示。",
     "zh_CN": "事件暂停：叙事描述与实际作用分别显示。",
@@ -1799,11 +1334,6 @@
     "zh_CN": "胜利：",
     "en": "Victory: "
   },
-  "LOC_SAVE_FORMAT_OR_CONTENT_VERSION_MISMATCH_B1E40DA6": {
-    "source": "存档版本或内容版本不匹配。",
-    "zh_CN": "存档版本或内容版本不匹配。",
-    "en": "Save format or content version mismatch."
-  },
   "LOC_WRONG_NUMERIC_TYPE_IN_SAVE_8A2D94B8": {
     "source": "存档数值类型错误：",
     "zh_CN": "存档数值类型错误：",
@@ -1824,30 +1354,10 @@
     "zh_CN": "存档数组类型错误：",
     "en": "Wrong array type in save: "
   },
-  "LOC_INVALID_SAVE_PHASE_RANDOM_STATE_OR_TIME_E6E2D192": {
-    "source": "存档阶段、随机状态或时间非法。",
-    "zh_CN": "存档阶段、随机状态或时间非法。",
-    "en": "Invalid save phase, random state or time."
-  },
-  "LOC_LEGACY_TRANSMISSION_REPLAY_LACKS_AN_AUTHENTICATED_SOURCE_CF3E020E": {
-    "source": "旧传播回放缺少认证来源。",
-    "zh_CN": "旧传播回放缺少认证来源。",
-    "en": "Legacy transmission replay lacks an authenticated source."
-  },
-  "LOC_COMPETITION_AUTHOR_DESIGN_RECORDS_ARE_MISSING_OR_35881CF4": {
-    "source": "竞争作者设计记录缺失或类型非法。",
-    "zh_CN": "竞争作者设计记录缺失或类型非法。",
-    "en": "Competition author-design records are missing or have an invalid type."
-  },
   "LOC_INVALID_COMPETITION_SAVE_INTEGER_572FEC0C": {
     "source": "竞争存档整数非法：",
     "zh_CN": "竞争存档整数非法：",
     "en": "Invalid competition-save integer: "
-  },
-  "LOC_COMPETITION_SAVE_DATA_IS_MISSING_00CE560B": {
-    "source": "竞争存档缺失。",
-    "zh_CN": "竞争存档缺失。",
-    "en": "Competition save data is missing."
   },
   "LOC_NON_RUNNING_PHASES_MUST_BE_PAUSED_03C4597B": {
     "source": "非运行阶段必须暂停。",
@@ -2014,11 +1524,6 @@
     "zh_CN": "作者传播草稿结构非法。",
     "en": "Invalid author transmission-draft structure."
   },
-  "LOC_INVALID_AUTHOR_TRANSMISSION_DRAFT_FIELD_TYPES_E9B299CF": {
-    "source": "作者传播草稿字段类型非法。",
-    "zh_CN": "作者传播草稿字段类型非法。",
-    "en": "Invalid author transmission-draft field types."
-  },
   "LOC_SPREAD_ABILITY_LACKS_A_VALID_UNLOCK_RECORD_237BB394": {
     "source": "传播能力没有合法解锁记录。",
     "zh_CN": "传播能力没有合法解锁记录。",
@@ -2048,16 +1553,6 @@
     "source": "事件竞争版本引用非法。",
     "zh_CN": "事件竞争版本引用非法。",
     "en": "Invalid event competition-version reference."
-  },
-  "LOC_INVALID_SAVED_STANCE_COORDINATES_FC3453A9": {
-    "source": "存档立场坐标错误。",
-    "zh_CN": "存档立场坐标错误。",
-    "en": "Invalid saved stance coordinates."
-  },
-  "LOC_INVALID_SAVED_DRAFT_FIELDS_66AEEB81": {
-    "source": "存档草稿字段错误。",
-    "zh_CN": "存档草稿字段错误。",
-    "en": "Invalid saved-draft fields."
   },
   "LOC_CURRENT_SAVED_DRAFT_DOES_NOT_MATCH_THE_8DDF6CAD": {
     "source": "存档当前草稿与版本预设不一致。",
@@ -2094,11 +1589,6 @@
     "zh_CN": "事件暂停缺少当前事件。",
     "en": "Event pause lacks a current event."
   },
-  "LOC_INVALID_SAVED_EFFECT_RECORD_D0417863": {
-    "source": "存档作用记录错误。",
-    "zh_CN": "存档作用记录错误。",
-    "en": "Invalid saved-effect record."
-  },
   "LOC_INVALID_SAVED_EVENT_COUNT_2C1B6BFB": {
     "source": "存档事件计数错误。",
     "zh_CN": "存档事件计数错误。",
@@ -2109,25 +1599,10 @@
     "zh_CN": "存档事件时间错误。",
     "en": "Invalid saved-event time."
   },
-  "LOC_WRONG_DESIGN_SAVE_FIELD_TYPES_ADC84DD7": {
-    "source": "设计存档字段类型错误。",
-    "zh_CN": "设计存档字段类型错误。",
-    "en": "Wrong design-save field types."
-  },
-  "LOC_CURRENT_DRAFT_SOLID_PROVENANCE_DOES_NOT_MATCH_B868B490": {
-    "source": "当前草稿固体来源不符合已应用记录。",
-    "zh_CN": "当前草稿固体来源不符合已应用记录。",
-    "en": "Current draft solid provenance does not match its applied records."
-  },
   "LOC_CURRENT_DRAFT_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_F36FC5F9": {
     "source": "当前草稿表达补丁或能力来源与记录不符。",
     "zh_CN": "当前草稿表达补丁或能力来源与记录不符。",
     "en": "Current draft expression-patch or ability provenance does not match its records."
-  },
-  "LOC_SOLID_PROVENANCE_IS_CLAIMED_WITHOUT_A_DESIGN_55BB543B": {
-    "source": "无设计记录却声明固体来源。",
-    "zh_CN": "无设计记录却声明固体来源。",
-    "en": "Solid provenance is claimed without a design record."
   },
   "LOC_WRONG_PRESET_SOURCE_FIELD_TYPE_IN_SAVED_449A9157": {
     "source": "存档%s预设来源字段类型错误。",
@@ -2174,16 +1649,6 @@
     "zh_CN": "存档浮点精度与数值不一致：",
     "en": "Saved floating-point precision does not match its value: "
   },
-  "LOC_HISTORICAL_REWARD_ID_LACKS_AN_AUTHENTICATED_MIGRATION_4C6379DD": {
-    "source": "历史奖励标识缺少认证迁移来源。",
-    "zh_CN": "历史奖励标识缺少认证迁移来源。",
-    "en": "Historical reward ID lacks an authenticated migration source."
-  },
-  "LOC_EVENT_SUPPLY_METADATA_IS_MISSING_OR_HAS_E4390BA8": {
-    "source": "事件物资元数据缺失或类型错误。",
-    "zh_CN": "事件物资元数据缺失或类型错误。",
-    "en": "Event-supply metadata is missing or has the wrong type."
-  },
   "LOC_EVENT_SUPPLY_OR_PRESET_SOURCE_CONFLICTS_WITH_2FE2F3F5": {
     "source": "事件物资或预设来源与开发定义不符。",
     "zh_CN": "事件物资或预设来源与开发定义不符。",
@@ -2193,11 +1658,6 @@
     "source": "事件物资文案与真实领取状态不符。",
     "zh_CN": "事件物资文案与真实领取状态不符。",
     "en": "Event-supply text does not match its actual claim state."
-  },
-  "LOC_SAVED_EVENT_TEXT_IS_MISSING_9EB87427": {
-    "source": "存档事件文本缺失：",
-    "zh_CN": "存档事件文本缺失：",
-    "en": "Saved event text is missing: "
   },
   "LOC_WRONG_SAVED_EVENT_TEXT_TYPE_5170C9D1": {
     "source": "存档事件文本类型错误：",
@@ -2213,11 +1673,6 @@
     "source": "存档67评价不是单行。",
     "zh_CN": "存档67评价不是单行。",
     "en": "67's saved comment is not a single line."
-  },
-  "LOC_SAMPLED_TRANSMISSION_DOTS_DO_NOT_REPRESENT_REAL_E759BBAB": {
-    "source": "实心点按已采用人数抽样，颜色区分模因家族；空心点表示投放或本轮出现的位置。",
-    "zh_CN": "实心点按已采用人数抽样，颜色区分模因家族；空心点表示投放或本轮出现的位置。",
-    "en": "Solid dots sample adoption, and colours identify meme families. Hollow dots mark deployment or emergence during this run."
   },
   "LOC_SOLID_DOTS_SAMPLE_ADOPTION_IN_EACH_COUNTRY_741CDCE6": {
     "source": "实心点按各国已采用人数抽样；空心是出生或投放位置。颜色区分模因家族。",
@@ -2299,11 +1754,6 @@
     "zh_CN": "群体",
     "en": "Audience"
   },
-  "LOC_CLICK_FOR_DETAILS_PULL_THE_PAPER_TAB_DF8BF6A4": {
-    "source": "单击查看说明；从纸舌取卡。",
-    "zh_CN": "单击查看说明；从纸舌取卡。",
-    "en": "Click for details; pull the paper tab to take the card."
-  },
   "LOC_CLICK_TO_FOCUS_THIS_SECTION_DRAG_A_3E6ABE39": {
     "source": "单击聚焦区块；拖动卡片取下。",
     "zh_CN": "单击聚焦区块；拖动卡片取下。",
@@ -2379,20 +1829,10 @@
     "zh_CN": "补丁卡片",
     "en": "Patch cards"
   },
-  "LOC_CAPACITY_D_DRAG_INSTALLED_CARDS_TO_REMOVE_8F1AAF85": {
-    "source": "\n\n当前容量：%d。拖动卡片取下，单击下方库存卡片查看信息。",
-    "zh_CN": "\n\n当前容量：%d。拖动卡片取下，单击下方库存卡片查看信息。",
-    "en": "\n\nCapacity: %d. Drag installed cards to remove them. Click an inventory card below to inspect it."
-  },
   "LOC_INVENTORY_CARDS_6691F0EB": {
     "source": "库存卡片",
     "zh_CN": "库存卡片",
     "en": "Inventory cards"
-  },
-  "LOC_TOPICS_USE_HORIZONTAL_CARDS_DRAG_AN_INSTALLED_997B4F0A": {
-    "source": "话题用横向卡片安装；拖动卡片取下。下方库存中的卡片可拖入空槽。",
-    "zh_CN": "话题用横向卡片安装；拖动卡片取下。下方库存中的卡片可拖入空槽。",
-    "en": "Topics use horizontal cards. Drag an installed card to remove it, or drag a card from the inventory below into an empty slot."
   },
   "LOC_DRAG_THE_MARKER_ALONG_ONE_AXIS_AT_291BFA50": {
     "source": "从标记拖动，单次只沿一个轴，每格 0.1；离开起点用筹码，返回起点归还。",
@@ -2409,11 +1849,6 @@
     "zh_CN": "未填写对象",
     "en": "No target entered"
   },
-  "LOC_LIFT_18B083A0": {
-    "source": "提起",
-    "zh_CN": "提起",
-    "en": "Lift"
-  },
   "LOC_REPLACE_724E8987": {
     "source": "放回",
     "zh_CN": "放回",
@@ -2428,16 +1863,6 @@
     "source": "松手取下",
     "zh_CN": "松手取下",
     "en": "Release to detach"
-  },
-  "LOC_TOPIC_D_381298F5": {
-    "source": "话题 %d",
-    "zh_CN": "话题 %d",
-    "en": "Topic %d"
-  },
-  "LOC_TAKE_CARD_56DAE924": {
-    "source": "取卡",
-    "zh_CN": "取卡",
-    "en": "Take card"
   },
   "LOC_UNREGISTERED_0DB3DB44": {
     "source": "未登记",
@@ -2483,11 +1908,6 @@
     "source": "自由",
     "zh_CN": "自由",
     "en": "Freedom"
-  },
-  "LOC_CLICK_FOR_DETAILS_A7C1FC10": {
-    "source": "单击查看说明",
-    "zh_CN": "单击查看说明",
-    "en": "Click for details"
   },
   "LOC_EMPTY_SLOT_INSERT_D029F95E": {
     "source": "空槽 · 放入",
@@ -2634,46 +2054,6 @@
     "zh_CN": "匹配记录，非支持或采用预测。",
     "en": "A match record, not a prediction of support or adoption."
   },
-  "LOC_EXPRESSION_PATCH_930D599F": {
-    "source": "表达补丁",
-    "zh_CN": "表达补丁",
-    "en": "Expression patch"
-  },
-  "LOC_EVAPORATION_AND_PROPORTIONS_99B0B1DA": {
-    "source": "蒸发与配比",
-    "zh_CN": "蒸发与配比",
-    "en": "Evaporation and proportions"
-  },
-  "LOC_S_D_PORTIONS_S_53068FE6": {
-    "source": "%s · %d份\n%s",
-    "zh_CN": "%s · %d份\n%s",
-    "en": "%s · %d portions\n%s"
-  },
-  "LOC_THE_STARTING_MEME_SELECTED_DURING_THE_CALL_233CFEAD": {
-    "source": "来电中已选定的初始模因；这里查看配置，不重复选择。",
-    "zh_CN": "来电中已选定的初始模因；这里查看配置，不重复选择。",
-    "en": "The starting meme selected during the call. Inspect its configuration here; it cannot be selected again."
-  },
-  "LOC_EXPRESSION_MODULES_46E5F9F9": {
-    "source": "表达模块",
-    "zh_CN": "表达模块",
-    "en": "Expression modules"
-  },
-  "LOC_CLICK_AN_EXPRESSION_ON_THE_SOMA_AXON_B375AE2A": {
-    "source": "点击细胞核、轴突或树突上的表达；将真实获得的补丁拖入图中。",
-    "zh_CN": "点击细胞核、轴突或树突上的表达；将真实获得的补丁拖入图中。",
-    "en": "Click an expression on the soma, axon or dendrites. Drag a patch you have actually obtained into the diagram."
-  },
-  "LOC_REMOVE_PATCH_47ED7983": {
-    "source": "卸下补丁",
-    "zh_CN": "卸下补丁",
-    "en": "Remove patch"
-  },
-  "LOC_PLACE_ON_DESK_D1B08223": {
-    "source": "放到桌面",
-    "zh_CN": "放到桌面",
-    "en": "Place on desk"
-  },
   "LOC_CORTEX_LANGUAGE_0D41EBCC": {
     "source": "皮层 / 语言",
     "zh_CN": "皮层 / 语言",
@@ -2693,21 +2073,6 @@
     "source": "应用能力到草稿",
     "zh_CN": "应用能力到草稿",
     "en": "Apply ability to draft"
-  },
-  "LOC_REVISE_THIS_PART_OF_THE_EXPRESSION_5BCC9FA3": {
-    "source": "修正这里的表达。",
-    "zh_CN": "修正这里的表达。",
-    "en": "Revise this part of the expression."
-  },
-  "LOC_EMPTY_PAPER_CLIP_14B1B4CA": {
-    "source": "空回形针",
-    "zh_CN": "空回形针",
-    "en": "Empty paper clip"
-  },
-  "LOC_CLIP_IN_AN_EXPRESSION_PATCH_5201F61B": {
-    "source": "夹入一张表达补丁。",
-    "zh_CN": "夹入一张表达补丁。",
-    "en": "Clip in an expression patch."
   },
   "LOC_CIRCULATING_EXPRESSION_48990024": {
     "source": "传播中的表达",
@@ -2733,46 +2098,6 @@
     "source": "由此前表达改写而来。",
     "zh_CN": "由此前表达改写而来。",
     "en": "Rewritten from an earlier expression."
-  },
-  "LOC_SOLVENT_EC5505D7": {
-    "source": "溶剂",
-    "zh_CN": "溶剂",
-    "en": "Solvent"
-  },
-  "LOC_REAGENT_09986FB8": {
-    "source": "试剂",
-    "zh_CN": "试剂",
-    "en": "Reagent"
-  },
-  "LOC_S_CLICK_TO_POUR_PORTION_EVAPORATION_ORDER_C86BD20F": {
-    "source": "%s · 单击倒入 1 份 · 蒸发次序 %d",
-    "zh_CN": "%s · 单击倒入 1 份 · 蒸发次序 %d",
-    "en": "%s · Click to pour 1 portion · Evaporation order %d"
-  },
-  "LOC_S_POWDER_DRAG_INTO_AN_EMPTY_POWDER_7F467BAC": {
-    "source": "%s粉末 · 拖入空粉瓶",
-    "zh_CN": "%s粉末 · 拖入空粉瓶",
-    "en": "%s powder · Drag into an empty powder bottle"
-  },
-  "LOC_AWAITING_GRINDING_E5B2EEB6": {
-    "source": " · 等待研磨",
-    "zh_CN": " · 等待研磨",
-    "en": " · Awaiting grinding"
-  },
-  "LOC_DRAG_ONTO_THE_NEURON_ON_THE_EDIT_F417B415": {
-    "source": "拖到编辑纸的神经元上。",
-    "zh_CN": "拖到编辑纸的神经元上。",
-    "en": "Drag onto the neuron on the edit sheet."
-  },
-  "LOC_REQUIRES_S_8959AF4A": {
-    "source": "依赖：%s",
-    "zh_CN": "依赖：%s",
-    "en": "Requires: %s"
-  },
-  "LOC_S_EFFECT_S_REQUIRES_S_COST_D_35DC10A9": {
-    "source": "%s\n\n效果\n%s\n\n依赖：%s\n消耗 %d Meme\n余额 %d\n%s",
-    "zh_CN": "%s\n\n效果\n%s\n\n依赖：%s\n消耗 %d Meme\n余额 %d\n%s",
-    "en": "%s\n\nEffect\n%s\n\nRequires: %s\nCost %d Meme\nBalance %d\n%s"
   },
   "LOC_REQUIREMENTS_NOT_MET_114C5744": {
     "source": "依赖尚未满足",
@@ -2804,125 +2129,10 @@
     "zh_CN": "未选择",
     "en": "Not selected"
   },
-  "LOC_CULTURE_EF458608": {
-    "source": "培养体 · ",
-    "zh_CN": "培养体 · ",
-    "en": "Culture · "
-  },
-  "LOC_SOLUTE_56B7DB28": {
-    "source": "溶质",
-    "zh_CN": "溶质",
-    "en": "Solute"
-  },
-  "LOC_DEPLOYED_F947367D": {
-    "source": "已投放",
-    "zh_CN": "已投放",
-    "en": "Deployed"
-  },
-  "LOC_FULLY_EVAPORATED_2DE95885": {
-    "source": "已蒸干",
-    "zh_CN": "已蒸干",
-    "en": "Fully evaporated"
-  },
-  "LOC_POWDER_LOADED_68712BD0": {
-    "source": "已装粉",
-    "zh_CN": "已装粉",
-    "en": "Powder loaded"
-  },
-  "LOC_UNREGISTERED_STATE_D6679378": {
-    "source": "未登记状态",
-    "zh_CN": "未登记状态",
-    "en": "Unregistered state"
-  },
-  "LOC_EMPTY_BOTTLE_3C4FA451": {
-    "source": "空瓶",
-    "zh_CN": "空瓶",
-    "en": "Empty bottle"
-  },
-  "LOC_LEAVE_ROOM_FOR_NEGOTIATION_AND_RESPONSE_7CF038C4": {
-    "source": "为商量与回应留下余地。",
-    "zh_CN": "为商量与回应留下余地。",
-    "en": "Leave room for negotiation and response."
-  },
-  "LOC_MAKE_A_RESPONSE_PART_OF_THE_EXPRESSION_1FD29512": {
-    "source": "使回应成为表达的一部分。",
-    "zh_CN": "使回应成为表达的一部分。",
-    "en": "Make a response part of the expression."
-  },
-  "LOC_TURN_THE_EXPRESSION_TOWARD_COMMANDS_AND_OBEDIENCE_624248D7": {
-    "source": "将表达转向命令与服从。",
-    "zh_CN": "将表达转向命令与服从。",
-    "en": "Turn the expression toward commands and obedience."
-  },
-  "LOC_RETAIN_RECOGNIZABLE_DETAILS_FROM_THE_SCENE_900A97F2": {
-    "source": "留下可辨认的现场细节。",
-    "zh_CN": "留下可辨认的现场细节。",
-    "en": "Retain recognizable details from the scene."
-  },
-  "LOC_BLEND_IT_INTO_YOUR_OWN_EXPRESSION_D22ED273": {
-    "source": "融入自己的表达。",
-    "zh_CN": "融入自己的表达。",
-    "en": "Blend it into your own expression."
-  },
-  "LOC_MAKE_IT_UNDERSTANDABLE_IN_ANOTHER_LANGUAGE_664CBBEC": {
-    "source": "让另一种语言也能读懂。",
-    "zh_CN": "让另一种语言也能读懂。",
-    "en": "Make it understandable in another language."
-  },
-  "LOC_MAKE_THE_EXPRESSION_WORK_IN_A_NEW_8635B004": {
-    "source": "让表达在新的场景中成立。",
-    "zh_CN": "让表达在新的场景中成立。",
-    "en": "Make the expression work in a new setting."
-  },
-  "LOC_GATHER_AROUND_A_TOPIC_01B30919": {
-    "source": "围绕一个话题凝聚。",
-    "zh_CN": "围绕一个话题凝聚。",
-    "en": "Gather around a topic."
-  },
-  "LOC_FIND_SHARED_UNDERSTANDING_WITHIN_A_COMMUNITY_F2506B11": {
-    "source": "在社群中寻找共同理解。",
-    "zh_CN": "在社群中寻找共同理解。",
-    "en": "Find shared understanding within a community."
-  },
-  "LOC_CHANGE_THE_TONE_AND_TEXTURE_OF_THE_3DF7D8EF": {
-    "source": "改变语气与表达质感。",
-    "zh_CN": "改变语气与表达质感。",
-    "en": "Change the tone and texture of the expression."
-  },
-  "LOC_LANGUAGE_CARRIES_THE_EXPRESSION_913CF649": {
-    "source": "语言承载表达。",
-    "zh_CN": "语言承载表达。",
-    "en": "Language carries the expression."
-  },
   "LOC_CONTEXT_5E21ECEB": {
     "source": "语境 / ",
     "zh_CN": "语境 / ",
     "en": "Context / "
-  },
-  "LOC_BASE_FORM_2C6D2C53": {
-    "source": "\n基模 · ",
-    "zh_CN": "\n基模 · ",
-    "en": "\nBase form · "
-  },
-  "LOC_REUSABLE_D9D7DF9F": {
-    "source": "可重用",
-    "zh_CN": "可重用",
-    "en": "Reusable"
-  },
-  "LOC_CONDITIONAL_26EE9BE2": {
-    "source": "有条件",
-    "zh_CN": "有条件",
-    "en": "Conditional"
-  },
-  "LOC_RESTRICTED_688F8923": {
-    "source": "限制",
-    "zh_CN": "限制",
-    "en": "Restricted"
-  },
-  "LOC_MODULES_D_MEME_D_PERMISSION_S_REPLACEABLE_23F3D191": {
-    "source": "模块 %d / 5 · Meme %d\n许可 %s · 可替换 %d项\n重混 %.0f%% · 语境 %.0f%%\n可达 %.0f%% · 识别 %.0f%%\n语言 %s · 群体 %s\n话题 %d / 3",
-    "zh_CN": "模块 %d / 5 · Meme %d\n许可 %s · 可替换 %d项\n重混 %.0f%% · 语境 %.0f%%\n可达 %.0f%% · 识别 %.0f%%\n语言 %s · 群体 %s\n话题 %d / 3",
-    "en": "Modules %d / 5 · Meme %d\nPermission %s · Replaceable %d\nRemix %.0f%% · Context %.0f%%\nAccess %.0f%% · Recognition %.0f%%\nLanguage %s · Audience %s\nTopics %d / 3"
   },
   "LOC_NOT_YET_COLLECTED_46C47B8A": {
     "source": "\n待收录",
@@ -2983,11 +2193,6 @@
     "source": "选择：",
     "zh_CN": "选择：",
     "en": "Selected: "
-  },
-  "LOC_CHOSEN_PUT_DOWN_THE_RECEIVER_THEN_EDIT_9B078A9D": {
-    "source": "选好了。放回听筒后，到稿纸上编辑、培养，再决定怎样传播。",
-    "zh_CN": "选好了。放回听筒后，到稿纸上编辑、培养，再决定怎样传播。",
-    "en": "Chosen. Put down the receiver, then edit and cultivate the draft before deciding how it spreads."
   },
   "LOC_HANDLE_THE_CURRENT_UNREAD_INTELLIGENCE_BEFORE_BROWSING_7897645D": {
     "source": "先处理当前待阅情报，再翻历史档案。",
@@ -3189,11 +2394,6 @@
     "zh_CN": "先挑一份起始模因，再继续修改。",
     "en": "Choose a starting meme, then keep editing."
   },
-  "LOC_AVAILABLE_D_7E88E6AF": {
-    "source": "可用 %d",
-    "zh_CN": "可用 %d",
-    "en": "Available %d"
-  },
   "LOC_START_D2BB025A": {
     "source": "开始",
     "zh_CN": "开始",
@@ -3219,11 +2419,6 @@
     "zh_CN": "设置",
     "en": "Settings"
   },
-  "LOC_LANGUAGE_APPLIES_TO_THE_INTERFACE_AND_EXISTING_844A2439": {
-    "source": "语言切换适用于界面与已有译文。",
-    "zh_CN": "语言切换适用于界面与已有译文。",
-    "en": "Language applies to the interface and existing translations."
-  },
   "LOC_LOAD_534CB3FA": {
     "source": "读取",
     "zh_CN": "读取",
@@ -3248,46 +2443,6 @@
     "source": "音效",
     "zh_CN": "音效",
     "en": "Effects"
-  },
-  "LOC_NOT_YET_COLLECTED_B1A912D0": {
-    "source": "待收录",
-    "zh_CN": "待收录",
-    "en": "Not yet collected"
-  },
-  "LOC_AUDIENCE_PLATE_B8809272": {
-    "source": "群体盘",
-    "zh_CN": "群体盘",
-    "en": "Audience plate"
-  },
-  "LOC_TOPIC_SLIP_01AB202A": {
-    "source": "话题纸条",
-    "zh_CN": "话题纸条",
-    "en": "Topic slip"
-  },
-  "LOC_LANGUAGE_PLATE_DD2E1021": {
-    "source": "语言盘",
-    "zh_CN": "语言盘",
-    "en": "Language plate"
-  },
-  "LOC_CLIP_IT_ONTO_THE_EDIT_SHEET_TO_A92EE7D0": {
-    "source": "夹在编辑纸的回形针上，修正表达。",
-    "zh_CN": "夹在编辑纸的回形针上，修正表达。",
-    "en": "Clip it onto the edit sheet to revise the expression."
-  },
-  "LOC_PLACE_IT_IN_AN_EMPTY_POWDER_BOTTLE_5553CABC": {
-    "source": "放进下层的空粉末瓶。",
-    "zh_CN": "放进下层的空粉末瓶。",
-    "en": "Place it in an empty powder bottle below."
-  },
-  "LOC_PLACE_IT_IN_THE_CULTIVATE_SHEET_S_E336E05D": {
-    "source": "放进培养纸的研钵，拖动研杵研磨。",
-    "zh_CN": "放进培养纸的研钵，拖动研杵研磨。",
-    "en": "Place it in the cultivate sheet's mortar and drag the pestle to grind."
-  },
-  "LOC_BRING_IT_TO_THE_NEURON_ON_THE_025846D4": {
-    "source": "送到编辑纸的神经元上。",
-    "zh_CN": "送到编辑纸的神经元上。",
-    "en": "Bring it to the neuron on the edit sheet."
   },
   "LOC_INSTALLED_A8B6C39D": {
     "source": "已安装",
@@ -3449,180 +2604,10 @@
     "zh_CN": "跳过讲解",
     "en": "Skip guide"
   },
-  "LOC_PERFORM_THE_ACTION_INDICATED_BY_THE_ARROW_39688533": {
-    "source": "在桌面完成箭头所指的操作。",
-    "zh_CN": "在桌面完成箭头所指的操作。",
-    "en": "Perform the action indicated by the arrow on the desk."
-  },
   "LOC_A_JOB_6E979BE1": {
     "source": "一份工作",
     "zh_CN": "一份工作",
     "en": "A job"
-  },
-  "LOC_YOU_ARE_THE_STUDIO_S_PRINT_EDITOR_FF8B8683": {
-    "source": "你是工作室的印刷编辑。能改稿，不能替别人理解它。后者的工资也没人发。",
-    "zh_CN": "你是工作室的印刷编辑。能改稿，不能替别人理解它。后者的工资也没人发。",
-    "en": "You are the print editor. You can revise a message, not understand it for other people. Nobody pays for the latter."
-  },
-  "LOC_YOUR_DRAFT_B0E0C947": {
-    "source": "你的稿件",
-    "zh_CN": "你的稿件",
-    "en": "Your copy"
-  },
-  "LOC_PUT_AN_EXPRESSION_INTO_A_MEME_ADJUST_FFBF95D7": {
-    "source": "把表达装进模因，调整它说给谁、说什么、怎样说。投放之后，读者和竞争者会替你继续改。通常不先征求意见。",
-    "zh_CN": "把表达装进模因，调整它说给谁、说什么、怎样说。投放之后，读者和竞争者会替你继续改。通常不先征求意见。",
-    "en": "Build an expression, decide whom it addresses and how it speaks. Readers and competitors will revise it after publication. Usually without asking."
-  },
-  "LOC_OWN_THE_WORLD_LET_AN_UNCONTROLLED_LINEAGE_FCB2FB17": {
-    "source": "占有世界；让失控谱系独自活下去；与竞争者达到均衡；或让多个版本共同扩散。任意一种成立就能收工。不是要求你同时加四班。",
-    "zh_CN": "占有世界；让失控谱系独自活下去；与竞争者达到均衡；或让多个版本共同扩散。任意一种成立就能收工。不是要求你同时加四班。",
-    "en": "Own the world; let an autonomous lineage survive; reach equilibrium with rivals; or spread through several distinct versions. Any one ends the job. Four overtime shifts are not required."
-  },
-  "LOC_FOUR_WAYS_TO_FINISH_648EFA2D": {
-    "source": "四种收工方式",
-    "zh_CN": "四种收工方式",
-    "en": "Four ways out"
-  },
-  "LOC_ANSWER_THE_PHONE_THREE_STARTING_DRAFTS_ARE_B98B5B3A": {
-    "source": "接起电话。三个起始稿件都已备好。先选一个，不必填一整份报表。",
-    "zh_CN": "接起电话。三个起始稿件都已备好。先选一个，不必填一整份报表。",
-    "en": "Pick up. Three starter manuscripts are ready. Choose one; a full report is not required."
-  },
-  "LOC_THE_PHONE_IS_RINGING_340485E6": {
-    "source": "电话响了",
-    "zh_CN": "电话响了",
-    "en": "The phone"
-  },
-  "LOC_CHOOSE_A_STARTING_MEME_IN_THE_CALL_D26D5127": {
-    "source": "在电话对话里选择一份起始模因。",
-    "zh_CN": "在电话对话里选择一份起始模因。",
-    "en": "Choose a starting meme during the call."
-  },
-  "LOC_TAKE_A_DRAFT_72393BB5": {
-    "source": "领一份稿",
-    "zh_CN": "领一份稿",
-    "en": "Take a manuscript"
-  },
-  "LOC_HANG_UP_AND_RETURN_TO_THE_DESK_FA41627B": {
-    "source": "挂断，回到桌面。",
-    "zh_CN": "挂断，回到桌面。",
-    "en": "Hang up and return to the desk."
-  },
-  "LOC_END_THE_CALL_ADD703A6": {
-    "source": "结束通话",
-    "zh_CN": "结束通话",
-    "en": "Hang up"
-  },
-  "LOC_THE_FAX_RECEIVES_INTELLIGENCE_AND_CARDS_THE_2810EFBC": {
-    "source": "传真收情报与卡牌，打印机留记录。点传真纸堆露出的页签，就能翻看历史事件。显示器盯着你的模因和点数。它没有加班费，所以一直盯着。",
-    "zh_CN": "传真收情报与卡牌，打印机留记录。点传真纸堆露出的页签，就能翻看历史事件。显示器盯着你的模因和点数。它没有加班费，所以一直盯着。",
-    "en": "The fax receives intelligence and cards; the printer keeps records. Click exposed tabs in the fax-paper stack to revisit past events. The monitor watches your meme and tokens. It gets no overtime pay, so it keeps watching."
-  },
-  "LOC_THIS_DESK_A5545146": {
-    "source": "这张桌子",
-    "zh_CN": "这张桌子",
-    "en": "This desk"
-  },
-  "LOC_TIME_CONTROLS_4A53DBA9": {
-    "source": "时间旋钮",
-    "zh_CN": "时间旋钮",
-    "en": "Time controls"
-  },
-  "LOC_TRY_PAUSE_NORMAL_SPEED_OR_FAST_FORWARD_DF69CA7C": {
-    "source": "试一下暂停、正常或快进。情报会继续打印，不用停下来盖章。读得快也不会多发奖励。",
-    "zh_CN": "试一下暂停、正常或快进。情报会继续打印，不用停下来盖章。读得快也不会多发奖励。",
-    "en": "Try pause, normal or fast. Messages keep printing without a stamp. Reading faster does not earn an extra reward."
-  },
-  "LOC_PULL_OUT_THE_EDIT_SHEET_PATCHES_CLIP_C10C8769": {
-    "source": "抽出编辑纸。补丁纸夹在回形针上；拿下纸片就卸下。左边的神经元会和它一起改变。",
-    "zh_CN": "抽出编辑纸。补丁纸夹在回形针上；拿下纸片就卸下。左边的神经元会和它一起改变。",
-    "en": "Pull out the editing sheet. Patch papers clip into place; taking a paper off uninstalls it. Its neuron changes the expression on the left."
-  },
-  "LOC_EDIT_SHEET_EFF562AB": {
-    "source": "编辑纸",
-    "zh_CN": "编辑纸",
-    "en": "Editing paper"
-  },
-  "LOC_CLIP_IN_A_PATCH_111ED358": {
-    "source": "夹一个补丁",
-    "zh_CN": "夹一个补丁",
-    "en": "Clip a patch"
-  },
-  "LOC_CLIP_ONE_OF_YOUR_PATCH_SLIPS_INTO_E3D38B97": {
-    "source": "把自己的补丁纸夹进空夹子。纸片不是重新选基模。原稿还得由你负责。",
-    "zh_CN": "把自己的补丁纸夹进空夹子。纸片不是重新选基模。原稿还得由你负责。",
-    "en": "Put an owned patch paper into a free clip. A patch is not a new core. You remain responsible for the manuscript."
-  },
-  "LOC_PULL_OUT_THE_CULTIVATE_SHEET_AND_INSPECT_DAD209DF": {
-    "source": "抽出培养纸，看看各个语境分区。语言、群体、话题放卡牌；立场与语用沿坐标轴调整。离开起点花筹码，退回起点归还。",
-    "zh_CN": "抽出培养纸，看看各个语境分区。语言、群体、话题放卡牌；立场与语用沿坐标轴调整。离开起点花筹码，退回起点归还。",
-    "en": "Pull out the context sheet. Language, groups and topics take cards; stance and pragmatics move along their axes. Moving out spends tokens, returning refunds them."
-  },
-  "LOC_CONTEXT_SLICES_82B22623": {
-    "source": "语境切片",
-    "zh_CN": "语境切片",
-    "en": "Context slice"
-  },
-  "LOC_PLACE_AN_AVAILABLE_ITEM_INTO_ITS_MATCHING_92ABA624": {
-    "source": "把一个可用物件放进对应空位。拆装会改稿，不会替世界改口。",
-    "zh_CN": "把一个可用物件放进对应空位。拆装会改稿，不会替世界改口。",
-    "en": "Put an available object in its matching free slot. Changing the manuscript does not rewrite the world."
-  },
-  "LOC_GIVE_THE_EXPRESSION_A_CONTEXT_020970BF": {
-    "source": "给表达一个语境",
-    "zh_CN": "给表达一个语境",
-    "en": "Give it context"
-  },
-  "LOC_SPREAD_SHEET_9D66347F": {
-    "source": "传播纸",
-    "zh_CN": "传播纸",
-    "en": "Propagation sheet"
-  },
-  "LOC_PULL_OUT_THE_SPREAD_SHEET_ABILITIES_GROW_5530382E": {
-    "source": "抽出传播纸。能力沿着同一棵树长出来，不是另一份采购清单。",
-    "zh_CN": "抽出传播纸。能力沿着同一棵树长出来，不是另一份采购清单。",
-    "en": "Pull out the propagation sheet. Abilities grow along one connected tree, not a second shopping list."
-  },
-  "LOC_BUY_AN_ABILITY_697FC774": {
-    "source": "买一种能力",
-    "zh_CN": "买一种能力",
-    "en": "Buy an ability"
-  },
-  "LOC_CHOOSE_AN_ABILITY_YOU_CAN_AFFORD_A_97E2AFCC": {
-    "source": "选一个付得起的能力。购买成功会作用于稿件。价格是真价格，后悔不是退款申请。",
-    "zh_CN": "选一个付得起的能力。购买成功会作用于稿件。价格是真价格，后悔不是退款申请。",
-    "en": "Choose an affordable ability. A successful purchase affects the manuscript. Its price is real; regret is not a refund request."
-  },
-  "LOC_CONFIRM_THE_DRAFT_ON_THE_EDIT_SHEET_66DB30DA": {
-    "source": "回编辑纸确认稿件，再决定投放国家。第一次发布免费。免费的是印刷，不是别人一定会采用。",
-    "zh_CN": "回编辑纸确认稿件，再决定投放国家。第一次发布免费。免费的是印刷，不是别人一定会采用。",
-    "en": "Confirm the manuscript on the editing sheet, then select a country. First publication is free. Adoption is not included."
-  },
-  "LOC_SEND_TO_PRINT_832C1ECB": {
-    "source": "送去印刷",
-    "zh_CN": "送去印刷",
-    "en": "Send to print"
-  },
-  "LOC_CHOOSE_A_COUNTRY_ON_THE_MAP_SHEET_6A9D0811": {
-    "source": "在地图纸上选国家。不同人群与语境会影响采用；国界不是情绪的围墙。",
-    "zh_CN": "在地图纸上选国家。不同人群与语境会影响采用；国界不是情绪的围墙。",
-    "en": "Choose a country on the map. Audiences and context affect adoption. Borders are not walls around emotions."
-  },
-  "LOC_CHOOSE_A_DESTINATION_4678E011": {
-    "source": "选一个落点",
-    "zh_CN": "选一个落点",
-    "en": "Choose a location"
-  },
-  "LOC_START_CIRCULATING_4530C87E": {
-    "source": "开始流通",
-    "zh_CN": "开始流通",
-    "en": "Into circulation"
-  },
-  "LOC_CONFIRM_DEPLOYMENT_NEW_EVENTS_PRINT_WITH_THEIR_403CEC3F": {
-    "source": "确认投放。新事件会和卡牌一起打印出来。把卡牌拖到桌面，再装进对应槽位；点纸堆露出的页签可重读事件，打印机会继续记账。",
-    "zh_CN": "确认投放。新事件会和卡牌一起打印出来。把卡牌拖到桌面，再装进对应槽位；点纸堆露出的页签可重读事件，打印机会继续记账。",
-    "en": "Confirm deployment. New events print with their cards. Drag cards onto the desk, then into matching slots. Click exposed paper tabs to reread events; the printer keeps the ledger."
   },
   "LOC_EVERYONE_IS_SAYING_YOUR_WORDS_NOW_PLEASE_41ADB542": {
     "source": "67：现在大家都在说你的话。请不要把这理解为大家都理解你。",
@@ -3693,11 +2678,6 @@
     "source": "国家顺序不匹配。",
     "zh_CN": "国家顺序不匹配。",
     "en": "Country order mismatch."
-  },
-  "LOC_WORLD_GEOGRAPHY_CONFLICTS_WITH_CURRENT_TRANSMISSION_RULES_55095F93": {
-    "source": "世界地理与当前传播规则不一致。",
-    "zh_CN": "世界地理与当前传播规则不一致。",
-    "en": "World geography conflicts with current transmission rules."
   },
   "LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087": {
     "source": "不同版本的曝光不重复，采用是对应曝光的子集；未采用人口不计为竞争模因。",
@@ -4029,11 +3009,6 @@
     "zh_CN": "没有足够的对应端筹码。",
     "en": "Not enough tokens for the matching direction."
   },
-  "LOC_INVALID_DRAFT_SOURCE_RECORD_2123E441": {
-    "source": "草稿来源记录无效。",
-    "zh_CN": "草稿来源记录无效。",
-    "en": "Invalid draft-source record."
-  },
   "LOC_DRAFT_CONTEXT_CONFLICTS_WITH_BRAIN_SLICE_CONFIGURATION_CBA3F275": {
     "source": "草稿语境与脑切片配置不一致。",
     "zh_CN": "草稿语境与脑切片配置不一致。",
@@ -4044,30 +3019,10 @@
     "zh_CN": "草稿含有未安装的扩展语境。",
     "en": "Draft contains an uninstalled expanded context."
   },
-  "LOC_INVALID_LEGACY_DESIGN_IMPORT_RECORD_681B3B46": {
-    "source": "旧设计导入记录无效。",
-    "zh_CN": "旧设计导入记录无效。",
-    "en": "Invalid legacy-design import record."
-  },
-  "LOC_LEGACY_DESIGN_VERSION_SOURCE_IS_MISSING_5C2E5D0F": {
-    "source": "旧设计版本来源丢失。",
-    "zh_CN": "旧设计版本来源丢失。",
-    "en": "Legacy-design version source is missing."
-  },
-  "LOC_CULTIVATION_NOW_USES_BRAIN_SLICE_CONFIGURATION_LEGACY_9A3465C2": {
-    "source": "培养已改为脑切片配置；旧化学动作不再可用。",
-    "zh_CN": "培养已改为脑切片配置；旧化学动作不再可用。",
-    "en": "Cultivation now uses brain-slice configuration; legacy chemical actions are unavailable."
-  },
   "LOC_ONLY_THE_SIMULATION_LEDGER_MAY_SUBMIT_THIS_D4C608B2": {
     "source": "该动作只能由模拟账本提交。",
     "zh_CN": "该动作只能由模拟账本提交。",
     "en": "Only the simulation ledger may submit this action."
-  },
-  "LOC_LEGACY_CHEMICAL_OPERATIONS_ARE_FOR_AUTHENTICATED_HISTORICAL_9C08E8BA": {
-    "source": "旧化学操作只用于认证历史回放。",
-    "zh_CN": "旧化学操作只用于认证历史回放。",
-    "en": "Legacy chemical operations are for authenticated historical replay only."
   },
   "LOC_DESIGN_ACTION_RECORD_HAS_REACHED_ITS_FINITE_37CDC932": {
     "source": "设计操作记录已达有限上限。",
@@ -4149,130 +3104,10 @@
     "zh_CN": "该连接已经存在。",
     "en": "This connection already exists."
   },
-  "LOC_TAKE_THIS_SOLUTE_FROM_THE_EVENT_PAPER_3FF1CBA5": {
-    "source": "请先从事件纸搬出这份溶质。",
-    "zh_CN": "请先从事件纸搬出这份溶质。",
-    "en": "Take this solute from the event paper first."
-  },
-  "LOC_REMOVE_OR_DISCARD_THE_MATERIAL_IN_THE_0AA1720D": {
-    "source": "请先取出或废弃研钵中的材料。",
-    "zh_CN": "请先取出或废弃研钵中的材料。",
-    "en": "Remove or discard the material in the mortar first."
-  },
-  "LOC_THE_MORTAR_REQUIRES_AN_UNGROUND_BLOCK_A1240587": {
-    "source": "研钵中需要待磨的原块。",
-    "zh_CN": "研钵中需要待磨的原块。",
-    "en": "The mortar requires an unground block."
-  },
-  "LOC_PESTLE_TRAVEL_EXCEEDS_THE_VALID_STROKE_RANGE_2AC9D3A3": {
-    "source": "研杵行程超出有效摆动范围。",
-    "zh_CN": "研杵行程超出有效摆动范围。",
-    "en": "Pestle travel exceeds the valid stroke range."
-  },
-  "LOC_MOVE_THE_PESTLE_IN_THE_OPPOSITE_DIRECTION_713BA803": {
-    "source": "请反向摆动研杵。",
-    "zh_CN": "请反向摆动研杵。",
-    "en": "Move the pestle in the opposite direction."
-  },
-  "LOC_MOVE_THE_PESTLE_TO_GRIND_THE_POWDER_F10DE61B": {
-    "source": "请先摆动研杵磨好粉末。",
-    "zh_CN": "请先摆动研杵磨好粉末。",
-    "en": "Move the pestle to grind the powder first."
-  },
-  "LOC_REQUIRES_GROUND_POWDER_AND_AN_EMPTY_BOTTLE_C5CC4A86": {
-    "source": "需要磨好的粉末和一个空瓶。",
-    "zh_CN": "需要磨好的粉末和一个空瓶。",
-    "en": "Requires ground powder and an empty bottle."
-  },
-  "LOC_EACH_BOTTLE_HOLDS_ONLY_ONE_SOLUTE_POUR_684E2329": {
-    "source": "每瓶只容纳一种溶质，请先倒出或废弃。",
-    "zh_CN": "每瓶只容纳一种溶质，请先倒出或废弃。",
-    "en": "Each bottle holds only one solute. Pour out or discard it first."
-  },
-  "LOC_GRIND_AND_TAKE_OUT_THIS_SOLUTE_FIRST_B977D9DD": {
-    "source": "请先磨碎并取出该溶质。",
-    "zh_CN": "请先磨碎并取出该溶质。",
-    "en": "Grind and take out this solute first."
-  },
-  "LOC_POUR_QUANTITY_MUST_BE_A_POSITIVE_INTEGER_D7982F97": {
-    "source": "倾倒量需为正整数，不能混用两种计量。",
-    "zh_CN": "倾倒量需为正整数，不能混用两种计量。",
-    "en": "Pour quantity must be a positive integer; the two measurement systems cannot be mixed."
-  },
-  "LOC_LEGACY_MEASUREMENT_ACCEPTS_ONLY_ONE_PORTION_OF_CDB32BD1": {
-    "source": "旧计量只接受一份溶剂。",
-    "zh_CN": "旧计量只接受一份溶剂。",
-    "en": "Legacy measurement accepts only one portion of solvent."
-  },
-  "LOC_INVALID_POUR_REQUEST_ID_9496BB1A": {
-    "source": "倾倒请求标识无效。",
-    "zh_CN": "倾倒请求标识无效。",
-    "en": "Invalid pour-request ID."
-  },
-  "LOC_THIS_POUR_REQUEST_HAS_ALREADY_BEEN_USED_0EEBB712": {
-    "source": "倾倒请求已使用，不能改写其用量。",
-    "zh_CN": "倾倒请求已使用，不能改写其用量。",
-    "en": "This pour request has already been used; its quantity cannot be changed."
-  },
-  "LOC_NOT_ENOUGH_TAKEN_OUT_SOLVENT_REMAINS_IN_A809A1AD": {
-    "source": "瓶中已搬出的溶剂不足。",
-    "zh_CN": "瓶中已搬出的溶剂不足。",
-    "en": "Not enough taken-out solvent remains in the bottle."
-  },
-  "LOC_THE_FLASK_DOES_NOT_HAVE_ENOUGH_REMAINING_94343D4E": {
-    "source": "烧瓶没有足够的剩余容量。",
-    "zh_CN": "烧瓶没有足够的剩余容量。",
-    "en": "The flask does not have enough remaining capacity."
-  },
-  "LOC_ONLY_THE_REMAINING_POWDER_IN_A_LOADED_5E282BF3": {
-    "source": "只能从装粉瓶倒出其剩余粉末。",
-    "zh_CN": "只能从装粉瓶倒出其剩余粉末。",
-    "en": "Only the remaining powder in a loaded powder bottle may be poured out."
-  },
-  "LOC_PICK_UP_THE_POWDER_BOTTLE_AND_BRING_32BD46F3": {
-    "source": "请拿起粉末瓶，靠近瓶口倾倒粉末。",
-    "zh_CN": "请拿起粉末瓶，靠近瓶口倾倒粉末。",
-    "en": "Pick up the powder bottle and bring it near the flask mouth to pour."
-  },
-  "LOC_ADD_MATERIALS_AND_STIR_THE_SOLUTION_BEFORE_31DE489B": {
-    "source": "点灯前需加入材料并搅拌溶液。",
-    "zh_CN": "点灯前需加入材料并搅拌溶液。",
-    "en": "Add materials and stir the solution before lighting the lamp."
-  },
-  "LOC_SOLVENT_HAS_NOT_FULLY_EVAPORATED_THE_SOLID_637672D3": {
-    "source": "溶剂尚未蒸干，不能取出固体。",
-    "zh_CN": "溶剂尚未蒸干，不能取出固体。",
-    "en": "Solvent has not fully evaporated; the solid cannot be removed."
-  },
-  "LOC_THE_SOLID_IS_MISSING_OR_THE_AUTHOR_52C1385A": {
-    "source": "没有该固体，或作者草稿字段不合法。",
-    "zh_CN": "没有该固体，或作者草稿字段不合法。",
-    "en": "The solid is missing or the author-draft fields are invalid."
-  },
-  "LOC_S_HAS_BLENDED_INTO_THE_EXPRESSION_8A29DAD3": {
-    "source": "%s已融入表达。",
-    "zh_CN": "%s已融入表达。",
-    "en": "%s has blended into the expression."
-  },
-  "LOC_ONLY_A_FULLY_EVAPORATED_SOLID_MAY_BE_D1FD22AE": {
-    "source": "只有蒸干后的固体可拖入自己的模因。",
-    "zh_CN": "只有蒸干后的固体可拖入自己的模因。",
-    "en": "Only a fully evaporated solid may be dragged into your own meme."
-  },
-  "LOC_INVALID_AUTHOR_DRAFT_OR_MATERIAL_PROVENANCE_ED1A0293": {
-    "source": "作者草稿或材料来源不合法。",
-    "zh_CN": "作者草稿或材料来源不合法。",
-    "en": "Invalid author draft or material provenance."
-  },
   "LOC_THIS_ABILITY_IS_LOCKED_OR_HAS_NO_553BFB9A": {
     "source": "该能力未解锁或没有可应用的草稿作用。",
     "zh_CN": "该能力未解锁或没有可应用的草稿作用。",
     "en": "This ability is locked or has no applicable draft effect."
-  },
-  "LOC_THIS_ABILITY_HAS_ALREADY_BEEN_APPLIED_TO_8B1D7CA8": {
-    "source": "本轮待发布草稿已应用该能力，不能重复堆叠。",
-    "zh_CN": "本轮待发布草稿已应用该能力，不能重复堆叠。",
-    "en": "This ability has already been applied to the draft awaiting publication; it cannot stack repeatedly."
   },
   "LOC_APPLYING_AN_ABILITY_REQUIRES_A_VALID_AUTHOR_7C886A86": {
     "source": "应用能力需要合法的作者草稿。",
@@ -4289,60 +3124,10 @@
     "zh_CN": "%s正帮你的表达走得更远。",
     "en": "%s is helping your expression travel further."
   },
-  "LOC_AN_EMPTY_BOTTLE_HAS_NOTHING_TO_DISCARD_6350EF76": {
-    "source": "空瓶无可废弃材料。",
-    "zh_CN": "空瓶无可废弃材料。",
-    "en": "An empty bottle has nothing to discard."
-  },
-  "LOC_THE_MORTAR_IS_EMPTY_67395DBF": {
-    "source": "研钵是空的。",
-    "zh_CN": "研钵是空的。",
-    "en": "The mortar is empty."
-  },
-  "LOC_NO_MATERIAL_TO_DISCARD_E34D1FB0": {
-    "source": "没有可废弃的材料。",
-    "zh_CN": "没有可废弃的材料。",
-    "en": "No material to discard."
-  },
-  "LOC_SEALED_SUPPLIES_CANNOT_BE_DISCARDED_FC0508C9": {
-    "source": "封存的物资不能废弃。",
-    "zh_CN": "封存的物资不能废弃。",
-    "en": "Sealed supplies cannot be discarded."
-  },
-  "LOC_UNREGISTERED_DISCARD_SOURCE_4756127D": {
-    "source": "废弃来源未登记。",
-    "zh_CN": "废弃来源未登记。",
-    "en": "Unregistered discard source."
-  },
-  "LOC_THE_FLASK_DOES_NOT_CONTAIN_THIS_SOLID_C545EB55": {
-    "source": "烧瓶中没有这份固体。",
-    "zh_CN": "烧瓶中没有这份固体。",
-    "en": "The flask does not contain this solid."
-  },
-  "LOC_THE_FLASK_DOES_NOT_CONTAIN_THIS_UNDISSOLVED_E6BC8620": {
-    "source": "烧瓶中没有这份未溶粉末。",
-    "zh_CN": "烧瓶中没有这份未溶粉末。",
-    "en": "The flask does not contain this undissolved powder."
-  },
   "LOC_ONLY_ACKNOWLEDGED_REAL_EVENT_PAPER_REWARDS_CAN_9A98F38C": {
     "source": "只能领取已确认的真实事件纸奖励。",
     "zh_CN": "只能领取已确认的真实事件纸奖励。",
     "en": "Only acknowledged, real event-paper rewards can be claimed."
-  },
-  "LOC_WRONG_EVENT_SUPPLY_FIELD_TYPES_D19E5DC3": {
-    "source": "事件物资字段类型错误。",
-    "zh_CN": "事件物资字段类型错误。",
-    "en": "Wrong event-supply field types."
-  },
-  "LOC_INVALID_EVENT_SUPPLY_RECORD_54E2DE90": {
-    "source": "事件物资记录无效。",
-    "zh_CN": "事件物资记录无效。",
-    "en": "Invalid event-supply record."
-  },
-  "LOC_UNREGISTERED_EVENT_SUPPLY_521C78E0": {
-    "source": "事件物资未登记。",
-    "zh_CN": "事件物资未登记。",
-    "en": "Unregistered event supply."
   },
   "LOC_EVENT_S_S_6E3B7EEE": {
     "source": "事件 %s：%s",
@@ -4353,11 +3138,6 @@
     "source": "只有玩家已发布版本可登记模块。",
     "zh_CN": "只有玩家已发布版本可登记模块。",
     "en": "Only player-published versions may register modules."
-  },
-  "LOC_INITIAL_BRAIN_SLICES_CANNOT_BE_CREATED_TWICE_8901B4D2": {
-    "source": "初始脑切片不能重复建立。",
-    "zh_CN": "初始脑切片不能重复建立。",
-    "en": "Initial brain slices cannot be created twice."
   },
   "LOC_WRONG_DRAFT_SYNC_TYPE_EAFCB504": {
     "source": "草稿同步类型错误。",
@@ -4419,11 +3199,6 @@
     "zh_CN": "五层脑切片分别承载语言、群体、话题、立场与语用。",
     "en": "The five brain slices carry language, audience, topics, stance and pragmatics."
   },
-  "LOC_CULTIVATION_VALUES_AND_NEURAL_TOPOLOGY_ARE_GAME_0FB9F6C6": {
-    "source": "培养数值与神经拓扑为游戏设计；沸腾顺序不是物理温度。外部版本只读，来源与控制权不变。",
-    "zh_CN": "培养数值与神经拓扑为游戏设计；沸腾顺序不是物理温度。外部版本只读，来源与控制权不变。",
-    "en": "Cultivation values and neural topology are game design; boiling order is not physical temperature. External versions are read-only; provenance and control remain unchanged."
-  },
   "LOC_INVALID_DESIGN_SAVE_VERSION_DEFINITIONS_OR_ACTION_1AA0AD8F": {
     "source": "设计存档版本、定义或操作记录错误。",
     "zh_CN": "设计存档版本、定义或操作记录错误。",
@@ -4444,20 +3219,10 @@
     "zh_CN": "开局选择必须在首发之前。",
     "en": "Starting selection must precede first publication."
   },
-  "LOC_LEGACY_DESIGN_IMPORT_MUST_BE_THE_FIRST_04855063": {
-    "source": "旧设计导入只能是首条操作。",
-    "zh_CN": "旧设计导入只能是首条操作。",
-    "en": "Legacy-design import must be the first action."
-  },
   "LOC_DESIGN_SAVE_LACKS_A_PLAYER_VERSION_MODULE_62FFDE84": {
     "source": "设计存档缺少玩家版本模块来源。",
     "zh_CN": "设计存档缺少玩家版本模块来源。",
     "en": "Design save lacks a player-version module source."
-  },
-  "LOC_VERSION_SOLID_PROVENANCE_DOES_NOT_MATCH_APPLIED_48F1FCA3": {
-    "source": "版本固体来源不符合已应用记录。",
-    "zh_CN": "版本固体来源不符合已应用记录。",
-    "en": "Version solid provenance does not match applied records."
   },
   "LOC_VERSION_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_DOES_C71016AF": {
     "source": "版本表达补丁或能力来源不符合操作记录。",
@@ -4468,16 +3233,6 @@
     "source": "设计存档状态不符合操作记录，拒绝部分恢复。",
     "zh_CN": "设计存档状态不符合操作记录，拒绝部分恢复。",
     "en": "Design-save state conflicts with action records; partial restoration rejected."
-  },
-  "LOC_CULTIVATION_MATERIAL_QUANTITIES_ARE_NOT_CONSERVED_4257ED1C": {
-    "source": "培养材料数量不守恒。",
-    "zh_CN": "培养材料数量不守恒。",
-    "en": "Cultivation-material quantities are not conserved."
-  },
-  "LOC_SOLVENT_QUANTITIES_ARE_NOT_CONSERVED_A557EA4B": {
-    "source": "溶剂数量不守恒。",
-    "zh_CN": "溶剂数量不守恒。",
-    "en": "Solvent quantities are not conserved."
   },
   "LOC_DESIGN_SAVE_SKILL_INCOME_AND_EXPENDITURE_DO_121EAB4E": {
     "source": "设计存档技能收支不一致。",
@@ -4494,31 +3249,6 @@
     "zh_CN": "设计存档技能与扣款数不一致。",
     "en": "Design-save skills and deduction counts do not match."
   },
-  "LOC_UNREGISTERED_LEGACY_DESIGN_VERSION_894147B0": {
-    "source": "旧设计版本未登记。",
-    "zh_CN": "旧设计版本未登记。",
-    "en": "Unregistered legacy-design version."
-  },
-  "LOC_ACTUAL_LEGACY_DESIGN_VERSION_SOURCE_IS_MISSING_66249D86": {
-    "source": "旧设计的真实版本来源丢失。",
-    "zh_CN": "旧设计的真实版本来源丢失。",
-    "en": "Actual legacy-design version source is missing."
-  },
-  "LOC_ADD_POWDER_AND_SOLVENT_BEFORE_STIRRING_B8A0A0B1": {
-    "source": "先倒入粉末与溶剂，再搅拌。",
-    "zh_CN": "先倒入粉末与溶剂，再搅拌。",
-    "en": "Add powder and solvent before stirring."
-  },
-  "LOC_NO_MATERIAL_NEEDS_STIRRING_36EB5880": {
-    "source": "没有待搅拌的材料。",
-    "zh_CN": "没有待搅拌的材料。",
-    "en": "No material needs stirring."
-  },
-  "LOC_THE_SOLUTION_IS_SATURATED_OR_THESE_SOLVENTS_8265C88F": {
-    "source": "溶液已饱和，或这些溶剂无法溶解当前材料。",
-    "zh_CN": "溶液已饱和，或这些溶剂无法溶解当前材料。",
-    "en": "The solution is saturated, or these solvents cannot dissolve the current material."
-  },
   "LOC_A_SUPPLY_SLIP_MUST_COME_FROM_A_2BE34758": {
     "source": "物资纸片必须来自本局真实事件。",
     "zh_CN": "物资纸片必须来自本局真实事件。",
@@ -4529,25 +3259,10 @@
     "zh_CN": "这张物资纸片已经搬出。",
     "en": "This supply slip has already been taken out."
   },
-  "LOC_INVALID_EVENT_SUPPLY_SOURCE_RECORD_DCD05FF4": {
-    "source": "事件物资来源记录无效。",
-    "zh_CN": "事件物资来源记录无效。",
-    "en": "Invalid event-supply source record."
-  },
   "LOC_THE_EVENT_DOES_NOT_CONTAIN_THIS_SUPPLY_E37D2D29": {
     "source": "事件没有这份物资。",
     "zh_CN": "事件没有这份物资。",
     "en": "The event does not contain this supply."
-  },
-  "LOC_INVALID_LEGACY_SLICE_IMPORT_RECORD_F26EA188": {
-    "source": "旧切片导入记录无效。",
-    "zh_CN": "旧切片导入记录无效。",
-    "en": "Invalid legacy-slice import record."
-  },
-  "LOC_LEGACY_SLICE_VERSION_SOURCE_IS_MISSING_C6844EB4": {
-    "source": "旧切片版本来源丢失。",
-    "zh_CN": "旧切片版本来源丢失。",
-    "en": "Legacy-slice version source is missing."
   },
   "LOC_ALL_SYNTHETIC_AUDIENCES_BED572F8": {
     "source": "全部合成群体",
@@ -4709,321 +3424,6 @@
     "zh_CN": "环境模因↑",
     "en": "Environmental meme ↑"
   },
-  "LOC_EVENT_NOT_FOUND_9ACBA557": {
-    "source": "未找到事件：",
-    "zh_CN": "未找到事件：",
-    "en": "Event not found: "
-  },
-  "LOC_ID_SELECT_OR_CREATE_AN_EVENT_FIRST_2F75DBE4": {
-    "source": "id: 请先选择或创建事件",
-    "zh_CN": "id: 请先选择或创建事件",
-    "en": "id: Select or create an event first"
-  },
-  "LOC_MENTOR_COMMENT_ENTER_A_ONE_LINE_COMMENT_579DDF88": {
-    "source": "mentor_comment: 请填写67的一行评价",
-    "zh_CN": "mentor_comment: 请填写67的一行评价",
-    "en": "mentor_comment: Enter a one-line comment from 67"
-  },
-  "LOC_ID_FILE_IDENTIFIERS_ALLOW_ONLY_ASCII_LETTERS_8A340EAF": {
-    "source": "id: 文件标识只允许英文字母、数字、下划线和连字符",
-    "zh_CN": "id: 文件标识只允许英文字母、数字、下划线和连字符",
-    "en": "id: File identifiers allow only ASCII letters, digits, underscores and hyphens"
-  },
-  "LOC_ID_EVENT_ID_ALREADY_EXISTS_4E2FCE8E": {
-    "source": "id: 事件 ID 已存在",
-    "zh_CN": "id: 事件 ID 已存在",
-    "en": "id: Event ID already exists"
-  },
-  "LOC_EXTERNAL_PRESET_ID_UNREGISTERED_INDEPENDENT_ENVIRONMENTAL_FAMILY_F0B5FC02": {
-    "source": "external_preset_id: 未登记的独立环境家族预设 ",
-    "zh_CN": "external_preset_id: 未登记的独立环境家族预设 ",
-    "en": "external_preset_id: Unregistered independent environmental-family preset "
-  },
-  "LOC_TOPIC_IDS_UNREGISTERED_TOPIC_D570CD52": {
-    "source": "topic_ids: 未登记的主题 ",
-    "zh_CN": "topic_ids: 未登记的主题 ",
-    "en": "topic_ids: Unregistered topic "
-  },
-  "LOC_OPERATION_IDS_UNREGISTERED_OPERATION_D614F7DC": {
-    "source": "operation_ids: 未登记的操作 ",
-    "zh_CN": "operation_ids: 未登记的操作 ",
-    "en": "operation_ids: Unregistered operation "
-  },
-  "LOC_DISCOVERY_IDS_UNREGISTERED_BASE_FORM_79C67C05": {
-    "source": "discovery_ids: 未登记的基模 ",
-    "zh_CN": "discovery_ids: 未登记的基模 ",
-    "en": "discovery_ids: Unregistered base form "
-  },
-  "LOC_EFFECTS_D_GROUP_IDS_UNREGISTERED_AUDIENCE_S_D1C59278": {
-    "source": "effects[%d].group_ids: 未登记的群体 %s",
-    "zh_CN": "effects[%d].group_ids: 未登记的群体 %s",
-    "en": "effects[%d].group_ids: Unregistered audience %s"
-  },
-  "LOC_DESIGN_REWARDS_D_ID_UNREGISTERED_ITEM_CANNOT_87CC61B9": {
-    "source": "design_rewards[%d].id: 未登记的物品，不能保存或领取",
-    "zh_CN": "design_rewards[%d].id: 未登记的物品，不能保存或领取",
-    "en": "design_rewards[%d].id: Unregistered item; cannot save or claim"
-  },
-  "LOC_NOT_SAVED_CLICK_AN_ERROR_TO_LOCATE_B4CB5F6C": {
-    "source": "未保存：请点击错误定位；原文件未覆盖。",
-    "zh_CN": "未保存：请点击错误定位；原文件未覆盖。",
-    "en": "Not saved: click an error to locate it. The original file was not overwritten."
-  },
-  "LOC_ID_SAVE_DIRECTORY_MUST_BE_RES_DATA_BC0FAF6A": {
-    "source": "id: 保存目录必须是 res://data/events",
-    "zh_CN": "id: 保存目录必须是 res://data/events",
-    "en": "id: Save directory must be res://data/events"
-  },
-  "LOC_NOT_SAVED_DIRECTORY_NOT_ALLOWED_6BC5EC40": {
-    "source": "未保存：不允许的目录。",
-    "zh_CN": "未保存：不允许的目录。",
-    "en": "Not saved: directory not allowed."
-  },
-  "LOC_NOT_SAVED_A_FILE_WITH_THIS_NAME_17ED1C79": {
-    "source": "未保存：同名文件已存在且不属于当前选中事件。",
-    "zh_CN": "未保存：同名文件已存在且不属于当前选中事件。",
-    "en": "Not saved: a file with this name exists and does not belong to the selected event."
-  },
-  "LOC_SAVE_FAILED_S_S_THE_ORIGINAL_FILE_081B6C04": {
-    "source": "保存失败（%s）：%s；原文件未覆盖。",
-    "zh_CN": "保存失败（%s）：%s；原文件未覆盖。",
-    "en": "Save failed (%s): %s. The original file was not overwritten."
-  },
-  "LOC_FILE_WRITTEN_BUT_RELOAD_FAILED_A89304B0": {
-    "source": "文件已写入但重新加载失败：",
-    "zh_CN": "文件已写入但重新加载失败：",
-    "en": "File written, but reload failed: "
-  },
-  "LOC_SAVED_AND_RELOADED_30C55DB8": {
-    "source": "已保存并重新加载：",
-    "zh_CN": "已保存并重新加载：",
-    "en": "Saved and reloaded: "
-  },
-  "LOC_EDITED_CATALOG_UPDATED_IN_MEMORY_ONLY_674580D7": {
-    "source": "（编辑 catalog 仅更新内存）",
-    "zh_CN": "（编辑 catalog 仅更新内存）",
-    "en": "(Edited catalog updated in memory only)"
-  },
-  "LOC_DEVELOPER_CATALOG_NOT_SAVED_CONTENT_VALIDATION_FAILED_17A1A107": {
-    "source": "开发 catalog 未保存：内容验证失败。",
-    "zh_CN": "开发 catalog 未保存：内容验证失败。",
-    "en": "Developer catalog not saved: content validation failed."
-  },
-  "LOC_DEVELOPER_CATALOG_SAVE_FAILED_468E0A84": {
-    "source": "开发 catalog 保存失败：",
-    "zh_CN": "开发 catalog 保存失败：",
-    "en": "Developer catalog save failed: "
-  },
-  "LOC_DEVELOPER_CATALOG_SAVED_B6382EB7": {
-    "source": "开发 catalog 已保存：",
-    "zh_CN": "开发 catalog 已保存：",
-    "en": "Developer catalog saved: "
-  },
-  "LOC_THE_CURRENT_RUN_IS_UNCHANGED_LOAD_IT_714C232A": {
-    "source": "；不会改变当前运行，下一局请显式加载。",
-    "zh_CN": "；不会改变当前运行，下一局请显式加载。",
-    "en": "; the current run is unchanged. Load it explicitly for the next run."
-  },
-  "LOC_RELOAD_FAILED_CURRENT_DRAFT_RETAINED_BE733DD5": {
-    "source": "重新加载失败；保留当前草稿：",
-    "zh_CN": "重新加载失败；保留当前草稿：",
-    "en": "Reload failed; current draft retained: "
-  },
-  "LOC_SELECTED_EVENT_RELOADED_UNSAVED_EDITS_DISCARDED_588519B0": {
-    "source": "已重新加载选中事件；未保存的编辑已丢弃。",
-    "zh_CN": "已重新加载选中事件；未保存的编辑已丢弃。",
-    "en": "Selected event reloaded; unsaved edits discarded."
-  },
-  "LOC_NEW_EVENT_88D5015D": {
-    "source": "新事件",
-    "zh_CN": "新事件",
-    "en": "New event"
-  },
-  "LOC_DESCRIBE_THE_MESSAGE_S_ACTORS_CHANGES_AND_6D408A80": {
-    "source": "填写消息的主体、发生的变化与后果。",
-    "zh_CN": "填写消息的主体、发生的变化与后果。",
-    "en": "Describe the message's actors, changes and consequences."
-  },
-  "LOC_CHECK_THE_MESSAGE_FIRST_THEN_DECIDE_WHAT_E5DCF319": {
-    "source": "先查清消息，再决定你要对谁说什么。",
-    "zh_CN": "先查清消息，再决定你要对谁说什么。",
-    "en": "Check the message first, then decide what you want to say and to whom."
-  },
-  "LOC_THE_NEW_EVENT_IS_AN_UNSAVED_DRAFT_31BACB30": {
-    "source": "新事件是未保存草稿。",
-    "zh_CN": "新事件是未保存草稿。",
-    "en": "The new event is an unsaved draft."
-  },
-  "LOC_COPY_F60ABACE": {
-    "source": "（副本）",
-    "zh_CN": "（副本）",
-    "en": "(Copy)"
-  },
-  "LOC_DUPLICATED_AS_AN_UNSAVED_DRAFT_THE_ORIGINAL_28E57F8F": {
-    "source": "已复制为未保存草稿；原事件不变。",
-    "zh_CN": "已复制为未保存草稿；原事件不变。",
-    "en": "Duplicated as an unsaved draft; the original event is unchanged."
-  },
-  "LOC_SELECT_AN_EVENT_TO_INSPECT_ITS_ACTUAL_68949392": {
-    "source": "选择事件后查看实际作用。",
-    "zh_CN": "选择事件后查看实际作用。",
-    "en": "Select an event to inspect its actual effects."
-  },
-  "LOC_OPERATIONS_AB8AF9B5": {
-    "source": "\n操作：",
-    "zh_CN": "\n操作：",
-    "en": "\nOperations: "
-  },
-  "LOC_TOPICS_6DB3A749": {
-    "source": "主题：",
-    "zh_CN": "主题：",
-    "en": "Topics: "
-  },
-  "LOC_NO_CONTENT_DICTIONARY_CONFIGURED_C214D95E": {
-    "source": "未配置内容字典。",
-    "zh_CN": "未配置内容字典。",
-    "en": "No content dictionary configured."
-  },
-  "LOC_AUDIENCE_REFERENCE_EMPTY_LIST_ALL_AEAC8EEA": {
-    "source": "群体参考（空列表=全部）：",
-    "zh_CN": "群体参考（空列表=全部）：",
-    "en": "Audience reference (empty list = all): "
-  },
-  "LOC_EMPTY_EFFECT_VALIDATION_FAILS_EA643513": {
-    "source": "空效果（验证失败）",
-    "zh_CN": "空效果（验证失败）",
-    "en": "Empty effect (validation fails)"
-  },
-  "LOC_ACTUAL_EFFECTS_DERIVED_FROM_EFFECTS_NOT_INDEPENDENTLY_35B8B446": {
-    "source": "实际作用（由 effects 派生，不能独立填写）：\n",
-    "zh_CN": "实际作用（由 effects 派生，不能独立填写）：\n",
-    "en": "Actual effects (derived from effects; not independently editable):\n"
-  },
-  "LOC_ITEMS_AFTER_ACKNOWLEDGEMENT_5AA3A7FD": {
-    "source": "\n确认后物品：",
-    "zh_CN": "\n确认后物品：",
-    "en": "\nItems after acknowledgement: "
-  },
-  "LOC_VALIDATION_PASSED_0EB40E89": {
-    "source": "验证通过",
-    "zh_CN": "验证通过",
-    "en": "Validation passed"
-  },
-  "LOC_VALIDATION_ERRORS_CLICK_TO_LOCATE_D_01D114F5": {
-    "source": "验证错误（点击定位）· %d",
-    "zh_CN": "验证错误（点击定位）· %d",
-    "en": "Validation errors (click to locate) · %d"
-  },
-  "LOC_REWARD_ITEMS_C9157F82": {
-    "source": "奖励物品",
-    "zh_CN": "奖励物品",
-    "en": "Reward items"
-  },
-  "LOC_ITEMS_COME_FROM_ACKNOWLEDGED_EVENT_INSTANCES_REREADING_7F0960B5": {
-    "source": "物品来自已确认的事件实例；重复阅读不会重复发放。\n溶质需研磨培养，溶剂为不可逆消耗后的补给。",
-    "zh_CN": "物品来自已确认的事件实例；重复阅读不会重复发放。\n溶质需研磨培养，溶剂为不可逆消耗后的补给。",
-    "en": "Items come from acknowledged event instances. Rereading does not grant them again.\nSolutes require grinding and cultivation; solvent supplies replace irreversibly consumed quantities."
-  },
-  "LOC_SOLVENT_SUPPLIES_18AB2BBE": {
-    "source": "溶剂补给",
-    "zh_CN": "溶剂补给",
-    "en": "Solvent supplies"
-  },
-  "LOC_SOLUTE_BLOCK_17E3AC7D": {
-    "source": "溶质纸块",
-    "zh_CN": "溶质纸块",
-    "en": "Solute block"
-  },
-  "LOC_NEURAL_MODULE_0E64EA35": {
-    "source": "神经模块",
-    "zh_CN": "神经模块",
-    "en": "Neural module"
-  },
-  "LOC_ADD_ITEM_61A6505B": {
-    "source": "添加物品",
-    "zh_CN": "添加物品",
-    "en": "Add item"
-  },
-  "LOC_DELETE_SELECTED_435BF8A2": {
-    "source": "删除所选",
-    "zh_CN": "删除所选",
-    "en": "Delete selected"
-  },
-  "LOC_UNREGISTERED_F5BA894D": {
-    "source": "未登记：",
-    "zh_CN": "未登记：",
-    "en": "Unregistered: "
-  },
-  "LOC_NOT_ENOUGH_ACQUIRED_MODULES_PAPER_SLIPS_CANNOT_F17EE669": {
-    "source": "已获得的模块数量不足，不能复制纸片。",
-    "zh_CN": "已获得的模块数量不足，不能复制纸片。",
-    "en": "Not enough acquired modules; paper slips cannot be duplicated."
-  },
-  "LOC_NO_SOLUTE_BLOCK_IS_AVAILABLE_TO_GRIND_10EB5766": {
-    "source": "没有可磨碎的溶质纸块。",
-    "zh_CN": "没有可磨碎的溶质纸块。",
-    "en": "No solute block is available to grind."
-  },
-  "LOC_REMOVE_OR_DISCARD_THE_POWDER_IN_THE_027545CC": {
-    "source": "请先取出或废弃研钵中的粉末。",
-    "zh_CN": "请先取出或废弃研钵中的粉末。",
-    "en": "Remove or discard the powder in the mortar first."
-  },
-  "LOC_THERE_IS_NO_GROUND_POWDER_IN_THE_6F19B5B1": {
-    "source": "研钵中没有磨好的粉末。",
-    "zh_CN": "研钵中没有磨好的粉末。",
-    "en": "There is no ground powder in the mortar."
-  },
-  "LOC_EACH_BOTTLE_HOLDS_ONLY_ONE_SOLUTE_REMOVE_5C8C255C": {
-    "source": "每瓶只容纳一种溶质，请先取出或废弃。",
-    "zh_CN": "每瓶只容纳一种溶质，请先取出或废弃。",
-    "en": "Each bottle holds only one solute. Remove or discard it first."
-  },
-  "LOC_INVALID_SOLVENT_QUANTITY_OR_INSUFFICIENT_INVENTORY_BFC677FA": {
-    "source": "溶剂数量无效或库存不足。",
-    "zh_CN": "溶剂数量无效或库存不足。",
-    "en": "Invalid solvent quantity or insufficient inventory."
-  },
-  "LOC_ONLY_A_BOTTLE_LOADED_WITH_POWDER_CAN_C443A11E": {
-    "source": "只有装好粉末的瓶可以投放。",
-    "zh_CN": "只有装好粉末的瓶可以投放。",
-    "en": "Only a bottle loaded with powder can be deployed."
-  },
-  "LOC_ADD_SOLUTE_AND_SOLVENT_BEFORE_STIRRING_DE2E457C": {
-    "source": "先加入溶质与溶剂，再搅拌。",
-    "zh_CN": "先加入溶质与溶剂，再搅拌。",
-    "en": "Add solute and solvent before stirring."
-  },
-  "LOC_THE_CURRENT_SOLUTION_HAS_ALREADY_BEEN_STIRRED_872DF27E": {
-    "source": "当前溶液已经搅拌。",
-    "zh_CN": "当前溶液已经搅拌。",
-    "en": "The current solution has already been stirred."
-  },
-  "LOC_DEPLOY_AND_STIR_THE_SOLUTION_BEFORE_LIGHTING_E1883678": {
-    "source": "点灯前需投放并搅拌溶液。",
-    "zh_CN": "点灯前需投放并搅拌溶液。",
-    "en": "Deploy and stir the solution before lighting the lamp."
-  },
-  "LOC_S_REVISES_ONLY_YOUR_OWN_DRAFT_AWAITING_BFD90BEC": {
-    "source": "%s → 仅修改自己的待发布草稿；原始事件 %s 来源保留。",
-    "zh_CN": "%s → 仅修改自己的待发布草稿；原始事件 %s 来源保留。",
-    "en": "%s → Revises only your own draft awaiting publication; the original event %s source is retained."
-  },
-  "LOC_S_REVISES_ONLY_YOUR_OWN_DRAFT_AWAITING_A256DBF9": {
-    "source": "%s → 仅修改自己的待发布草稿；本轮仅可应用一次。",
-    "zh_CN": "%s → 仅修改自己的待发布草稿；本轮仅可应用一次。",
-    "en": "%s → Revises only your own draft awaiting publication; may be applied only once this run."
-  },
-  "LOC_REQUIRES_ONE_PORTION_OF_POWDER_IN_THE_9C977EAE": {
-    "source": "需要研钵中的一份粉末和一个空瓶。",
-    "zh_CN": "需要研钵中的一份粉末和一个空瓶。",
-    "en": "Requires one portion of powder in the mortar and an empty bottle."
-  },
-  "LOC_INTERFACE_LANGUAGE_3D138685": {
-    "source": "界面语言",
-    "zh_CN": "界面语言",
-    "en": "Interface language"
-  },
   "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71": {
     "source": "界面及现有内容均可切换中英文。",
     "zh_CN": "界面及现有内容均可切换中英文。",
@@ -5039,16 +3439,6 @@
     "zh_CN": "、",
     "en": ", "
   },
-  "LOC_AVAILABLE_S_8B2D5419": {
-    "source": "可用数量：%s",
-    "zh_CN": "可用数量：%s",
-    "en": "Available: %s"
-  },
-  "LOC_SOURCE_S_892247BA": {
-    "source": "来源：%s",
-    "zh_CN": "来源：%s",
-    "en": "Source: %s"
-  },
   "LOC_SAVED_S_C5E73322": {
     "source": "已保存：%s",
     "zh_CN": "已保存：%s",
@@ -5063,11 +3453,6 @@
     "source": "%s：%s",
     "zh_CN": "%s：%s",
     "en": "%s: %s"
-  },
-  "LOC_EACH_EVENT_AWARDS_AT_MOST_ONE_PHYSICAL_AC41EE1A": {
-    "source": "每个事件最多奖励一件实体物品；重复阅读不会重复发放。",
-    "zh_CN": "每个事件最多奖励一件实体物品；重复阅读不会重复发放。",
-    "en": "Each event awards at most one physical item. Rereading does not grant it again."
   },
   "LOC_STANCE_TOKEN_D1A72C88": {
     "source": "立场筹码",
@@ -5088,1096 +3473,6 @@
     "source": "确认模因后点击地图国家，再点击国家上方的勾选气泡开始游戏。",
     "zh_CN": "确认模因后点击地图国家，再点击国家上方的勾选气泡开始游戏。",
     "en": "Confirm your meme, click a country, then click its checkmark bubble to start the game."
-  },
-  "LOC_MEME_WORLD_8631A3DD": {
-    "source": "模因世界",
-    "zh_CN": "模因世界",
-    "en": "Meme world"
-  },
-  "LOC_SEED_5E20FC22": {
-    "source": "种子",
-    "zh_CN": "种子",
-    "en": "Seed"
-  },
-  "LOC_GENERATE_195F077F": {
-    "source": "按种子生成",
-    "zh_CN": "按种子生成",
-    "en": "Generate"
-  },
-  "LOC_RANDOMIZE_74F156D8": {
-    "source": "随机地图",
-    "zh_CN": "随机地图",
-    "en": "Randomize"
-  },
-  "LOC_RESET_VIEW_D26785DA": {
-    "source": "重置视角",
-    "zh_CN": "重置视角",
-    "en": "Reset view"
-  },
-  "LOC_COUNTRY_PROFILE_39DF5E19": {
-    "source": "国家档案",
-    "zh_CN": "国家档案",
-    "en": "COUNTRY PROFILE"
-  },
-  "LOC_SELECT_LAND_TO_INSPECT_A_COUNTRY_TERRITORY_1FF499EA": {
-    "source": "点击陆地查看国家。",
-    "zh_CN": "点击陆地查看国家。",
-    "en": "Select land to inspect a country."
-  },
-  "LOC_TOPIC_INTERESTS_68EA6070": {
-    "source": "主题兴趣",
-    "zh_CN": "主题兴趣",
-    "en": "Topic interests"
-  },
-  "LOC_CANDIDATE_EVENT_POOL_50FCE872": {
-    "source": "候选事件池",
-    "zh_CN": "候选事件池",
-    "en": "Candidate event pool"
-  },
-  "LOC_COMPETING_MEMES_77320264": {
-    "source": "竞争性模因",
-    "zh_CN": "竞争性模因",
-    "en": "Competing memes"
-  },
-  "LOC_HOVER_OVER_LAND_9C4F06FE": {
-    "source": "将指针移到陆地上",
-    "zh_CN": "将指针移到陆地上",
-    "en": "Hover over land"
-  },
-  "LOC_D_COUNTRIES_F_MILLION_PEOPLE_5D67E36B": {
-    "source": "%d 国 · 总人口 %.0f 百万",
-    "zh_CN": "%d 国 · 总人口 %.0f 百万",
-    "en": "%d countries · %.0f million people"
-  },
-  "LOC_POPULATION_F_MILLION_4DDD5E81": {
-    "source": "人口：%.0f 百万",
-    "zh_CN": "人口：%.0f 百万",
-    "en": "Population: %.0f million"
-  },
-  "LOC_SELECT_LEFT_CLICK_PAN_MIDDLE_SPACE_DRAG_A771D245": {
-    "source": "左键选择 · 中键或空格＋左键平移 · 滚轮平滑缩放 · 放大显示城市与地理细节",
-    "zh_CN": "左键选择 · 中键或空格＋左键平移 · 滚轮平滑缩放 · 放大显示城市与地理细节",
-    "en": "Select: left-click · Pan: middle / Space + drag · Smooth zoom: wheel · Zoom in for cities and geography"
-  },
-  "LOC_SEED_MUST_BE_AN_INTEGER_BETWEEN_AND_0A93EB80": {
-    "source": "种子必须是 1 至 2147483647 的整数。",
-    "zh_CN": "种子必须是 1 至 2147483647 的整数。",
-    "en": "Seed must be an integer between 1 and 2147483647."
-  },
-  "LOC_NINGHUA_FDCDA2C7": {
-    "source": "宁华",
-    "zh_CN": "宁华",
-    "en": "Ninghua"
-  },
-  "LOC_REPUBLIC_OF_NINGHUA_E413DE95": {
-    "source": "宁华共和国",
-    "zh_CN": "宁华共和国",
-    "en": "Republic of Ninghua"
-  },
-  "LOC_DOMESTIC_MASS_INTERNET_FC17AFD0": {
-    "source": "本土大众网络",
-    "zh_CN": "本土大众网络",
-    "en": "Domestic mass internet"
-  },
-  "LOC_CHINA_INSPIRED_NETWORKS_LARGE_DOMESTIC_PLATFORMS_IMPORTED_4689B45F": {
-    "source": "中国网络原型。大型本土平台与语境圈；外来内容需要语境转换。",
-    "zh_CN": "中国网络原型。大型本土平台与语境圈；外来内容需要语境转换。",
-    "en": "China-inspired networks. Large domestic platforms; imported references need contextual translation."
-  },
-  "LOC_WORK_AND_EDUCATION_CONSUMPTION_GAMES_EVERYDAY_CONTRASTS_89F430AA": {
-    "source": "工作与教育、消费、游戏、生活反差",
-    "zh_CN": "工作与教育、消费、游戏、生活反差",
-    "en": "Work and education; consumption; games; everyday contrasts"
-  },
-  "LOC_MODERATION_SPONTANEOUS_DECONSTRUCTION_BRANDED_FESTIVALS_FC00B00A": {
-    "source": "审核、自发性解构、品牌节庆",
-    "zh_CN": "审核、自发性解构、品牌节庆",
-    "en": "Moderation; spontaneous deconstruction; branded festivals"
-  },
-  "LOC_STRESS_CATCHPHRASES_CONSUMER_JOKES_FANDOM_IMAGES_3EF2AA19": {
-    "source": "压力口头禅、消费笑话、粉圈图像",
-    "zh_CN": "压力口头禅、消费笑话、粉圈图像",
-    "en": "Stress catchphrases; consumer jokes; fandom images"
-  },
-  "LOC_SHIOHARA_F93E78D1": {
-    "source": "汐原",
-    "zh_CN": "汐原",
-    "en": "Shiohara"
-  },
-  "LOC_STATE_OF_SHIOHARA_8B943340": {
-    "source": "汐原国",
-    "zh_CN": "汐原国",
-    "en": "State of Shiohara"
-  },
-  "LOC_WORKS_AND_REFERENCE_COMMUNITIES_5CB9FF4F": {
-    "source": "作品与引用社群",
-    "zh_CN": "作品与引用社群",
-    "en": "Works and reference communities"
-  },
-  "LOC_JAPAN_INSPIRED_NETWORKS_ESTABLISHED_CREATIVE_COMMUNITIES_SHARED_7015A17E": {
-    "source": "日本网络原型。成熟创作社群；作品知识影响理解，图像引用密集。",
-    "zh_CN": "日本网络原型。成熟创作社群；作品知识影响理解，图像引用密集。",
-    "en": "Japan-inspired networks. Established creative communities; shared knowledge shapes image references."
-  },
-  "LOC_CHARACTERS_AND_STORIES_DAILY_OBSERVATIONS_GAMES_285C9B25": {
-    "source": "角色与剧情、日常观察、游戏",
-    "zh_CN": "角色与剧情、日常观察、游戏",
-    "en": "Characters and stories; daily observations; games"
-  },
-  "LOC_NEW_RELEASES_PUBLICATION_HIATUS_COMMUNITY_DISPUTES_3DDF08C5": {
-    "source": "新作上线、连载休止、社群争论",
-    "zh_CN": "新作上线、连载休止、社群争论",
-    "en": "New releases; publication hiatus; community disputes"
-  },
-  "LOC_CHARACTER_REACTIONS_OLDER_WORKS_EVERYDAY_COMIC_PANELS_FB599975": {
-    "source": "角色反应图、旧作引用、日常四格",
-    "zh_CN": "角色反应图、旧作引用、日常四格",
-    "en": "Character reactions; older works; everyday comic panels"
-  },
-  "LOC_SEOWON_D43006BD": {
-    "source": "瑞原",
-    "zh_CN": "瑞原",
-    "en": "Seowon"
-  },
-  "LOC_REPUBLIC_OF_SEOWON_D92FA09C": {
-    "source": "瑞原共和国",
-    "zh_CN": "瑞原共和国",
-    "en": "Republic of Seowon"
-  },
-  "LOC_COORDINATED_FAN_NETWORKS_890F5F21": {
-    "source": "粉丝协作网络",
-    "zh_CN": "粉丝协作网络",
-    "en": "Coordinated fan networks"
-  },
-  "LOC_KOREA_INSPIRED_NETWORKS_HIGHLY_CONNECTED_COMMUNITIES_COLLABORATI_47EA9201": {
-    "source": "韩国网络原型。高连接度社群；协作和翻译接力加快跨语境传播。",
-    "zh_CN": "韩国网络原型。高连接度社群；协作和翻译接力加快跨语境传播。",
-    "en": "Korea-inspired networks. Highly connected communities; collaboration and translation relays cross language boundaries."
-  },
-  "LOC_ENTERTAINMENT_IDENTITY_AESTHETICS_BELONGING_9A85970A": {
-    "source": "娱乐身份、审美、群体归属",
-    "zh_CN": "娱乐身份、审美、群体归属",
-    "en": "Entertainment identity; aesthetics; belonging"
-  },
-  "LOC_FAN_RELAYS_COORDINATED_EVENTS_DIVIDED_INTERPRETATIONS_FC6564BE": {
-    "source": "应援接力、同步活动、解释分裂",
-    "zh_CN": "应援接力、同步活动、解释分裂",
-    "en": "Fan relays; coordinated events; divided interpretations"
-  },
-  "LOC_FAN_SLOGANS_REACTION_IMAGES_INSIDER_LANGUAGE_B05EDA1A": {
-    "source": "应援口号、反应图、圈内暗语",
-    "zh_CN": "应援口号、反应图、圈内暗语",
-    "en": "Fan slogans; reaction images; insider language"
-  },
-  "LOC_ALDEN_82CAA0CE": {
-    "source": "阿尔登",
-    "zh_CN": "阿尔登",
-    "en": "Alden"
-  },
-  "LOC_UNITED_STATES_OF_ALDEN_BCEEA186": {
-    "source": "阿尔登合众国",
-    "zh_CN": "阿尔登合众国",
-    "en": "United States of Alden"
-  },
-  "LOC_ENGLISH_LANGUAGE_TREND_MARKETS_445C9F07": {
-    "source": "英语趋势市场",
-    "zh_CN": "英语趋势市场",
-    "en": "English-language trend markets"
-  },
-  "LOC_US_INSPIRED_NETWORKS_LARGE_COMMERCIAL_PLATFORMS_AND_0E007FD7": {
-    "source": "美国网络原型。大型商业平台与跨国英语受众；热榜竞争激烈。",
-    "zh_CN": "美国网络原型。大型商业平台与跨国英语受众；热榜竞争激烈。",
-    "en": "US-inspired networks. Large commercial platforms and international English audiences; intense trend competition."
-  },
-  "LOC_WORK_AND_RELATIONSHIPS_CONSUMPTION_TECHNOLOGY_PUBLIC_ISSUES_9F3FF2B9": {
-    "source": "工作关系、消费、技术、公共议题",
-    "zh_CN": "工作关系、消费、技术、公共议题",
-    "en": "Work and relationships; consumption; technology; public issues"
-  },
-  "LOC_TRENDING_BOOSTS_BRAND_APPROPRIATION_CONTROVERSY_CYCLES_D32C69C7": {
-    "source": "热榜助推、品牌借用、争议循环",
-    "zh_CN": "热榜助推、品牌借用、争议循环",
-    "en": "Trending boosts; brand appropriation; controversy cycles"
-  },
-  "LOC_GENERIC_TEMPLATES_OUTRAGE_BAIT_CELEBRITY_REACTIONS_293D9445": {
-    "source": "通用模板、愤怒诱饵、名人反应图",
-    "zh_CN": "通用模板、愤怒诱饵、名人反应图",
-    "en": "Generic templates; outrage bait; celebrity reactions"
-  },
-  "LOC_VERESK_3AD122F1": {
-    "source": "韦列斯克",
-    "zh_CN": "韦列斯克",
-    "en": "Veresk"
-  },
-  "LOC_FEDERATION_OF_VERESK_3D07DFB6": {
-    "source": "韦列斯克联邦",
-    "zh_CN": "韦列斯克联邦",
-    "en": "Federation of Veresk"
-  },
-  "LOC_IRONIC_REINTERPRETATION_NETWORKS_8CE569FF": {
-    "source": "反讽再诠释网络",
-    "zh_CN": "反讽再诠释网络",
-    "en": "Ironic reinterpretation networks"
-  },
-  "LOC_RUSSIA_AND_EASTERN_EUROPE_REFERENCE_CENTRAL_EUROPEAN_603E18B3": {
-    "source": "俄罗斯及东欧参考圈，中欧成员另列，以反讽再诠释为设计起点。",
-    "zh_CN": "俄罗斯及东欧参考圈，中欧成员另列，以反讽再诠释为设计起点。",
-    "en": "Russia and Eastern Europe reference, with Central European members listed separately. The design starts from ironic reinterpretation."
-  },
-  "LOC_EVERYDAY_SETBACKS_ABSURD_JUXTAPOSITIONS_WORDPLAY_382CE827": {
-    "source": "日常挫折、荒诞错位、语言游戏",
-    "zh_CN": "日常挫折、荒诞错位、语言游戏",
-    "en": "Everyday setbacks; absurd juxtapositions; wordplay"
-  },
-  "LOC_OLD_MEME_REVIVAL_LITERALIZED_IRONY_COLLECTIVE_RENAMING_7CF0A17A": {
-    "source": "旧梗复兴、反讽直译、集体改名",
-    "zh_CN": "旧梗复兴、反讽直译、集体改名",
-    "en": "Old meme revival; literalized irony; collective renaming"
-  },
-  "LOC_RECAPTIONED_IMAGES_ABSURD_DIALOGUE_LOCAL_PUNS_95673117": {
-    "source": "旧图新字、荒诞台词、本地双关",
-    "zh_CN": "旧图新字、荒诞台词、本地双关",
-    "en": "Recaptioned images; absurd dialogue; local puns"
-  },
-  "LOC_LINDAL_A28E3F7C": {
-    "source": "林达尔",
-    "zh_CN": "林达尔",
-    "en": "Lindal"
-  },
-  "LOC_KINGDOM_OF_LINDAL_D95F1475": {
-    "source": "林达尔王国",
-    "zh_CN": "林达尔王国",
-    "en": "Kingdom of Lindal"
-  },
-  "LOC_SMALL_BILINGUAL_PUBLIC_NETWORKS_FBEA318A": {
-    "source": "小型双语公共网络",
-    "zh_CN": "小型双语公共网络",
-    "en": "Small bilingual public networks"
-  },
-  "LOC_NORDIC_INSPIRED_NETWORKS_HIGH_ACCESS_AND_SMALLER_B4B2ED04": {
-    "source": "北欧网络原型。连接度高、人口较少；国际内容易进入，但本地议题仍需解释。",
-    "zh_CN": "北欧网络原型。连接度高、人口较少；国际内容易进入，但本地议题仍需解释。",
-    "en": "Nordic-inspired networks. High access and smaller populations; global material enters readily, while local issues need explanation."
-  },
-  "LOC_PUBLIC_SERVICES_WORK_LIFE_BALANCE_LOCAL_LIFE_4C3CB9BC": {
-    "source": "公共服务、工作生活、地方日常",
-    "zh_CN": "公共服务、工作生活、地方日常",
-    "en": "Public services; work-life balance; local life"
-  },
-  "LOC_LOCAL_ISSUES_CONTEXTUAL_EXPLANATION_INSTITUTIONAL_APPROPRIATION_EF2A0CFA": {
-    "source": "地方议题、语境解释、机构借用",
-    "zh_CN": "地方议题、语境解释、机构借用",
-    "en": "Local issues; contextual explanation; institutional appropriation"
-  },
-  "LOC_EVERYDAY_SELF_IRONY_PUBLIC_SERVICE_IMAGES_BILINGUAL_7310C34D": {
-    "source": "日常自嘲、公共服务图、双语笑话",
-    "zh_CN": "日常自嘲、公共服务图、双语笑话",
-    "en": "Everyday self-irony; public-service images; bilingual jokes"
-  },
-  "LOC_MARASU_293C2879": {
-    "source": "马拉苏",
-    "zh_CN": "马拉苏",
-    "en": "Marasu"
-  },
-  "LOC_FEDERATION_OF_MARASU_F5D01F10": {
-    "source": "马拉苏联邦",
-    "zh_CN": "马拉苏联邦",
-    "en": "Federation of Marasu"
-  },
-  "LOC_MULTILINGUAL_BRIDGE_NETWORKS_27C5580B": {
-    "source": "多语种桥接网络",
-    "zh_CN": "多语种桥接网络",
-    "en": "Multilingual bridge networks"
-  },
-  "LOC_MALAY_AND_SOUTHEAST_ASIA_INSPIRED_NETWORKS_MULTILINGUAL_D8109937": {
-    "source": "马来及东南亚网络原型。多语种和跨境联系并存，内部接入条件不均。",
-    "zh_CN": "马来及东南亚网络原型。多语种和跨境联系并存，内部接入条件不均。",
-    "en": "Malay and Southeast Asia-inspired networks. Multilingual cross-border ties coexist with uneven domestic access."
-  },
-  "LOC_LIVING_COSTS_FAMILY_CITIES_TRAVEL_3A46F504": {
-    "source": "生活成本、家庭、城市、旅行",
-    "zh_CN": "生活成本、家庭、城市、旅行",
-    "en": "Living costs; family; cities; travel"
-  },
-  "LOC_CODE_SWITCHING_TRANSLATION_DRIFT_FESTIVAL_TRENDS_CA13F2BF": {
-    "source": "语码混用、翻译漂移、节庆热点",
-    "zh_CN": "语码混用、翻译漂移、节庆热点",
-    "en": "Code-switching; translation drift; festival trends"
-  },
-  "LOC_MULTILINGUAL_PUNS_FAMILY_REACTIONS_CITY_JOKES_E08D4D4E": {
-    "source": "多语双关、家庭反应图、城市段子",
-    "zh_CN": "多语双关、家庭反应图、城市段子",
-    "en": "Multilingual puns; family reactions; city jokes"
-  },
-  "LOC_SERRANOVA_594681D6": {
-    "source": "塞拉诺瓦",
-    "zh_CN": "塞拉诺瓦",
-    "en": "Serranova"
-  },
-  "LOC_FEDERATIVE_REPUBLIC_OF_SERRANOVA_6F4C1718": {
-    "source": "塞拉诺瓦联邦共和国",
-    "zh_CN": "塞拉诺瓦联邦共和国",
-    "en": "Federative Republic of Serranova"
-  },
-  "LOC_SOUTH_AMERICA_REFERENCE_CHAT_RELAYS_0164D867": {
-    "source": "南美参考圈 · 聊天转发网络",
-    "zh_CN": "南美参考圈 · 聊天转发网络",
-    "en": "South America reference · chat relays"
-  },
-  "LOC_AREA_REFERENCES_SOUTH_AMERICAN_COUNTRIES_THE_CURRENT_BFF87951": {
-    "source": "面积参考南美 12 国，文化机制以巴西聊天转发为设计起点。",
-    "zh_CN": "面积参考南美 12 国，文化机制以巴西聊天转发为设计起点。",
-    "en": "Area references 12 South American countries. The chat-relay prototype starts from Brazil."
-  },
-  "LOC_SPORTS_FILM_AND_TELEVISION_FAMILY_CONSUMPTION_DFC3E514": {
-    "source": "体育、影视、家庭、消费",
-    "zh_CN": "体育、影视、家庭、消费",
-    "en": "Sports; film and television; family; consumption"
-  },
-  "LOC_GROUP_CHAT_RELAYS_STICKER_EXTRACTION_SPORTING_TRENDS_D86A33BF": {
-    "source": "群聊接力、贴图截取、赛事热点",
-    "zh_CN": "群聊接力、贴图截取、赛事热点",
-    "en": "Group-chat relays; sticker extraction; sporting trends"
-  },
-  "LOC_SPORTS_SLOGANS_TELEVISION_REACTIONS_CHAT_STICKERS_2813A720": {
-    "source": "体育口号、连续剧反应图、聊天贴图",
-    "zh_CN": "体育口号、连续剧反应图、聊天贴图",
-    "en": "Sports slogans; television reactions; chat stickers"
-  },
-  "LOC_ORUVIA_9D8B9C32": {
-    "source": "奥鲁维亚",
-    "zh_CN": "奥鲁维亚",
-    "en": "Oruvia"
-  },
-  "LOC_FEDERAL_REPUBLIC_OF_ORUVIA_205C34FD": {
-    "source": "奥鲁维亚联邦共和国",
-    "zh_CN": "奥鲁维亚联邦共和国",
-    "en": "Federal Republic of Oruvia"
-  },
-  "LOC_SUB_SAHARAN_AFRICA_MULTILINGUAL_CREATION_D18B0295": {
-    "source": "撒哈拉以南非洲 · 多语创作网络",
-    "zh_CN": "撒哈拉以南非洲 · 多语创作网络",
-    "en": "Sub-Saharan Africa · multilingual creation"
-  },
-  "LOC_AREA_REFERENCES_SUB_SAHARAN_AFRICAN_COUNTRIES_NIGERIA_D6B5C26E": {
-    "source": "面积参考撒哈拉以南非洲 48 国；当前机制以尼日利亚城市创作为起点，内部差异留待后续建模。",
-    "zh_CN": "面积参考撒哈拉以南非洲 48 国；当前机制以尼日利亚城市创作为起点，内部差异留待后续建模。",
-    "en": "Area references 48 Sub-Saharan African countries. Nigeria-inspired urban creation is a starting point; internal differences are not yet simulated."
-  },
-  "LOC_TRANSPORT_AND_SERVICES_PRICES_WORK_FAMILY_FILM_075B4418": {
-    "source": "交通服务、物价、工作、家庭、影视",
-    "zh_CN": "交通服务、物价、工作、家庭、影视",
-    "en": "Transport and services; prices; work; family; film"
-  },
-  "LOC_IMPROVED_ACCESS_LOCAL_DIALOGUE_CROSS_REGIONAL_REWRITING_9CC8BC6F": {
-    "source": "接入改善、本地对白、跨区域改写",
-    "zh_CN": "接入改善、本地对白、跨区域改写",
-    "en": "Improved access; local dialogue; cross-regional rewriting"
-  },
-  "LOC_URBAN_DIALOGUE_FILM_STILLS_PRICE_JOKES_022DB595": {
-    "source": "城市日常对白、影视截帧、物价段子",
-    "zh_CN": "城市日常对白、影视截帧、物价段子",
-    "en": "Urban dialogue; film stills; price jokes"
-  },
-  "LOC_POPULATION_NOT_CONFIGURED_C2FA0553": {
-    "source": "人口：待配置",
-    "zh_CN": "人口：待配置",
-    "en": "Population: not configured"
-  },
-  "LOC_D_COUNTRIES_POPULATION_DATA_INCOMPLETE_44B2F8EF": {
-    "source": "%d 国 · 人口数据待补全",
-    "zh_CN": "%d 国 · 人口数据待补全",
-    "en": "%d countries · population data incomplete"
-  },
-  "LOC_REFERENCE_LAND_F_MILLION_KM_C5DCC1CB": {
-    "source": "参考陆地面积：%.2f 百万 km²",
-    "zh_CN": "参考陆地面积：%.2f 百万 km²",
-    "en": "Reference land: %.2f million km²"
-  },
-  "LOC_ZOOM_F_S_D9FD3894": {
-    "source": "缩放 %.1f× · %s",
-    "zh_CN": "缩放 %.1f× · %s",
-    "en": "Zoom %.1f× · %s"
-  },
-  "LOC_COUNTRIES_0CC659A9": {
-    "source": "国家",
-    "zh_CN": "国家",
-    "en": "Countries"
-  },
-  "LOC_CAPITALS_AND_RIVERS_D833FC2C": {
-    "source": "首都与河流",
-    "zh_CN": "首都与河流",
-    "en": "Capitals and rivers"
-  },
-  "LOC_CITIES_AND_GEOGRAPHY_D4693EC5": {
-    "source": "城市与地理细节",
-    "zh_CN": "城市与地理细节",
-    "en": "Cities and geography"
-  },
-  "LOC_NASHIR_928DCE81": {
-    "source": "纳希尔",
-    "zh_CN": "纳希尔",
-    "en": "Nashir"
-  },
-  "LOC_FEDERAL_REPUBLIC_OF_NASHIR_EC789180": {
-    "source": "纳希尔联邦共和国",
-    "zh_CN": "纳希尔联邦共和国",
-    "en": "Federal Republic of Nashir"
-  },
-  "LOC_NORTH_AFRICA_REFERENCE_MECHANISMS_PENDING_REVIEW_D2BDC75A": {
-    "source": "北非参考圈 · 机制待访谈",
-    "zh_CN": "北非参考圈 · 机制待访谈",
-    "en": "North Africa reference · mechanisms pending review"
-  },
-  "LOC_AREA_REFERENCES_SIX_NORTH_AFRICAN_COUNTRIES_MIDDLE_993970D4": {
-    "source": "面积参考北非六国；中东—西亚已单列。主题、传播环境与事件机制待访谈，成员不被视为同质。",
-    "zh_CN": "面积参考北非六国；中东—西亚已单列。主题、传播环境与事件机制待访谈，成员不被视为同质。",
-    "en": "Area references six North African countries; Middle East–West Asia is separate. Topics, networks and events await review; members are not treated as identical."
-  },
-  "LOC_PENDING_REVIEW_2265980E": {
-    "source": "待访谈",
-    "zh_CN": "待访谈",
-    "en": "Pending review"
-  },
-  "LOC_CHENGNING_D163A924": {
-    "source": "承宁",
-    "zh_CN": "承宁",
-    "en": "Chengning"
-  },
-  "LOC_LANPU_FA8E70E6": {
-    "source": "岚浦",
-    "zh_CN": "岚浦",
-    "en": "Lanpu"
-  },
-  "LOC_SONGCHUAN_0783D605": {
-    "source": "松川",
-    "zh_CN": "松川",
-    "en": "Songchuan"
-  },
-  "LOC_JIANGTING_A05978EB": {
-    "source": "江汀",
-    "zh_CN": "江汀",
-    "en": "Jiangting"
-  },
-  "LOC_QINGLAN_HILLS_F91E301A": {
-    "source": "青岚丘陵",
-    "zh_CN": "青岚丘陵",
-    "en": "Qinglan Hills"
-  },
-  "LOC_SHIOMIYA_5C61DBDF": {
-    "source": "潮宫",
-    "zh_CN": "潮宫",
-    "en": "Shiomiya"
-  },
-  "LOC_TSUKIHAMA_82051796": {
-    "source": "月滨",
-    "zh_CN": "月滨",
-    "en": "Tsukihama"
-  },
-  "LOC_MORISE_7FD99057": {
-    "source": "森濑",
-    "zh_CN": "森濑",
-    "en": "Morise"
-  },
-  "LOC_AOSAKI_97950740": {
-    "source": "青崎",
-    "zh_CN": "青崎",
-    "en": "Aosaki"
-  },
-  "LOC_SHIRAMINE_HIGHLANDS_45D1A2FB": {
-    "source": "白峰山地",
-    "zh_CN": "白峰山地",
-    "en": "Shiramine Highlands"
-  },
-  "LOC_SEOGYEONG_D26A3E44": {
-    "source": "瑞京",
-    "zh_CN": "瑞京",
-    "en": "Seogyeong"
-  },
-  "LOC_HAEWON_AA5381E4": {
-    "source": "海原",
-    "zh_CN": "海原",
-    "en": "Haewon"
-  },
-  "LOC_UNJIN_1BB11937": {
-    "source": "云津",
-    "zh_CN": "云津",
-    "en": "Unjin"
-  },
-  "LOC_SONGHANG_CD2B01B5": {
-    "source": "松港",
-    "zh_CN": "松港",
-    "en": "Songhang"
-  },
-  "LOC_UNRYEONG_RIDGE_A57C339B": {
-    "source": "云岭",
-    "zh_CN": "云岭",
-    "en": "Unryeong Ridge"
-  },
-  "LOC_ALDEN_CITY_B80A67D9": {
-    "source": "阿尔登城",
-    "zh_CN": "阿尔登城",
-    "en": "Alden City"
-  },
-  "LOC_WESTHAVEN_5F2488E6": {
-    "source": "韦斯特港",
-    "zh_CN": "韦斯特港",
-    "en": "Westhaven"
-  },
-  "LOC_GLENFORD_48936F49": {
-    "source": "格伦福德",
-    "zh_CN": "格伦福德",
-    "en": "Glenford"
-  },
-  "LOC_LAKETON_ECBA2A82": {
-    "source": "莱克顿",
-    "zh_CN": "莱克顿",
-    "en": "Laketon"
-  },
-  "LOC_SILVERPINE_UPLANDS_A9952377": {
-    "source": "银松高地",
-    "zh_CN": "银松高地",
-    "en": "Silverpine Uplands"
-  },
-  "LOC_NOVOLESK_BE416C08": {
-    "source": "诺沃列斯克",
-    "zh_CN": "诺沃列斯克",
-    "en": "Novolesk"
-  },
-  "LOC_BELOVA_C0D5CE79": {
-    "source": "别洛瓦",
-    "zh_CN": "别洛瓦",
-    "en": "Belova"
-  },
-  "LOC_OZERSK_23A1D10F": {
-    "source": "奥泽尔斯克",
-    "zh_CN": "奥泽尔斯克",
-    "en": "Ozersk"
-  },
-  "LOC_MIRNO_CC4AA98F": {
-    "source": "米尔诺",
-    "zh_CN": "米尔诺",
-    "en": "Mirno"
-  },
-  "LOC_NORTHWIND_HILLS_794B0ED4": {
-    "source": "北风丘陵",
-    "zh_CN": "北风丘陵",
-    "en": "Northwind Hills"
-  },
-  "LOC_LINDBORG_32A42363": {
-    "source": "林堡",
-    "zh_CN": "林堡",
-    "en": "Lindborg"
-  },
-  "LOC_SOLVIK_C36C112C": {
-    "source": "索尔维克",
-    "zh_CN": "索尔维克",
-    "en": "Solvik"
-  },
-  "LOC_NORDAL_9E5193D2": {
-    "source": "诺尔达尔",
-    "zh_CN": "诺尔达尔",
-    "en": "Nordal"
-  },
-  "LOC_ELVHAVN_FECE86EB": {
-    "source": "埃尔夫港",
-    "zh_CN": "埃尔夫港",
-    "en": "Elvhavn"
-  },
-  "LOC_PINEBAY_HIGHLANDS_F7D49D05": {
-    "source": "松湾高地",
-    "zh_CN": "松湾高地",
-    "en": "Pinebay Highlands"
-  },
-  "LOC_KOTA_MARA_2DC05082": {
-    "source": "马拉城",
-    "zh_CN": "马拉城",
-    "en": "Kota Mara"
-  },
-  "LOC_TANJUNG_BAY_E4E556EF": {
-    "source": "丹绒湾",
-    "zh_CN": "丹绒湾",
-    "en": "Tanjung Bay"
-  },
-  "LOC_SRI_PORT_EC6F2C18": {
-    "source": "斯里港",
-    "zh_CN": "斯里港",
-    "en": "Sri Port"
-  },
-  "LOC_LUMA_RIVER_6F1DC4A6": {
-    "source": "卢马河",
-    "zh_CN": "卢马河",
-    "en": "Luma River"
-  },
-  "LOC_RAINFOREST_HILLS_AE6C11CA": {
-    "source": "雨林丘陵",
-    "zh_CN": "雨林丘陵",
-    "en": "Rainforest Hills"
-  },
-  "LOC_NOVA_SERRA_B494A462": {
-    "source": "新塞拉城",
-    "zh_CN": "新塞拉城",
-    "en": "Nova Serra"
-  },
-  "LOC_BELA_VISTA_ADACE7CC": {
-    "source": "贝拉维斯塔",
-    "zh_CN": "贝拉维斯塔",
-    "en": "Bela Vista"
-  },
-  "LOC_RIO_CLARO_CF4D05F1": {
-    "source": "里奥克拉罗",
-    "zh_CN": "里奥克拉罗",
-    "en": "Rio Claro"
-  },
-  "LOC_PORTO_VERDE_9FE2D944": {
-    "source": "波尔托韦尔德",
-    "zh_CN": "波尔托韦尔德",
-    "en": "Porto Verde"
-  },
-  "LOC_GREEN_RIDGE_2DE88B30": {
-    "source": "绿岭",
-    "zh_CN": "绿岭",
-    "en": "Green Ridge"
-  },
-  "LOC_ORU_CITY_7F3C1DED": {
-    "source": "奥鲁城",
-    "zh_CN": "奥鲁城",
-    "en": "Oru City"
-  },
-  "LOC_ILE_PORT_01822074": {
-    "source": "伊莱港",
-    "zh_CN": "伊莱港",
-    "en": "Ile Port"
-  },
-  "LOC_AWO_RIVER_EB284FFB": {
-    "source": "阿沃河",
-    "zh_CN": "阿沃河",
-    "en": "Awo River"
-  },
-  "LOC_NDALA_244936FB": {
-    "source": "恩达拉",
-    "zh_CN": "恩达拉",
-    "en": "Ndala"
-  },
-  "LOC_REDEARTH_PLATEAU_822F11D5": {
-    "source": "赤土高原",
-    "zh_CN": "赤土高原",
-    "en": "Redearth Plateau"
-  },
-  "LOC_NASHIR_CITY_CE5D5BBC": {
-    "source": "纳希尔城",
-    "zh_CN": "纳希尔城",
-    "en": "Nashir City"
-  },
-  "LOC_SAFA_PORT_437A17FD": {
-    "source": "萨法港",
-    "zh_CN": "萨法港",
-    "en": "Safa Port"
-  },
-  "LOC_ZAHRAN_DBC697DF": {
-    "source": "扎赫兰",
-    "zh_CN": "扎赫兰",
-    "en": "Zahran"
-  },
-  "LOC_WADI_NUR_0AC9DD30": {
-    "source": "瓦迪努尔",
-    "zh_CN": "瓦迪努尔",
-    "en": "Wadi Nur"
-  },
-  "LOC_DAWN_PLATEAU_537A5DB4": {
-    "source": "晨光高原",
-    "zh_CN": "晨光高原",
-    "en": "Dawn Plateau"
-  },
-  "LOC_SOLERIA_310E26FB": {
-    "source": "索莱里亚",
-    "zh_CN": "索莱里亚",
-    "en": "Soleria"
-  },
-  "LOC_REPUBLIC_OF_SOLERIA_D0A37C73": {
-    "source": "索莱里亚共和国",
-    "zh_CN": "索莱里亚共和国",
-    "en": "Republic of Soleria"
-  },
-  "LOC_SOUTHERN_EUROPE_REFERENCE_MECHANISMS_PENDING_REVIEW_04EE0D7F": {
-    "source": "南欧参考圈 · 机制待访谈",
-    "zh_CN": "南欧参考圈 · 机制待访谈",
-    "en": "Southern Europe reference · mechanisms pending review"
-  },
-  "LOC_SOUTHERN_EUROPE_AREA_REFERENCE_TOPICS_NETWORKS_AND_79D3AACC": {
-    "source": "南欧面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "zh_CN": "南欧面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "en": "Southern Europe area reference. Topics, networks and events await review. Members are not treated as identical."
-  },
-  "LOC_SOLEA_668C5EEF": {
-    "source": "索莱城",
-    "zh_CN": "索莱城",
-    "en": "Solea"
-  },
-  "LOC_PORTO_MONTERO_E5B01B9E": {
-    "source": "蒙特罗港",
-    "zh_CN": "蒙特罗港",
-    "en": "Porto Montero"
-  },
-  "LOC_RIO_BELA_F856183E": {
-    "source": "贝拉河",
-    "zh_CN": "贝拉河",
-    "en": "Rio Bela"
-  },
-  "LOC_SAN_LORA_2EA4CD79": {
-    "source": "圣洛拉",
-    "zh_CN": "圣洛拉",
-    "en": "San Lora"
-  },
-  "LOC_GOLDEN_OLIVE_HILLS_7011CAB8": {
-    "source": "金橄榄丘陵",
-    "zh_CN": "金橄榄丘陵",
-    "en": "Golden Olive Hills"
-  },
-  "LOC_AVENDON_CA1039C9": {
-    "source": "阿文顿",
-    "zh_CN": "阿文顿",
-    "en": "Avendon"
-  },
-  "LOC_UNITED_KINGDOM_OF_AVENDON_BAD6AFD0": {
-    "source": "阿文顿联合王国",
-    "zh_CN": "阿文顿联合王国",
-    "en": "United Kingdom of Avendon"
-  },
-  "LOC_WESTERN_EUROPE_AND_BRITAIN_IRELAND_REFERENCE_MECHANISMS_B2C57094": {
-    "source": "西欧及英爱参考圈 · 机制待访谈",
-    "zh_CN": "西欧及英爱参考圈 · 机制待访谈",
-    "en": "Western Europe and Britain–Ireland reference · mechanisms pending review"
-  },
-  "LOC_WESTERN_EUROPE_AND_BRITAIN_IRELAND_AREA_REFERENCE_685FDF5F": {
-    "source": "西欧及英爱面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "zh_CN": "西欧及英爱面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "en": "Western Europe and Britain–Ireland area reference. Topics, networks and events await review. Members are not treated as identical."
-  },
-  "LOC_AVENDON_F448D9AD": {
-    "source": "阿文顿城",
-    "zh_CN": "阿文顿城",
-    "en": "Avendon"
-  },
-  "LOC_BELMONT_HARBOUR_BC0B7D41": {
-    "source": "贝尔蒙港",
-    "zh_CN": "贝尔蒙港",
-    "en": "Belmont Harbour"
-  },
-  "LOC_GREYFORD_DFE2A34E": {
-    "source": "格雷福德",
-    "zh_CN": "格雷福德",
-    "en": "Greyford"
-  },
-  "LOC_NEUVILLE_A5FEEE83": {
-    "source": "新维尔",
-    "zh_CN": "新维尔",
-    "en": "Neuville"
-  },
-  "LOC_GREYSTONE_UPLANDS_88D7F187": {
-    "source": "灰石高地",
-    "zh_CN": "灰石高地",
-    "en": "Greystone Uplands"
-  },
-  "LOC_RHENIVIA_FD174A8A": {
-    "source": "莱茵维亚",
-    "zh_CN": "莱茵维亚",
-    "en": "Rhenivia"
-  },
-  "LOC_FEDERAL_REPUBLIC_OF_RHENIVIA_0922BB69": {
-    "source": "莱茵维亚联邦共和国",
-    "zh_CN": "莱茵维亚联邦共和国",
-    "en": "Federal Republic of Rhenivia"
-  },
-  "LOC_CENTRAL_EUROPE_REFERENCE_MECHANISMS_PENDING_REVIEW_3B0891D9": {
-    "source": "中欧参考圈 · 机制待访谈",
-    "zh_CN": "中欧参考圈 · 机制待访谈",
-    "en": "Central Europe reference · mechanisms pending review"
-  },
-  "LOC_CENTRAL_EUROPE_AREA_REFERENCE_TOPICS_NETWORKS_AND_403B6637": {
-    "source": "中欧面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "zh_CN": "中欧面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "en": "Central Europe area reference. Topics, networks and events await review. Members are not treated as identical."
-  },
-  "LOC_RHEINBURG_35650572": {
-    "source": "莱茵堡",
-    "zh_CN": "莱茵堡",
-    "en": "Rheinburg"
-  },
-  "LOC_STEINAU_1F483A5D": {
-    "source": "施泰瑙",
-    "zh_CN": "施泰瑙",
-    "en": "Steinau"
-  },
-  "LOC_WALDEN_8C4EE3D1": {
-    "source": "瓦尔登",
-    "zh_CN": "瓦尔登",
-    "en": "Walden"
-  },
-  "LOC_BRINNOVA_9FE9699C": {
-    "source": "布林诺瓦",
-    "zh_CN": "布林诺瓦",
-    "en": "Brinnova"
-  },
-  "LOC_FIRCREST_HIGHLANDS_4EAABC5A": {
-    "source": "杉岭山地",
-    "zh_CN": "杉岭山地",
-    "en": "Fircrest Highlands"
-  },
-  "LOC_MEHRAN_C075B55A": {
-    "source": "米赫兰",
-    "zh_CN": "米赫兰",
-    "en": "Mehran"
-  },
-  "LOC_REPUBLIC_OF_MEHRAN_8010D7C5": {
-    "source": "米赫兰共和国",
-    "zh_CN": "米赫兰共和国",
-    "en": "Republic of Mehran"
-  },
-  "LOC_MIDDLE_EAST_WEST_ASIA_REFERENCE_MECHANISMS_PENDING_771C0CDC": {
-    "source": "中东—西亚参考圈 · 机制待访谈",
-    "zh_CN": "中东—西亚参考圈 · 机制待访谈",
-    "en": "Middle East–West Asia reference · mechanisms pending review"
-  },
-  "LOC_MIDDLE_EAST_WEST_ASIA_AREA_REFERENCE_TOPICS_323C944B": {
-    "source": "中东—西亚面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "zh_CN": "中东—西亚面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "en": "Middle East–West Asia area reference. Topics, networks and events await review. Members are not treated as identical."
-  },
-  "LOC_MEHRAN_CITY_69D5A6E8": {
-    "source": "米赫兰城",
-    "zh_CN": "米赫兰城",
-    "en": "Mehran City"
-  },
-  "LOC_NURABAD_06C84BB1": {
-    "source": "努拉巴德",
-    "zh_CN": "努拉巴德",
-    "en": "Nurabad"
-  },
-  "LOC_DARYA_PORT_9DB9DE8D": {
-    "source": "达里亚港",
-    "zh_CN": "达里亚港",
-    "en": "Darya Port"
-  },
-  "LOC_SARAM_6E7793C9": {
-    "source": "萨拉姆",
-    "zh_CN": "萨拉姆",
-    "en": "Saram"
-  },
-  "LOC_OCHRE_HIGHLANDS_70BEC993": {
-    "source": "赭石山地",
-    "zh_CN": "赭石山地",
-    "en": "Ochre Highlands"
-  },
-  "LOC_CANTALIA_6AD4E597": {
-    "source": "坎塔利亚",
-    "zh_CN": "坎塔利亚",
-    "en": "Cantalia"
-  },
-  "LOC_COMMONWEALTH_OF_CANTALIA_1B11E664": {
-    "source": "坎塔利亚联邦",
-    "zh_CN": "坎塔利亚联邦",
-    "en": "Commonwealth of Cantalia"
-  },
-  "LOC_AUSTRALIA_AND_NEW_ZEALAND_REFERENCE_MECHANISMS_PENDING_FC9D6137": {
-    "source": "澳洲及新西兰参考圈 · 机制待访谈",
-    "zh_CN": "澳洲及新西兰参考圈 · 机制待访谈",
-    "en": "Australia and New Zealand reference · mechanisms pending review"
-  },
-  "LOC_AUSTRALIA_AND_NEW_ZEALAND_AREA_REFERENCE_TOPICS_FF71008B": {
-    "source": "澳洲及新西兰面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "zh_CN": "澳洲及新西兰面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "en": "Australia and New Zealand area reference. Topics, networks and events await review. Members are not treated as identical."
-  },
-  "LOC_CANTA_0B52F1B3": {
-    "source": "坎塔城",
-    "zh_CN": "坎塔城",
-    "en": "Canta"
-  },
-  "LOC_SOUTHCROSS_HARBOUR_E7084325": {
-    "source": "南十字港",
-    "zh_CN": "南十字港",
-    "en": "Southcross Harbour"
-  },
-  "LOC_REDPLAIN_09D24980": {
-    "source": "赤原镇",
-    "zh_CN": "赤原镇",
-    "en": "Redplain"
-  },
-  "LOC_FERN_BAY_A8998CC6": {
-    "source": "蕨湾",
-    "zh_CN": "蕨湾",
-    "en": "Fern Bay"
-  },
-  "LOC_REDROCK_UPLANDS_15A645F6": {
-    "source": "赤岩高地",
-    "zh_CN": "赤岩高地",
-    "en": "Redrock Uplands"
-  },
-  "LOC_VISHARA_3899F636": {
-    "source": "维沙拉",
-    "zh_CN": "维沙拉",
-    "en": "Vishara"
-  },
-  "LOC_REPUBLIC_OF_VISHARA_3396CA16": {
-    "source": "维沙拉共和国",
-    "zh_CN": "维沙拉共和国",
-    "en": "Republic of Vishara"
-  },
-  "LOC_SOUTH_ASIA_REFERENCE_MECHANISMS_PENDING_REVIEW_563F256C": {
-    "source": "南亚参考圈 · 机制待访谈",
-    "zh_CN": "南亚参考圈 · 机制待访谈",
-    "en": "South Asia reference · mechanisms pending review"
-  },
-  "LOC_SOUTH_ASIA_AREA_REFERENCE_TOPICS_NETWORKS_AND_6C0FA10E": {
-    "source": "南亚面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "zh_CN": "南亚面积参考圈。主题、传播环境和事件机制待访谈，不把成员视为同质。",
-    "en": "South Asia area reference. Topics, networks and events await review. Members are not treated as identical."
-  },
-  "LOC_VISHARA_CITY_C46EF917": {
-    "source": "维沙拉城",
-    "zh_CN": "维沙拉城",
-    "en": "Vishara City"
-  },
-  "LOC_SURAPUR_B91A23C4": {
-    "source": "苏拉浦",
-    "zh_CN": "苏拉浦",
-    "en": "Surapur"
-  },
-  "LOC_NAVA_PORT_E2C9176C": {
-    "source": "纳瓦港",
-    "zh_CN": "纳瓦港",
-    "en": "Nava Port"
-  },
-  "LOC_GIRINA_36696691": {
-    "source": "吉里纳",
-    "zh_CN": "吉里纳",
-    "en": "Girina"
-  },
-  "LOC_MONSOON_HILLS_733A3766": {
-    "source": "季风丘陵",
-    "zh_CN": "季风丘陵",
-    "en": "Monsoon Hills"
-  },
-  "LOC_JAN_11357F09": {
-    "source": "2000年1月1日",
-    "zh_CN": "2000年1月1日",
-    "en": "1 Jan 2000"
-  },
-  "LOC_PAUSE_F1_F0CDDD3B": {
-    "source": "暂停 · F1",
-    "zh_CN": "暂停 · F1",
-    "en": "Pause · F1"
-  },
-  "LOC_NORMAL_F2_S_DAY_FE195924": {
-    "source": "常速 · F2 · 5秒/天",
-    "zh_CN": "常速 · F2 · 5秒/天",
-    "en": "Normal · F2 · 5s/day"
-  },
-  "LOC_FAST_F3_S_DAY_EEE24AC9": {
-    "source": "加速 · F3 · 2秒/天",
-    "zh_CN": "加速 · F3 · 2秒/天",
-    "en": "Fast · F3 · 2s/day"
-  },
-  "LOC_OPEN_MEME_WORKBENCH_34BE25D9": {
-    "source": "打开模因工作台",
-    "zh_CN": "打开模因工作台",
-    "en": "Open meme workbench"
-  },
-  "LOC_UNDERGROUND_PRESS_COUNTRY_FILE_766225D3": {
-    "source": "地下印刷厂 · 国家档案",
-    "zh_CN": "地下印刷厂 · 国家档案",
-    "en": "UNDERGROUND PRESS / COUNTRY FILE"
-  },
-  "LOC_CLOSE_3FD47EDC": {
-    "source": "关闭",
-    "zh_CN": "关闭",
-    "en": "Close"
-  },
-  "LOC_CLICK_A_COUNTRY_TO_LOCATE_YOUR_STUDIO_7ACA5E0C": {
-    "source": "点击一个国家，选定工作室所在地。",
-    "zh_CN": "点击一个国家，选定工作室所在地。",
-    "en": "Click a country to locate your studio."
-  },
-  "LOC_NO_COUNTRY_SELECTED_3DC1001E": {
-    "source": "尚未选择国家",
-    "zh_CN": "尚未选择国家",
-    "en": "No country selected"
-  },
-  "LOC_ESTABLISH_STUDIO_F0EB8921": {
-    "source": "设立工作室",
-    "zh_CN": "设立工作室",
-    "en": "Establish studio"
-  },
-  "LOC_MEME_WORKBENCH_1B075241": {
-    "source": "模因工作台",
-    "zh_CN": "模因工作台",
-    "en": "Meme workbench"
-  },
-  "LOC_THIS_STANDALONE_MAP_PAGE_DOES_NOT_PROVIDE_1A39A758": {
-    "source": "独立地图页不提供模因编辑，Meme点数与收入也未接入。请从游戏主界面使用工作台。",
-    "zh_CN": "独立地图页不提供模因编辑，Meme点数与收入也未接入。请从游戏主界面使用工作台。",
-    "en": "This standalone map page does not provide meme editing, meme points or income. Use the workbench in the main game."
-  },
-  "LOC_D_D_D_E42EB9AE": {
-    "source": "%d年%d月%d日",
-    "zh_CN": "%d年%d月%d日",
-    "en": "%d-%d-%d"
-  },
-  "LOC_SPRING_8AC69242": {
-    "source": "春季",
-    "zh_CN": "春季",
-    "en": "Spring"
-  },
-  "LOC_SUMMER_6E9ABEE0": {
-    "source": "夏季",
-    "zh_CN": "夏季",
-    "en": "Summer"
-  },
-  "LOC_AUTUMN_9FAD05BC": {
-    "source": "秋季",
-    "zh_CN": "秋季",
-    "en": "Autumn"
-  },
-  "LOC_WINTER_0AE780E1": {
-    "source": "冬季",
-    "zh_CN": "冬季",
-    "en": "Winter"
-  },
-  "LOC_ARCTIC_CIRCLE_N_04B8161E": {
-    "source": "北极圈 · 66.56°N",
-    "zh_CN": "北极圈 · 66.56°N",
-    "en": "Arctic Circle · 66.56°N"
-  },
-  "LOC_NORTH_TEMPERATE_MIDLINE_N_F217AF3D": {
-    "source": "北温带中线 · 45°N",
-    "zh_CN": "北温带中线 · 45°N",
-    "en": "North temperate midline · 45°N"
-  },
-  "LOC_TROPIC_OF_CANCER_N_59E050E3": {
-    "source": "北回归线 · 23.44°N",
-    "zh_CN": "北回归线 · 23.44°N",
-    "en": "Tropic of Cancer · 23.44°N"
-  },
-  "LOC_EQUATOR_A35896F8": {
-    "source": "赤道 · 0°",
-    "zh_CN": "赤道 · 0°",
-    "en": "Equator · 0°"
-  },
-  "LOC_TROPIC_OF_CAPRICORN_S_2147189D": {
-    "source": "南回归线 · 23.44°S",
-    "zh_CN": "南回归线 · 23.44°S",
-    "en": "Tropic of Capricorn · 23.44°S"
-  },
-  "LOC_SOUTH_TEMPERATE_MIDLINE_S_07233AB9": {
-    "source": "南温带中线 · 45°S",
-    "zh_CN": "南温带中线 · 45°S",
-    "en": "South temperate midline · 45°S"
-  },
-  "LOC_ANTARCTIC_CIRCLE_S_2C1AE645": {
-    "source": "南极圈 · 66.56°S",
-    "zh_CN": "南极圈 · 66.56°S",
-    "en": "Antarctic Circle · 66.56°S"
   },
   "LOC_NEIGHBORHOOD_BOARD_5C77E697": {
     "source": "街区留言板",
@@ -6208,31 +3503,6 @@
     "source": "社区改写工坊，鼓励留痕与再创作。",
     "zh_CN": "社区改写工坊，鼓励留痕与再创作。",
     "en": "A community remix workshop that encourages attribution and new versions."
-  },
-  "LOC_PLACE_THE_EXPRESSION_IN_A_CHINESE_LANGUAGE_29B981D3": {
-    "source": "把表达送进中文语境。",
-    "zh_CN": "把表达送进中文语境。",
-    "en": "Place the expression in a Chinese-language context."
-  },
-  "LOC_PLACE_THE_EXPRESSION_IN_AN_ENGLISH_LANGUAGE_755F86BA": {
-    "source": "把表达送进英文语境。",
-    "zh_CN": "把表达送进英文语境。",
-    "en": "Place the expression in an English-language context."
-  },
-  "LOC_ENGLISH_348EA84C": {
-    "source": "英文",
-    "zh_CN": "英文",
-    "en": "English"
-  },
-  "LOC_PLACE_THE_EXPRESSION_IN_A_MIXED_CHINESE_056B33E9": {
-    "source": "把表达送进中英混合语境。",
-    "zh_CN": "把表达送进中英混合语境。",
-    "en": "Place the expression in a mixed Chinese-English context."
-  },
-  "LOC_CHINESE_ENGLISH_MIX_DC1CE4AE": {
-    "source": "中英混合",
-    "zh_CN": "中英混合",
-    "en": "Chinese-English mix"
   },
   "LOC_ADDRESS_THE_EXPRESSION_TO_COMMUTING_OFFICE_WORKERS_EB817EB1": {
     "source": "让表达面向通勤职员。",
@@ -6364,16 +3634,6 @@
     "zh_CN": "把表达往反对的一端推动。",
     "en": "Move the expression toward opposition."
   },
-  "LOC_YOU_CALL_THIS_NORMAL_B5E0EEB3": {
-    "source": "这也能叫正常？",
-    "zh_CN": "这也能叫正常？",
-    "en": "You call this normal?"
-  },
-  "LOC_TURN_A_PLAIN_STATEMENT_INTO_A_QUESTION_156032AE": {
-    "source": "把平直陈述转成质疑，让读者注意情境与表态的落差。",
-    "zh_CN": "把平直陈述转成质疑，让读者注意情境与表态的落差。",
-    "en": "Turn a plain statement into a question, drawing attention to the gap between the situation and the stated position."
-  },
   "LOC_SPEAKER_24069A3B": {
     "source": "发声者",
     "zh_CN": "发声者",
@@ -6393,16 +3653,6 @@
     "source": "反问补丁",
     "zh_CN": "反问补丁",
     "en": "Question"
-  },
-  "LOC_PLACE_BOTH_SIDES_PROMISES_BESIDE_WHAT_THEY_4AEDB763": {
-    "source": "把双方承诺与实际所得并置",
-    "zh_CN": "把双方承诺与实际所得并置",
-    "en": "Place both sides' promises beside what they actually receive"
-  },
-  "LOC_COMPARE_BOTH_SIDES_PROMISES_AND_ACTUAL_RETURNS_24ACA26F": {
-    "source": "并置双方承诺与实际所得，修正表达的比较方向而非更换核心关系。",
-    "zh_CN": "并置双方承诺与实际所得，修正表达的比较方向而非更换核心关系。",
-    "en": "Compare both sides' promises and actual returns, changing the direction of comparison without replacing the core relationship."
   },
   "LOC_ROLE_A_745A2F91": {
     "source": "角色 A",
@@ -6424,16 +3674,6 @@
     "zh_CN": "对照补丁",
     "en": "Compare"
   },
-  "LOC_ALLOW_PEOPLE_NOT_TO_JOIN_IN_WHILE_E26A9825": {
-    "source": "允许不跟做，也保留回应位置",
-    "zh_CN": "允许不跟做，也保留回应位置",
-    "en": "Allow people not to join in, while leaving room to respond"
-  },
-  "LOC_ADD_AN_EXIT_TO_THE_RESPONSE_CHAIN_9BA540AF": {
-    "source": "在接续表达中加入退出入口，让跟做不再成为唯一回应。",
-    "zh_CN": "在接续表达中加入退出入口，让跟做不再成为唯一回应。",
-    "en": "Add an exit to the response chain so that following along is no longer the only way to respond."
-  },
   "LOC_TRIGGER_250BF9D5": {
     "source": "触发",
     "zh_CN": "触发",
@@ -6453,16 +3693,6 @@
     "source": "退出补丁",
     "zh_CN": "退出补丁",
     "en": "Exit"
-  },
-  "LOC_LEAVE_ONE_SENTENCE_OF_EXPLANATION_FOR_OUTSIDERS_30278B47": {
-    "source": "给圈外读者留下一句解释",
-    "zh_CN": "给圈外读者留下一句解释",
-    "en": "Leave one sentence of explanation for outsiders"
-  },
-  "LOC_ADD_A_SENTENCE_FOR_OUTSIDERS_REDUCING_THE_0DE62A67": {
-    "source": "为圈外读者增加一句说明，降低携带语境的负担；不取消识别边界。",
-    "zh_CN": "为圈外读者增加一句说明，降低携带语境的负担；不取消识别边界。",
-    "en": "Add a sentence for outsiders, reducing the burden of carrying context without removing the recognition boundary."
   },
   "LOC_INVARIANT_TRACE_98F8BA88": {
     "source": "不变痕迹",
@@ -6484,16 +3714,6 @@
     "zh_CN": "释义补丁",
     "en": "Explain"
   },
-  "LOC_LEAVE_AN_OPENING_OTHERS_CAN_EXTEND_WITHOUT_14BEA689": {
-    "source": "留下可接续但不替人定论的空白",
-    "zh_CN": "留下可接续但不替人定论的空白",
-    "en": "Leave an opening others can extend without deciding for them"
-  },
-  "LOC_LEAVE_AN_OPENING_FOR_OTHERS_TO_CONTINUE_FD41B878": {
-    "source": "留下可接续的表达缺口，不替后来者预设结论，也不恢复外部版本控制。",
-    "zh_CN": "留下可接续的表达缺口，不替后来者预设结论，也不恢复外部版本控制。",
-    "en": "Leave an opening for others to continue. Do not predetermine their conclusions or restore control over external versions."
-  },
   "LOC_WORLD_PREMISE_37998A9C": {
     "source": "世界前提",
     "zh_CN": "世界前提",
@@ -6513,26 +3733,6 @@
     "source": "续写补丁",
     "zh_CN": "续写补丁",
     "en": "Continue"
-  },
-  "LOC_LANGUAGE_SOLVENT_E2FA801D": {
-    "source": "语言溶剂",
-    "zh_CN": "语言溶剂",
-    "en": "Language solvent"
-  },
-  "LOC_AUDIENCE_SOLVENT_7AE4153D": {
-    "source": "群体溶剂",
-    "zh_CN": "群体溶剂",
-    "en": "Audience solvent"
-  },
-  "LOC_TOPIC_SOLVENT_8011CF5B": {
-    "source": "主题溶剂",
-    "zh_CN": "主题溶剂",
-    "en": "Topic solvent"
-  },
-  "LOC_STYLE_REAGENT_C0C77C69": {
-    "source": "风格试剂",
-    "zh_CN": "风格试剂",
-    "en": "Style reagent"
   },
   "LOC_POST_THE_EXPRESSION_ON_THE_NEIGHBORHOOD_BOARD_CBD7BF79": {
     "source": "把表达贴进街区留言板。",
@@ -6603,106 +3803,6 @@
     "source": "响应实例",
     "zh_CN": "响应实例",
     "en": "Response instance"
-  },
-  "LOC_A_VISIBLE_SITUATION_AND_A_STATED_POSITION_94BCDE6C": {
-    "source": "可见情境与表态形成判断落差。拓扑是游戏设计抽象。",
-    "zh_CN": "可见情境与表态形成判断落差。拓扑是游戏设计抽象。",
-    "en": "A visible situation and a stated position create a contrast in judgment. This topology is a game-design abstraction."
-  },
-  "LOC_STANCE_BASE_FORM_E10C5991": {
-    "source": "立场基模",
-    "zh_CN": "立场基模",
-    "en": "Stance base form"
-  },
-  "LOC_RELATIONSHIP_BASE_FORM_90B1A56B": {
-    "source": "关系基模",
-    "zh_CN": "关系基模",
-    "en": "Relationship base form"
-  },
-  "LOC_A_RELATIONSHIP_NODE_CONNECTS_THE_TWO_SIDES_7E0A4390": {
-    "source": "关系节点连接双方，交换方向可改写。",
-    "zh_CN": "关系节点连接双方，交换方向可改写。",
-    "en": "A relationship node connects the two sides; the direction of exchange can be rewritten."
-  },
-  "LOC_RITUAL_BASE_FORM_ADF03D2E": {
-    "source": "仪式基模",
-    "zh_CN": "仪式基模",
-    "en": "Ritual base form"
-  },
-  "LOC_TRIGGER_PARTICIPATION_AND_RESPONSE_FORM_A_CYCLE_D4F8F03F": {
-    "source": "触发、参与和回应构成可退出的循环。",
-    "zh_CN": "触发、参与和回应构成可退出的循环。",
-    "en": "Trigger, participation, and response form a cycle that allows an exit."
-  },
-  "LOC_INVARIANT_TRACES_AND_INSIDER_CONTEXT_JOINTLY_SUPPORT_F795C7A3": {
-    "source": "不变痕迹和圈内语境共同支撑识别。",
-    "zh_CN": "不变痕迹和圈内语境共同支撑识别。",
-    "en": "Invariant traces and insider context jointly support recognition."
-  },
-  "LOC_BOUNDARY_BASE_FORM_39FB7D0F": {
-    "source": "边界基模",
-    "zh_CN": "边界基模",
-    "en": "Boundary base form"
-  },
-  "LOC_SHARED_WORLD_BASE_FORM_99693CC2": {
-    "source": "共享世界基模",
-    "zh_CN": "共享世界基模",
-    "en": "Shared-world base form"
-  },
-  "LOC_PREMISE_SHARED_RULES_AND_OPEN_GAPS_SUPPORT_FEE92BEC": {
-    "source": "前提、共同规则与开放缺口相互支撑。",
-    "zh_CN": "前提、共同规则与开放缺口相互支撑。",
-    "en": "Premise, shared rules, and open gaps support one another."
-  },
-  "LOC_APPLY_ACTIVELY_TO_YOUR_OWN_UNPUBLISHED_DRAFT_5F6F433F": {
-    "source": "可主动应用到自己的待发布草稿：语境依赖 −0.1；每草稿轮次一次，不恢复外部控制（游戏启发式）。",
-    "zh_CN": "可主动应用到自己的待发布草稿：语境依赖 −0.1；每草稿轮次一次，不恢复外部控制（游戏启发式）。",
-    "en": "Apply actively to your own unpublished draft: context dependency −0.1, once per draft round. Does not restore external control (game heuristic)."
-  },
-  "LOC_APPLY_ACTIVELY_TO_YOUR_OWN_UNPUBLISHED_DRAFT_0778DE45": {
-    "source": "可主动应用到自己的待发布草稿：语言可达性 +0.1；每草稿轮次一次（游戏启发式）。",
-    "zh_CN": "可主动应用到自己的待发布草稿：语言可达性 +0.1；每草稿轮次一次（游戏启发式）。",
-    "en": "Apply actively to your own unpublished draft: language access +0.1, once per draft round (game heuristic)."
-  },
-  "LOC_AN_UNLOCKED_ROOT_NODE_E0C7DCD7": {
-    "source": "已解锁的根节点。",
-    "zh_CN": "已解锁的根节点。",
-    "en": "An unlocked root node."
-  },
-  "LOC_SUPPORTS_THE_NEIGHBORHOOD_BOARD_CHANNEL_CE8D9161": {
-    "source": "支持街区留言板渠道。",
-    "zh_CN": "支持街区留言板渠道。",
-    "en": "Supports the neighborhood board channel."
-  },
-  "LOC_CONNECTS_TWO_BRANCHES_WITHOUT_REPLACING_EXISTING_AUDIENCE_6D499272": {
-    "source": "汇合两个分支，不替代现有群体相关性与传播模拟。",
-    "zh_CN": "汇合两个分支，不替代现有群体相关性与传播模拟。",
-    "en": "Connects two branches without replacing existing audience affinity or propagation simulation."
-  },
-  "LOC_UNLOCKS_THE_IMAGE_BRANCH_OF_PROPAGATION_RESEARCH_7944A008": {
-    "source": "解锁传播研究的图像分支，不等同于购买模因商品。",
-    "zh_CN": "解锁传播研究的图像分支，不等同于购买模因商品。",
-    "en": "Unlocks the image branch of propagation research. This is not a purchase of meme merchandise."
-  },
-  "LOC_UNLOCKS_SUPPORT_FOR_THE_PUBLIC_RECOMMENDATION_FEED_1F643936": {
-    "source": "解锁公开推荐流渠道支持，不增加总注意力。",
-    "zh_CN": "解锁公开推荐流渠道支持，不增加总注意力。",
-    "en": "Unlocks support for the public recommendation feed without increasing total attention."
-  },
-  "LOC_UNLOCKS_SUPPORT_FOR_THE_OPEN_REMIX_WORKSHOP_7339760D": {
-    "source": "解锁开放改写工坊渠道支持，不改变再利用许可。",
-    "zh_CN": "解锁开放改写工坊渠道支持，不改变再利用许可。",
-    "en": "Unlocks support for the open remix workshop without changing reuse permission."
-  },
-  "LOC_UNLOCKS_THE_CROSS_LANGUAGE_RESEARCH_BRANCH_WITHOUT_0466672A": {
-    "source": "解锁跨语言研究分支，不凭空增加注意力。",
-    "zh_CN": "解锁跨语言研究分支，不凭空增加注意力。",
-    "en": "Unlocks the cross-language research branch without creating attention from nothing."
-  },
-  "LOC_UNLOCKS_THE_REMIX_RESEARCH_BRANCH_WITHOUT_RESTORING_61777787": {
-    "source": "解锁重混研究分支；不恢复外部版本的控制权。",
-    "zh_CN": "解锁重混研究分支；不恢复外部版本的控制权。",
-    "en": "Unlocks the remix research branch without restoring control over external versions."
   },
   "LOC_AN_ARCHIVE_EXHIBITION_BRINGS_AN_OLD_TOPIC_71AF401B": {
     "source": "档案社展出旧版短图，旧话题重返讨论",
@@ -10499,66 +7599,6 @@
     "zh_CN": "语义：旧概念艺术被无义俄语名和音乐重新世界化，作者原意不再决定角色身份。\n语用：用户做幻灯片、阵营对决和“图片没加载但最好别又是它”元评论。\n跨语境：俄语似义词、阿拉伯语食物动物和英语音乐共存，是跨语种误读创造世界的代表。",
     "en": "Semantics: older concept art becomes a world through a nonsensical Russian name and music; the artist's original intent no longer determines the character's identity.\nPragmatics: users make slideshows, faction battles, and meta-comments such as \"the image has not loaded, but it had better not be that thing again.\"\nAcross contexts: Russian pseudo-words, Arabic food animals, and English music coexist, exemplifying world-building through cross-language misreading."
   },
-  "LOC_PRESERVE_EVIDENCE_FROM_THE_SCENE_ACTIVE_AUTHOR_D192FA88": {
-    "source": "保留现场证据，作者主动应用后提高表达可识别性。",
-    "zh_CN": "保留现场证据，作者主动应用后提高表达可识别性。",
-    "en": "Preserve evidence from the scene; active author application increases the expression's recognizability."
-  },
-  "LOC_OBSERVATION_SOLUTE_C2135898": {
-    "source": "观察溶质",
-    "zh_CN": "观察溶质",
-    "en": "Observation solute"
-  },
-  "LOC_PRESERVE_RESPONSE_RELATIONSHIPS_ACTIVE_AUTHOR_APPLICATION_LOWERS_844AC505": {
-    "source": "保留回应关系，作者主动应用后降低再创作操作成本。",
-    "zh_CN": "保留回应关系，作者主动应用后降低再创作操作成本。",
-    "en": "Preserve response relationships; active author application lowers the cost of remixing."
-  },
-  "LOC_RESPONSE_SOLUTE_913A7CFD": {
-    "source": "回应溶质",
-    "zh_CN": "回应溶质",
-    "en": "Response solute"
-  },
-  "LOC_CROSS_CONTEXT_SOLUTE_72DA0FED": {
-    "source": "异境溶质",
-    "zh_CN": "异境溶质",
-    "en": "Cross-context solute"
-  },
-  "LOC_REORGANIZE_PORTABLE_CONTEXT_ACTIVE_AUTHOR_APPLICATION_LOWERS_10F3A13C": {
-    "source": "重新组织可携带语境，作者主动应用后降低语境依赖。",
-    "zh_CN": "重新组织可携带语境，作者主动应用后降低语境依赖。",
-    "en": "Reorganize portable context; active author application lowers context dependency."
-  },
-  "LOC_AUTHORITY_SOLUTE_F30FA5C1": {
-    "source": "威权溶质",
-    "zh_CN": "威权溶质",
-    "en": "Authority solute"
-  },
-  "LOC_USE_ORDER_AND_OBEDIENCE_AS_AN_EXPLICITLY_6B7A91AB": {
-    "source": "把秩序与服从作为作者明确选择的表达框架；y=-1威权、+1自由。",
-    "zh_CN": "把秩序与服从作为作者明确选择的表达框架；y=-1威权、+1自由。",
-    "en": "Use order and obedience as an explicitly chosen authorial framework; y=-1 means authority and +1 means liberty."
-  },
-  "LOC_NEGOTIATION_SOLUTE_B279D9C3": {
-    "source": "协商溶质",
-    "zh_CN": "协商溶质",
-    "en": "Negotiation solute"
-  },
-  "LOC_USE_NEGOTIATION_AND_AUTONOMY_AS_AN_EXPLICITLY_4C876B89": {
-    "source": "把协商与自主作为作者明确选择的表达框架。",
-    "zh_CN": "把协商与自主作为作者明确选择的表达框架。",
-    "en": "Use negotiation and autonomy as an explicitly chosen authorial framework."
-  },
-  "LOC_THE_AUTHOR_ACTIVELY_REWRITES_AND_INCREASES_LANGUAGE_E84C500E": {
-    "source": "作者主动改写并提高语言可达性。",
-    "zh_CN": "作者主动改写并提高语言可达性。",
-    "en": "The author actively rewrites and increases language access."
-  },
-  "LOC_TRANSLATION_SOLUTE_9A78E57D": {
-    "source": "转译溶质",
-    "zh_CN": "转译溶质",
-    "en": "Translation solute"
-  },
   "LOC_SAVED_DRAFT_COORDINATES_MUST_CONTAIN_TWO_FINITE_6899D7DB": {
     "source": "存档草稿坐标必须是两个有限数值：",
     "zh_CN": "存档草稿坐标必须是两个有限数值：",
@@ -10658,56 +7698,6 @@
     "source": "按 Esc，回到主桌面。",
     "zh_CN": "按 Esc，回到主桌面。",
     "en": "Press Esc to return to the main desk."
-  },
-  "LOC_FOLLOW_THE_CURRENT_PROMPT_TO_FINISH_THE_40A63035": {
-    "source": "按当前提示完成操作。",
-    "zh_CN": "按当前提示完成操作。",
-    "en": "Follow the current instruction."
-  },
-  "LOC_FAX_AND_REPORTS_5CF0BA35": {
-    "source": "传真与情报",
-    "zh_CN": "传真与情报",
-    "en": "Incoming intelligence"
-  },
-  "LOC_THE_FAX_RECEIVES_REPORTS_AND_CARDS_CLICK_FF09A1DF": {
-    "source": "传真收情报与卡牌。点纸堆露出的页签，就能翻看历史事件。",
-    "zh_CN": "传真收情报与卡牌。点纸堆露出的页签，就能翻看历史事件。",
-    "en": "The fax receives intelligence and cards. Its exposed paper tabs reopen past events."
-  },
-  "LOC_PRINTER_7D6376EF": {
-    "source": "打印机",
-    "zh_CN": "打印机",
-    "en": "The printer"
-  },
-  "LOC_THE_PRINTER_KEEPS_YOUR_WORK_LOG_THE_5F08155E": {
-    "source": "打印机留下工作记录。世界会忘事，它负责记账。",
-    "zh_CN": "打印机留下工作记录。世界会忘事，它负责记账。",
-    "en": "The printer keeps your work record. The world forgets; it keeps the books."
-  },
-  "LOC_MONITOR_1A13EA59": {
-    "source": "显示器",
-    "zh_CN": "显示器",
-    "en": "The monitor"
-  },
-  "LOC_THE_MONITOR_WATCHES_YOUR_MEMES_AND_POINTS_80B39D7D": {
-    "source": "显示器盯着你的模因和点数。它没有加班费，所以一直盯着。",
-    "zh_CN": "显示器盯着你的模因和点数。它没有加班费，所以一直盯着。",
-    "en": "The monitor watches your memes and points. It has no overtime pay, so it keeps watching."
-  },
-  "LOC_CLICK_THE_CHECKED_BUBBLE_ABOVE_A_COUNTRY_B1C53CA4": {
-    "source": "点击国家上方带对勾的气泡。气泡破裂后，稿件开始流传。新事件会和卡牌一起打印出来；把卡牌拖到桌面，再装进对应槽位。",
-    "zh_CN": "点击国家上方带对勾的气泡。气泡破裂后，稿件开始流传。新事件会和卡牌一起打印出来；把卡牌拖到桌面，再装进对应槽位。",
-    "en": "Click the checkmark bubble above the country. It pops and your manuscript starts circulating. New events and cards print together; drag the cards onto the desk, then into their matching slots."
-  },
-  "LOC_PATCH_CLIPS_4D7B122D": {
-    "source": "补丁回形针",
-    "zh_CN": "补丁回形针",
-    "en": "Patch clips"
-  },
-  "LOC_DRAG_A_PATCH_FROM_THE_INVENTORY_BELOW_934DD092": {
-    "source": "将下方库存或桌面上的补丁拖到空回形针上安装。拖出已安装的补丁可将它取下。",
-    "zh_CN": "将下方库存或桌面上的补丁拖到空回形针上安装。拖出已安装的补丁可将它取下。",
-    "en": "Drag a patch from the inventory below or the desk onto an empty clip to install it. Drag an installed patch out to remove it."
   },
   "LOC_PATCH_70F56533": {
     "source": "补丁",
@@ -11144,11 +8134,6 @@
     "zh_CN": "delusional",
     "en": "delusional"
   },
-  "LOC_EDIT_FINAL_EXPRESSION": {
-    "source": "最终表达",
-    "zh_CN": "最终表达",
-    "en": "Final expression"
-  },
   "LOC_EDIT_READ_ONLY_PART": {
     "source": "基模节点只读；安装或取下补丁可改变最终表达。",
     "zh_CN": "基模节点只读；安装或取下补丁可改变最终表达。",
@@ -11163,11 +8148,6 @@
     "source": "话题",
     "zh_CN": "话题",
     "en": "Topics"
-  },
-  "LOC_EDIT_PATCHES": {
-    "source": "已安装补丁",
-    "zh_CN": "已安装补丁",
-    "en": "Installed patches"
   },
   "LOC_EDIT_REQUIRES": {
     "source": "前置能力",
@@ -11588,11 +8568,6 @@
     "source": "请选择一份起始模因，预览后确认。",
     "zh_CN": "请选择一份起始模因，预览后确认。",
     "en": "Choose a starting meme, then confirm your preview."
-  },
-  "LOC_GUIDANCE_SETTING_SAVE_ERROR": {
-    "source": "引导设置保存失败：%s",
-    "zh_CN": "引导设置保存失败：%s",
-    "en": "Could not save guidance setting: %s"
   },
   "LOC_TYPEWRITER_ENABLED": {
     "source": "文本打字机效果",

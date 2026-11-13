@@ -49,11 +49,6 @@
     "zh_CN": "中性",
     "en": "Neutral"
   },
-  "LOC_STARTER_DEFAULTS_NOTE": {
-    "source": "这些是初始设定，选好后仍可修改。",
-    "zh_CN": "这些是初始设定，选好后仍可修改。",
-    "en": "These are starting values. You can edit them after choosing."
-  },
   "LOC_STARTER_POLITICAL_NEUTRAL": {
     "source": "中立",
     "zh_CN": "中立",
