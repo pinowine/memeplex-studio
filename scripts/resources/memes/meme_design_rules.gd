@@ -10,6 +10,7 @@ const EVENT_REWARD_COUNT := 1
 
 @export var definition_version: int = DEFINITION_VERSION
 @export var module_slots: int = 4
+@export var card_replacements: Dictionary = {}
 @export var starter_presets: PackedStringArray = PackedStringArray()
 @export var starter_contexts: Dictionary = {}
 @export var expression_routes: Dictionary = {}:
@@ -26,6 +27,7 @@ const EVENT_REWARD_COUNT := 1
 @export var context_depths: PackedFloat32Array = PackedFloat32Array([0.1, 0.3, 0.5, 0.7, 0.9])
 
 func context_resource(id: String) -> Dictionary:
+	id = str(card_replacements.get(id,id))
 	if context_definitions != null:
 		for entry: Dictionary in context_definitions.entries:
 			if str(entry.id) == id:
@@ -69,6 +71,7 @@ func reward_resource(kind: String, id: String) -> Dictionary:
 	return entry if str(entry.get("kind", "")) == kind else {}
 
 func find(kind: String, id: String) -> Dictionary:
+	if kind == "modules": id = str(card_replacements.get(id,id))
 	var values: Array[Dictionary]
 	match kind:
 		"modules": values = modules
@@ -81,7 +84,7 @@ func find(kind: String, id: String) -> Dictionary:
 
 func module_compatible(preset_id: String, module_id: String) -> bool:
 	if find("modules", module_id).is_empty(): return false
-	if Composition.supports(preset_id): return module_id in Composition.definition(preset_id).compatible_modules
+	if Composition.supports(preset_id): return str(find("modules", module_id).get("composition_role", module_id)) in Composition.definition(preset_id).compatible_modules
 	var presets: Variant = find("modules", module_id).get("compatible_presets", [])
 	return presets is Array and preset_id in presets
 
@@ -93,19 +96,22 @@ func patch_errors(preset_id: String, module_ids: Array) -> PackedStringArray:
 	var definition: Dictionary = Composition.definition(preset_id)
 	var capacity := mini(module_slots, int(definition.get("max_modules",4)))
 	if ids.size() > capacity: errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_SLOTS"))
+	var roles: Array[String] = []
+	for id: String in ids: roles.append(str(find("modules", id).get("composition_role", id)))
 	var seen := {}
 	for id: String in ids:
-		if seen.has(id): errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_DUPLICATE"))
-		seen[id] = true
+		var role := str(find("modules", id).get("composition_role", id))
+		if seen.has(role): errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_DUPLICATE"))
+		seen[role] = true
 		if not module_compatible(preset_id,id): errors.append(DeskLocalization.source("LOC_PATCH_INCOMPATIBLE_MEME"))
-		for required: String in definition.get("requires",{}).get(id,[]):
-			if required not in ids: errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_EXIT"))
+		for required: String in definition.get("requires",{}).get(role,[]):
+			if required not in roles: errors.append(DeskLocalization.source("LOC_COMPOSE_ERROR_EXIT"))
 	return errors
 
 func expression_route(preset_id: String, module_ids: Array) -> String:
 	var ids := PackedStringArray()
 	for module_id: String in module_ids:
-		if not module_id.is_empty(): ids.append(module_id)
+		if not module_id.is_empty(): ids.append(str(find("modules",module_id).get("composition_role",module_id)))
 	ids.sort()
 	return str(expression_routes.get(preset_id, {}).get("+".join(ids), ""))
 
@@ -126,6 +132,7 @@ func signature() -> String:
 		"axis_step": axis_step,
 		"depths": Array(context_depths),
 	}
+	if not card_replacements.is_empty(): data.card_replacements = card_replacements
 	return JSON.stringify(data, "", true, true).sha256_text()
 
 func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
@@ -138,6 +145,12 @@ func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
 		errors.append("Missing brain context definitions")
 	else:
 		errors.append_array(context_definitions.validate(catalog))
+	for id: String in card_replacements:
+		for kind: String in ["language", "group", "topic"]:
+			if not id.begins_with(kind + "_"): continue
+			var entry := context_resource(id)
+			if str(entry.get("kind", "")) != kind or str(entry.get("value", "")) != id.trim_prefix(kind + "_"):
+				errors.append("Replacement context must preserve its original value")
 	if not is_finite(axis_step) or axis_step < 0.01 or axis_step > 1 or context_depths.size() != 5:
 		errors.append("Invalid brain slice limits")
 	for depth in context_depths:
@@ -221,6 +234,7 @@ func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
 func _expression_route_errors() -> PackedStringArray:
 	var errors := PackedStringArray()
 	for module: Dictionary in modules:
+		if module.has("composition_role"): continue
 		var compatible: Variant = module.get("compatible_presets")
 		if not compatible is Array or compatible.is_empty():
 			errors.append("A patch must target a nonempty subset of opening memes")
@@ -238,13 +252,16 @@ func _expression_route_errors() -> PackedStringArray:
 			draft.preset_id = preset
 			errors.append_array(Composition.validate(draft,[]))
 			for id: String in definition.compatible_modules:
-				if find("modules",id).is_empty(): errors.append("Unknown composition patch: " + id)
+				var module := find("modules",id)
+				if module.is_empty(): errors.append("Unknown composition patch: " + id)
+				elif str(module.get("composition_role",module.id)) != id: errors.append("Composition patch role must preserve its logical identity")
 		elif preset not in legacy_presets: legacy_presets.append(preset)
 	for preset: String in legacy_presets:
 		if Composition.supports(preset): continue
 		var compatible: Array[String] = []
 		for module: Dictionary in modules:
-			if module_compatible(preset, str(module.id)): compatible.append(str(module.id))
+			var role := str(module.get("composition_role",module.id))
+			if module_compatible(preset,str(module.id)) and role not in compatible: compatible.append(role)
 		if compatible.size() > mini(module_slots, 12):
 			errors.append("Compatible patches exceed the finite physical slot capacity")
 			continue

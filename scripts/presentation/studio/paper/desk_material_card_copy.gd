@@ -121,9 +121,9 @@ const COMMENTARY := {
 static func apply_to(details: Dictionary) -> void:
  var id := str(details.get("id", ""))
  if DESCRIPTIONS.has(id): details.description = DESCRIPTIONS[id]
- details.commentary = COMMENTARY.get(id, "")
- details.hover_description = hover_description(id)
- details.hover_note = hover_note(id)
+ details.commentary = details.get("commentary", COMMENTARY.get(id, ""))
+ details.hover_description = details.get("hover_description", hover_description(id))
+ details.hover_note = details.get("hover_note", hover_note(id))
 
 static func hover_description(id: String) -> String:
  return DeskLocalization.source(str(HOVER_DESCRIPTIONS.get(id, "")))

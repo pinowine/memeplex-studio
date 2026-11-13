@@ -67,6 +67,16 @@ static func compose(draft: Dictionary, module_ids: Array) -> Dictionary:
 	if language_id not in languages: language_id = languages[0] if not languages.is_empty() else str(defaults.language_id)
 	var segments := _expression_segments(draft,modules,language_id)
 	var meaning := _meaning(draft,modules)
+	var source_ids := {}
+	var rules: Resource = load("res://data/rules/design_rules.tres")
+	for value: Variant in module_ids:
+		var id := str(value)
+		if id.is_empty(): continue
+		var module: Dictionary = rules.find("modules",id)
+		source_ids[str(module.get("composition_role",id))] = str(module.get("id",id))
+	for segment: Dictionary in segments + meaning.segments:
+		for source: Dictionary in segment.sources:
+			if str(source.kind) == "patch": source.id = source_ids[str(source.id)]
 	var context := _context_segments(draft)
 	var versions: Array[Dictionary] = []
 	for language: String in languages:
@@ -266,8 +276,12 @@ static func _values(draft: Dictionary, kind: String) -> Array[String]:
 
 static func _modules(values: Array) -> Array[String]:
 	var result: Array[String] = []
+	var rules: Resource = load("res://data/rules/design_rules.tres")
 	for value: Variant in values:
-		if not str(value).is_empty(): result.append(str(value))
+		var id := str(value)
+		if id.is_empty(): continue
+		var module: Dictionary = rules.find("modules", id)
+		result.append(str(module.get("composition_role", id)))
 	result.sort()
 	return result
 
@@ -281,7 +295,10 @@ static func _position(value: Variant) -> Vector2:
 	return value if value is Vector2 else Vector2(float(value[0]),float(value[1]))
 
 static func _source(kind: String, id: String) -> Dictionary:
-	return {"kind":kind,"id":kind+"_"+id if kind in ["language","group","topic"] else id}
+	if kind in ["language","group","topic"]:
+		var rules: Resource = load("res://data/rules/design_rules.tres")
+		return {"kind":kind,"id":str(rules.context_resource(kind+"_"+id).id)}
+	return {"kind":kind,"id":id}
 
 static func _with_patch(sources: Array, id: String) -> Array:
 	var result := sources.duplicate()

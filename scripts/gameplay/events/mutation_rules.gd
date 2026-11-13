@@ -17,7 +17,7 @@ static func candidate(catalog: MemeDemoCatalog, parent: Dictionary, event_defini
 	if inherited.size() >= catalog.DESIGN_RULES.module_slots: return {}
 	var preferred: String = {"semantic_split":"module_stance", "critical_quote":"module_stance", "cross_language":"module_boundary", "platform_tool":"module_shared_world"}.get(event_definition_id, "")
 	var candidates: Array[String] = []
-	if not preferred.is_empty(): candidates.append(preferred)
+	if not preferred.is_empty(): candidates.append(str(catalog.DESIGN_RULES.find("modules",preferred).id))
 	for module: Dictionary in catalog.DESIGN_RULES.modules:
 		if str(module.id) not in candidates: candidates.append(str(module.id))
 	for id: String in candidates:
