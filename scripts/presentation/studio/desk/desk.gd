@@ -87,11 +87,6 @@ var _outlet_width := 0.0
 func slot_details_active() -> bool:
 	return not _slot_return_state.is_empty()
 
-func _slot_paper_rect() -> Rect2:
-	var view := get_viewport_rect().size
-	var width := minf(430.0,view.x*.32)
-	return Rect2(view.x-width-28,48,width,maxf(210,minf(560,view.y-90)))
-
 func _context_slot_pressed(layer: String, _index: int, viewport_rect: Rect2) -> void:
 	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/cultivate": return
 	if _page._interface_paused() or not _page.startup_ready(): return
@@ -665,11 +660,6 @@ func _layout() -> void:
 	_props.set_bounds(Rect2(-80,-100,1760,1100))
 	_update_prop_dependents()
 	_fit_settings()
-
-
-func _layout_token_inventory(_view: Vector2) -> void:
-	# Both directional inventories are drawn inside the monitor.
-	pass
 
 
 func _prop(node: TextureRect, rect: Rect2, angle: float) -> void:

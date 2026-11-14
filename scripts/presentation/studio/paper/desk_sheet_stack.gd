@@ -6,7 +6,6 @@ signal switch_completed(id: String)
 
 const ShadowObject := preload("res://scripts/presentation/studio/desk/desk_object_shadow.gd")
 const FRONT_LAYER := 26
-const BACK_LAYER := 25
 const BACK_OFFSET := Vector2(-24.0, 9.0)
 const SHEET_IDS := ["map", "edit", "cultivate", "spread"]
 const TAB_SIZE := Vector2(136.0, 60.0)

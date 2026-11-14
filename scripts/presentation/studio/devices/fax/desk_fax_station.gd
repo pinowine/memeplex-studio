@@ -994,11 +994,6 @@ func _machine_polygon() -> PackedVector2Array:
 	return PackedVector2Array([_machine_rect.position, _machine_rect.position + Vector2(_machine_rect.size.x, 0), _machine_rect.end, _machine_rect.position + Vector2(0, _machine_rect.size.y)])
 
 
-func _paper_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if stamp_at(get_global_mouse_position()): _view.sheet.accept_event()
-
-
 func _tween_focus(target: float) -> void:
 	if _focus_tween != null and _focus_tween.is_valid(): _focus_tween.kill()
 	_focus_tween = create_tween()

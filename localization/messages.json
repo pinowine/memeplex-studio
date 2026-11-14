@@ -1229,11 +1229,6 @@
     "zh_CN": "外部改写相对固定家族锚点的语义偏移：%.2f。下一次改写按分家规则处理。",
     "en": "External rewrite drift from the fixed family anchor: %.2f. The next rewrite follows the family-splitting rules."
   },
-  "LOC_NO_VERSIONS_CREATED_BECAUSE_THE_REWRITE_COUNT_0A2A9637": {
-    "source": "改写数量为零，不生成版本。",
-    "zh_CN": "改写数量为零，不生成版本。",
-    "en": "No versions created because the rewrite count is zero."
-  },
   "LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C": {
     "source": "再利用许可受限：这次规范内的重混未产生版本；许可不是对外部世界的强制控制。",
     "zh_CN": "再利用许可受限，本次重混未生成版本；该许可不能强制约束外部世界。",
@@ -1243,11 +1238,6 @@
     "source": "%s：疲劳降低 %.2f，旧表达重新进入使用；不恢复对外部分家的控制。",
     "zh_CN": "%s：疲劳最多降低 %.2f；不会恢复对外部分家的控制。",
     "en": "%s: fatigue decreases by up to %.2f. This does not restore control of external offshoot families."
-  },
-  "LOC_ERROR_UNREGISTERED_EFFECT_D26EA480": {
-    "source": "错误：效果未登记。",
-    "zh_CN": "错误：效果未登记。",
-    "en": "Error: unregistered effect."
   },
   "LOC_NO_DEPLOYED_VERSION_IS_AVAILABLE_TO_REWRITE_151CB474": {
     "source": "没有可改写的已投放版本。",

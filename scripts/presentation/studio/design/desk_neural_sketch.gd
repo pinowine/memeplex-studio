@@ -334,16 +334,6 @@ func _module_label_rect(index: int) -> Rect2:
 	return _label_rect(point,64,-56 if point.y<_core_point().y else 64)
 
 
-func _cell_distance(point: Vector2) -> float:
-	var distance := point.distance_to(_core_point())-CORE_RADIUS
-	for index in _installed.size():
-		if str(_installed[index]).is_empty(): continue
-		var patch := point.distance_to(_module_point(index))-PATCH_RADIUS
-		var mix_value := clampf(.5+.5*(patch-distance)/MEMBRANE_BLEND,0.0,1.0)
-		distance = lerpf(patch,distance,mix_value)-MEMBRANE_BLEND*mix_value*(1.0-mix_value)
-	return distance
-
-
 func _update_field() -> void:
 	_bridges.clear()
 	_update_neuronal_network()
