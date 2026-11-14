@@ -142,10 +142,6 @@ func _context_unit_source(id: String) -> Dictionary:
 				return result
 	return {}
 
-func _locked_tokens(layer: String) -> int:
-	var offsets: Array = _state.context_layers[layer].offsets
-	return absi(int(offsets[0]))+absi(int(offsets[1]))
-
 func _perform_layer(action: String, params: Dictionary) -> PackedStringArray:
 	_layer_repeat = false
 	var layer := str(params.get("layer",""))

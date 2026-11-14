@@ -172,63 +172,6 @@ func _cache_twig(start: Vector2,direction: Vector2,length: float,depth: int,rng:
 		_cache_twig(tip,direction.rotated(side*rng.randf_range(.45,.76)),length*.57,depth-1,rng,output,at,path_index)
 
 
-func _grown_curve(path: PackedVector2Array, growth: float) -> PackedVector2Array:
-	var points := PackedVector2Array()
-	if path.size() < 2 or growth <= 0.0: return points
-	var progress := clampf(growth,0.0,1.0) * (path.size()-1)
-	var whole := floori(progress)
-	for index in whole + 1: points.append(path[index])
-	if whole < path.size()-1:
-		var tip := path[whole].lerp(path[whole+1],progress-whole)
-		# Coalesce subpixel tips instead of creating a near-zero polygon edge.
-		if tip.distance_squared_to(points[-1]) > .000001: points.append(tip)
-	return points
-
-
-func _tube(path: PackedVector2Array, growth: float) -> PackedVector2Array:
-	var grown := _grown_curve(path,growth)
-	var upper := PackedVector2Array()
-	var lower := PackedVector2Array()
-	if grown.size() < 2: return upper
-	for index in grown.size():
-		# Partial tips use smooth normals from the full curve, not the tiny last edge.
-		var t := minf(float(index)/(path.size()-1),growth)
-		var at := t * (path.size()-1)
-		var whole := floori(at)
-		var next := mini(whole+1,path.size()-1)
-		var first_tangent := (path[mini(whole+1,path.size()-1)]-path[maxi(whole-1,0)]).normalized()
-		var next_tangent := (path[mini(next+1,path.size()-1)]-path[maxi(next-1,0)]).normalized()
-		var tangent := first_tangent.lerp(next_tangent,at-whole).normalized()
-		var swell := exp(-pow((t-.94)/.09,2))*9.0
-		var radius := 2.5+(1-t)*1.1+swell
-		upper.append(grown[index]+tangent.orthogonal()*radius)
-		lower.append(grown[index]-tangent.orthogonal()*radius)
-	lower.reverse()
-	upper.append_array(lower)
-	return upper
-
-
-func _draw_tube(path: PackedVector2Array, growth: float, active: bool) -> void:
-	var tube := _tube(path,growth)
-	if tube.size() < 4: return
-	draw_colored_polygon(tube,Color(.65,.70,.57,.18 if active else .045))
-	for contour: PackedVector2Array in _tube_contours(tube,growth):
-		draw_polyline(contour,Color(INK,.68 if active else .25),.85 if active else .55,true)
-
-
-func _tube_contours(tube: PackedVector2Array, growth: float) -> Array[PackedVector2Array]:
-	var contours: Array[PackedVector2Array] = []
-	if tube.size() < 4: return contours
-	var count := tube.size()/2
-	var upper := tube.slice(0,count)
-	var lower := tube.slice(count)
-	# Node junctions share the existing body; only a growing tip needs a cap.
-	if growth < 1.0: upper.append(lower[0])
-	contours.append(upper)
-	contours.append(lower)
-	return contours
-
-
 func _make_union_layer(id: String, active: bool) -> void:
 	var viewport := SubViewport.new()
 	viewport.name = "Union"+id.capitalize()+"Mask"
@@ -252,33 +195,6 @@ func _make_union_layer(id: String, active: bool) -> void:
 	display.material = union_material
 	add_child(display)
 	_union_layers[id] = {"viewport":viewport,"painter":painter,"display":display}
-
-
-func _disc_polygon(center: Vector2, radius: float) -> PackedVector2Array:
-	var polygon := PackedVector2Array()
-	for index in 32: polygon.append(center+Vector2.from_angle(float(index)*TAU/32.0)*radius)
-	return polygon
-
-
-func _twig_tube(path: PackedVector2Array, growth: float, radius: float) -> PackedVector2Array:
-	var grown := _grown_curve(path,growth)
-	var upper := PackedVector2Array()
-	var lower := PackedVector2Array()
-	if grown.size() < 2: return upper
-	for index in grown.size():
-		var t := minf(float(index)/(path.size()-1),growth)
-		var at := t*(path.size()-1)
-		var whole := floori(at)
-		var next := mini(whole+1,path.size()-1)
-		var first := (path[mini(whole+1,path.size()-1)]-path[maxi(whole-1,0)]).normalized()
-		var second := (path[mini(next+1,path.size()-1)]-path[maxi(next-1,0)]).normalized()
-		var normal := first.lerp(second,at-whole).normalized().orthogonal()
-		var width := lerpf(radius,.18,t)
-		upper.append(grown[index]+normal*width)
-		lower.append(grown[index]-normal*width)
-	lower.reverse()
-	upper.append_array(lower)
-	return upper
 
 
 func _union_polygons(active: bool) -> Array[PackedVector2Array]:

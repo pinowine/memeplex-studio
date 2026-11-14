@@ -601,12 +601,6 @@ func _request_event_material(record: Dictionary) -> PackedStringArray:
 		_read_intelligence(str(record.instance_id))
 	return errors
 
-func _claim_design_reward(instance_id: String) -> void:
-	if not _ready_to_run or not startup_ready() or _interface_paused(): return
-	var errors := simulation.claim_design_reward(instance_id)
-	hud.report_design_errors(errors)
-	_render()
-
 func _render() -> void:
 	if simulation == null: return
 	var snapshot := simulation.snapshot()

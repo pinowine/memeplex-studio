@@ -754,46 +754,6 @@ func _produce_event_memes() -> void:
 func _event_hours(value: float) -> float:
 	return value * catalog.gameplay_rules.event_time_scale
 
-func _apply_effect(effect: MemeDemoEffect, event_id: String, definition: MemeDemoEvent = null) -> String:
-	var ids: Array[String] = []
-	for group in catalog.groups:
-		if effect.group_ids.is_empty() or group.id in effect.group_ids:
-			ids.append(str(group.id))
-	var scope := DeskLocalization.source("LOC_ALL_SYNTHETIC_AUDIENCES_ADD04D9F") if effect.group_ids.is_empty() else "、".join(ids)
-	var amount: float = effect.amount
-	match str(effect.effect_id):
-		"attention", "channel_reach":
-			modifiers.append({"source":event_id, "amount":amount, "groups":ids, "starts":hour, "expires":hour + maxf(1.0, _event_hours(effect.duration_hours)), "topics":Array(definition.topic_ids) if definition != null else [], "decay":str(definition.attention_decay) if definition != null else "constant", "decay_parameter":_event_hours(definition.decay_parameter_hours) if definition != null else 1.0})
-			return DeskLocalization.source_format("LOC_S_ATTRACTION_MULTIPLIER_F_FOR_F_GAME_C6C49FBD", [scope, maxf(0.05, 1.0 + amount), maxf(1.0, _event_hours(effect.duration_hours))], [0])
-		"trust", "fatigue":
-			var field := str(effect.effect_id)
-			var changes := PackedStringArray()
-			for id in ids:
-				var state: Dictionary = group_state[id]
-				var before: float = state[field]
-				state[field] = clampf(before + amount, 0.0, 1.0)
-				group_state[id] = state
-				changes.append("%s %.2f→%.2f" % [id, before, state[field]])
-			return DeskLocalization.source_format("LOC_S_S_DCCB2F9E",[(DeskLocalization.source("LOC_TRUST_D1CD931B") if field == "trust" else DeskLocalization.source("LOC_FATIGUE_9211F063")),DeskLocalization.source_join("；",changes)],[0,1])
-		"adoption":
-			var added: int = competition.adoption_pulse(current_variant_id,amount)
-			_reward_milestones()
-			return DeskLocalization.source_format("LOC_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_ADOPT_6CA6F2FB", added)
-		"semantic_shift":
-			draft_distance = clampf(amount, 0.0, 1.0)
-			return DeskLocalization.source_format("LOC_EXTERNAL_REWRITES_SEMANTIC_DRIFT_FROM_THE_FIXED_35C3A40D", draft_distance)
-		"remix":
-			if amount <= 0.0: return DeskLocalization.source("LOC_NO_VERSIONS_CREATED_BECAUSE_THE_REWRITE_COUNT_0A2A9637")
-			return _spawn_remix(event_id, ids[0] if not ids.is_empty() else "community", str(definition.id) if definition != null else "")
-		"revival":
-			for id in ids:
-				var state: Dictionary = group_state[id]
-				state.fatigue = clampf(state.fatigue - maxf(0.0, amount), 0.0, 1.0)
-				group_state[id] = state
-			return DeskLocalization.source_format("LOC_S_FATIGUE_DECREASES_BY_F_AND_THE_40D510A3", [scope, maxf(0.0, amount)], [0])
-	push_error("Invalid effect reached simulation: " + str(effect.effect_id))
-	return DeskLocalization.source("LOC_ERROR_UNREGISTERED_EFFECT_D26EA480")
-
 func _spawn_remix(event_id: String, creator: String, definition_id: String = "", parent_id: String = "", event_country: String = "") -> String:
 	var parent := variant_by_id(current_variant_id if parent_id.is_empty() else parent_id)
 	var event_definition := _event_definition(definition_id)
