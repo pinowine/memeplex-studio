@@ -133,8 +133,7 @@ func _ready() -> void:
 	_panel.name = "MemeLedgerPanel"
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_panel.mouse_force_pass_scroll_events = false
-	var paper := Style.new()
-	paper.set_content_margin_all(INSET)
+	var paper := StyleBoxEmpty.new()
 	_panel.add_theme_stylebox_override("panel", paper)
 	add_child(_panel)
 	_column = VBoxContainer.new()
@@ -142,6 +141,7 @@ func _ready() -> void:
 	_panel.add_child(_column)
 	var header := HBoxContainer.new()
 	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	header.visible = false
 	header.add_theme_constant_override("separation", 8)
 	_column.add_child(header)
 	header.add_child(HeaderIcon.new())
@@ -152,6 +152,7 @@ func _ready() -> void:
 	header.add_child(_heading)
 	var rule := HSeparator.new()
 	rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	rule.visible = false
 	var line := StyleBoxLine.new()
 	line.color = Style.EDGE
 	rule.add_theme_stylebox_override("separator", line)
@@ -234,7 +235,7 @@ func show_candidates(ids: PackedStringArray) -> void:
 	if ids.size() == 1: _select(ids[0])
 
 func panel_width() -> float:
-	return clampf(size.x * 0.30, 320.0, 380.0)
+	return maxf(1.0, size.x - 48.0)
 
 func handles_point(viewport_point: Vector2) -> bool:
 	return is_visible_in_tree() and _contains_point(_panel, viewport_point)
@@ -342,8 +343,8 @@ func _layout() -> void:
 	for row: Dictionary in _rows.values(): row.tag.fit_width(content_width)
 	var height := _column.get_combined_minimum_size().y + INSET * 2.0
 	if _scroll.visible: height += _flow.get_combined_minimum_size().y - _scroll.get_combined_minimum_size().y
-	_panel.position = Vector2(maxf(24.0, (size.x - width) * .5), 32.0)
-	_panel.size = Vector2(width, minf(maxf(1.0, size.y - 64.0), maxf(96.0, height)))
+	_panel.position = Vector2(24.0, 16.0)
+	_panel.size = Vector2(width, minf(maxf(1.0, size.y * 0.22), maxf(36.0, height)))
 
 func _contains_point(control: Control, viewport_point: Vector2) -> bool:
 	var point := control.get_global_transform_with_canvas().affine_inverse() * viewport_point
