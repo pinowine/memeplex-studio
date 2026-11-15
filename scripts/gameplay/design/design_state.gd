@@ -191,8 +191,9 @@ func _perform_layer(action: String, params: Dictionary) -> PackedStringArray:
 		var old := int(data.offsets[axis])
 		var next := old+int(params.direction)
 		var origin := float(data.origin[axis])
-		var minimum := int(floor((-1.0-origin)/rules.axis_step+0.000001))
-		var maximum := int(ceil((1.0-origin)/rules.axis_step-0.000001))
+		var bounds := _axis_offset_bounds(data, axis)
+		var minimum := bounds.x
+		var maximum := bounds.y
 		if next < minimum or next > maximum: return PackedStringArray([DeskLocalization.source("LOC_THE_COORDINATE_HAS_REACHED_ITS_BOUNDARY_2B0D9566")])
 		var cost := absi(next)-absi(old)
 		var token_id := _axis_token(layer,str(params.axis),1 if next > 0 else -1)
@@ -314,9 +315,25 @@ func _snapshot_layers(result: Dictionary) -> void:
 			if row.id == id: row.available = available; row.installed = locked
 	for layer in ["stance","pragmatic"]:
 		result.context_layers[layer].step = rules.axis_step
+		result.context_layers[layer].reachable_offsets = axis_reachable_offsets(layer)
 		result.context_layers[layer].token_kind = layer+"_token"
 		result.context_layers[layer].token_ids = {"x_negative":_axis_token(layer,"x",-1),"x_positive":_axis_token(layer,"x",1),"y_negative":_axis_token(layer,"y",-1),"y_positive":_axis_token(layer,"y",1)}
 		result.context_layers[layer].axis_labels = {"x_negative":DeskLocalization.source("LOC_FREEDOM_D1047EED"),"x_positive":DeskLocalization.source("LOC_AUTHORITY_E9D827BA"),"y_negative":DeskLocalization.source("LOC_EQUALITY_14DD2491"),"y_positive":DeskLocalization.source("LOC_HIERARCHY_33771717")} if layer == "stance" else {"x_negative":DeskLocalization.source("LOC_SINCERITY_8BB7FF57"),"x_positive":DeskLocalization.source("LOC_IRONY_06D9BA32"),"y_negative":DeskLocalization.source("LOC_SUPPORT_D93373F8"),"y_positive":DeskLocalization.source("LOC_OPPOSITION_454F03C9")}
+
+func _axis_offset_bounds(data: Dictionary, axis: int) -> Vector2i:
+	var origin := float(data.origin[axis])
+	return Vector2i(floori((-1.0 - origin) / rules.axis_step + .000001), ceili((1.0 - origin) / rules.axis_step - .000001))
+
+func axis_reachable_offsets(layer: String) -> Array:
+	var data: Dictionary = _state.context_layers[layer]
+	var result: Array = []
+	for axis in 2:
+		var name := "x" if axis == 0 else "y"
+		var bounds := _axis_offset_bounds(data, axis)
+		var negative := _context_available(_axis_token(layer, name, -1))
+		var positive := _context_available(_axis_token(layer, name, 1))
+		result.append([maxi(bounds.x, -negative), mini(bounds.y, positive)])
+	return result
 
 func token_balance(id: String) -> int:
 	return maxi(0,_context_available(id)-_locked_token(id))

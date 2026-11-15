@@ -1172,6 +1172,8 @@ func _process(_delta: float) -> void:
 			_fax_drop_preview = false
 	for item: Control in _context_layer_items.values(): item.set_interaction_enabled(enabled)
 	var editor: Control = _page.hud.design_workbench()
+	var dragged: Dictionary = _material_cards.focused_dragged_material()
+	editor.context_slice().set_token_drag(_monitor._drag_id if _monitor._dragging else str(dragged.get("id", "")))
 	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
 	if editor.has_method("set_interaction_enabled"):
 		editor.set_interaction_enabled(design_enabled)

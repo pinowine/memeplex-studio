@@ -25,6 +25,7 @@ const HEADING_SIZE := 20
 const AXIS_HANDLE_RADIUS := 13.0
 const GRID_INK := Color("737968", .14)
 const GRID_PAPER := Color("737968", .025)
+const REACHABLE_INK := Color("648f72", .24)
 
 var _rules: MemeDesignRules
 var _state: Dictionary = {}
@@ -48,6 +49,7 @@ var _resource_dragging := false
 var _drag_preview: Control
 var _drag_preview_parent: Control
 var _axis_drag := false
+var _token_drag_layer := ""
 var _commands := ContextController.new("board")
 var _action_count := 0
 var _slot_rejections := 0
@@ -362,12 +364,35 @@ func _draw_slots(id: String) -> void:
 			draw_line(center - Vector2(radius, 0), center + Vector2(radius, 0), Color(INK, .55), 1.8, true)
 			draw_line(center - Vector2(0, radius), center + Vector2(0, radius), Color(INK, .55), 1.8, true)
 
+func set_token_drag(token_id: String) -> void:
+	var layer := ""
+	for id: String in ["stance", "pragmatic"]:
+		if token_id in _layers().get(id, {}).get("token_ids", {}).values(): layer = id
+	if layer == _token_drag_layer: return
+	_token_drag_layer = layer
+	queue_redraw()
+
+func _reachable_cells(id: String) -> Array[Rect2]:
+	var result: Array[Rect2] = []
+	if not ((_axis_drag and _held_layer == id) or _token_drag_layer == id): return result
+	var data: Dictionary = _layers().get(id, {})
+	var ranges: Array = data.get("reachable_offsets", [])
+	if ranges.is_empty(): return result
+	var cell_size := Vector2.ONE * float(_layout_layers[id].grid_spacing) * .84
+	var step := float(data.step)
+	for x in range(int(ranges[0][0]), int(ranges[0][1]) + 1):
+		for y in range(int(ranges[1][0]), int(ranges[1][1]) + 1):
+			var coordinate := [clampf(float(data.origin[0]) + x * step, -1, 1), clampf(float(data.origin[1]) + y * step, -1, 1)]
+			result.append(Rect2(_axis_position(id, coordinate) - cell_size * .5, cell_size).intersection(_layout_layers[id].plot_rect))
+	return result
+
 func _draw_axis(id: String) -> void:
 	var info: Dictionary = _layout_layers[id]
 	var plot: Rect2 = info.plot_rect
 	var data: Dictionary = _layers().get(id, {})
 	var center := plot.get_center()
 	draw_rect(plot, info.grid_fill_color)
+	for cell: Rect2 in _reachable_cells(id): draw_rect(cell, REACHABLE_INK)
 	draw_multiline(info.grid_lines, info.grid_color, .7, true)
 	for tick in 11:
 		var t := float(tick)/10.0
@@ -706,6 +731,8 @@ func inspection() -> Dictionary:
 		info.slot_quads = quads
 		if id in ["stance", "pragmatic"]:
 			info.coordinate_readout_visible = false
+			info.reachable_cells = _reachable_cells(id)
+			info.reachable_color = REACHABLE_INK
 			info.axis_rect = info.plot_rect
 			info.axis_labels = _axis_labels(id)
 			info.axis_label_positions = _axis_label_positions(id)
