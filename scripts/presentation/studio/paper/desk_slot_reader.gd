@@ -142,6 +142,7 @@ func _build() -> void:
 	_paper_holder = Control.new()
 	_paper_holder.name = "DescriptionPaper"
 	_paper_holder.mouse_filter = Control.MOUSE_FILTER_STOP
+	_paper_holder.mouse_force_pass_scroll_events = false
 	add_child(_paper_holder)
 	_surface = PaperSurface.new()
 	_surface.name = "HighDensityPaperFibers"
