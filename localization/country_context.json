@@ -1,8 +1,8 @@
 {
   "LOC_WORLD_LANGUAGE_ALDEN": {
-    "source": "阿尔登语",
-    "zh_CN": "阿尔登语",
-    "en": "Aldenian"
+    "source": "远洋通用语",
+    "zh_CN": "远洋通用语",
+    "en": "Oceanic Common"
   },
   "LOC_WORLD_LANGUAGE_ALDEN_DESCRIPTION": {
     "source": "沿着航线和商路传播的语言，常从别处借来词语。简短的词序能交代事情，重音和惯用语又给同一句话添上不同意味。",
@@ -10,9 +10,9 @@
     "en": "A language carried along shipping lanes and trade routes, quick to borrow words. Word order carries much of its grammar; stress and idioms give the same sentence different shades of meaning."
   },
   "LOC_WORLD_LANGUAGE_VERESK": {
-    "source": "韦列斯克语",
-    "zh_CN": "韦列斯克语",
-    "en": "Vereskian"
+    "source": "东陆语",
+    "zh_CN": "东陆语",
+    "en": "Eastland"
   },
   "LOC_WORLD_LANGUAGE_VERESK_DESCRIPTION": {
     "source": "辅音密集，名词的词尾会随句中角色变化。诗歌与书信保留着丰厚的书面传统，日常交谈则爱用昵称拉近距离。",
@@ -20,9 +20,9 @@
     "en": "Consonant clusters and changing noun endings give this language a distinctive rhythm. Poetry and letters sustain its written tradition, while affectionate names bring conversation closer."
   },
   "LOC_WORLD_LANGUAGE_LINDAL": {
-    "source": "林达尔语",
-    "zh_CN": "林达尔语",
-    "en": "Lindalic"
+    "source": "北湾语",
+    "zh_CN": "北湾语",
+    "en": "Northbay"
   },
   "LOC_WORLD_LANGUAGE_LINDAL_DESCRIPTION": {
     "source": "北方港口与小镇通行的语言。复合词可以把几个意思接在一起，语调的起伏让相近的词听来各有区别。",
@@ -30,9 +30,9 @@
     "en": "Spoken in northern ports and small towns. Compound words join ideas together, while pitch gives similar-sounding words their own contours."
   },
   "LOC_WORLD_LANGUAGE_MARASU": {
-    "source": "马拉苏语",
-    "zh_CN": "马拉苏语",
-    "en": "Marasan"
+    "source": "群岛通语",
+    "zh_CN": "群岛通语",
+    "en": "Archipelago Common"
   },
   "LOC_WORLD_LANGUAGE_MARASU_DESCRIPTION": {
     "source": "群岛之间往来的商人和旅客把它带到各个码头。词根加上前后缀就能换一种用法，重叠的词语也常出现在闲谈里。",
@@ -40,9 +40,9 @@
     "en": "Traders and travellers carry it between island harbours. Prefixes and suffixes give roots new uses, and repeated words are common in everyday talk."
   },
   "LOC_WORLD_LANGUAGE_SERRANOVA": {
-    "source": "塞拉诺瓦语",
-    "zh_CN": "塞拉诺瓦语",
-    "en": "Serranovan"
+    "source": "越洋罗曼语",
+    "zh_CN": "越洋罗曼语",
+    "en": "Oversea Romance"
   },
   "LOC_WORLD_LANGUAGE_SERRANOVA_DESCRIPTION": {
     "source": "曾随移民横渡大洋，如今在许多城市有了各自的口音。动词的变化交代人物和时间，问句与感叹句在纸上也有鲜明的起落。",
@@ -50,9 +50,9 @@
     "en": "Carried across the ocean by migrants, it has developed distinct city accents. Verb endings locate speakers and events in time, and its written questions and exclamations have clear beginnings and endings."
   },
   "LOC_WORLD_LANGUAGE_ORUVIA": {
-    "source": "奥鲁维亚语",
-    "zh_CN": "奥鲁维亚语",
-    "en": "Oruvian"
+    "source": "沿岸通语",
+    "zh_CN": "沿岸通语",
+    "en": "Coastal Common"
   },
   "LOC_WORLD_LANGUAGE_ORUVIA_DESCRIPTION": {
     "source": "沿海集市和内陆商路上都能听见它。名词分成不同类别，句中的修饰语随之呼应，外来词也在长久的往来中落下脚来。",
@@ -60,9 +60,9 @@
     "en": "Heard in coastal markets and along inland trade routes. Noun classes echo through the words around them, alongside borrowings left by generations of contact."
   },
   "LOC_WORLD_LANGUAGE_NASHIR": {
-    "source": "纳希尔语",
-    "zh_CN": "纳希尔语",
-    "en": "Nashiri"
+    "source": "沙海语",
+    "zh_CN": "沙海语",
+    "en": "Sandspeech"
   },
   "LOC_WORLD_LANGUAGE_NASHIR_DESCRIPTION": {
     "source": "书写从右向左铺开，许多词围绕一组辅音词根生长。朗读的书面语与街巷里的口语各有节奏，故事常在人声之间流传。",
@@ -70,9 +70,9 @@
     "en": "Written from right to left, with many words built around consonant roots. Formal readings and street conversation have different rhythms, and stories travel readily by voice."
   },
   "LOC_WORLD_LANGUAGE_SOLERIA": {
-    "source": "索莱里亚语",
-    "zh_CN": "索莱里亚语",
-    "en": "Solerian"
+    "source": "南岸语",
+    "zh_CN": "南岸语",
+    "en": "Southshore"
   },
   "LOC_WORLD_LANGUAGE_SOLERIA_DESCRIPTION": {
     "source": "元音清楚，句子常随着重音舒展。地方口音伴着市集、戏剧和歌声流动，书面语把许多城镇的读者联系在一起。",
@@ -80,9 +80,9 @@
     "en": "Clear vowels and strong stresses let sentences unfold. Local accents travel through markets, theatre and song, while the written language connects readers across towns."
   },
   "LOC_WORLD_LANGUAGE_AVENDON": {
-    "source": "阿文顿语",
-    "zh_CN": "阿文顿语",
-    "en": "Avendonian"
+    "source": "海峡语",
+    "zh_CN": "海峡语",
+    "en": "Channel Speech"
   },
   "LOC_WORLD_LANGUAGE_AVENDON_DESCRIPTION": {
     "source": "海峡两岸的口音一路传到远方。古老的词、航海用语和城市俚语挤在同一部词典里，日常说法又随地方而变。",
@@ -90,9 +90,9 @@
     "en": "Accents from the channel have travelled far. Old words, nautical terms and city slang share the same dictionaries, with everyday usage varying from place to place."
   },
   "LOC_WORLD_LANGUAGE_RHENIVIA": {
-    "source": "莱茵维亚语",
-    "zh_CN": "莱茵维亚语",
-    "en": "Rhenivian"
+    "source": "中陆语",
+    "zh_CN": "中陆语",
+    "en": "Midland"
   },
   "LOC_WORLD_LANGUAGE_RHENIVIA_DESCRIPTION": {
     "source": "复合词能把长长的概念收进一个词里，名词和冠词的变化标明句中的关系。严整的书面句式之外，各地口语保留着自己的声调。",
@@ -100,9 +100,9 @@
     "en": "Compounds gather long ideas into single words, while nouns and articles mark relationships within a sentence. Local speech keeps its own sounds alongside the structured written language."
   },
   "LOC_WORLD_LANGUAGE_MEHRAN": {
-    "source": "米赫兰语",
-    "zh_CN": "米赫兰语",
-    "en": "Mehrani"
+    "source": "高原语",
+    "zh_CN": "高原语",
+    "en": "Highland"
   },
   "LOC_WORLD_LANGUAGE_MEHRAN_DESCRIPTION": {
     "source": "文字从右向左连缀，诗句常借节奏与押韵记在人们心里。日常表达中的敬语、借词和委婉说法，沿着古老商道传到别处。",
@@ -110,9 +110,9 @@
     "en": "Its letters join from right to left, and rhythm and rhyme help poetry stay in memory. Polite forms, borrowed words and indirect phrasing have travelled along old trade routes."
   },
   "LOC_WORLD_LANGUAGE_CANTALIA": {
-    "source": "坎塔利亚语",
-    "zh_CN": "坎塔利亚语",
-    "en": "Cantalian"
+    "source": "南洋通语",
+    "zh_CN": "南洋通语",
+    "en": "Southern Common"
   },
   "LOC_WORLD_LANGUAGE_CANTALIA_DESCRIPTION": {
     "source": "远航者带来的语言在南方长出了新口音。简称、绰号和本地词进入日常交谈，旷野与港口的故事都有人用它讲述。",
@@ -120,9 +120,9 @@
     "en": "A language brought by voyagers and reshaped by southern accents. Short forms, nicknames and local words colour everyday speech, carrying stories of the bush and the harbours."
   },
   "LOC_WORLD_LANGUAGE_VISHARA": {
-    "source": "维沙拉语",
-    "zh_CN": "维沙拉语",
-    "en": "Visharan"
+    "source": "河原语",
+    "zh_CN": "河原语",
+    "en": "Riverplain"
   },
   "LOC_WORLD_LANGUAGE_VISHARA_DESCRIPTION": {
     "source": "街市、铁路和城市间的往来让这门语言广为人知。名词有性的区别，动词随人物与时态变化，口语里还保留着许多来自邻近语言的词。",
