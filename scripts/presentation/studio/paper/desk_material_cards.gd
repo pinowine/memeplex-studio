@@ -403,8 +403,8 @@ func focus_stack(kind: String, host: Control, rect: Rect2) -> void:
 		_focus_scroll.mouse_filter = Control.MOUSE_FILTER_STOP
 		host.add_child(_focus_scroll)
 		_focus_grid = GridContainer.new()
-		_focus_grid.add_theme_constant_override("h_separation", 8)
-		_focus_grid.add_theme_constant_override("v_separation", 10)
+		_focus_grid.add_theme_constant_override("h_separation", 6)
+		_focus_grid.add_theme_constant_override("v_separation", 6)
 		_focus_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_focus_scroll.add_child(_focus_grid)
 	_focus_kind = kind
@@ -474,7 +474,7 @@ func _refresh_focus_list() -> void:
 		_focus_grid.add_child(projection)
 		return
 	var dimensions := CardFace.minimum_card_size(_focus_kind)
-	_focus_grid.columns = maxi(1, floori((_focus_rect.size.x - 12) / (dimensions.x + 8)))
+	_focus_grid.columns = maxi(1, floori((_focus_rect.size.x - 12 + 6) / (dimensions.x + 6)))
 	for record: Dictionary in records:
 		var row := StackCard.new()
 		row.name = "StackItem" + str(record.id).to_pascal_case()

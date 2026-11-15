@@ -17,6 +17,7 @@ const StarterContextCard = preload("res://scripts/presentation/studio/paper/star
 const PaperSurface = preload("res://scripts/presentation/studio/paper/desk_popup_paper.gd")
 const EventDocument = preload("res://scripts/presentation/studio/paper/desk_event_document.gd")
 const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
+const Decoration = preload("res://scripts/presentation/studio/paper/desk_paper_decoration.gd")
 const ReceiptPanel = preload("res://scripts/presentation/studio/paper/desk_receipt_panel.gd")
 
 class PencilRule extends Control:
@@ -42,6 +43,8 @@ var _paper_holder: Control
 var _surface: Control
 var _stack_surface: Panel
 var _log_surface: Panel
+var _title_icon: Control
+var _footer: Control
 var _title_label: Label
 var _body_label: RichTextLabel
 var _event_document: Control
@@ -174,6 +177,7 @@ func inspection() -> Dictionary:
 		"event_document":_event_document.inspection() if _built and _event_document.visible else {},
 		"meme_mode":_meme_mode(), "meme_id":str(_details.get("meme_id", "")), "variant_id":str(_details.get("id", "")),
 		"source_pixels_per_world_unit":SOURCE_PIXELS_PER_UNIT, "slide_duration":SLIDE_DURATION,
+		"title_icon":_title_icon.inspection() if _built else {}, "paper_footer":_footer.inspection() if _built else {},
 		"receipt_panel":_log_surface.visible if _built else false, "receipt_width":_target_rect.size.x, "receipt_code":_log_surface.receipt_code if _built else ""}
 
 func _build() -> void:
@@ -199,6 +203,13 @@ func _build() -> void:
 	_log_surface.paper_margin = 16.0
 	_log_surface.hide()
 	_paper_holder.add_child(_log_surface)
+	_title_icon = Decoration.new()
+	_title_icon.name = "TitleIcon"
+	_paper_holder.add_child(_title_icon)
+	_footer = Decoration.new()
+	_footer.name = "PaperBarcode"
+	_footer.footer = true
+	_paper_holder.add_child(_footer)
 	_title_label = Label.new()
 	_title_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_title_label.name = "HandwrittenTitle"
@@ -285,20 +296,31 @@ func _layout_paper() -> void:
 	_log_surface.queue_redraw()
 	var title_size := Typography.point_size("section" if log_receipt else "subtitle")
 	_title_label.add_theme_font_size_override("font_size", title_size)
-	var padding := 16.0 if log_receipt else (24.0 if has_stack else minf(30.0, dimensions.x * .075))
+	var padding := 16.0 if log_receipt else 20.0
 	var width := maxf(1, dimensions.x - padding * 2.0)
 	var font := _font if _font != null else ThemeDB.fallback_font
 	var title_font := _title_label.get_theme_font("font")
-	var measured := title_font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,width,title_size)
+	var title_width := maxf(1,width - 36)
+	var measured := title_font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,title_width,title_size)
 	var title_height := minf(ceilf(measured.y),ceilf(title_font.get_height(title_size)*2)) if not _title.is_empty() else 0.0
 	_full_title_in_body = event_document or (not _title.is_empty() and measured.y>title_height+1)
 	_title_label.visible = not event_document and not _title.is_empty()
-	_title_label.position = Vector2(padding,25)
-	_title_label.size = Vector2(width,title_height)
+	_title_label.position = Vector2(padding+36,20)
+	_title_label.size = Vector2(title_width,title_height)
+	_title_icon.visible = _title_label.visible
+	_title_icon.kind = str(_details.get("kind", _details.get("stack_kind", "source")))
+	_title_icon.position = Vector2(padding,20)
+	_title_icon.size = Vector2(28,28)
+	_title_icon.queue_redraw()
+	_footer.visible = not event_document and not log_receipt
+	_footer.position = Vector2(padding,dimensions.y-44)
+	_footer.size = Vector2(width,28)
+	_footer.code = "%08d" % posmod(_title.hash(),100000000)
+	_footer.queue_redraw()
 	_rule.visible = not event_document and not _title.is_empty()
-	_rule.position = Vector2(padding,25+title_height+7)
+	_rule.position = Vector2(padding,20+maxf(28,title_height)+6)
 	_rule.size = Vector2(width,1)
-	var body_y := 25.0 if event_document else 25.0+title_height+(25.0 if not _title.is_empty() else 0.0)
+	var body_y := 20.0 if event_document else 20.0+maxf(28,title_height)+(16.0 if not _title.is_empty() else 0.0)
 	_render_body()
 	var content_width := maxf(1,width-16)
 	var natural_height := 0.0
@@ -315,14 +337,14 @@ func _layout_paper() -> void:
 		button.size = Vector2(content_width,button.custom_minimum_size.y)
 		natural_height += button.custom_minimum_size.y+5
 	if not _choice_buttons.is_empty(): natural_height-=5
-	var choice_height := minf(natural_height, dimensions.y - body_y - 28.0 if bool(_details.get("starter_pending", false)) else floorf(dimensions.y*.42))
+	var choice_height := minf(natural_height, dimensions.y - body_y - 64.0 if bool(_details.get("starter_pending", false)) else floorf(dimensions.y*.42))
 	_choice_scroll.visible = not _choice_buttons.is_empty()
-	_choice_scroll.position = Vector2(padding, body_y + maxf(0, (dimensions.y - body_y - 22 - choice_height) * .5) if starter else dimensions.y-22-choice_height)
+	_choice_scroll.position = Vector2(padding, body_y + maxf(0, (dimensions.y - body_y - 60 - choice_height) * .5) if starter else dimensions.y-60-choice_height)
 	_choice_scroll.size = Vector2(width,choice_height)
 	_choice_box.custom_minimum_size.x = content_width
 	_choice_box.size = Vector2(content_width,natural_height)
 	_body_label.position = Vector2(padding,body_y)
-	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(64 if log_receipt else (34 if choice_height>0 else 28))))
+	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-64))
 	_body_label.visible = not event_document and not (has_stack and _body.is_empty())
 	_surface.visible = not event_document and not has_stack and not log_receipt
 	_event_document.visible = event_document
@@ -333,7 +355,7 @@ func _layout_paper() -> void:
 	_stack_rule.visible = has_stack and not stack_only
 	_stack_label.visible = has_stack and not stack_only
 	if has_stack:
-		var divider_y := floorf(dimensions.y * .49)
+		var divider_y := minf(floorf(dimensions.y * .44), body_y+maxf(48,_body_label.get_content_height())+12)
 		_stack_rule.position = Vector2(padding, divider_y)
 		_stack_rule.size = Vector2(width, 1)
 		_stack_label.position = Vector2(padding, divider_y + 10)
@@ -342,7 +364,7 @@ func _layout_paper() -> void:
 		_stack_label.add_theme_font_override("font", font)
 		_body_label.size.y = maxf(48, divider_y - body_y - 16)
 		var stack_y := body_y if stack_only else divider_y + 42
-		var next_rect := Rect2(Vector2(padding, stack_y), Vector2(width, dimensions.y - stack_y - 20))
+		var next_rect := Rect2(Vector2(padding, stack_y), Vector2(width, dimensions.y - stack_y - 60))
 		var changed := _stack_host.position != next_rect.position or _stack_host.size != next_rect.size
 		_stack_host.position = next_rect.position
 		_stack_host.size = next_rect.size

@@ -5,6 +5,7 @@ signal country_hovered(id: String)
 signal close_requested
 
 const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
+const Decoration = preload("res://scripts/presentation/studio/paper/desk_paper_decoration.gd")
 const MemeDetailView = preload("res://scripts/presentation/map/meme_map_detail_view.gd")
 const MemeFields = preload("res://scripts/presentation/map/meme_map_fields.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
@@ -43,6 +44,7 @@ var _meme_details: Dictionary = {}
 var _meme_header_key := ""
 var _meme_view: Control
 var _meme_close: Button
+var _footer: Control
 var _column: VBoxContainer
 var _header: VBoxContainer
 var _scroll: ScrollContainer
@@ -61,14 +63,14 @@ var scroll_vertical: int:
 
 func _init() -> void:
 	var paper := Style.new()
-	for side: int in [SIDE_LEFT, SIDE_RIGHT, SIDE_TOP, SIDE_BOTTOM]: paper.set_content_margin(side, 20)
+	for side: int in [SIDE_LEFT, SIDE_RIGHT, SIDE_TOP, SIDE_BOTTOM]: paper.set_content_margin(side, 16)
 	add_theme_stylebox_override("panel", paper)
 	var layout := VBoxContainer.new()
-	layout.add_theme_constant_override("separation", 12)
+	layout.add_theme_constant_override("separation", 8)
 	add_child(layout)
 	_header = VBoxContainer.new()
 	_header.name = "StickyHeader"
-	_header.add_theme_constant_override("separation", 12)
+	_header.add_theme_constant_override("separation", 8)
 	layout.add_child(_header)
 	_scroll = ScrollContainer.new()
 	_scroll.name = "ArticleScroll"
@@ -77,6 +79,11 @@ func _init() -> void:
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_scroll.mouse_force_pass_scroll_events = false
 	layout.add_child(_scroll)
+	_footer = Decoration.new()
+	_footer.name = "PaperBarcode"
+	_footer.footer = true
+	_footer.custom_minimum_size = Vector2(0,28)
+	layout.add_child(_footer)
 	var gutter := MarginContainer.new()
 	gutter.name = "ScrollbarGutter"
 	gutter.add_theme_constant_override("margin_right", 16)
@@ -87,7 +94,7 @@ func _init() -> void:
 	_column.name = "ArticleSections"
 	_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_column.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	_column.add_theme_constant_override("separation", 12)
+	_column.add_theme_constant_override("separation", 8)
 	gutter.add_child(_column)
 	var overlay := CanvasLayer.new()
 	overlay.layer = 60
@@ -109,6 +116,8 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 	_meme_close = null
 	_blocks = blocks.duplicate(true)
 	_headline = full_title
+	_footer.code = "%08d" % posmod(full_title.hash(),100000000)
+	_footer.queue_redraw()
 	_hide_hover()
 	_impact = null
 	_impact_labels.clear()
@@ -120,10 +129,16 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 			container.remove_child(child)
 			child.queue_free()
 	if not full_title.is_empty():
+		var headline := HBoxContainer.new()
+		headline.name = "HeadlineRow"
+		headline.add_theme_constant_override("separation", 8)
+		headline.add_child(_icon("source"))
+		_header.add_child(headline)
 		var title := _label(full_title, 22, Style.INK)
 		title.name = "Headline"
 		title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
-		_header.add_child(title)
+		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		headline.add_child(title)
 	for block: Dictionary in blocks:
 		match str(block.get("role", "")):
 			"metadata": _add_metadata(block)
@@ -437,6 +452,8 @@ func set_meme_details(details: Dictionary) -> void:
 		_column.add_child(_meme_view)
 	_meme_details = details.duplicate(true)
 	_headline = str(details.title)
+	_footer.code = "%08d" % posmod(_headline.hash(),100000000)
+	_footer.queue_redraw()
 	var header_key := str([details.title, details.get("source_kind", ""), details.get("origin_title", ""), TranslationServer.get_locale()])
 	if header_key != _meme_header_key:
 		_meme_header_key = header_key
@@ -451,6 +468,7 @@ func _rebuild_meme_header(details: Dictionary) -> void:
 	heading.name = "MemeHeadline"
 	heading.add_theme_constant_override("separation", 12)
 	_header.add_child(heading)
+	heading.add_child(_icon("source"))
 	var title := _label(str(details.title), 22, Style.INK)
 	title.name = "Headline"
 	title.max_lines_visible = 2
@@ -503,7 +521,7 @@ func inspection() -> Dictionary:
 		for segment: Dictionary in _impact.get_meta("segments"): impact_text.append(str(segment.text))
 	var narrative_gap := _article_rule.global_position.y - (_article.global_position.y + _article.size.y) if _article != null and _article_rule != null else 0.0
 	var bar := _scroll.get_v_scroll_bar()
-	return {"blocks":_blocks.duplicate(true), "headline":_headline, "scrollable":true,
+	return {"blocks":_blocks.duplicate(true), "headline":_headline, "paper_footer":_footer.inspection(), "scrollable":true,
 		"meme_mode":_meme_mode, "meme_details":_meme_view.inspection() if _meme_mode else {},
 		"meme_sections":_meme_details.get("sections", []).duplicate(true), "paper_style":"event",
 		"close_button_visible":_meme_mode and _meme_close.is_visible_in_tree(),
