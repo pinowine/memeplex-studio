@@ -135,9 +135,9 @@
     "en": "Agricultural workers"
   },
   "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS_DESCRIPTION": {
-    "source": "把表达放进种植、养殖与农产品流通的日常讨论。",
-    "zh_CN": "把表达放进种植、养殖与农产品流通的日常讨论。",
-    "en": "Addresses people discussing farming, livestock and the movement of agricultural goods."
+    "source": "按播种和收获安排日子的人。天气、收购价和下一季的投入，常比日历更能决定他们什么时候忙。",
+    "zh_CN": "按播种和收获安排日子的人。天气、收购价和下一季的投入，常比日历更能决定他们什么时候忙。",
+    "en": "People whose days follow sowing and harvest. Weather, crop prices and next season's costs often matter more than the calendar."
   },
   "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS": {
     "source": "产业工人",
@@ -145,9 +145,9 @@
     "en": "Industrial workers"
   },
   "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS_DESCRIPTION": {
-    "source": "把表达放进车间、生产排班和劳动条件的讨论。",
-    "zh_CN": "把表达放进车间、生产排班和劳动条件的讨论。",
-    "en": "Addresses people discussing workshops, production shifts and working conditions."
+    "source": "在车间与生产线上交接班的人，熟悉机器的声响，也在意工时、工资和岗位的变化。",
+    "zh_CN": "在车间与生产线上交接班的人，熟悉机器的声响，也在意工时、工资和岗位的变化。",
+    "en": "Shift workers in workshops and on production lines. They know the sound of their machines and watch changes to hours, pay and jobs."
   },
   "LOC_WORLD_GROUP_SERVICE_WORKERS": {
     "source": "服务业从业者",
@@ -155,9 +155,9 @@
     "en": "Service workers"
   },
   "LOC_WORLD_GROUP_SERVICE_WORKERS_DESCRIPTION": {
-    "source": "把表达放进餐饮、零售与接待工作的日常交流。",
-    "zh_CN": "把表达放进餐饮、零售与接待工作的日常交流。",
-    "en": "Addresses people exchanging experiences of hospitality, retail and customer service."
+    "source": "从开门营业忙到送走最后一位客人。排班、客流和顾客的评价会穿进他们下班后的聊天。",
+    "zh_CN": "从开门营业忙到送走最后一位客人。排班、客流和顾客的评价会穿进他们下班后的聊天。",
+    "en": "Their working day runs from opening time to the last customer. Rotas, busy periods and customer reviews follow them into conversations after work."
   },
   "LOC_WORLD_GROUP_HEALTH_WORKERS": {
     "source": "医护人员",
@@ -165,9 +165,9 @@
     "en": "Health workers"
   },
   "LOC_WORLD_GROUP_HEALTH_WORKERS_DESCRIPTION": {
-    "source": "把表达放进医疗服务、照护分工与轮班工作的讨论。",
-    "zh_CN": "把表达放进医疗服务、照护分工与轮班工作的讨论。",
-    "en": "Addresses people discussing health services, care responsibilities and shift work."
+    "source": "照看病人、安排治疗的人，有人值夜班，有人跑社区。诊室里的经历和交接时的消息，把分散的同事连在一起。",
+    "zh_CN": "照看病人、安排治疗的人，有人值夜班，有人跑社区。诊室里的经历和交接时的消息，把分散的同事连在一起。",
+    "en": "People caring for patients and arranging treatment, from night shifts to community visits. Experiences in consulting rooms and handover notes connect colleagues who rarely meet."
   },
   "LOC_WORLD_GROUP_EDUCATORS": {
     "source": "教育工作者",
@@ -175,9 +175,9 @@
     "en": "Educators"
   },
   "LOC_WORLD_GROUP_EDUCATORS_DESCRIPTION": {
-    "source": "把表达放进教学、学习资源与社区教育的讨论。",
-    "zh_CN": "把表达放进教学、学习资源与社区教育的讨论。",
-    "en": "Addresses people discussing teaching, learning resources and community education."
+    "source": "把知识讲给别人听的人。备课、答疑和改作业之外，他们也讨论学生的处境和教学里遇到的难题。",
+    "zh_CN": "把知识讲给别人听的人。备课、答疑和改作业之外，他们也讨论学生的处境和教学里遇到的难题。",
+    "en": "People who make knowledge understandable. Beyond preparing lessons and marking work, they talk about students' lives and the problems that teaching brings."
   },
   "LOC_WORLD_GROUP_SMALL_BUSINESS": {
     "source": "小商户",
@@ -185,9 +185,9 @@
     "en": "Small business owners"
   },
   "LOC_WORLD_GROUP_SMALL_BUSINESS_DESCRIPTION": {
-    "source": "把表达放进店铺经营、采购与街坊生意的讨论。",
-    "zh_CN": "把表达放进店铺经营、采购与街坊生意的讨论。",
-    "en": "Addresses people discussing shopkeeping, supplies and neighbourhood businesses."
+    "source": "守着摊位或小店谋生的人，常客的习惯、房租和进货账都记在心里。街坊一句话，有时比广告传得快。",
+    "zh_CN": "守着摊位或小店谋生的人，常客的习惯、房租和进货账都记在心里。街坊一句话，有时比广告传得快。",
+    "en": "People making a living from stalls and small shops. They remember regular customers, rent dates and supplier bills. A neighbour's word can travel faster than an advert."
   },
   "LOC_WORLD_GROUP_TECH_WORKERS": {
     "source": "技术从业者",
@@ -195,9 +195,9 @@
     "en": "Tech workers"
   },
   "LOC_WORLD_GROUP_TECH_WORKERS_DESCRIPTION": {
-    "source": "把表达放进技术工具、研发协作与工作变化的讨论。",
-    "zh_CN": "把表达放进技术工具、研发协作与工作变化的讨论。",
-    "en": "Addresses people discussing technical tools, research collaboration and changes at work."
+    "source": "与设备、软件和技术系统打交道的人。工具更新得很快，故障、经验和招工消息在同行之间流转。",
+    "zh_CN": "与设备、软件和技术系统打交道的人。工具更新得很快，故障、经验和招工消息在同行之间流转。",
+    "en": "People working with equipment, software and technical systems. Tools change quickly; faults, practical advice and job leads circulate among peers."
   },
   "LOC_WORLD_GROUP_RETIREES": {
     "source": "退休居民",
@@ -205,9 +205,9 @@
     "en": "Retired residents"
   },
   "LOC_WORLD_GROUP_RETIREES_DESCRIPTION": {
-    "source": "把表达放进退休生活、社区往来与代际照护的讨论。",
-    "zh_CN": "把表达放进退休生活、社区往来与代际照护的讨论。",
-    "en": "Addresses people discussing retirement, community life and care across generations."
+    "source": "从固定工作中退下来，重新安排日常生活的人。有人照顾家人，有人参加社区活动，旧同事和邻居仍是重要的消息来源。",
+    "zh_CN": "从固定工作中退下来，重新安排日常生活的人。有人照顾家人，有人参加社区活动，旧同事和邻居仍是重要的消息来源。",
+    "en": "People rebuilding their routines after leaving regular work. Family care, community activities, former colleagues and neighbours keep their days connected."
   },
   "LOC_WORLD_GROUP_DIASPORAS": {
     "source": "跨境社群",
@@ -215,9 +215,9 @@
     "en": "Diaspora communities"
   },
   "LOC_WORLD_GROUP_DIASPORAS_DESCRIPTION": {
-    "source": "把表达放进跨境生活、异地家庭与多语交流的讨论。",
-    "zh_CN": "把表达放进跨境生活、异地家庭与多语交流的讨论。",
-    "en": "Addresses people discussing life across borders, families living apart and multilingual exchange."
+    "source": "在别处生活，同时与故乡保持往来的人。聊天群里的消息跨着时区，语言和习惯也在新生活里慢慢变化。",
+    "zh_CN": "在别处生活，同时与故乡保持往来的人。聊天群里的消息跨着时区，语言和习惯也在新生活里慢慢变化。",
+    "en": "People living elsewhere while keeping ties with home. Their group messages cross time zones, and their language and habits change with their new lives."
   },
   "LOC_WORLD_TOPIC_HOUSING": {
     "source": "住房",
@@ -225,9 +225,9 @@
     "en": "Housing"
   },
   "LOC_WORLD_TOPIC_HOUSING_DESCRIPTION": {
-    "source": "把表达接到租住、房屋负担与居住条件上。",
-    "zh_CN": "把表达接到租住、房屋负担与居住条件上。",
-    "en": "Connects the expression to rent, housing costs and living conditions."
+    "source": "从租金、搬家到买房，围绕住处作出的选择。房间的大小、离工作的远近和每月的账单都在里面。",
+    "zh_CN": "从租金、搬家到买房，围绕住处作出的选择。房间的大小、离工作的远近和每月的账单都在里面。",
+    "en": "Choices about finding somewhere to live: rent, moving, buying, space, the journey to work and the monthly bill."
   },
   "LOC_WORLD_TOPIC_HEALTHCARE": {
     "source": "医疗健康",
@@ -235,9 +235,9 @@
     "en": "Healthcare"
   },
   "LOC_WORLD_TOPIC_HEALTHCARE_DESCRIPTION": {
-    "source": "把表达接到就医、健康服务与公共卫生上。",
-    "zh_CN": "把表达接到就医、健康服务与公共卫生上。",
-    "en": "Connects the expression to medical visits, health services and public health."
+    "source": "身体出了什么问题，去哪里求助，治疗要花多少钱。挂号、用药和照顾病人的经验很容易引出长谈。",
+    "zh_CN": "身体出了什么问题，去哪里求助，治疗要花多少钱。挂号、用药和照顾病人的经验很容易引出长谈。",
+    "en": "What is wrong, where to seek help and how to pay for treatment. Appointments, medicines and caring for someone can start long conversations."
   },
   "LOC_WORLD_TOPIC_CLIMATE": {
     "source": "气候环境",
@@ -245,9 +245,9 @@
     "en": "Climate"
   },
   "LOC_WORLD_TOPIC_CLIMATE_DESCRIPTION": {
-    "source": "把表达接到天气变化、生态与气候适应上。",
-    "zh_CN": "把表达接到天气变化、生态与气候适应上。",
-    "en": "Connects the expression to changing weather, ecosystems and climate adaptation."
+    "source": "人们如何应对天气与环境的长期变化，也谈眼前的酷暑、雨季和身边的河流。",
+    "zh_CN": "人们如何应对天气与环境的长期变化，也谈眼前的酷暑、雨季和身边的河流。",
+    "en": "How people live with long-term changes in weather and the environment, alongside this summer's heat, the rains and the river nearby."
   },
   "LOC_WORLD_TOPIC_ENERGY": {
     "source": "能源",
@@ -255,9 +255,9 @@
     "en": "Energy"
   },
   "LOC_WORLD_TOPIC_ENERGY_DESCRIPTION": {
-    "source": "把表达接到电力、燃料与能源使用上。",
-    "zh_CN": "把表达接到电力、燃料与能源使用上。",
-    "en": "Connects the expression to electricity, fuel and energy use."
+    "source": "灯为什么会熄，油价为什么又变了。电力、燃料与供给的选择，最后都会落到生产和生活的开销上。",
+    "zh_CN": "灯为什么会熄，油价为什么又变了。电力、燃料与供给的选择，最后都会落到生产和生活的开销上。",
+    "en": "Why the lights went out or fuel prices changed again. Decisions about power and supply become costs in working and everyday life."
   },
   "LOC_WORLD_TOPIC_FOOD": {
     "source": "饮食与粮食",
@@ -265,9 +265,9 @@
     "en": "Food"
   },
   "LOC_WORLD_TOPIC_FOOD_DESCRIPTION": {
-    "source": "把表达接到餐桌、食品供应与农业收成上。",
-    "zh_CN": "把表达接到餐桌、食品供应与农业收成上。",
-    "en": "Connects the expression to meals, food supplies and agricultural harvests."
+    "source": "从田地到餐桌，一顿饭经过许多人的手。口味、食材价格、供应和收成都能成为谈话的起点。",
+    "zh_CN": "从田地到餐桌，一顿饭经过许多人的手。口味、食材价格、供应和收成都能成为谈话的起点。",
+    "en": "A meal passes through many hands on its way from field to table. Taste, ingredient prices, supplies and harvests all give people something to discuss."
   },
   "LOC_WORLD_TOPIC_TRANSPORT": {
     "source": "交通出行",
@@ -275,9 +275,9 @@
     "en": "Transport"
   },
   "LOC_WORLD_TOPIC_TRANSPORT_DESCRIPTION": {
-    "source": "把表达接到通勤、公共交通与物流上。",
-    "zh_CN": "把表达接到通勤、公共交通与物流上。",
-    "en": "Connects the expression to commuting, public transport and logistics."
+    "source": "怎样准时到达，又怎样把东西送到。通勤、公共交通和货运把不同地方的人接在同一张时间表上。",
+    "zh_CN": "怎样准时到达，又怎样把东西送到。通勤、公共交通和货运把不同地方的人接在同一张时间表上。",
+    "en": "Getting people and goods where they need to be. Commuting, public transport and freight connect distant places through shared timetables."
   },
   "LOC_WORLD_TOPIC_MIGRATION": {
     "source": "迁移与侨居",
@@ -285,9 +285,9 @@
     "en": "Migration"
   },
   "LOC_WORLD_TOPIC_MIGRATION_DESCRIPTION": {
-    "source": "把表达接到迁居、跨境生活与异地联系上。",
-    "zh_CN": "把表达接到迁居、跨境生活与异地联系上。",
-    "en": "Connects the expression to relocation, life across borders and long-distance ties."
+    "source": "离开熟悉的地方，到新的住处开始生活。手续、工作、家人和远方的联系，常常同时悬在心上。",
+    "zh_CN": "离开熟悉的地方，到新的住处开始生活。手续、工作、家人和远方的联系，常常同时悬在心上。",
+    "en": "Leaving a familiar place and starting life somewhere new. Paperwork, work, family and ties across distance often compete for attention."
   },
   "LOC_WORLD_TOPIC_TOURISM": {
     "source": "旅游",
@@ -295,9 +295,9 @@
     "en": "Tourism"
   },
   "LOC_WORLD_TOPIC_TOURISM_DESCRIPTION": {
-    "source": "把表达接到旅行、游客接待与地方体验上。",
-    "zh_CN": "把表达接到旅行、游客接待与地方体验上。",
-    "en": "Connects the expression to travel, visitor services and local experiences."
+    "source": "暂时去别处看看的人，与在那里过日子的人相遇。路线、住宿、风景和接待游客的生意都由此展开。",
+    "zh_CN": "暂时去别处看看的人，与在那里过日子的人相遇。路线、住宿、风景和接待游客的生意都由此展开。",
+    "en": "Visitors meet people living their ordinary lives elsewhere. Routes, rooms, scenery and the businesses serving travellers grow around those encounters."
   },
   "LOC_WORLD_TOPIC_TRADE": {
     "source": "贸易",
@@ -305,9 +305,9 @@
     "en": "Trade"
   },
   "LOC_WORLD_TOPIC_TRADE_DESCRIPTION": {
-    "source": "把表达接到货物流通、市场交易与跨境生意上。",
-    "zh_CN": "把表达接到货物流通、市场交易与跨境生意上。",
-    "en": "Connects the expression to goods, market exchange and cross-border business."
+    "source": "货物从哪里来，价格由谁谈，能否按约定送到。跨境买卖也把港口、工厂和商店的日子联系起来。",
+    "zh_CN": "货物从哪里来，价格由谁谈，能否按约定送到。跨境买卖也把港口、工厂和商店的日子联系起来。",
+    "en": "Where goods come from, who agrees the price and whether deliveries arrive as promised. Trade links the working days of ports, factories and shops."
   },
   "LOC_WORLD_TOPIC_SCIENCE": {
     "source": "科学",
@@ -315,9 +315,9 @@
     "en": "Science"
   },
   "LOC_WORLD_TOPIC_SCIENCE_DESCRIPTION": {
-    "source": "把表达接到研究发现、科学解释与实验上。",
-    "zh_CN": "把表达接到研究发现、科学解释与实验上。",
-    "en": "Connects the expression to research findings, scientific explanations and experiments."
+    "source": "提出问题，再拿观察和实验去检验。新发现怎样被解释、谁来相信，也是讨论的一部分。",
+    "zh_CN": "提出问题，再拿观察和实验去检验。新发现怎样被解释、谁来相信，也是讨论的一部分。",
+    "en": "Questions tested through observation and experiment. How discoveries are explained, and who believes them, is part of the conversation too."
   },
   "LOC_WORLD_TOPIC_CARE": {
     "source": "家庭照护",
@@ -325,9 +325,9 @@
     "en": "Care"
   },
   "LOC_WORLD_TOPIC_CARE_DESCRIPTION": {
-    "source": "把表达接到育儿、养老与日常照护分工上。",
-    "zh_CN": "把表达接到育儿、养老与日常照护分工上。",
-    "en": "Connects the expression to childcare, elder care and everyday care responsibilities."
+    "source": "日常照顾怎样分担，时间又从哪里来。育儿、养老和病中陪伴，把家里的事带进了公共讨论。",
+    "zh_CN": "日常照顾怎样分担，时间又从哪里来。育儿、养老和病中陪伴，把家里的事带进了公共讨论。",
+    "en": "Sharing the daily work of looking after others, and finding the time. Childcare, elder care and supporting someone through illness bring household questions into public discussion."
   },
   "LOC_WORLD_TOPIC_PUBLIC_SAFETY": {
     "source": "公共安全",
@@ -335,9 +335,9 @@
     "en": "Public safety"
   },
   "LOC_WORLD_TOPIC_PUBLIC_SAFETY_DESCRIPTION": {
-    "source": "把表达接到事故预防、应急与社区安全上。",
-    "zh_CN": "把表达接到事故预防、应急与社区安全上。",
-    "en": "Connects the expression to accident prevention, emergency response and community safety."
+    "source": "街道和社区怎样让人安心生活。事故、治安与应急准备，会把平时互不相识的人聚到一起。",
+    "zh_CN": "街道和社区怎样让人安心生活。事故、治安与应急准备，会把平时互不相识的人聚到一起。",
+    "en": "What makes streets and neighbourhoods feel safe to live in. Accidents, crime and preparing for emergencies can bring strangers together."
   },
   "LOC_WORLD_LANGUAGE_ALDEN_NOTE": {
     "source": "“Call me Ishmael.”\\n赫尔曼·梅尔维尔《白鲸》第一章（英语，1851）",
@@ -403,5 +403,110 @@
     "source": "“सभी मनुष्यों को गौरव और अधिकारों के मामले में जन्मजात स्वतन्त्रता और समानता प्राप्त है।”\\n《世界人权宣言》第一条（印地语，1948）",
     "zh_CN": "“सभी मनुष्यों को गौरव और अधिकारों के मामले में जन्मजात स्वतन्त्रता और समानता प्राप्त है।”\\n《世界人权宣言》第一条（印地语，1948）",
     "en": "“सभी मनुष्यों को गौरव और अधिकारों के मामले में जन्मजात स्वतन्त्रता और समानता प्राप्त है।”\\nUniversal Declaration of Human Rights, article 1 (Hindi, 1948)"
+  },
+  "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS_NOTE": {
+    "source": "收购站门口的价目表被雨浸湿了，新的数字直接写在旧价上。",
+    "zh_CN": "收购站门口的价目表被雨浸湿了，新的数字直接写在旧价上。",
+    "en": "Rain has soaked the price list outside the buying station. The new figures are written over the old ones."
+  },
+  "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS_NOTE": {
+    "source": "交班簿上夹着一张纸：第三台机器今天还是那个响声。",
+    "zh_CN": "交班簿上夹着一张纸：第三台机器今天还是那个响声。",
+    "en": "A note sits in the shift book: the third machine is still making that noise."
+  },
+  "LOC_WORLD_GROUP_SERVICE_WORKERS_NOTE": {
+    "source": "关店前还剩一张没擦的桌子，末班车快到了。",
+    "zh_CN": "关店前还剩一张没擦的桌子，末班车快到了。",
+    "en": "One table still needs wiping before closing. The last bus is due."
+  },
+  "LOC_WORLD_GROUP_HEALTH_WORKERS_NOTE": {
+    "source": "值班表边缘写满换班的名字，有一个名字被圈了两次。",
+    "zh_CN": "值班表边缘写满换班的名字，有一个名字被圈了两次。",
+    "en": "Shift swaps fill the edge of the rota. One name has been circled twice."
+  },
+  "LOC_WORLD_GROUP_EDUCATORS_NOTE": {
+    "source": "讲义最后一页留着半道题，旁边写着：明天接着讲。",
+    "zh_CN": "讲义最后一页留着半道题，旁边写着：明天接着讲。",
+    "en": "Half a problem remains on the last page of the notes. Beside it: continue tomorrow."
+  },
+  "LOC_WORLD_GROUP_SMALL_BUSINESS_NOTE": {
+    "source": "账本里有一页只记着赊账的姓氏，熟客来了才添全名。",
+    "zh_CN": "账本里有一页只记着赊账的姓氏，熟客来了才添全名。",
+    "en": "One ledger page lists only the surnames of customers buying on credit. Full names are added when they return."
+  },
+  "LOC_WORLD_GROUP_TECH_WORKERS_NOTE": {
+    "source": "问题单终于关闭，评论区又多了一句：我这里也复现了。",
+    "zh_CN": "问题单终于关闭，评论区又多了一句：我这里也复现了。",
+    "en": "The issue is finally closed. Another comment arrives: I can reproduce it here too."
+  },
+  "LOC_WORLD_GROUP_RETIREES_NOTE": {
+    "source": "合唱队把排练改到了周四，通知贴在一张旧节目单的背面。",
+    "zh_CN": "合唱队把排练改到了周四，通知贴在一张旧节目单的背面。",
+    "en": "Choir practice has moved to Thursday. The notice is on the back of an old programme."
+  },
+  "LOC_WORLD_GROUP_DIASPORAS_NOTE": {
+    "source": "一个人说早安，另一个人刚准备关灯。",
+    "zh_CN": "一个人说早安，另一个人刚准备关灯。",
+    "en": "One person says good morning as another gets ready to turn out the light."
+  },
+  "LOC_WORLD_TOPIC_HOUSING_NOTE": {
+    "source": "看房时拍的照片里，窗户外面刚好经过一列火车。",
+    "zh_CN": "看房时拍的照片里，窗户外面刚好经过一列火车。",
+    "en": "A train passes outside the window in the flat-viewing photo."
+  },
+  "LOC_WORLD_TOPIC_HEALTHCARE_NOTE": {
+    "source": "候诊单上的号码又往前跳了一格。",
+    "zh_CN": "候诊单上的号码又往前跳了一格。",
+    "en": "The number on the waiting-room display moves forward again."
+  },
+  "LOC_WORLD_TOPIC_CLIMATE_NOTE": {
+    "source": "往年的水位线留在桥墩上，今年的线又高了一点。",
+    "zh_CN": "往年的水位线留在桥墩上，今年的线又高了一点。",
+    "en": "Last year's waterline is still on the bridge pier. This year's is a little higher."
+  },
+  "LOC_WORLD_TOPIC_ENERGY_NOTE": {
+    "source": "停电通知压在冰箱贴下面。",
+    "zh_CN": "停电通知压在冰箱贴下面。",
+    "en": "The power-cut notice is held under a fridge magnet."
+  },
+  "LOC_WORLD_TOPIC_FOOD_NOTE": {
+    "source": "食谱上的用量改了三回，只有盐那一栏写着少许。",
+    "zh_CN": "食谱上的用量改了三回，只有盐那一栏写着少许。",
+    "en": "The quantities in the recipe have changed three times. Salt still just says a little."
+  },
+  "LOC_WORLD_TOPIC_TRANSPORT_NOTE": {
+    "source": "站牌上贴着临时改道的箭头。",
+    "zh_CN": "站牌上贴着临时改道的箭头。",
+    "en": "A temporary diversion arrow is taped to the bus stop."
+  },
+  "LOC_WORLD_TOPIC_MIGRATION_NOTE": {
+    "source": "行李里最先拿出来的是插头转换器。",
+    "zh_CN": "行李里最先拿出来的是插头转换器。",
+    "en": "The plug adaptor is the first thing out of the luggage."
+  },
+  "LOC_WORLD_TOPIC_TOURISM_NOTE": {
+    "source": "明信片寄出时，寄信的人已经到家了。",
+    "zh_CN": "明信片寄出时，寄信的人已经到家了。",
+    "en": "By the time the postcard is posted, its writer is already home."
+  },
+  "LOC_WORLD_TOPIC_TRADE_NOTE": {
+    "source": "箱子上的目的地盖了新章，旧地址还能辨认出来。",
+    "zh_CN": "箱子上的目的地盖了新章，旧地址还能辨认出来。",
+    "en": "A new destination is stamped on the crate. The old address is still legible."
+  },
+  "LOC_WORLD_TOPIC_SCIENCE_NOTE": {
+    "source": "实验记录的空白处写着：换一组样本再试。",
+    "zh_CN": "实验记录的空白处写着：换一组样本再试。",
+    "en": "In a blank space in the lab book: try another sample."
+  },
+  "LOC_WORLD_TOPIC_CARE_NOTE": {
+    "source": "药盒旁边放着一张轮班表。",
+    "zh_CN": "药盒旁边放着一张轮班表。",
+    "en": "A rota lies beside the pill organiser."
+  },
+  "LOC_WORLD_TOPIC_PUBLIC_SAFETY_NOTE": {
+    "source": "楼道里的手电筒刚换上新电池。",
+    "zh_CN": "楼道里的手电筒刚换上新电池。",
+    "en": "The torch in the stairwell has fresh batteries."
   }
 }

@@ -122,7 +122,9 @@ static func apply_to(details: Dictionary) -> void:
  var id := str(details.get("id", ""))
  if DESCRIPTIONS.has(id): details.description = DESCRIPTIONS[id]
  var commentary := str(COMMENTARY.get(id, ""))
- if id.begins_with("language_") and not COMMENTARY.has(id): commentary = "LOC_WORLD_LANGUAGE_" + id.trim_prefix("language_").to_upper() + "_NOTE"
+ if not COMMENTARY.has(id):
+  var note := "LOC_WORLD_" + id.to_upper() + "_NOTE"
+  if not DeskLocalization.text_source(note).is_empty(): commentary = note
  details.commentary = details.get("commentary", commentary)
  details.hover_description = details.get("hover_description", hover_description(id))
  details.hover_note = details.get("hover_note", hover_note(id))
@@ -139,7 +141,8 @@ static func stack_description(kind: String) -> String:
 
 static func hover_note(id: String) -> String:
  if HOVER_NOTES.has(id): return DeskLocalization.source(str(HOVER_NOTES[id]))
- if id.begins_with("language_"): return DeskLocalization.source("LOC_WORLD_LANGUAGE_" + id.trim_prefix("language_").to_upper() + "_NOTE")
+ var note := "LOC_WORLD_" + id.to_upper() + "_NOTE"
+ if not DeskLocalization.text_source(note).is_empty(): return DeskLocalization.source(note)
  var definitions: Resource = load("res://data/context/context_resources.tres")
  for entry: Dictionary in definitions.entries:
   if str(entry.id) == id: return stack_note(str(entry.kind))
