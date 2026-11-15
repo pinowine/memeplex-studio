@@ -1336,6 +1336,9 @@ func show_meme_details(details: Dictionary) -> bool:
 	return _slot_reader.show_meme_details(details, _slot_reader.get_viewport().get_visible_rect())
 
 func _show_component_details() -> void:
+	if _component_target in ["fax", "fax/phone"]:
+		if _slot_reader != null: _slot_reader.hide_details()
+		return
 	if _slot_reader == null or _component_target.is_empty() or slot_details_active(): return
 	var details := _component_details()
 	if details.is_empty(): return
