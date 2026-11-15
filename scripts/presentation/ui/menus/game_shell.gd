@@ -23,6 +23,8 @@ var _tutorial_dragged_card: Control
 var _tutorial_drag_origin := Vector2.ZERO
 var _tutorial_context_slot := -1
 var _tutorial_context_card_key := ""
+var _tutorial_return_rect := Rect2()
+var _tutorial_return_stamp := ""
 
 func configure(owner_page: Node2D) -> void:
 	page = owner_page
@@ -155,7 +157,8 @@ func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 	if _id in ["starter", "starter_confirm"]:
 		page.desk._slot_reader.hide_details()
 		sync_starter_options()
-	if _id in ["editor_context", "expression", "module_result"]: _reveal_editor_readout(_id)
+	if _id in ["meme_name", "editor_context", "expression", "module_result"]: _reveal_editor_readout(_id)
+	if _id in ["spread_tree", "spread_details", "skill"]: page.hud.design_workbench()._select_skill("text")
 	var action := str(step.get("action", ""))
 	if action == "country_selected" and page.atlas.selected_country >= 0:
 		tutorial.observe_action("country_selected", {"index":page.atlas.selected_country})
@@ -177,7 +180,7 @@ func _reveal_editor_readout(step_id: String) -> void:
 	await get_tree().process_frame
 	if not tutorial._active or str(tutorial.inspection().step.get("id", "")) != step_id: return
 	var editor: Control = page.hud.design_workbench()
-	var target: Control = editor._overview_data if step_id == "editor_context" else editor._final_expression
+	var target: Control = editor._overview_name if step_id == "meme_name" else (editor._overview_data if step_id == "editor_context" else editor._final_expression)
 	editor._detail_scroll.ensure_control_visible(target)
 
 func _target(id: String) -> Variant:
@@ -187,8 +190,8 @@ func _target(id: String) -> Variant:
 	if target is Control and not target.is_visible_in_tree(): return null
 	if page.has_meta("studio3d"):
 		target = page.get_meta("studio3d").project_target(target)
-	if id in ["editor/context", "editor/details", "editor/expression"]:
-		var area: Rect2 = target if target is Rect2 else (target.get_global_rect() if target is Control else Rect2())
+	if id in ["editor/name", "editor/context", "editor/details", "editor/expression"]:
+		var area: Rect2 = target if target is Rect2 else (_tutorial_project_rect(target) if target is Control else Rect2())
 		return area.intersection(_tutorial_project_rect(page.hud.design_workbench()._detail_scroll))
 	return target
 
@@ -225,8 +228,12 @@ func _logical_target(id: String) -> Variant:
 		"context/axes": return _context_regions_target(editor.context_slice(), ["stance", "pragmatic"])
 		"context/layers": return _context_regions_target(editor.context_slice(), ["language", "group", "topics"])
 		"spread/tree": return editor._spread_tree
-		"spread/details": return editor._skill_details
+		"spread/details": return _targets_bounds(["spread/heading", "spread/body", "spread/purchase"])
+		"spread/heading": return editor._skill_heading
+		"spread/body": return editor._skill_scroll
+		"spread/purchase": return editor._skill_purchase
 		"map/details": return page.atlas.hover_note
+		"map/monitor": return page.atlas._meme_ledger._panel
 		"editor/clips":
 			if not editor._pages.edit.is_visible_in_tree(): return page.desk._stack.tab_control("edit")
 			var slots: Array = editor._design.get("module_slots", [])
@@ -315,7 +322,8 @@ func _tutorial_context_remove_targets(board: Control) -> Dictionary:
 	var source := _context_current_topic(board)
 	if source == null: return {}
 	var source_rect := _tutorial_project_rect(source)
-	var target_rect := _tutorial_project_rect(page.desk._material_cards._stack_surfaces.topic)
+	var target_rect := _tutorial_context_return_target()
+	if not target_rect.has_area(): return {}
 	return {"source":source_rect, "source_point":source_rect.get_center(), "target":target_rect,
 		"accepts_point":_tutorial_context_remove_contains, "accepts_drop":_tutorial_context_return_contains}
 
@@ -325,9 +333,58 @@ func _tutorial_context_remove_contains(point: Vector2) -> bool:
 	var local := board.get_global_transform_with_canvas().affine_inverse() * point
 	return board._layer_at(local) == "topics" and board._slot_at("topics", local) == _tutorial_context_slot
 
-func _tutorial_context_return_contains(point: Vector2) -> bool:
+func _tutorial_context_return_obstacles() -> Array[Rect2]:
+	var desk: Control = page.desk
+	var controls: Array[Control] = [page.hud.design_workbench()._pages.cultivate, desk._speed_strip, desk._printer]
+	for prop: Dictionary in desk._props._props.values(): controls.append(prop.node)
+	for stack: Control in desk._material_cards._stack_surfaces.values(): controls.append(stack)
+	for card: Dictionary in desk._material_cards._cards.values(): controls.append(card.node)
+	var areas: Array[Rect2] = []
+	for control: Control in controls:
+		if control.is_visible_in_tree(): areas.append(_tutorial_project_rect(control).grow(8))
+	areas.append_array(_tutorial_reserved_areas())
+	return areas
+
+func _tutorial_context_return_contains(point: Vector2, obstacles: Array[Rect2] = []) -> bool:
+	if not get_viewport().get_visible_rect().has_point(point): return false
+	if obstacles.is_empty(): obstacles = _tutorial_context_return_obstacles()
+	for area: Rect2 in obstacles:
+		if area.has_point(point): return false
 	if page.has_meta("studio3d"): point = page.get_meta("studio3d").logical_pointer_from_root(point)
-	return page.desk._material_cards._stack_at(point) == "topic"
+	var desk: Control = page.desk
+	var local := desk.get_global_transform_with_canvas().affine_inverse() * point
+	return Rect2(Vector2.ZERO, desk.DESK_SIZE).has_point(local) and not desk._monitor.handles_viewport_point(point) and desk._props._hit_prop(point) == &"" and not desk._material_cards.handles_viewport_point(point)
+
+func _tutorial_context_return_target() -> Rect2:
+	var viewport := get_viewport().get_visible_rect().grow(-24)
+	var source: Control = _context_current_topic(page.hud.design_workbench().context_slice())
+	var origin := _tutorial_project_rect(source).get_center()
+	var stamp := str(viewport) + str(origin) + str(_tutorial_project_rect(page.hud.design_workbench()._pages.cultivate))
+	var obstacles := _tutorial_context_return_obstacles()
+	if stamp == _tutorial_return_stamp and _tutorial_return_rect.has_area() and _tutorial_context_return_area_clear(_tutorial_return_rect, obstacles): return _tutorial_return_rect
+	var best := Rect2()
+	var distance := INF
+	# Keep the whole landing area off the paper, hardware and material stacks.
+	for extent: Vector2 in [Vector2(64, 48), Vector2(40, 32), Vector2(24, 24)]:
+		for y in 8:
+			for x in 12:
+				var center := viewport.position + extent * .5 + (viewport.size - extent) * Vector2(float(x) / 11.0, float(y) / 7.0)
+				var area := Rect2(center - extent * .5, extent)
+				if _tutorial_context_return_area_clear(area, obstacles) and center.distance_squared_to(origin) < distance:
+					best = area
+					distance = center.distance_squared_to(origin)
+		if best.has_area(): break
+	_tutorial_return_rect = best
+	_tutorial_return_stamp = stamp
+	return best
+
+func _tutorial_context_return_area_clear(area: Rect2, obstacles: Array[Rect2] = []) -> bool:
+	if obstacles.is_empty(): obstacles = _tutorial_context_return_obstacles()
+	for obstacle: Rect2 in obstacles:
+		if area.intersects(obstacle): return false
+	for point: Vector2 in [area.position, area.position + Vector2(area.size.x, 0), area.end, area.position + Vector2(0, area.size.y), area.get_center()]:
+		if not _tutorial_context_return_contains(point, obstacles): return false
+	return true
 
 func _tutorial_drag_targets(step_id: String) -> Dictionary:
 	if step_id not in ["module", "context_remove", "context_item"]: return {}
@@ -417,6 +474,8 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 		areas.append(_tutorial_project_rect(editor._detail_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
+	elif bool(step.get("scroll", false)) and id == "spread/details":
+		areas.append(_tutorial_project_rect(editor._skill_scroll))
 	elif bool(step.get("map_navigation", false)) and page.atlas.map_input.is_visible_in_tree():
 		areas.append(_tutorial_project_rect(page.atlas.map_input))
 		if bool(step.get("allow_launch", false)) and page.atlas.launch_marker.is_visible_in_tree():
@@ -427,17 +486,8 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 			if not button.disabled: areas.append(_tutorial_project_rect(button))
 	elif id == "spread/skill" and editor._spread_tree.is_visible_in_tree():
 		var tree: Control = editor._spread_tree
-		var unlocked: Array = editor._design.get("unlocked_skills", ["text"])
-		var balance := int(editor._state.get("meme_points", 0))
-		for skill: Dictionary in editor._rules.skills:
-			var skill_id := str(skill.get("id", ""))
-			if skill_id in unlocked or int(skill.get("cost", 0)) > balance: continue
-			var available := true
-			for dependency: Variant in skill.get("requires", []):
-				if str(dependency) not in unlocked: available = false
-			if available and tree._points.has(skill_id):
-				areas.append(_tutorial_project_rect(_area_target(tree, Rect2(tree._points[skill_id] - Vector2(22, 22), Vector2(44, 44)))))
-		if editor._buy.is_visible_in_tree() and not editor._buy.disabled:
+		areas.append(_tutorial_project_rect(_area_target(tree, Rect2(tree._points["text"] - Vector2(22, 22), Vector2(44, 44)))))
+		if editor._selected_skill == "text" and editor._buy.is_visible_in_tree() and not editor._buy.disabled:
 			areas.append(_tutorial_project_rect(editor._buy))
 	else:
 		var target: Variant = _target(id)
@@ -459,18 +509,8 @@ func _skill_target(editor: Control) -> Control:
 	var tree: Control = editor._spread_tree
 	if not tree.is_visible_in_tree(): return page.desk._stack.tab_control("spread")
 	var buy: Button = editor._buy
-	if buy.is_visible_in_tree() and not buy.disabled: return buy
-	var unlocked: Array = editor._design.get("unlocked_skills", ["text"])
-	var balance := int(editor._state.get("meme_points", 0))
-	for skill: Dictionary in editor._rules.skills:
-		var id := str(skill.get("id", ""))
-		if id in unlocked or int(skill.get("cost", 0)) > balance: continue
-		var available := true
-		for dependency: Variant in skill.get("requires", []):
-			if str(dependency) not in unlocked: available = false
-		if available and tree._points.has(id):
-			return _area_target(tree, Rect2(tree._points[id] - Vector2(22, 22), Vector2(44, 44)))
-	return null
+	if editor._selected_skill == "text" and buy.is_visible_in_tree() and not buy.disabled: return buy
+	return _area_target(tree, Rect2(tree._points["text"] - Vector2(22, 22), Vector2(44, 44)))
 
 func _country_target() -> Control:
 	var atlas: Node2D = page.atlas

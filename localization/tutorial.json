@@ -164,16 +164,6 @@
     "zh_CN": "点开语言摞。",
     "en": "Open the language stack. Find out what you’ve got before planning to sell it to the whole world."
   },
-  "LOC_OPENING_LANGUAGE_CARD_TITLE": {
-    "source": "语言卡片",
-    "zh_CN": "语言卡片",
-    "en": "Language cards"
-  },
-  "LOC_OPENING_LANGUAGE_CARD_TEXT": {
-    "source": "这一摞的语言卡都在这里。先选中第一张，再看看它的悬停说明。",
-    "zh_CN": "这一摞的语言卡都在这里。",
-    "en": "Here are the language cards in this stack. Select the first card, then read its hover note."
-  },
   "LOC_OPENING_LANGUAGE_DETAIL_TITLE": {
     "source": "卡片详情",
     "zh_CN": "卡片详情",
@@ -290,9 +280,9 @@
     "en": "Final expression"
   },
   "LOC_OPENING_EXPRESSION_TEXT": {
-    "source": "这里显示装配后的最终表达。把鼠标移到文字上，可以查看语言、群体、话题和补丁怎样影响了这句话。想改变说法，就去调整语境或补丁。",
-    "zh_CN": "这里显示装配后的最终表达。把鼠标移到文字上，可以查看语言、群体、话题和补丁怎样影响了这句话。",
-    "en": "This is the final expression. Hover over the text to see how language, audience, topics and patches shaped it. Adjust the context or patches to change the wording."
+    "source": "右栏显示装配后的最终表达，可以滚动查看。把鼠标移到文字上，看看语言、群体、话题和补丁怎样影响了这句话。",
+    "zh_CN": "右栏显示装配后的最终表达，可以滚动查看。把鼠标移到文字上，看看语言、群体、话题和补丁怎样影响了这句话。",
+    "en": "The right column shows the final expression. Scroll to read it, and hover over the text to see how language, audience, topics and patches shaped it."
   },
   "LOC_OPENING_PREVIEW_TITLE": {
     "source": "预览与指纹",
@@ -300,9 +290,9 @@
     "en": "Base meme diagram"
   },
   "LOC_OPENING_PREVIEW_TEXT": {
-    "source": "神经元图展示基模的结构。装上的补丁也会出现在图里，沿着连线就能看出它们接在什么位置。",
-    "zh_CN": "神经元图展示基模的结构。如果模因发生什么本质上的变化，它也会自然地呈现这一点。",
-    "en": "The neuron diagram shows the base meme structure. Installed patches appear here too; follow the connections to see where they fit."
+    "source": "左侧的神经元图展示基模的结构。如果模因发生本质上的变化，它也会呈现出来。",
+    "zh_CN": "左侧的神经元图展示基模的结构。如果模因发生本质上的变化，它也会呈现出来。",
+    "en": "The neuron diagram on the left shows the base meme structure and changes to it."
   },
   "LOC_OPENING_MODULE_TITLE": {
     "source": "给它装个模组",
@@ -380,9 +370,9 @@
     "en": "Ability tree"
   },
   "LOC_OPENING_SPREAD_TREE_TEXT": {
-    "source": "这些节点是传播能力，连线表示先后关系。先学会前面的，后面的才轮得到你。",
-    "zh_CN": "这些节点是传播能力，连线表示依赖关系。",
-    "en": "The nodes are spread abilities; the lines show prerequisites. Learn what comes first before reaching for what comes next."
+    "source": "左侧是传播能力树，连线表示依赖关系。先从第一个文字传播节点开始。",
+    "zh_CN": "左侧是传播能力树，连线表示依赖关系。先从第一个文字传播节点开始。",
+    "en": "The ability tree is on the left; its lines show prerequisites. Start with the first node, text transmission."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
     "source": "能力详情",
@@ -390,9 +380,9 @@
     "en": "Ability details"
   },
   "LOC_OPENING_SPREAD_DETAILS_TEXT": {
-    "source": "这里列着能力的效果和费用。买之前读一眼，我们不报销“点错了”。",
-    "zh_CN": "这里列着能力的效果和费用。不要瞎买，亏钱了自行离职吧。",
-    "en": "The effects and costs are listed here. Read them before buying. If you lose money, hand in your resignation."
+    "source": "右侧可以滚动查看能力说明和效果，下方是费用、余额和解锁按钮。不要瞎买，亏钱了自行离职吧。",
+    "zh_CN": "右侧可以滚动查看能力说明和效果，下方是费用、余额和解锁按钮。不要瞎买，亏钱了自行离职吧。",
+    "en": "Scroll through the ability description and effects on the right. The cost, balance and Unlock button stay below. If you lose money, hand in your resignation."
   },
   "LOC_OPENING_SKILL_TITLE": {
     "source": "买一项能力",
@@ -510,9 +500,9 @@
     "en": "Meme name"
   },
   "LOC_OPENING_MEME_NAME_TEXT": {
-    "source": "上方是这份模因的名称。名称和最终表达分开显示，装上补丁不会让你认错项目。",
-    "zh_CN": "上方是这份模因的名称。",
-    "en": "The meme name is shown above. It stays separate from the final expression so you can identify the project after fitting patches."
+    "source": "右栏上方是这份模因的名称。",
+    "zh_CN": "右栏上方是这份模因的名称。",
+    "en": "The meme name is at the top of the right column."
   },
   "LOC_OPENING_MODULE_RESULT_TITLE": {
     "source": "补丁后的表达",
@@ -533,5 +523,15 @@
     "source": "语言、群体和话题集中显示在这里。想调整这些模块，接下来到培养页装卸卡片。",
     "zh_CN": "语言、群体和话题集中显示在这里。想调整这些模块，接下来到培养页装卸卡片。",
     "en": "Language, group and topic modules are summarized here. To change them, install or remove cards on the Cultivate sheet next."
+  },
+  "LOC_OPENING_MAP_MONITOR_TITLE": {
+    "source": "模因监控",
+    "zh_CN": "模因监控",
+    "en": "Meme monitor"
+  },
+  "LOC_OPENING_MAP_MONITOR_TEXT": {
+    "source": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
+    "zh_CN": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
+    "en": "After launch, this panel lists the memes on the map, with yours first. Hover over a tag to highlight its spread points; click it to see spread, growth, deviation and other details."
   }
 }

@@ -12,6 +12,8 @@ const PALETTES := {
 	"topic":{"edge":Color("765b32"), "body":Color("c7a05c"), "panel":Color("e7d5a8"), "ink":Color("594523"), "light":Color("f3e4bf")}
 }
 
+const EXTERNAL_PALETTE := {"edge":Color("6c3030"), "body":Color("b45e53"), "panel":Color("ead5c1"), "ink":Color("542e2b"), "light":Color("f2b4a0")}
+
 var paper_view := false:
 	set(value):
 		paper_view = value
@@ -229,7 +231,7 @@ func _stroke(points: PackedVector2Array, color: Color, width: float = 1.0) -> vo
 
 
 func _palette() -> Dictionary:
-	var palette: Dictionary = PALETTES[_kind]
+	var palette: Dictionary = EXTERNAL_PALETTE if _kind == "module" and str(_record.get("palette", "")) == "external" else PALETTES[_kind]
 	if not paper_view: return palette
 	var reading_palette := palette.duplicate()
 	reading_palette.body = palette.body.lerp(palette.light, .36)
@@ -352,7 +354,7 @@ func inspection() -> Dictionary:
 	_layout = _build_layout()
 	var fit := {}
 	for role: String in _layout.text: fit[role] = _layout.text[role].duplicate(true)
-	return {"component":"physical_material_card_face", "kind":_kind, "id":str(_record.get("id", "")), "shape":SHAPES[_kind], "thickness":_layout.thickness, "minimum_size":minimum_card_size(_kind), "size":size, "body":_layout.body, "silhouette":_shape(_layout.body), "sections":_layout.sections.duplicate(true), "font_fit":fit, "count":_count_value(), "count_visible":_shows_count(), "source":_source_text(), "title":DeskLocalization.text(str(_record.get("title", _record.get("id", "")))), "hovered":_hovered, "selected":_selected, "reflection":_hovered or _selected, "draw_count":_draw_count, "rendering":"native_canvas_geometry_and_font", "mutates_inventory":false, "mouse_filter":mouse_filter}
+	return {"component":"physical_material_card_face", "kind":_kind, "palette":_palette().duplicate(true), "palette_key":"external" if _kind == "module" and str(_record.get("palette", "")) == "external" else _kind, "id":str(_record.get("id", "")), "shape":SHAPES[_kind], "thickness":_layout.thickness, "minimum_size":minimum_card_size(_kind), "size":size, "body":_layout.body, "silhouette":_shape(_layout.body), "sections":_layout.sections.duplicate(true), "font_fit":fit, "count":_count_value(), "count_visible":_shows_count(), "source":_source_text(), "title":DeskLocalization.text(str(_record.get("title", _record.get("id", "")))), "hovered":_hovered, "selected":_selected, "reflection":_hovered or _selected, "draw_count":_draw_count, "rendering":"native_canvas_geometry_and_font", "mutates_inventory":false, "mouse_filter":mouse_filter}
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():

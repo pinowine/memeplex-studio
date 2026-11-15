@@ -3,7 +3,7 @@ extends RefCounted
 
 const DEFAULT_RULES = preload("res://data/rules/design_rules.tres")
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
-const DESIGN_VERSION := 9
+const DESIGN_VERSION := 10
 const RECORD_LIMIT := 65536
 var catalog: MemeDemoCatalog
 var rules: MemeDesignRules
@@ -346,7 +346,7 @@ func reset() -> void:
 		"module_contents":[], "module_positions":[], "connections":[], "inventory_sources":[],
 		"context_draft":{}, "current_publish_index":0, "skill_applications":[], "skill_application":"",
 		"module_records":[], "module_application":"", "event_material_claims":[],
-		"unlocked_skills":["text"], "claimed_events":[], "inventory_log":[], "operations":[]}
+		"unlocked_skills":[], "claimed_events":[], "inventory_log":[], "operations":[]}
 	for index in rules.module_slots:
 		_state.module_slots.append("")
 		_state.module_contents.append("")
@@ -719,6 +719,17 @@ func _apply_modules(base: Dictionary) -> PackedStringArray:
 func unlock_skill(id: String) -> PackedStringArray:
 	return _perform("unlock", {"skill_id":id})
 
+func _effective_source_creator(raw: Dictionary, visible: Dictionary, by_id: Dictionary) -> String:
+	if not raw.has("rollback_from_id"): return str(raw.creator)
+	for patch: String in visible.get("patch_ids", []):
+		var source: Dictionary = by_id[str(raw.rollback_from_id)]
+		while str(source.creator) != "player":
+			if patch not in source.get("mutation_parent_content", {}).get("patch_ids", []): return str(source.creator)
+			if source.parent_ids.is_empty(): break
+			source = by_id[str(source.parent_ids[0])]
+	return str(visible.creator)
+
+
 ## 展示快照不复制操作历史；所有返回的容器都与权威状态隔离。
 func snapshot(variants: Array = []) -> Dictionary:
 	var result := {}
@@ -727,13 +738,15 @@ func snapshot(variants: Array = []) -> Dictionary:
 		var value: Variant = _state[field]
 		result[field] = value.duplicate(true) if value is Dictionary or value is Array else value
 	var lineage: Array[Dictionary] = []
+	var by_id := {}
+	for raw: Dictionary in variants: by_id[str(raw.id)] = raw
 	for raw: Dictionary in variants:
 		if bool(raw.get("retired", false)): continue
 		var variant := raw.duplicate(true)
 		variant.merge(raw.get("effective_content", {}), true)
 		lineage.append({"id":variant.id, "meme_id":str(raw.get("meme_id", raw.id)), "parent_ids":[],
 			"origin_ids":variant.get("origin_ids", []).duplicate(), "source_presets":variant.get("source_presets", []).duplicate(true),
-			"kernel_id":variant.kernel_id, "module_id":str(rules.find("modules","module_" + str(variant.kernel_id)).get("id","")), "creator":variant.creator,
+			"kernel_id":variant.kernel_id, "module_id":str(rules.find("modules","module_" + str(variant.kernel_id)).get("id","")), "creator":variant.creator, "source_creator":_effective_source_creator(raw, variant, by_id),
 			"owned":variant.owned, "controlled":variant.controlled, "text":variant.text, "semantic_distance":variant.semantic_distance,
 			"meaning":variant.get("meaning", ""), "patch_ids":variant.get("patch_ids", []).duplicate(),
 			"language_versions":variant.get("language_versions", []).duplicate(true)})
@@ -767,9 +780,12 @@ func _normalize_empty_context_slots(data: Dictionary) -> Dictionary:
 func validate_payload(data: Dictionary, events: Array, variants: Array, economy: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	data = _normalize_empty_context_slots(data)
-	if not _integer(data.get("design_version")) or int(data.design_version) != DESIGN_VERSION or not data.get("rules_signature") is String or data.rules_signature != rules.signature() or not data.get("operations") is Array or data.operations.size() > RECORD_LIMIT:
+	if not _integer(data.get("design_version")) or int(data.design_version) not in [9, DESIGN_VERSION] or not data.get("rules_signature") is String or data.rules_signature != rules.signature() or not data.get("operations") is Array or data.operations.size() > RECORD_LIMIT:
 		return PackedStringArray([DeskLocalization.source("LOC_INVALID_DESIGN_SAVE_VERSION_DEFINITIONS_OR_ACTION_1AA0AD8F")])
 	var replay = get_script().new(catalog, rules)
+	var initial_skills: Array = ["text"] if int(data.design_version) == 9 else []
+	replay._state.design_version = int(data.design_version)
+	replay._state.unlocked_skills = initial_skills.duplicate()
 	var published := {}
 	for operation: Variant in data.operations:
 		if not operation is Dictionary or not operation.get("action") is String or not operation.get("params") is Dictionary:
@@ -799,12 +815,12 @@ func validate_payload(data: Dictionary, events: Array, variants: Array, economy:
 		if transaction is Dictionary and str(transaction.get("reason", "")).begins_with(DeskLocalization.source("LOC_SKILL_UNLOCKED_811EF328")):
 			var id := str(transaction.reason).trim_prefix(DeskLocalization.source("LOC_SKILL_UNLOCKED_811EF328"))
 			var skill: Dictionary = rules.find("skills", id)
-			if skill.is_empty() or id == "text" or purchases.has(id) or transaction.get("delta") != -int(skill.get("cost", -1)):
+			if skill.is_empty() or id in initial_skills or purchases.has(id) or transaction.get("delta") != -int(skill.get("cost", -1)):
 				errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_INCOME_AND_EXPENDITURE_DO_121EAB4E"))
 			purchases[id] = true
 	for id in _skill_ids(data):
-		if id != "text" and not purchases.has(id): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_LACKS_AN_ACTUAL_DEDUCTION_59FBBF1C"))
-	if purchases.size() != _skill_ids(data).size() - 1: errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILLS_AND_DEDUCTION_COUNTS_DO_78EE7B1D"))
+		if id not in initial_skills and not purchases.has(id): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_LACKS_AN_ACTUAL_DEDUCTION_59FBBF1C"))
+	if purchases.size() != _skill_ids(data).size() - initial_skills.size(): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILLS_AND_DEDUCTION_COUNTS_DO_78EE7B1D"))
 	return errors
 
 func restore(data: Dictionary, events: Array = [], variants: Array = [], economy: Dictionary = {}) -> PackedStringArray:

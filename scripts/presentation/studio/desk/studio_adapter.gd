@@ -187,7 +187,9 @@ func material_faces() -> Array[Dictionary]:
 	for key: String in cards._cards:
 		var card: Dictionary = cards._cards[key]
 		faces.append({"source":card.face, "key":key, "owner":null, "visible":card.node.is_visible_in_tree()})
-	var board: Control = _desk._page.hud.design_workbench().context_slice()
+	var editor: Control = _desk._page.hud.design_workbench()
+	faces.append_array(editor.lineage_material_faces())
+	var board: Control = editor.context_slice()
 	if is_instance_valid(board._drag_preview):
 		faces.append({"source":board._drag_preview, "key":"context/drag", "owner":null, "visible":board._drag_preview.is_visible_in_tree()})
 	return faces

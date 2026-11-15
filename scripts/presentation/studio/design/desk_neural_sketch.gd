@@ -39,6 +39,9 @@ var _installed: Array = []
 var _connections: Array = []
 var _lineage: Array = []
 var _visible_lineage: Array = []
+var _lineage_slots: Dictionary = {}
+var _lineage_reservations: Dictionary = {}
+var _lineage_core_key := ""
 var _core_variant_id := ""
 var _lineage_positions: Dictionary = {}
 var _lineage_layout_stamp := ""
@@ -137,6 +140,10 @@ func _hit_id(at: Vector2) -> String:
 	return ""
 
 
+func lineage_slots() -> Dictionary:
+	return _lineage_slots.duplicate(true)
+
+
 func _on_mouse_exited() -> void:
 	_feedback.set_hover("")
 	mouse_default_cursor_shape = CURSOR_ARROW
@@ -205,6 +212,7 @@ func set_display_slots(slots: Dictionary) -> void:
 	queue_redraw()
 
 func configure(kernel_id: String, nodes: Array, edges: Array, slots: Dictionary) -> void:
+	var kernel_changed := _kernel_id != kernel_id
 	_kernel_id = kernel_id
 	_nodes = nodes.duplicate(true)
 	_edges = edges.duplicate(true)
@@ -212,6 +220,7 @@ func configure(kernel_id: String, nodes: Array, edges: Array, slots: Dictionary)
 	_display_slots = slots.duplicate(true)
 	if not _nodes.is_empty() and _selected.is_empty(): _selected = str(_nodes[0].get("id", ""))
 	if _selected_module < 0: _feedback.set_selected("part:" + _selected)
+	if kernel_changed: _rebuild_visible_lineage()
 	_update_field()
 	queue_redraw()
 
@@ -247,18 +256,24 @@ func _core_lineage_id() -> String:
 
 func _rebuild_visible_lineage() -> void:
 	_visible_lineage.clear()
+	_lineage_slots.clear()
 	_lineage_layout_stamp = ""
+	var core_key := _kernel_id + ":" + _core_variant_id
+	if core_key != _lineage_core_key:
+		_lineage_core_key = core_key
+		_lineage_reservations.clear()
 	var core_id := _core_lineage_id()
 	var by_id := {}
 	for record: Dictionary in _lineage: by_id[str(record.id)] = record
 	var seen := {}
 	var pending: Array[String] = []
+	var relatives: Array[String] = []
 	if not core_id.is_empty():
 		seen[core_id] = true
 		pending.append(core_id)
 	var cursor := 0
-	# Breadth-first ancestry keeps each visible relative connected through a recorded edge.
-	while cursor < pending.size() and _visible_lineage.size() < 12:
+	# Reservations remain tied to the same core and slot while fitted patches cover them.
+	while cursor < pending.size():
 		var id := pending[cursor]
 		cursor += 1
 		var parents: Array = by_id[id].get("parent_ids", [])
@@ -268,9 +283,22 @@ func _rebuild_visible_lineage() -> void:
 			if id not in record.get("parent_ids", []) and other not in parents: continue
 			seen[other] = true
 			pending.append(other)
-			_visible_lineage.append(record)
-			if _visible_lineage.size() == 12: break
-	# The specimen contains only its recorded relatives; independent expressions remain in the ledger.
+			relatives.append(other)
+	var marked := relatives.duplicate()
+	if not core_id.is_empty() and str(by_id[core_id].get("source_creator", "player")) != "player": marked.append(core_id)
+	for slot: int in _lineage_reservations.keys():
+		if slot >= _installed.size() or str(_lineage_reservations[slot]) not in marked: _lineage_reservations.erase(slot)
+	for slot in _installed.size():
+		if not str(_installed[slot]).is_empty() or _lineage_reservations.has(slot): continue
+		for id: String in marked:
+			if id in _lineage_reservations.values(): continue
+			_lineage_reservations[slot] = id
+			break
+	for id: String in marked:
+		for slot: int in _lineage_reservations:
+			if str(_lineage_reservations[slot]) != id or not str(_installed[slot]).is_empty(): continue
+			_lineage_slots[slot] = by_id[id]
+			if id != core_id: _visible_lineage.append(by_id[id])
 	_layout_attached_lineage()
 
 func _lineage_ink(record: Dictionary) -> Color:
@@ -640,6 +668,6 @@ func inspection() -> Dictionary:
 		"feedback":_feedback.inspection(),"selected_module":_selected_module,"interaction_enabled":_interaction_enabled,
 		"dragging_slot":_pressed_module if _dragging else -1,"drag_count":_drag_count,"cancel_count":_cancel_count,"last_drag":_last_drag.duplicate(true),"tooltip":tooltip_text,
 		"last_drop":_last_drop.duplicate(),
-		"connections":_connections.duplicate(true),"lineage":_lineage.duplicate(true),"visible_lineage":_visible_lineage.duplicate(true),"core_variant_id":_core_lineage_id(),"lineage_relation_source":"recorded parent_ids","lineage_layout":"attached_parent_branches","lineage_positions":_lineage_positions.duplicate(),"hidden_lineage_count":_lineage.size()-_visible_lineage.size()-(0 if _core_lineage_id().is_empty() else 1),
+		"connections":_connections.duplicate(true),"lineage":_lineage.duplicate(true),"visible_lineage":_visible_lineage.duplicate(true),"lineage_slots":lineage_slots(),"lineage_reservations":_lineage_reservations.duplicate(true),"shared_branch_capacity":_installed.size(),"shared_branch_count":module_points.size()+_visible_lineage.size(),"core_variant_id":_core_lineage_id(),"lineage_relation_source":"recorded parent_ids","lineage_layout":"attached_parent_branches","lineage_positions":_lineage_positions.duplicate(),"hidden_lineage_count":_lineage.size()-_visible_lineage.size()-(0 if _core_lineage_id().is_empty() else 1),
 		"topology_signature":JSON.stringify([_kernel_id,SHAPES.get(_kernel_id,[]),_edges]),
 		"metaball_shader":Metaball.resource_path,"relation_evidence":"design visualization only", "mouse_filter":mouse_filter,"tracking_style":"corner_wireframe","solid_covers":false,"edge_width":.65,"edge_dashed":true,"base_alpha":_family_art.modulate.a if _family_art!=null else 0}

@@ -15,6 +15,7 @@ const Sketch = preload("res://scripts/presentation/studio/design/desk_neural_ske
 const DendriteTree = preload("res://scripts/presentation/studio/design/desk_dendrite_tree.gd")
 const ContextSlice = preload("res://scripts/presentation/studio/context/desk_context_board.gd")
 const ContextTrialSlip = preload("res://scripts/presentation/studio/context/desk_context_trial_slip.gd")
+const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
 const ModuleClip = preload("res://scripts/presentation/studio/design/desk_module_paper_clip.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const AnnotatedText = preload("res://scripts/presentation/studio/workbench/desk_annotated_text.gd")
@@ -39,6 +40,36 @@ const MODULE_REGIONS := {
 	"shared_world": Rect2(1740, 0, 432, 724),
 }
 
+class LineagePatchFace extends DeskMaterialCardFace:
+	var _print_mask: ImageTexture
+	var _mask_size := Vector2.ZERO
+	var _mask_builds := 0
+
+	func print_mask() -> Texture2D:
+		if _print_mask != null and _mask_size == size: return _print_mask
+		var layout := _build_layout()
+		var body: Rect2 = layout.body
+		var outlines: Array[PackedVector2Array] = [outline_for("module", body), outline_for("module", Rect2(body.position + Vector2(1.2, layout.thickness), body.size))]
+		var svg := '<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s">' % [size.x, size.y]
+		for outline: PackedVector2Array in outlines:
+			var points := PackedStringArray()
+			for point: Vector2 in outline: points.append("%s,%s" % [point.x, point.y])
+			svg += '<polygon points="%s" fill="white" stroke="white" stroke-width="1.1"/>' % " ".join(points)
+		svg += "</svg>"
+		var mask := Image.new()
+		mask.load_svg_from_string(svg, 2.0)
+		_print_mask = ImageTexture.create_from_image(mask)
+		_mask_size = size
+		_mask_builds += 1
+		return _print_mask
+
+	func inspection() -> Dictionary:
+		var result := super.inspection()
+		result.mask_builds = _mask_builds
+		result.read_only = true
+		return result
+
+
 var _catalog: MemeDemoCatalog
 const DEFAULT_RULES := preload("res://data/rules/design_rules.tres")
 var _rules: MemeDesignRules = DEFAULT_RULES
@@ -52,12 +83,14 @@ var _selected_skill := "text"
 var _selected_variant := ""
 var _interaction_enabled := true
 var _module_drop_enabled := false
+var _hover_enabled := true
 var _setting := false
 var _pages: Dictionary = {}
 var _tabs: Array[Button] = []
 var _neuron: Control
 var _starter: OptionButton
 var _physical_clips: Array[Control] = []
+var _lineage_cards: Array[Control] = []
 var _part_title: Label
 var _part_note: Label
 var _part_content: RichTextLabel
@@ -349,6 +382,15 @@ func _build_edit() -> void:
 		clip.name = "PaperClip%d" % index
 		page.add_child(clip)
 		_physical_clips.append(clip)
+		var external := LineagePatchFace.new()
+		external.name = "LineagePatchCard"
+		external.configure({"kind":"module", "id":"", "title":""}, get_theme_font("font", "Label"))
+		external.pivot_offset = CardFace.minimum_card_size("module") * .5
+		external.rotation = deg_to_rad(float(index - 2) * 1.3)
+		clip.add_child(external)
+		external.hide()
+		_lineage_cards.append(external)
+		clip.bring_front()
 		clip.pressed.connect(func(): module_slots_pressed.emit(module_clips_viewport_rect()))
 	_detail_scroll = ScrollContainer.new()
 	_detail_scroll.name = "ExpressionDetails"
@@ -634,10 +676,39 @@ func _refresh_neuron() -> void:
 	_neuron.set_core_variant(str(_state.get("current_variant_id", "")))
 	_neuron.sync_design(_design.get("module_slots",[]),_design.get("connections",[]),_design.get("lineage_view",_state.get("lineage",[])))
 	_neuron.set_module_positions(_design.get("module_positions",[]))
+	_sync_lineage_clips()
 	var current_exists := false
 	for node in nodes:
 		if str(node.get("id",""))==_selected_part: current_exists=true
 	if not current_exists and not nodes.is_empty(): _select_part(str(nodes[0].id))
+
+
+func _sync_lineage_clips() -> void:
+	var lineage: Dictionary = _neuron.lineage_slots()
+	for slot in _lineage_cards.size():
+		var face: Control = _lineage_cards[slot]
+		face.visible = lineage.has(slot)
+		_physical_clips[slot].set_meta("external_variant_id", str(lineage[slot].id) if lineage.has(slot) else "")
+		if not lineage.has(slot): continue
+		var record: Dictionary = lineage[slot]
+		var external := str(record.get("source_creator", record.get("creator", "player"))) != "player"
+		face.configure({"kind":"module", "id":str(record.id), "title":"LOC_EDIT_EXTERNAL_EXPRESSION" if external else "LOC_YOUR_OWN_EXPRESSION_0A35E8E2", "source_label":str(record.id), "palette":"external" if external else "module", "show_count":false}, get_theme_font("font", "Label"))
+
+
+func lineage_material_faces() -> Array[Dictionary]:
+	var faces: Array[Dictionary] = []
+	for slot in _lineage_cards.size():
+		var face: Control = _lineage_cards[slot]
+		faces.append({"source":face, "key":"lineage/" + str(slot), "owner":null, "visible":face.is_visible_in_tree()})
+	return faces
+
+
+func _lineage_card_inspection() -> Array[Dictionary]:
+	var cards: Array[Dictionary] = []
+	for slot in _lineage_cards.size():
+		var face: Control = _lineage_cards[slot]
+		cards.append({"slot":slot, "id":str(_physical_clips[slot].get_meta("external_variant_id", "")), "visible":face.is_visible_in_tree(), "rect":face.get_global_rect(), "instance_id":face.get_instance_id(), "face":face.inspection()})
+	return cards
 
 
 func _select_part(id: String) -> void:
@@ -813,9 +884,10 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 	var has_cards := false
 	for id: String in _design.get("module_slots", []):
 		if not id.is_empty(): has_cards = true
+	has_cards = has_cards or not _neuron.lineage_slots().is_empty()
 	var clip_height := 128.0 if has_cards else 48.0
 	var content_y := 160.0 if has_cards else 144.0
-	var clip_step := 96.0 + SPACE_WITHIN * 2
+	var clip_step := CardFace.minimum_card_size("module").x + SPACE_WITHIN * 2
 	var clip_start := w - inset - 96.0 - clip_step * (_physical_clips.size() - 1)
 	_overview_data.columns = 2 if span >= 280 else 1
 	_place(_neuron, Rect2(GROUP_SPACING, 144, right - GROUP_SPACING * 2, maxf(100, h - 168)))
@@ -824,6 +896,7 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 		var x := clip_start + float(index) * clip_step
 		_place(_physical_clips[index], Rect2(x, 6, 96, clip_height))
 		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5][index])
+		_place(_lineage_cards[index], Rect2(Vector2(4, 15), CardFace.minimum_card_size("module")))
 	var footer_height := 48.0 if _publish != null and _publish.visible else 0.0
 	_place(_detail_scroll, Rect2(right, content_y, span, maxf(78, h - content_y - inset - footer_height)))
 	_place(_footer, Rect2(right, h - footer_height, span, footer_height))
@@ -866,10 +939,15 @@ func set_interaction_enabled(enabled: bool) -> void:
 	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
-	_final_expression.set_interaction_enabled(enabled and _tab == "edit")
-	_meaning.mouse_filter = Control.MOUSE_FILTER_PASS if enabled and _tab == "edit" else Control.MOUSE_FILTER_IGNORE
-	if not enabled: _hide_source_hover()
+	_sync_hover_enabled()
 	if _buy != null: _select_skill(_selected_skill)
+
+
+func _sync_hover_enabled() -> void:
+	var enabled := _hover_enabled and _tab == "edit"
+	_final_expression.set_interaction_enabled(enabled)
+	_meaning.mouse_filter = Control.MOUSE_FILTER_PASS if enabled else Control.MOUSE_FILTER_IGNORE
+	if not enabled: _hide_source_hover()
 
 
 func _button(parent: Node,text: String,name: String) -> Button:
@@ -943,6 +1021,7 @@ func _entry_title(kind: String, id: String) -> String:
 func inspection() -> Dictionary:
 	return {"tab":_tab,"tabs":TABS,"draft":get_draft(),"neuron":_neuron.inspection(),"design_state":_design.duplicate(true),"sync_count":_sync_count,
 		"module_slots":_physical_clips.size(),"skill_count":_skill_buttons.size(),
+		"lineage_slots":_neuron.lineage_slots(), "lineage_cards":_lineage_card_inspection(),
 		"selected_part":_selected_part,"selected_skill":_selected_skill,"selected_module":_selected_module,"selected_variant":_selected_variant,
 		"content_editable":false,"final_expression":_final_expression.current_text(),"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"source_text":_source.text,"skill_details":_skill_details.text,"buy_disabled":_buy.disabled,"error_text":_errors.text,
 		"composition":_composition.duplicate(true),"meaning":_meaning.current_text(),"expression_context":_final_expression.context_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":{"plain_text":_final_expression.context_text(),"annotations":_final_expression.inspection().context_annotations},"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
@@ -953,6 +1032,40 @@ func inspection() -> Dictionary:
 		"overview":{"name":_overview_name.text,"data":_summary_text,"columns":_overview_data.columns,"cells":_summary_inspection(),"name_rect":_overview_name.get_global_rect(),"data_rect":_overview_data.get_global_rect()},
 		"spread_tree":_spread_tree.inspection(),"spread_layout":_spread_layout_inspection(),"module_slot_rects":_physical_clips.map(func(clip: Control)->Rect2:return clip.get_global_rect()),
 		"sheet_pages":_pages.keys(),"state_mutation":"signals only; authoritative simulation applies resources"}
+
+
+func set_hover_enabled(enabled: bool) -> void:
+	if _hover_enabled == enabled: return
+	_hover_enabled = enabled
+	_sync_hover_enabled()
+
+
+func hover_info(viewport_point: Vector2) -> Dictionary:
+	if not _hover_enabled or _tab != "edit" or not _pages.edit.is_visible_in_tree(): return {}
+	var slot := module_clip_at(viewport_point)
+	var lineage: Dictionary = _neuron.lineage_slots()
+	if lineage.has(slot): return _variant_hover(lineage[slot])
+	return {}
+
+
+func _full_variant(record: Dictionary) -> Dictionary:
+	for variant: Dictionary in _state.get("lineage", []):
+		if str(variant.id) == str(record.id): return variant
+	return record
+
+
+func _variant_hover(record: Dictionary) -> Dictionary:
+	var external_rewrite := str(record.get("source_creator", record.get("creator", "player"))) != "player"
+	record = _full_variant(record)
+	var text := str(record.get("text", ""))
+	var meaning := str(record.get("meaning", ""))
+	if not str(record.get("meaning_id", "")).is_empty():
+		text = DeskLocalization.text(text)
+		meaning = DeskLocalization.text(meaning)
+	var description := DeskLocalization.text("LOC_REWRITTEN_FROM_AN_EARLIER_EXPRESSION_22EA25D8" if not (record.get("parent_ids", []) as Array).is_empty() else "LOC_AN_INDEPENDENTLY_EMERGING_EXPRESSION_77A66F57")
+	var note := DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024") + "\n" + text + ("\n" + meaning if not meaning.is_empty() else "")
+	var title := DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E" if external_rewrite else "LOC_YOUR_OWN_EXPRESSION_0A35E8E2")
+	return {"kind":"source", "id":str(record.id), "title":title, "description":description, "hover_description":description, "hover_note":note}
 
 
 func module_clip_parent(slot: int) -> Control:
@@ -1133,7 +1246,7 @@ func _direction_title(id: String) -> String:
 
 
 func _show_source_hover(sources: Array, excerpt: String) -> void:
-	if not _interaction_enabled or _tab != "edit": return
+	if not _hover_enabled or _tab != "edit": return
 	_source_hover_records = sources.duplicate(true)
 	var rows: Array[Dictionary] = []
 	var grouped := {}

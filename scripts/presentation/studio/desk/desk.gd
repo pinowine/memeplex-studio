@@ -184,6 +184,7 @@ func _update_hover_strip() -> void:
 	var point := get_viewport().get_mouse_position()
 	var info: Dictionary = _page.atlas.meme_field_hover_info(point)
 	if info.is_empty() and _material_cards != null: info = _material_cards.hover_info(point)
+	if info.is_empty(): info = editor.hover_info(point)
 	if info.is_empty(): info = _monitor.hover_info(point)
 	var fax_hint: String = _fax.hover_details(point)
 	if info.is_empty() and not fax_hint.is_empty(): info = {"kind":"fax","title":DeskLocalization.source("LOC_FAX_INTELLIGENCE_214AFC92"),"hint":fax_hint}
@@ -1153,7 +1154,6 @@ func _process(_delta: float) -> void:
 	_monitor.set_interaction_enabled(enabled)
 	_monitor.set_token_interaction_enabled(enabled and _revealed_focus == "sheet/cultivate" and _camera.inspection().state == "focused")
 	_update_material_storage(enabled)
-	_update_hover_strip()
 	for box: Control in _token_boxes.values(): box.set_interaction_enabled(enabled and _revealed_focus == "sheet/cultivate" and _camera.inspection().state == "focused")
 	if _props.enabled != enabled: _props.set_enabled(enabled)
 	# Loose paper keeps its desk pose and drag behavior while inspecting the fax.
@@ -1172,6 +1172,9 @@ func _process(_delta: float) -> void:
 	if editor.has_method("set_interaction_enabled"):
 		editor.set_interaction_enabled(design_enabled)
 	editor.set_module_drop_enabled(_module_drop_allowed(get_viewport().get_mouse_position()))
+	var hover_enabled: bool = enabled and not slot_details_active() and _active_sheet == "edit" and (_camera.inspection().state == "overview" or (_revealed_focus == "sheet/edit" and _camera.inspection().state == "focused"))
+	editor.set_hover_enabled(hover_enabled)
+	_update_hover_strip()
 	_country_layer.visible = _active_sheet == "map" and enabled
 	_page.atlas._update_hover()
 	_page.atlas.get_node("%SpeedControl").disabled = blocked or interaction_paused() or _page._clock_paused() or _page.simulation.phase != "running"
