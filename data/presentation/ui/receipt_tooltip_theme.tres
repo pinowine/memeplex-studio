@@ -1,10 +1,146 @@
-[gd_resource type="Theme" load_steps=6 format=3]
+[gd_resource type="Theme" load_steps=16 format=3]
 
 [ext_resource type="StyleBox" path="res://data/presentation/ui/receipt_tooltip_style.tres" id="1"]
 [ext_resource type="FontVariation" path="res://assets/image/fonts/development_font.tres" id="2"]
 [ext_resource type="FontVariation" path="res://assets/image/fonts/body_bold_font.tres" id="bold"]
 [ext_resource type="FontVariation" path="res://assets/image/fonts/body_medium_font.tres" id="medium"]
 [ext_resource type="FontVariation" path="res://assets/image/fonts/body_semibold_font.tres" id="semibold"]
+
+[sub_resource type="Gradient" id="ScrollArrowGradient"]
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="ScrollArrow"]
+gradient = SubResource("ScrollArrowGradient")
+width = 1
+height = 1
+
+[sub_resource type="StyleBoxFlat" id="ScrollTrack"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.894118, 0.858824, 0.776471, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.721569, 0.678431, 0.588235, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollTrackFocus"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.933333, 0.901961, 0.827451, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.254902, 0.403922, 0.372549, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollVerticalNormal"]
+content_margin_left = 5.0
+content_margin_top = 14.0
+content_margin_right = 5.0
+content_margin_bottom = 14.0
+bg_color = Color(0.254902, 0.403922, 0.372549, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.184314, 0.298039, 0.27451, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollVerticalHover"]
+content_margin_left = 5.0
+content_margin_top = 14.0
+content_margin_right = 5.0
+content_margin_bottom = 14.0
+bg_color = Color(0.329412, 0.494118, 0.45098, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.254902, 0.403922, 0.372549, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollVerticalPressed"]
+content_margin_left = 5.0
+content_margin_top = 14.0
+content_margin_right = 5.0
+content_margin_bottom = 14.0
+bg_color = Color(0.184314, 0.298039, 0.27451, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14902, 0.239216, 0.219608, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollHorizontalNormal"]
+content_margin_left = 14.0
+content_margin_top = 5.0
+content_margin_right = 14.0
+content_margin_bottom = 5.0
+bg_color = Color(0.254902, 0.403922, 0.372549, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.184314, 0.298039, 0.27451, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollHorizontalHover"]
+content_margin_left = 14.0
+content_margin_top = 5.0
+content_margin_right = 14.0
+content_margin_bottom = 5.0
+bg_color = Color(0.329412, 0.494118, 0.45098, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.254902, 0.403922, 0.372549, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollHorizontalPressed"]
+content_margin_left = 14.0
+content_margin_top = 5.0
+content_margin_right = 14.0
+content_margin_bottom = 5.0
+bg_color = Color(0.184314, 0.298039, 0.27451, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14902, 0.239216, 0.219608, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_left = 2
+corner_radius_bottom_right = 2
 
 [resource]
 default_font = ExtResource("2")
@@ -22,3 +158,25 @@ TooltipLabel/colors/font_shadow_color = Color(0, 0, 0, 0)
 TooltipLabel/constants/outline_size = 0
 TooltipLabel/fonts/font = ExtResource("2")
 TooltipLabel/font_sizes/font_size = 14
+VScrollBar/icons/decrement = SubResource("ScrollArrow")
+VScrollBar/icons/decrement_highlight = SubResource("ScrollArrow")
+VScrollBar/icons/decrement_pressed = SubResource("ScrollArrow")
+VScrollBar/icons/increment = SubResource("ScrollArrow")
+VScrollBar/icons/increment_highlight = SubResource("ScrollArrow")
+VScrollBar/icons/increment_pressed = SubResource("ScrollArrow")
+VScrollBar/styles/scroll = SubResource("ScrollTrack")
+VScrollBar/styles/scroll_focus = SubResource("ScrollTrackFocus")
+VScrollBar/styles/grabber = SubResource("ScrollVerticalNormal")
+VScrollBar/styles/grabber_highlight = SubResource("ScrollVerticalHover")
+VScrollBar/styles/grabber_pressed = SubResource("ScrollVerticalPressed")
+HScrollBar/icons/decrement = SubResource("ScrollArrow")
+HScrollBar/icons/decrement_highlight = SubResource("ScrollArrow")
+HScrollBar/icons/decrement_pressed = SubResource("ScrollArrow")
+HScrollBar/icons/increment = SubResource("ScrollArrow")
+HScrollBar/icons/increment_highlight = SubResource("ScrollArrow")
+HScrollBar/icons/increment_pressed = SubResource("ScrollArrow")
+HScrollBar/styles/scroll = SubResource("ScrollTrack")
+HScrollBar/styles/scroll_focus = SubResource("ScrollTrackFocus")
+HScrollBar/styles/grabber = SubResource("ScrollHorizontalNormal")
+HScrollBar/styles/grabber_highlight = SubResource("ScrollHorizontalHover")
+HScrollBar/styles/grabber_pressed = SubResource("ScrollHorizontalPressed")

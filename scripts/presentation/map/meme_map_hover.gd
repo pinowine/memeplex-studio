@@ -2,6 +2,7 @@ extends "res://scripts/presentation/studio/paper/desk_receipt_hover.gd"
 
 const Fields = preload("res://scripts/presentation/map/meme_map_fields.gd")
 const MemeHandwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
+const ScrollBehavior = preload("res://scripts/presentation/ui/components/smooth_scrolling.gd")
 const MEME_WIDTH := 300.0
 const MEME_GAP := 8.0
 const MEME_FOOTER_HEIGHT := 16.0
@@ -49,7 +50,9 @@ func set_meme_details(details: Dictionary) -> void:
 	_meme_share_label.text = str(details.share_label)
 	_meme_share_value.text = str(details.share_value)
 	_update_tags(details.context_tags)
-	if changed_version: _meme_scroll.scroll_vertical = 0
+	if changed_version:
+		ScrollBehavior.cancel(_meme_scroll.get_v_scroll_bar())
+		_meme_scroll.scroll_vertical = 0
 	_layout_content()
 
 func is_meme_hover() -> bool:
@@ -59,7 +62,7 @@ func scroll_details(direction: int) -> bool:
 	if not _meme_mode: return false
 	var scrollbar := _meme_scroll.get_v_scroll_bar()
 	if scrollbar.max_value - scrollbar.page <= 1.0: return false
-	_meme_scroll.scroll_vertical += direction * 72
+	ScrollBehavior.scroll_by(scrollbar, direction * ScrollBehavior.WHEEL_STEP)
 	return true
 
 func content_text() -> String:
