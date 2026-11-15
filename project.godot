@@ -95,7 +95,6 @@ simulation_speed_3={
 
 locale/translations=PackedStringArray("res://localization/ui/interface.zh_CN.translation", "res://localization/ui/interface.en.translation")
 locale/test="en"
-locale/fallback="en"
 
 [physics]
 
@@ -103,10 +102,9 @@ locale/fallback="en"
 
 [rendering]
 
+rendering_device/driver.windows="d3d12"
 textures/vram_compression/import_s3tc_bptc=true
 textures/vram_compression/import_etc2_astc=true
-
-rendering_device/driver.windows="d3d12"
 textures/default_filters/anisotropic_filtering_level=3
 anti_aliasing/quality/msaa_2d=2
 anti_aliasing/quality/msaa_3d=3
