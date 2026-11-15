@@ -1233,9 +1233,9 @@ func _component_details() -> Dictionary:
 			if not details.event_record.is_empty():
 				var seconds: float = _page.atlas.clock.local_seconds() + (float(details.hour) - _page.simulation.elapsed_hours()) * 3600.0
 				var date := Time.get_datetime_dict_from_unix_time(floori(seconds))
-				var timestamp := "%04d-%02d-%02d %02d:%02d:%02d" % [date.year, date.month, date.day, date.hour, date.minute, date.second]
+				var timestamp := "%04d-%02d-%02d" % [date.year, date.month, date.day]
 				details.sections[0].timestamp = timestamp
-				details.sections[0].body = DeskLocalization.source_format("%s · %s", [details.sections[0].event_type, timestamp], [0])
+				details.sections[0].body = DeskLocalization.source_join("\n", [details.sections[0].event_type, details.sections[0].country_title, timestamp])
 			var segments := EventImpactText.build(details.event_record, _page.catalog, _page.simulation.variants)
 			if not segments.is_empty():
 				var content := PackedStringArray()

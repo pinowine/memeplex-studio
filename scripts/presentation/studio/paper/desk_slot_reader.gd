@@ -33,7 +33,7 @@ var _paper_holder: Control
 var _surface: Control
 var _title_label: Label
 var _body_label: RichTextLabel
-var _event_document: ScrollContainer
+var _event_document: Control
 var _rule: Control
 var _stack_host: Control
 var _stack_rule: Control
@@ -175,6 +175,8 @@ func _build() -> void:
 	_paper_holder.add_child(_body_label)
 	_event_document = EventDocument.new()
 	_event_document.meme_selected.connect(func(id: String): meme_selected.emit(id))
+	_event_document.minimum_size_changed.connect(_layout_paper, CONNECT_DEFERRED)
+	_event_document.resized.connect(_layout_paper, CONNECT_DEFERRED)
 	_event_document.name = "EventDocument"
 	_event_document.hide()
 	_paper_holder.add_child(_event_document)
@@ -254,9 +256,10 @@ func _layout_paper() -> void:
 	_body_label.position = Vector2(padding,body_y)
 	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(34 if choice_height>0 else 28)))
 	_body_label.visible = not event_document
+	_surface.visible = not event_document
 	_event_document.visible = event_document
-	_event_document.position = _body_label.position
-	_event_document.size = _body_label.size
+	_event_document.position = Vector2(4, 4)
+	_event_document.size = dimensions - Vector2(8, 8)
 	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
 	var stack_only := has_stack and _body.is_empty()
 	_stack_host.visible = has_stack
@@ -389,7 +392,7 @@ func refresh_locale() -> void:
 
 func _refresh_translation(reset_scroll: bool) -> void:
 	var scroll := _body_label.get_v_scroll_bar().value
-	var document_scroll := _event_document.scroll_vertical
+	var document_scroll: int = _event_document.scroll_vertical
 	_title = DeskLocalization.text(_text(_details,"title"))
 	var paragraphs := PackedStringArray()
 	_body_blocks.clear()
@@ -408,6 +411,12 @@ func _refresh_translation(reset_scroll: bool) -> void:
 			for key: String in ["text", "tooltip_title", "tooltip_body", "tooltip_note"]:
 				if segment.has(key): segment[key] = _localized_block(str(segment[key]))
 			segments.append(segment)
+		var event_fields: Array[Dictionary] = []
+		for source_field: Dictionary in section.get("event_fields", []):
+			var field := source_field.duplicate(true)
+			for key: String in ["text", "tooltip_title", "tooltip_body", "tooltip_note"]:
+				if field.has(key): field[key] = _localized_block(str(field[key]))
+			event_fields.append(field)
 		if not segments.is_empty():
 			var pieces := PackedStringArray()
 			for segment: Dictionary in segments: pieces.append(str(segment.text))
@@ -422,7 +431,7 @@ func _refresh_translation(reset_scroll: bool) -> void:
 			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source")),
 				"event_type":_localized_block(str(section.get("event_type", ""))), "event_type_help":_localized_block(str(section.get("event_type_help", ""))),
 				"event_type_note":_localized_block(str(section.get("event_type_note", ""))), "country_title":_localized_block(str(section.get("country_title", ""))),
-				"timestamp":_localized_block(str(section.get("timestamp", ""))), "segments":segments})
+				"timestamp":_localized_block(str(section.get("timestamp", ""))), "event_fields":event_fields, "segments":segments})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""

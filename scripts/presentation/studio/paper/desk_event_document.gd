@@ -1,11 +1,10 @@
-extends ScrollContainer
+extends PanelContainer
 
 signal meme_selected(id: String)
 
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
-const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 const MentorPortrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait.gd")
 const PORTRAIT = preload("res://assets/image/textures/studio/desk/portrait_67.svg")
 const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
@@ -34,6 +33,10 @@ class SectionIcon extends Control:
 		Glyph.draw(self, Rect2(Vector2.ZERO, Vector2(24, 24)), kind, ink)
 
 var _column: VBoxContainer
+var _header: VBoxContainer
+var _scroll: ScrollContainer
+var _article: RichTextLabel
+var _article_rule: HSeparator
 var _blocks: Array[Dictionary] = []
 var _headline := ""
 var _impact: VBoxContainer
@@ -41,14 +44,40 @@ var _impact_labels: Array[RichTextLabel] = []
 var _portrait: TextureRect
 var _hover: PanelContainer
 var _numbers := RegEx.create_from_string("[-+]?[0-9]+(?:[.,][0-9]+)*(?:%|％)?")
+var scroll_vertical: int:
+	get: return _scroll.scroll_vertical
+	set(value): _scroll.scroll_vertical = value
 
 func _init() -> void:
-	horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	var paper := Style.new()
+	for side: int in [SIDE_LEFT, SIDE_RIGHT, SIDE_TOP, SIDE_BOTTOM]: paper.set_content_margin(side, 20)
+	add_theme_stylebox_override("panel", paper)
+	var layout := VBoxContainer.new()
+	layout.add_theme_constant_override("separation", 12)
+	add_child(layout)
+	_header = VBoxContainer.new()
+	_header.name = "StickyHeader"
+	_header.add_theme_constant_override("separation", 12)
+	layout.add_child(_header)
+	_scroll = ScrollContainer.new()
+	_scroll.name = "ArticleScroll"
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_scroll.mouse_force_pass_scroll_events = false
+	layout.add_child(_scroll)
+	var gutter := MarginContainer.new()
+	gutter.name = "ScrollbarGutter"
+	gutter.add_theme_constant_override("margin_right", 16)
+	gutter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	gutter.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_scroll.add_child(gutter)
 	_column = VBoxContainer.new()
+	_column.name = "ArticleSections"
 	_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_column.add_theme_constant_override("separation", 16)
-	add_child(_column)
+	_column.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_column.add_theme_constant_override("separation", 12)
+	gutter.add_child(_column)
 	var overlay := CanvasLayer.new()
 	overlay.layer = 60
 	add_child(overlay)
@@ -58,7 +87,7 @@ func _init() -> void:
 	_hover.hide()
 	overlay.add_child(_hover)
 	visibility_changed.connect(_hide_hover)
-	get_v_scroll_bar().value_changed.connect(func(_value: float): _hide_hover())
+	_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float): _hide_hover())
 
 func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 	_blocks = blocks.duplicate(true)
@@ -67,14 +96,17 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 	_impact = null
 	_impact_labels.clear()
 	_portrait = null
-	for child in _column.get_children():
-		_column.remove_child(child)
-		child.queue_free()
+	_article = null
+	_article_rule = null
+	for container: VBoxContainer in [_header, _column]:
+		for child in container.get_children():
+			container.remove_child(child)
+			child.queue_free()
 	if not full_title.is_empty():
-		var title := _label(full_title, 25, Style.INK)
+		var title := _label(full_title, 22, Style.INK)
 		title.name = "Headline"
-		title.add_theme_font_override("font", Handwriting.HEADING_FONT)
-		_column.add_child(title)
+		title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
+		_header.add_child(title)
 	for block: Dictionary in blocks:
 		match str(block.get("role", "")):
 			"metadata": _add_metadata(block)
@@ -83,41 +115,44 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 			"commentary": _add_comment(block)
 
 func _add_metadata(block: Dictionary) -> void:
-	var row := HBoxContainer.new()
+	var types := HFlowContainer.new()
+	types.name = "EventTypes"
+	types.add_theme_constant_override("h_separation", 16)
+	types.add_theme_constant_override("v_separation", 4)
+	_header.add_child(types)
+	for field: Dictionary in block.get("event_fields", []):
+		var event_type := _body(14, Style.SECTION_TEAL)
+		event_type.name = "EventType"
+		event_type.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		event_type.custom_minimum_size.x = minf(200, ReceiptHover.BODY_FONT.get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 2)
+		types.add_child(event_type)
+		_write_field(event_type, field, 0)
+		_bind_fields(event_type, [field])
+	var row := HFlowContainer.new()
 	row.name = "Dateline"
-	row.add_theme_constant_override("separation", 16)
-	_column.add_child(row)
-	row.add_child(_icon(str(block.get("kind", "clock"))))
-	var dateline := VBoxContainer.new()
-	dateline.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	dateline.add_theme_constant_override("separation", 4)
-	row.add_child(dateline)
-	var event_type := _body(14, Style.SECONDARY_INK)
-	event_type.name = "EventType"
-	event_type.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	event_type.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	dateline.add_child(event_type)
-	var field := {"text":str(block.get("event_type", "")), "tooltip_title":str(block.get("event_type", "")),
-		"tooltip_body":str(block.get("event_type_help", "")), "tooltip_note":str(block.get("event_type_note", "")), "field_kind":"event_type"}
-	_write_field(event_type, field, 0)
-	_bind_fields(event_type, [field])
+	row.add_theme_constant_override("h_separation", 16)
+	row.add_theme_constant_override("v_separation", 4)
+	_header.add_child(row)
 	var country := str(block.get("country_title", ""))
 	if not country.is_empty():
-		var location := _label(country, 14, Style.INK)
+		var location := _label(country, 12, Style.SECONDARY_INK)
 		location.name = "Country"
-		dateline.add_child(location)
-	var timestamp := _label(str(block.get("timestamp", "")), 14, Style.SECONDARY_INK)
+		location.autowrap_mode = TextServer.AUTOWRAP_OFF
+		row.add_child(location)
+	var timestamp := _label(str(block.get("timestamp", "")), 12, Style.SECONDARY_INK)
+	timestamp.name = "EventDate"
 	timestamp.autowrap_mode = TextServer.AUTOWRAP_OFF
 	timestamp.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	row.add_child(timestamp)
-	_add_rule()
+	_add_rule(_header)
 
-func _add_rule() -> void:
+func _add_rule(container: VBoxContainer = null) -> HSeparator:
 	var rule := HSeparator.new()
 	var line := StyleBoxLine.new()
 	line.color = Style.EDGE
 	rule.add_theme_stylebox_override("separator", line)
-	_column.add_child(rule)
+	(_column if container == null else container).add_child(rule)
+	return rule
 
 func _icon(kind: String) -> Control:
 	var icon := SectionIcon.new()
@@ -133,22 +168,22 @@ func _section(kind: String, section_name: String) -> VBoxContainer:
 	row.add_child(_icon(kind))
 	var content := VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	content.add_theme_constant_override("separation", 8)
 	row.add_child(content)
 	return content
 
 func _add_narrative(block: Dictionary) -> void:
 	var content := _section(str(block.get("kind", "source")), "Article")
-	var body := _body(16, Style.INK)
+	var body := _body(14, Style.INK)
 	body.name = "ArticleText"
-	body.add_theme_constant_override("paragraph_separation", 16)
+	body.add_theme_constant_override("paragraph_separation", 6)
 	content.add_child(body)
-	body.push_paragraph(HORIZONTAL_ALIGNMENT_FILL)
 	body.add_text(str(block.content).strip_edges())
-	body.pop()
+	_article = body
 
 func _add_impact(block: Dictionary) -> void:
-	_add_rule()
+	_article_rule = _add_rule()
 	var content := _section(str(block.get("kind", "impact")), "Impact")
 	_impact = VBoxContainer.new()
 	_impact.name = "ImpactFields"
@@ -156,6 +191,7 @@ func _add_impact(block: Dictionary) -> void:
 	content.add_child(_impact)
 	var segments: Array = block.get("segments", [])
 	_impact.set_meta("segments", segments)
+	var row: HBoxContainer
 	var body: RichTextLabel
 	for index in segments.size():
 		var segment: Dictionary = segments[index]
@@ -163,24 +199,26 @@ func _add_impact(block: Dictionary) -> void:
 			body = null
 			continue
 		if body == null:
-			var row := HBoxContainer.new()
-			row.add_theme_constant_override("separation", 8)
+			row = HBoxContainer.new()
+			row.add_theme_constant_override("separation", 12)
 			_impact.add_child(row)
-			var bullet := _body(16, Style.INK)
-			bullet.name = "Bullet"
-			bullet.autowrap_mode = TextServer.AUTOWRAP_OFF
-			bullet.custom_minimum_size.x = 12
-			bullet.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-			bullet.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-			row.add_child(bullet)
-			bullet.add_text("•")
-			body = _body(16, Style.INK)
+			body = _body(14, Style.INK)
 			body.name = "ImpactText"
 			body.meta_underlined = false
 			row.add_child(body)
 			_impact_labels.append(body)
 			_bind_fields(body, segments)
-		_write_field(body, segment, index)
+		if str(segment.get("impact_role", "")) == "label":
+			var label := _body(12, Style.SECONDARY_INK)
+			label.name = "ImpactLabel"
+			label.custom_minimum_size.x = 84
+			label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+			row.add_child(label)
+			row.move_child(label, 0)
+			_write_field(label, segment, index)
+			_bind_fields(label, segments)
+		else:
+			_write_field(body, segment, index)
 
 func _write_field(label: RichTextLabel, field: Dictionary, index: int) -> void:
 	var annotated := not str(field.get("tooltip_body", "")).is_empty()
@@ -231,7 +269,7 @@ func _add_comment(block: Dictionary) -> void:
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_theme_constant_override("separation", 8)
 	row.add_child(content)
-	var body := _body(16, Style.SECONDARY_INK)
+	var body := _body(14, Style.SECONDARY_INK)
 	content.add_child(body)
 	body.add_text(str(block.content))
 
@@ -240,7 +278,7 @@ func _label(text: String, font_size: int, ink: Color) -> Label:
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.text = text
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.add_theme_font_override("font", Handwriting.SEMIBOLD_FONT)
+	label.add_theme_font_override("font", ReceiptHover.BODY_FONT)
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", ink)
 	return label
@@ -253,12 +291,13 @@ func _body(font_size: int, ink: Color) -> RichTextLabel:
 	body.selection_enabled = true
 	body.mouse_filter = Control.MOUSE_FILTER_PASS
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	body.add_theme_font_override("normal_font", Handwriting.BODY_FONT)
-	body.add_theme_font_override("bold_font", Handwriting.BOLD_FONT)
+	body.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	body.add_theme_font_override("normal_font", ReceiptHover.BODY_FONT)
+	body.add_theme_font_override("bold_font", ReceiptHover.BOLD_FONT)
 	body.add_theme_font_size_override("normal_font_size", font_size)
 	body.add_theme_font_size_override("bold_font_size", font_size)
 	body.add_theme_color_override("default_color", ink)
-	body.add_theme_constant_override("line_separation", 8)
+	body.add_theme_constant_override("line_separation", 4)
 	return body
 
 func _write_content(label: RichTextLabel, text: String) -> void:
@@ -276,11 +315,18 @@ func _hide_hover() -> void:
 
 func inspection() -> Dictionary:
 	var impact_text := PackedStringArray()
-	for label: RichTextLabel in _impact_labels: impact_text.append(label.get_parsed_text())
+	if _impact != null:
+		for segment: Dictionary in _impact.get_meta("segments"): impact_text.append(str(segment.text))
+	var narrative_gap := _article_rule.global_position.y - (_article.global_position.y + _article.size.y) if _article != null and _article_rule != null else 0.0
+	var bar := _scroll.get_v_scroll_bar()
 	return {"blocks":_blocks.duplicate(true), "headline":_headline, "scrollable":true,
-		"content_height":_column.size.y, "viewport_height":size.y, "columns":1,
-		"impact_text":"\n".join(impact_text), "impact_count":_impact_labels.size(),
+		"content_height":_column.size.y, "viewport_height":_scroll.size.y, "columns":2,
+		"header_rect":_header.get_global_rect(), "scroll_rect":_scroll.get_global_rect(),
+		"scrollbar_rect":bar.get_global_rect(), "scrollbar_gap":bar.global_position.x - _column.get_global_rect().end.x,
+		"narrative_rect":_article.get_global_rect() if _article != null else Rect2(), "narrative_gap":narrative_gap,
+		"content_scroll_top":_scroll.scroll_vertical,
+		"impact_text":"".join(impact_text), "impact_count":_impact_labels.size(),
 		"impact_segments":_impact.get_meta("segments") if _impact != null else [],
 		"portrait":_portrait.inspection() if _portrait != null else {},
 		"field_hover_visible":_hover.visible, "field_hover_text":_hover.content_text(),
-		"horizontal_overflow":_column.size.x > size.x + 1}
+		"horizontal_overflow":_column.size.x > _scroll.size.x + 1}
