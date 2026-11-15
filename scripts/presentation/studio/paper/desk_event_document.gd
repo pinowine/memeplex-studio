@@ -184,41 +184,97 @@ func _add_narrative(block: Dictionary) -> void:
 
 func _add_impact(block: Dictionary) -> void:
 	_article_rule = _add_rule()
-	var content := _section(str(block.get("kind", "impact")), "Impact")
 	_impact = VBoxContainer.new()
 	_impact.name = "ImpactFields"
-	_impact.add_theme_constant_override("separation", 8)
-	content.add_child(_impact)
+	_impact.add_theme_constant_override("separation", 14)
+	_column.add_child(_impact)
 	var segments: Array = block.get("segments", [])
 	_impact.set_meta("segments", segments)
-	var row: HBoxContainer
-	var body: RichTextLabel
+	var groups := {}
+	var indices: Array[int] = []
 	for index in segments.size():
 		var segment: Dictionary = segments[index]
 		if str(segment.text) == "\n":
-			body = null
-			continue
-		if body == null:
-			row = HBoxContainer.new()
-			row.add_theme_constant_override("separation", 12)
-			_impact.add_child(row)
-			body = _body(14, Style.INK)
-			body.name = "ImpactText"
-			body.meta_underlined = false
-			row.add_child(body)
-			_impact_labels.append(body)
-			_bind_fields(body, segments)
-		if str(segment.get("impact_role", "")) == "label":
-			var label := _body(12, Style.SECONDARY_INK)
-			label.name = "ImpactLabel"
-			label.custom_minimum_size.x = 84
-			label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-			row.add_child(label)
-			row.move_child(label, 0)
-			_write_field(label, segment, index)
-			_bind_fields(label, segments)
+			_collect_impact_row(groups, segments, indices)
+			indices = []
 		else:
-			_write_field(body, segment, index)
+			indices.append(index)
+	_collect_impact_row(groups, segments, indices)
+	var icons := {"scope":"language", "effects":"impact", "audience":"group", "variants":"source", "rewards":"reward"}
+	for group: String in ["scope", "effects", "audience", "variants", "rewards"]:
+		if not groups.has(group): continue
+		var section := VBoxContainer.new()
+		section.name = "ImpactGroup_" + group
+		section.add_theme_constant_override("separation", 6)
+		_impact.add_child(section)
+		var heading := HBoxContainer.new()
+		heading.add_theme_constant_override("separation", 8)
+		section.add_child(heading)
+		heading.add_child(_icon(str(icons[group])))
+		var title := _label(DeskLocalization.text("LOC_EVENT_SECTION_" + group.to_upper()), 12, Style.SECONDARY_INK)
+		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
+		heading.add_child(title)
+		for row_indices: Array in groups[group]: _add_impact_row(section, segments, row_indices)
+
+func _collect_impact_row(groups: Dictionary, segments: Array, indices: Array[int]) -> void:
+	if indices.is_empty(): return
+	var group := str(segments[indices[0]].get("impact_group", "effects"))
+	if not groups.has(group): groups[group] = []
+	groups[group].append(indices)
+
+func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 10)
+	section.add_child(row)
+	var label := _body(12, Style.SECONDARY_INK)
+	label.name = "ImpactLabel"
+	label.custom_minimum_size.x = 72
+	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	row.add_child(label)
+	var values := VBoxContainer.new()
+	values.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	values.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	values.add_theme_constant_override("separation", 2)
+	row.add_child(values)
+	var body := _body(14, Style.INK)
+	body.name = "ImpactText"
+	values.add_child(body)
+	_impact_labels.append(body)
+	var stats := HBoxContainer.new()
+	stats.name = "ImpactNumbers"
+	stats.add_theme_constant_override("separation", 8)
+	values.add_child(stats)
+	var amount := _body(14, Style.INK)
+	amount.name = "ImpactAmount"
+	amount.custom_minimum_size.x = 48
+	amount.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	stats.add_child(amount)
+	var duration := _body(12, Style.SECONDARY_INK)
+	duration.name = "ImpactDuration"
+	stats.add_child(duration)
+	for index: int in indices:
+		var segment: Dictionary = segments[index]
+		match str(segment.get("impact_role", "value")):
+			"label": _write_impact_field(label, segment, index)
+			"amount": _write_impact_field(amount, segment, index)
+			"duration": _write_impact_field(duration, segment, index)
+			_: _write_impact_field(body, segment, index)
+	for field_label: RichTextLabel in [label, body, amount, duration]:
+		_bind_fields(field_label, segments)
+		field_label.visible = not field_label.get_parsed_text().strip_edges().is_empty()
+	stats.visible = amount.visible or duration.visible
+	if str(segments[int(indices[0])].impact_group) == "rewards":
+		stats.reparent(row)
+		stats.size_flags_horizontal = Control.SIZE_SHRINK_END
+		stats.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+
+func _write_impact_field(label: RichTextLabel, field: Dictionary, index: int) -> void:
+	var rendered := field
+	if label.get_total_character_count() == 0:
+		rendered = field.duplicate()
+		rendered.text = str(field.text).strip_edges(true, false)
+	_write_field(label, rendered, index)
 
 func _write_field(label: RichTextLabel, field: Dictionary, index: int) -> void:
 	var annotated := not str(field.get("tooltip_body", "")).is_empty()
