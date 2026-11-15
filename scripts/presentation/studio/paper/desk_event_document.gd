@@ -147,10 +147,16 @@ func _add_metadata(block: Dictionary) -> void:
 		location.name = "Country"
 		if location is Label: location.autowrap_mode = TextServer.AUTOWRAP_OFF
 		dateline.add_child(location)
-	var timestamp := _label(str(block.get("timestamp", "")), 11, Style.SECONDARY_INK)
+	var date_text := str(block.get("timestamp", ""))
+	var timestamp := _body(11, Style.SECONDARY_INK)
 	timestamp.name = "EventDate"
 	timestamp.autowrap_mode = TextServer.AUTOWRAP_OFF
+	timestamp.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	timestamp.add_theme_constant_override("line_separation", 0)
+	timestamp.custom_minimum_size.x = ceilf(ReceiptHover.BODY_FONT.get_string_size(date_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 11).x) + 2
+	timestamp.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	timestamp.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	timestamp.add_text(date_text)
 	dateline.add_child(timestamp)
 	_add_rule(_header)
 
@@ -165,6 +171,8 @@ func _tag_style(outlined: bool) -> StyleBoxFlat:
 func _compact_field(field: Dictionary, node_name: String, font_size: int, ink: Color = Color.TRANSPARENT) -> RichTextLabel:
 	var label := _body(font_size, FIELD_COLORS[str(field.field_kind)] if ink.a == 0.0 else ink)
 	label.name = node_name
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_constant_override("line_separation", 0)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	label.custom_minimum_size.x = ceilf(ReceiptHover.BODY_FONT.get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x) + 2
