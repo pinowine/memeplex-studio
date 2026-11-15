@@ -3726,23 +3726,23 @@
   },
   "LOC_POST_THE_EXPRESSION_ON_THE_NEIGHBORHOOD_BOARD_CBD7BF79": {
     "source": "把表达贴进街区留言板。",
-    "zh_CN": "把表达贴进街区留言板。",
-    "en": "Post the expression on the neighborhood board."
+    "zh_CN": "街区留言板上，一句短话也会被邻里记住、转述。",
+    "en": "On the neighborhood board, even a short phrase can become something neighbors remember and repeat."
   },
   "LOC_NEIGHBORHOOD_BOARD_CHANNEL_UNLOCKED_64B49366": {
     "source": "街区留言板渠道已解锁。",
-    "zh_CN": "街区留言板渠道已解锁。",
-    "en": "Neighborhood board channel unlocked."
+    "zh_CN": "解锁“街区留言板”投放渠道。",
+    "en": "Unlocks the neighborhood board launch channel."
   },
   "LOC_BRING_IMAGES_INTO_THE_PUBLIC_RECOMMENDATION_FEED_2E4CFFD6": {
     "source": "让图像进入公开推荐流。",
-    "zh_CN": "让图像进入公开推荐流。",
-    "en": "Bring images into the public recommendation feed."
+    "zh_CN": "公开推荐流在人们的屏幕间传递图像，让陌生人看见同一个瞬间。",
+    "en": "The public feed passes images between screens, bringing the same moment into the lives of strangers."
   },
   "LOC_PUBLIC_RECOMMENDATION_FEED_CHANNEL_UNLOCKED_7C60B262": {
     "source": "公开推荐流渠道已解锁。",
-    "zh_CN": "公开推荐流渠道已解锁。",
-    "en": "Public recommendation feed channel unlocked."
+    "zh_CN": "解锁“公开推荐流”投放渠道。",
+    "en": "Unlocks the public feed launch channel."
   },
   "LOC_IMAGE_MEDIUM_74F473C4": {
     "source": "图像媒介",
@@ -3751,8 +3751,8 @@
   },
   "LOC_BUILD_A_BRIDGE_BETWEEN_READERS_OF_DIFFERENT_A7CA0150": {
     "source": "给不同语言的读者搭一座桥。",
-    "zh_CN": "给不同语言的读者搭一座桥。",
-    "en": "Build a bridge between readers of different languages."
+    "zh_CN": "城邦之间口音各异，同一句话在不同语言里寻找自己的回声。",
+    "en": "Each city speaks in its own voice. The same phrase finds a new echo in another language."
   },
   "LOC_LANGUAGE_ACCESS_5317F083": {
     "source": "语言可达性 +0.1。",
@@ -3766,13 +3766,13 @@
   },
   "LOC_SEND_THE_EXPRESSION_TO_THE_OPEN_REMIX_29B5AC84": {
     "source": "把表达送进开放改写工坊。",
-    "zh_CN": "把表达送进开放改写工坊。",
-    "en": "Send the expression to the open remix workshop."
+    "zh_CN": "开放改写工坊把熟悉的表达拆成模板，每个人都能续上自己的版本。",
+    "en": "At the open remix workshop, familiar expressions become templates for someone else's version."
   },
   "LOC_OPEN_REMIX_WORKSHOP_CHANNEL_UNLOCKED_D45AD777": {
     "source": "开放改写工坊渠道已解锁。",
-    "zh_CN": "开放改写工坊渠道已解锁。",
-    "en": "Open remix workshop channel unlocked."
+    "zh_CN": "解锁“开放改写工坊”投放渠道。",
+    "en": "Unlocks the open remix workshop launch channel."
   },
   "LOC_TEMPLATE_CARRIER_515C52BE": {
     "source": "模板载体",
@@ -3781,8 +3781,8 @@
   },
   "LOC_LET_A_PHRASE_INVITE_A_RESPONSE_IN_0444E668": {
     "source": "让一句话在新的场合也能接上回应。",
-    "zh_CN": "让一句话在新的场合也能接上回应。",
-    "en": "Let a phrase invite a response in a new setting."
+    "zh_CN": "一句话离开最初的场合，在陌生人的回应里找到新的落脚点。",
+    "en": "A phrase leaves its first setting behind and finds a new home in a stranger's response."
   },
   "LOC_CONTEXT_DEPENDENCY_A5CCA14B": {
     "source": "语境依赖 −0.1。",

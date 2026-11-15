@@ -15,10 +15,16 @@ static var TITLES := {"language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"
 const DEPTHS := ContextController.DEPTHS
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const CardFace := preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
+const PaperIcon := preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
+const HEADING_FONT := preload("res://assets/image/fonts/body_semibold_font.tres")
 const INK := Color("384238")
 const MUTED := Color("737968")
 const DRAG_THRESHOLD := 6.0
 const CARD_GAP := 12.0
+const HEADING_SIZE := 20
+const AXIS_HANDLE_RADIUS := 13.0
+const GRID_INK := Color("737968", .14)
+const GRID_PAPER := Color("737968", .025)
 
 var _rules: MemeDesignRules
 var _state: Dictionary = {}
@@ -29,7 +35,9 @@ var _enabled := true
 var _action_callback := Callable()
 var _resource_factory := Callable()
 var _resource_graphics: Dictionary = {}
+var _heading_icons: Dictionary = {}
 var _layout_layers: Dictionary = {}
+var _hover_target := ""
 var _held := ""
 var _held_layer := ""
 var _held_slot := -1
@@ -52,6 +60,13 @@ func _ready() -> void:
 	resized.connect(_refresh)
 	get_window().focus_exited.connect(_cancel_input)
 	_drag_preview_parent = self
+	for id: String in LAYERS:
+		var icon := PaperIcon.new()
+		icon.name = id.capitalize() + "Icon"
+		icon.kind = "topic" if id == "topics" else id
+		add_child(icon)
+		_heading_icons[id] = icon
+	mouse_exited.connect(_on_mouse_exited)
 	_refresh()
 
 func _notification(what: int) -> void:
@@ -98,7 +113,9 @@ func perform(action: String, params: Dictionary) -> void:
 
 func set_interaction_enabled(value: bool) -> void:
 	_enabled = value
-	if not value: _cancel_input()
+	if not value:
+		_cancel_input()
+		_on_mouse_exited()
 	queue_redraw()
 
 func select_layer(id: String) -> void:
@@ -155,38 +172,52 @@ func _region_points(id: String) -> PackedVector2Array:
 
 func _build_layout() -> void:
 	_layout_layers.clear()
-	# The stance heading sits below the CRT; card rows keep their physical proportions.
+	# The left column starts below the CRT; card rows keep their physical proportions.
 	var areas := {
-		"stance":Rect2(.055,.19,.30,.30), "pragmatic":Rect2(.055,.555,.30,.37),
-		"language":Rect2(.405,.075,.22,.39), "group":Rect2(.665,.075,.28,.39),
+		"language":Rect2(.055,.19,.30,.30), "group":Rect2(.055,.555,.30,.37),
+		"stance":Rect2(.405,.075,.255,.39), "pragmatic":Rect2(.69,.075,.255,.39),
 		"topics":Rect2(.405,.555,.54,.37)}
 	for id: String in LAYERS:
 		var area: Rect2 = areas[id]
 		var rect := Rect2(area.position*size,area.size*size)
-		var data := {"rect":rect,"handle_rect":Rect2(rect.end.x-33,rect.position.y+3,30,18),"slot_centres":[],"slot_rects":[],"slot_pickup_rects":[]}
+		var data := {"rect":rect,"handle_rect":Rect2(rect.end.x-28,rect.position.y,28,32),"slot_centres":[],"slot_rects":[],"slot_pickup_rects":[]}
+		data.icon_rect = Rect2(rect.position + Vector2(0, 3), Vector2(24, 24))
+		data.title_rect = Rect2(rect.position + Vector2(32, 0), Vector2(rect.size.x - 68, 32))
+		data.heading_rule = Rect2(rect.position + Vector2(0, 40), Vector2(rect.size.x, 1))
 		_layout_layers[id] = data
 		data.region_polygon = _region_points(id)
+		if _heading_icons.has(id):
+			_heading_icons[id].position = data.icon_rect.position
+			_heading_icons[id].size = data.icon_rect.size
 		if id in ["stance","pragmatic"]:
-			# Reserve the upper axis label's full height below the heading rule.
-			var plot_top := 43 + get_theme_default_font().get_ascent(14)
-			var plot_size := Vector2(maxf(42,rect.size.x-72),maxf(42,rect.size.y-plot_top-26))
-			data.plot_rect = Rect2(rect.position+Vector2(35,plot_top),plot_size)
-			data.flow_axis_labels = rect.size.y < 128
-			for label: String in _axis_labels(id).values():
-				if get_theme_default_font().get_string_size(label,HORIZONTAL_ALIGNMENT_LEFT,-1,14).x > 34:
-					data.flow_axis_labels = true
-			if data.flow_axis_labels:
-				var caption_height := minf(34,maxf(16,(rect.size.y-70)*.3))
-				data.axis_caption_height = caption_height
-				data.plot_rect = Rect2(rect.position+Vector2(35,40+caption_height),Vector2(maxf(42,rect.size.x-72),maxf(24,rect.size.y-44-caption_height*2)))
+			var plot_area := Rect2(rect.position + Vector2(64, 70), Vector2(maxf(42, rect.size.x - 128), maxf(32, rect.size.y - 104)))
+			var side := minf(plot_area.size.x, plot_area.size.y)
+			var plot := Rect2(plot_area.get_center() - Vector2.ONE * side * .5, Vector2.ONE * side)
+			data.plot_rect = plot
+			data.grid_step = float(_layers().get(id, {}).get("step", _rules.axis_step if _rules != null else .1))
+			data.grid_divisions = roundi(2.0 / float(data.grid_step))
+			data.grid_spacing = side / float(data.grid_divisions)
+			data.grid_color = GRID_INK
+			data.grid_fill_color = GRID_PAPER
+			var grid_lines := PackedVector2Array()
+			for tick in int(data.grid_divisions) + 1:
+				var offset := float(tick) * float(data.grid_spacing)
+				grid_lines.append(Vector2(plot.position.x + offset, plot.position.y))
+				grid_lines.append(Vector2(plot.position.x + offset, plot.end.y))
+				grid_lines.append(Vector2(plot.position.x, plot.position.y + offset))
+				grid_lines.append(Vector2(plot.end.x, plot.position.y + offset))
+			data.grid_lines = grid_lines
+			data.flow_axis_labels = true
+			data.axis_caption_height = 24.0
 		else:
 			var count: int = (_layers().get(id, {}).get("slots", []) as Array).size()
-			if count == 0: count = 3 if id == "topics" else 1
+			if count == 0: count = 3 if id == "topics" else 2
+			if id in ["language", "group"]: count = mini(count, 2)
 			var kind := "topic" if id == "topics" else id
 			var card_size := CardFace.minimum_card_size(kind)
-			var columns := mini(count, 2)
+			var columns := mini(count, 3 if id == "topics" else 2)
 			var rows := ceili(float(count) / columns)
-			var content := Rect2(rect.position + Vector2(4, 48), rect.size - Vector2(8, 64))
+			var content := Rect2(rect.position + Vector2(4, 64), rect.size - Vector2(8, 80))
 			var cell_size := Vector2((content.size.x - CARD_GAP * (columns - 1)) / columns, (content.size.y - CARD_GAP * (rows - 1)) / rows)
 			var card_scale := minf(1.5, minf(cell_size.x / card_size.x, cell_size.y / card_size.y))
 			var graphic_size := card_size * card_scale
@@ -253,24 +284,50 @@ func _draw_pencil_path(points: PackedVector2Array, color: Color, width: float = 
 	draw_polyline(offset,Color(color, color.a*.30),0.65,true)
 
 func _draw() -> void:
+	for column_rule: Rect2 in _column_rules():
+		draw_line(column_rule.position, column_rule.end, Color(MUTED, .28), .9, true)
 	for id: String in LAYERS:
 		if not _layout_layers.has(id): continue
 		var info: Dictionary = _layout_layers[id]
 		var rect: Rect2 = info.rect
 		var attached := _attached(id)
-		_text(TITLES[id],rect.position+Vector2(4,20),21)
-		_draw_pencil_path(PackedVector2Array([rect.position+Vector2(1,29),rect.position+Vector2(rect.size.x*.42,28),rect.position+Vector2(rect.size.x*.75,30),Vector2(rect.end.x,rect.position.y+27)]),Color(INK,.64),1.15)
-		var handle: Rect2 = info.handle_rect
-		_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(), DeskLocalization.text("LOC_VIEW_DB8DB053" if attached else DeskLocalization.source("LOC_REPLACE_724E8987")), handle, 12, 10, 1), MUTED)
+		var title: Rect2 = info.title_rect
+		draw_string(HEADING_FONT, title.position + Vector2(0, 24), DeskLocalization.text(TITLES[id]), HORIZONTAL_ALIGNMENT_LEFT, title.size.x, HEADING_SIZE, INK)
+		var rule: Rect2 = info.heading_rule
+		draw_line(rule.position, rule.end, Color(INK, .35), 1.0, true)
+		if id == _layer: draw_line(rule.position, rule.position + Vector2(32, 0), Color(INK, .85), 2.0, true)
+		_draw_section_handle(id)
 		if not attached:
-			_text(DeskLocalization.source("LOC_AWAITING_RETURN_A4746B64"),rect.position+Vector2(6,rect.size.y*.57),15,MUTED,rect.size.x-12)
+			_draw_detached_slot(rect)
 			continue
 		if id in ["stance","pragmatic"]: _draw_axis(id)
 		else: _draw_slots(id)
 	if _held_moved and _held == "layer":
 		var point := get_global_transform_with_canvas().affine_inverse()*_last_point
 		draw_arc(point,17,0.2,TAU-0.2,32,Color(0.20,0.32,0.25,0.65),1.5,true)
-		_text(DeskLocalization.source("LOC_RELEASE_TO_DETACH_09EF1937"),point+Vector2(23,5),13)
+		draw_rect(Rect2(point + Vector2(-7, -10), Vector2(14, 20)), Color(INK, .65), false, 1.2)
+
+func _column_rules() -> Array[Rect2]:
+	return [Rect2(Vector2(size.x * .38, size.y * .19), Vector2(0, size.y * .735)),
+		Rect2(Vector2(size.x * .675, size.y * .075), Vector2(0, size.y * .39)),
+		Rect2(Vector2(size.x * .055, size.y * .525), Vector2(size.x * .89, 0))]
+
+func _draw_section_handle(id: String) -> void:
+	var handle: Rect2 = _layout_layers[id].handle_rect
+	var active := _enabled and (_hover_target == id + "/handle" or (_held == "layer" and _held_layer == id))
+	if active: draw_circle(handle.get_center(), 15, Color(INK, .07))
+	for x in [-3, 3]:
+		for y in [-6, 0, 6]: draw_circle(handle.get_center() + Vector2(x, y), 1.3, Color(INK, .85 if active else .5))
+
+func _draw_detached_slot(rect: Rect2) -> void:
+	var center := Vector2(rect.get_center().x, rect.position.y + 64 + (rect.size.y - 64) * .5)
+	var frame := Rect2(center - Vector2(36, 24), Vector2(72, 48))
+	draw_dashed_line(frame.position, Vector2(frame.end.x, frame.position.y), Color(MUTED, .45), 1.0, 5.0)
+	draw_dashed_line(Vector2(frame.position.x, frame.end.y), frame.end, Color(MUTED, .45), 1.0, 5.0)
+	draw_dashed_line(frame.position, Vector2(frame.position.x, frame.end.y), Color(MUTED, .45), 1.0, 5.0)
+	draw_dashed_line(Vector2(frame.end.x, frame.position.y), frame.end, Color(MUTED, .45), 1.0, 5.0)
+	draw_arc(center + Vector2(2, 0), 11, -.5, PI + .5, 24, Color(INK, .55), 1.5, true)
+	draw_polyline(PackedVector2Array([center + Vector2(-12, -9), center + Vector2(-8, -4), center + Vector2(-2, -8)]), Color(INK, .55), 1.5, true)
 
 func _slot_shape(id: String) -> String:
 	return CardFace.SHAPES.get("topic" if id == "topics" else id, "xy_plane")
@@ -298,13 +355,18 @@ func _draw_slots(id: String) -> void:
 		var occupied: bool = index < slots.size() and not slots[index].is_empty()
 		_draw_slot_socket(id, rect, id == _layer and index == _selected_slot, occupied)
 		if not occupied:
-			var label := "%s %d" % [DeskLocalization.text(TITLES[id]), index + 1]
-			_draw_text_layout(ResourceGraphic.fit_text(get_theme_default_font(),label,rect.grow(-8),12,10,1),MUTED)
+			var center := rect.get_center() - Vector2(2, 2)
+			var radius := minf(8, minf(rect.size.x, rect.size.y) * .12)
+			draw_line(center - Vector2(radius, 0), center + Vector2(radius, 0), Color(INK, .55), 1.8, true)
+			draw_line(center - Vector2(0, radius), center + Vector2(0, radius), Color(INK, .55), 1.8, true)
+
 func _draw_axis(id: String) -> void:
 	var info: Dictionary = _layout_layers[id]
 	var plot: Rect2 = info.plot_rect
 	var data: Dictionary = _layers().get(id, {})
 	var center := plot.get_center()
+	draw_rect(plot, info.grid_fill_color)
+	draw_multiline(info.grid_lines, info.grid_color, .7, true)
 	for tick in 11:
 		var t := float(tick)/10.0
 		if tick == 5: continue
@@ -317,18 +379,15 @@ func _draw_axis(id: String) -> void:
 	var label_layouts := _axis_label_layouts(id)
 	for key: String in ["x_negative", "x_positive", "y_negative", "y_positive"]:
 		_draw_text_layout(label_layouts[key])
-	draw_arc(_axis_origin(id), 7, 0, TAU, 28, INK, 1.5, true)
 	var known := id != "stance" or bool(data.get("known", false))
-	if known:
-		draw_circle(_axis_point(id), 4, INK)
-		var current: Array = data.get("current", [0.0, 0.0])
-		var coordinates := "%.1f / %.1f" % [float(current[0]), float(current[1])]
-		var available: float = (info.handle_rect as Rect2).position.x-info.rect.position.x-58
-		if get_theme_default_font().get_string_size(coordinates,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x > available:
-			coordinates = "%.1f/%.1f" % [float(current[0]),float(current[1])]
-		_text(coordinates, info.rect.position + Vector2(53,20),12,MUTED)
-	else:
-		_text(DeskLocalization.source("LOC_UNREGISTERED_0DB3DB44"), info.rect.position + Vector2(53, 20), 14, MUTED)
+	var anchor := _axis_point(id) if known else _axis_origin(id)
+	var active := _enabled and (_hover_target == id + "/axis" or (_axis_drag and _held_layer == id))
+	if known: draw_circle(anchor, AXIS_HANDLE_RADIUS - 1, Color("eee6d3"))
+	draw_arc(anchor, AXIS_HANDLE_RADIUS - 1, 0, TAU, 32, Color(INK, .85 if active else .55), 1.8 if active else 1.2, true)
+	for direction: Vector2 in [Vector2.LEFT, Vector2.RIGHT, Vector2.UP, Vector2.DOWN]:
+		draw_line(anchor + direction * 9, anchor + direction * 14, Color(INK, .65), 1.2, true)
+	draw_arc(_axis_origin(id), 7, 0, TAU, 28, INK, 1.5, true)
+	if known: draw_circle(_axis_point(id), 4, INK)
 
 func _axis_labels(id: String) -> Dictionary:
 	var labels := {"x_negative":DeskLocalization.text("LOC_FREEDOM_D1047EED") if id == "stance" else DeskLocalization.text("LOC_SINCERITY_8BB7FF57"), "x_positive":DeskLocalization.text("LOC_AUTHORITY_E9D827BA") if id == "stance" else DeskLocalization.text("LOC_IRONY_06D9BA32"), "y_negative":DeskLocalization.text("LOC_EQUALITY_14DD2491") if id == "stance" else DeskLocalization.text("LOC_SUPPORT_D93373F8"), "y_positive":DeskLocalization.text("LOC_HIERARCHY_33771717") if id == "stance" else DeskLocalization.text("LOC_OPPOSITION_454F03C9")}
@@ -353,24 +412,16 @@ func _axis_label_layouts(id: String) -> Dictionary:
 	var info: Dictionary = _layout_layers[id]
 	var labels := _axis_labels(id)
 	var font := get_theme_default_font()
-	var areas := {}
-	if not bool(info.get("flow_axis_labels",false)):
-		var positions := {"x_negative":Vector2(plot.position.x-31,center.y+4),"x_positive":Vector2(plot.end.x+6,center.y+4),"y_negative":Vector2(center.x-12,plot.position.y-7),"y_positive":Vector2(center.x-12,plot.end.y+17)}
-		for key: String in positions:
-			var width := font.get_string_size(str(labels[key]),HORIZONTAL_ALIGNMENT_LEFT,-1,14).x
-			areas[key] = Rect2(positions[key]-Vector2(0,font.get_ascent(14)),Vector2(width,font.get_ascent(14)+font.get_descent(14)))
-	else:
-		var rect: Rect2 = info.rect
-		var height := float(info.axis_caption_height)
-		var side_width := maxf(1,rect.size.x*.30-4)
-		var middle_width := rect.size.x*.32
-		areas = {
-			"x_negative":Rect2(Vector2(rect.position.x+1,center.y+6),Vector2(side_width,height)),
-			"x_positive":Rect2(Vector2(rect.end.x-side_width-1,center.y+6),Vector2(side_width,height)),
-			"y_negative":Rect2(Vector2(rect.get_center().x-middle_width*.5,rect.position.y+36),Vector2(middle_width,height)),
-			"y_positive":Rect2(Vector2(rect.get_center().x-middle_width*.5,rect.end.y-height-1),Vector2(middle_width,height))}
+	var rect: Rect2 = info.rect
+	var side_width := maxf(58, rect.size.x * .36 - 4)
+	var middle_width := rect.size.x - 64
+	var areas := {
+		"x_negative":Rect2(Vector2(rect.position.x, center.y + 8), Vector2(side_width, 24)),
+		"x_positive":Rect2(Vector2(rect.end.x - side_width, center.y + 8), Vector2(side_width, 24)),
+		"y_negative":Rect2(Vector2(rect.get_center().x - middle_width * .5, plot.position.y - 26), Vector2(middle_width, 26)),
+		"y_positive":Rect2(Vector2(rect.get_center().x - middle_width * .5, plot.end.y + 7), Vector2(middle_width, 24))}
 	var result := {}
-	for key: String in areas: result[key]=ResourceGraphic.fit_text(font,str(labels[key]),areas[key],14,12,2)
+	for key: String in areas: result[key]=ResourceGraphic.fit_text(font,str(labels[key]),areas[key],16,16,1)
 	return result
 
 func _axis_point(id: String) -> Vector2:
@@ -451,6 +502,7 @@ func plane_record(id: String = "") -> Dictionary:
 
 func _gui_input(event: InputEvent) -> void:
 	if not _enabled: return
+	if event is InputEventMouseMotion: _update_pointer(event.position)
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		_last_point = get_global_transform_with_canvas() * event.position
 		if event.pressed: _begin_pointer(event.position)
@@ -490,7 +542,7 @@ func _begin_pointer(point: Vector2) -> void:
 		elif id in ["stance", "pragmatic"]:
 			var anchor := _axis_point(id)
 			if id == "stance" and not bool(_layers().get(id, {}).get("known", false)): anchor = _axis_origin(id)
-			if point.distance_to(anchor) <= 13:
+			if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS:
 				_held = "axis"
 				_axis_drag = true
 		else:
@@ -504,6 +556,34 @@ func _begin_pointer(point: Vector2) -> void:
 	selected_info_changed.emit(selected_info())
 	_sync_graphics()
 	queue_redraw()
+
+func _on_mouse_exited() -> void:
+	_hover_target = ""
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
+	queue_redraw()
+
+func _update_pointer(point: Vector2) -> void:
+	var id := _layer_at(point)
+	var target := id
+	var cursor := Control.CURSOR_POINTING_HAND if not id.is_empty() else Control.CURSOR_ARROW
+	if not id.is_empty() and _attached(id):
+		if (_layout_layers[id].handle_rect as Rect2).has_point(point):
+			target += "/handle"
+			cursor = Control.CURSOR_DRAG
+		elif id in ["stance", "pragmatic"]:
+			var anchor := _axis_point(id)
+			if id == "stance" and not bool(_layers().get(id, {}).get("known", false)): anchor = _axis_origin(id)
+			if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS:
+				target += "/axis"
+				cursor = Control.CURSOR_DRAG
+		else:
+			var slot := _slot_at(id, point)
+			var slots: Array = _layers().get(id, {}).get("slots", [])
+			if slot >= 0 and slot < slots.size() and not slots[slot].is_empty(): cursor = Control.CURSOR_DRAG
+	mouse_default_cursor_shape = cursor
+	if target != _hover_target:
+		_hover_target = target
+		queue_redraw()
 
 func _update_resource_drag() -> void:
 	if _held != "resource" or not _held_moved: return
@@ -601,14 +681,22 @@ func inspection() -> Dictionary:
 		info.slot_shape = _slot_shape(id)
 		info.slot_material = "fitted_card_socket" if id in ["language","group","topics"] else "pencil_axes"
 		info.pin_style = ""
+		info.heading_rect = Rect2(info.rect.position, Vector2(info.rect.size.x, 32))
+		info.heading_font_size = HEADING_SIZE
+		info.heading_emphasis = "semibold"
+		info.handle_style = "six_dot_grip"
+		info.empty_slot_style = "card_silhouette_plus" if id in ["language", "group", "topics"] else "axis_drag_handle"
 		var quads: Array = []
 		for rect: Rect2 in info.get("slot_rects", []):
 			quads.append(PackedVector2Array([rect.position, rect.position + Vector2(rect.size.x, 0), rect.end, rect.position + Vector2(0, rect.size.y)]))
 		info.slot_quads = quads
 		if id in ["stance", "pragmatic"]:
+			info.coordinate_readout_visible = false
 			info.axis_rect = info.plot_rect
 			info.axis_labels = _axis_labels(id)
 			info.axis_label_positions = _axis_label_positions(id)
+			info.axis_label_layouts = _axis_label_layouts(id)
+			info.axis_handle_radius = AXIS_HANDLE_RADIUS
 			info.marker_known = bool(_layers().get(id, {}).get("known", false)) if id == "stance" else true
 			info.axis_point = _axis_point(id)
 			info.axis_origin = _axis_origin(id)
@@ -623,7 +711,7 @@ func inspection() -> Dictionary:
 		layers[id] = info
 		visible.append(id)
 	var selected: Dictionary = layers.get(_layer, {})
-	return {"layout_mode":"assembly_board", "layout_version":14, "layers":layers, "visible_layers":visible, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":-1, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","drag_threshold":DRAG_THRESHOLD,"resource_dragging":_resource_dragging}
+	return {"layout_mode":"assembly_board", "layout_version":16, "layers":layers, "visible_layers":visible, "section_icon_count":_heading_icons.size(), "column_rules":_column_rules(), "instruction_labels_visible":false, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":-1, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","drag_threshold":DRAG_THRESHOLD,"resource_dragging":_resource_dragging}
 
 func _viewport_rect(rect: Rect2) -> Rect2:
 	var transform := get_global_transform_with_canvas()
@@ -640,7 +728,7 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	if layer.is_empty(): return {}
 	var index := _slot_at(layer,point)
 	var data: Dictionary = _layers().get(layer,{})
-	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":DeskLocalization.text("LOC_CLICK_TO_FOCUS_THIS_SECTION_901FD24F"),"attached":_attached(layer)}
+	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":"","attached":_attached(layer)}
 	if layer in ["stance","pragmatic"]:
 		result.kind = layer
 		result.text = ""
@@ -651,7 +739,7 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	elif index >= 0:
 		var slots: Array = data.get("slots",[])
 		var resource := _resource(str(slots[index].get("resource_id",slots[index].get("id","")))) if index < slots.size() else {}
-		if resource.is_empty(): result.text = DeskLocalization.text("LOC_EMPTY_SLOT_INSERT_D029F95E")+TITLES[layer]
+		if resource.is_empty(): result.text = ""
 		else:
 			result.title = resource.get("title",TITLES[layer])
 			result.text = resource.get("description","")

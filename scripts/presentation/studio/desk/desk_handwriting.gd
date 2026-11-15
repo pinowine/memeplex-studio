@@ -41,6 +41,7 @@ static func _apply(node: Node, themes: Dictionary) -> void:
 			var font: Font = BODY_FONT
 			if control is TabBar: font = FONT
 			elif control is Button: font = MEDIUM_FONT
+			elif bool(control.get_meta("paper_section_heading", false)): font = SEMIBOLD_FONT
 			elif bool(control.get_meta("paper_emphasis", false)) or control.theme_type_variation in ["PrintHeading", "DemoHeading"]: font = HEADING_FONT
 			if control.get_theme_font("font") != font:
 				control.add_theme_font_override("font", font)

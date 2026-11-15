@@ -38,5 +38,30 @@
     "source": "表达补丁 %d / %d：%s",
     "zh_CN": "表达补丁 %d / %d：%s",
     "en": "Expression patches %d / %d: %s"
+  },
+  "LOC_WB_CAPABILITIES": {
+    "source": "传播能力",
+    "zh_CN": "传播能力",
+    "en": "Capabilities"
+  },
+  "LOC_WB_EFFECT": {
+    "source": "能力效果",
+    "zh_CN": "效果",
+    "en": "Effect"
+  },
+  "LOC_WB_COST": {
+    "source": "费用",
+    "zh_CN": "费用",
+    "en": "Cost"
+  },
+  "LOC_WB_BALANCE": {
+    "source": "余额",
+    "zh_CN": "余额",
+    "en": "Balance"
+  },
+  "LOC_WB_UNLOCK": {
+    "source": "解锁",
+    "zh_CN": "解锁",
+    "en": "Unlock"
   }
 }

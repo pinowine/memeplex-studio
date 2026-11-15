@@ -8,10 +8,16 @@ const SketchShader = preload("res://shaders/studio/desk_sketch_base.gdshader")
 const UnionShader = preload("res://shaders/studio/desk_neuron_ink.gdshader")
 const NeuronGeometry=preload("res://scripts/presentation/studio/design/desk_neuron_geometry.gd")
 const BlobFeedback = preload("res://scripts/presentation/studio/desk/desk_blob_feedback.gd")
+const TextLayout = preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
+const LabelFont = preload("res://assets/image/fonts/body_medium_font.tres")
+const SelectedFont = preload("res://assets/image/fonts/body_bold_font.tres")
+const ACCENT := Color("41675f")
 const UNION_PIXEL_SCALE := 2
 var _skills: Array = []
 var _unlocked: Array = []
 var _points: Dictionary = {}
+var _label_layouts: Dictionary = {}
+var _hit_rects: Dictionary = {}
 var _paths: Dictionary = {}
 var _twigs: Dictionary = {}
 var _growth: Dictionary = {}
@@ -60,7 +66,15 @@ func cursor_shape_at(point: Vector2) -> int:
 func _hit_id(at: Vector2) -> String:
 	for id: String in _points:
 		if at.distance_to(_points[id]) <= 27.0: return id
+	for id: String in _hit_rects:
+		if (_hit_rects[id] as Rect2).has_point(at): return id
 	return ""
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
+		_refresh_labels()
+		queue_redraw()
 
 
 func _ready() -> void:
@@ -129,13 +143,15 @@ func _rebuild() -> void:
 	var offsets: Dictionary={}
 	var highest:=1
 	for depth in depths.values(): highest=maxi(highest,int(depth))
+	var label_width := minf(152, (size.x - 24) / float(highest + 1) - 8)
+	var inset := label_width * .5 + 12
 	for skill in _skills:
 		var id:=str(skill.get("id",""))
 		var depth:=int(depths.get(id,0))
 		var row:=int(offsets.get(depth,0))
 		offsets[depth]=row+1
 		var fraction:=float(row+1)/(int(rows.get(depth,1))+1)
-		_points[id]=Vector2(38+depth*(maxf(80,size.x-80)/highest),size.y*(.15+.67*fraction))
+		_points[id]=Vector2(inset+depth*((size.x-inset*2)/highest),size.y*(.15+.67*fraction))
 	for skill in _skills:
 		var id:=str(skill.get("id",""))
 		var parents: Array=skill.get("requires",[]).duplicate()
@@ -160,7 +176,50 @@ func _rebuild() -> void:
 				_cache_twig(curve[index],direction,rng.randf_range(24,40),3,rng,twigs,float(index)/32,path_index)
 		_paths[id]=curves
 		_twigs[id]=twigs
+	_refresh_labels()
 	queue_redraw()
+
+
+func _refresh_labels() -> void:
+	_label_layouts.clear()
+	_hit_rects.clear()
+	var depths := {}
+	var highest := 1
+	for skill: Dictionary in _skills:
+		var depth := 0
+		for dependency: Variant in skill.get("requires", []): depth = maxi(depth, int(depths.get(str(dependency), 0)) + 1)
+		depths[str(skill.get("id", ""))] = depth
+		highest = maxi(highest, depth)
+	var width := minf(152, (size.x - 24) / float(highest + 1) - 8)
+	for skill: Dictionary in _skills:
+		var id := str(skill.get("id", ""))
+		if not _points.has(id): continue
+		var point: Vector2 = _points[id]
+		var area := Rect2(point + Vector2(-width * .5, 28), Vector2(width, 46))
+		var label := TextLayout.fit_text(SelectedFont, DeskLocalization.text(str(skill.get("title", ""))), area, 15, 14, 2)
+		_label_layouts[id] = label
+		_hit_rects[id] = Rect2(point - Vector2(27, 27), Vector2(54, 54)).merge(area).grow(3)
+
+
+func _node_status(skill: Dictionary) -> String:
+	if str(skill.get("id", "")) in _unlocked: return "unlocked"
+	for dependency: Variant in skill.get("requires", []):
+		if str(dependency) not in _unlocked: return "locked"
+	return "available"
+
+
+func _draw_status(at: Vector2, status: String, selected: bool) -> void:
+	var color := ACCENT if selected or status == "unlocked" else Color(INK, .52 if status == "locked" else .84)
+	if status == "unlocked":
+		draw_polyline(PackedVector2Array([at + Vector2(-5, 0), at + Vector2(-1, 4), at + Vector2(6, -5)]), color, 1.8, true)
+	elif status == "locked":
+		draw_arc(at + Vector2(0, -3), 4, PI, TAU, 16, color, 1.2, true)
+		draw_rect(Rect2(at + Vector2(-5, -3), Vector2(10, 9)), color, false, 1.2)
+		draw_circle(at + Vector2(0, 1), 1, color)
+	else:
+		draw_arc(at, 6, 0, TAU, 24, color, 1.4, true)
+		draw_line(at + Vector2(-3, 0), at + Vector2(3, 0), color, 1.2, true)
+		draw_line(at + Vector2(0, -3), at + Vector2(0, 3), color, 1.2, true)
 
 
 func _cache_twig(start: Vector2,direction: Vector2,length: float,depth: int,rng: RandomNumberGenerator,output: Array,at: float,path_index: int) -> void:
@@ -252,7 +311,6 @@ func union_image(active: bool = true) -> Image:
 
 
 func _draw() -> void:
-	var font := get_theme_default_font()
 	_update_union_masks()
 	for skill: Dictionary in _skills:
 		var id := str(skill.get("id",""))
@@ -266,7 +324,17 @@ func _draw() -> void:
 		draw_arc(point,radius,0,TAU,20,Color(INK,opacity),.7,true)
 		draw_circle(point,radius*.46,Color(INK,opacity))
 		_feedback.paint(self,point,Vector2(38,36),id)
-		draw_string(font,point+Vector2(-45,32),DeskLocalization.text(str(skill.get("title",""))),HORIZONTAL_ALIGNMENT_CENTER,90,11,INK)
+		var selected := id == _selected
+		var status := _node_status(skill)
+		_draw_status(point + Vector2(22, -18), status, selected)
+		var color := ACCENT if selected else Color(INK, .60 if status == "locked" else 1.0)
+		var font: Font = SelectedFont if selected else LabelFont
+		var layout: Dictionary = _label_layouts.get(id, {})
+		for line: Dictionary in layout.get("lines", []):
+			draw_string(font, line.baseline, line.text, HORIZONTAL_ALIGNMENT_LEFT, -1, int(line.font_size), color)
+		if selected:
+			var area: Rect2 = layout.get("area", Rect2())
+			draw_line(area.position + Vector2(8, area.size.y + 3), area.end + Vector2(-8, 3), Color(ACCENT, .65), 1.2, true)
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -290,10 +358,14 @@ func _gui_input(event: InputEvent) -> void:
 
 func inspection() -> Dictionary:
 	var dependencies: Dictionary={}
+	var states := {}
 	var twig_count:=0
-	for skill in _skills: dependencies[str(skill.get("id",""))]=(skill.get("requires",[]) as Array).duplicate()
+	for skill in _skills:
+		dependencies[str(skill.get("id",""))]=(skill.get("requires",[]) as Array).duplicate()
+		states[str(skill.get("id", ""))] = _node_status(skill)
 	for twigs in _twigs.values(): twig_count+=twigs.size()
 	return {"node_points":_points.duplicate(),"growth":_growth.duplicate(),"selected":_selected,"unlocked":_unlocked.duplicate(),
+		"node_labels":_label_layouts.duplicate(true),"node_hit_rects":_hit_rects.duplicate(),"node_states":states,"selected_label_weight":700,"label_hit_enabled":true,
 		"paths":_paths.duplicate(true),"dependencies":dependencies,"twig_count":twig_count,"recursion_depth":3,"rebuilds":_rebuilds,
 		"origin":Vector2(-18,size.y*.56),"shader":SketchShader.resource_path,"uses_private_rng":true,"branch_style":"continuous_tapered_swelling_tree",
 		"scaffold_paths":_paths.duplicate(true),"scaffold_continuous":true,"growth_resets":_growth_resets,

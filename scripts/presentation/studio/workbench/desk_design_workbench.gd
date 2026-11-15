@@ -23,6 +23,7 @@ const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_recei
 const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_flow.gd")
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const HEADING_FONT = preload("res://assets/image/fonts/body_semibold_font.tres")
 const INK := Color("384238")
 const SECONDARY_INK := Color("594d3f")
 const SPACE_WITHIN := 8
@@ -78,6 +79,16 @@ var _publish: Button
 var _skill_buttons: Dictionary = {}
 var _skill_title: Label
 var _skill_details: RichTextLabel
+var _spread_heading: HBoxContainer
+var _spread_column_rule: VSeparator
+var _skill_heading: HBoxContainer
+var _skill_scroll: ScrollContainer
+var _skill_content: VBoxContainer
+var _skill_effect: RichTextLabel
+var _skill_purchase: VBoxContainer
+var _skill_cost: Label
+var _skill_balance: Label
+var _skill_presentation: Dictionary = {}
 var _buy: Button
 var _apply_skill: Button
 var _textures: Dictionary = {}
@@ -120,6 +131,8 @@ func _notification(what: int) -> void:
 func _refresh_locale() -> void:
 	if _part_content == null: return
 	DeskLocalization.refresh_edits(self)
+	for label: Label in _pages.spread.find_children("*", "Label", true, false):
+		if label.has_meta("spread_caption"): label.text = DeskLocalization.text(str(label.get_meta("spread_caption")))
 	_refresh_starters()
 	_refresh_culture()
 	_refresh_skills()
@@ -523,21 +536,54 @@ func _build_culture() -> void:
 
 
 func _build_spread() -> void:
-	_spread_tree=DendriteTree.new()
-	_spread_tree.name="DendriteTree"
-	_pages.spread.add_child(_spread_tree)
+	var page: Control = _pages.spread
+	_spread_heading = _spread_section(page, "spread", "LOC_WB_CAPABILITIES", "SpreadHeading", 20)
+	_spread_column_rule = VSeparator.new()
+	_spread_column_rule.name = "SpreadColumnRule"
+	_spread_column_rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var pencil := StyleBoxLine.new()
+	pencil.vertical = true
+	pencil.color = Color("858571", .45)
+	pencil.thickness = 1
+	_spread_column_rule.add_theme_stylebox_override("separator", pencil)
+	page.add_child(_spread_column_rule)
+	_spread_tree = DendriteTree.new()
+	_spread_tree.name = "DendriteTree"
+	page.add_child(_spread_tree)
 	_spread_tree.node_selected.connect(_select_skill)
-	var page: Control=_pages.spread
-	_skill_title=_label(page,DeskLocalization.source("LOC_TEXT_DD818618"),"SkillTitle",18)
-	_skill_details=RichTextLabel.new()
-	_skill_details.name="SkillDetails"
-	_skill_details.bbcode_enabled=true
-	_skill_details.add_theme_constant_override("line_separation", 7)
-	_skill_details.add_theme_color_override("default_color",INK)
-	_skill_details.add_theme_font_size_override("normal_font_size",14)
-	page.add_child(_skill_details)
-	_buy=_button(page,DeskLocalization.source("LOC_RESEARCH_THIS_NODE_9222A1F7"),"BuySkill")
-	_buy.pressed.connect(func() -> void: skill_purchase_requested.emit(_selected_skill))
+	_skill_heading = _spread_section(page, "spread", "LOC_TEXT_DD818618", "SkillHeading", 20)
+	_skill_heading.minimum_size_changed.connect(_queue_text_layout)
+	_skill_title = _skill_heading.get_child(1)
+	_skill_title.name = "SkillTitle"
+	_skill_scroll = ScrollContainer.new()
+	_skill_scroll.name = "SkillScroll"
+	_skill_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	page.add_child(_skill_scroll)
+	_skill_content = VBoxContainer.new()
+	_skill_content.name = "SkillContent"
+	_skill_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_skill_content.add_theme_constant_override("separation", GROUP_SPACING)
+	_skill_scroll.add_child(_skill_content)
+	_skill_details = _readout(_skill_content, "SkillDetails", 16)
+	_information_rule("SkillEffectRule", _skill_content)
+	_spread_section(_skill_content, "meaning", "LOC_WB_EFFECT", "SkillEffectTitle")
+	_skill_effect = _readout(_skill_content, "SkillEffect", 16)
+	_skill_purchase = VBoxContainer.new()
+	_skill_purchase.name = "SkillPurchase"
+	_skill_purchase.add_theme_constant_override("separation", GROUP_SPACING)
+	page.add_child(_skill_purchase)
+	_skill_purchase.minimum_size_changed.connect(_queue_text_layout)
+	_information_rule("PurchaseRule", _skill_purchase)
+	var metrics := HBoxContainer.new()
+	metrics.name = "SkillMetrics"
+	metrics.add_theme_constant_override("separation", GROUP_SPACING)
+	_skill_purchase.add_child(metrics)
+	_skill_cost = _skill_metric(metrics, "cost", "LOC_WB_COST", "SkillCost")
+	_skill_balance = _skill_metric(metrics, "balance", "LOC_WB_BALANCE", "SkillBalance")
+	_buy = _button(_skill_purchase, "", "BuySkill")
+	_buy.custom_minimum_size.y = 48
+	_spread_button_ink(_buy)
+	_buy.pressed.connect(_purchase_selected_skill)
 	_apply_skill=_button(page,DeskLocalization.source("LOC_APPLY_ABILITY_TO_DRAFT_DD49D83A"),"ApplySkill")
 	_apply_skill.pressed.connect(func() -> void: _request("apply_skill",{"skill_id":_selected_skill}))
 
@@ -710,27 +756,29 @@ func _refresh_skills() -> void:
 
 
 func _select_skill(id: String) -> void:
-	_selected_skill=id
-	if _spread_tree!=null: _spread_tree.sync_state(_design.get("unlocked_skills",["text"]),id)
-	for skill in _rules.skills:
-		if str(skill.id)!=id: continue
-		var unlocked: bool=id in _design.get("unlocked_skills",["text"])
-		var missing: Array=[]
-		for dependency in skill.get("requires",[]):
-			if str(dependency) not in _design.get("unlocked_skills",["text"]): missing.append(dependency)
-		_skill_title.text=DeskLocalization.text(str(skill.title))
-		var dependency_titles:=PackedStringArray()
-		for dependency in skill.get("requires",[]): dependency_titles.append(_entry_title("skills",str(dependency)))
-		var status := DeskLocalization.text("LOC_UNLOCKED_E4CF2DE9") if unlocked else (DeskLocalization.text("LOC_REQUIREMENTS_NOT_MET_114C5744") if not missing.is_empty() else DeskLocalization.text("LOC_AVAILABLE_TO_UNLOCK_097705A8"))
-		_skill_details.text = "[b]%s[/b]\n%s\n\n%s\n\n[b]%s[/b]\n%s\n\n[font_size=22]%d / %d[/font_size]  MEME\n%s" % [_escape(DeskLocalization.text(str(skill.title))), _escape(DeskLocalization.text(str(skill.get("description", "")))), _escape(DeskLocalization.text(str(skill.get("effect_text", skill.get("description", ""))))), DeskLocalization.text("LOC_EDIT_REQUIRES"), _escape(", ".join(dependency_titles) if not dependency_titles.is_empty() else DeskLocalization.text("LOC_NONE_484D5561")), int(_state.get("meme_points", 0)), int(skill.get("cost", 0)), _escape(status)]
-		_buy.disabled=unlocked or not missing.is_empty() or int(_state.get("meme_points",0))<int(skill.get("cost",0))
-		_buy.text=DeskLocalization.text("LOC_UNLOCKED_E4CF2DE9") if unlocked else DeskLocalization.format_text("LOC_SPEND_D_MEME_UNLOCK_45B2FF07", int(skill.get("cost",0)))
-		var applied:=false
-		for application in _design.get("skill_applications",[]):
-			if str(application.get("skill_id",""))==id and int(application.get("publish_index",-1))==int(_design.get("current_publish_index",0)): applied=true
-		_apply_skill.disabled=not unlocked or (skill.get("draft_effects",[]) as Array).is_empty() or applied
-		_apply_skill.text=""
+	_selected_skill = id
+	var unlocked_ids: Array = _design.get("unlocked_skills", ["text"])
+	if _spread_tree != null: _spread_tree.sync_state(unlocked_ids, id)
+	for skill: Dictionary in _rules.skills:
+		if str(skill.id) != id: continue
+		var unlocked := id in unlocked_ids
+		var missing: Array = []
+		for dependency: String in skill.get("requires", []):
+			if dependency not in unlocked_ids: missing.append(dependency)
+		var balance := int(_state.get("meme_points", 0))
+		var cost := int(skill.get("cost", 0))
+		_skill_title.text = DeskLocalization.text(str(skill.title))
+		_skill_details.text = DeskLocalization.text(str(skill.get("description", "")))
+		_skill_effect.text = DeskLocalization.text(str(skill.get("effect_text", "")))
+		_skill_cost.text = "%d MEME" % cost
+		_skill_balance.text = "%d MEME" % balance
+		var status := "unlocked" if unlocked else ("locked" if not missing.is_empty() else ("unaffordable" if balance < cost else "available"))
+		_skill_balance.add_theme_color_override("font_color", Color("a44635") if not unlocked and balance < cost else INK)
+		_buy.disabled = not _interaction_enabled or _tab != "spread" or status != "available"
+		_buy.text = DeskLocalization.text("LOC_WB_UNLOCK")
+		_skill_presentation = {"balance":balance, "cost":cost, "status":status, "dependencies":skill.get("requires", []).duplicate(), "description":_skill_details.text, "effect":_skill_effect.text}
 	_apply_skill.hide()
+	_queue_text_layout()
 
 
 func _layout() -> void:
@@ -792,12 +840,21 @@ func _layout_culture_sheet(w: float,h: float) -> void:
 	_context_trial.hide()
 
 func _layout_spread_sheet(w: float,h: float) -> void:
-	var right:=w*.61
-	_place(_spread_tree,Rect2(0,0,right-16,h))
-	_place(_skill_title,Rect2(right,18,w-right,29))
-	var details_y := maxf(61, _skill_title.position.y + _skill_title.size.y + 14)
-	_place(_skill_details,Rect2(right,details_y,w-right,maxf(72,h-74-details_y)))
-	_place(_buy,Rect2(right,h-59,w-right,35))
+	var split := w * .60
+	var right := split + SPACE_BETWEEN
+	var span := w - right - SPACE_BETWEEN
+	var top := 144.0
+	var tree_top := maxf(top, h * .19)
+	_place(_spread_heading, Rect2(SPACE_BETWEEN, tree_top, split - SPACE_BETWEEN * 2, 32))
+	_place(_spread_tree, Rect2(SPACE_BETWEEN, tree_top + 40, split - SPACE_BETWEEN * 2, h - tree_top - 64))
+	_place(_spread_column_rule, Rect2(split, top, 1, h - top - SPACE_BETWEEN))
+	_place(_skill_heading, Rect2(right, top, span, 32))
+	var details_y := top + maxf(32, _skill_heading.get_combined_minimum_size().y) + SPACE_BETWEEN
+	_skill_purchase.size.x = span
+	var purchase_height := maxf(156, _skill_purchase.get_combined_minimum_size().y)
+	var purchase_y := h - SPACE_BETWEEN - purchase_height
+	_place(_skill_purchase, Rect2(right, purchase_y, span, purchase_height))
+	_place(_skill_scroll, Rect2(right, details_y, span, maxf(48, purchase_y - SPACE_BETWEEN - details_y)))
 	_apply_skill.hide()
 	for button in _skill_buttons.values(): button.hide()
 
@@ -811,6 +868,7 @@ func set_interaction_enabled(enabled: bool) -> void:
 	_final_expression.set_interaction_enabled(enabled and _tab == "edit")
 	_meaning.mouse_filter = Control.MOUSE_FILTER_PASS if enabled and _tab == "edit" else Control.MOUSE_FILTER_IGNORE
 	if not enabled: _hide_source_hover()
+	if _buy != null: _select_skill(_selected_skill)
 
 
 func _button(parent: Node,text: String,name: String) -> Button:
@@ -892,7 +950,7 @@ func inspection() -> Dictionary:
 		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
 		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
 		"overview":{"name":_overview_name.text,"data":_summary_text,"columns":_overview_data.columns,"cells":_summary_inspection(),"name_rect":_overview_name.get_global_rect(),"data_rect":_overview_data.get_global_rect()},
-		"spread_tree":_spread_tree.inspection(),"module_slot_rects":_physical_clips.map(func(clip: Control)->Rect2:return clip.get_global_rect()),
+		"spread_tree":_spread_tree.inspection(),"spread_layout":_spread_layout_inspection(),"module_slot_rects":_physical_clips.map(func(clip: Control)->Rect2:return clip.get_global_rect()),
 		"sheet_pages":_pages.keys(),"state_mutation":"signals only; authoritative simulation applies resources"}
 
 
@@ -1150,3 +1208,56 @@ func context_trial_inspection() -> Dictionary:
 
 func context_slice() -> Control:
 	return _context_slice
+
+
+func _spread_section(parent: Node, kind: String, key: String, node_name: String, font_size: int = 16) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.name = node_name
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", SPACE_WITHIN)
+	parent.add_child(row)
+	var icon := _paper_icon(row, kind)
+	icon.custom_minimum_size = Vector2(24, 24)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	var title := _label(row, DeskLocalization.text(key), node_name + "Label", font_size)
+	title.set_meta("spread_caption", key)
+	title.set_meta("paper_section_heading", true)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.add_theme_font_override("font", HEADING_FONT)
+	return row
+
+
+func _skill_metric(parent: Node, kind: String, key: String, node_name: String) -> Label:
+	var column := VBoxContainer.new()
+	column.name = node_name + "Column"
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.size_flags_stretch_ratio = 1
+	column.add_theme_constant_override("separation", SPACE_WITHIN)
+	parent.add_child(column)
+	_spread_section(column, kind, key, node_name + "Heading")
+	var value := _label(column, "", node_name, 24)
+	value.add_theme_font_override("font", HEADING_FONT)
+	return value
+
+
+func _purchase_selected_skill() -> void:
+	if not _interaction_enabled or _tab != "spread" or _buy.disabled: return
+	skill_purchase_requested.emit(_selected_skill)
+
+
+func _spread_button_ink(button: Button) -> void:
+	for state: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+		button.add_theme_color_override(state, INK)
+	button.add_theme_color_override("font_disabled_color", Color(SECONDARY_INK, .65))
+
+
+func _spread_layout_inspection() -> Dictionary:
+	var result := _skill_presentation.duplicate(true)
+	result.merge({"tree_rect":_spread_tree.get_global_rect(), "heading_rect":_skill_heading.get_global_rect(),
+		"column_rule_rect":_spread_column_rule.get_global_rect(), "details_scroll_rect":_skill_scroll.get_global_rect(),
+		"purchase_rect":_skill_purchase.get_global_rect(), "buy_rect":_buy.get_global_rect(),
+		"icon_sections":5, "instruction_text_visible":false, "body_font_size":_skill_details.get_theme_font_size("normal_font_size"),
+		"title_font":_skill_title.get_theme_font("font").resource_path, "buy_text":_buy.text,
+		"status_text_visible":false, "prerequisites_visible":false, "scroll_horizontal_disabled":_skill_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED})
+	return result

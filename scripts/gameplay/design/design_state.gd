@@ -25,7 +25,7 @@ func _reset_layers() -> void:
 		if index < 3:
 			var slots: Array = []
 			var origins: Array = []
-			for slot in 3:
+			for slot in context_slot_capacity(layer):
 				slots.append({})
 				origins.append("")
 			_state.context_layers[layer] = {"slots":slots,"origins":origins,"depth":float(rules.context_depths[index])}
@@ -81,7 +81,8 @@ func _installed_context(id: String) -> int:
 	return count
 
 func context_slot_capacity(layer: String, _installed_modules: Variant = null) -> int:
-	return 3 if layer in ["language","group","topics"] else 0
+	if layer in ["language","group"]: return 2
+	return 3 if layer == "topics" else 0
 
 func _context_capacity_errors(modules: Array) -> PackedStringArray:
 	for layer in ["language","group"]:
@@ -160,7 +161,7 @@ func _perform_layer(action: String, params: Dictionary) -> PackedStringArray:
 		return _apply_layers(params.base)
 	if not bool(_state.context_layers[layer].attached): return PackedStringArray([DeskLocalization.source("LOC_RETURN_THIS_SLICE_TO_THE_BRAIN_FIRST_4F3C38DA")] )
 	if action in ["install_context","remove_context"]:
-		if layer not in ["language","group","topics"] or not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= context_slot_capacity(layer): return PackedStringArray([DeskLocalization.source("LOC_INVALID_CONTEXT_SLOT_17C28A5F")])
+		if layer not in ["language","group","topics"] or not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= context_slot_capacity(layer): return PackedStringArray([DeskLocalization.source("LOC_INVALID_CONTEXT_SLOT_17C28A5F") + " (%s[%s])" % [layer, str(params.get("slot", "?"))]])
 		var slot := int(params.slot)
 		while _state.context_layers[layer].slots.size() <= slot:
 			_state.context_layers[layer].slots.append({})
@@ -749,10 +750,23 @@ func payload() -> Dictionary:
 func record_errors() -> PackedStringArray:
 	return PackedStringArray([DeskLocalization.source("LOC_DESIGN_ACTION_RECORD_HAS_REACHED_ITS_FINITE_37CDC932")] if _state.operations.size() >= RECORD_LIMIT else [])
 
+func _normalize_empty_context_slots(data: Dictionary) -> Dictionary:
+	var result: Dictionary = _canonical(data)
+	if not result.get("context_layers") is Dictionary: return result
+	for layer: String in ["language", "group"]:
+		if not result.context_layers.get(layer) is Dictionary: continue
+		var record: Dictionary = result.context_layers[layer]
+		if not record.get("slots") is Array or not record.get("origins") is Array: continue
+		if record.slots.size() != 3 or record.origins.size() != 3: continue
+		if not record.slots[2] is Dictionary or not record.slots[2].is_empty() or record.origins[2] != "": continue
+		record.slots.resize(context_slot_capacity(layer))
+		record.origins.resize(context_slot_capacity(layer))
+	return result
+
 ## 仅接受当前设计格式，并通过重放核对来源、扣款、资源数量和最终状态。
 func validate_payload(data: Dictionary, events: Array, variants: Array, economy: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
-	data = _canonical(data)
+	data = _normalize_empty_context_slots(data)
 	if not _integer(data.get("design_version")) or int(data.design_version) != DESIGN_VERSION or not data.get("rules_signature") is String or data.rules_signature != rules.signature() or not data.get("operations") is Array or data.operations.size() > RECORD_LIMIT:
 		return PackedStringArray([DeskLocalization.source("LOC_INVALID_DESIGN_SAVE_VERSION_DEFINITIONS_OR_ACTION_1AA0AD8F")])
 	var replay = get_script().new(catalog, rules)
@@ -795,7 +809,7 @@ func validate_payload(data: Dictionary, events: Array, variants: Array, economy:
 
 func restore(data: Dictionary, events: Array = [], variants: Array = [], economy: Dictionary = {}) -> PackedStringArray:
 	var errors := validate_payload(data, events, variants, economy)
-	if errors.is_empty(): _state = _canonical(data)
+	if errors.is_empty(): _state = _normalize_empty_context_slots(data)
 	return errors
 
 func _skill_ids(data: Dictionary) -> Array:

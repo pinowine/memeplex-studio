@@ -56,6 +56,27 @@ func _draw() -> void:
 			_line([Vector2(7, 12), Vector2(9, 16), Vector2(15, 16), Vector2(17, 12)])
 			_line([Vector2(9, 19), Vector2(15, 19)])
 			_line([Vector2(10, 22), Vector2(14, 22)])
+		"check":
+			draw_arc(Vector2(12, 12), 9, 0, TAU, 32, INK, STROKE, true)
+			_line([Vector2(7, 12), Vector2(10, 15), Vector2(17, 8)])
+		"lock":
+			draw_arc(Vector2(12, 9), 5, PI, TAU, 20, INK, STROKE, true)
+			_line([Vector2(7, 9), Vector2(7, 11)])
+			_line([Vector2(17, 9), Vector2(17, 11)])
+			draw_rect(Rect2(5, 11, 14, 10), INK, false, STROKE, true)
+			draw_circle(Vector2(12, 15), 1, INK)
+			_line([Vector2(12, 15), Vector2(12, 18)])
+		"requires":
+			_line([Vector2(4, 5), Vector2(10, 5), Vector2(10, 12), Vector2(18, 12)])
+			_line([Vector2(4, 19), Vector2(10, 19), Vector2(10, 12)])
+			_line([Vector2(15, 8), Vector2(19, 12), Vector2(15, 16)])
+		"cost":
+			draw_arc(Vector2(12, 12), 8, 0, TAU, 32, INK, STROKE, true)
+			_line([Vector2(8, 16), Vector2(8, 8), Vector2(12, 12), Vector2(16, 8), Vector2(16, 16)])
+		"balance":
+			_line([Vector2(4, 7), Vector2(19, 7), Vector2(19, 20), Vector2(4, 20), Vector2(4, 7), Vector2(16, 4), Vector2(16, 7)])
+			draw_rect(Rect2(14, 11, 7, 5), INK, false, STROKE, true)
+			draw_circle(Vector2(17, 13.5), .8, INK)
 
 
 func _line(points: PackedVector2Array) -> void:
