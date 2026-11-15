@@ -1012,7 +1012,7 @@ func select_sheet(id: String) -> void:
 		_page.open_startup_call()
 		return
 	if _page != null and _page._shell != null and _page._shell.blocks_input(): return
-	if _page == null or _page.hud.modal_visible() or _fax_phone_focused(): return
+	if _page == null or _page.hud.modal_visible(): return
 	if _stack.is_switching(): return
 	if not focus_component("sheet/"+id): return
 	# Start moving the paper while the camera travels to it.
