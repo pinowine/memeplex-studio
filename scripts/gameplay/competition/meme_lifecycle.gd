@@ -197,6 +197,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 		raw.meme_id = str(parent.meme_id)
 		raw.meme_name = str(parent.meme_name)
 		raw.meme_name_index = int(parent.get("meme_name_index", -1))
+		if parent.has("split_parent_name"): raw.split_parent_name = str(parent.split_parent_name)
 		raw.deviation_anchor = reference.duplicate(true)
 		raw.semantic_distance = distance
 		var identity := content(parent)
@@ -222,6 +223,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	parent.erase("split_effect_deltas")
 	parent.erase("split_patch_effects")
 	raw.split_from_id = str(parent.id)
+	raw.split_parent_name = str(parent.get("split_parent_name", parent.meme_name))
 	raw.split_effect_deltas = raw.deviation_effect_deltas.duplicate(true)
 	raw.split_patch_effects = raw.deviation_patch_effects.duplicate(true)
 	raw.deviation_effect_deltas = {}

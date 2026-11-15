@@ -205,6 +205,10 @@ func _hit_cell(point: Vector2) -> Vector2i:
 	return Vector2i(floori(point.x / HIT_CELL_SIZE), floori(point.y / HIT_CELL_SIZE))
 
 func _meme_color(meme_id: String, player: bool) -> Color:
+	if _simulation != null:
+		var birth := _simulation.variant_by_id(meme_id)
+		if birth.has("split_from_id"):
+			return Color("a34f91").lightened(float(int(birth.get("meme_name_index", 0)) % 4) * 0.065)
 	var serial: int = absi(meme_id.hash())
 	var suffix: String = meme_id.get_slice("_", meme_id.get_slice_count("_") - 1)
 	if suffix.is_valid_int(): serial = maxi(1, int(suffix)) - 1

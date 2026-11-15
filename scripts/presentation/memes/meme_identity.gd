@@ -5,8 +5,9 @@ const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd
 static func name(catalog: MemeDemoCatalog, raw: Dictionary) -> String:
 	var meme_name := str(raw.get("meme_name", ""))
 	if not meme_name.is_empty():
-		var title := DeskLocalization.text(meme_name)
+		var title := DeskLocalization.text(str(raw.get("split_parent_name", meme_name)))
 		var name_index := int(raw.get("meme_name_index", -1))
+		if raw.has("split_parent_name") or raw.has("split_from_id"): return "%s-%d" % [title, name_index + 1]
 		return "%s %d" % [title, name_index / 16 + 1] if name_index >= 16 else title
 	var preset := catalog.find_preset(_preset_id(raw))
 	if preset != null: return ExpressionText.preset_name(preset, true)
