@@ -313,11 +313,11 @@ func _rebuild_visible_lineage() -> void:
 		for slot: int in _lineage_reservations:
 			if str(_lineage_reservations[slot]) != id or not str(_installed[slot]).is_empty(): continue
 			_lineage_slots[slot] = by_id[id]
-			if id != core_id: _visible_lineage.append(by_id[id])
+			_visible_lineage.append(by_id[id])
 	_layout_attached_lineage()
 
 func _lineage_ink(record: Dictionary) -> Color:
-	return EXTERNAL_INK if str(record.get("creator", "player")) != "player" else OWN_INK
+	return EXTERNAL_INK if str(record.get("source_creator", record.get("creator", "player"))) != "player" else OWN_INK
 
 
 func select_part(id: String) -> void:
@@ -507,8 +507,10 @@ func _update_neuronal_network() -> void:
 		variant_points[id]=point
 		var cell := _cell_record(point,8.3,"variant:"+id,str(record.get("kernel_id",_kernel_id)))
 		cell.ink = _lineage_ink(record)
-		cell.external = str(record.get("creator", "player")) != "player"
+		cell.external = str(record.get("source_creator", record.get("creator", "player"))) != "player"
 		cells.append(cell)
+		if id == core_id:
+			links.append({"points":_fusion_curve(_core_point(),point,index),"width":1.05,"growth":cell.growth,"ink":_lineage_ink(record),"role":"external_expression","to_variant":id})
 	for record: Dictionary in linked_records:
 		var id := str(record.id)
 		for parent: Variant in record.get("parent_ids",[]):
@@ -683,6 +685,6 @@ func inspection() -> Dictionary:
 		"feedback":_feedback.inspection(),"selected_module":_selected_module,"interaction_enabled":_interaction_enabled,
 		"dragging_slot":_pressed_module if _dragging else -1,"drag_count":_drag_count,"cancel_count":_cancel_count,"last_drag":_last_drag.duplicate(true),"tooltip":tooltip_text,
 		"last_drop":_last_drop.duplicate(),
-		"connections":_connections.duplicate(true),"lineage":_lineage.duplicate(true),"visible_lineage":_visible_lineage.duplicate(true),"lineage_slots":lineage_slots(),"lineage_reservations":_lineage_reservations.duplicate(true),"shared_branch_capacity":_installed.size(),"shared_branch_count":module_points.size()+_visible_lineage.size(),"core_variant_id":_core_lineage_id(),"lineage_relation_source":"recorded parent_ids","lineage_layout":"attached_parent_branches","lineage_positions":_lineage_positions.duplicate(),"hidden_lineage_count":_lineage.size()-_visible_lineage.size()-(0 if _core_lineage_id().is_empty() else 1),
+		"connections":_connections.duplicate(true),"lineage":_lineage.duplicate(true),"visible_lineage":_visible_lineage.duplicate(true),"lineage_slots":lineage_slots(),"lineage_reservations":_lineage_reservations.duplicate(true),"shared_branch_capacity":_installed.size(),"shared_branch_count":module_points.size()+_visible_lineage.size(),"core_variant_id":_core_lineage_id(),"lineage_relation_source":"recorded parent_ids","lineage_layout":"attached_parent_branches","lineage_positions":_lineage_positions.duplicate(),"hidden_lineage_count":_lineage.size()-_visible_lineage.size()-(0 if _core_lineage_id().is_empty() or _lineage_positions.has(_core_lineage_id()) else 1),
 		"topology_signature":JSON.stringify([_kernel_id,SHAPES.get(_kernel_id,[]),_edges]),
 		"metaball_shader":Metaball.resource_path,"relation_evidence":"design visualization only", "mouse_filter":mouse_filter,"tracking_style":"corner_wireframe","solid_covers":false,"edge_width":.65,"edge_dashed":true,"base_alpha":_family_art.modulate.a if _family_art!=null else 0}
