@@ -2,6 +2,7 @@ class_name DeskMaterialCardFace
 extends Control
 
 const MINIMUM := Vector2(108, 72)
+const MODULE_MINIMUM := Vector2(112, 94)
 const TOPIC_MINIMUM := Vector2(144, 74)
 const TITLES := {"language":"LOC_LANGUAGE_9F6FEE1A", "group":"LOC_AUDIENCE_D14FC4B5", "module":"LOC_PATCH_70F56533", "topic":"LOC_TOPICS_A2C81C5A"}
 const SHAPES := {"language":"double_layer_laminated_round", "group":"clipped_identity_card", "module":"notched_expansion_board", "topic":"notched_horizontal_ticket"}
@@ -33,6 +34,7 @@ var shadow_enabled := true:
 
 
 static func minimum_card_size(kind: String) -> Vector2:
+	if kind == "module": return MODULE_MINIMUM
 	return TOPIC_MINIMUM if kind in ["topic", "topics"] else MINIMUM
 
 
@@ -169,13 +171,11 @@ func _build_layout() -> Dictionary:
 		"icon":Rect2(body.position + Vector2(7, 6), Vector2(15, 13)),
 		"category":header.category,
 		"count":header.count,
-		"title":Rect2(body.position + Vector2(10, 23), Vector2(body.size.x - 20, body.size.y - 39)),
-		"source":Rect2(Vector2(body.position.x + 10, body.end.y - 15), Vector2(body.size.x - 20, 14))
+		"title":Rect2(body.position + Vector2(10, 23), Vector2(body.size.x - 20, body.size.y - 29))
 	}
 	var title := DeskLocalization.text(str(_record.get("title", _record.get("id", ""))))
 	var text := {
 		"title":_fit_text(title, sections.title, 15, 12, 2),
-		"source":_fit_text(_source_text(), sections.source, 9, 8, 1),
 		"category":_fit_text(DeskLocalization.text(TITLES[_kind]), sections.category, header.category_size, header.category_size, 1),
 		"count":_fit_text(header.count_text, sections.count.grow(-1), header.count_size, header.count_size, 1)
 	}
@@ -261,7 +261,7 @@ func _draw() -> void:
 		badge_style.set_corner_radius_all(2)
 		draw_style_box(badge_style, badge)
 		_draw_text(_layout.text.count, palette.light, true)
-	for role: String in ["category", "title", "source"]:
+	for role: String in ["category", "title"]:
 		_draw_text(_layout.text[role], palette.ink)
 	if _hovered or _selected:
 		var glass := body.grow(-5)
@@ -280,7 +280,6 @@ func _draw_face_structure(body: Rect2, palette: Dictionary) -> void:
 	style.set_corner_radius_all(3 if _kind == "language" else 1)
 	draw_style_box(style, panel)
 	var divider_y := body.end.y - 16
-	draw_line(Vector2(body.position.x + 9, divider_y), Vector2(body.end.x - 9, divider_y), Color(palette.ink, .35), .7, true)
 	match _kind:
 		"language":
 			_stroke(_rounded_shape(inner, 4), Color(palette.light, .70), 1.0)

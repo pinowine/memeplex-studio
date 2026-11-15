@@ -22,6 +22,7 @@ const AnnotatedText = preload("res://scripts/presentation/studio/workbench/desk_
 const MemeExpression = preload("res://scripts/presentation/studio/workbench/desk_meme_expression.gd")
 const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
 const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_flow.gd")
+const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const HEADING_FONT = preload("res://assets/image/fonts/body_semibold_font.tres")
@@ -40,6 +41,7 @@ const MODULE_REGIONS := {
 	"boundary": Rect2(1315, 0, 425, 724),
 	"shared_world": Rect2(1740, 0, 432, 724),
 }
+
 
 class LineagePatchFace extends DeskMaterialCardFace:
 	var _print_mask: ImageTexture
@@ -461,16 +463,9 @@ func _build_summary(parent: Node) -> void:
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_theme_constant_override("separation", SPACE_WITHIN)
 		_overview_data.add_child(cell)
-		if kind != "spread":
-			var tags := ContextTagFlow.new()
-			tags.name = "Tags"
-			cell.add_child(tags)
-			tags.minimum_size_changed.connect(_queue_text_layout)
-			_summary_cells[kind] = {"title":"", "value":"", "tags":tags, "control":cell}
-			continue
 		var icon := _paper_icon(cell, kind)
 		icon.custom_minimum_size = Vector2(20, 20)
-		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		icon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		var words := VBoxContainer.new()
 		words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		words.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -478,8 +473,16 @@ func _build_summary(parent: Node) -> void:
 		cell.add_child(words)
 		var title := _label(words, "", "Category", 12)
 		title.add_theme_color_override("font_color", SECONDARY_INK)
-		var value := _label(words, "", "Value", 14)
-		_summary_cells[kind] = {"title":"", "value":"", "title_label":title, "value_label":value, "control":cell}
+		var entry := {"title":"", "value":"", "title_label":title, "control":cell, "icon_control":icon}
+		if kind == "spread":
+			entry.value_label = _label(words, "", "Value", 14)
+		else:
+			var tags := ContextTagFlow.new()
+			tags.name = "Tags"
+			words.add_child(tags)
+			tags.minimum_size_changed.connect(_queue_text_layout)
+			entry.tags = tags
+		_summary_cells[kind] = entry
 
 
 func _paper_icon(parent: Node, kind: String) -> Control:
@@ -1144,16 +1147,118 @@ func _spread_layout_inspection() -> Dictionary:
 
 func hover_info(viewport_point: Vector2) -> Dictionary:
 	if not _hover_enabled or _tab != "edit" or not _pages.edit.is_visible_in_tree(): return {}
-	var slot := module_clip_at(viewport_point)
-	var lineage: Dictionary = _neuron.lineage_slots()
-	if lineage.has(slot): return _variant_hover(lineage[slot])
+	var clip_slot := module_clip_at(viewport_point)
+	if clip_slot >= 0:
+		var modules: Array = _design.get("module_slots", [])
+		if clip_slot < modules.size() and not str(modules[clip_slot]).is_empty(): return _module_hover(str(modules[clip_slot]), clip_slot)
+		var lineage: Dictionary = _neuron.lineage_slots()
+		if lineage.has(clip_slot): return _variant_hover(lineage[clip_slot])
+	var local := _neuron.get_global_transform_with_canvas().affine_inverse() * viewport_point
+	if Rect2(Vector2.ZERO, _neuron.size).has_point(local):
+		var hit: Dictionary = _neuron.hit_info(local, true)
+		match str(hit.get("kind", "")):
+			"part": return _part_hover(str(hit.id))
+			"module": return _module_hover(str(hit.id), int(hit.slot))
+			"variant":
+				for record: Dictionary in _design.get("lineage_view", _state.get("lineage", [])):
+					if str(record.id) == str(hit.id): return _variant_hover(record)
+	var detail_local := _detail_scroll.get_global_transform_with_canvas().affine_inverse() * viewport_point
+	if not Rect2(Vector2.ZERO, _detail_scroll.size).has_point(detail_local): return {}
+	for cell: Dictionary in _summary_cells.values():
+		if not cell.has("tags"): continue
+		for chip: Control in cell.tags.get_children():
+			var chip_local := chip.get_global_transform_with_canvas().affine_inverse() * viewport_point
+			if not Rect2(Vector2.ZERO, chip.size).has_point(chip_local): continue
+			var tag: Dictionary = chip.get_meta("hover_record")
+			if str(tag.id).is_empty(): return {}
+			return {"kind":tag.kind, "id":tag.id, "title":tag.text, "description":tag.help, "hover_description":tag.help, "hover_note":tag.note}
 	return {}
+
+
+func _part_title_for(id: String, kernel_id: String) -> String:
+	for node: Dictionary in _module_for_kernel(kernel_id).get("neuron_nodes", []):
+		if str(node.id) == id: return DeskLocalization.text(str(node.title))
+	return id
+
+
+func _part_hover(id: String) -> Dictionary:
+	var title := _part_title_for(id, str(_draft.get("kernel_id", "")))
+	var explanation := DeskLocalization.text("LOC_NEURON_" + id.to_upper())
+	var specific := ""
+	var preset: MemeDemoPreset = _catalog.find_preset(str(_draft.get("preset_id", "")))
+	if preset != null:
+		var index := preset.required_slots.find(id)
+		if index >= 0: specific = DeskLocalization.text(preset.slot_prompts[index])
+	var content := str(ExpressionText.base_slots(_draft).get(id, ""))
+	if _authored_slot_default(id, content): content = DeskLocalization.text(content)
+	return {"kind":"source", "id":id, "title":title, "description":explanation, "hover_description":explanation, "hover_note":specific + "\n" + content}
+
+
+func _module_hover(id: String, slot: int) -> Dictionary:
+	var module := _rules.find("modules", id)
+	var details := {"kind":"module", "id":id, "slot":slot, "title":str(module.get("title", id)), "description":str(module.get("description", ""))}
+	for field: String in ["hover_description", "hover_note", "commentary"]:
+		if module.has(field): details[field] = module[field]
+	CardCopy.apply_to(details)
+	return details
 
 
 func _full_variant(record: Dictionary) -> Dictionary:
 	for variant: Dictionary in _state.get("lineage", []):
 		if str(variant.id) == str(record.id): return variant
 	return record
+
+
+func _variant_patch_contents(record: Dictionary) -> Dictionary:
+	var patch: Dictionary = record.get("flow_draft", {}).get("module_patch_record", {})
+	var suffixes: Array = patch.get("suffixes", [])
+	var contents := {}
+	var cursor := 0
+	for id: String in patch.get("modules", []):
+		if id.is_empty(): continue
+		if cursor < suffixes.size(): contents[id] = str(suffixes[cursor].get("content", ""))
+		cursor += 1
+	return contents
+
+
+func _variant_changes(record: Dictionary) -> String:
+	var parents: Array = record.get("parent_ids", [])
+	if parents.is_empty(): return DeskLocalization.text("LOC_AN_INDEPENDENTLY_EMERGING_EXPRESSION_77A66F57")
+	var sections := PackedStringArray()
+	for parent_id: String in parents:
+		var parent := {}
+		for candidate: Dictionary in _state.get("lineage", []):
+			if str(candidate.id) == parent_id:
+				parent = candidate
+				break
+		if parent.is_empty():
+			sections.append(DeskLocalization.text("LOC_NEURON_PARENT_UNAVAILABLE"))
+			continue
+		var changes := PackedStringArray()
+		var before: Array = parent.get("patch_ids", [])
+		var after: Array = record.get("patch_ids", [])
+		for id: String in after:
+			if id in before: continue
+			var definition := _rules.find("modules", id)
+			var detail := _entry_title("modules", id) + " · " + DeskLocalization.text(str(definition.get("description", "")))
+			changes.append(DeskLocalization.format_text("LOC_NEURON_PATCH_ADDED", detail))
+		for id: String in before:
+			if id not in after: changes.append(DeskLocalization.format_text("LOC_NEURON_PATCH_REMOVED", _entry_title("modules", id)))
+		var old_contents := _variant_patch_contents(parent)
+		var new_contents := _variant_patch_contents(record)
+		for id: String in new_contents:
+			if old_contents.has(id) and str(old_contents[id]) != str(new_contents[id]): changes.append(DeskLocalization.format_text("LOC_NEURON_PATCH_CHANGED", _entry_title("modules", id)))
+		if changes.is_empty(): changes.append(DeskLocalization.text("LOC_NEURON_PATCH_UNCHANGED"))
+		var old_draft: Dictionary = parent.get("flow_draft", {})
+		var new_draft: Dictionary = record.get("flow_draft", {})
+		var old_slots := ExpressionText.base_slots(old_draft)
+		var new_slots := ExpressionText.base_slots(new_draft)
+		var changed_parts := PackedStringArray()
+		for id: String in new_slots:
+			if old_slots.has(id) and str(old_slots[id]) != str(new_slots[id]): changed_parts.append(_part_title_for(id, str(record.get("kernel_id", ""))))
+		if not changed_parts.is_empty(): changes.append(DeskLocalization.format_text("LOC_NEURON_PARTS_CHANGED", " / ".join(changed_parts)))
+		sections.append(DeskLocalization.format_text("LOC_NEURON_PARENT_DELTA", parent_id) + "\n" + "\n".join(changes))
+	return "\n\n".join(sections)
 
 
 func _variant_hover(record: Dictionary) -> Dictionary:
@@ -1165,7 +1270,7 @@ func _variant_hover(record: Dictionary) -> Dictionary:
 		text = DeskLocalization.text(text)
 		meaning = DeskLocalization.text(meaning)
 	var description := DeskLocalization.text("LOC_REWRITTEN_FROM_AN_EARLIER_EXPRESSION_22EA25D8" if not (record.get("parent_ids", []) as Array).is_empty() else "LOC_AN_INDEPENDENTLY_EMERGING_EXPRESSION_77A66F57")
-	var note := DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024") + "\n" + text + ("\n" + meaning if not meaning.is_empty() else "")
+	var note := ("" if external_rewrite else _variant_changes(record) + "\n\n") + DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024") + "\n" + text + ("\n" + meaning if not meaning.is_empty() else "")
 	var title := DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E" if external_rewrite else "LOC_YOUR_OWN_EXPRESSION_0A35E8E2")
 	return {"kind":"source", "id":str(record.id), "title":title, "description":description, "hover_description":description, "hover_note":note}
 
@@ -1284,21 +1389,45 @@ func _summary_value(kind: String, title_key: String, values: PackedStringArray) 
 	var cell: Dictionary = _summary_cells[kind]
 	cell.title = title
 	cell.value = value
+	cell.title_label.text = title
 	if kind == "spread":
-		cell.title_label.text = title
 		cell.value_label.text = value
 	else:
-		var tags: Array[Dictionary] = []
-		for text: String in values: tags.append({"text":text, "kind":kind, "help":""})
+		var tags := _summary_tags(kind, values)
 		cell.tags.set_tags(tags)
+		for index in tags.size(): cell.tags.get_child(index).set_meta("hover_record", tags[index])
 	return "%s  %s" % [title, value]
+
+
+func _summary_tags(kind: String, values: PackedStringArray) -> Array[Dictionary]:
+	var records: Array[Dictionary] = []
+	if kind in ["language", "group", "topic"]:
+		for id: String in Array(_draft.get(kind + "_ids", [_draft.get(kind + "_id", "")])):
+			var resource_id := kind + "_" + id
+			var resource: Dictionary = _rules.context_resource(resource_id)
+			if not resource.is_empty(): records.append({"id":resource_id, "title":DeskLocalization.text(str(resource.title)), "description":DeskLocalization.text(str(resource.get("description", "")))})
+	else:
+		var directions := ["freedom", "authority", "equality", "hierarchy"] if kind == "stance" else ["sincere", "ironic", "support", "opposition"]
+		for id: String in directions: records.append({"id":id, "title":_direction_title(id), "description":""})
+	var tags: Array[Dictionary] = []
+	for text: String in values:
+		var tag := {"text":text, "kind":kind, "help":"", "id":"", "note":""}
+		for record: Dictionary in records:
+			if str(record.title) != text: continue
+			tag.id = record.id
+			tag.help = DeskLocalization.text(CardCopy.hover_description(str(record.id)))
+			if str(tag.help).is_empty(): tag.help = record.description
+			tag.note = DeskLocalization.text(CardCopy.hover_note(str(record.id)))
+			break
+		tags.append(tag)
+	return tags
 
 
 func _summary_inspection() -> Dictionary:
 	var result := {}
 	for kind: String in _summary_cells:
 		var cell: Dictionary = _summary_cells[kind]
-		result[kind] = {"title":cell.title, "value":cell.value, "rect":cell.control.get_global_rect(), "icon":kind}
+		result[kind] = {"title":cell.title, "value":cell.value, "rect":cell.control.get_global_rect(), "icon":kind, "title_visible":cell.title_label.is_visible_in_tree(), "icon_visible":cell.icon_control.is_visible_in_tree()}
 		if cell.has("tags"): result[kind].tags = cell.tags.inspection()
 	return result
 
@@ -1436,5 +1565,3 @@ func context_trial_inspection() -> Dictionary:
 
 func context_slice() -> Control:
 	return _context_slice
-
-

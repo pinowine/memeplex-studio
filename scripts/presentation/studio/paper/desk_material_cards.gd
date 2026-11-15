@@ -71,8 +71,7 @@ class StackSurface extends Control:
 			draw_colored_polygon(outline, palette.body.darkened(.10 * index))
 			outline.append(outline[0])
 			draw_polyline(outline, palette.edge, 1.1, true)
-		var caption := DeskLocalization.source("LOC_RELEASE_TO_STORE_5DA913B8") if highlighted and hovered else (DeskLocalization.source("LOC_EMPTY_STACK_4498EADD") if quantity == 0 else DeskLocalization.source("LOC_INVENTORY_CARDS_6691F0EB"))
-		_face.configure({"kind":kind, "title":title, "count":quantity, "show_count":true, "source_label":DeskLocalization.text(caption)}, get_theme_default_font())
+		_face.configure({"kind":kind, "title":title, "count":quantity, "show_count":true}, get_theme_default_font())
 		_face.set_hovered(hovered)
 		_face.set_selected(selected or highlighted)
 
@@ -686,12 +685,12 @@ func clamp_module(id: String, slot: int, parent: Control, anchor: Vector2) -> bo
 	var node: Control = card.node
 	card.clipped_slot=slot
 	card.inventory_docked=false
-	_resize_card(card,Vector2(112,94))
+	_resize_card(card,CardFace.minimum_card_size("module"))
 	node.show()
 	card.anchor=anchor
-	var global_scale := node.get_global_transform_with_canvas().get_scale()
+	var global_scale := node.get_global_transform().get_scale()
 	node.reparent(parent,true)
-	node.scale=global_scale/parent.get_global_transform_with_canvas().get_scale()
+	node.scale=global_scale/parent.get_global_transform().get_scale()
 	node.rotation=deg_to_rad(float(slot-2)*1.3)
 	node.position=anchor
 	if parent.has_method("bring_front"): parent.bring_front()
@@ -767,7 +766,7 @@ func request_item(kind: String, id: String, installed: bool=false) -> bool:
 	var node := Control.new()
 	node.name = "Material" + str(_cards.size())
 	node.mouse_filter = MOUSE_FILTER_IGNORE
-	node.size = Vector2(144,78) if kind=="topic" else Vector2(112,82)
+	node.size = CardFace.minimum_card_size(kind) if kind in STACK_KINDS else Vector2(112,82)
 	var siblings := 0
 	for existing: Dictionary in _cards.values():
 		if existing.kind==kind and int(existing.get("clipped_slot",-1))<0: siblings+=1

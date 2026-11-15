@@ -1,8 +1,8 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
-const TOKEN_AXIS_MOVES := {"freedom":[0,-1],"authority":[0,1],"equality":[1,-1],"hierarchy":[1,1],"sincere":[0,-1],"ironic":[0,1],"support":[1,-1],"opposition":[1,1]}
 const MATERIAL_STORAGE_RECT := Rect2(672, 64, 540, 104)
+const TOKEN_AXIS_MOVES := {"freedom":[0,-1],"authority":[0,1],"equality":[1,-1],"hierarchy":[1,1],"sincere":[0,-1],"ironic":[0,1],"support":[1,-1],"opposition":[1,1]}
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
@@ -995,7 +995,11 @@ func clock_rect() -> Rect2:
 
 
 func interaction_paused() -> bool:
-	return _stack != null and (_stack.is_switching() or (_fax != null and _fax.interaction_focused()))
+	return _stack != null and (_stack.is_switching() or _fax_phone_focused())
+
+
+func _fax_phone_focused() -> bool:
+	return _fax != null and _fax.interaction_focused() and _fax._focus_mode == "phone"
 
 
 func _sync_reader_blocks() -> void:
@@ -1008,7 +1012,7 @@ func select_sheet(id: String) -> void:
 		_page.open_startup_call()
 		return
 	if _page != null and _page._shell != null and _page._shell.blocks_input(): return
-	if _page == null or _page.hud.modal_visible() or _fax.inspection().focused: return
+	if _page == null or _page.hud.modal_visible() or _fax_phone_focused(): return
 	if _stack.is_switching(): return
 	if not focus_component("sheet/"+id): return
 	# Start moving the paper while the camera travels to it.

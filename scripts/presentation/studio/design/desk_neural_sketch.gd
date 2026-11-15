@@ -140,6 +140,21 @@ func _hit_id(at: Vector2) -> String:
 	return ""
 
 
+func hit_info(at: Vector2, read_only: bool = false) -> Dictionary:
+	if not _interaction_enabled and not read_only: return {}
+	var hit := _hit_id(at)
+	if hit.begins_with("module:"):
+		var slot := int(hit.trim_prefix("module:"))
+		return {"kind":"module", "id":str(_installed[slot]), "slot":slot}
+	if hit.begins_with("part:"): return {"kind":"part", "id":hit.trim_prefix("part:")}
+	for index in _visible_lineage.size():
+		if at.distance_to(_lineage_point(index)) > 18: continue
+		var id := str(_visible_lineage[index].id)
+		for slot: int in _lineage_slots:
+			if str(_lineage_slots[slot].id) == id: return {"kind":"variant", "id":id, "slot":slot}
+	return {}
+
+
 func lineage_slots() -> Dictionary:
 	return _lineage_slots.duplicate(true)
 

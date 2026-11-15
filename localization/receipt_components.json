@@ -109,6 +109,116 @@
     "zh_CN": "“其实地上本没有路，走的人多了，也便成了路。”\n鲁迅《故乡》（1921）",
     "en": "“There was no road on the ground; as more people walked, a road came into being.”\nLu Xun, My Old Home (1921)"
   },
+  "LOC_NEURON_SPEAKER": {
+    "source": "发出表达、持有某种态度的一方。",
+    "zh_CN": "发出表达、持有某种态度的一方。",
+    "en": "The voice expressing a view or taking a stance."
+  },
+  "LOC_NEURON_VISIBLE_SITUATION": {
+    "source": "表达所面对的事实或可见情境。",
+    "zh_CN": "表达所面对的事实或可见情境。",
+    "en": "The facts or visible situation the expression responds to."
+  },
+  "LOC_NEURON_CLAIM": {
+    "source": "表达的核心表态，与眼前情境形成对照。",
+    "zh_CN": "表达的核心表态，与眼前情境形成对照。",
+    "en": "The central claim, set against the visible situation."
+  },
+  "LOC_NEURON_ROLE_A": {
+    "source": "关系中的一方。",
+    "zh_CN": "关系中的一方。",
+    "en": "One side of the relationship."
+  },
+  "LOC_NEURON_ROLE_B": {
+    "source": "关系中的另一方。",
+    "zh_CN": "关系中的另一方。",
+    "en": "The other side of the relationship."
+  },
+  "LOC_NEURON_RELATION": {
+    "source": "表达的核心，说明两方或两个群体之间的关系。",
+    "zh_CN": "表达的核心，说明两方或两个群体之间的关系。",
+    "en": "The core expression of the relationship between two sides or groups."
+  },
+  "LOC_NEURON_TRIGGER": {
+    "source": "引发参与和回应的起点。",
+    "zh_CN": "引发参与和回应的起点。",
+    "en": "The starting point that invites participation and responses."
+  },
+  "LOC_NEURON_ACTION": {
+    "source": "参与者可以模仿、重复或接续的动作。",
+    "zh_CN": "参与者可以模仿、重复或接续的动作。",
+    "en": "An action participants can imitate, repeat or continue."
+  },
+  "LOC_NEURON_RESPONSE_AND_EXIT": {
+    "source": "其他人如何回应，以及参与何时结束。",
+    "zh_CN": "其他人如何回应，以及参与何时结束。",
+    "en": "How others respond and when participation ends."
+  },
+  "LOC_NEURON_INVARIANT_TRACE": {
+    "source": "改写后依然保留、让表达可被认出的痕迹。",
+    "zh_CN": "改写后依然保留、让表达可被认出的痕迹。",
+    "en": "A recognizable trace retained through rewrites."
+  },
+  "LOC_NEURON_INSIDER_CONTEXT": {
+    "source": "让圈内人读懂表达的共同经验和背景。",
+    "zh_CN": "让圈内人读懂表达的共同经验和背景。",
+    "en": "The shared experience and background that make the expression legible to insiders."
+  },
+  "LOC_NEURON_RECOGNITION_RULE": {
+    "source": "判断谁能识别表达、凭什么识别的规则。",
+    "zh_CN": "判断谁能识别表达、凭什么识别的规则。",
+    "en": "The rule defining who recognizes the expression and on what basis."
+  },
+  "LOC_NEURON_PREMISE": {
+    "source": "共同想象的世界以此为前提。",
+    "zh_CN": "共同想象的世界以此为前提。",
+    "en": "The premise of the shared imaginary world."
+  },
+  "LOC_NEURON_SHARED_RULE": {
+    "source": "所有参与者都需要保留的共同规则。",
+    "zh_CN": "所有参与者都需要保留的共同规则。",
+    "en": "The shared rule every participant preserves."
+  },
+  "LOC_NEURON_OPEN_GAP": {
+    "source": "留给其他人继续补充和改写的空间。",
+    "zh_CN": "留给其他人继续补充和改写的空间。",
+    "en": "Room for others to contribute and rewrite."
+  },
+  "LOC_NEURON_PARENT_DELTA": {
+    "source": "相对父版本 %s：",
+    "zh_CN": "相对父版本 %s：",
+    "en": "Compared with parent %s:"
+  },
+  "LOC_NEURON_PATCH_ADDED": {
+    "source": "新增补丁：%s",
+    "zh_CN": "新增补丁：%s",
+    "en": "Added patch: %s"
+  },
+  "LOC_NEURON_PATCH_REMOVED": {
+    "source": "移除补丁：%s",
+    "zh_CN": "移除补丁：%s",
+    "en": "Removed patch: %s"
+  },
+  "LOC_NEURON_PATCH_CHANGED": {
+    "source": "改写补丁：%s",
+    "zh_CN": "改写补丁：%s",
+    "en": "Rewritten patch: %s"
+  },
+  "LOC_NEURON_PATCH_UNCHANGED": {
+    "source": "补丁模块未改变。",
+    "zh_CN": "补丁模块未改变。",
+    "en": "Patch modules are unchanged."
+  },
+  "LOC_NEURON_PARTS_CHANGED": {
+    "source": "改变的表达组分：%s",
+    "zh_CN": "改变的表达组分：%s",
+    "en": "Changed expression components: %s"
+  },
+  "LOC_NEURON_PARENT_UNAVAILABLE": {
+    "source": "缺少父版本记录，无法比较模块变化。",
+    "zh_CN": "缺少父版本记录，无法比较模块变化。",
+    "en": "The parent record is unavailable, so module changes cannot be compared."
+  },
   "LOC_LOG_RECEIPT_HEADING": {
     "source": "运行小票",
     "zh_CN": "运行小票",
