@@ -74,6 +74,7 @@ var _arrow: Node2D
 var _drag_arrow: Node2D
 var _typewriter := TypewriterEffect.new()
 var _typewriter_enabled := true
+var _typewriter_speed := 1.0
 var _body_text := ""
 var _hover_target := ""
 var _hover_text := ""
@@ -356,6 +357,9 @@ func set_interaction_blocked(blocked: bool) -> void:
 	if blocked: _cancel_pointer()
 	_refresh()
 
+func set_typewriter_speed(value: float) -> void:
+	_typewriter_speed = value
+
 func set_typewriter_enabled(enabled: bool) -> void:
 	_typewriter_enabled = enabled
 	if not enabled: _typewriter.progress = _body_text.length() + 3.0
@@ -425,7 +429,7 @@ func _process(delta: float) -> void:
 	_ui.get_node("Card").position = _card_position
 	_update_arrow(Rect2(_card_position, _ui.get_node("Card").size))
 	if _active and not _transitioning and _typewriter_enabled:
-		var speed := TYPE_SPEED * (1.8 if TranslationServer.get_locale().begins_with("en") else 1.0)
+		var speed := TYPE_SPEED * _typewriter_speed * (1.8 if TranslationServer.get_locale().begins_with("en") else 1.0)
 		_typewriter.progress = minf(_typewriter.progress + delta * speed, _body_text.length() + 3.0)
 
 func _refresh() -> void:

@@ -124,6 +124,7 @@ func _sync_guide_settings(_settings: Dictionary) -> void:
 	page.hud.set_guide_enabled(enabled)
 	for mentor: Control in [tutorial, starter_dialog, context_guidance.mentor]:
 		mentor.set_typewriter_enabled(main_menu.typewriter_enabled())
+		mentor.set_typewriter_speed(main_menu.typewriter_speed())
 	context_guidance.set_enabled(enabled)
 	if not enabled:
 		tutorial.skip()

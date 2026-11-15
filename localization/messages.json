@@ -8628,5 +8628,10 @@
     "source": "本局的故事已经落在纸上。",
     "zh_CN": "本局的故事已经落在纸上。",
     "en": "This run has found its story on paper."
+  },
+  "LOC_TYPEWRITER_SPEED": {
+    "source": "出字速度",
+    "zh_CN": "出字速度",
+    "en": "Typing speed"
   }
 }

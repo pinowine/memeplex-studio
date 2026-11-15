@@ -14,7 +14,7 @@ const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd
 const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_MAIN_NEW_GAME", "LOC_MAIN_LOAD_GAME", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
-var _settings := {"language": "en", "music": 1.0, "effects": 1.0, "guide_enabled": true, "typewriter_enabled": true, "key_bindings": {}}
+var _settings := {"language": "en", "music": 1.0, "effects": 1.0, "guide_enabled": true, "typewriter_enabled": true, "typewriter_speed": 1.0, "key_bindings": {}}
 var _music_bus := "BGM"
 var _effect_buses := PackedStringArray(["SFX", "BGS", "MFX"])
 var _ui: Control
@@ -41,6 +41,7 @@ func _ready() -> void:
 	_ui.get_node("SettingsPanel/Content/LanguageRow/Language").item_selected.connect(func(index: int): change_language("zh_CN" if index == 0 else "en"))
 	_ui.get_node("SettingsPanel/Content/GuideEnabled").toggled.connect(set_guide_enabled)
 	_ui.get_node("SettingsPanel/Content/TypewriterEnabled").toggled.connect(set_typewriter_enabled)
+	_ui.get_node("SettingsPanel/Content/TypewriterSpeedRow/TypewriterSpeed").value_changed.connect(set_typewriter_speed)
 	_ui.get_node("SettingsPanel/Content/KeyBindings").pressed.connect(open_key_bindings)
 	_ui.get_node("KeysPanel/Content/Back").pressed.connect(close_key_bindings)
 	_ui.get_node("KeysPanel/Content/Reset").pressed.connect(reset_key_bindings)
@@ -243,6 +244,13 @@ func guide_enabled() -> bool:
 func typewriter_enabled() -> bool:
 	return bool(_settings.typewriter_enabled)
 
+func typewriter_speed() -> float:
+	return float(_settings.typewriter_speed)
+
+func set_typewriter_speed(value: float) -> Error:
+	_settings.typewriter_speed = clampf(value, 0.5, 3.0)
+	return save_settings()
+
 func set_typewriter_enabled(enabled: bool) -> Error:
 	_settings.typewriter_enabled = enabled
 	return save_settings()
@@ -266,6 +274,7 @@ func load_settings() -> Error:
 	var guide: Variant = config.get_value("interface", "guide_enabled", true)
 	_settings.guide_enabled = guide if guide is bool else true
 	_settings.typewriter_enabled = bool(config.get_value("interface", "typewriter_enabled", true))
+	_settings.typewriter_speed = clampf(float(config.get_value("interface", "typewriter_speed", 1.0)), 0.5, 3.0)
 	KeyBindings.apply(config.get_value("interface", "key_bindings", {}))
 	_settings.key_bindings = KeyBindings.bindings()
 	_last_error = OK if guide is bool else ERR_INVALID_DATA
@@ -285,6 +294,7 @@ func save_settings() -> Error:
 	config.set_value("interface", "language", _settings.language)
 	config.set_value("interface", "guide_enabled", _settings.guide_enabled)
 	config.set_value("interface", "typewriter_enabled", _settings.typewriter_enabled)
+	config.set_value("interface", "typewriter_speed", _settings.typewriter_speed)
 	config.set_value("interface", "key_bindings", _settings.key_bindings)
 	for kind: String in ["music", "effects"]: config.set_value("audio", kind, _settings[kind])
 	var absolute := ProjectSettings.globalize_path(settings_path)
@@ -326,6 +336,10 @@ func _refresh_labels() -> void:
 	_ui.get_node("SettingsPanel/Content/LanguageRow/Language").select(0 if _settings.language == "zh_CN" else 1)
 	_ui.get_node("SettingsPanel/Content/GuideEnabled").set_pressed_no_signal(_settings.guide_enabled)
 	_ui.get_node("SettingsPanel/Content/TypewriterEnabled").set_pressed_no_signal(_settings.typewriter_enabled)
+	var type_speed: HSlider = _ui.get_node("SettingsPanel/Content/TypewriterSpeedRow/TypewriterSpeed")
+	type_speed.set_value_no_signal(typewriter_speed())
+	type_speed.editable = typewriter_enabled()
+	_ui.get_node("SettingsPanel/Content/TypewriterSpeedRow/TypewriterSpeedValue").text = "%.2f×" % typewriter_speed()
 	for pair: Array in [["Music", "music"], ["Effects", "effects"]]:
 		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Row/" + pair[0]).set_value_no_signal(_settings[pair[1]])
 		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Row/" + pair[0] + "Value").text = "%d%%" % roundi(float(_settings[pair[1]]) * 100)
