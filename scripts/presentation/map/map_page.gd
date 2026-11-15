@@ -1,6 +1,7 @@
 extends Node2D
 
 signal initialization_finished(error: Error)
+signal meme_details_requested(id: String)
 signal launch_confirmed
 
 const COUNTRY_RULES = preload("res://data/rules/gameplay_rules.tres")
@@ -239,10 +240,8 @@ func configure_meme_tracking(overlay: Control, catalog: MemeDemoCatalog) -> void
 	overlay.add_child(_meme_ledger)
 	_meme_ledger.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_meme_ledger.configure(catalog)
-	_meme_ledger.variant_selected.connect(select_meme)
+	_meme_ledger.variant_selected.connect(_on_meme_tag_selected)
 	_meme_ledger.variant_hovered.connect(_on_ledger_variant_hovered)
-	_meme_ledger.country_hovered.connect(_on_ledger_country_hovered)
-	_meme_ledger.details_changed.connect(func(_id: String, _expanded: bool): _on_map_exited())
 
 func update_meme_state(snapshot: Dictionary) -> void:
 	_meme_snapshot = snapshot
@@ -254,6 +253,13 @@ func update_meme_state(snapshot: Dictionary) -> void:
 	_meme_ledger.sync_state(snapshot, _meme_overlay.colors())
 	_meme_ledger.set_selected_variant(_meme_overlay.selected_variant_id)
 	_update_hover()
+
+func _on_meme_tag_selected(id: String) -> void:
+	_meme_overlay.set_selected_variant(id)
+	_meme_ledger.set_selected_variant(id)
+	_on_ledger_variant_hovered("")
+	_on_map_exited()
+	meme_details_requested.emit(id)
 
 func select_meme(id: String) -> void:
 	_meme_overlay.set_selected_variant(id)

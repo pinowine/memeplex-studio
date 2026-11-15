@@ -295,9 +295,9 @@
     "en": "Expression strength calculated from distinct characters in the actual text, used in competition fitness."
   },
   "MM_HELP_LEGEND": {
-    "source": "带外圈的点表示起始位置，后续传播使用实心点。悬停模因即可高亮对应的地图点。",
-    "zh_CN": "带外圈的点表示起始位置，后续传播使用实心点。悬停模因即可高亮对应的地图点。",
-    "en": "Ringed dots mark origins; solid dots mark later spread. Hover a meme to highlight its map points."
+    "source": "标记点持续显示；起始点带外圈，传播点为实心点。国家内的点密度反映采用、曝光和注意力的综合传播度。仅悬停时减淡其他模因的点，离开即恢复。",
+    "zh_CN": "标记点持续显示；起始点带外圈，传播点为实心点。国家内的点密度反映采用、曝光和注意力的综合传播度。仅悬停时减淡其他模因的点，离开即恢复。",
+    "en": "Markers stay visible. Origins have an outer ring and spread points are solid. Country density reflects adoption, exposure and attention together. Hover temporarily fades other memes; moving away restores every point."
   },
   "MAP_MEME_MONITOR": {
     "source": "模因监控",

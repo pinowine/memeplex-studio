@@ -2,10 +2,15 @@ extends Node2D
 
 signal initialization_finished(error: Error)
 signal initialization_progress(stage: String)
+var _meme_reader_id := ""
+var _meme_reader_meme_id := ""
+var _meme_reader_country_id := ""
+
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
 
+const MemeDetails = preload("res://scripts/presentation/map/meme_map_details.gd")
 const SAVE_PATH := "user://saves/current_run.json"
 const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 
@@ -78,6 +83,9 @@ func _ready() -> void:
 	desk.configure(self)
 	spread.configure(atlas)
 	atlas.configure_meme_tracking(spread, catalog)
+	atlas.meme_details_requested.connect(_show_meme_details)
+	desk._slot_reader.country_hovered.connect(_on_meme_country_hovered)
+	desk._slot_reader.closed.connect(_on_meme_reader_closed)
 	hud.layout_for_date(desk.clock_rect())
 	desk._fax.starter_selected.connect(_select_starter)
 	desk._fax.startup_finished.connect(_finish_startup)
@@ -368,6 +376,11 @@ func _input(event: InputEvent) -> void:
 			_toggle_menu("settings")
 			get_viewport().set_input_as_handled()
 			return
+		if hud.menu_mode() == "" and desk != null and desk._slot_reader.is_visible_in_tree() and str(desk._slot_reader._details.get("document_kind", "")) == "meme":
+			desk._slot_reader.hide_details()
+			_on_meme_reader_closed()
+			get_viewport().set_input_as_handled()
+			return
 		if hud.menu_mode() == "" and desk != null and desk.slot_details_active():
 			desk.close_slot_details()
 			get_viewport().set_input_as_handled()
@@ -610,9 +623,51 @@ func _render() -> void:
 		_sync_setup()
 		spread.update_simulation(simulation)
 		atlas.update_meme_state(snapshot)
+		_refresh_meme_reader(snapshot)
 		if _shell != null: _shell.context_guidance.observe_world(snapshot.world_competition)
 		hud.set_legend(spread.legend_rows())
 		_queue_context_trial()
+
+func _show_meme_details(id: String) -> void:
+	if not _ready_to_run or not startup_ready() or _interface_paused(): return
+	var snapshot := simulation.snapshot()
+	var variants: Dictionary = snapshot.world_competition.variants_by_id
+	if not variants.has(id): return
+	_meme_reader_id = id
+	_meme_reader_meme_id = str(variants[id].meme_id)
+	_meme_reader_country_id = ""
+	atlas._on_ledger_variant_hovered("")
+	desk.show_meme_details(MemeDetails.build(snapshot, catalog, id))
+
+func _refresh_meme_reader(snapshot: Dictionary) -> void:
+	if _meme_reader_meme_id.is_empty(): return
+	var reader: Control = desk._slot_reader
+	if not reader.is_visible_in_tree() or str(reader._details.get("document_kind", "")) != "meme" or reader._phase in ["hidden", "exiting"]:
+		_on_meme_reader_closed()
+		return
+	if not atlas.map_input.is_visible_in_tree():
+		reader.hide_details()
+		_on_meme_reader_closed()
+		return
+	for variant: Dictionary in snapshot.world_competition.variants:
+		if str(variant.meme_id) != _meme_reader_meme_id: continue
+		_meme_reader_id = str(variant.id)
+		reader.update_meme_details(MemeDetails.build(snapshot, catalog, _meme_reader_id))
+		if not _meme_reader_country_id.is_empty(): atlas._on_ledger_country_hovered(_meme_reader_id, _meme_reader_country_id)
+		return
+	reader.hide_details()
+	_on_meme_reader_closed()
+
+func _on_meme_country_hovered(country_id: String) -> void:
+	_meme_reader_country_id = country_id
+	atlas._on_ledger_country_hovered(_meme_reader_id if not country_id.is_empty() else "", country_id)
+
+func _on_meme_reader_closed() -> void:
+	if _meme_reader_meme_id.is_empty(): return
+	_meme_reader_id = ""
+	_meme_reader_meme_id = ""
+	_meme_reader_country_id = ""
+	atlas._on_ledger_country_hovered("", "")
 
 func focus_meme_on_map(id: String) -> void:
 	if desk.focus_component("sheet/map"):

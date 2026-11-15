@@ -127,7 +127,7 @@ func _rebuild(interactive_countries: bool) -> void:
 			grid.add_theme_constant_override("h_separation", 12)
 			grid.add_theme_constant_override("v_separation", 8)
 			content = grid
-		elif str(section.kind) == "group":
+		elif str(section.kind) == "group" and not section.rows.is_empty():
 			var flow := HFlowContainer.new()
 			flow.name = "SpreadCountryTags"
 			flow.add_theme_constant_override("h_separation", 6)

@@ -170,6 +170,14 @@ func _update_hover_strip() -> void:
 		_hover_strip.clear_hover()
 		_page.atlas.hover_note.hide()
 		return
+	if _slot_reader.is_visible_in_tree() and str(_slot_reader._details.get("document_kind", "")) == "meme":
+		var foreground_point := _hover_pointer_position()
+		if _slot_reader.handles_viewport_point(foreground_point):
+			_page.atlas.hover_note.hide()
+			var foreground_info: Dictionary = _slot_reader.hover_info(foreground_point)
+			if foreground_info.is_empty(): _hover_strip.clear_hover()
+			else: _hover_strip.show_hover(foreground_info)
+			return
 	if _page.atlas.hover_note.is_visible_in_tree():
 		_hover_strip.clear_hover()
 		return
@@ -1301,6 +1309,12 @@ func _event_country_field(record: Dictionary) -> Dictionary:
 			"tooltip_body":DeskLocalization.source_join("\n\n", [str(country.description_key), str(country.culture_key)]),
 			"tooltip_note":str(country.description_key) + "_NOTE", "field_kind":"language", "tooltip_width":360.0}
 	return {}
+
+func show_meme_details(details: Dictionary) -> bool:
+	_component_target = ""
+	_hover_strip.clear_hover()
+	_page.atlas._on_map_exited()
+	return _slot_reader.show_meme_details(details, _slot_reader.get_viewport().get_visible_rect())
 
 func _show_component_details() -> void:
 	if _slot_reader == null or _component_target.is_empty() or slot_details_active(): return

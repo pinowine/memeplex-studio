@@ -1,7 +1,12 @@
 extends PanelContainer
 
 signal meme_selected(id: String)
+signal country_hovered(id: String)
+signal close_requested
 
+const MemeDetailView = preload("res://scripts/presentation/map/meme_map_detail_view.gd")
+const MemeFields = preload("res://scripts/presentation/map/meme_map_fields.gd")
+const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
@@ -32,6 +37,11 @@ class SectionIcon extends Control:
 	func _draw() -> void:
 		Glyph.draw(self, Rect2(Vector2.ZERO, Vector2(24, 24)), kind, ink)
 
+var _meme_mode := false
+var _meme_details: Dictionary = {}
+var _meme_header_key := ""
+var _meme_view: Control
+var _meme_close: Button
 var _column: VBoxContainer
 var _header: VBoxContainer
 var _scroll: ScrollContainer
@@ -90,6 +100,12 @@ func _init() -> void:
 	_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float): _hide_hover())
 
 func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
+	if _meme_mode: country_hovered.emit("")
+	_meme_mode = false
+	_meme_details.clear()
+	_meme_header_key = ""
+	_meme_view = null
+	_meme_close = null
 	_blocks = blocks.duplicate(true)
 	_headline = full_title
 	_hide_hover()
@@ -403,6 +419,77 @@ func _write_content(label: RichTextLabel, text: String) -> void:
 
 func _hide_hover() -> void:
 	_hover.hide()
+	if _meme_mode: country_hovered.emit("")
+
+func set_meme_details(details: Dictionary) -> void:
+	if not _meme_mode:
+		set_blocks([], "")
+		_meme_mode = true
+		_meme_view = MemeDetailView.new()
+		_meme_view.name = "MemeDetails"
+		_meme_view.country_hovered.connect(func(id: String): country_hovered.emit(id))
+		_column.add_child(_meme_view)
+	_meme_details = details.duplicate(true)
+	_headline = str(details.title)
+	var header_key := str([details.title, details.get("source_kind", ""), details.get("origin_title", ""), TranslationServer.get_locale()])
+	if header_key != _meme_header_key:
+		_meme_header_key = header_key
+		_rebuild_meme_header(details)
+	_meme_view.set_details(details)
+
+func _rebuild_meme_header(details: Dictionary) -> void:
+	for child in _header.get_children():
+		_header.remove_child(child)
+		child.queue_free()
+	var heading := HBoxContainer.new()
+	heading.name = "MemeHeadline"
+	heading.add_theme_constant_override("separation", 12)
+	_header.add_child(heading)
+	var title := _label(str(details.title), 22, Style.INK)
+	title.name = "Headline"
+	title.max_lines_visible = 2
+	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	title.tooltip_text = str(details.title)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
+	heading.add_child(title)
+	_meme_close = Button.new()
+	_meme_close.name = "CloseMemeDetails"
+	_meme_close.text = "×"
+	_meme_close.tooltip_text = DeskLocalization.text("PRINT_CLOSE")
+	_meme_close.custom_minimum_size = Vector2(28, 28)
+	_meme_close.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_meme_close.add_theme_font_override("font", ReceiptHover.BODY_FONT)
+	_meme_close.add_theme_font_size_override("font_size", 20)
+	_meme_close.add_theme_color_override("font_color", Style.INK)
+	_meme_close.add_theme_color_override("font_hover_color", Style.SECTION_TEAL)
+	_meme_close.add_theme_color_override("font_pressed_color", Style.SECTION_TEAL)
+	_meme_close.add_theme_color_override("font_focus_color", Style.SECTION_TEAL)
+	_meme_close.pressed.connect(func(): close_requested.emit())
+	heading.add_child(_meme_close)
+	PaperStyle.apply_button(_meme_close, true)
+	var fields: Array[Dictionary] = []
+	if not str(details.get("source_kind", "")).is_empty():
+		fields.append({"text":str(details.source_kind), "field_kind":"meme",
+			"tooltip_title":str(details.title), "tooltip_body":str(details.get("name_help", ""))})
+	_add_metadata({"event_fields":fields, "country_title":str(details.get("origin_title", ""))})
+	# The detail section supplies the first rule, avoiding two adjacent separators.
+	var duplicate_rule: HSeparator = _header.get_child(_header.get_child_count() - 1)
+	_header.remove_child(duplicate_rule)
+	duplicate_rule.queue_free()
+
+func meme_hover_info(point: Vector2) -> Dictionary:
+	if not _meme_mode or not is_visible_in_tree() or not _contains_viewport_point(_scroll, point): return {}
+	var controls: Array[Control] = _meme_view.get("_help_controls").duplicate()
+	controls.reverse()
+	for control: Control in controls:
+		if control.is_visible_in_tree() and not str(control.help_body).is_empty() and _contains_viewport_point(control, point):
+			return MemeFields.hover_info(control)
+	return {}
+
+func _contains_viewport_point(control: Control, point: Vector2) -> bool:
+	var local := control.get_global_transform_with_canvas().affine_inverse() * point
+	return Rect2(Vector2.ZERO, control.size).has_point(local)
 
 func inspection() -> Dictionary:
 	var impact_text := PackedStringArray()
@@ -411,6 +498,9 @@ func inspection() -> Dictionary:
 	var narrative_gap := _article_rule.global_position.y - (_article.global_position.y + _article.size.y) if _article != null and _article_rule != null else 0.0
 	var bar := _scroll.get_v_scroll_bar()
 	return {"blocks":_blocks.duplicate(true), "headline":_headline, "scrollable":true,
+		"meme_mode":_meme_mode, "meme_details":_meme_view.inspection() if _meme_mode else {},
+		"meme_sections":_meme_details.get("sections", []).duplicate(true), "paper_style":"event",
+		"close_button_visible":_meme_mode and _meme_close.is_visible_in_tree(),
 		"content_height":_column.size.y, "viewport_height":_scroll.size.y, "columns":2,
 		"header_rect":_header.get_global_rect(), "scroll_rect":_scroll.get_global_rect(),
 		"scrollbar_rect":bar.get_global_rect(), "scrollbar_gap":bar.global_position.x - _column.get_global_rect().end.x,

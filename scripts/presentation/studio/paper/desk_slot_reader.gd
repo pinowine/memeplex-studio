@@ -6,6 +6,7 @@ signal choice_hovered(index: int)
 signal contact_selected(index: int)
 signal stack_layout_changed
 signal meme_selected(id: String)
+signal country_hovered(id: String)
 
 const SLIDE_DURATION := .24
 const SOURCE_PIXELS_PER_UNIT := 3.0
@@ -56,6 +57,8 @@ var _rendered_body_key := ""
 var _numbers := RegEx.create_from_string("[-+]?[0-9]+(?:[.,][0-9]+)*(?:%|％)?")
 var _phase := "hidden"
 var _generation := 0
+var _meme_request_serial := 0
+var _meme_outside_press_serial := -1
 var _motion: Tween
 var _viewport_rect := Rect2()
 var _target_rect := Rect2()
@@ -93,6 +96,8 @@ func configure(hand_font: Font, paper: Texture2D) -> void:
 			_body_label.remove_theme_font_override(kind)
 
 func show_details(details: Dictionary, viewport_rect: Rect2) -> bool:
+	_meme_request_serial += 1
+	if _meme_mode(): country_hovered.emit("")
 	var title := _text(details, "title")
 	var paragraphs := PackedStringArray()
 	var body := _text(details, "body", "text")
@@ -130,6 +135,7 @@ func show_details(details: Dictionary, viewport_rect: Rect2) -> bool:
 
 func hide_details() -> bool:
 	if _phase in ["hidden", "exiting"]: return false
+	if _meme_mode(): country_hovered.emit("")
 	_cancel_motion()
 	_phase = "exiting"
 	_animate_to(0.0)
@@ -152,6 +158,7 @@ func inspection() -> Dictionary:
 		"body_rect":_viewport_bounds(_body_label) if _built else Rect2(), "body_plain_text":not _body_label.bbcode_enabled if _built else true, "structured_body":true, "section_count":_body_blocks.size(),
 		"scroll_active":_body_label.scroll_active if _built else false, "font_bound":_font != null, "paper_texture_bound":_paper != null,
 		"event_document":_event_document.inspection() if _built and _event_document.visible else {},
+		"meme_mode":_meme_mode(), "meme_id":str(_details.get("meme_id", "")), "variant_id":str(_details.get("id", "")),
 		"source_pixels_per_world_unit":SOURCE_PIXELS_PER_UNIT, "slide_duration":SLIDE_DURATION}
 
 func _build() -> void:
@@ -199,6 +206,10 @@ func _build() -> void:
 	_paper_holder.add_child(_body_label)
 	_event_document = EventDocument.new()
 	_event_document.meme_selected.connect(func(id: String): meme_selected.emit(id))
+	_event_document.country_hovered.connect(func(id: String):
+		if _meme_mode() and _phase != "exiting": country_hovered.emit(id))
+	_event_document.close_requested.connect(func():
+		if _meme_mode(): hide_details())
 	_event_document.minimum_size_changed.connect(_layout_paper, CONNECT_DEFERRED)
 	_event_document.resized.connect(_layout_paper, CONNECT_DEFERRED)
 	_event_document.name = "EventDocument"
@@ -233,7 +244,7 @@ func _layout_paper() -> void:
 	var margin := clampf(view.size.x * .018, 12.0, 28.0)
 	var top := clampf(view.size.y * .055, 18.0, 48.0)
 	var starter := bool(_details.get("starter_pending", false))
-	var event_document := str(_details.get("document_kind", "")) == "event"
+	var event_document := str(_details.get("document_kind", "")) in ["event", "meme"]
 	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
 	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter or event_document or has_stack else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
 	_target_rect = Rect2(Vector2(view.end.x - margin - dimensions.x, view.position.y + top).round(), dimensions)
@@ -310,7 +321,7 @@ func _layout_paper() -> void:
 		if changed: stack_layout_changed.emit()
 
 func text_layout_inspection() -> Dictionary:
-	return {"complete_title":_title,"full_title_in_body":_full_title_in_body,"choices_scrollable":_choice_scroll != null and _choice_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_AUTO,"choice_count":_choice_buttons.size(),"rendered_body":_body if str(_details.get("document_kind", "")) == "event" else (_body_label.text if _built else "")}
+	return {"complete_title":_title,"full_title_in_body":_full_title_in_body,"choices_scrollable":_choice_scroll != null and _choice_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_AUTO,"choice_count":_choice_buttons.size(),"rendered_body":_body if str(_details.get("document_kind", "")) in ["event", "meme"] else (_body_label.text if _built else "")}
 
 
 func _animate_to(target: float) -> void:
@@ -419,6 +430,17 @@ func refresh_locale() -> void:
 	if _built and not _details.is_empty(): _refresh_translation(false)
 
 func _refresh_translation(reset_scroll: bool) -> void:
+	if _meme_mode():
+		var document_scroll: int = _event_document.scroll_vertical
+		_title = DeskLocalization.text(_text(_details, "title"))
+		_body = str(_details)
+		_body_blocks.clear()
+		_title_label.text = _title
+		_rendered_body_key = ""
+		_layout_paper()
+		if reset_scroll: _event_document.scroll_vertical = 0
+		else: _event_document.set_deferred("scroll_vertical", document_scroll)
+		return
 	var scroll := _body_label.get_v_scroll_bar().value
 	var document_scroll: int = _event_document.scroll_vertical
 	_title = DeskLocalization.text(_text(_details,"title"))
@@ -482,6 +504,9 @@ func _render_body() -> void:
 	var key := str(_details.get("document_kind", "")) + "\n" + (_title if _full_title_in_body else "") + "\n" + _body
 	if _rendered_body_key == key: return
 	_rendered_body_key = key
+	if _meme_mode():
+		_event_document.set_meme_details(_details)
+		return
 	if str(_details.get("document_kind", "")) == "event":
 		_event_document.set_blocks(_body_blocks, _title if _full_title_in_body else "")
 		return
@@ -537,3 +562,64 @@ func _localized_block(source: String) -> String:
 	var exact := str(TranslationServer.translate(StringName(source)))
 	if exact != source: return exact
 	return "\n".join(DeskLocalization.lines(Array(source.split("\n",true))))
+
+func _meme_mode() -> bool:
+	return str(_details.get("document_kind", "")) == "meme"
+
+func show_meme_details(details: Dictionary, viewport_rect: Rect2) -> bool:
+	if not _valid_meme_details(details) or not _valid_viewport(viewport_rect): return false
+	_meme_request_serial += 1
+	if _meme_mode() and _phase in ["entering", "shown"] and str(_details.get("meme_id", "")) == str(details.get("meme_id", "")):
+		var resized := _viewport_rect != viewport_rect
+		_viewport_rect = viewport_rect
+		var updated := update_meme_details(details)
+		if resized: _layout_paper()
+		return updated
+	var document := details.duplicate(true)
+	document.document_kind = "meme"
+	return show_details(document, viewport_rect)
+
+func update_meme_details(details: Dictionary) -> bool:
+	if not _meme_mode() or _phase not in ["entering", "shown"]: return false
+	if not _valid_meme_details(details) or str(details.meme_id) != str(_details.meme_id): return false
+	var document := details.duplicate(true)
+	document.document_kind = "meme"
+	if _details != document:
+		_details = document
+		_refresh_translation(false)
+	return true
+
+func hover_info(point: Vector2) -> Dictionary:
+	if not _meme_mode() or _phase not in ["entering", "shown"] or not handles_viewport_point(point): return {}
+	return _event_document.meme_hover_info(point)
+
+func _input(event: InputEvent) -> void:
+	if not _meme_mode() or _phase not in ["entering", "shown"] or not is_visible_in_tree(): return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+		hide_details()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_meme_outside_press_serial = _meme_request_serial if not handles_viewport_point(event.position) else -1
+		elif _meme_outside_press_serial >= 0:
+			var serial := _meme_outside_press_serial
+			_meme_outside_press_serial = -1
+			if not handles_viewport_point(event.position): _close_meme_after_pointer.call_deferred(serial)
+
+func _close_meme_after_pointer(serial: int) -> void:
+	# A tag selected by this click may already have requested another document.
+	if serial == _meme_request_serial and _meme_mode(): hide_details()
+
+func _valid_meme_details(details: Dictionary) -> bool:
+	if _text(details, "id").is_empty() or _text(details, "meme_id").is_empty() or _text(details, "title").is_empty(): return false
+	var sections: Variant = details.get("sections")
+	if not sections is Array: return false
+	for section: Variant in sections:
+		if not section is Dictionary or not section.get("rows") is Array: return false
+		for key: String in ["title", "kind", "help"]:
+			if not section.get(key) is String: return false
+		for row: Variant in section.rows:
+			if not row is Dictionary: return false
+			for key: String in ["label", "help", "value"]:
+				if not row.get(key) is String: return false
+	return true
