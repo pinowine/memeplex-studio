@@ -586,7 +586,7 @@ func _design_action(action: String, params: Dictionary) -> void:
 		_render()
 		return
 	var input := params.duplicate(true)
-	var changes_draft := action in ["apply_context", "apply_skill", "install_module", "remove_module", "edit_module_content", "take_apply_context", "install_context", "remove_context", "move_context_axis", "detach_context_layer", "attach_context_layer"]
+	var changes_draft := action in ["apply_context", "apply_skill", "install_module", "remove_module", "edit_module_content", "take_apply_context", "install_context", "remove_context", "move_context_axis", "move_context_axes", "detach_context_layer", "attach_context_layer"]
 	if changes_draft: input["draft"] = hud.get_draft()
 	var errors := simulation.design_action(action, input)
 	if errors.is_empty() and changes_draft:
@@ -597,7 +597,7 @@ func _design_action(action: String, params: Dictionary) -> void:
 		if action == "install_context": _tutorial_observe("context_installed", params)
 		if action == "remove_context": _tutorial_observe("context_removed", params)
 	hud.report_design_errors(errors)
-	_render()
+	if action != "move_context_axes" or not errors.is_empty(): _render()
 
 func _buy_skill(skill_id: String) -> void:
 	if not _ready_to_run or not startup_ready() or _interface_paused(): return

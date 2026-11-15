@@ -85,6 +85,7 @@ var _selected_module := ""
 var _selected_skill := "text"
 var _selected_variant := ""
 var _interaction_enabled := true
+var _interaction_tab := ""
 var _module_drop_enabled := false
 var _hover_enabled := true
 var _setting := false
@@ -864,7 +865,7 @@ func _request(action: String, params: Dictionary) -> void:
 		if not errors.is_empty():
 			_show_module_errors(errors)
 			return
-	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context_axis","detach_context_layer","attach_context_layer"]:
+	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context_axis", "move_context_axes","detach_context_layer","attach_context_layer"]:
 		request["draft"]=get_draft()
 		if action=="install_module":
 			var module_id := str(request.get("module_id",""))
@@ -1028,7 +1029,9 @@ func _layout_spread_sheet(w: float,h: float) -> void:
 
 
 func set_interaction_enabled(enabled: bool) -> void:
+	if _interaction_enabled == enabled and _interaction_tab == _tab: return
 	_interaction_enabled = enabled
+	_interaction_tab = _tab
 	_neuron.set_interaction_enabled(enabled and _tab == "edit")
 	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")

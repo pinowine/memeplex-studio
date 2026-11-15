@@ -143,7 +143,7 @@ func _context_unit_source(id: String) -> Dictionary:
 				return result
 	return {}
 
-func _perform_layer(action: String, params: Dictionary) -> PackedStringArray:
+func _perform_layer(action: String, params: Dictionary, apply_result: bool = true) -> PackedStringArray:
 	_layer_repeat = false
 	var layer := str(params.get("layer",""))
 	if not _state.layers_initialized or not _state.context_layers.has(layer): return PackedStringArray([DeskLocalization.source("LOC_CONFIRM_A_STARTING_MEME_FIRST_11EAF3C4")])
@@ -202,7 +202,34 @@ func _perform_layer(action: String, params: Dictionary) -> PackedStringArray:
 		data.current[axis] = float(Vector2(clampf(origin+float(next)*rules.axis_step,-1.0,1.0),0.0).x)
 		data.known = true
 		_state.axis_requests.append(request)
-	return _apply_layers(params.base)
+	return _apply_layers(params.base) if apply_result else PackedStringArray()
+
+func _perform_axes(params: Dictionary) -> PackedStringArray:
+	var layer := str(params.get("layer", ""))
+	var target: Variant = params.get("target_offsets")
+	if layer not in ["stance", "pragmatic"] or not target is Array or target.size() != 2 or not _integer(target[0]) or not _integer(target[1]):
+		return PackedStringArray([DeskLocalization.source("LOC_A_D_MOVE_ACCEPTS_ONE_STEP_ON_11740594")])
+	var request_id := str(params.get("request_id", ""))
+	if not params.get("request_id") is String or request_id.is_empty() or request_id.length() > 100:
+		return PackedStringArray([DeskLocalization.source("LOC_A_D_MOVE_REQUIRES_A_BOUNDED_REQUEST_83645A17")])
+	for operation: Dictionary in _state.operations:
+		if str(operation.action) != "move_context_axes" or str(operation.params.request_id) != request_id: continue
+		_layer_repeat = true
+		return PackedStringArray() if str(operation.params.layer) == layer and operation.params.target_offsets == target else PackedStringArray([DeskLocalization.source("LOC_THIS_REQUEST_ID_HAS_ALREADY_BEEN_USED_C071C23E")])
+	var moved := false
+	for axis in 2:
+		var data: Dictionary = _state.context_layers[layer]
+		var bounds := _axis_offset_bounds(data, axis)
+		if int(target[axis]) < bounds.x or int(target[axis]) > bounds.y:
+			return PackedStringArray([DeskLocalization.source("LOC_THE_COORDINATE_HAS_REACHED_ITS_BOUNDARY_2B0D9566")])
+		var start := int(data.offsets[axis])
+		var direction := 1 if int(target[axis]) > start else -1
+		for step in absi(int(target[axis]) - start):
+			var errors := _perform_layer("move_context_axis", {"layer":layer, "axis":"x" if axis == 0 else "y", "direction":direction, "request_id":"%s:%d:%d" % [request_id, axis, step], "base":params.base}, false)
+			if not errors.is_empty(): return errors
+			moved = true
+	_layer_repeat = not moved
+	return _apply_layers(params.base) if moved else PackedStringArray()
 
 func _layer_fields() -> Dictionary:
 	var result := {"language_id":"","group_id":"","topic_ids":[],"political_position":_state.context_layers.stance.current.duplicate(),"pragmatic_position":_state.context_layers.pragmatic.current.duplicate(),"political_known":_state.context_layers.stance.known}
@@ -399,8 +426,8 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 		if not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= rules.module_slots:
 			return PackedStringArray([DeskLocalization.source("LOC_SLOT_IS_OUTSIDE_ITS_FINITE_RANGE_F48EA765")])
 		slot = int(params.slot)
-	if action in ["install_context", "remove_context", "move_context_axis", "set_context_depth", "detach_context_layer", "attach_context_layer"]:
-		errors = _perform_layer(action, params)
+	if action in ["install_context", "remove_context", "move_context_axis", "move_context_axes", "set_context_depth", "detach_context_layer", "attach_context_layer"]:
+		errors = _perform_axes(params) if action == "move_context_axes" else _perform_layer(action, params)
 		if errors.is_empty() and not _layer_repeat:
 			_state.operations.append({"action":action,"params":params.duplicate(true)})
 		return errors

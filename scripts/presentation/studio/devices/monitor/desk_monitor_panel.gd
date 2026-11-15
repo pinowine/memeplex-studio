@@ -230,11 +230,13 @@ func _select_button(index: int) -> void:
 	_refresh()
 
 func set_interaction_enabled(value: bool) -> void:
+	if _enabled == value: return
 	_enabled = value
 	if not value: cancel_drag()
 	_refresh()
 
 func set_token_interaction_enabled(value: bool) -> void:
+	if _token_enabled == value: return
 	_token_enabled = value
 	if not value: cancel_drag()
 	_refresh()

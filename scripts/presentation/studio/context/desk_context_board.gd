@@ -114,6 +114,7 @@ func perform(action: String, params: Dictionary) -> void:
 	else: action_requested.emit(action, params.duplicate(true))
 
 func set_interaction_enabled(value: bool) -> void:
+	if _enabled == value: return
 	_enabled = value
 	if not value:
 		_cancel_input()
@@ -679,10 +680,11 @@ func _move_axis(point: Vector2) -> void:
 	var step := float(data.get("step", 0.1))
 	if step <= 0.0: return
 	var origin: Array = data.get("origin", [0.0, 0.0])
+	var targets: Array = []
 	for axis in 2:
 		var value := clampf((point[axis] - plot.get_center()[axis]) / (plot.size[axis] * 0.5), -1.0, 1.0)
-		var target := roundi((value - float(origin[axis])) / step)
-		_commands.move_axis(_layers, perform, id, axis, target)
+		targets.append(roundi((value - float(origin[axis])) / step))
+	_commands.move_axes(_layers, perform, id, targets)
 	selected_info_changed.emit(selected_info())
 	queue_redraw()
 
