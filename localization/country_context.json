@@ -5,9 +5,9 @@
     "en": "Aldenian"
   },
   "LOC_WORLD_LANGUAGE_ALDEN_DESCRIPTION": {
-    "source": "阿尔登的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "阿尔登的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Alden, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "沿着航线和商路传播的语言，常从别处借来词语。简短的词序能交代事情，重音和惯用语又给同一句话添上不同意味。",
+    "zh_CN": "沿着航线和商路传播的语言，常从别处借来词语。简短的词序能交代事情，重音和惯用语又给同一句话添上不同意味。",
+    "en": "A language carried along shipping lanes and trade routes, quick to borrow words. Word order carries much of its grammar; stress and idioms give the same sentence different shades of meaning."
   },
   "LOC_WORLD_LANGUAGE_VERESK": {
     "source": "韦列斯克语",
@@ -15,9 +15,9 @@
     "en": "Vereskian"
   },
   "LOC_WORLD_LANGUAGE_VERESK_DESCRIPTION": {
-    "source": "韦列斯克的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "韦列斯克的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Veresk, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "辅音密集，名词的词尾会随句中角色变化。诗歌与书信保留着丰厚的书面传统，日常交谈则爱用昵称拉近距离。",
+    "zh_CN": "辅音密集，名词的词尾会随句中角色变化。诗歌与书信保留着丰厚的书面传统，日常交谈则爱用昵称拉近距离。",
+    "en": "Consonant clusters and changing noun endings give this language a distinctive rhythm. Poetry and letters sustain its written tradition, while affectionate names bring conversation closer."
   },
   "LOC_WORLD_LANGUAGE_LINDAL": {
     "source": "林达尔语",
@@ -25,9 +25,9 @@
     "en": "Lindalic"
   },
   "LOC_WORLD_LANGUAGE_LINDAL_DESCRIPTION": {
-    "source": "林达尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "林达尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Lindal, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "北方港口与小镇通行的语言。复合词可以把几个意思接在一起，语调的起伏让相近的词听来各有区别。",
+    "zh_CN": "北方港口与小镇通行的语言。复合词可以把几个意思接在一起，语调的起伏让相近的词听来各有区别。",
+    "en": "Spoken in northern ports and small towns. Compound words join ideas together, while pitch gives similar-sounding words their own contours."
   },
   "LOC_WORLD_LANGUAGE_MARASU": {
     "source": "马拉苏语",
@@ -35,9 +35,9 @@
     "en": "Marasan"
   },
   "LOC_WORLD_LANGUAGE_MARASU_DESCRIPTION": {
-    "source": "马拉苏的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "马拉苏的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Marasu, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "群岛之间往来的商人和旅客把它带到各个码头。词根加上前后缀就能换一种用法，重叠的词语也常出现在闲谈里。",
+    "zh_CN": "群岛之间往来的商人和旅客把它带到各个码头。词根加上前后缀就能换一种用法，重叠的词语也常出现在闲谈里。",
+    "en": "Traders and travellers carry it between island harbours. Prefixes and suffixes give roots new uses, and repeated words are common in everyday talk."
   },
   "LOC_WORLD_LANGUAGE_SERRANOVA": {
     "source": "塞拉诺瓦语",
@@ -45,9 +45,9 @@
     "en": "Serranovan"
   },
   "LOC_WORLD_LANGUAGE_SERRANOVA_DESCRIPTION": {
-    "source": "塞拉诺瓦的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "塞拉诺瓦的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Serranova, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "曾随移民横渡大洋，如今在许多城市有了各自的口音。动词的变化交代人物和时间，问句与感叹句在纸上也有鲜明的起落。",
+    "zh_CN": "曾随移民横渡大洋，如今在许多城市有了各自的口音。动词的变化交代人物和时间，问句与感叹句在纸上也有鲜明的起落。",
+    "en": "Carried across the ocean by migrants, it has developed distinct city accents. Verb endings locate speakers and events in time, and its written questions and exclamations have clear beginnings and endings."
   },
   "LOC_WORLD_LANGUAGE_ORUVIA": {
     "source": "奥鲁维亚语",
@@ -55,9 +55,9 @@
     "en": "Oruvian"
   },
   "LOC_WORLD_LANGUAGE_ORUVIA_DESCRIPTION": {
-    "source": "奥鲁维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "奥鲁维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Oruvia, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "沿海集市和内陆商路上都能听见它。名词分成不同类别，句中的修饰语随之呼应，外来词也在长久的往来中落下脚来。",
+    "zh_CN": "沿海集市和内陆商路上都能听见它。名词分成不同类别，句中的修饰语随之呼应，外来词也在长久的往来中落下脚来。",
+    "en": "Heard in coastal markets and along inland trade routes. Noun classes echo through the words around them, alongside borrowings left by generations of contact."
   },
   "LOC_WORLD_LANGUAGE_NASHIR": {
     "source": "纳希尔语",
@@ -65,9 +65,9 @@
     "en": "Nashiri"
   },
   "LOC_WORLD_LANGUAGE_NASHIR_DESCRIPTION": {
-    "source": "纳希尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "纳希尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Nashir, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "书写从右向左铺开，许多词围绕一组辅音词根生长。朗读的书面语与街巷里的口语各有节奏，故事常在人声之间流传。",
+    "zh_CN": "书写从右向左铺开，许多词围绕一组辅音词根生长。朗读的书面语与街巷里的口语各有节奏，故事常在人声之间流传。",
+    "en": "Written from right to left, with many words built around consonant roots. Formal readings and street conversation have different rhythms, and stories travel readily by voice."
   },
   "LOC_WORLD_LANGUAGE_SOLERIA": {
     "source": "索莱里亚语",
@@ -75,9 +75,9 @@
     "en": "Solerian"
   },
   "LOC_WORLD_LANGUAGE_SOLERIA_DESCRIPTION": {
-    "source": "索莱里亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "索莱里亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Soleria, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "元音清楚，句子常随着重音舒展。地方口音伴着市集、戏剧和歌声流动，书面语把许多城镇的读者联系在一起。",
+    "zh_CN": "元音清楚，句子常随着重音舒展。地方口音伴着市集、戏剧和歌声流动，书面语把许多城镇的读者联系在一起。",
+    "en": "Clear vowels and strong stresses let sentences unfold. Local accents travel through markets, theatre and song, while the written language connects readers across towns."
   },
   "LOC_WORLD_LANGUAGE_AVENDON": {
     "source": "阿文顿语",
@@ -85,9 +85,9 @@
     "en": "Avendonian"
   },
   "LOC_WORLD_LANGUAGE_AVENDON_DESCRIPTION": {
-    "source": "阿文顿的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "阿文顿的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Avendon, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "海峡两岸的口音一路传到远方。古老的词、航海用语和城市俚语挤在同一部词典里，日常说法又随地方而变。",
+    "zh_CN": "海峡两岸的口音一路传到远方。古老的词、航海用语和城市俚语挤在同一部词典里，日常说法又随地方而变。",
+    "en": "Accents from the channel have travelled far. Old words, nautical terms and city slang share the same dictionaries, with everyday usage varying from place to place."
   },
   "LOC_WORLD_LANGUAGE_RHENIVIA": {
     "source": "莱茵维亚语",
@@ -95,9 +95,9 @@
     "en": "Rhenivian"
   },
   "LOC_WORLD_LANGUAGE_RHENIVIA_DESCRIPTION": {
-    "source": "莱茵维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "莱茵维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Rhenivia, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "复合词能把长长的概念收进一个词里，名词和冠词的变化标明句中的关系。严整的书面句式之外，各地口语保留着自己的声调。",
+    "zh_CN": "复合词能把长长的概念收进一个词里，名词和冠词的变化标明句中的关系。严整的书面句式之外，各地口语保留着自己的声调。",
+    "en": "Compounds gather long ideas into single words, while nouns and articles mark relationships within a sentence. Local speech keeps its own sounds alongside the structured written language."
   },
   "LOC_WORLD_LANGUAGE_MEHRAN": {
     "source": "米赫兰语",
@@ -105,9 +105,9 @@
     "en": "Mehrani"
   },
   "LOC_WORLD_LANGUAGE_MEHRAN_DESCRIPTION": {
-    "source": "米赫兰的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "米赫兰的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Mehran, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "文字从右向左连缀，诗句常借节奏与押韵记在人们心里。日常表达中的敬语、借词和委婉说法，沿着古老商道传到别处。",
+    "zh_CN": "文字从右向左连缀，诗句常借节奏与押韵记在人们心里。日常表达中的敬语、借词和委婉说法，沿着古老商道传到别处。",
+    "en": "Its letters join from right to left, and rhythm and rhyme help poetry stay in memory. Polite forms, borrowed words and indirect phrasing have travelled along old trade routes."
   },
   "LOC_WORLD_LANGUAGE_CANTALIA": {
     "source": "坎塔利亚语",
@@ -115,9 +115,9 @@
     "en": "Cantalian"
   },
   "LOC_WORLD_LANGUAGE_CANTALIA_DESCRIPTION": {
-    "source": "坎塔利亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "坎塔利亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Cantalia, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "远航者带来的语言在南方长出了新口音。简称、绰号和本地词进入日常交谈，旷野与港口的故事都有人用它讲述。",
+    "zh_CN": "远航者带来的语言在南方长出了新口音。简称、绰号和本地词进入日常交谈，旷野与港口的故事都有人用它讲述。",
+    "en": "A language brought by voyagers and reshaped by southern accents. Short forms, nicknames and local words colour everyday speech, carrying stories of the bush and the harbours."
   },
   "LOC_WORLD_LANGUAGE_VISHARA": {
     "source": "维沙拉语",
@@ -125,9 +125,9 @@
     "en": "Visharan"
   },
   "LOC_WORLD_LANGUAGE_VISHARA_DESCRIPTION": {
-    "source": "维沙拉的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "维沙拉的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "en": "The local language context of Vishara, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "source": "街市、铁路和城市间的往来让这门语言广为人知。名词有性的区别，动词随人物与时态变化，口语里还保留着许多来自邻近语言的词。",
+    "zh_CN": "街市、铁路和城市间的往来让这门语言广为人知。名词有性的区别，动词随人物与时态变化，口语里还保留着许多来自邻近语言的词。",
+    "en": "Markets, railways and travel between cities have carried it widely. Nouns have gender, verbs change with speakers and time, and everyday speech holds many words from neighbouring languages."
   },
   "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS": {
     "source": "农业从业者",
@@ -338,5 +338,70 @@
     "source": "把表达接到事故预防、应急与社区安全上。",
     "zh_CN": "把表达接到事故预防、应急与社区安全上。",
     "en": "Connects the expression to accident prevention, emergency response and community safety."
+  },
+  "LOC_WORLD_LANGUAGE_ALDEN_NOTE": {
+    "source": "“Call me Ishmael.”\\n赫尔曼·梅尔维尔《白鲸》第一章（英语，1851）",
+    "zh_CN": "“Call me Ishmael.”\\n赫尔曼·梅尔维尔《白鲸》第一章（英语，1851）",
+    "en": "“Call me Ishmael.”\\nHerman Melville, Moby-Dick, chapter 1 (English, 1851)"
+  },
+  "LOC_WORLD_LANGUAGE_VERESK_NOTE": {
+    "source": "“Я помню чудное мгновенье:”\\n亚历山大·普希金《致***》首行（俄语，1825）",
+    "zh_CN": "“Я помню чудное мгновенье:”\\n亚历山大·普希金《致***》首行（俄语，1825）",
+    "en": "“Я помню чудное мгновенье:”\\nAlexander Pushkin, To ***, opening line (Russian, 1825)"
+  },
+  "LOC_WORLD_LANGUAGE_LINDAL_NOTE": {
+    "source": "“Alla människor är födda fria och lika i värde och rättigheter.”\\n《世界人权宣言》第一条（瑞典语，1948）",
+    "zh_CN": "“Alla människor är födda fria och lika i värde och rättigheter.”\\n《世界人权宣言》第一条（瑞典语，1948）",
+    "en": "“Alla människor är födda fria och lika i värde och rättigheter.”\\nUniversal Declaration of Human Rights, article 1 (Swedish, 1948)"
+  },
+  "LOC_WORLD_LANGUAGE_MARASU_NOTE": {
+    "source": "“Semua orang dilahirkan merdeka dan mempunyai martabat dan hak-hak yang sama.”\\n《世界人权宣言》第一条（印度尼西亚语，1948）",
+    "zh_CN": "“Semua orang dilahirkan merdeka dan mempunyai martabat dan hak-hak yang sama.”\\n《世界人权宣言》第一条（印度尼西亚语，1948）",
+    "en": "“Semua orang dilahirkan merdeka dan mempunyai martabat dan hak-hak yang sama.”\\nUniversal Declaration of Human Rights, article 1 (Indonesian, 1948)"
+  },
+  "LOC_WORLD_LANGUAGE_SERRANOVA_NOTE": {
+    "source": "“En un lugar de la Mancha, de cuyo nombre no quiero acordarme,”\\n米格尔·德·塞万提斯《堂吉诃德》第一部第一章（西班牙语，1605）",
+    "zh_CN": "“En un lugar de la Mancha, de cuyo nombre no quiero acordarme,”\\n米格尔·德·塞万提斯《堂吉诃德》第一部第一章（西班牙语，1605）",
+    "en": "“En un lugar de la Mancha, de cuyo nombre no quiero acordarme,”\\nMiguel de Cervantes, Don Quijote, part I, chapter 1 (Spanish, 1605)"
+  },
+  "LOC_WORLD_LANGUAGE_ORUVIA_NOTE": {
+    "source": "“Watu wote wamezaliwa huru, hadhi na haki zao ni sawa.”\\n《世界人权宣言》第一条（斯瓦希里语，1948）",
+    "zh_CN": "“Watu wote wamezaliwa huru, hadhi na haki zao ni sawa.”\\n《世界人权宣言》第一条（斯瓦希里语，1948）",
+    "en": "“Watu wote wamezaliwa huru, hadhi na haki zao ni sawa.”\\nUniversal Declaration of Human Rights, article 1 (Swahili, 1948)"
+  },
+  "LOC_WORLD_LANGUAGE_NASHIR_NOTE": {
+    "source": "“يولد جميع الناس أحراراً ومتساوين في الكرامة والحقوق.”\\n《世界人权宣言》第一条（阿拉伯语，1948）",
+    "zh_CN": "“يولد جميع الناس أحراراً ومتساوين في الكرامة والحقوق.”\\n《世界人权宣言》第一条（阿拉伯语，1948）",
+    "en": "“يولد جميع الناس أحراراً ومتساوين في الكرامة والحقوق.”\\nUniversal Declaration of Human Rights, article 1 (Arabic, 1948)"
+  },
+  "LOC_WORLD_LANGUAGE_SOLERIA_NOTE": {
+    "source": "“Nel mezzo del cammin di nostra vita”\\n但丁《神曲·地狱篇》第一歌（意大利语）",
+    "zh_CN": "“Nel mezzo del cammin di nostra vita”\\n但丁《神曲·地狱篇》第一歌（意大利语）",
+    "en": "“Nel mezzo del cammin di nostra vita”\\nDante Alighieri, Divine Comedy, Inferno, canto I (Italian)"
+  },
+  "LOC_WORLD_LANGUAGE_AVENDON_NOTE": {
+    "source": "“The rest is silence.”\\n威廉·莎士比亚《哈姆雷特》第五幕第二场（英语）",
+    "zh_CN": "“The rest is silence.”\\n威廉·莎士比亚《哈姆雷特》第五幕第二场（英语）",
+    "en": "“The rest is silence.”\\nWilliam Shakespeare, Hamlet, act V, scene 2 (English)"
+  },
+  "LOC_WORLD_LANGUAGE_RHENIVIA_NOTE": {
+    "source": "“Zwei Seelen wohnen, ach! in meiner Brust,”\\n约翰·沃尔夫冈·冯·歌德《浮士德》第一部《城门前》，第1112行（德语）",
+    "zh_CN": "“Zwei Seelen wohnen, ach! in meiner Brust,”\\n约翰·沃尔夫冈·冯·歌德《浮士德》第一部《城门前》，第1112行（德语）",
+    "en": "“Zwei Seelen wohnen, ach! in meiner Brust,”\\nJohann Wolfgang von Goethe, Faust I, Before the Gate, line 1112 (German)"
+  },
+  "LOC_WORLD_LANGUAGE_MEHRAN_NOTE": {
+    "source": "“تمام افراد بشر آزاد بدنیا میایند”\\n《世界人权宣言》第一条节选（波斯语，1948）",
+    "zh_CN": "“تمام افراد بشر آزاد بدنیا میایند”\\n《世界人权宣言》第一条节选（波斯语，1948）",
+    "en": "“تمام افراد بشر آزاد بدنیا میایند”\\nUniversal Declaration of Human Rights, excerpt from article 1 (Persian, 1948)"
+  },
+  "LOC_WORLD_LANGUAGE_CANTALIA_NOTE": {
+    "source": "“The two-roomed house is built of round timber, slabs, and stringy-bark,”\\n亨利·劳森《赶牲灵人的妻子》开篇（英语，1892）",
+    "zh_CN": "“The two-roomed house is built of round timber, slabs, and stringy-bark,”\\n亨利·劳森《赶牲灵人的妻子》开篇（英语，1892）",
+    "en": "“The two-roomed house is built of round timber, slabs, and stringy-bark,”\\nHenry Lawson, The Drover's Wife, opening (English, 1892)"
+  },
+  "LOC_WORLD_LANGUAGE_VISHARA_NOTE": {
+    "source": "“सभी मनुष्यों को गौरव और अधिकारों के मामले में जन्मजात स्वतन्त्रता और समानता प्राप्त है।”\\n《世界人权宣言》第一条（印地语，1948）",
+    "zh_CN": "“सभी मनुष्यों को गौरव और अधिकारों के मामले में जन्मजात स्वतन्त्रता और समानता प्राप्त है।”\\n《世界人权宣言》第一条（印地语，1948）",
+    "en": "“सभी मनुष्यों को गौरव और अधिकारों के मामले में जन्मजात स्वतन्त्रता और समानता प्राप्त है।”\\nUniversal Declaration of Human Rights, article 1 (Hindi, 1948)"
   }
 }
