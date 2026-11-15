@@ -10,6 +10,7 @@ signal country_hovered(id: String)
 
 const SLIDE_DURATION := .24
 const SOURCE_PIXELS_PER_UNIT := 3.0
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 
 const StarterContextCard = preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
@@ -125,16 +126,16 @@ func show_details(details: Dictionary, viewport_rect: Rect2) -> bool:
 		_title_label.add_theme_font_override("font", Handwriting.BOLD_FONT if has_stack else _title_font)
 	else:
 		_title_label.remove_theme_font_override("font")
-	_title_label.add_theme_font_size_override("font_size", 22 if has_stack else 25)
+	_title_label.add_theme_font_size_override("font_size", Typography.point_size("subtitle"))
 	_title_label.add_theme_color_override("font_color", ReceiptStyle.INK if has_stack else Color("373d33"))
 	_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER if log_receipt else HORIZONTAL_ALIGNMENT_LEFT
 	for kind: String in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:
 		if log_receipt: _body_label.add_theme_font_override(kind, ReceiptStyle.FONT)
 		elif _font != null: _body_label.add_theme_font_override(kind, Handwriting.BOLD_FONT if "bold" in kind else Handwriting.BODY_FONT)
 		else: _body_label.remove_theme_font_override(kind)
-	_body_label.add_theme_font_size_override("normal_font_size", 16 if log_receipt else 18)
-	_body_label.add_theme_constant_override("line_separation", 4 if log_receipt else 6)
-	_body_label.add_theme_constant_override("paragraph_separation", 8 if log_receipt else 10)
+	_body_label.add_theme_font_size_override("normal_font_size", Typography.point_size("body"))
+	_body_label.add_theme_constant_override("line_separation", int(Typography.ROLES.body.line_gap))
+	_body_label.add_theme_constant_override("paragraph_separation", int(Typography.ROLES.body.paragraph_gap))
 	_rule.receipt = has_stack or log_receipt
 	_rule.queue_redraw()
 	_viewport_rect = viewport_rect
@@ -207,7 +208,7 @@ func _build() -> void:
 	_title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_title_label.add_theme_color_override("font_color", Color("373d33"))
-	_title_label.add_theme_font_size_override("font_size", 25)
+	_title_label.add_theme_font_size_override("font_size", Typography.point_size("subtitle"))
 	_paper_holder.add_child(_title_label)
 	_rule = PencilRule.new()
 	_rule.name = "PencilRule"
@@ -220,7 +221,7 @@ func _build() -> void:
 	_body_label.selection_enabled = true
 	_body_label.mouse_filter = Control.MOUSE_FILTER_STOP
 	_body_label.add_theme_color_override("default_color", Color("4e5346"))
-	_body_label.add_theme_font_size_override("normal_font_size", 18)
+	_body_label.add_theme_font_size_override("normal_font_size", Typography.point_size("body"))
 	_body_label.add_theme_constant_override("line_separation", 6)
 	_body_label.add_theme_constant_override("paragraph_separation", 10)
 	_paper_holder.add_child(_body_label)
@@ -245,7 +246,7 @@ func _build() -> void:
 	_paper_holder.add_child(_stack_rule)
 	_stack_label = Label.new()
 	_stack_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_stack_label.add_theme_font_size_override("font_size", 16)
+	_stack_label.add_theme_font_size_override("font_size", Typography.point_size("body"))
 	_stack_label.add_theme_color_override("font_color", Color("4e5346"))
 	_paper_holder.add_child(_stack_label)
 	_stack_host = Control.new()
@@ -282,7 +283,7 @@ func _layout_paper() -> void:
 	_log_surface.visible = log_receipt
 	_log_surface.receipt_code = str(_details.get("receipt_code", "00000000"))
 	_log_surface.queue_redraw()
-	var title_size := 18 if log_receipt else (22 if has_stack else 25)
+	var title_size := Typography.point_size("section" if log_receipt else "subtitle")
 	_title_label.add_theme_font_size_override("font_size", title_size)
 	var padding := 16.0 if log_receipt else (24.0 if has_stack else minf(30.0, dimensions.x * .075))
 	var width := maxf(1, dimensions.x - padding * 2.0)
@@ -410,7 +411,7 @@ func _build_choices(details: Dictionary) -> void:
 		_choice_rows.append(row.duplicate(true) if row is Dictionary else row)
 		button.disabled = (contacts.is_empty() and not bool(details.get("reply_enabled",false))) or (row is Dictionary and bool(row.get("disabled", false)))
 		button.add_theme_font_override("font",_font)
-		button.add_theme_font_size_override("font_size",17)
+		Typography.apply_control(button, "label", true)
 		var ink := StyleBoxEmpty.new()
 		ink.set_content_margin(SIDE_LEFT,10)
 		ink.set_content_margin(SIDE_RIGHT,10)
@@ -549,17 +550,22 @@ func _render_body() -> void:
 			if not str(block.content).is_empty(): _body_label.add_text("\n")
 		var commentary := str(block.get("role", "")) == "commentary"
 		if commentary:
-			_body_label.push_font_size(16)
-			_body_label.push_color(Color("6e715e"))
-		_write_content(str(block.content))
-		if commentary:
-			_body_label.pop()
-			_body_label.pop()
+			var lines := str(block.content).split("\n", false)
+			for line_index in lines.size():
+				if line_index > 0: _body_label.add_text("\n")
+				var role := "quote" if line_index == 0 and str(lines[line_index]).begins_with("“") else "reference"
+				_body_label.push_font_size(Typography.point_size(role))
+				_body_label.push_color(Typography.ROLES[role].color)
+				_write_content(str(lines[line_index]))
+				_body_label.pop()
+				_body_label.pop()
+		else:
+			_write_content(str(block.content))
 
 func _write_heading(text: String) -> void:
-	_body_label.push_font_size(20)
+	_body_label.push_font_size(Typography.point_size("section"))
 	_body_label.push_bold()
-	_body_label.push_color(Color("373d33"))
+	_body_label.push_color(Typography.INK)
 	_body_label.add_text(text)
 	_body_label.pop()
 	_body_label.pop()
@@ -571,7 +577,7 @@ func _write_content(text: String) -> void:
 	for match_result: RegExMatch in _numbers.search_all(text):
 		_body_label.add_text(text.substr(cursor, match_result.get_start() - cursor))
 		_body_label.push_bold()
-		_body_label.push_color(Color("855234"))
+		_body_label.push_color(Typography.ACCENT)
 		_body_label.add_text(match_result.get_string())
 		_body_label.pop()
 		_body_label.pop()

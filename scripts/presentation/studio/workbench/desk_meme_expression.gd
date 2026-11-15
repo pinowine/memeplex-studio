@@ -4,12 +4,13 @@ extends VBoxContainer
 signal source_hovered(sources: Array, excerpt: String)
 signal source_hover_ended
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const AnnotatedText = preload("res://scripts/presentation/studio/workbench/desk_annotated_text.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
-const INK := Color("384238")
-const SECONDARY_INK := Color("594d3f")
+const INK := Typography.INK
+const SECONDARY_INK := Typography.MUTED
 const SPACE := 8
-const BODY_SIZE := 18
+const BODY_SIZE: int = Typography.ROLES.body.size
 
 
 class ExpressionSurface extends MarginContainer:
@@ -145,6 +146,7 @@ func _surface(parent: Node, kind: String, left: int, top: int, right: int, botto
 
 func _readout(parent: Node, segments: Array, fallback: String, color: Color) -> RichTextLabel:
 	var label := AnnotatedText.new()
+	Typography.apply_control(label, "body", true)
 	label.add_theme_font_size_override("normal_font_size",BODY_SIZE)
 	label.add_theme_font_size_override("bold_font_size",BODY_SIZE)
 	label.add_theme_color_override("default_color",color)

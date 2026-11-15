@@ -4,6 +4,7 @@ signal meme_selected(id: String)
 signal country_hovered(id: String)
 signal close_requested
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const MemeDetailView = preload("res://scripts/presentation/map/meme_map_detail_view.gd")
 const MemeFields = preload("res://scripts/presentation/map/meme_map_fields.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
@@ -185,6 +186,7 @@ func _tag_style(outlined: bool) -> StyleBoxFlat:
 	return style
 
 func _compact_field(field: Dictionary, node_name: String, font_size: int, ink: Color = Color.TRANSPARENT) -> RichTextLabel:
+	font_size = Typography.normalized_size(font_size)
 	var label := _body(font_size, FIELD_COLORS[str(field.field_kind)] if ink.a == 0.0 else ink)
 	label.name = node_name
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -381,6 +383,7 @@ func _add_comment(block: Dictionary) -> void:
 	body.add_text(str(block.content))
 
 func _label(text: String, font_size: int, ink: Color) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.text = text
@@ -388,9 +391,11 @@ func _label(text: String, font_size: int, ink: Color) -> Label:
 	label.add_theme_font_override("font", ReceiptHover.BODY_FONT)
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", ink)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 func _body(font_size: int, ink: Color) -> RichTextLabel:
+	font_size = Typography.normalized_size(font_size)
 	var body := RichTextLabel.new()
 	body.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	body.fit_content = true
@@ -405,6 +410,7 @@ func _body(font_size: int, ink: Color) -> RichTextLabel:
 	body.add_theme_font_size_override("bold_font_size", font_size)
 	body.add_theme_color_override("default_color", ink)
 	body.add_theme_constant_override("line_separation", 4)
+	Typography.apply_control(body, Typography.role_for_size(font_size), true)
 	return body
 
 func _write_content(label: RichTextLabel, text: String) -> void:

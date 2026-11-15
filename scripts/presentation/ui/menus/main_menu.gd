@@ -8,6 +8,7 @@ signal quit_requested
 signal settings_changed(settings: Dictionary)
 signal settings_closed
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const TEMPLATE = preload("res://scenes/ui/menus/main_menu.tscn")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd")
@@ -106,7 +107,7 @@ func _style_desktop_menu() -> void:
 		button.set_meta("hover_outline", false)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		button.add_theme_font_size_override("font_size", 24)
+		Typography.apply_control(button, "subtitle", true)
 		for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
 			var box := StyleBoxFlat.new()
 			box.content_margin_left = 24

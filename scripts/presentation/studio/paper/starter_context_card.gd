@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const Rules = preload("res://data/rules/design_rules.tres")
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_flow.gd")
@@ -79,6 +80,7 @@ func _context_tags(kind: String, values: Array) -> Array[Dictionary]:
 	return tags
 
 func _label(key_or_source: String, font_size: int) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -91,6 +93,7 @@ func _label(key_or_source: String, font_size: int) -> Label:
 	label.text = DeskLocalization.text(key)
 	label.set_meta("text_workbench_source", DeskLocalization.text_source(key))
 	_localized.append({"label":label, "key":key})
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 func fit_width(width: float) -> void:

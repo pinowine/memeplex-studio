@@ -1,5 +1,7 @@
 extends RefCounted
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
+
 const FONT := preload("res://assets/image/fonts/handwritten_font.tres")
 const BODY_FONT := preload("res://assets/image/fonts/development_font.tres")
 const MEDIUM_FONT := preload("res://assets/image/fonts/body_medium_font.tres")
@@ -21,6 +23,7 @@ static func _apply(node: Node, themes: Dictionary) -> void:
 			var key := control.theme.get_instance_id()
 			if not themes.has(key):
 				var paper_theme := control.theme.duplicate() as Theme
+				Typography.apply_theme(paper_theme)
 				paper_theme.default_font = BODY_FONT
 				for type_name in paper_theme.get_font_type_list():
 					if type_name == "TooltipLabel": continue
@@ -47,4 +50,10 @@ static func _apply(node: Node, themes: Dictionary) -> void:
 			elif bool(control.get_meta("paper_emphasis", false)) or control.theme_type_variation in ["PrintHeading", "DemoHeading"]: font = HEADING_FONT
 			if control.get_theme_font("font") != font:
 				control.add_theme_font_override("font", font)
+		if control is Label or control is RichTextLabel:
+			var size_key := "normal_font_size" if control is RichTextLabel else "font_size"
+			var current_size := control.get_theme_font_size(size_key)
+			if current_size <= 40:
+				var role := str(control.get_meta("text_role", Typography.THEME_ROLES.get(str(control.theme_type_variation), Typography.role_for_size(current_size))))
+				Typography.apply_control(control, role)
 	for child in node.get_children(): _apply(child, themes)

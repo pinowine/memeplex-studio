@@ -122,7 +122,7 @@ theme_override_constants/separation = 12
 [node name="Title" type="Label" parent="SettingsPanel/Content"]
 layout_mode = 2
 text = "LOC_SETTINGS_DF3D58C7"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 24
 theme_override_fonts/font = ExtResource("3")
 
 [node name="TitleRule" type="HSeparator" parent="SettingsPanel/Content"]
@@ -263,7 +263,7 @@ theme_override_constants/separation = 12
 [node name="Title" type="Label" parent="KeysPanel/Content"]
 layout_mode = 2
 text = "LOC_KEY_BINDINGS"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 24
 theme_override_fonts/font = ExtResource("3")
 
 [node name="TitleRule" type="HSeparator" parent="KeysPanel/Content"]

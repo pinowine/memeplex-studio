@@ -160,6 +160,7 @@ func _update_tags(tags: Array) -> void:
 		_tag_chips.append(chip)
 
 func _meme_label(font_size: int, font: Font, ink: Color) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -168,6 +169,7 @@ func _meme_label(font_size: int, font: Font, ink: Color) -> Label:
 	label.add_theme_font_override("font", font)
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", ink)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 func _layout_content() -> void:

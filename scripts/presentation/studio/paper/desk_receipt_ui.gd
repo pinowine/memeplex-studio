@@ -1,6 +1,7 @@
 class_name DeskReceiptUI
 extends RefCounted
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const BODY_FONT = preload("res://assets/image/fonts/development_font.tres")
 const MEDIUM_FONT = preload("res://assets/image/fonts/body_medium_font.tres")
@@ -62,6 +63,7 @@ static func create_theme() -> Theme:
 	fill.bg_color = Style.SECTION_TEAL
 	result.set_stylebox("grabber_area", "HSlider", fill)
 	result.set_stylebox("grabber_area_highlight", "HSlider", fill)
+	Typography.apply_theme(result)
 	return result
 
 static func layout_menu(panel: Control, content: Control, view: Vector2) -> void:

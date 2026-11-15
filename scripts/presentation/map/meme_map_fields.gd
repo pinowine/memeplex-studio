@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
@@ -80,8 +81,8 @@ class TagChip extends PanelContainer:
 		_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		_label.add_theme_font_override("font", Handwriting.BODY_FONT)
-		_label.add_theme_font_size_override("font_size", 14)
+		_label.add_theme_font_override("font", Typography.font("label"))
+		_label.add_theme_font_size_override("font_size", Typography.point_size("label"))
 		line.add_child(_label)
 
 	func configure(tag: Dictionary, interactive: bool = true, compact: bool = false) -> void:
@@ -90,10 +91,10 @@ class TagChip extends PanelContainer:
 		help_body = str(tag.help)
 		help_kind = str(tag.kind)
 		_label.text = help_title
-		var font_size := 12 if compact else 14
+		var font_size := Typography.point_size("annotation" if compact else "label")
 		_label.add_theme_font_size_override("font_size", font_size)
 		_icon.custom_minimum_size = Vector2(14, 14) if compact else Vector2(16, 16)
-		custom_minimum_size.x = minf(120.0 if compact else 256.0, ceilf(Handwriting.BODY_FONT.get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + (30.0 if compact else 34.0)))
+		custom_minimum_size.x = minf(120.0 if compact else 256.0, ceilf(Typography.font("label").get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + (30.0 if compact else 34.0)))
 		_icon.kind = help_kind
 		var ink: Color
 		var fill: Color

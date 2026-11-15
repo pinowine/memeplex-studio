@@ -11,6 +11,7 @@ signal starter_preview_requested(index: int)
 signal starter_confirm_requested
 signal skip_requested
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const OpeningSteps = preload("res://scripts/presentation/ui/tutorial/opening_steps.gd")
 const TEMPLATE = preload("res://scenes/ui/tutorial/tutorial.tscn")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
@@ -529,8 +530,8 @@ func _refresh() -> void:
 	portrait.size = Vector2.ONE * (48 if compact else 64)
 	portrait.pivot_offset = portrait.size * 0.5
 	var title: Label = card.get_node("Content/Title")
-	var title_size := 18 if compact else 21
-	var body_size := 16 if compact else 18
+	var title_size := Typography.point_size("section")
+	var body_size := Typography.point_size("body")
 	if title.get_theme_font_size("font_size") != title_size: title.add_theme_font_size_override("font_size", title_size)
 	if body.get_theme_font_size("normal_font_size") != body_size: body.add_theme_font_size_override("normal_font_size", body_size)
 	var waiting: Label = _ui.get_node("Card/Content/Waiting")
@@ -583,7 +584,7 @@ func _add_hover_text(body: RichTextLabel, text: String) -> void:
 	body.add_text(paragraphs[0])
 	if paragraphs.size() == 1: return
 	body.add_text("\n\n")
-	body.push_font_size(12)
+	body.push_font_size(Typography.point_size("reference"))
 	body.push_color(ReceiptStyle.SECONDARY_INK)
 	body.add_text(paragraphs[1])
 	body.pop()

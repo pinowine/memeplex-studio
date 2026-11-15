@@ -1,6 +1,7 @@
 class_name DeskReceiptHover
 extends PanelContainer
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const ContextTag = preload("res://scripts/presentation/context/context_tag.gd")
@@ -116,14 +117,18 @@ func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 	return Rect2(position,extent)
 
 func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
+	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label"}.get(role, "body"))
+	font_size = Typography.point_size(text_role)
+	font = Typography.font(text_role)
 	var paragraph := TextParagraph.new()
+	paragraph.line_spacing = float(Typography.ROLES[text_role].line_gap)
 	paragraph.width = width
 	paragraph.alignment = alignment
 	paragraph.break_flags = TextServer.BREAK_MANDATORY|TextServer.BREAK_WORD_BOUND|TextServer.BREAK_ADAPTIVE
 	# TextParagraph keeps brackets and markup literal in every hover source.
 	paragraph.add_string(text,font,font_size)
 	var height := ceilf(paragraph.get_size().y)
-	_text_blocks.append({"text":text,"paragraph":paragraph,"position":at,"rect":Rect2(at,Vector2(width,height)),"font_size":font_size,"color":color,"role":role})
+	_text_blocks.append({"text":text,"paragraph":paragraph,"position":at,"rect":Rect2(at,Vector2(width,height)),"font_size":font_size,"color":color,"role":role,"text_role":text_role})
 	return height
 
 func _add_separator(y: float) -> float:
@@ -136,7 +141,7 @@ func _add_tags(tags: Array, y: float, width: float) -> float:
 	for tag: Dictionary in tags:
 		var text := str(tag.text)
 		var kind := str(tag.kind)
-		var chip_width := minf(minf(256.0, width), ceilf(BODY_FONT.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12).x + 30.0))
+		var chip_width := minf(minf(256.0, width), ceilf(BODY_FONT.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, Typography.point_size("label")).x + 30.0))
 		if x > PADDING.x and x + chip_width > PADDING.x + width:
 			x = PADDING.x
 			y += row_height + 4
@@ -181,7 +186,7 @@ func _layout_content() -> void:
 	var label_width := 0.0
 	for row: Dictionary in _rows:
 		if row.has("tags"): continue
-		label_width = maxf(label_width,BOLD_FONT.get_string_size(str(row.get("category","")),HORIZONTAL_ALIGNMENT_LEFT,-1,12).x+24)
+		label_width = maxf(label_width,BOLD_FONT.get_string_size(str(row.get("category","")),HORIZONTAL_ALIGNMENT_LEFT,-1,Typography.point_size("table_header")).x+24)
 	label_width = minf(label_width,width*.5)
 	for index in _rows.size():
 		var row: Dictionary = _rows[index]

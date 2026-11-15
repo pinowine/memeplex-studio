@@ -9,6 +9,7 @@ signal response_requested(index: int)
 signal stamp_requested
 signal close_requested
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const A4_RATIO: float = 297.0 / 210.0
 const KEY_ZONES := [Rect2(800,536,52,50),Rect2(871,536,52,50),Rect2(943,536,52,50),Rect2(800,600,52,50),Rect2(871,600,52,50),Rect2(943,600,52,50),Rect2(800,665,52,50),Rect2(871,665,52,50),Rect2(943,665,52,50),Rect2(800,729,52,52),Rect2(871,729,52,52),Rect2(943,729,52,52)]
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
@@ -220,7 +221,7 @@ func build() -> void:
 	conversation.bbcode_enabled = false
 	conversation.scroll_active = true
 	conversation.add_theme_color_override("default_color",Color("b8d9ac"))
-	conversation.add_theme_font_size_override("normal_font_size",14)
+	Typography.apply_control(conversation, "body")
 	identity.add_child(conversation)
 	player_portrait = _image("PlayerPortrait",identity)
 	player_fallback = AuthorPortrait.new()
@@ -285,6 +286,7 @@ func _panel(id: String, parent: Node, color: Color) -> Panel:
 	return panel
 
 func _label(id: String, text: String, parent: Node, font_size: int) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.name = id
 	label.text = text
@@ -292,6 +294,7 @@ func _label(id: String, text: String, parent: Node, font_size: int) -> Label:
 	label.add_theme_color_override("font_color", Color("252a23"))
 	label.add_theme_font_size_override("font_size", font_size)
 	parent.add_child(label)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 func _button(id: String, text: String, parent: Node) -> Button:
@@ -367,16 +370,16 @@ func layout_station(frame: Dictionary, measure_mouth: Callable) -> Dictionary:
 	var padding := 22.0 if large else 9.0
 	paper_meta.position = Vector2(padding,padding+material_offset)
 	paper_meta.size = Vector2(maxf(0,width-padding*2),16 if large else 12)
-	paper_meta.add_theme_font_size_override("font_size",11 if large else 7)
+	paper_meta.add_theme_font_size_override("font_size",Typography.point_size("reference") if large else 7)
 	paper_title.position = Vector2(padding,(48 if large else 9)+material_offset)
 	paper_title.size = Vector2(maxf(0,width-padding*2),64 if large else 30)
-	paper_title.add_theme_font_size_override("font_size",23 if large else (11 if width >= 150 else 10))
+	paper_title.add_theme_font_size_override("font_size",Typography.point_size("subtitle") if large else (11 if width >= 150 else 10))
 	var body_y := 127.0 if large else 47.0
 	paper_rule.position = Vector2(padding,body_y-10+material_offset)
 	paper_rule.size = Vector2(maxf(0,width-padding*2),1)
 	body.position = Vector2(padding,body_y+material_offset)
 	body.size = Vector2(maxf(0,width-padding*2),maxf(0,paper_height-body_y-(92 if large else 48)))
-	body.add_theme_font_size_override("normal_font_size",15 if large else (9 if width >= 150 else 8))
+	body.add_theme_font_size_override("normal_font_size",Typography.point_size("body") if large else (9 if width >= 150 else 8))
 	seal_radius = 28.0 if large else minf(18.0,width*.1)
 	seal_center = Vector2(width-padding-seal_radius,paper_height-padding-seal_radius)
 	seal_guide.position = seal_center-Vector2.ONE*seal_radius+Vector2(0,material_offset)

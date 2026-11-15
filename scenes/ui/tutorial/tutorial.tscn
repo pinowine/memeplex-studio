@@ -52,13 +52,13 @@ visible = false
 mouse_filter = 2
 layout_mode = 2
 text = "LOC_A_JOB_6E979BE1"
-theme_override_font_sizes/font_size = 21
+theme_override_font_sizes/font_size = 20
 
 [node name="Body" type="RichTextLabel" parent="Card/Content"]
 mouse_filter = 2
 layout_mode = 2
 text = "LOC_YOU_ARE_THE_STUDIO_S_PRINT_EDITOR_1433C561"
-theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/normal_font_size = 16
 fit_content = true
 scroll_active = false
 autowrap_mode = 3
@@ -68,7 +68,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 layout_mode = 2
 text = ""
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
 
 [node name="Actions" type="HBoxContainer" parent="Card/Content"]

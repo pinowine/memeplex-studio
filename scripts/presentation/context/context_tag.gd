@@ -1,5 +1,6 @@
 extends PanelContainer
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
@@ -57,8 +58,8 @@ func _init() -> void:
 	_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_label.add_theme_font_override("font", Handwriting.BODY_FONT)
-	_label.add_theme_font_size_override("font_size", 12)
+	Typography.apply_control(_label, "label", true)
+	_label.add_theme_font_size_override("font_size", Typography.point_size("label"))
 	line.add_child(_label)
 
 func configure(tag: Dictionary) -> void:
@@ -66,7 +67,7 @@ func configure(tag: Dictionary) -> void:
 	help_body = str(tag.help)
 	help_kind = str(tag.kind)
 	_label.text = help_title
-	_preferred_width = minf(256.0, ceilf(Handwriting.BODY_FONT.get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, 12).x + 30.0))
+	_preferred_width = minf(256.0, ceilf(Typography.font("label").get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, Typography.point_size("label")).x + 30.0))
 	fit_width(_preferred_width)
 	_icon.kind = help_kind
 	var colors := palette(help_kind)

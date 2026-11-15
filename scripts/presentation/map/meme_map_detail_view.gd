@@ -2,6 +2,7 @@ extends VBoxContainer
 
 signal country_hovered(id: String)
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
@@ -196,7 +197,7 @@ func _rebuild(interactive_countries: bool) -> void:
 func _configure_country_tag(chip: Control, row: Dictionary, interactive: bool) -> void:
 	chip.configure({"text":str(row.label), "help":str(row.help), "kind":"group", "hover_info":row.get("hover_info", {})}, interactive)
 	chip.get("_icon").hide()
-	chip.custom_minimum_size.x = minf(256.0, ceilf(Handwriting.BODY_FONT.get_string_size(str(row.label), HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 14.0))
+	chip.custom_minimum_size.x = minf(256.0, ceilf(Typography.font("label").get_string_size(str(row.label), HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 14.0))
 	chip.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	chip.mouse_filter = Control.MOUSE_FILTER_STOP if interactive else Control.MOUSE_FILTER_IGNORE
 
@@ -218,6 +219,7 @@ func _rule() -> HSeparator:
 	return rule
 
 func _label(text: String, font_size: int, ink: Color) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var label := Fields.HelpLabel.new()
 	label.text = text
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
@@ -226,6 +228,7 @@ func _label(text: String, font_size: int, ink: Color) -> Label:
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", ink)
 	_help_controls.append(label)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 func _section_ink(kind: String) -> Color:

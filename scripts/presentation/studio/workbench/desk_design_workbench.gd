@@ -11,6 +11,7 @@ signal context_resource_detached(record: Dictionary, global_point: Vector2)
 signal context_layer_detached(record: Dictionary, global_point: Vector2)
 signal module_slots_pressed(viewport_rect: Rect2)
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const Sketch = preload("res://scripts/presentation/studio/design/desk_neural_sketch.gd")
 const DendriteTree = preload("res://scripts/presentation/studio/design/desk_dendrite_tree.gd")
 const ContextSlice = preload("res://scripts/presentation/studio/context/desk_context_board.gd")
@@ -509,6 +510,7 @@ func _section_heading(parent: Node, kind: String, title: String, node_name: Stri
 
 
 func _annotated_readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
+	font_size = Typography.normalized_size(font_size)
 	var label := AnnotatedText.new()
 	label.name = node_name
 	label.add_theme_font_size_override("normal_font_size", font_size)
@@ -517,6 +519,7 @@ func _annotated_readout(parent: Node, node_name: String, font_size: int) -> Rich
 	parent.add_child(label)
 	label.source_hovered.connect(_show_source_hover)
 	label.source_hover_ended.connect(_hide_source_hover)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 
@@ -546,6 +549,7 @@ func _information_rule(node_name: String, parent: Node) -> void:
 
 
 func _readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
+	font_size = Typography.normalized_size(font_size)
 	var label := RichTextLabel.new()
 	label.name = node_name
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
@@ -558,6 +562,7 @@ func _readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
 	label.add_theme_constant_override("line_separation", 6)
 	label.add_theme_color_override("default_color", INK)
 	parent.add_child(label)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 
@@ -575,7 +580,7 @@ func _build_culture() -> void:
 	_context_title = _label(page,DeskLocalization.source("LOC_CORTEX_LANGUAGE_0D41EBCC"),"ContextLayerTitle",20)
 	_context_details = RichTextLabel.new()
 	_context_details.name = "ContextLayerDetails"
-	_context_details.add_theme_font_size_override("normal_font_size",14)
+	Typography.apply_control(_context_details, "hint", true)
 	_context_details.add_theme_color_override("default_color",INK)
 	_context_details.selection_enabled = true
 	_context_details.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -1052,7 +1057,7 @@ func _button(parent: Node,text: String,name: String) -> Button:
 	node.name=name
 	node.text=text
 	node.clip_text=false
-	node.add_theme_font_size_override("font_size",12)
+	Typography.apply_control(node, "label", true)
 	parent.add_child(node)
 	PaperStyle.apply_button(node)
 	node.minimum_size_changed.connect(_queue_text_layout)
@@ -1060,6 +1065,7 @@ func _button(parent: Node,text: String,name: String) -> Button:
 
 
 func _label(parent: Node,text: String,name: String,font_size: int=12) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var node:=Label.new()
 	node.name=name
 	node.text=text
@@ -1069,6 +1075,7 @@ func _label(parent: Node,text: String,name: String,font_size: int=12) -> Label:
 	node.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	parent.add_child(node)
 	node.minimum_size_changed.connect(_queue_text_layout)
+	Typography.apply_control(node, Typography.role_for_size(font_size), true)
 	return node
 
 

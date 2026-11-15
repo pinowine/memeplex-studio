@@ -3,6 +3,7 @@ extends Control
 
 signal return_menu_requested
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const TEMPLATE = preload("res://scenes/ui/summary/ending_summary.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const ENDINGS := {
@@ -178,6 +179,7 @@ func _build_statistics() -> void:
 		_shares.append({"title":title,"value":value,"bar":bar})
 
 func _label(font_size: int, emphasis: bool = false) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -185,6 +187,7 @@ func _label(font_size: int, emphasis: bool = false) -> Label:
 	label.add_theme_color_override("font_color", Color("3f4537"))
 	label.add_theme_font_size_override("font_size", font_size)
 	label.set_meta("paper_emphasis", emphasis)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
 
 func _group_number(value: int) -> String:

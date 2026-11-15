@@ -3,6 +3,7 @@ extends Control
 signal variant_selected(id: String)
 signal variant_hovered(id: String)
 
+const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
@@ -58,7 +59,7 @@ class MemeTag extends PanelContainer:
 		title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		title.add_theme_font_override("font", Handwriting.BODY_FONT)
+		title.add_theme_font_override("font", Typography.font("label"))
 		title.add_theme_font_size_override("font_size", 14)
 		line.add_child(title)
 		mouse_entered.connect(func(): hovered = true; _style())
@@ -69,7 +70,7 @@ class MemeTag extends PanelContainer:
 	func configure(text: String, color: Color, is_own: bool, is_selected: bool, is_candidate: bool) -> void:
 		if title.text != text:
 			title.text = text
-			_natural_width = ceilf(Handwriting.BODY_FONT.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 34.0)
+			_natural_width = ceilf(Typography.font("label").get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 34.0)
 		own = is_own
 		selected = is_selected
 		candidate = is_candidate
@@ -351,9 +352,11 @@ func _contains_point(control: Control, viewport_point: Vector2) -> bool:
 	return Rect2(Vector2.ZERO, control.size).has_point(point)
 
 func _label(font_size: int) -> Label:
+	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_font_size_override("font_size", font_size)
+	Typography.apply_control(label, Typography.role_for_size(font_size), true)
 	return label
