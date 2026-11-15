@@ -205,22 +205,17 @@ func _profile_tags(weights: Dictionary, kind: String, limit: int = 0) -> Array[D
 func _update_hover() -> void:
 	var available := _pointer_inside_map and map_input.is_visible_in_tree() and not panning
 	if _meme_ledger != null and _meme_ledger.handles_point(_pointer): available = false
-	var hits: Array[Dictionary] = []
-	if available and _meme_overlay != null: hits = _meme_overlay.hit_at(_pointer)
-	hover_note.visible = available and (hovered_country >= 0 or not hits.is_empty())
+	hover_note.visible = available and hovered_country >= 0
 	hover_note.set_pointer_following(hover_note.visible)
 	if _meme_overlay != null:
 		if not _ledger_hovered_variant.is_empty():
 			_meme_overlay.set_hovered_variants(PackedStringArray([_ledger_hovered_variant]), _ledger_hovered_country)
 		else:
-			_meme_overlay.set_hovered_variants(PackedStringArray([str(hits[0].variant_id)]) if not hits.is_empty() else PackedStringArray())
+			_meme_overlay.set_hovered_variants(PackedStringArray())
 	if not hover_note.visible: return
-	var signature: Array = [hovered_country, TranslationServer.get_locale(), world.seed_value, hits.map(func(hit: Dictionary): return [str(hit.variant_id), str(hit.country_id), int(hit.country_adopted)]), _meme_snapshot.get("hour", -1)]
+	var signature: Array = [hovered_country, TranslationServer.get_locale(), world.seed_value, _meme_snapshot.get("hour", -1)]
 	if signature == _hover_profile_signature: return
 	_hover_profile_signature = signature
-	if not hits.is_empty():
-		hover_note.set_meme_details(MemeDetails.build_hover(_meme_snapshot, _meme_catalog, str(hits[0].variant_id)))
-		return
 	var country := settings.countries[hovered_country]
 	var profile := COUNTRY_RULES.country(str(country.id))
 	var tags := _profile_tags(profile.groups, "group", 3)
