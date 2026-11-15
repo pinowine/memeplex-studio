@@ -19,6 +19,73 @@ func control_hover_target(control: Control) -> Dictionary:
 func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int:
 	return _hover_targets.control_cursor_shape(control, point)
 
+func pointer_cursor_shape(point: Vector2) -> int:
+	var editor: Control = _desk._page.hud.design_workbench()
+	var clip: int = editor.module_clip_at(point)
+	if editor._tab == "edit" and editor.is_visible_in_tree() and clip >= 0:
+		if not editor._interaction_enabled: return Input.CURSOR_FORBIDDEN
+		return Input.CURSOR_CROSS if _desk._can_focus_slot("edit") else Input.CURSOR_POINTING_HAND
+	var cards: Control = _desk._material_cards
+	if not cards._enabled and not String(cards._props._hit_prop(point)).is_empty(): return Input.CURSOR_FORBIDDEN
+	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	for slip: Control in slips:
+		if not slip._enabled and _hover_targets._contains(slip, point): return Input.CURSOR_FORBIDDEN
+	var atlas: Node2D = _desk._page.atlas
+	if atlas._pointer_inside_map and atlas._meme_overlay != null and not atlas._meme_overlay.hit_at(point).is_empty(): return Input.CURSOR_POINTING_HAND
+	if _desk._hover_strip._has_hover or atlas.hover_note.is_visible_in_tree() or editor._source_hover.is_visible_in_tree(): return Input.CURSOR_HELP
+	return control_cursor_shape(_desk.get_viewport().gui_get_hovered_control(), point)
+
+func blocked_cursor_shape(point: Vector2) -> int:
+	var shape := control_cursor_shape(_desk.get_viewport().gui_get_hovered_control(), point)
+	if shape in [Input.CURSOR_POINTING_HAND, Input.CURSOR_CROSS, Input.CURSOR_FORBIDDEN]: return Input.CURSOR_FORBIDDEN
+	var cards: Control = _desk._material_cards
+	if not String(cards._props._hit_prop(point)).is_empty() or not String(_desk._props._hit_prop(point)).is_empty(): return Input.CURSOR_FORBIDDEN
+	var target: Dictionary = _hover_targets.target_at(point)
+	if not target.is_empty() and int(target.cursor_shape) != Input.CURSOR_HELP: return Input.CURSOR_FORBIDDEN
+	return Input.CURSOR_ARROW
+
+func _dragged_material() -> Dictionary:
+	var cards: Control = _desk._material_cards
+	if cards._props._dragging:
+		return cards._cards.get(String(cards._props._pressed), {})
+	if cards._focus_grid != null:
+		for row: Node in cards._focus_grid.get_children():
+			if row is DeskMaterialCards.StackCard and row._pressed: return row.record
+	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	for slip: Control in slips:
+		if slip.is_dragging(): return slip.record
+	var monitor: Control = _desk._monitor
+	if monitor._dragging:
+		return {"id":monitor._drag_id, "kind":"stance_token" if monitor._mode == "stance" else "pragmatic_token"}
+	return {}
+
+func drag_cursor_shape(point: Vector2) -> int:
+	var editor: Control = _desk._page.hud.design_workbench()
+	var board: Control = editor.context_slice()
+	var local := board.get_global_transform_with_canvas().affine_inverse() * point
+	var record := _dragged_material()
+	if not record.is_empty():
+		if not _desk._material_cards._enabled: return Input.CURSOR_FORBIDDEN
+		var kind := str(record.get("kind", ""))
+		var id := str(record.get("id", ""))
+		if kind == "module":
+			if not editor._candidate_patch_errors(id).is_empty(): return Input.CURSOR_FORBIDDEN
+			if editor.module_clip_at(point) >= 0:
+				return Input.CURSOR_POINTING_HAND if _desk._module_drop_allowed(point) and editor.can_place_module(id, point) else Input.CURSOR_FORBIDDEN
+		elif kind in ["stance_token", "pragmatic_token"]:
+			return Input.CURSOR_POINTING_HAND if _desk.can_drop_token(id, point) else Input.CURSOR_FORBIDDEN
+		elif not board._layer_at(local).is_empty():
+			return Input.CURSOR_POINTING_HAND if board._can_drop_data(local, {"type":"context_resource", "kind":kind, "resource_id":id}) else Input.CURSOR_FORBIDDEN
+		return Input.CURSOR_POINTING_HAND if _desk._material_cards._enabled else Input.CURSOR_FORBIDDEN
+	for item: Control in _desk._context_layer_items.values():
+		if item._dragging or item._native_drag:
+			if not item._enabled: return Input.CURSOR_FORBIDDEN
+			if not board._layer_at(local).is_empty(): return Input.CURSOR_POINTING_HAND if board._can_drop_data(local, item.record) else Input.CURSOR_FORBIDDEN
+	if board._resource_dragging or board._axis_drag or (board._held == "layer" and board._held_moved):
+		return Input.CURSOR_POINTING_HAND if board._enabled else Input.CURSOR_FORBIDDEN
+	if editor._neuron._dragging: return Input.CURSOR_POINTING_HAND if editor._neuron._interaction_enabled else Input.CURSOR_FORBIDDEN
+	return Input.CURSOR_POINTING_HAND
+
 func pointer_dragging() -> bool:
 	var cards: Control = _desk._material_cards
 	if cards._props._dragging or cards.focus_dragging() or _desk._monitor._dragging or _desk._page.atlas.panning or _desk.get_viewport().gui_is_dragging(): return true

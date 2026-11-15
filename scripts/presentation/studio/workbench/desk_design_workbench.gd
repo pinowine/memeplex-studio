@@ -51,6 +51,7 @@ var _selected_module := ""
 var _selected_skill := "text"
 var _selected_variant := ""
 var _interaction_enabled := true
+var _module_drop_enabled := false
 var _setting := false
 var _pages: Dictionary = {}
 var _tabs: Array[Button] = []
@@ -982,26 +983,38 @@ func module_clips_viewport_rect() -> Rect2:
 	return rect
 
 
+func set_module_drop_enabled(enabled: bool) -> void:
+	_module_drop_enabled = enabled
+
+
+func can_place_module(id: String, global_position: Vector2) -> bool:
+	if not is_visible_in_tree() or id.is_empty() or _tab != "edit": return false
+	if not _candidate_patch_errors(id).is_empty(): return false
+	var free := int((_design.get("available_module_inventory", _design.get("module_inventory", {})) as Dictionary).get(id, 0))
+	for placed in _design.get("module_slots", []):
+		if str(placed) == id: free -= 1
+	if free <= 0: return false
+	var index := module_clip_at(global_position, true)
+	var slots: Array = _design.get("module_slots", [])
+	return index >= 0 and index < slots.size() and str(slots[index]).is_empty()
+
+
 func accept_tabletop_item(kind: String,id: String,global_position: Vector2) -> bool:
-	if not _interaction_enabled or not is_visible_in_tree() or id.is_empty(): return false
+	if not is_visible_in_tree() or id.is_empty(): return false
 	if kind=="module" and _tab=="edit":
+		if not _interaction_enabled and not _module_drop_enabled: return false
 		if not _candidate_patch_errors(id).is_empty():
 			if module_clip_at(global_position) >= 0 and not _rules.find("modules", id).is_empty(): show_module(id)
 			return false
-		var free:=int((_design.get("available_module_inventory",_design.get("module_inventory",{})) as Dictionary).get(id,0))
-		for placed in _design.get("module_slots",[]):
-			if str(placed)==id: free-=1
-		if free<=0: return false
+		if not can_place_module(id, global_position): return false
 		var index := module_clip_at(global_position, true)
-		var slots: Array=_design.get("module_slots",[])
-		if index<0 or index>=slots.size() or not str(slots[index]).is_empty(): return false
 		_request("install_module",{"slot":index,"module_id":id})
 		var current: Array=_design.get("module_slots",[])
 		if index>=current.size() or str(current[index])!=id: return false
 		_request("move_module",{"slot":index,"position":_neuron.suggested_module_position(index)})
 		show_module(id, index)
 		return true
-	if _tab != "cultivate": return false
+	if not _interaction_enabled or _tab != "cultivate": return false
 	return _context_slice.accept_tabletop_item(kind,id,global_position)
 
 

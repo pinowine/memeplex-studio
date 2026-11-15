@@ -201,6 +201,7 @@ var _focus_point_mapper: Callable
 var _drop_kind := ""
 var _drop_stack := ""
 var _selected_key := ""
+var _root_drop_position := Vector2.INF
 
 func _ready() -> void:
 	mouse_filter = MOUSE_FILTER_IGNORE
@@ -470,7 +471,9 @@ func _drop_expanded(point: Vector2, kind: String, id: String) -> void:
 	place_existing_item(kind, id, desktop_point)
 	_cards[key].return_position = origin
 	_cards[key].return_docked = true
+	_root_drop_position = point
 	item_dropped.emit(kind, id, desktop_point)
+	_root_drop_position = Vector2.INF
 	if _cards.has(key):
 		_cards[key].erase("return_position")
 		_cards[key].erase("return_docked")

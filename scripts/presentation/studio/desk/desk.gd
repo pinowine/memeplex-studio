@@ -1,6 +1,7 @@
 extends Control
 
 const DESK_SIZE := Vector2(1600, 900)
+const TOKEN_AXIS_MOVES := {"freedom":[0,-1],"authority":[0,1],"equality":[1,-1],"hierarchy":[1,1],"sincere":[0,-1],"ironic":[0,1],"support":[1,-1],"opposition":[1,1]}
 const MATERIAL_STORAGE_RECT := Rect2(672, 64, 540, 104)
 const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
@@ -87,14 +88,15 @@ var _outlet_width := 0.0
 func slot_details_active() -> bool:
 	return not _slot_return_state.is_empty()
 
+func _can_focus_slot(sheet: String) -> bool:
+	return _camera.inspection().state == "focused" and _revealed_focus == "sheet/" + sheet and not _page._interface_paused() and _page.startup_ready()
+
 func _context_slot_pressed(layer: String, _index: int, viewport_rect: Rect2) -> void:
-	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/cultivate": return
-	if _page._interface_paused() or not _page.startup_ready(): return
+	if not _can_focus_slot("cultivate"): return
 	_focus_slot(layer,viewport_rect)
 
 func _module_slots_pressed(viewport_rect: Rect2) -> void:
-	if _camera.inspection().state != "focused" or _revealed_focus != "sheet/edit": return
-	if _page._interface_paused() or not _page.startup_ready(): return
+	if not _can_focus_slot("edit"): return
 	_focus_slot("module",viewport_rect)
 
 func _focus_slot(layer: String, viewport_rect: Rect2) -> void:
@@ -573,19 +575,25 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			return_overview()
 			get_viewport().set_input_as_handled()
 
+func can_drop_token(token_id: String, point: Vector2) -> bool:
+	if not TOKEN_AXIS_MOVES.has(token_id): return false
+	if _active_sheet != "cultivate" or _revealed_focus != "sheet/cultivate" or _page._interface_paused() or _page.hud.modal_visible() or _camera.inspection().state != "focused": return false
+	var board: Control = _page.hud.design_workbench().context_slice()
+	if not board._enabled: return false
+	var layer := "stance" if token_id in ["freedom","authority","equality","hierarchy"] else "pragmatic"
+	var info: Dictionary = board._layout_layers.get(layer, {})
+	if info.is_empty(): return false
+	var local := board.get_global_transform_with_canvas().affine_inverse() * point
+	return (info.get("plot_rect",Rect2()) as Rect2).has_point(local)
+
+
 func _drop_token(token_id: String, point: Vector2) -> void:
-	if _active_sheet != "cultivate" or _revealed_focus != "sheet/cultivate" or _page._interface_paused() or _page.hud.modal_visible() or _camera.inspection().state != "focused": return
+	if not can_drop_token(token_id, point): return
 	var board: Control = _page.hud.design_workbench().context_slice()
 	var layer := "stance" if token_id in ["freedom","authority","equality","hierarchy"] else "pragmatic"
-	var info: Dictionary = board.inspection().get("layers",{}).get(layer,{})
-	if info.is_empty(): return
-	var local := board.get_global_transform_with_canvas().affine_inverse() * point
-	if not (info.get("axis_rect",Rect2()) as Rect2).has_point(local): return
-	var values := {"freedom":[0,-1],"authority":[0,1],"equality":[1,-1],"hierarchy":[1,1],"sincere":[0,-1],"ironic":[0,1],"support":[1,-1],"opposition":[1,1]}
-	if values.has(token_id):
-		var action: Array = values[token_id]
-		_token_request_index += 1
-		board.perform("move_context_axis",{"layer":layer,"axis":"x" if int(action[0]) == 0 else "y","direction":action[1],"request_id":"tray:%s:%d" % [get_instance_id(),_token_request_index]})
+	var action: Array = TOKEN_AXIS_MOVES[token_id]
+	_token_request_index += 1
+	board.perform("move_context_axis",{"layer":layer,"axis":"x" if int(action[0]) == 0 else "y","direction":action[1],"request_id":"tray:%s:%d" % [get_instance_id(),_token_request_index]})
 
 
 func _screen_ink(texture: Texture2D) -> ShaderMaterial:
@@ -907,11 +915,39 @@ func _drop_material(kind: String, id: String, point: Vector2) -> void:
 	if kind in ["stance_token","pragmatic_token"]:
 		_drop_token(id,point)
 		return
+	if kind == "module":
+		var workbench: Control = _page.hud.design_workbench()
+		if not _module_drop_allowed(point) or workbench.module_clip_at(point, true) < 0: return
+		workbench.set_module_drop_enabled(true)
+		if workbench.accept_tabletop_item(kind, id, point): _sync_module_papers()
+		return
 	if _active_sheet == "map" or not _page.startup_ready() or _revealed_focus != "sheet/"+_active_sheet or _camera.inspection().state != "focused": return
 	var editor: Control = _page.hud.design_workbench()
 	if editor.accept_tabletop_item(kind, id, point):
 		if kind == "module": _sync_module_papers()
 		else: _material_cards.return_to_inventory(kind, id)
+
+
+func _module_drop_allowed(point: Vector2) -> bool:
+	if _active_sheet != "edit" or not _page.startup_ready() or _page.hud.modal_visible() or _stack.is_switching(): return false
+	if _page._shell != null and _page._shell.blocks_input(): return false
+	if _fax.interaction_focused(): return false
+	var camera: Dictionary = _camera.inspection()
+	if slot_details_active():
+		if _slot_restoring or _focused_stack != "module" or str(_slot_return_state.get("active_sheet", "")) != "edit": return false
+		if camera.state != "focused" or camera.target not in ["stack/module", "slot/module"]: return false
+	elif camera.state != "overview" and not (camera.state == "focused" and _revealed_focus == "sheet/edit"):
+		return false
+	var foreground_viewport := _slot_reader.get_viewport()
+	var root_point: Vector2 = _material_cards._root_drop_position if _material_cards._root_drop_position.is_finite() else _foreground_point(point)
+	if not foreground_viewport.get_visible_rect().has_point(root_point) or _slot_reader.handles_viewport_point(root_point): return false
+	if _page._shell != null and _page._shell.guidance_handles_point(root_point): return false
+	for id: String in ["fax", "printer", "crt", "clock", "speed"]:
+		var prop: Dictionary = _props._props.get(id, {})
+		if prop.is_empty(): continue
+		var local: Vector2 = prop.node.get_global_transform_with_canvas().affine_inverse() * point
+		if (prop.hit_rect as Rect2).has_point(local): return false
+	return true
 
 
 func _fax_focus_changed(focused: bool) -> void:
@@ -1124,6 +1160,7 @@ func _process(_delta: float) -> void:
 	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
 	if editor.has_method("set_interaction_enabled"):
 		editor.set_interaction_enabled(design_enabled)
+	editor.set_module_drop_enabled(_module_drop_allowed(get_viewport().get_mouse_position()))
 	_country_layer.visible = _active_sheet == "map" and enabled
 	_page.atlas._update_hover()
 	_page.atlas.get_node("%SpeedControl").disabled = blocked or interaction_paused() or _page._clock_paused() or _page.simulation.phase != "running"

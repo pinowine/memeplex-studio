@@ -32,6 +32,7 @@ var buttons: Dictionary = {}
 var areas: Array[Area3D] = []
 var hovered := ""
 var cursor_shape := Input.CURSOR_ARROW
+var _cursor := GameCursors.new()
 var ready_3d := false
 var half_tone: ColorRect
 var modal_image: TextureRect
@@ -43,7 +44,8 @@ var cord_endpoints: Dictionary = {}
 var _loading := LoadingScreen.new()
 
 func _ready() -> void:
-	GameCursors.install()
+	add_child(_cursor)
+	_cursor.install()
 	DeskLocalization.ensure_loaded()
 	var started := Time.get_ticks_msec()
 	add_child(_loading)
@@ -338,8 +340,8 @@ func _process(_delta: float) -> void:
 	modal_image.visible = showing_modal
 	cursor_shape = _update_hover()
 	if get_window().has_focus() and not showing_modal and not page.presentation_blocks_input() and desktop.pointer_dragging():
-		cursor_shape = Input.CURSOR_POINTING_HAND
-	GameCursors.apply(cursor_shape)
+		cursor_shape = desktop.drag_cursor_shape(logical.get_canvas_transform() * input_router.desktop_point(get_viewport().get_mouse_position()))
+	_cursor.apply(cursor_shape)
 	button_feedback.tick(_delta)
 	hover_outline.sync()
 
@@ -392,10 +394,18 @@ func _update_hover() -> int:
 	if not get_window().has_focus():
 		hover_outline.clear()
 		return Input.CURSOR_ARROW
-	var target: Dictionary = desktop.control_hover_target(get_viewport().gui_get_hovered_control())
+	for window: Window in get_viewport().get_embedded_subwindows():
+		if not window is PopupMenu or not window.visible: continue
+		hover_outline.clear()
+		return _popup_cursor_shape(window as PopupMenu)
+	var root_control := get_viewport().gui_get_hovered_control()
+	var target: Dictionary = desktop.control_hover_target(root_control)
 	if not target.is_empty():
 		_show_hover_target(target)
 		return target.cursor_shape
+	if root_control != null and root_control != modal_image and (root_control.mouse_filter == Control.MOUSE_FILTER_STOP or desktop.control_cursor_shape(root_control) != Input.CURSOR_ARROW):
+		hover_outline.clear()
+		return desktop.control_cursor_shape(root_control)
 	if desktop.foreground_ui_handles(get_viewport().get_mouse_position()):
 		hover_outline.clear()
 		return desktop.control_cursor_shape(get_viewport().gui_get_hovered_control())
@@ -409,11 +419,11 @@ func _update_hover() -> int:
 		return target.cursor_shape if not target.is_empty() else desktop.control_cursor_shape(logical.gui_get_hovered_control())
 	if page.presentation_blocks_input():
 		hover_outline.clear()
-		return Input.CURSOR_ARROW
+		return _blocked_cursor_shape(get_viewport().get_mouse_position())
 	var point := get_viewport().get_mouse_position()
 	if not page._shell.tutorial.allows_hover(point):
 		hover_outline.clear()
-		return Input.CURSOR_ARROW
+		return _blocked_cursor_shape(point)
 	var desktop_position: Vector2 = logical.get_canvas_transform() * input_router.desktop_point(point)
 	var material_input: bool = desktop.material_handles_viewport_point(desktop_position)
 	var physical_hit: Dictionary = {} if material_input else input_router.hit(point)
@@ -426,7 +436,7 @@ func _update_hover() -> int:
 			button_feedback.update_hover(key)
 			hover_outline.show_meshes(key, _meshes_for_hover(key, buttons[key].mesh))
 		else: hover_outline.clear()
-		return Input.CURSOR_POINTING_HAND if enabled else Input.CURSOR_ARROW
+		return Input.CURSOR_POINTING_HAND if enabled else Input.CURSOR_FORBIDDEN
 	target = desktop.hover_target_at(desktop_position if material_input else input_router.screen_input(point))
 	if not target.is_empty():
 		_show_hover_target(target)
@@ -434,8 +444,42 @@ func _update_hover() -> int:
 	hovered = desktop.hovered_equipment(input_router.desktop_point(point))
 	if hovered.is_empty(): hover_outline.clear()
 	else: hover_outline.show_meshes(hovered, _meshes_for_hover(hovered, _node(hovered)))
-	if not hovered.is_empty(): return Input.CURSOR_HELP
-	return desktop.control_cursor_shape(logical.gui_get_hovered_control(), desktop_position if material_input else input_router.screen_input(point))
+	if not hovered.is_empty(): return Input.CURSOR_CROSS
+	var input_position: Vector2 = desktop_position if material_input else input_router.screen_input(point)
+	var control_shape: int = desktop.control_cursor_shape(logical.gui_get_hovered_control(), input_position)
+	return control_shape if control_shape != Input.CURSOR_ARROW else desktop.pointer_cursor_shape(input_position)
+
+func _popup_cursor_shape(menu: PopupMenu) -> int:
+	var surface := menu.gui_get_hovered_control()
+	if surface == null: return Input.CURSOR_ARROW
+	if surface.get_class() != "PopupMenuItems": return desktop.control_cursor_shape(surface)
+	# Focus can remain on the previous enabled row while the pointer is over a disabled one.
+	var y := surface.get_local_mouse_position().y
+	var font := surface.get_theme_font("font", "PopupMenu")
+	var font_size := surface.get_theme_font_size("font_size", "PopupMenu")
+	var bottom := 0.0
+	for index in menu.item_count:
+		var text := menu.tr(menu.get_item_text(index))
+		var height := font.get_multiline_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y
+		if text.is_empty() and not menu.is_item_separator(index): height = font.get_height(font_size)
+		var icon := menu.get_item_icon(index)
+		if icon != null:
+			var width := menu.get_item_icon_max_width(index)
+			if width <= 0: width = surface.get_theme_constant("icon_max_width", "PopupMenu")
+			height = maxf(height, icon.get_height() * minf(1.0, float(width) / icon.get_width()) if width > 0 else icon.get_height())
+		if menu.is_item_checkable(index):
+			for kind in ["checked", "radio_checked"]: height = maxf(height, surface.get_theme_icon(kind, "PopupMenu").get_height())
+		if menu.is_item_separator(index):
+			for kind in ["separator", "labeled_separator_left", "labeled_separator_right"]: height = maxf(height, surface.get_theme_stylebox(kind, "PopupMenu").get_minimum_size().y)
+		bottom += int(height) + surface.get_theme_constant("v_separation", "PopupMenu")
+		if y < bottom:
+			if menu.is_item_separator(index): return Input.CURSOR_ARROW
+			return Input.CURSOR_FORBIDDEN if menu.is_item_disabled(index) else Input.CURSOR_POINTING_HAND
+	return Input.CURSOR_ARROW
+
+func _blocked_cursor_shape(point: Vector2) -> int:
+	if not input_router.hit(point).is_empty(): return Input.CURSOR_FORBIDDEN
+	return desktop.blocked_cursor_shape(logical.get_canvas_transform() * input_router.desktop_point(point))
 
 func _meshes_for_hover(key: String, root: Node3D) -> Array[MeshInstance3D]:
 	if not _hover_meshes.has(key):
@@ -478,7 +522,7 @@ func _route_input(event: InputEvent) -> void:
 
 func _cancel_input() -> void:
 	cursor_shape = Input.CURSOR_ARROW
-	GameCursors.apply(cursor_shape)
+	_cursor.apply(cursor_shape)
 	if ready_3d:
 		input_router.cancel()
 		hover_outline.clear()
