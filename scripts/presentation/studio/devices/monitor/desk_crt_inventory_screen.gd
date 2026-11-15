@@ -7,6 +7,7 @@ const IDS := {"stance":["freedom", "authority", "equality", "hierarchy"], "pragm
 const SEGMENTS := [[0,1,2,4,5,6], [2,5], [0,2,3,4,6], [0,2,3,5,6], [1,2,3,5], [0,1,3,5,6], [0,1,3,4,5,6], [0,2,5], [0,1,2,3,4,5,6], [0,1,2,3,5,6]]
 const INK := Color("9dc996")
 const DIM := Color("38533a")
+var paper_view := false
 var _mode := "stance"
 var _balances: Dictionary = {}
 var _enabled := true
@@ -47,15 +48,17 @@ func _gui_input(event: InputEvent) -> void:
 				return
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("06140b"))
+	if not paper_view: draw_rect(Rect2(Vector2.ZERO, size), Color("06140b"))
+	var ink := Color("384238") if paper_view else INK
+	var dim := Color("aca58e") if paper_view else DIM
 	var center := size * 0.5
 	var inset := minf(size.x, size.y) * 0.035
-	draw_line(Vector2(center.x, inset), Vector2(center.x, size.y - inset), DIM, 1.0, true)
-	draw_line(Vector2(inset, center.y), Vector2(size.x - inset, center.y), DIM, 1.0, true)
+	draw_line(Vector2(center.x, inset), Vector2(center.x, size.y - inset), dim, 1.0, true)
+	draw_line(Vector2(inset, center.y), Vector2(size.x - inset, center.y), dim, 1.0, true)
 	for index in 4:
 		var rect := cell_rect(index)
 		var id: String = IDS[_mode][index]
-		var color := INK if int(_balances.get(id, 0)) > 0 else Color("48674b")
+		var color := ink if int(_balances.get(id, 0)) > 0 else Color("8c8c79") if paper_view else Color("48674b")
 		if _hover == index:
 			draw_rect(rect.grow(1), Color(0.65, 0.8, 0.6, 0.07), true)
 			draw_rect(rect, Color(0.65, 0.8, 0.6, 0.5), false, 1.0)
@@ -63,7 +66,7 @@ func _draw() -> void:
 		_symbol(id, symbol_center, minf(rect.size.x * 0.15, rect.size.y * 0.28), color)
 		var digits := Rect2(rect.position + rect.size * Vector2(0.40, 0.19), rect.size * Vector2(0.55, 0.62))
 		_number(str(int(_balances.get(id, 0))), digits, color)
-	for line in range(0, int(size.y), 3):
+	for line in range(0, 0 if paper_view else int(size.y), 3):
 		draw_line(Vector2(0, line), Vector2(size.x, line), Color(0, 0, 0, 0.07))
 
 func _number(text: String, rect: Rect2, color: Color) -> void:
@@ -128,7 +131,7 @@ func inspection() -> Dictionary:
 	for index in 4:
 		var id: String = IDS[_mode][index]
 		cells.append({"id":id,"count":int(_balances.get(id,0)),"digits":str(int(_balances.get(id,0))),"rect":cell_rect(index)})
-	return {"mode":_mode,"cells":cells,"hovered":_hover,"enabled":_enabled,"digits_renderer":"vector_seven_segment","symbol_renderer":"vector_direction_symbols","quad_layout":"two_by_two","mutates_inventory":false}
+	return {"mode":_mode,"cells":cells,"hovered":_hover,"enabled":_enabled,"digits_renderer":"vector_seven_segment","symbol_renderer":"vector_direction_symbols","quad_layout":"two_by_two","mutates_inventory":false,"paper_projection":paper_view}
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():

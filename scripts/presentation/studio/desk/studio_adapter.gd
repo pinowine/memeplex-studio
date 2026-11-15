@@ -48,9 +48,8 @@ func _dragged_material() -> Dictionary:
 	var cards: Control = _desk._material_cards
 	if cards._props._dragging:
 		return cards._cards.get(String(cards._props._pressed), {})
-	if cards._focus_grid != null:
-		for row: Node in cards._focus_grid.get_children():
-			if row is DeskMaterialCards.StackCard and row._pressed: return row.record
+	var focused: Dictionary = cards.focused_dragged_material()
+	if not focused.is_empty(): return focused
 	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
 	for slip: Control in slips:
 		if slip.is_dragging(): return slip.record

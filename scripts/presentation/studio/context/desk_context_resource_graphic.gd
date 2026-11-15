@@ -40,6 +40,10 @@ func _draw() -> void:
 		draw_texture_rect(PAPER,paper,false,Color("eee9d7"))
 		_draw_caption(caption_layout(), Color("45493e"))
 		return
+	if kind in ["stance_token", "pragmatic_token"]:
+		var edge := minf(size.x,size.y)
+		_icon(size * .5, edge * .30, Color("384238"), maxf(1.2, edge * .025))
+		return
 	var edge := minf(size.x,size.y)
 	var rect := Rect2((size-Vector2.ONE*edge)*.5,Vector2.ONE*edge)
 	draw_texture_rect(_metal,rect,false)
@@ -244,7 +248,7 @@ func _icon(center: Vector2,radius: float,color: Color,width: float) -> void:
 
 func inspection() -> Dictionary:
 	var kind := str(definition.get("kind",""))
-	return {"definition":definition.duplicate(true),"metal_asset":METAL.resource_path,"kind":kind,"native_icon":definition.get("id",""),"title_layout":"pencil_caption" if kind in ["language","group"] else ("horizontal" if kind=="topic" else "circular"),"caption":caption_layout() if kind in ["language","group","topic"] else {},"popup":false,"visual_style":"pencil" if kind in ["language","group"] else ("paper_strip" if kind=="topic" else "metal_token"),"is_physical_token":kind in ["stance_token","pragmatic_token"],"pin_texture":"","pin_source_region":Rect2()}
+	return {"definition":definition.duplicate(true),"metal_asset":METAL.resource_path,"kind":kind,"native_icon":definition.get("id",""),"title_layout":"pencil_caption" if kind in ["language","group"] else ("horizontal" if kind=="topic" else "circular"),"caption":caption_layout() if kind in ["language","group","topic"] else {},"popup":false,"visual_style":"pencil" if kind in ["language","group"] else ("paper_strip" if kind=="topic" else "direction_symbol"),"is_physical_token":false,"pin_texture":"","pin_source_region":Rect2()}
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():

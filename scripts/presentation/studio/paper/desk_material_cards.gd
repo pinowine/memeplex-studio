@@ -15,6 +15,7 @@ const Shade = preload("res://scripts/presentation/studio/desk/desk_object_shadow
 const Hover = preload("res://shaders/ui/desk_torn_hover.gdshader")
 const INVENTORIES := {"module":"module_inventory","language":"context_resource_inventory","group":"context_resource_inventory","topic":"context_resource_inventory","stance_token":"context_resource_inventory","pragmatic_token":"context_resource_inventory"}
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
+const InventoryScreen := preload("res://scripts/presentation/studio/devices/monitor/desk_crt_inventory_screen.gd")
 const NeuronGraphic := preload("res://scripts/presentation/studio/design/desk_neuron_graphic.gd")
 const STACK_KINDS := ["module", "language", "group", "topic"]
 static var STACK_TITLES := {"group":DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"), "language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), "module":DeskLocalization.source("LOC_PATCH_70F56533"), "topic":DeskLocalization.source("LOC_TOPICS_A2C81C5A")}
@@ -99,6 +100,42 @@ class StackSurface extends Control:
 		_mask_layers = layers
 		_mask_size = size
 		return _print_mask
+
+class TokenProjection extends DeskCRTInventoryScreen:
+	signal dropped(id: String, point: Vector2)
+	var drag_id := ""
+	var _pressed := false
+	var _dragging := false
+	var _origin := Vector2.ZERO
+
+	func _ready() -> void:
+		super._ready()
+		paper_view = true
+		token_pressed.connect(func(id: String, point: Vector2):
+			drag_id = id
+			_pressed = true
+			_origin = point)
+		get_window().focus_exited.connect(cancel_drag)
+
+	func _input(event: InputEvent) -> void:
+		if not _pressed: return
+		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+			cancel_drag()
+		elif event is InputEventMouseMotion:
+			if event.button_mask & MOUSE_BUTTON_MASK_LEFT == 0:
+				cancel_drag()
+				return
+			_dragging = _dragging or event.position.distance_to(_origin) >= 6.0
+		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			var released := drag_id if _dragging else ""
+			cancel_drag()
+			if not released.is_empty(): dropped.emit(released, event.position)
+		get_viewport().set_input_as_handled()
+
+	func cancel_drag() -> void:
+		_pressed = false
+		_dragging = false
+		drag_id = ""
 
 class StackCard extends Control:
 	signal chosen
@@ -229,6 +266,11 @@ func set_enabled(value: bool, loose_only := false) -> void:
 	_props.loose_only = loose_only
 	_props.set_enabled(value)
 	if not value: _return_free_cards()
+	if _focus_grid != null:
+		for row: Node in _focus_grid.get_children():
+			if row is TokenProjection:
+				row.sync_inventory(row._mode, _design.get("context_token_balances", {}), value)
+				if not value: row.cancel_drag()
 	# Camera travel blocks dragging without removing physical paper from the desk.
 	queue_redraw()
 
@@ -386,8 +428,16 @@ func clear_stack_focus() -> void:
 func focus_dragging() -> bool:
 	if _focus_grid == null: return false
 	for row: Node in _focus_grid.get_children():
-		if row is StackCard and row._pressed: return true
+		if (row is StackCard or row is TokenProjection) and row._pressed: return true
 	return false
+
+func focused_dragged_material() -> Dictionary:
+	if _focus_grid == null: return {}
+	for row: Node in _focus_grid.get_children():
+		if row is TokenProjection and row._dragging:
+			return {"id":row.drag_id, "kind":_focus_kind}
+		if row is StackCard and row._pressed: return row.record
+	return {}
 
 func _focus_records() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
@@ -414,7 +464,16 @@ func _refresh_focus_list() -> void:
 		_focus_grid.remove_child(child)
 		child.queue_free()
 	var token := _focus_kind in ["stance_token", "pragmatic_token"]
-	var dimensions := Vector2(112, 100) if token else CardFace.minimum_card_size(_focus_kind)
+	if token:
+		_focus_grid.columns = 1
+		var projection := TokenProjection.new()
+		projection.name = "ProjectedDirectionInventory"
+		projection.custom_minimum_size = Vector2(maxf(180, _focus_rect.size.x - 14), maxf(130, _focus_rect.size.y - 8))
+		projection.sync_inventory("stance" if _focus_kind == "stance_token" else "pragmatic", _design.get("context_token_balances", {}), _enabled)
+		projection.dropped.connect(func(id: String, point: Vector2): _drop_expanded(point, _focus_kind, id))
+		_focus_grid.add_child(projection)
+		return
+	var dimensions := CardFace.minimum_card_size(_focus_kind)
 	_focus_grid.columns = maxi(1, floori((_focus_rect.size.x - 12) / (dimensions.x + 8)))
 	for record: Dictionary in records:
 		var row := StackCard.new()
