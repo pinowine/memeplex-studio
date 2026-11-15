@@ -1,4 +1,5 @@
 {
+  "LOC_MEME_POOL_FULL": {"source":"本局模因池已满，无法再产生独立模因。", "zh_CN":"本局模因池已满，无法再产生独立模因。", "en":"This run has reached its meme limit. No new independent meme can enter."},
   "LOC_RECEIPT_FAX_PURPOSE": {
     "source": "接收来电、外界消息和随信送来的物资。",
     "zh_CN": "接收来电、外界消息和随信送来的物资。",

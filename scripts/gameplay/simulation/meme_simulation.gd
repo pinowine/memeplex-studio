@@ -54,6 +54,8 @@ var _rng := RandomNumberGenerator.new()
 var _event_clock_arrivals: Dictionary = {}
 var competition: RefCounted
 var guide_progress: Dictionary = {}
+var _meme_pool_seed := -1
+var _meme_pool: Array[String] = []
 
 func _init(content: MemeDemoCatalog = null, initial_world: RefCounted = null) -> void:
 	catalog = content
@@ -99,6 +101,42 @@ func reset(run_seed: int, world: RefCounted = null) -> void:
 	status = DeskLocalization.source_format("LOC_NEW_RUN_D_MEME_MEME_TRADING_IS_74CC0B27", economy.balance)
 	changed.emit()
 
+
+func candidate_meme_pool() -> Array[String]:
+	if _meme_pool_seed == seed_value and not _meme_pool.is_empty(): return _meme_pool.duplicate()
+	_meme_pool_seed = seed_value
+	_meme_pool.clear()
+	for definition: MemeDemoEvent in catalog.events:
+		var id := str(definition.external_preset_id)
+		if definition.origin == &"environment_meme" and id not in _meme_pool: _meme_pool.append(id)
+	var random := RandomNumberGenerator.new()
+	random.seed = seed_value ^ 0x4d454d45
+	for index in range(_meme_pool.size() - 1, 0, -1):
+		var other := random.randi_range(0, index)
+		var id := _meme_pool[index]
+		_meme_pool[index] = _meme_pool[other]
+		_meme_pool[other] = id
+	_meme_pool.resize(mini(_meme_pool.size(), random.randi_range(6, 8)))
+	return _meme_pool.duplicate()
+
+func can_add_meme(excluding_variant_id: String = "") -> bool:
+	var identities := {}
+	for variant: Dictionary in variants:
+		if str(variant.id) == excluding_variant_id: continue
+		identities[str(variant.get("meme_id", variant.id))] = true
+	return identities.size() < candidate_meme_pool().size()
+
+func _external_preset_available(id: String) -> bool:
+	if id not in candidate_meme_pool() or not can_add_meme(): return false
+	for variant: Dictionary in variants:
+		if str(variant.get("preset_id", "")) == id and variant.get("parent_ids", []).is_empty(): return false
+	return true
+
+func _eligible_events() -> Array[MemeDemoEvent]:
+	var result: Array[MemeDemoEvent] = []
+	for definition: MemeDemoEvent in catalog.events:
+		if definition.origin != &"environment_meme" or _external_preset_available(str(definition.external_preset_id)): result.append(definition)
+	return result
 
 func gameplay_mode() -> String:
 	return "world_competition"
@@ -662,7 +700,7 @@ func _event_condition_values() -> Dictionary:
 func _schedule_events() -> void:
 	var arrivals := EventScheduler.arrival_count(catalog.event_clock, seed_value, hour, _event_clock_arrivals)
 	while events.size() < arrivals:
-		var definition := EventScheduler.choose_event(catalog.events, hour, catalog.gameplay_rules.event_time_scale,
+		var definition := EventScheduler.choose_event(_eligible_events(), hour, catalog.gameplay_rules.event_time_scale,
 			event_counts, last_event_hours, _event_condition_values(), _rng)
 		if definition == null: return
 		var previous_count := events.size()
@@ -671,6 +709,7 @@ func _schedule_events() -> void:
 
 ## 统一创建事件身份、应用效果并登记来源，界面只接收记录副本。
 func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -> void:
+	if definition.origin == &"environment_meme" and not _external_preset_available(str(definition.external_preset_id)): return
 	var pristine := _capture_lifecycle_state()
 	var id := str(definition.id)
 	var cid := occurring_country if not occurring_country.is_empty() else _event_country(definition)
@@ -844,7 +883,8 @@ func _produce_event_memes() -> void:
 		if _rng.randf() >= probability: continue
 		var candidates: Array[MemeDemoEvent] = []
 		for definition: MemeDemoEvent in catalog.events:
-			if definition.origin == &"environment_meme": candidates.append(definition)
+			if definition.origin == &"environment_meme" and _external_preset_available(str(definition.external_preset_id)): candidates.append(definition)
+		if candidates.is_empty(): continue
 		var source: MemeDemoEvent = candidates[_rng.randi_range(0, candidates.size() - 1)].duplicate(true)
 		source.topic_ids = PackedStringArray(modifier.topics)
 		_spawn_external_preset(str(modifier.source), source)
@@ -919,6 +959,7 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "",
 	return DeskLocalization.source("LOC_AUDIENCE_REWRITE_FD322DDD")
 
 func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> String:
+	if not _external_preset_available(str(definition.external_preset_id)): return ""
 	var preset := catalog.find_preset(str(definition.external_preset_id))
 	if preset == null:
 		push_error("External preset not registered: " + str(definition.external_preset_id))
@@ -1015,6 +1056,7 @@ func snapshot() -> Dictionary:
 	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "variants":competition.active_variants(variants).size(), "events":events.duplicate(true), "lineage":competition.active_variants(variants), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
 	state.propagation_research_ready = propagation_research_ready()
 	state.propagation = competition.propagation_inspection()
+	state.meme_candidate_pool = candidate_meme_pool()
 	state.current_variant_id = current_variant_id
 	state.guide_progress = guidance_progress()
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}
