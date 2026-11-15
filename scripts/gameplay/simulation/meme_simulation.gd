@@ -5,6 +5,7 @@ signal event_raised(event: Dictionary)
 signal changed
 signal completed(result: Dictionary)
 
+const WorldWar = preload("res://scripts/gameplay/events/world_war.gd")
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
 const Lifecycle = preload("res://scripts/gameplay/competition/meme_lifecycle.gd")
@@ -24,6 +25,7 @@ var hour: int = 0
 var run_end_hour: int = 48
 var phase: String = "draft"
 var ending: Dictionary = {}
+var endgame: Dictionary = {}
 var speed: int = 0
 var resume_speed: int = 1
 var seed_value: int = 20261003
@@ -67,6 +69,7 @@ func reset(run_seed: int, world: RefCounted = null) -> void:
 	resume_speed = 1
 	phase = "draft"
 	ending.clear()
+	endgame = {"war_started":false,"war_started_hour":-1,"carrier_country_ids":[],"collapse_hours":{}}
 	speed = 0
 	_serial = 0
 	publish_count = 0
@@ -183,6 +186,7 @@ func starter_draft(preset_id: String, base: Dictionary = {}) -> Dictionary:
 	return preset.to_draft(defaults)
 
 func design_action(action: String, params: Dictionary = {}) -> PackedStringArray:
+	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
 	if action == "choose_starter" and (publish_count > 0 or phase != "draft"):
 		return PackedStringArray([DeskLocalization.source("LOC_A_DEPLOYED_RUN_CANNOT_SELECT_A_DIFFERENT_1172A7D4")])
 	if action == "choose_starter":
@@ -275,6 +279,7 @@ func _encoded_draft(draft: Dictionary) -> Dictionary:
 	return encoded
 
 func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringArray:
+	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
 	var errors: PackedStringArray = design_state.skill_errors(id)
 	if not errors.is_empty(): return errors
 	var cost: int = int(design_state.rules.find("skills", id).cost)
@@ -301,6 +306,7 @@ func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringAr
 	return errors
 
 func bind_country(id: String, title: String) -> void:
+	if bool(endgame.war_started) or phase == "complete": return
 	country_id = id
 	country_title = title
 	changed.emit()
@@ -376,6 +382,7 @@ func _draft_layer_attached(data: Dictionary,layer: String) -> bool:
 
 ## 校验来源、语境和费用后投放；外部版本不获得作者控制权。
 func publish(data: Dictionary) -> PackedStringArray:
+	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
 	var errors := validate_draft(data)
 	var patch_ids := MutationRules.authored_patch_ids(data)
 	errors.append_array(catalog.DESIGN_RULES.patch_errors(str(data.get("preset_id", "")), patch_ids))
@@ -439,6 +446,7 @@ func publish(data: Dictionary) -> PackedStringArray:
 	current_variant_id = id
 	latest_draft = data.duplicate(true)
 	draft_distance = 0.0
+	competition.record_publication(variants, current_variant_id, country_id, hour)
 	publish_count += 1
 	deployments.append({"id":_new_id("deployment"), "variant_id":id, "country_id":country_id, "group_id":str(data.group_id), "channel_id":str(data.channel_id), "hour":hour})
 	phase = "running"
@@ -448,6 +456,7 @@ func publish(data: Dictionary) -> PackedStringArray:
 	return errors
 
 func begin_revision(draft: Dictionary = {}) -> PackedStringArray:
+	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
 	if phase == "draft" and draft.is_empty(): return PackedStringArray()
 	if phase == "event":
 		status = DeskLocalization.source("LOC_COLLECT_OR_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_A156F2DD")
@@ -467,10 +476,6 @@ func begin_revision(draft: Dictionary = {}) -> PackedStringArray:
 			return errors
 		design_state = candidate
 		latest_draft = context_draft()
-	if phase == "complete":
-		run_end_hour = hour + catalog.run_hours
-		competition._state.victory = {}
-		ending.clear()
 	phase = "draft"
 	ending.clear()
 	speed = 0
@@ -493,12 +498,19 @@ func step_hour() -> bool:
 		return false
 	hour += 1
 	_expire_modifiers()
-	_produce_event_memes()
-	_spread_world()
-	_schedule_events()
-	_open_next_event()
-	if phase == "running" and hour >= run_end_hour:
-		_finish()
+	if bool(endgame.war_started):
+		_advance_world_war()
+	else:
+		_produce_event_memes()
+		_spread_world()
+		var result: Dictionary = competition.evaluate_ending(variants, hour, current_variant_id, country_id)
+		if not result.is_empty():
+			_finish(result)
+		elif hour >= ceili(catalog.gameplay_rules.fallback_war_seconds * catalog.gameplay_rules.hours_per_active_second):
+			_start_world_war()
+		else:
+			_schedule_events()
+			_open_next_event()
 	changed.emit()
 	return true
 
@@ -882,16 +894,50 @@ func acknowledge_event() -> void:
 	phase = "running"
 	speed = resume_speed
 	_open_next_event()
-	if phase == "running" and hour >= run_end_hour:
-		_finish()
+	if phase == "running" and bool(endgame.war_started): _check_war_extinction()
 	changed.emit()
 
-func _finish() -> void:
+func _start_world_war() -> void:
+	var ids: Array = []
+	for row: Dictionary in competition._state.world: ids.append(str(row.id))
+	endgame = {"war_started":true,"war_started_hour":hour,
+		"carrier_country_ids":WorldWar.carrier_countries(variants, competition._state.countries, current_variant_id),
+		"collapse_hours":WorldWar.schedule(seed_value, ids, catalog.gameplay_rules.world_war_min_country_hours, catalog.gameplay_rules.world_war_duration_hours)}
+	_execute_event(_event_definition("world_war_three"), country_id)
+	for record: Dictionary in events:
+		if str(record.definition_id) == "world_war_three": record.carrier_country_ids = endgame.carrier_country_ids.duplicate()
+	status = DeskLocalization.source("LOC_WAR_ACTIVE_STATUS")
+	_open_next_event()
+
+func _advance_world_war() -> void:
+	var populations := {}
+	var elapsed := hour - int(endgame.war_started_hour)
+	for row: Dictionary in competition._state.world:
+		var id := str(row.id)
+		populations[id] = WorldWar.population(int(row.population), elapsed, int(endgame.collapse_hours[id]))
+	competition.apply_populations(populations)
+	competition._state.hour = hour
+	attention = competition.snapshot(variants, false).attention
+	status = DeskLocalization.source("LOC_WAR_ACTIVE_STATUS")
+	_check_war_extinction()
+
+func _check_war_extinction() -> void:
+	if phase == "complete": return
+	var population := 0
+	for value: int in competition._state.populations.values(): population += value
+	if population == 0:
+		_finish({"id":"world_extinction","hour":hour,"war_started_hour":int(endgame.war_started_hour)})
+		return
+	if endgame.carrier_country_ids.is_empty(): return
+	for id: String in endgame.carrier_country_ids:
+		if int(competition._state.populations[id]) > 0: return
+	_finish({"id":"player_extinction","hour":hour,"war_started_hour":int(endgame.war_started_hour)})
+
+func _finish(result: Dictionary) -> void:
 	phase = "complete"
 	speed = 0
-	status = DeskLocalization.source("LOC_RUN_COMPLETE_RETAIN_THE_RESULTS_UNDER_YOUR_3E988C72")
-	competition._state.victory = {}
-	ending = {"id":"time_elapsed", "hour":hour}
+	status = DeskLocalization.source("LOC_WAR_END_STATUS" if bool(endgame.war_started) else "LOC_INDEPENDENT_RUN_COMPLETE")
+	ending = result.duplicate(true)
 	completed.emit(snapshot())
 
 func snapshot() -> Dictionary:
@@ -902,6 +948,7 @@ func snapshot() -> Dictionary:
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}
 	state.world_competition = competition.snapshot(variants)
 	state.world_competition.ending = ending.duplicate(true)
+	state.world_competition.endgame = endgame.duplicate(true)
 	state.design_state = design_state.snapshot(variants)
 	state.design_state.event_materials = event_materials(state.design_state)
 	state.event_materials = state.design_state.event_materials.duplicate(true)

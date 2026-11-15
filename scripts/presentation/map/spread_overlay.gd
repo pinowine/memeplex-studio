@@ -392,6 +392,7 @@ func _current_point(point: Dictionary) -> Dictionary:
 	var key := str(point.get("_sample_key", ""))
 	if _presence_by_key.has(key):
 		var request: Dictionary = _presence_by_key[key]
+		result.variant_id = str(request.id)
 		result.country_adopted = int(request.adopted)
 		result.country_exposed = int(request.exposed)
 		result.country_attention = int(request.attention)
@@ -408,6 +409,22 @@ func _cached_segment(request: Dictionary, offset: int, count: int) -> Dictionary
 	var positions := _land_positions(str(request.meme_id), str(request.country_id), required)
 	var pool: Array[Dictionary] = _point_pools.get(key, [] as Array[Dictionary])
 	var buffer: PackedFloat32Array = _buffer_pools.get(key, PackedFloat32Array())
+	if not pool.is_empty() and (str(pool[0].variant_id) != str(request.id) or bool(pool[0].origin) != bool(request.origin) or pool[0].color != request.color):
+		var color: Color = request.color
+		for index: int in pool.size():
+			var point: Dictionary = pool[index]
+			var origin: bool = bool(request.origin) and index == 0
+			point.variant_id = str(request.id)
+			point.origin = origin
+			point.scope = "origin_country" if origin else "country_composite_sample"
+			point.pool = "owned" if bool(request.owned) else "external"
+			point.color = color
+			var buffer_offset: int = index * 16
+			buffer[buffer_offset + 8] = color.r
+			buffer[buffer_offset + 9] = color.g
+			buffer[buffer_offset + 10] = color.b
+			buffer[buffer_offset + 11] = color.a
+			buffer[buffer_offset + 13] = float(_country_indices[str(request.country_id)]) * 2.0 + (1.0 if origin else 0.0)
 	for index in range(pool.size(), mini(required, positions.size())):
 		var point := _spread_point(request, positions[index], bool(request.origin) and index == 0)
 		point._sample_key = key
@@ -538,7 +555,7 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 	var started := Time.get_ticks_usec()
 	var world: Dictionary = simulation.competition.snapshot(simulation.variants)
 	var signature_rows: Array = []
-	for row: Dictionary in world.variants: signature_rows.append([row.id, row.meme_id, row.get("meme_name", ""), row.adopted, row.exposed, row.attention])
+	for row: Dictionary in world.variants: signature_rows.append([row.id, row.meme_id, row.get("meme_name", ""), row.origin_country, row.adopted, row.exposed, row.attention])
 	var country_signature: Array = []
 	for country: Dictionary in world.countries:
 		var presence_rows: Array = []
@@ -571,7 +588,7 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 	var requests_by_key := {}
 	for country: Dictionary in world.countries:
 		var cid := str(country.id)
-		if not _country_indices.has(cid): continue
+		if not _country_indices.has(cid) or int(country.population) <= 0: continue
 		var budget := floori(int(country.population) * simulation.catalog.gameplay_rules.attention_fraction)
 		for presence: Dictionary in country.variants:
 			var id := str(presence.id)
@@ -594,11 +611,11 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 		if not _meme_draw_indices.has(meme): _meme_draw_indices[meme] = _meme_draw_indices.size()
 		_variant_draw_indices[str(variant.id)] = _meme_draw_indices[meme]
 	var segments: Array[Dictionary] = []
-	# Every origin survives allocation and remains separate from spread density.
+	# Living-country origin markers remain separate from spread density.
 	for variant: Dictionary in world.variants:
 		var cid := str(variant.origin_country)
-		if not _country_indices.has(cid) or _points.size() >= MAX_TOTAL_DOTS: continue
 		var key := str(variant.meme_id) + "/" + cid
+		if not _country_indices.has(cid) or not requests_by_key.has(key) or _points.size() >= MAX_TOTAL_DOTS: continue
 		segments.append(_cached_segment(requests_by_key[key], 0, 1))
 	var allocations := _budget_counts(requests, MAX_TOTAL_DOTS - _points.size())
 	for index in requests.size():

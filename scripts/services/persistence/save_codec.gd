@@ -10,6 +10,7 @@ const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
 const EventMutation = preload("res://scripts/gameplay/events/event_mutation.gd")
 const EventResponse = preload("res://scripts/gameplay/events/event_response.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
+const WorldWar = preload("res://scripts/gameplay/events/world_war.gd")
 const SAVE_VERSION := 3
 
 var simulation: RefCounted
@@ -33,6 +34,7 @@ func payload() -> Dictionary:
 	if draft.has("topic_ids"): draft.topic_ids = Array(draft.topic_ids)
 	var data := {"save_version":SAVE_VERSION, "content_version":catalog.content_version, "content_signature":content_signature(), "seed":simulation.seed_value, "rng_state":str(simulation._rng.state), "hour":simulation.hour, "run_end_hour":simulation.run_end_hour, "phase":simulation.phase, "speed":simulation.speed, "resume_speed":simulation.resume_speed, "country_id":simulation.country_id, "country_title":simulation.country_title, "status":simulation.status, "latest_draft":draft, "families":simulation.families.duplicate(true), "variants":simulation.variants.duplicate(true), "deployments":simulation.deployments.duplicate(true), "group_state":simulation.group_state.duplicate(true), "events":simulation.events.duplicate(true), "discoveries":simulation.discoveries.duplicate(), "modifiers":simulation.modifiers.duplicate(true), "event_counts":simulation.event_counts.duplicate(), "last_event_hours":simulation.last_event_hours.duplicate(), "pending_events":simulation.pending_events.duplicate(true), "active_event":simulation.active_event.duplicate(true), "attention":simulation.attention.duplicate(), "current_variant_id":simulation.current_variant_id, "draft_distance":simulation.draft_distance, "publish_count":simulation.publish_count, "serial":simulation._serial, "economy":economy.payload()}
 	data.ending = simulation.ending.duplicate(true)
+	data.endgame = simulation.endgame.duplicate(true)
 	data.design_state = design_state.payload()
 	data.guide_progress = simulation.guidance_progress()
 	data.gameplay_mode = "world_competition"
@@ -52,7 +54,6 @@ func _decode(data: Dictionary, errors: PackedStringArray) -> Dictionary:
 	if not errors.is_empty(): return {}
 	# Guidance progress is optional in version-3 saves.
 	if not decoded.has("guide_progress"): decoded.guide_progress = {}
-	if not decoded.has("ending"): decoded.ending = {"id":"time_elapsed", "hour":int(decoded.get("hour", 0))} if decoded.get("phase") == "complete" else {}
 	errors.append_array(_validate_current(decoded))
 	if not errors.is_empty(): return {}
 	return decoded
@@ -91,7 +92,7 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 		return PackedStringArray([DeskLocalization.source("LOC_THE_SAVE_VERSION_CONTENT_OR_GAMEPLAY_FORMAT_7D8AC708")])
 	var numeric := ["seed", "hour", "run_end_hour", "speed", "resume_speed", "draft_distance", "publish_count", "serial"]
 	var strings := ["rng_state", "phase", "country_id", "country_title", "status", "current_variant_id"]
-	var dictionaries := ["latest_draft", "families", "group_state", "event_counts", "last_event_hours", "active_event", "attention", "economy", "design_state", "competition_state"]
+	var dictionaries := ["latest_draft", "families", "group_state", "event_counts", "last_event_hours", "active_event", "attention", "economy", "design_state", "competition_state", "ending", "endgame"]
 	var arrays := ["variants", "deployments", "events", "discoveries", "modifiers", "pending_events"]
 	for key in numeric:
 		if not data.has(key) or not _number(data[key]): errors.append(DeskLocalization.source("LOC_WRONG_NUMERIC_TYPE_IN_SAVE_8A2D94B8") + key)
@@ -104,7 +105,7 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 	if not errors.is_empty(): return errors
 	for key in ["seed", "hour", "run_end_hour", "speed", "resume_speed", "publish_count", "serial"]:
 		if not _integer(data[key]): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_INTEGER_25F32879") + key)
-	if not str(data.rng_state).is_valid_int() or data.phase not in ["draft", "running", "event", "complete"] or data.hour < 0 or data.hour > data.run_end_hour or data.run_end_hour < catalog.run_hours or data.speed < 0 or data.speed > 2 or data.resume_speed < 0 or data.resume_speed > 2 or data.publish_count < 0 or data.serial < 0 or data.draft_distance < 0 or data.draft_distance > 1:
+	if not str(data.rng_state).is_valid_int() or data.phase not in ["draft", "running", "event", "complete"] or data.hour < 0 or data.hour > data.run_end_hour or data.run_end_hour != catalog.run_hours or data.speed < 0 or data.speed > 2 or data.resume_speed < 0 or data.resume_speed > 2 or data.publish_count < 0 or data.serial < 0 or data.draft_distance < 0 or data.draft_distance > 1:
 		errors.append(DeskLocalization.source("LOC_THE_SAVED_PHASE_RANDOM_STATE_COUNT_OR_244F19E2"))
 	if not errors.is_empty(): return errors
 	errors.append_array(competition.validate_payload(data.competition_state, data.variants, int(data.hour)))
@@ -291,6 +292,7 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 		if not _number(value): errors.append(DeskLocalization.source("LOC_INVALID_SAVED_EVENT_TIME_61D60A84"))
 	if errors.is_empty() and not design_state.author_marks_valid(data.latest_draft, data.design_state): errors.append(DeskLocalization.source("LOC_CURRENT_DRAFT_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_F36FC5F9"))
 	if errors.is_empty(): errors.append_array(_validate_guidance_progress(data))
+	if errors.is_empty(): errors.append_array(_validate_endgame(data))
 	if errors.is_empty(): data.latest_draft = restored_draft
 	return errors
 
@@ -586,11 +588,76 @@ func _validate_content_snapshots(data: Dictionary, variants_by_id: Dictionary) -
 		if target_id.is_empty() and event.target_content_snapshot is Dictionary and event.target_content_snapshot.is_empty(): continue
 		if not variants_by_id.has(target_id) or not event.target_content_snapshot is Dictionary or not _is_recorded_content(event.target_content_snapshot, variants_by_id[target_id], data.variants, variants_by_id):
 			errors.append("Event target content differs from its immutable expression history")
-	if not data.get("ending", {}) is Dictionary:
-		errors.append("Saved ending must be a dictionary")
-	elif not data.ending.is_empty():
-		if data.ending.get("id") != "time_elapsed" or not _integer(data.ending.get("hour")) or int(data.ending.hour) != int(data.hour) or data.phase != "complete":
-			errors.append("Saved ending must describe the completed run without a victory state")
+	return errors
+
+
+func _validate_endgame(data: Dictionary) -> PackedStringArray:
+	var errors := PackedStringArray()
+	var state: Dictionary = data.endgame
+	if state.size() != 4 or not state.has_all(["war_started", "war_started_hour", "carrier_country_ids", "collapse_hours"]) or not state.get("war_started") is bool or not _integer(state.get("war_started_hour")) or not state.get("carrier_country_ids") is Array or not state.get("collapse_hours") is Dictionary:
+		return PackedStringArray(["Saved endgame state has invalid fields or types"])
+	var world: Dictionary = data.competition_state
+	var rules: MemeGameplayRules = catalog.gameplay_rules
+	var trigger_hour := ceili(rules.fallback_war_seconds * rules.hours_per_active_second)
+	var target_meme_id := ""
+	for variant: Dictionary in data.variants:
+		if str(variant.id) == str(data.current_variant_id):
+			target_meme_id = str(variant.get("meme_id", variant.id))
+			break
+	if str(world.ending_progress.get("target_meme_id", "")) != target_meme_id:
+		return PackedStringArray(["Saved ending progress must track the current independent meme"])
+	var country_ids: Array = []
+	for row: Dictionary in world.world: country_ids.append(str(row.id))
+	var war_events: Array = []
+	for event: Dictionary in data.events:
+		if str(event.definition_id) == "world_war_three": war_events.append(event)
+	if data.phase == "complete":
+		if not _integer(data.ending.get("hour")) or int(data.ending.get("hour", -1)) != int(data.hour): errors.append("Saved ending must match the completed run's hour")
+	elif not data.ending.is_empty(): errors.append("An unfinished run cannot contain a completed ending")
+	if not bool(state.war_started):
+		if int(state.war_started_hour) != -1 or not state.carrier_country_ids.is_empty() or not state.collapse_hours.is_empty() or not war_events.is_empty(): errors.append("A peaceful run cannot contain a war schedule or announcement")
+		for row: Dictionary in world.world:
+			if int(world.populations[str(row.id)]) != int(row.population): errors.append("A peaceful country's population differs from its initial population")
+		if data.phase == "complete":
+			if str(data.ending.get("id", "")) not in ["viral_icon", "local_classic", "balanced_duel", "successful_adaptation", "forgotten", "best_substitute"] or competition._canonical(data.ending) != competition._canonical(world.victory): errors.append("A normal ending must match its verified competition outcome")
+			if int(data.hour) > trigger_hour: errors.append("A normal ending is later than the world war deadline")
+		elif int(data.hour) >= trigger_hour or not world.victory.is_empty(): errors.append("An unfinished peaceful run has passed the war deadline or already reached an ending")
+		return errors
+	if int(state.war_started_hour) != trigger_hour or int(data.hour) < trigger_hour:
+		return PackedStringArray(["Saved world war must start at the configured deadline"])
+	if competition._canonical(state.collapse_hours) != competition._canonical(WorldWar.schedule(int(data.seed), country_ids, rules.world_war_min_country_hours, rules.world_war_duration_hours)):
+		return PackedStringArray(["Saved country collapse schedule differs from its seed and rules"])
+	var carriers := {}
+	for id: Variant in state.carrier_country_ids:
+		if not id is String or id not in country_ids or carriers.has(id): errors.append("Saved war carriers must contain unique world country identifiers")
+		else: carriers[id] = true
+	if not errors.is_empty(): return errors
+	if war_events.size() != 1:
+		return PackedStringArray(["A world war requires exactly one recorded announcement"])
+	var announcement: Dictionary = war_events[0]
+	if int(announcement.hour) != trigger_hour or competition._canonical(announcement.get("carrier_country_ids")) != competition._canonical(state.carrier_country_ids): errors.append("The world war announcement differs from its start or carrier snapshot")
+	if bool(announcement.acknowledged):
+		if data.phase not in ["running", "complete"]: errors.append("An acknowledged world war cannot remain in an event or draft phase")
+	elif data.phase != "event" or data.active_event.get("instance_id") != announcement.instance_id or int(data.hour) != trigger_hour:
+		errors.append("An unacknowledged war announcement must be the active event at its start")
+	if not world.victory.is_empty(): errors.append("A wartime run cannot claim a normal competition ending")
+	var elapsed := int(data.hour) - int(state.war_started_hour)
+	var total_population := 0
+	var carrier_population := 0
+	var current_carriers := WorldWar.carrier_countries(data.variants, world.countries, str(data.current_variant_id))
+	for id: String in current_carriers:
+		if not carriers.has(id): errors.append("The war carrier snapshot omits a country still carrying the current meme")
+	for row: Dictionary in world.world:
+		var id := str(row.id)
+		var population := int(world.populations[id])
+		if population != WorldWar.population(int(row.population), elapsed, int(state.collapse_hours[id])): errors.append("Saved wartime population differs from its country's collapse schedule")
+		total_population += population
+		if carriers.has(id): carrier_population += population
+	var expected_ending := "world_extinction" if total_population == 0 else "player_extinction" if not carriers.is_empty() and carrier_population == 0 else ""
+	if data.phase == "complete":
+		if expected_ending.is_empty() or data.ending.size() != 3 or str(data.ending.get("id", "")) != expected_ending or not _integer(data.ending.get("war_started_hour")) or int(data.ending.get("war_started_hour", -1)) != trigger_hour:
+			errors.append("A catastrophe ending must follow actual world or player-carrier extinction")
+	elif not expected_ending.is_empty(): errors.append("An extinct world or player carrier population must already be settled")
 	return errors
 
 
@@ -703,6 +770,9 @@ func _validate_event_copy(event: Dictionary, errors: PackedStringArray) -> void:
 	if definition == null:
 		errors.append(DeskLocalization.source("LOC_THE_EVENT_DEFINITION_IS_NOT_IN_THE_8062767A"))
 		return
+	if str(definition.id) == "world_war_three":
+		if not event.get("carrier_country_ids") is Array: errors.append("The world war event must preserve its carrier-country snapshot")
+	elif event.has("carrier_country_ids"): errors.append("Only the world war event may contain a carrier-country snapshot")
 	if not event.get("country_id") is String or not event.get("country_title") is String or event.get("category") != str(definition.category) or not event.get("response") is Dictionary or not event.get("applied_effects") is Array or not _number(event.get("response_duration_hours")):
 		errors.append("Saved events require their country, category and resolved response")
 		return
@@ -805,6 +875,7 @@ func restore(data: Dictionary) -> PackedStringArray:
 	simulation.publish_count = int(decoded.publish_count)
 	simulation.phase = decoded.phase
 	simulation.ending = decoded.ending.duplicate(true)
+	simulation.endgame = decoded.endgame.duplicate(true)
 	simulation.country_id = decoded.country_id
 	simulation.country_title = decoded.country_title
 	simulation.status = decoded.status

@@ -8608,5 +8608,25 @@
     "source": "快速时间",
     "zh_CN": "快速时间",
     "en": "Fast speed"
+  },
+  "LOC_WAR_ACTIVE_STATUS": {
+    "source": "第三次世界大战已开始，人口正在减少",
+    "zh_CN": "第三次世界大战已开始，人口正在减少",
+    "en": "World War III has begun. Populations are falling."
+  },
+  "LOC_WAR_END_STATUS": {
+    "source": "传播停止，已无存活的人类载体",
+    "zh_CN": "传播归于寂静，本局记录封存",
+    "en": "Transmission has fallen silent. This run is sealed away."
+  },
+  "LOC_WAR_NO_REVISION": {
+    "source": "战争开始或本局结束后无法继续发布，请开始新局",
+    "zh_CN": "本轮发布已经结束，请开始新局继续创作",
+    "en": "Publication has ended for this run. Start a new run to keep creating."
+  },
+  "LOC_INDEPENDENT_RUN_COMPLETE": {
+    "source": "本局的故事已经落在纸上。",
+    "zh_CN": "本局的故事已经落在纸上。",
+    "en": "This run has found its story on paper."
   }
 }

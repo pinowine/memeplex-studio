@@ -211,6 +211,8 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	parent.rollback_from_id = str(raw.id)
 	parent.deviation_effect_deltas = {}
 	parent.deviation_patch_effects = {}
+	parent.erase("split_effect_deltas")
+	parent.erase("split_patch_effects")
 	raw.split_from_id = str(parent.id)
 	raw.split_effect_deltas = raw.deviation_effect_deltas.duplicate(true)
 	raw.split_patch_effects = raw.deviation_patch_effects.duplicate(true)

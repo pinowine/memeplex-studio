@@ -1608,5 +1608,20 @@
     "source": "收尾改变了这句话在对话里的用途。",
     "zh_CN": "网友给它接上了一句固定收尾，争论拖得太久时发出来，意思就是不再往下接了。原本用来引人搭腔的话，多加这一截尾巴，在对话里起到的作用就从开场变成了散场。",
     "en": "Readers added a fixed ending to the meme and now use it when an argument drags on too long. With that ending attached, a phrase that used to invite replies has taken on the job of ending the exchange."
+  },
+  "LOC_EVENT_WORLD_WAR_THREE_TITLE": {
+    "source": "第三次世界大战",
+    "zh_CN": "第三次世界大战",
+    "en": "World War III"
+  },
+  "LOC_EVENT_WORLD_WAR_THREE_NARRATIVE": {
+    "source": "第三次世界大战爆发。人口急剧减少，三天内将无人存活。投放与修订已停止。",
+    "zh_CN": "第三次世界大战爆发。各国人口迅速减少，地图将在三天内归于寂静。发布流程已经结束。",
+    "en": "World War III has broken out. Populations are falling rapidly, and the map will fall silent within three days. Publication has ended."
+  },
+  "LOC_EVENT_WORLD_WAR_THREE_COMMENT": {
+    "source": "先看仍有人生活的地方；模因需要有人接住。",
+    "zh_CN": "先看仍有人生活的地方；模因需要有人接住。",
+    "en": "Watch where people still live. A meme needs someone to carry it."
   }
 }

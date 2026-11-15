@@ -24,6 +24,8 @@ static func build(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_id: St
 		_section("MM_COUNTRIES", "group", "MM_HELP_COUNTRIES", _country_rows(world, variant_id, country_titles)),
 		_section("MM_CONTEXT", "language", "MM_HELP_CONTEXT", _context_rows(profile, catalog)),
 		_section("MM_TRANSMISSION", "metric", "MM_HELP_TRANSMISSION", _transmission_rows(snapshot, variant_id))]
+	var ending_rows := _ending_rows(snapshot, catalog, variant_id, country_titles)
+	if not ending_rows.is_empty(): sections.append(_section("MM_ENDING_PROGRESS", "metric", "MM_ENDING_PROGRESS_HELP", ending_rows))
 	var origin := str(variant.origin_country)
 	return {"id":variant_id, "title":str(identity.name), "name":str(identity.name),
 		"expression":str(identity.expression), "meaning":str(identity.meaning),
@@ -132,6 +134,62 @@ static func _transmission_rows(snapshot: Dictionary, variant_id: String) -> Arra
 		_row("MM_SPREAD", _share(float(metrics.spread)), "MM_HELP_SPREAD"),
 		_row("MM_GROWTH", ("+" if growth > 0.0 else "") + "%.1f%%" % growth, "MM_HELP_GROWTH"),
 		_row("MM_DEVIATION", _percentage(float(metrics.deviation)), "MM_HELP_DEVIATION")]
+
+static func _ending_rows(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_id: String, country_titles: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	var raw := _raw_variant(snapshot, variant_id)
+	for progress: Dictionary in snapshot.world_competition.get("ending_progress", []):
+		if str(progress.meme_id) != str(raw.meme_id): continue
+		var id := str(progress.id)
+		var parts: Array[String] = []
+		match id:
+			"viral_icon":
+				parts.append(_progress_spread(progress))
+				parts.append(_progress_lead(progress))
+			"local_classic":
+				parts.append(str(country_titles.get(str(progress.country_id), DeskLocalization.text("MM_ENDING_TARGET_COUNTRY"))))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_ADOPTION", [_percentage(float(progress.adoption)), _percentage(float(progress.adoption_min))]))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_DEVIATION", [_percentage(float(progress.deviation)), _percentage(float(progress.deviation_max))]))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_RANGE", [_progress_pp(float(progress.range)), _progress_pp(float(progress.range_max))]))
+			"balanced_duel":
+				parts.append(_progress_meme_name(snapshot, catalog, str(progress.other_meme_id)))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_BOTH", [_percentage(float(progress.spread)), _percentage(float(progress.other_spread)), _percentage(float(progress.spread_min))]))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_GAP", [_progress_pp(float(progress.gap)), _progress_pp(float(progress.gap_max))]))
+			"successful_adaptation":
+				parts.append(str(country_titles.get(str(progress.country_id), DeskLocalization.text("MM_ENDING_TARGET_COUNTRY"))))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_BASELINE", [_percentage(float(progress.baseline)), _percentage(float(progress.baseline_min))]))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_ADOPTION", [_percentage(float(progress.adoption)), _percentage(float(progress.adoption_min))]))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_GAIN", [_progress_pp(float(progress.gain)), _progress_pp(float(progress.gain_min))]))
+			"forgotten":
+				parts.append(_progress_format("MM_ENDING_PROGRESS_CARRIERS", [_number(int(progress.adopted)), _number(int(progress.exposed))]))
+				parts.append(_progress_format("MM_ENDING_PROGRESS_SEED", [int(progress.seed_hours), int(progress.seed_required_hours)]))
+			"best_substitute":
+				parts.append(_progress_meme_name(snapshot, catalog, str(progress.candidate_meme_id)))
+				parts.append(_progress_spread(progress))
+				parts.append(_progress_lead(progress))
+		parts.append(_progress_format("MM_ENDING_PROGRESS_HOURS", [int(progress.hours), int(progress.required_hours)]))
+		var row := _row("MM_ENDING_" + id.to_upper() + "_TITLE", " · ".join(parts), "MM_ENDING_PROGRESS_HELP")
+		row.ending_id = id
+		row.meme_id = str(progress.meme_id)
+		rows.append(row)
+	return rows
+
+static func _progress_meme_name(snapshot: Dictionary, catalog: MemeDemoCatalog, meme_id: String) -> String:
+	for variant: Dictionary in snapshot.world_competition.variants:
+		if str(variant.meme_id) == meme_id: return short_name(snapshot, catalog, str(variant.id))
+	return DeskLocalization.text("MM_ENDING_NEW_EXPRESSION")
+
+static func _progress_format(key: String, values: Array) -> String:
+	return DeskLocalization.text(key) % values
+
+static func _progress_pp(value: float) -> String:
+	return "%.1f" % (value * 100.0)
+
+static func _progress_spread(progress: Dictionary) -> String:
+	return _progress_format("MM_ENDING_PROGRESS_SPREAD", [_percentage(float(progress.spread)), _percentage(float(progress.spread_min))])
+
+static func _progress_lead(progress: Dictionary) -> String:
+	return _progress_format("MM_ENDING_PROGRESS_LEAD", [_progress_pp(float(progress.lead)), _progress_pp(float(progress.lead_min))])
 
 static func _section(title_key: String, kind: String, help_key: String, rows: Array[Dictionary]) -> Dictionary:
 	return {"title":DeskLocalization.text(title_key), "kind":kind, "help_key":help_key, "help":DeskLocalization.text(help_key), "rows":rows}

@@ -2,8 +2,30 @@ class_name MemeGameplayRules
 extends Resource
 
 @export var policy_version: int = 1
-@export var horizon_hours: int = 1440
-@export var hours_per_active_second: float = 1.2
+@export var horizon_hours: int = 1872
+@export var hours_per_active_second: float = 2.0
+@export var viral_spread_min: float = 0.15
+@export var viral_lead_min: float = 0.03
+@export var viral_hours: int = 72
+@export var local_adoption_min: float = 0.50
+@export var local_deviation_max: float = 0.20
+@export var local_range_max: float = 0.05
+@export var local_hours: int = 120
+@export var duel_spread_min: float = 0.08
+@export var duel_gap_max: float = 0.02
+@export var duel_hours: int = 120
+@export var adaptation_baseline_min: float = 0.05
+@export var adaptation_stable_window_hours: int = 60
+@export var adaptation_adoption_min: float = 0.25
+@export var adaptation_gain_min: float = 0.15
+@export var adaptation_hours: int = 72
+@export var forgotten_hours: int = 120
+@export var substitute_spread_min: float = 0.15
+@export var substitute_lead_min: float = 0.03
+@export var substitute_hours: int = 72
+@export var fallback_war_seconds: float = 900.0
+@export var world_war_min_country_hours: int = 24
+@export var world_war_duration_hours: int = 72
 @export var event_time_scale: float = 20.0
 @export var event_generation_interval_hours: float = 240.0
 @export var attention_fraction: float = 0.025
@@ -49,7 +71,15 @@ extends Resource
 
 func validate() -> PackedStringArray:
 	var errors := PackedStringArray()
-	if policy_version != 1 or horizon_hours < equilibrium_min_hours or hours_per_active_second <= 0.0 or not is_finite(hours_per_active_second): errors.append("Invalid gameplay horizon or pace")
+	if policy_version != 1 or horizon_hours <= 0 or hours_per_active_second <= 0.0 or not is_finite(hours_per_active_second): errors.append("Invalid gameplay horizon or pace")
+	if not is_finite(hours_per_active_second) or hours_per_active_second <= 0.0 or not is_finite(fallback_war_seconds) or fallback_war_seconds <= 0.0 or world_war_min_country_hours <= 0 or world_war_duration_hours < world_war_min_country_hours:
+		errors.append("Invalid ending or world-war timing")
+	elif horizon_hours != ceili(fallback_war_seconds * hours_per_active_second) + world_war_duration_hours:
+		errors.append("Ending horizon must include the full world-war fallback")
+	for key: String in ["viral_spread_min", "viral_lead_min", "local_adoption_min", "local_deviation_max", "local_range_max", "duel_spread_min", "duel_gap_max", "adaptation_baseline_min", "adaptation_adoption_min", "adaptation_gain_min", "substitute_spread_min", "substitute_lead_min"]:
+		if not is_finite(float(get(key))) or float(get(key)) <= 0.0 or float(get(key)) > 1.0: errors.append("Invalid independent ending threshold: " + key)
+	for key: String in ["viral_hours", "local_hours", "duel_hours", "adaptation_stable_window_hours", "adaptation_hours", "forgotten_hours", "substitute_hours"]:
+		if int(get(key)) <= 0: errors.append("Invalid independent ending window: " + key)
 	for key in ["attention_fraction","adoption_response","exposure_response","seed_pressure","parent_relay","expression_floor","autonomous_language_access","autonomous_recognizability","autonomous_context_dependency","occupancy_cap","land_contact","sea_contact","ownership_victory_share","lineage_victory_share","distinct_variant_min_share","autonomous_min_share","equilibrium_tolerance","equilibrium_min_side_share","equilibrium_variant_min_share","milestone_population_fraction","fatigue_gain","fatigue_recovery"]:
 		var value: float = float(get(key))
 		if not is_finite(value) or value <= 0.0 or value > 1.0: errors.append("Invalid gameplay fraction: " + key)

@@ -83,4 +83,4 @@ static func summary(response: Dictionary) -> String:
 		parts.append(DeskLocalization.source_format("%s %s%.0f%%", ["LOC_EVENT_RESPONSE_" + metric.to_upper(), "+" if amount > 0.0 else "", amount * 100.0], [0]))
 	if not is_zero_approx(float(response.sentiment)):
 		parts.append(DeskLocalization.source("LOC_EVENT_RESPONSE_POSITIVE" if float(response.sentiment) > 0.0 else "LOC_EVENT_RESPONSE_NEGATIVE"))
-	return DeskLocalization.source_join(" · ", parts)
+	return "" if parts.is_empty() else DeskLocalization.source_join(" · ", parts)

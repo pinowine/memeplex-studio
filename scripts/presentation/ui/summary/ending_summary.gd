@@ -6,12 +6,21 @@ signal return_menu_requested
 const TEMPLATE = preload("res://scenes/ui/summary/ending_summary.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const ENDINGS := {
-	"time_elapsed": ["MM_ENDING_REASON", "MM_ENDING_COMMENT"]
+	"viral_icon": ["MM_ENDING_VIRAL_ICON_TITLE", "MM_ENDING_VIRAL_ICON_REASON", "MM_ENDING_VIRAL_ICON_COMMENT"],
+	"local_classic": ["MM_ENDING_LOCAL_CLASSIC_TITLE", "MM_ENDING_LOCAL_CLASSIC_REASON", "MM_ENDING_LOCAL_CLASSIC_COMMENT"],
+	"balanced_duel": ["MM_ENDING_BALANCED_DUEL_TITLE", "MM_ENDING_BALANCED_DUEL_REASON", "MM_ENDING_BALANCED_DUEL_COMMENT"],
+	"successful_adaptation": ["MM_ENDING_SUCCESSFUL_ADAPTATION_TITLE", "MM_ENDING_SUCCESSFUL_ADAPTATION_REASON", "MM_ENDING_SUCCESSFUL_ADAPTATION_COMMENT"],
+	"forgotten": ["MM_ENDING_FORGOTTEN_TITLE", "MM_ENDING_FORGOTTEN_REASON", "MM_ENDING_FORGOTTEN_COMMENT"],
+	"best_substitute": ["MM_ENDING_BEST_SUBSTITUTE_TITLE", "MM_ENDING_BEST_SUBSTITUTE_REASON", "MM_ENDING_BEST_SUBSTITUTE_COMMENT"],
+	"world_extinction": ["MM_ENDING_WORLD_EXTINCTION_TITLE", "MM_ENDING_WORLD_EXTINCTION_REASON", "MM_ENDING_WORLD_EXTINCTION_SCENE"],
+	"player_extinction": ["MM_ENDING_PLAYER_EXTINCTION_TITLE", "MM_ENDING_PLAYER_EXTINCTION_REASON", "MM_ENDING_PLAYER_EXTINCTION_SCENE"]
 }
 
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
+const Identity = preload("res://scripts/presentation/memes/meme_identity.gd")
+const CATALOG = preload("res://data/catalogs/catalog.tres")
 const METRIC_KEYS := ["LOC_SUMMARY_HOUR", "LOC_SUMMARY_POPULATION", "MM_ENDING_MEMES", "LOC_SUMMARY_MEME_POINTS"]
-const SHARE_KEYS := ["MM_ENDING_OWN", "MM_ENDING_OTHER", "MM_ENDING_UNADOPTED"]
+const SHARE_KEYS := ["MM_ENDING_CURRENT_ADOPTION", "MM_ENDING_OTHER", "MM_ENDING_UNADOPTED"]
 const SHARE_COLORS := [Color("667951"), Color("8b724c"), Color("9a5c45")]
 
 class MetricIcon extends Control:
@@ -80,13 +89,24 @@ func show_result(snapshot: Dictionary, ending: Dictionary = {}) -> bool:
 func _refresh() -> void:
 	if not is_instance_valid(_ui) or _ending.is_empty(): return
 	var copy: Array = ENDINGS[str(_ending.id)]
-	_content.get_node("Title").text = DeskLocalization.text("MM_ENDING_TITLE")
-	_content.get_node("Reason").text = DeskLocalization.text(copy[0])
-	_content.get_node("Verdict/Comment").text = DeskLocalization.text(copy[1])
+	_content.get_node("Title").text = DeskLocalization.text(copy[0])
+	var reason := DeskLocalization.text(copy[1])
+	match str(_ending.id):
+		"local_classic", "successful_adaptation": reason = reason % _ending_country_name(str(_ending.get("country_id", "")))
+		"balanced_duel": reason = reason % _ending_meme_name(str(_ending.get("other_meme_id", "")))
+		"best_substitute": reason = reason % _ending_meme_name(str(_ending.get("meme_id", "")))
+	_content.get_node("Reason").text = reason
+	_content.get_node("Verdict/Comment").text = DeskLocalization.text(copy[2])
 	_content.get_node("ReturnMenu").text = DeskLocalization.text("LOC_RETURN_TO_MAIN_MENU_E34E61A2")
 	var world: Dictionary = _snapshot.get("world_competition", {})
 	var hour := int(_ending.get("hour", _snapshot.get("hour", 0)))
-	var own := float(_ending.get("owned_share", world.get("owned_share", 0))) * 100
+	var focus_meme := str(_ending.get("meme_id", ""))
+	if focus_meme.is_empty():
+		for variant: Dictionary in world.get("variants", []):
+			if str(variant.id) == str(_snapshot.get("current_variant_id", "")): focus_meme = str(variant.meme_id)
+	var own := 0.0
+	for variant: Dictionary in world.get("variants", []):
+		if str(variant.meme_id) == focus_meme: own = float(variant.share) * 100.0
 	var unadopted := float(world.get("unadopted_share", 1.0)) * 100
 	var others := maxf(0.0, 100.0 - own - unadopted)
 	var variants: Variant = world.get("variants", [])
@@ -96,12 +116,24 @@ func _refresh() -> void:
 	for index in _metrics.size():
 		_metrics[index].title.text = DeskLocalization.text(METRIC_KEYS[index])
 		_metrics[index].value.text = values[index]
-	var shares := [own, others, unadopted]
+	var has_population: bool = int(world.get("world_population", 0)) > 0
+	_content.get_node("Shares").visible = has_population
+	var shares := [own, others, unadopted] if has_population else [0.0, 0.0, 0.0]
 	for index in _shares.size():
 		_shares[index].title.text = DeskLocalization.text(SHARE_KEYS[index])
 		_shares[index].value.text = "%.2f%%" % shares[index]
 		_shares[index].bar.value = shares[index]
 	_layout()
+
+func _ending_meme_name(meme_id: String) -> String:
+	for raw: Dictionary in _snapshot.get("lineage", []):
+		if str(raw.meme_id) == meme_id: return Identity.name(CATALOG, raw)
+	return DeskLocalization.text("MM_ENDING_TARGET_MEME")
+
+func _ending_country_name(country_id: String) -> String:
+	for country: Resource in CATALOG.gameplay_rules.map_settings.countries:
+		if str(country.id) == country_id: return DeskLocalization.text(str(country.short_name_key))
+	return DeskLocalization.text("MM_ENDING_TARGET_COUNTRY")
 
 func _build_statistics() -> void:
 	for index in METRIC_KEYS.size():
@@ -173,7 +205,7 @@ func _layout() -> void:
 	_content.get_node("Metrics").columns = 2 if scroll.size.x < 540 else 4
 
 func inspection() -> Dictionary:
-	return {"visible": is_visible_in_tree(), "ending": _ending.duplicate(true), "snapshot": _snapshot.duplicate(true), "ending_ids": ENDINGS.keys(), "title": "" if not is_instance_valid(_ui) else _content.get_node("Title").text, "reason": "" if not is_instance_valid(_ui) else _content.get_node("Reason").text, "statistics": _statistics, "metric_count":_metrics.size(), "share_values":_shares.map(func(row: Dictionary): return row.bar.value), "scrollable":true, "comment": "" if not is_instance_valid(_ui) else _content.get_node("Verdict/Comment").text, "scope": "Presentation of confirmed backend ending; no victory thresholds or economy writes"}
+	return {"visible": is_visible_in_tree(), "ending": _ending.duplicate(true), "snapshot": _snapshot.duplicate(true), "ending_ids": ENDINGS.keys(), "title": "" if not is_instance_valid(_ui) else _content.get_node("Title").text, "reason": "" if not is_instance_valid(_ui) else _content.get_node("Reason").text, "statistics": _statistics, "metric_count":_metrics.size(), "share_values":_shares.map(func(row: Dictionary): return row.bar.value), "shares_visible":false if not is_instance_valid(_ui) else _content.get_node("Shares").visible, "scrollable":true, "comment": "" if not is_instance_valid(_ui) else _content.get_node("Verdict/Comment").text, "scope": "Presentation of confirmed independent-meme outcomes"}
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():

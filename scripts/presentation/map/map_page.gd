@@ -56,6 +56,7 @@ var _clock_presentation_updates := 0
 var _marker_projection_updates := 0
 var _marker_projection_cache_hits := 0
 var _hover_profile_signature: Array = []
+var _country_population_signature: Array = []
 var _meme_overlay: Control
 var _meme_ledger: Control
 var _meme_snapshot: Dictionary = {}
@@ -229,8 +230,14 @@ func _update_hover() -> void:
 	hover_note.set_width(360)
 	hover_note.set_content(tr(country.official_name_key), rows,
 		tr(country.description_key)+"\n\n"+tr(country.culture_key),
-		{"kind":"language", "badge":tr("MAP_POPULATION") % (int(profile.population)/1000000.0),
+		{"kind":"language", "badge":tr("MAP_POPULATION") % (_country_population(str(country.id))/1000000.0),
 		"note":tr(str(country.description_key) + "_NOTE")})
+
+func _country_population(id: String) -> int:
+	if _meme_snapshot.is_empty(): return int(COUNTRY_RULES.country(id).population)
+	for country: Dictionary in _meme_snapshot.world_competition.countries:
+		if str(country.id) == id: return int(country.population)
+	return 0
 
 func configure_meme_tracking(overlay: Control, catalog: MemeDemoCatalog) -> void:
 	_meme_overlay = overlay
@@ -244,6 +251,11 @@ func configure_meme_tracking(overlay: Control, catalog: MemeDemoCatalog) -> void
 	_meme_ledger.variant_hovered.connect(_on_ledger_variant_hovered)
 
 func update_meme_state(snapshot: Dictionary) -> void:
+	var populations: Array = []
+	for country: Dictionary in snapshot.world_competition.countries: populations.append([country.id, country.population])
+	if populations != _country_population_signature:
+		_country_population_signature = populations
+		_hover_profile_signature.clear()
 	_meme_snapshot = snapshot
 	if not snapshot.world_competition.variants_by_id.has(_ledger_hovered_variant):
 		_ledger_hovered_variant = ""

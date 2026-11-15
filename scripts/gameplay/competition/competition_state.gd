@@ -4,12 +4,12 @@ const Generator = preload("res://scripts/gameplay/map/map_generator.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const IndependentEndings = preload("res://scripts/gameplay/competition/independent_endings.gd")
 static var _geography_cache: Dictionary = {}
 var rules: MemeGameplayRules
 var catalog: MemeDemoCatalog
 var _state: Dictionary = {}
 var _fitness_cache: Dictionary = {}
-var _populations: Dictionary = {}
 var _monitor_previous_scores: Dictionary = {}
 
 func _init(content: MemeDemoCatalog = null) -> void:
@@ -19,7 +19,7 @@ func _init(content: MemeDemoCatalog = null) -> void:
 func reset(world: RefCounted = null) -> void:
 	_monitor_previous_scores.clear()
 	_fitness_cache.clear()
-	_state = {"competition_version":1,"policy_signature":rules.signature(),"world_seed":rules.reference_geometry_seed,"world":[],"countries":{},"registry":{},"hour":0,"active_seconds":0.0,"hour_credit":0.0,"equilibrium_hours":0,"equilibrium_candidate_hour":-1,"equilibrium_ranges":{},"autonomous_hours":0,"previous_shares":{},"victory":{}}
+	_state = {"competition_version":1,"policy_signature":rules.signature(),"world_seed":rules.reference_geometry_seed,"world":[],"populations":{},"countries":{},"registry":{},"hour":0,"active_seconds":0.0,"hour_credit":0.0,"ending_evaluated_hour":0,"equilibrium_hours":0,"equilibrium_candidate_hour":-1,"equilibrium_ranges":{},"autonomous_hours":0,"previous_shares":{},"ending_progress":{},"victory":{}}
 	if world == null:
 		_set_world(_reference_world(int(rules.reference_geometry_seed)))
 	else:
@@ -65,11 +65,29 @@ func _world_rows(world: RefCounted) -> Array:
 func _set_world(rows: Array) -> void:
 	_state.world = rows.duplicate(true)
 	_state.countries.clear()
-	_populations.clear()
+	_state.populations.clear()
 	_fitness_cache.clear()
 	for row in rows:
 		_state.countries[str(row.id)] = {"adopted":{},"exposed":{},"attention":{}}
-		_populations[str(row.id)] = int(row.population)
+		_state.populations[str(row.id)] = int(row.population)
+
+func apply_populations(populations: Dictionary) -> void:
+	assert(populations.size() == _state.world.size())
+	for row: Dictionary in _state.world:
+		var cid: String = str(row.id)
+		var previous: int = _population(cid)
+		var current: int = populations[cid]
+		assert(current >= 0 and current <= previous)
+		var country: Dictionary = _state.countries[cid]
+		for field: String in ["adopted", "exposed", "attention"]:
+			for id: String in country[field]:
+				country[field][id] = floori(float(country[field][id]) * current / previous) if previous > 0 else 0
+		if _sum(country.adopted) > current: country.adopted = _allocate(current, country.adopted)
+		if _sum(country.exposed) > current: country.exposed = _cap_exposure(country.exposed, country.adopted, current)
+		var budget: int = floori(current * rules.attention_fraction)
+		if _sum(country.attention) > budget: country.attention = _allocate(budget, country.attention)
+	_state.populations = populations.duplicate(true)
+	_monitor_previous_scores.clear()
 
 func has_country(id: String) -> bool:
 	return _state.countries.has(id)
@@ -81,7 +99,7 @@ func adoption_pulse(variant_id: String, amount: float, country_id: String = "") 
 		var country: Dictionary = _state.countries[str(row.id)]
 		var adopted := int(country.adopted.get(variant_id,0))
 		var eligible := maxi(0,int(country.exposed.get(variant_id,0))-adopted)
-		var increase := mini(floori(eligible*clampf(amount,0.0,1.0)),int(row.population)-_sum(country.adopted))
+		var increase := mini(floori(eligible*clampf(amount,0.0,1.0)),_population(str(row.id))-_sum(country.adopted))
 		country.adopted[variant_id] = adopted+increase
 		added += increase
 	return added
@@ -225,8 +243,8 @@ func _monitor_scores(variants: Array) -> Dictionary:
 	var population := 0
 	var budget := 0
 	for row: Dictionary in _state.world:
-		population += int(row.population)
-		budget += floori(int(row.population) * rules.attention_fraction)
+		population += _population(str(row.id))
+		budget += floori(_population(str(row.id)) * rules.attention_fraction)
 		var country: Dictionary = _state.countries[str(row.id)]
 		for id: String in totals:
 			for field: String in ["adopted", "exposed", "attention"]:
@@ -244,7 +262,8 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 	for variant: Dictionary in variants: reuse_factors[str(variant.id)] = _community_reuse(variant)
 	for row: Dictionary in _state.world:
 		var cid := str(row.id)
-		var population := int(row.population)
+		var population := _population(cid)
+		if population == 0: continue
 		var weights := {}
 		var fits := {}
 		for variant: Dictionary in variants:
@@ -254,7 +273,9 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 			var own: float = float(previous[cid].adopted[id]) / population
 			var pressure := own
 			var travel: float = rules.network_contact_multiplier if "network" in live_profile.get("skill_ids",[]) else 1.0
-			for neighbor in row.contacts: pressure += float(previous[neighbor].adopted[id]) / float(_population(str(neighbor))) * float(row.contacts[neighbor]) * travel
+			for neighbor in row.contacts:
+				var neighbor_population := _population(str(neighbor))
+				if neighbor_population > 0: pressure += float(previous[neighbor].adopted[id]) / neighbor_population * float(row.contacts[neighbor]) * travel
 			if cid == str(entry.origin_country) and hour - int(entry.birth_hour) <= rules.seed_hours: pressure += rules.seed_pressure
 			if hour-int(entry.birth_hour) <= rules.seed_hours:
 				for parent_id in entry.parent_ids: pressure += float(previous[cid].adopted.get(parent_id,0))/population * rules.parent_relay
@@ -291,10 +312,9 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 				next_exposed[registered_id] = 0
 				allocation[registered_id] = 0
 		_state.countries[cid] = {"adopted":next_adopted,"exposed":next_exposed,"attention":allocation}
-	_state.victory = {}
 
 func _population(id: String) -> int:
-	return int(_populations[id])
+	return int(_state.populations[id])
 
 func _sum(data: Dictionary) -> int:
 	var total := 0
@@ -324,6 +344,19 @@ func _cap_exposure(exposed: Dictionary,adopted: Dictionary,population: int) -> D
 	for id in exposed: exposed[id] = int(adopted[id]) + int(allocated[id])
 	return exposed
 
+func record_publication(variants: Array, current_id: String, country_id: String, hour: int) -> void:
+	_state.ending_progress = IndependentEndings.record_publication(_state.ending_progress, variants, current_id, country_id, hour, self)
+	if not _state.ending_progress.is_empty(): _state.ending_evaluated_hour = int(_state.ending_progress.last_hour)
+
+func evaluate_ending(variants: Array, hour: int, current_id: String = "", country_id: String = "") -> Dictionary:
+	if not _state.victory.is_empty(): return _state.victory.duplicate(true)
+	if current_id.is_empty(): current_id = str(_state.ending_progress.get("target_record_id", ""))
+	if country_id.is_empty(): country_id = str(_state.ending_progress.get("country_id", ""))
+	var result: Dictionary = IndependentEndings.evaluate(_state.ending_progress, variants, current_id, country_id, hour, self)
+	if not _state.ending_progress.is_empty(): _state.ending_evaluated_hour = int(_state.ending_progress.last_hour)
+	if not result.is_empty(): _state.victory = result.duplicate(true)
+	return result
+
 func _legacy_eligibility(view: Dictionary,hour: int,autonomous_hours: int,equilibrium_hours: int) -> Dictionary:
 	var ids: Array = []
 	if view.owned_share >= rules.ownership_victory_share: ids.append("own_world")
@@ -339,14 +372,15 @@ func _legacy_eligibility(view: Dictionary,hour: int,autonomous_hours: int,equili
 func snapshot(variants: Array, details: bool = true) -> Dictionary:
 	variants = active_variants(variants)
 	var world_population := 0
-	for row in _state.world: world_population += int(row.population)
+	for row in _state.world: world_population += _population(str(row.id))
 	var totals := {}
 	var attention := {"budget":0,"player":0,"external":0,"background":0}
 	var country_rows: Array = []
 	var exposed_total := 0
 	for row: Dictionary in _state.world:
 		var country: Dictionary = _state.countries[str(row.id)]
-		var budget := floori(int(row.population)*rules.attention_fraction)
+		var population := _population(str(row.id))
+		var budget := floori(population*rules.attention_fraction)
 		attention.budget += budget
 		attention.background += budget-_sum(country.attention)
 		var positions: Array = []
@@ -360,11 +394,13 @@ func snapshot(variants: Array, details: bool = true) -> Dictionary:
 			totals[id].exposed += exposure
 			totals[id].attention += slots
 			attention["player" if variant.controlled else "external"] += slots
-			if details: positions.append({"id":id,"meme_id":str(variant.get("meme_id", id)),"adopted":adopted,"exposed":exposure,"share":float(adopted)/int(row.population),"attention":slots})
+			if details: positions.append({"id":id,"meme_id":str(variant.get("meme_id", id)),"adopted":adopted,"exposed":exposure,"share":float(adopted)/maxf(1.0,population),"attention":slots})
 		if details:
 			var entry := row.duplicate(true)
+			entry.initial_population = int(row.population)
+			entry.population = population
 			entry.variants = positions
-			entry.unadopted = int(row.population)-_sum(country.adopted)
+			entry.unadopted = population-_sum(country.adopted)
 			country_rows.append(entry)
 		exposed_total += _sum(country.exposed)
 	var variant_rows: Array = []
@@ -397,7 +433,7 @@ func snapshot(variants: Array, details: bool = true) -> Dictionary:
 		variant_rows.back().monitor_spread = monitor_spread
 		variant_rows.back().monitor_growth = MonitorMetrics.growth(monitor_spread, float(_monitor_previous_scores.get(id, monitor_spread)))
 		variants_by_id[id] = variant_rows.back().duplicate(true)
-	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"victory":{},"population_evidence":"configured_game_population","metric_explanation":DeskLocalization.source("LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087"),"autonomy_explanation":DeskLocalization.source("LOC_THE_UNCONTROLLED_SHARE_COUNTS_ONLY_MUTANT_DESCENDANTS_A4F94F3A")}
+	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"ending_progress":_state.ending_progress.get("rows", []).duplicate(true),"victory":_state.victory.duplicate(true),"population_evidence":"configured_game_population","metric_explanation":DeskLocalization.source("LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087"),"autonomy_explanation":DeskLocalization.source("LOC_THE_UNCONTROLLED_SHARE_COUNTS_ONLY_MUTANT_DESCENDANTS_A4F94F3A")}
 
 func payload() -> Dictionary:
 	return _state.duplicate(true)
@@ -406,11 +442,8 @@ func restore(data: Dictionary, variants: Array, hour: int) -> PackedStringArray:
 	var errors := validate_payload(data,variants,hour)
 	if errors.is_empty():
 		_state = data.duplicate(true)
-		_state.victory = {}
 		_monitor_previous_scores.clear()
 		_fitness_cache.clear()
-		_populations.clear()
-		for row: Dictionary in _state.world: _populations[str(row.id)] = int(row.population)
 	return errors
 
 func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStringArray:
@@ -419,28 +452,34 @@ func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStrin
 		if not variant is Dictionary or not variant.has_all(["id","family_id","parent_ids","origin_ids","creator","controlled","owned","text"]) or not variant.id is String or not variant.family_id is String or not variant.creator is String or not variant.text is String or not variant.parent_ids is Array or not variant.origin_ids is Array or not variant.controlled is bool or not variant.owned is bool: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_VERSION_FIELDS_OR_TYPES_976AE41C"))
 		elif not _number(variant.get("semantic_distance")) or float(variant.semantic_distance) < 0.0 or float(variant.semantic_distance) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SEMANTIC_DRIFT_8C39ABE4"))
 	if not errors.is_empty(): return errors
-	if not data.has_all(["competition_version","policy_signature","world_seed","world","countries","registry","hour","active_seconds","hour_credit","equilibrium_hours","equilibrium_candidate_hour","equilibrium_ranges","autonomous_hours","previous_shares","victory"]) or data.get("competition_version") != 1 or data.get("policy_signature") != rules.signature(): return PackedStringArray([DeskLocalization.source("LOC_COMPETITION_SAVE_RULES_MISMATCH_E5C4836F")])
-	for key in ["world_seed","hour","equilibrium_hours","autonomous_hours"]:
+	if not data.has_all(["competition_version","policy_signature","world_seed","world","populations","countries","registry","hour","active_seconds","hour_credit","ending_evaluated_hour","equilibrium_hours","equilibrium_candidate_hour","equilibrium_ranges","autonomous_hours","previous_shares","ending_progress","victory"]) or data.get("competition_version") != 1 or data.get("policy_signature") != rules.signature(): return PackedStringArray([DeskLocalization.source("LOC_COMPETITION_SAVE_RULES_MISMATCH_E5C4836F")])
+	for key in ["world_seed","hour","ending_evaluated_hour","equilibrium_hours","autonomous_hours"]:
 		if not _integer(data[key]) or int(data[key]) < 0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SAVE_INTEGER_572FEC0C")+key)
 	if not _integer(data.equilibrium_candidate_hour) or int(data.equilibrium_candidate_hour) < -1: errors.append(DeskLocalization.source("LOC_INVALID_EQUILIBRIUM_WINDOW_START_TYPE_OR_RANGE_CECBB7B5"))
 	for key in ["active_seconds","hour_credit"]:
 		if not _number(data[key]) or float(data[key]) < 0.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_TIME_4A384748"))
 	if _number(data.hour_credit) and float(data.hour_credit) >= 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_TIME_REMAINDER_C095A207"))
-	for key in ["countries","registry","previous_shares","equilibrium_ranges","victory"]:
+	for key in ["populations","countries","registry","previous_shares","equilibrium_ranges","ending_progress","victory"]:
 		if not data[key] is Dictionary: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SAVE_OBJECT_9BF60091")+key)
 	if not data.world is Array or int(data.get("hour",-1)) != hour: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_CLOCK_OR_COUNTRY_TYPES_37C5A372"))
 	if not errors.is_empty(): return errors
-	if int(data.equilibrium_hours) > hour or int(data.autonomous_hours) > hour: errors.append(DeskLocalization.source("LOC_COMPETITION_DURATION_CANNOT_EXCEED_RUNTIME_C26AEA8F"))
+	var evaluated_hour := int(data.ending_evaluated_hour)
+	if evaluated_hour > hour or int(data.equilibrium_hours) > evaluated_hour or int(data.autonomous_hours) > evaluated_hour: errors.append(DeskLocalization.source("LOC_COMPETITION_DURATION_CANNOT_EXCEED_RUNTIME_C26AEA8F"))
 	if _canonical(data.world) != _canonical(_reference_world(int(data.world_seed))): errors.append(DeskLocalization.source("LOC_COMPETITION_COUNTRY_POPULATION_OR_GEOGRAPHY_HAS_BEEN_806CDA1E"))
+	if data.populations.size() != rules.countries.size(): errors.append("Current population must cover every country")
+	for row: Dictionary in rules.countries:
+		var population: Variant = data.populations.get(str(row.id))
+		if not _integer(population) or int(population) < 0 or int(population) > int(row.population): errors.append("Invalid current country population: " + str(row.id))
+	if not errors.is_empty(): return errors
 	var ids := {}
 	for variant: Dictionary in variants:
 		if ids.has(variant.id) or str(variant.id).is_empty(): errors.append(DeskLocalization.source("LOC_COMPETITION_VERSION_IDENTITY_IS_EMPTY_OR_DUPLICATED_3448340A"))
 		ids[str(variant.id)] = variant
-	if not _integer(data.equilibrium_candidate_hour) or int(data.equilibrium_candidate_hour) < -1 or int(data.equilibrium_candidate_hour) > hour:
+	if not _integer(data.equilibrium_candidate_hour) or int(data.equilibrium_candidate_hour) < -1 or int(data.equilibrium_candidate_hour) > evaluated_hour:
 		errors.append(DeskLocalization.source("LOC_INVALID_EQUILIBRIUM_WINDOW_START_A44215B1"))
 	elif int(data.equilibrium_candidate_hour) == -1:
-		if int(data.equilibrium_hours) != 0: errors.append(DeskLocalization.source("LOC_AN_INACTIVE_EQUILIBRIUM_WINDOW_CANNOT_ACCUMULATE_TIME_46053AEC"))
-	elif hour-int(data.equilibrium_candidate_hour) != int(data.equilibrium_hours): errors.append(DeskLocalization.source("LOC_ACCUMULATED_EQUILIBRIUM_TIME_DOES_NOT_MATCH_THE_4FCBB4A2"))
+		if int(data.equilibrium_hours) != 0 or not data.equilibrium_ranges.is_empty(): errors.append(DeskLocalization.source("LOC_AN_INACTIVE_EQUILIBRIUM_WINDOW_CANNOT_ACCUMULATE_TIME_46053AEC"))
+	elif evaluated_hour-int(data.equilibrium_candidate_hour) != int(data.equilibrium_hours): errors.append(DeskLocalization.source("LOC_ACCUMULATED_EQUILIBRIUM_TIME_DOES_NOT_MATCH_THE_4FCBB4A2"))
 	for id in data.equilibrium_ranges:
 		var bounds: Variant = data.equilibrium_ranges[id]
 		if id not in ["@lineage","@competitors"] and not ids.has(id): errors.append(DeskLocalization.source("LOC_EQUILIBRIUM_WINDOW_CONTAINS_AN_UNKNOWN_VERSION_F61D082A"))
@@ -453,6 +492,25 @@ func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStrin
 		if not ids.has(id) or not _number(share) or float(share) < 0.0 or float(share) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_HISTORICAL_COMPETITION_SHARES_47A0DDB2"))
 		else: previous_total += float(share)
 	if previous_total > 1.000000000001: errors.append(DeskLocalization.source("LOC_HISTORICAL_COMPETITION_SHARES_ARE_NOT_CONSERVED_AFF62254"))
+	if evaluated_hour == 0 and (not data.previous_shares.is_empty() or int(data.equilibrium_candidate_hour) != -1 or int(data.autonomous_hours) != 0): errors.append("An unevaluated run cannot contain ending progress")
+	if not errors.is_empty(): return errors
+	var previous_lineage := 0.0
+	var previous_mutants := 0.0
+	var previous_controlled_mutants := 0.0
+	for id: String in data.previous_shares:
+		if not ids[id].origin_ids.is_empty(): previous_lineage += float(data.previous_shares[id])
+		var variant: Dictionary = ids[id]
+		if not variant.origin_ids.is_empty() and not variant.parent_ids.is_empty() and not str(variant.get("source_event", "")).is_empty() and str(variant.creator) != "player":
+			previous_mutants += float(data.previous_shares[id])
+			if variant.controlled: previous_controlled_mutants += float(data.previous_shares[id])
+	var previous_competitors := maxf(0.0, previous_total - previous_lineage)
+	if int(data.autonomous_hours) > 0 and (previous_mutants + 0.000000000001 < rules.autonomous_min_share or previous_controlled_mutants > 0.0): errors.append("Autonomous survival requires an uncontrolled mutant population")
+	if int(data.equilibrium_candidate_hour) >= 0:
+		if previous_lineage + 0.000000000001 < rules.equilibrium_min_side_share or previous_competitors + 0.000000000001 < rules.equilibrium_min_side_share: errors.append("An equilibrium window requires both sides to be present")
+		for id: String in data.equilibrium_ranges:
+			var share := previous_lineage if id == "@lineage" else (previous_competitors if id == "@competitors" else float(data.previous_shares.get(id, 0.0)))
+			var bounds: Dictionary = data.equilibrium_ranges[id]
+			if share < float(bounds.min) - 0.000000000001 or share > float(bounds.max) + 0.000000000001: errors.append("Equilibrium ranges must contain the last evaluated shares")
 	if data.registry.size() != ids.size() or data.countries.size() != rules.countries.size(): errors.append(DeskLocalization.source("LOC_INCORRECT_COMPETITION_VERSION_OR_COUNTRY_COUNT_1EB4B504"))
 	for id in data.registry:
 		var entry: Variant = data.registry[id]
@@ -490,28 +548,16 @@ func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStrin
 			for id in c[field]:
 				if not ids.has(id) or not _integer(c[field][id]) or int(c[field][id]) < 0: valid = false
 		if not valid: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_ALLOCATION_TYPE_OR_REFERENCE_CB369AD0")); continue
-		if _sum(c.adopted) > int(row.population) or _sum(c.exposed) > int(row.population) or _sum(c.attention) > floori(int(row.population)*rules.attention_fraction): errors.append(DeskLocalization.source("LOC_COMPETITION_POPULATION_OR_ATTENTION_IS_NOT_CONSERVED_4A83A0A6"))
+		var population := int(data.populations[str(row.id)])
+		if _sum(c.adopted) > population or _sum(c.exposed) > population or _sum(c.attention) > floori(population*rules.attention_fraction): errors.append(DeskLocalization.source("LOC_COMPETITION_POPULATION_OR_ATTENTION_IS_NOT_CONSERVED_4A83A0A6"))
 		for id in c.adopted:
 			if int(c.adopted[id]) > int(c.exposed[id]): errors.append(DeskLocalization.source("LOC_ADOPTION_EXCEEDS_EXPOSURE_0A1A8E38"))
 	if not errors.is_empty(): return errors
-	if not data.victory.is_empty():
-		var v: Dictionary = data.victory
-		if not v.has_all(["id","eligible_ids","hour","owned_share","lineage_share","escaped_share","mutant_share","mutation_control_ratio","distinct_variants","equilibrium_hours","autonomous_hours"]) or not v.id is String or not v.eligible_ids is Array: return PackedStringArray([DeskLocalization.source("LOC_INVALID_VICTORY_RECORD_FIELDS_24269A0D")])
-		for key in ["hour","distinct_variants","equilibrium_hours","autonomous_hours"]:
-			if not _integer(v[key]) or int(v[key]) < 0: errors.append(DeskLocalization.source("LOC_INVALID_VICTORY_RECORD_INTEGER_F78EABDD"))
-		for key in ["owned_share","lineage_share","escaped_share","mutant_share","mutation_control_ratio"]:
-			if not _number(v[key]) or float(v[key]) < 0.0 or float(v[key]) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_VICTORY_RECORD_SHARE_CA8D53A4"))
-		if not errors.is_empty(): return errors
-		if int(v.hour) != hour or int(v.equilibrium_hours) != int(data.equilibrium_hours) or int(v.autonomous_hours) != int(data.autonomous_hours): errors.append(DeskLocalization.source("LOC_VICTORY_RECORD_CLOCK_MISMATCH_796E3FFC"))
-		var verifier: RefCounted = get_script().new(catalog)
-		verifier._state = data.duplicate(true)
-		var view: Dictionary = verifier.snapshot(variants,false)
-		var actual: Dictionary = _legacy_eligibility(view,hour,int(data.autonomous_hours),int(data.equilibrium_hours))
-		if v.eligible_ids.is_empty() or v.id != v.eligible_ids[0] or int(v.distinct_variants) != int(actual.distinct): errors.append(DeskLocalization.source("LOC_VICTORY_CONDITIONS_CONFLICT_WITH_ACTUAL_VERSIONS_7109142A"))
-		var seen := {}
-		for id: Variant in v.eligible_ids:
-			if not id is String or id not in actual.ids or seen.has(id): errors.append(DeskLocalization.source("LOC_VICTORY_CONDITIONS_WERE_NOT_ACHIEVED_THROUGH_ACTUAL_8AE0D6C4"))
-			seen[id] = true
+	var verifier: RefCounted = get_script().new(catalog)
+	verifier._state = data.duplicate(true)
+	errors.append_array(IndependentEndings.validate_state(data.ending_progress, variants, verifier, hour))
+	if not data.ending_progress.is_empty() and int(data.ending_progress.get("last_hour", -1)) != evaluated_hour: errors.append("Ending progress and competition evaluation clocks must match")
+	if errors.is_empty() and not data.victory.is_empty(): errors.append_array(IndependentEndings.validate_result(data.victory, data.ending_progress, variants, verifier, hour))
 	return errors
 
 func _number(value: Variant) -> bool:
@@ -586,8 +632,8 @@ func counterfactual_capability(id: String, candidate_profile: Dictionary) -> flo
 	var population := 0
 	var budget := 0
 	for row: Dictionary in _state.world:
-		population += int(row.population)
-		budget += floori(int(row.population) * rules.attention_fraction)
+		population += _population(str(row.id))
+		budget += floori(_population(str(row.id)) * rules.attention_fraction)
 	var capability := 0.0
 	for row: Dictionary in _state.world:
 		var cid := str(row.id)
