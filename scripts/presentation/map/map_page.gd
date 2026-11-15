@@ -224,7 +224,7 @@ func _update_hover() -> void:
 	var rows := [{"tags":tags}]
 	hover_note.set_width(360)
 	hover_note.set_content(tr(country.official_name_key), rows,
-		tr(country.description_key)+"\n\n"+tr(country.culture_key),
+		tr(country.description_key),
 		{"kind":"language", "badge":tr("MAP_POPULATION") % (_country_population(str(country.id))/1000000.0),
 		"note":tr(str(country.description_key) + "_NOTE")})
 
