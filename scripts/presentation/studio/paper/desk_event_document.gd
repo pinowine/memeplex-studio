@@ -115,36 +115,62 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 			"commentary": _add_comment(block)
 
 func _add_metadata(block: Dictionary) -> void:
-	var types := HFlowContainer.new()
-	types.name = "EventTypes"
-	types.add_theme_constant_override("h_separation", 16)
-	types.add_theme_constant_override("v_separation", 4)
-	_header.add_child(types)
-	for field: Dictionary in block.get("event_fields", []):
-		var event_type := _body(14, Style.SECTION_TEAL)
-		event_type.name = "EventType"
-		event_type.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-		event_type.custom_minimum_size.x = minf(200, ReceiptHover.BODY_FONT.get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 2)
-		types.add_child(event_type)
-		_write_field(event_type, field, 0)
-		_bind_fields(event_type, [field])
 	var row := HFlowContainer.new()
-	row.name = "Dateline"
-	row.add_theme_constant_override("h_separation", 16)
-	row.add_theme_constant_override("v_separation", 4)
+	row.name = "MetadataLine"
+	row.add_theme_constant_override("h_separation", 12)
+	row.add_theme_constant_override("v_separation", 6)
 	_header.add_child(row)
+	var types := HBoxContainer.new()
+	types.name = "EventTypes"
+	types.add_theme_constant_override("separation", 0)
+	types.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(types)
+	var fields: Array = block.get("event_fields", [])
+	for index in fields.size():
+		var field: Dictionary = fields[index]
+		var tag := PanelContainer.new()
+		tag.name = "EventPrimary" if index == 0 else "EventSubtype"
+		tag.add_theme_stylebox_override("panel", _tag_style(index > 0))
+		types.add_child(tag)
+		tag.add_child(_compact_field(field, "EventType", 11, Style.PAPER if index == 0 else Style.SECTION_TEAL))
+	var dateline := HBoxContainer.new()
+	dateline.name = "CountryDate"
+	dateline.alignment = BoxContainer.ALIGNMENT_END
+	dateline.add_theme_constant_override("separation", 8)
+	dateline.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	dateline.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(dateline)
 	var country := str(block.get("country_title", ""))
 	if not country.is_empty():
-		var location := _label(country, 12, Style.SECONDARY_INK)
+		var field: Dictionary = block.get("country_field", {})
+		var location: Control = _compact_field(field, "Country", 11) if not field.is_empty() else _label(country, 11, Style.SECONDARY_INK)
 		location.name = "Country"
-		location.autowrap_mode = TextServer.AUTOWRAP_OFF
-		row.add_child(location)
-	var timestamp := _label(str(block.get("timestamp", "")), 12, Style.SECONDARY_INK)
+		if location is Label: location.autowrap_mode = TextServer.AUTOWRAP_OFF
+		dateline.add_child(location)
+	var timestamp := _label(str(block.get("timestamp", "")), 11, Style.SECONDARY_INK)
 	timestamp.name = "EventDate"
 	timestamp.autowrap_mode = TextServer.AUTOWRAP_OFF
-	timestamp.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	row.add_child(timestamp)
+	timestamp.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	dateline.add_child(timestamp)
 	_add_rule(_header)
+
+func _tag_style(outlined: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color.TRANSPARENT if outlined else Style.SECTION_TEAL
+	style.border_color = Style.SECTION_TEAL
+	style.set_border_width_all(1)
+	style.set_content_margin_all(4)
+	return style
+
+func _compact_field(field: Dictionary, node_name: String, font_size: int, ink: Color = Color.TRANSPARENT) -> RichTextLabel:
+	var label := _body(font_size, FIELD_COLORS[str(field.field_kind)] if ink.a == 0.0 else ink)
+	label.name = node_name
+	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	label.custom_minimum_size.x = ceilf(ReceiptHover.BODY_FONT.get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x) + 2
+	_write_field(label, field, 0, ink)
+	_bind_fields(label, [field])
+	return label
 
 func _add_rule(container: VBoxContainer = null) -> HSeparator:
 	var rule := HSeparator.new()
@@ -276,12 +302,12 @@ func _write_impact_field(label: RichTextLabel, field: Dictionary, index: int) ->
 		rendered.text = str(field.text).strip_edges(true, false)
 	_write_field(label, rendered, index)
 
-func _write_field(label: RichTextLabel, field: Dictionary, index: int) -> void:
+func _write_field(label: RichTextLabel, field: Dictionary, index: int, ink: Color = Color.TRANSPARENT) -> void:
 	var annotated := not str(field.get("tooltip_body", "")).is_empty()
 	var linked := not str(field.get("variant_id", "")).is_empty()
 	if annotated or linked:
 		label.push_meta(index, RichTextLabel.META_UNDERLINE_ALWAYS if linked else RichTextLabel.META_UNDERLINE_NEVER)
-		label.push_color(FIELD_COLORS[str(field.field_kind)])
+		label.push_color(FIELD_COLORS[str(field.field_kind)] if ink.a == 0.0 else ink)
 	_write_content(label, str(field.text))
 	if annotated or linked:
 		label.pop()
@@ -293,6 +319,7 @@ func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 		if str(field.get("tooltip_body", "")).is_empty():
 			_hide_hover()
 			return
+		_hover.set_width(float(field.get("tooltip_width", ReceiptHover.DEFAULT_WIDTH)))
 		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
 		_hover.show()
 		_hover.fit_at(get_viewport().get_mouse_position(), get_viewport().get_visible_rect()))

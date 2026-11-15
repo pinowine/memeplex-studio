@@ -417,6 +417,9 @@ func _refresh_translation(reset_scroll: bool) -> void:
 			for key: String in ["text", "tooltip_title", "tooltip_body", "tooltip_note"]:
 				if field.has(key): field[key] = _localized_block(str(field[key]))
 			event_fields.append(field)
+		var country_field: Dictionary = section.get("country_field", {}).duplicate(true)
+		for key: String in ["text", "tooltip_title", "tooltip_body", "tooltip_note"]:
+			if country_field.has(key): country_field[key] = _localized_block(str(country_field[key]))
 		if not segments.is_empty():
 			var pieces := PackedStringArray()
 			for segment: Dictionary in segments: pieces.append(str(segment.text))
@@ -431,7 +434,7 @@ func _refresh_translation(reset_scroll: bool) -> void:
 			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source")),
 				"event_type":_localized_block(str(section.get("event_type", ""))), "event_type_help":_localized_block(str(section.get("event_type_help", ""))),
 				"event_type_note":_localized_block(str(section.get("event_type_note", ""))), "country_title":_localized_block(str(section.get("country_title", ""))),
-				"timestamp":_localized_block(str(section.get("timestamp", ""))), "event_fields":event_fields, "segments":segments})
+				"timestamp":_localized_block(str(section.get("timestamp", ""))), "event_fields":event_fields, "country_field":country_field, "segments":segments})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""

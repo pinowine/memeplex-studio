@@ -1235,6 +1235,7 @@ func _component_details() -> Dictionary:
 				var date := Time.get_datetime_dict_from_unix_time(floori(seconds))
 				var timestamp := "%04d-%02d-%02d" % [date.year, date.month, date.day]
 				details.sections[0].timestamp = timestamp
+				details.sections[0].country_field = _event_country_field(details.event_record)
 				details.sections[0].body = DeskLocalization.source_join("\n", [details.sections[0].event_type, details.sections[0].country_title, timestamp])
 			var segments := EventImpactText.build(details.event_record, _page.catalog, _page.simulation.variants)
 			if not segments.is_empty():
@@ -1252,6 +1253,16 @@ func _component_details() -> Dictionary:
 		if mode == "archive": details.erase("contacts")
 		if mode != "phonebook": details.erase("contacts")
 		return details
+	return {}
+
+func _event_country_field(record: Dictionary) -> Dictionary:
+	var country_id := str(record.get("country_id", ""))
+	if country_id.is_empty(): return {}
+	for country: MapCountryDefinition in _page.atlas.settings.countries:
+		if str(country.id) != country_id: continue
+		return {"text":str(record.country_title), "tooltip_title":str(country.official_name_key),
+			"tooltip_body":DeskLocalization.source_join("\n\n", [str(country.description_key), str(country.culture_key)]),
+			"tooltip_note":str(country.description_key) + "_NOTE", "field_kind":"language", "tooltip_width":360.0}
 	return {}
 
 func _show_component_details() -> void:
