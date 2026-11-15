@@ -726,8 +726,11 @@ func snapshot(variants: Array = []) -> Dictionary:
 		var value: Variant = _state[field]
 		result[field] = value.duplicate(true) if value is Dictionary or value is Array else value
 	var lineage: Array[Dictionary] = []
-	for variant: Dictionary in variants:
-		lineage.append({"id":variant.id, "family_id":variant.family_id, "parent_ids":variant.parent_ids.duplicate(),
+	for raw: Dictionary in variants:
+		if bool(raw.get("retired", false)): continue
+		var variant := raw.duplicate(true)
+		variant.merge(raw.get("effective_content", {}), true)
+		lineage.append({"id":variant.id, "meme_id":str(raw.get("meme_id", raw.id)), "parent_ids":[],
 			"origin_ids":variant.get("origin_ids", []).duplicate(), "source_presets":variant.get("source_presets", []).duplicate(true),
 			"kernel_id":variant.kernel_id, "module_id":str(rules.find("modules","module_" + str(variant.kernel_id)).get("id","")), "creator":variant.creator,
 			"owned":variant.owned, "controlled":variant.controlled, "text":variant.text, "semantic_distance":variant.semantic_distance,

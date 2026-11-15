@@ -570,10 +570,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 clip_contents = true
 
-[node name="家族谱系" type="VBoxContainer" parent="History/Column/Tabs"]
+[node name="模因记录" type="VBoxContainer" parent="History/Column/Tabs"]
 layout_mode = 2
 
-[node name="Lineage" type="ItemList" parent="History/Column/Tabs/家族谱系"]
+[node name="Lineage" type="ItemList" parent="History/Column/Tabs/模因记录"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

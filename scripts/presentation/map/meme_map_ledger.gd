@@ -1,8 +1,9 @@
 extends Control
 
 signal variant_selected(id: String)
-signal country_focus_requested(country_id: String)
 signal details_changed(id: String, expanded: bool)
+signal variant_hovered(id: String)
+signal country_hovered(variant_id: String, country_id: String)
 
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
@@ -43,8 +44,16 @@ class LegendBacking extends Control:
 	func _draw() -> void:
 		draw_circle(Vector2(size.x * 0.5, minf(size.y, 24.0) * 0.5), 8.0, Style.PAPER)
 
+var _panel_collapsed := false
+var _pinned: VBoxContainer
+var _header_icon: Control
+var _collapsed_summary: Button
+var _collapse_button: Button
+var _collapse_mark: DisclosureMark
+var _header_rule: HSeparator
 var _details_expanded := false
 var _selected := ""
+var _selected_meme_id := ""
 var _seed := -1
 var _locale := ""
 var _snapshot: Dictionary = {}
@@ -80,17 +89,42 @@ func _ready() -> void:
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 8)
 	column.add_child(header)
-	header.add_child(HeaderIcon.new())
+	_header_icon = HeaderIcon.new()
+	header.add_child(_header_icon)
 	_heading = _label("", 18)
 	_heading.add_theme_font_override("font", Handwriting.SEMIBOLD_FONT)
 	_heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_heading)
+	_collapsed_summary = _button("")
+	_collapsed_summary.name = "CollapsedOwnMeme"
+	_collapsed_summary.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_collapsed_summary.clip_text = true
+	_collapsed_summary.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_collapsed_summary.pressed.connect(func(): _set_panel_collapsed(false))
+	_collapsed_summary.mouse_entered.connect(func(): variant_hovered.emit(_own_id()))
+	_collapsed_summary.mouse_exited.connect(func(): variant_hovered.emit(""))
+	header.add_child(_collapsed_summary)
+	_collapse_button = _button("")
+	_collapse_button.name = "ToggleMonitor"
+	_collapse_button.custom_minimum_size = Vector2(40, 40)
+	_collapse_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	_collapse_button.pressed.connect(func(): _set_panel_collapsed(not _panel_collapsed))
+	header.add_child(_collapse_button)
+	_collapse_mark = DisclosureMark.new()
+	_collapse_mark.scale = Vector2(1.8, 1.8)
+	_collapse_mark.position = Vector2(6, 6)
+	_collapse_button.add_child(_collapse_mark)
 	var rule := HSeparator.new()
 	rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var line := StyleBoxLine.new()
 	line.color = Style.EDGE
 	rule.add_theme_stylebox_override("separator", line)
 	column.add_child(rule)
+	_header_rule = rule
+	_pinned = VBoxContainer.new()
+	_pinned.name = "PinnedOwnMemes"
+	_pinned.add_theme_constant_override("separation", 8)
+	column.add_child(_pinned)
 	_scroll = ScrollContainer.new()
 	_scroll.name = "MemeLedgerScroll"
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -100,6 +134,7 @@ func _ready() -> void:
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_list.add_theme_constant_override("separation", 8)
 	_scroll.add_child(_list)
+	_pinned.reparent(_list)
 	_empty = _label(DeskLocalization.text("MAP_MEME_EMPTY"), 14)
 	_empty.add_theme_color_override("font_color", Style.SECONDARY_INK)
 	column.add_child(_empty)
@@ -115,6 +150,7 @@ func configure(catalog: MemeDemoCatalog) -> void:
 		_country_names[str(country.id)] = str(country.short_name_key)
 
 func sync_state(snapshot: Dictionary, colors: Dictionary) -> void:
+	var previous_meme := _selected_meme_id
 	_snapshot = snapshot
 	_colors = colors
 	var world: Dictionary = snapshot.world_competition
@@ -123,19 +159,26 @@ func sync_state(snapshot: Dictionary, colors: Dictionary) -> void:
 		_seed = seed_value
 		_order.clear()
 		_selected = ""
+		_selected_meme_id = ""
+		previous_meme = ""
 		_details_expanded = false
 		_candidates.clear()
 	_variants = world.variants_by_id
 	if not _variants.has(_selected):
 		_selected = ""
-		_details_expanded = false
+		for id: String in _variants:
+			if str(_variants[id].meme_id) == previous_meme:
+				_selected = id
+				break
+		if _selected.is_empty(): _details_expanded = false
+	_selected_meme_id = str(_variants[_selected].meme_id) if _variants.has(_selected) else ""
 	for id in _candidates:
 		if not _variants.has(id):
 			_candidates.clear()
 			break
 	var previous_order := _order.duplicate()
 	_sort_order()
-	var changed := _rows.size() != _variants.size()
+	var changed := _rows.size() != _order.size()
 	for id in _order:
 		if not _rows.has(id): changed = true
 	var locale_changed := _locale != TranslationServer.get_locale()
@@ -153,7 +196,11 @@ func sync_state(snapshot: Dictionary, colors: Dictionary) -> void:
 func set_selected_variant(id: String) -> void:
 	if _selected == id: return
 	_selected = id
+	_selected_meme_id = str(_variants[id].meme_id) if _variants.has(id) else ""
 	_details_expanded = not id.is_empty()
+	if not id.is_empty() and _variants.has(id):
+		_panel_collapsed = false
+		_refresh_header()
 	if not _rows.is_empty():
 		_update_rows()
 		_reveal_selected.call_deferred()
@@ -181,6 +228,7 @@ func handles_point(viewport_point: Vector2) -> bool:
 
 func hover_info(viewport_point: Vector2) -> Dictionary:
 	if not handles_point(viewport_point) or not _contains_point(_scroll, viewport_point): return {}
+	if _panel_collapsed: return {}
 	var controls: Array[Control] = []
 	for id in _order:
 		var row: Dictionary = _rows[id]
@@ -207,10 +255,12 @@ func inspection() -> Dictionary:
 	var own_ids: Array[String] = []
 	for id in _order:
 		if _is_own(_variants[id]): own_ids.append(id)
-	return {"selected_variant":_selected, "details_expanded":_details_expanded, "variant_count":_variants.size(),
+	return {"selected_variant":_selected, "details_expanded":_details_expanded, "meme_count":_order.size(),
 		"order":_order.duplicate(), "candidates":_candidates.duplicate(), "panel_width":panel_width(),
 		"panel_rect":_panel.get_global_rect(), "own_variant_ids":own_ids,
-		"sort":"control_power", "row_count":_rows.size(),
+		"sort":"own_then_spread", "row_count":_rows.size(), "panel_collapsed":_panel_collapsed,
+		"heading":_heading.text, "independent_meme_ids":_order.map(func(id: String): return str(_variants[id].meme_id)),
+		"pinned_variant_ids":_pinned_ids(),
 		"scroll_vertical":_scroll.scroll_vertical, "selected_row":selected_row}
 
 func _column_width() -> float:
@@ -220,17 +270,26 @@ func _layout() -> void:
 	if _panel == null: return
 	var width := _column_width()
 	var content_height := _panel.get_combined_minimum_size().y
-	content_height += _list.get_combined_minimum_size().y - _scroll.get_combined_minimum_size().y
-	var desired_height := maxf(200.0, content_height)
+	if _scroll.visible: content_height += _list.get_combined_minimum_size().y - _scroll.get_combined_minimum_size().y
+	var desired_height := maxf(72.0 if _panel_collapsed else 120.0, content_height)
 	var height := minf(maxf(1.0, size.y - 64.0), desired_height)
 	_panel.position = Vector2(size.x - width - 24.0, 32.0)
 	_panel.size = Vector2(width, height)
 
 func _refresh_header() -> void:
-	var title := DeskLocalization.text("MAP_MEME_COUNT") % _variants.size()
-	_heading.text = title
-	_empty.visible = _variants.is_empty()
-	_scroll.visible = not _variants.is_empty()
+	_heading.text = DeskLocalization.text("MAP_MEME_MONITOR")
+	_heading.visible = not _panel_collapsed
+	_header_icon.visible = not _panel_collapsed
+	_header_rule.visible = not _panel_collapsed
+	_pinned.visible = not _panel_collapsed
+	_collapsed_summary.visible = _panel_collapsed
+	var own := _own_id()
+	_collapsed_summary.text = "● " + Details.short_name(_snapshot, _catalog, own) if not own.is_empty() else DeskLocalization.text("MAP_MEME_EMPTY")
+	_collapse_button.set_help(DeskLocalization.text("MAP_MEME_EXPAND" if _panel_collapsed else "MAP_MEME_COLLAPSE"), "")
+	_collapse_mark.expanded = not _panel_collapsed
+	_collapse_mark.queue_redraw()
+	_empty.visible = _variants.is_empty() and not _panel_collapsed
+	_scroll.visible = not _variants.is_empty() and not _panel_collapsed
 	_layout()
 
 func _sort_order() -> void:
@@ -239,7 +298,7 @@ func _sort_order() -> void:
 	var lineage: Array = _snapshot.get("lineage", [])
 	for index in lineage.size():
 		var id := str(lineage[index].id)
-		_order.append(id)
+		if _variants.has(id) and id not in _order: _order.append(id)
 		newest[id] = index
 	_order.sort_custom(func(a: String, b: String):
 		var own_a := _is_own(_variants[a])
@@ -254,26 +313,40 @@ func _is_own(variant: Dictionary) -> bool:
 	return bool(variant.controlled) and str(variant.creator) == "player"
 
 func _reorder_rows() -> void:
-	for index in _order.size(): _list.move_child(_rows[_order[index]].column, index)
+	var others := 1
+	var own := 0
+	for id in _order:
+		var row: Dictionary = _rows[id]
+		if bool(row.own):
+			_pinned.move_child(row.column, own)
+			own += 1
+		else:
+			_list.move_child(row.column, others)
+			others += 1
 
 func _rebuild_rows() -> void:
-	for child in _list.get_children():
-		_list.remove_child(child)
-		child.queue_free()
+	for parent: Control in [_pinned, _list]:
+		for child in parent.get_children():
+			if child == _pinned: continue
+			parent.remove_child(child)
+			child.queue_free()
 	_rows.clear()
 	for id in _order:
 		var frame := PanelContainer.new()
-		frame.name = "Version_" + id
+		frame.name = "Meme_" + str(_variants[id].meme_id)
 		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_list.add_child(frame)
+		if _is_own(_variants[id]): _pinned.add_child(frame)
+		else: _list.add_child(frame)
 		var column := VBoxContainer.new()
 		column.add_theme_constant_override("separation", 8)
 		frame.add_child(column)
 		var button := _button("")
-		button.name = "SelectVersion"
+		button.name = "SelectMeme"
 		button.custom_minimum_size.y = 56
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.pressed.connect(_select.bind(id))
+		button.mouse_entered.connect(func(): variant_hovered.emit(id))
+		button.mouse_exited.connect(func(): variant_hovered.emit(""))
 		column.add_child(button)
 		var margin := MarginContainer.new()
 		margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -312,9 +385,10 @@ func _rebuild_rows() -> void:
 		count.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		line.add_child(count)
 		var disclosure := _button("")
-		disclosure.name = "ToggleVersionDetails"
+		disclosure.name = "ToggleMemeDetails"
 		disclosure.custom_minimum_size = Vector2(24, 24)
 		disclosure.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		disclosure.mouse_filter = Control.MOUSE_FILTER_STOP
 		disclosure.pressed.connect(_toggle_details.bind(id))
 		line.add_child(disclosure)
 		var mark := DisclosureMark.new()
@@ -328,7 +402,7 @@ func _rebuild_rows() -> void:
 		details.add_theme_constant_override("separation", 8)
 		column.add_child(details)
 		var detail_view := DetailView.new()
-		detail_view.country_selected.connect(func(country_id: String): country_focus_requested.emit(country_id))
+		detail_view.country_hovered.connect(func(country_id: String): country_hovered.emit(id if not country_id.is_empty() else "", country_id))
 		details.add_child(detail_view)
 		_rows[id] = {"column":frame, "button":button, "title":title, "count":count, "dot":dot,
 			"origin":origin, "details":details, "detail_view":detail_view, "disclosure":disclosure,
@@ -347,22 +421,25 @@ func _update_rows() -> void:
 		var name := Details.short_name(_snapshot, _catalog, id)
 		row.title.text = name
 		row.origin.text = _country_title(str(variant.origin_country))
-		row.count.text = _number(int(variant.adopted))
+		row.count.text = ""
+		row.count.visible = false
 		row.dot.text = "●" if int(variant.adopted) > 0 else "○"
-		var color: Variant = _colors.get(str(variant.family_id), Style.INK)
+		var color: Variant = _colors.get(str(variant.meme_id), Style.INK)
 		row.dot.add_theme_color_override("font_color", Color(color) if color is String else color)
 		row.button.set_help(name, DeskLocalization.text("MM_HELP_NAME"), "source")
 		row.title.set_help(name, DeskLocalization.text("MM_HELP_NAME"), "source")
 		row.origin.set_help(str(row.origin.text), DeskLocalization.text("MM_HELP_ORIGIN"), "group")
-		row.count.set_help(str(row.count.text), DeskLocalization.text("MM_HELP_ADOPTION"), "metric")
+		row.count.set_help("", "")
 		row.dot.set_help(name, DeskLocalization.text("MM_HELP_LEGEND"), "source")
 		row.disclosure.set_help(name, DeskLocalization.text("MM_HELP_NAME"), "source")
+		row.disclosure.mouse_filter = Control.MOUSE_FILTER_STOP
 		row.details.visible = selected and _details_expanded
 		row.mark.expanded = selected and _details_expanded
 		row.mark.queue_redraw()
 		row.title.add_theme_color_override("font_color", Style.PAPER if bool(row.own) else (Style.SECTION_TEAL if selected else Style.INK))
 		_measure_row(id)
 		if selected and _details_expanded: row.detail_view.set_details(Details.build(_snapshot, _catalog, id))
+	_layout()
 
 func _row_frame() -> StyleBoxFlat:
 	var frame := StyleBoxFlat.new()
@@ -425,7 +502,7 @@ func _toggle_details(id: String) -> void:
 		_select(id)
 		return
 	_set_details_expanded(not _details_expanded)
-	variant_selected.emit(id)
+	# Detail disclosure does not select or recenter the map.
 
 func _set_details_expanded(value: bool) -> void:
 	if _details_expanded == value: return
@@ -437,12 +514,12 @@ func _reveal_selected() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	if _rows.has(_selected) and (_candidates.is_empty() or _selected in _candidates):
-		_scroll.scroll_vertical = int(_rows[_selected].column.position.y)
+		_scroll.ensure_control_visible(_rows[_selected].button)
 
 func _reveal_row(id: String) -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
-	if _rows.has(id): _scroll.scroll_vertical = int(_rows[id].column.position.y)
+	if _rows.has(id): _scroll.ensure_control_visible(_rows[id].button)
 
 func _country_title(id: String) -> String:
 	return tr(str(_country_names[id]))
@@ -477,3 +554,23 @@ func _number(value: int) -> String:
 		if index > 0 and (digits.length() - index) % 3 == 0: result += ","
 		result += digits[index]
 	return result
+
+func _own_id() -> String:
+	var current := str(_snapshot.get("current_variant_id", ""))
+	if _variants.has(current) and _is_own(_variants[current]): return current
+	for id in _order:
+		if _is_own(_variants[id]): return id
+	return ""
+
+func _pinned_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for id in _order:
+		if _is_own(_variants[id]): ids.append(id)
+	return ids
+
+func _set_panel_collapsed(value: bool) -> void:
+	_panel_collapsed = value
+	variant_hovered.emit("")
+	country_hovered.emit("", "")
+	_refresh_header()
+	details_changed.emit(_selected, _details_expanded and not value)

@@ -40,7 +40,7 @@ theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="Paper/Scroll/Content"]
 layout_mode = 2
-text = "LOC_VICTORY_943874EC"
+text = "MM_ENDING_TITLE"
 theme_override_font_sizes/font_size = 32
 
 [node name="Reason" type="Label" parent="Paper/Scroll/Content"]

@@ -3,18 +3,21 @@ extends RefCounted
 const Generator = preload("res://scripts/gameplay/map/map_generator.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
+const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
 static var _geography_cache: Dictionary = {}
 var rules: MemeGameplayRules
 var catalog: MemeDemoCatalog
 var _state: Dictionary = {}
 var _fitness_cache: Dictionary = {}
 var _populations: Dictionary = {}
+var _monitor_previous_scores: Dictionary = {}
 
 func _init(content: MemeDemoCatalog = null) -> void:
 	catalog = content
 	if content != null: rules = content.gameplay_rules
 
 func reset(world: RefCounted = null) -> void:
+	_monitor_previous_scores.clear()
 	_fitness_cache.clear()
 	_state = {"competition_version":1,"policy_signature":rules.signature(),"world_seed":rules.reference_geometry_seed,"world":[],"countries":{},"registry":{},"hour":0,"active_seconds":0.0,"hour_credit":0.0,"equilibrium_hours":0,"equilibrium_candidate_hour":-1,"equilibrium_ranges":{},"autonomous_hours":0,"previous_shares":{},"victory":{}}
 	if world == null:
@@ -208,14 +211,33 @@ func _community_reuse(variant: Dictionary) -> float:
 	if not variant.get("flow_draft") is Dictionary:
 		return float(variant.get("reuse_factor",1.0)) if bool(variant.owned) else 1.0
 	var draft: Dictionary = variant.flow_draft
-	var source: Dictionary = _state.registry[str(variant.id)].profile
+	var entry: Dictionary = _state.registry[str(variant.id)]
+	var source: Dictionary = entry.get("effective_profile", entry.profile)
 	var required_slots := 0
 	for kernel: MemeDemoKernel in catalog.kernels:
 		if str(kernel.id) == str(draft.kernel_id): required_slots = kernel.required_slots.size()
 	return EffectRules.reuse_factor(str(draft.reuse_permission),draft.replaceable_slots.size(),required_slots,
 		float(source.remix_cost),float(source.context_dependency))
 
+func _monitor_scores(variants: Array) -> Dictionary:
+	var totals := {}
+	for variant: Dictionary in variants: totals[str(variant.id)] = {"adopted":0, "exposed":0, "attention":0}
+	var population := 0
+	var budget := 0
+	for row: Dictionary in _state.world:
+		population += int(row.population)
+		budget += floori(int(row.population) * rules.attention_fraction)
+		var country: Dictionary = _state.countries[str(row.id)]
+		for id: String in totals:
+			for field: String in ["adopted", "exposed", "attention"]:
+				totals[id][field] += int(country[field].get(id, 0))
+	var scores := {}
+	for id: String in totals: scores[id] = MonitorMetrics.spread(totals[id], population, budget)
+	return scores
+
 func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
+	variants = active_variants(variants)
+	_monitor_previous_scores = _monitor_scores(variants)
 	_state.hour = hour
 	var previous: Dictionary = _state.countries.duplicate(true)
 	var reuse_factors := {}
@@ -228,15 +250,16 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 		for variant: Dictionary in variants:
 			var id := str(variant.id)
 			var entry: Dictionary = _state.registry[id]
+			var live_profile: Dictionary = entry.get("effective_profile", entry.profile)
 			var own: float = float(previous[cid].adopted[id]) / population
 			var pressure := own
-			var travel: float = rules.network_contact_multiplier if "network" in entry.profile.get("skill_ids",[]) else 1.0
+			var travel: float = rules.network_contact_multiplier if "network" in live_profile.get("skill_ids",[]) else 1.0
 			for neighbor in row.contacts: pressure += float(previous[neighbor].adopted[id]) / float(_population(str(neighbor))) * float(row.contacts[neighbor]) * travel
 			if cid == str(entry.origin_country) and hour - int(entry.birth_hour) <= rules.seed_hours: pressure += rules.seed_pressure
 			if hour-int(entry.birth_hour) <= rules.seed_hours:
 				for parent_id in entry.parent_ids: pressure += float(previous[cid].adopted.get(parent_id,0))/population * rules.parent_relay
 			if not _fitness_cache.has(id): _fitness_cache[id] = {}
-			if not _fitness_cache[id].has(cid): _fitness_cache[id][cid] = fitness(entry.profile,cid)
+			if not _fitness_cache[id].has(cid): _fitness_cache[id][cid] = fitness(live_profile,cid)
 			var fit: Dictionary = _fitness_cache[id][cid]
 			fits[id] = fit.score
 			var age: int = hour - int(entry.birth_hour)
@@ -262,8 +285,13 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 			next_exposed[id] = maxi(int(next_adopted[id]),floori(lerpf(float(previous[cid].exposed[id]),exposure_target,rules.exposure_response)))
 		# Variants are disjoint; adoption is a subset of that variant's exposure.
 		if _sum(next_exposed) > population: next_exposed = _cap_exposure(next_exposed,next_adopted,population)
+		for registered_id: String in _state.registry:
+			if not next_adopted.has(registered_id):
+				next_adopted[registered_id] = 0
+				next_exposed[registered_id] = 0
+				allocation[registered_id] = 0
 		_state.countries[cid] = {"adopted":next_adopted,"exposed":next_exposed,"attention":allocation}
-	_update_victory(variants)
+	_state.victory = {}
 
 func _population(id: String) -> int:
 	return int(_populations[id])
@@ -296,35 +324,7 @@ func _cap_exposure(exposed: Dictionary,adopted: Dictionary,population: int) -> D
 	for id in exposed: exposed[id] = int(adopted[id]) + int(allocated[id])
 	return exposed
 
-func _update_victory(variants: Array) -> void:
-	var view := snapshot(variants,false)
-	var shares := {}
-	var values := {"@lineage":float(view.lineage_share),"@competitors":maxf(0.0,1.0-float(view.unadopted_share)-float(view.lineage_share))}
-	for row: Dictionary in view.variants:
-		shares[row.id] = row.share
-		if float(row.share) >= rules.equilibrium_variant_min_share or _state.equilibrium_ranges.has(row.id): values[row.id] = float(row.share)
-	var qualified: bool = float(values["@lineage"]) >= rules.equilibrium_min_side_share and float(values["@competitors"]) >= rules.equilibrium_min_side_share
-	var ranges: Dictionary = _state.equilibrium_ranges.duplicate(true)
-	var bounded := true
-	for id in values:
-		var previous: Dictionary = ranges.get(id,{"min":values[id],"max":values[id]})
-		ranges[id] = {"min":minf(float(previous.min),float(values[id])),"max":maxf(float(previous.max),float(values[id]))}
-		bounded = bounded and float(ranges[id].max)-float(ranges[id].min) <= rules.equilibrium_tolerance
-	if not qualified or int(_state.equilibrium_candidate_hour) < 0 or not bounded:
-		_state.equilibrium_candidate_hour = int(_state.hour) if qualified else -1
-		_state.equilibrium_ranges = {}
-		for id in values: _state.equilibrium_ranges[id] = {"min":values[id],"max":values[id]}
-		_state.equilibrium_hours = 0
-	else:
-		_state.equilibrium_ranges = ranges
-		_state.equilibrium_hours = int(_state.hour)-int(_state.equilibrium_candidate_hour)
-	_state.previous_shares = shares
-	var autonomous: bool = view.mutant_adopted > 0 and view.controlled_mutant_adopted == 0 and view.autonomous_mutant_adopted == view.mutant_adopted and view.mutant_share >= rules.autonomous_min_share
-	_state.autonomous_hours = int(_state.autonomous_hours)+1 if autonomous else 0
-	var eligibility := _eligibility(view,int(_state.hour),int(_state.autonomous_hours),int(_state.equilibrium_hours))
-	if not eligibility.ids.is_empty() and _state.victory.is_empty(): _state.victory = {"id":eligibility.ids[0],"eligible_ids":eligibility.ids,"hour":_state.hour,"owned_share":view.owned_share,"lineage_share":view.lineage_share,"escaped_share":view.escaped_share,"mutant_share":view.mutant_share,"mutation_control_ratio":float(view.autonomous_mutant_adopted)/maxf(1.0,view.mutant_adopted),"distinct_variants":eligibility.distinct,"equilibrium_hours":_state.equilibrium_hours,"autonomous_hours":_state.autonomous_hours}
-
-func _eligibility(view: Dictionary,hour: int,autonomous_hours: int,equilibrium_hours: int) -> Dictionary:
+func _legacy_eligibility(view: Dictionary,hour: int,autonomous_hours: int,equilibrium_hours: int) -> Dictionary:
 	var ids: Array = []
 	if view.owned_share >= rules.ownership_victory_share: ids.append("own_world")
 	if view.mutant_adopted > 0 and view.controlled_mutant_adopted == 0 and view.mutant_share >= rules.autonomous_min_share and autonomous_hours >= rules.autonomous_survival_hours: ids.append("autonomous_lineage")
@@ -337,6 +337,7 @@ func _eligibility(view: Dictionary,hour: int,autonomous_hours: int,equilibrium_h
 	return {"ids":ids,"distinct":distinct}
 
 func snapshot(variants: Array, details: bool = true) -> Dictionary:
+	variants = active_variants(variants)
 	var world_population := 0
 	for row in _state.world: world_population += int(row.population)
 	var totals := {}
@@ -359,7 +360,7 @@ func snapshot(variants: Array, details: bool = true) -> Dictionary:
 			totals[id].exposed += exposure
 			totals[id].attention += slots
 			attention["player" if variant.controlled else "external"] += slots
-			if details: positions.append({"id":id,"family_id":variant.family_id,"adopted":adopted,"exposed":exposure,"share":float(adopted)/int(row.population),"attention":slots})
+			if details: positions.append({"id":id,"meme_id":str(variant.get("meme_id", id)),"adopted":adopted,"exposed":exposure,"share":float(adopted)/int(row.population),"attention":slots})
 		if details:
 			var entry := row.duplicate(true)
 			entry.variants = positions
@@ -368,7 +369,6 @@ func snapshot(variants: Array, details: bool = true) -> Dictionary:
 		exposed_total += _sum(country.exposed)
 	var variant_rows: Array = []
 	var variants_by_id := {}
-	var family_rows := {}
 	var owned := 0
 	var adopted_total := 0
 	var lineage := 0
@@ -392,14 +392,12 @@ func snapshot(variants: Array, details: bool = true) -> Dictionary:
 			mutant += int(counts.adopted)
 			if variant.controlled: controlled_mutant += int(counts.adopted)
 			else: autonomous_mutant += int(counts.adopted)
-		variant_rows.append({"id":id,"family_id":variant.family_id,"title":variant.text,"text":variant.text,"creator":variant.creator,"owned":variant.owned,"controlled":variant.controlled,"lineage":is_lineage,"mutation":is_mutant,"adopted":counts.adopted,"exposed":counts.exposed,"attention":counts.attention,"share":float(counts.adopted)/maxf(1.0,world_population),"origin_country":_state.registry.get(id,{}).get("origin_country",""),"source_event":variant.get("source_event",""),"source_presets":variant.get("source_presets",[]).duplicate(true)})
+		variant_rows.append({"id":id,"meme_id":str(variant.get("meme_id", id)),"meme_name":str(variant.get("meme_name", "")),"title":variant.text,"text":variant.text,"creator":variant.creator,"owned":variant.owned,"controlled":variant.controlled,"lineage":is_lineage,"mutation":is_mutant,"adopted":counts.adopted,"exposed":counts.exposed,"attention":counts.attention,"share":float(counts.adopted)/maxf(1.0,world_population),"origin_country":_state.registry.get(id,{}).get("origin_country",""),"source_event":variant.get("source_event",""),"source_presets":variant.get("source_presets",[]).duplicate(true)})
+		var monitor_spread := MonitorMetrics.spread(counts, world_population, int(attention.budget))
+		variant_rows.back().monitor_spread = monitor_spread
+		variant_rows.back().monitor_growth = MonitorMetrics.growth(monitor_spread, float(_monitor_previous_scores.get(id, monitor_spread)))
 		variants_by_id[id] = variant_rows.back().duplicate(true)
-		var family_id := str(variant.family_id)
-		if not family_rows.has(family_id): family_rows[family_id] = {"id":family_id,"adopted":0,"share":0.0,"variant_ids":[]}
-		family_rows[family_id].adopted += int(counts.adopted)
-		family_rows[family_id].share = float(family_rows[family_id].adopted)/maxf(1.0,world_population)
-		family_rows[family_id].variant_ids.append(id)
-	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"families_by_id":family_rows,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"victory":_state.victory.duplicate(true),"population_evidence":"configured_game_population","metric_explanation":DeskLocalization.source("LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087"),"autonomy_explanation":DeskLocalization.source("LOC_THE_UNCONTROLLED_SHARE_COUNTS_ONLY_MUTANT_DESCENDANTS_A4F94F3A")}
+	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"victory":{},"population_evidence":"configured_game_population","metric_explanation":DeskLocalization.source("LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087"),"autonomy_explanation":DeskLocalization.source("LOC_THE_UNCONTROLLED_SHARE_COUNTS_ONLY_MUTANT_DESCENDANTS_A4F94F3A")}
 
 func payload() -> Dictionary:
 	return _state.duplicate(true)
@@ -408,6 +406,8 @@ func restore(data: Dictionary, variants: Array, hour: int) -> PackedStringArray:
 	var errors := validate_payload(data,variants,hour)
 	if errors.is_empty():
 		_state = data.duplicate(true)
+		_state.victory = {}
+		_monitor_previous_scores.clear()
 		_fitness_cache.clear()
 		_populations.clear()
 		for row: Dictionary in _state.world: _populations[str(row.id)] = int(row.population)
@@ -506,7 +506,7 @@ func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStrin
 		var verifier: RefCounted = get_script().new(catalog)
 		verifier._state = data.duplicate(true)
 		var view: Dictionary = verifier.snapshot(variants,false)
-		var actual: Dictionary = _eligibility(view,hour,int(data.autonomous_hours),int(data.equilibrium_hours))
+		var actual: Dictionary = _legacy_eligibility(view,hour,int(data.autonomous_hours),int(data.equilibrium_hours))
 		if v.eligible_ids.is_empty() or v.id != v.eligible_ids[0] or int(v.distinct_variants) != int(actual.distinct): errors.append(DeskLocalization.source("LOC_VICTORY_CONDITIONS_CONFLICT_WITH_ACTUAL_VERSIONS_7109142A"))
 		var seen := {}
 		for id: Variant in v.eligible_ids:
@@ -531,3 +531,76 @@ func _canonical(value: Variant) -> Variant:
 		return out
 	if _number(value) and float(value) == floorf(float(value)): return int(value)
 	return value
+
+func active_variants(variants: Array) -> Array:
+	var active: Array = []
+	for raw: Dictionary in variants:
+		if bool(raw.get("retired", false)): continue
+		var visible := raw.duplicate(true)
+		visible.merge(raw.get("effective_content", {}), true)
+		visible.meme_id = str(raw.get("meme_id", raw.id))
+		visible.meme_name = str(raw.get("meme_name", ""))
+		active.append(visible)
+	return active
+
+func replace_revision(old_id: String, new_id: String) -> Dictionary:
+	var error := _transfer_error(old_id, new_id)
+	if not error.is_empty(): return {"error":error}
+	for country: Dictionary in _state.countries.values():
+		for field: String in ["adopted", "exposed", "attention"]:
+			country[field][new_id] = int(country[field][old_id])
+			country[field][old_id] = 0
+	_state.registry[new_id].birth_hour = _state.registry[old_id].birth_hour
+	_state.registry[new_id].origin_country = _state.registry[old_id].origin_country
+	if _monitor_previous_scores.has(old_id):
+		_monitor_previous_scores[new_id] = _monitor_previous_scores[old_id]
+		_monitor_previous_scores.erase(old_id)
+	_fitness_cache.erase(old_id)
+	_fitness_cache.erase(new_id)
+	return {"old_id":old_id, "new_id":new_id, "retained_ratio":1.0}
+
+func split_revision(old_id: String, new_id: String, before_profile: Dictionary, rolled_profile: Dictionary) -> Dictionary:
+	var error := _transfer_error(old_id, new_id)
+	if not error.is_empty(): return {"error":error}
+	var before := counterfactual_capability(old_id, before_profile)
+	var after := counterfactual_capability(old_id, rolled_profile)
+	var retained := clampf(after / before, 0.0, 1.0) if before > 0.0 else 1.0
+	var transfers := {}
+	for country_id: String in _state.countries:
+		var country: Dictionary = _state.countries[country_id]
+		var moved := {}
+		for field: String in ["adopted", "exposed", "attention"]:
+			var total := int(country[field][old_id])
+			var remaining := roundi(float(total) * retained)
+			country[field][old_id] = remaining
+			country[field][new_id] = total - remaining
+			moved[field] = total - remaining
+		transfers[country_id] = moved
+	_state.registry[old_id].effective_profile = rolled_profile.duplicate(true)
+	_fitness_cache.erase(old_id)
+	_fitness_cache.erase(new_id)
+	return {"old_id":old_id, "new_id":new_id, "before_capability":before, "after_capability":after,
+		"retained_ratio":retained, "new_ratio":1.0-retained, "transfers":transfers}
+
+func counterfactual_capability(id: String, candidate_profile: Dictionary) -> float:
+	var population := 0
+	var budget := 0
+	for row: Dictionary in _state.world:
+		population += int(row.population)
+		budget += floori(int(row.population) * rules.attention_fraction)
+	var capability := 0.0
+	for row: Dictionary in _state.world:
+		var cid := str(row.id)
+		var country: Dictionary = _state.countries[cid]
+		var counts := {"adopted":int(country.adopted.get(id, 0)), "exposed":int(country.exposed.get(id, 0)), "attention":int(country.attention.get(id, 0))}
+		var fit := fitness(candidate_profile, cid)
+		capability += MonitorMetrics.spread(counts, population, budget) * float(fit.score) * float(fit.reach)
+	return capability
+
+func _transfer_error(old_id: String, new_id: String) -> String:
+	if old_id == new_id or not _state.registry.has(old_id) or not _state.registry.has(new_id):
+		return "Meme transfer requires two distinct registered revisions"
+	for country: Dictionary in _state.countries.values():
+		for field: String in ["adopted", "exposed", "attention"]:
+			if int(country[field].get(new_id, 0)) != 0: return "Meme transfer destination must be empty"
+	return ""

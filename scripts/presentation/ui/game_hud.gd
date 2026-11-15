@@ -305,10 +305,9 @@ func render(state: Dictionary) -> void:
 		PaperStyle.suppress_item_tooltip(%EventLog, item_index)
 	%Lineage.clear()
 	for variant in state.get("lineage", []):
-		var ownership := DeskLocalization.text("LOC_PLAYER_FAMILY_4C35ED8C" if bool(variant.get("owned",false)) else DeskLocalization.source("LOC_EXTERNAL_FAMILY_4A76EB88"))
-		var line := DeskLocalization.format_text("LOC_S_S_DRIFT_F_5E4194C7", [str(variant.get("id", "")), ownership, float(variant.get("semantic_distance", 0.0))])
-		var item_index: int = %Lineage.add_item(line)
-		%Lineage.set_item_tooltip(item_index, DeskLocalization.format_text("LOC_FAMILY_S_DIRECT_CREATOR_S_PARENT_VERSION_A445BF1F", [str(variant.get("family_id", "")), str(variant.get("creator", "")), str(variant.get("parent_ids", [])), str(variant.get("text", "")), str(variant.get("text", ""))]))
+		var name := DeskLocalization.text(str(variant.get("meme_name", variant.get("text", ""))))
+		var item_index: int = %Lineage.add_item(name)
+		%Lineage.set_item_tooltip(item_index, str(variant.get("text", "")))
 		PaperStyle.suppress_item_tooltip(%Lineage, item_index)
 	var discoveries: Array = state.get("discoveries", [])
 	%Discoveries.text = DeskLocalization.format_text("LOC_COLLECTED_S_9534F75E", (", ".join(PackedStringArray(discoveries)) if not discoveries.is_empty() else DeskLocalization.text("LOC_NONE_YET_B336A174")))
@@ -345,12 +344,7 @@ func show_result(result: Dictionary) -> void:
 	%ResultTitle.text = DeskLocalization.text(str(result.get("title", DeskLocalization.source("LOC_OBSERVATION_COMPLETE_25B11800"))))
 	var final_state: Dictionary = _last_state.duplicate(true)
 	final_state.merge(result, true)
-	%ResultSummary.text = DeskLocalization.format_text("LOC_OBSERVED_THROUGH_GAME_HOUR_D_SYNTHETIC_SAMPLE_72EC36A4", [
-		int(final_state.get("hour", 0)), int(final_state.get("exposed", 0)), int(final_state.get("adopted", 0)),
-		int(final_state.get("owned_adopted", 0)), int(final_state.get("lineage_adopted", 0)),
-		int(final_state.get("families", 0)), int(final_state.get("variants", 0)), int(final_state.get("meme_points", 0)),
-		int(final_state.get("attention_budget", 0)), int(final_state.get("attention_player", 0)),
-		int(final_state.get("attention_external", 0)), int(final_state.get("attention_background", 0))])
+	%ResultSummary.text = DeskLocalization.text("MM_ENDING_STATISTICS") % [int(final_state.get("hour", 0)), int(final_state.get("world_competition", {}).get("world_population", 0)), int(final_state.get("variants", 0)), str(final_state.get("meme_points", 0))]
 	var summary := str(result.get("summary", result.get("text", "")))
 	if not summary.is_empty():
 		%ResultSummary.text += "\n" + summary

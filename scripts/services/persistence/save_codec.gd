@@ -1,4 +1,7 @@
 extends RefCounted
+
+const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const MemeLifecycle = preload("res://scripts/gameplay/competition/meme_lifecycle.gd")
 ## 当前存档格式的唯一边界：先解析和验证，再一次性安装完整候选状态。
 
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
@@ -29,6 +32,7 @@ func payload() -> Dictionary:
 	if draft.has("replaceable_slots"): draft.replaceable_slots = Array(draft.replaceable_slots)
 	if draft.has("topic_ids"): draft.topic_ids = Array(draft.topic_ids)
 	var data := {"save_version":SAVE_VERSION, "content_version":catalog.content_version, "content_signature":content_signature(), "seed":simulation.seed_value, "rng_state":str(simulation._rng.state), "hour":simulation.hour, "run_end_hour":simulation.run_end_hour, "phase":simulation.phase, "speed":simulation.speed, "resume_speed":simulation.resume_speed, "country_id":simulation.country_id, "country_title":simulation.country_title, "status":simulation.status, "latest_draft":draft, "families":simulation.families.duplicate(true), "variants":simulation.variants.duplicate(true), "deployments":simulation.deployments.duplicate(true), "group_state":simulation.group_state.duplicate(true), "events":simulation.events.duplicate(true), "discoveries":simulation.discoveries.duplicate(), "modifiers":simulation.modifiers.duplicate(true), "event_counts":simulation.event_counts.duplicate(), "last_event_hours":simulation.last_event_hours.duplicate(), "pending_events":simulation.pending_events.duplicate(true), "active_event":simulation.active_event.duplicate(true), "attention":simulation.attention.duplicate(), "current_variant_id":simulation.current_variant_id, "draft_distance":simulation.draft_distance, "publish_count":simulation.publish_count, "serial":simulation._serial, "economy":economy.payload()}
+	data.ending = simulation.ending.duplicate(true)
 	data.design_state = design_state.payload()
 	data.guide_progress = simulation.guidance_progress()
 	data.gameplay_mode = "world_competition"
@@ -48,6 +52,7 @@ func _decode(data: Dictionary, errors: PackedStringArray) -> Dictionary:
 	if not errors.is_empty(): return {}
 	# Guidance progress is optional in version-3 saves.
 	if not decoded.has("guide_progress"): decoded.guide_progress = {}
+	if not decoded.has("ending"): decoded.ending = {"id":"time_elapsed", "hour":int(decoded.get("hour", 0))} if decoded.get("phase") == "complete" else {}
 	errors.append_array(_validate_current(decoded))
 	if not errors.is_empty(): return {}
 	return decoded
@@ -171,7 +176,10 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 		for origin in variant.get("origin_ids", []):
 			if not variant_ids.has(origin): errors.append(DeskLocalization.source("LOC_SAVED_ORIGINAL_VERSION_SOURCE_IS_MISSING_84500A57"))
 			elif (not variant_ids[origin].parent_ids.is_empty() or str(variant_ids[origin].creator) != "player"): errors.append(DeskLocalization.source("LOC_A_COMPETITION_LINEAGE_MUST_ORIGINATE_FROM_THE_76CFFF89"))
+	if errors.is_empty(): errors.append_array(_validate_lifecycle_field_types(data.variants))
+	if errors.is_empty(): errors.append_array(_validate_content_snapshots(data, variant_ids))
 	if errors.is_empty(): errors.append_array(_validate_variant_compositions(data.variants, variant_ids))
+	if errors.is_empty(): errors.append_array(_validate_meme_lifecycle(data, variant_ids))
 	if errors.is_empty():
 		var source_checker: RefCounted = CompetitionState.new(catalog)
 		source_checker._state = data.competition_state.duplicate(true)
@@ -183,7 +191,7 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 			if str(variant.creator) == "player" and (not variant.owned or not variant.controlled): errors.append(DeskLocalization.source("LOC_THE_PLAYER_S_ORIGINAL_VERSION_CANNOT_IMPERSONATE_118E38C2"))
 			if str(variant.creator) != "player" and variant.controlled: errors.append(DeskLocalization.source("LOC_AN_EXTERNAL_VERSION_CANNOT_CLAIM_PLAYER_CONTROL_0B60A355"))
 			var family: Dictionary = data.families[variant.family_id]
-			if not family.owner is String or variant.owned != (str(family.owner) == "player"): errors.append(DeskLocalization.source("LOC_AUTHOR_OWNERSHIP_DOES_NOT_MATCH_THE_ACTUAL_4ADFAFF9"))
+			if (not variant.has("meme_id") or bool(variant.get("legacy_identity", false))) and (not family.owner is String or variant.owned != (str(family.owner) == "player")): errors.append(DeskLocalization.source("LOC_AUTHOR_OWNERSHIP_DOES_NOT_MATCH_THE_ACTUAL_4ADFAFF9"))
 			if not _number(variant.semantic_distance) or float(variant.semantic_distance) < 0.0 or float(variant.semantic_distance) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_SEMANTIC_DRIFT_8C39ABE4"))
 			if str(variant.creator) != "player":
 				if variant.parent_ids.is_empty():
@@ -191,10 +199,8 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 				else:
 					var parent: Dictionary = variant_ids[variant.parent_ids[0]]
 					if competition._canonical(variant.origin_ids) != competition._canonical(parent.origin_ids): errors.append(DeskLocalization.source("LOC_MUTATIONS_MUST_RETAIN_THE_ACTUAL_ORIGINAL_DEPLOYMENT_DD642E47"))
-					var meaning_changed: bool = str(variant.meaning_id) != str(parent.meaning_id)
-					var split: bool = meaning_changed and float(variant.semantic_distance) >= float(data.families[parent.family_id].split_threshold)
-					if not meaning_changed and float(variant.semantic_distance) != 0.0: errors.append("Unchanged meaning cannot claim semantic drift")
-					if split != (str(variant.family_id) != str(parent.family_id)) or bool(variant.owned) != (bool(parent.owned) and not split): errors.append(DeskLocalization.source("LOC_MUTATION_OWNERSHIP_CONFLICTS_WITH_THE_FIXED_FAMILY_6809C659"))
+					var split: bool = MonitorMetrics.should_split(float(variant.semantic_distance))
+					if (not variant.has("meme_id") or bool(variant.get("legacy_identity", false))) and (split != (str(variant.family_id) != str(parent.family_id)) or bool(variant.owned) != (bool(parent.owned) and not split)): errors.append(DeskLocalization.source("LOC_MUTATION_OWNERSHIP_CONFLICTS_WITH_THE_FIXED_FAMILY_6809C659"))
 			var entry: Dictionary = data.competition_state.registry[str(variant.id)]
 			if not variant.get("flow_profile") is Dictionary or competition._canonical(variant.flow_profile) != competition._canonical(entry.profile): errors.append(DeskLocalization.source("LOC_COMPETITION_EXPRESSION_CONFIGURATION_DOES_NOT_MATCH_ITS_FCCA1944"))
 			if variant.controlled:
@@ -228,7 +234,7 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 				var target_id := str(event.get("target_variant_id", ""))
 				if not variant_ids.has(target_id) or variant_ids[target_id].origin_ids.is_empty():
 					errors.append("Transmission events require a player lineage target")
-				elif event.response.topic_ids != variant_ids[target_id].topic_ids or event.target_variant_text != variant_ids[target_id].text:
+				elif event.response.topic_ids != event.get("target_content_snapshot", variant_ids[target_id]).get("topic_ids", []) or event.target_variant_text != event.get("target_content_snapshot", variant_ids[target_id]).get("text", ""):
 					errors.append("Transmission response must match its recorded target")
 			for id in event.get("competition_variant_ids",[]):
 				if not variant_ids.has(id) or str(variant_ids[id].get("source_event","")) != str(event.instance_id): errors.append(DeskLocalization.source("LOC_INVALID_EVENT_COMPETITION_VERSION_REFERENCE_D6AAF201"))
@@ -362,7 +368,7 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 		else:
 			if variant.parent_ids.size() != 1:
 				return PackedStringArray(["A mutation must have one source version"])
-			var parent: Dictionary = variants_by_id[variant.parent_ids[0]]
+			var parent: Dictionary = variant.get("mutation_parent_content", variants_by_id[variant.parent_ids[0]])
 			var inherited: Array = parent.patch_ids
 			var definition := simulation._event_definition(str(variant.get("mutation_definition_id", ""))) as MemeDemoEvent
 			var expression_only := definition != null and definition.mutation_kind == &"expression"
@@ -376,7 +382,7 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 			if definition != null and definition.mutation_kind == &"confluence":
 				var companion_id := str(variant.get("confluence_source_id", ""))
 				if not variants_by_id.has(companion_id) or companion_id == str(parent.id): return PackedStringArray(["Confluence requires its actual second circulating meme"])
-				mutation = EventMutation.merge_with(mutation, variants_by_id[companion_id])
+				mutation = EventMutation.merge_with(mutation, variant.get("confluence_companion_content", variants_by_id[companion_id]))
 			if mutation.is_empty() or competition._canonical(draft) != competition._canonical(mutation.flow_draft):
 				return PackedStringArray(["A mutation draft must match its inherited expression and new patch"])
 			composed = mutation.composition
@@ -387,6 +393,282 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 		if str(variant.text) != str(composed.expression): errors.append("Saved expression differs from its patches")
 		if not errors.is_empty(): return errors
 	return errors
+
+
+# Historical revisions remain immutable; live meme identity and effect rollback are checked separately.
+func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> PackedStringArray:
+	var errors := PackedStringArray()
+	var active_ids := {}
+	var split_names := {}
+	for variant: Dictionary in data.variants:
+		if not variant.has("meme_id"):
+			for field: String in ["meme_name", "deviation_anchor", "retired", "split_distance", "effective_content", "rollback_from_id", "split_from_id"]:
+				if variant.has(field): errors.append("Saved meme lifecycle metadata is incomplete: " + field)
+			continue
+		if not variant.meme_id is String or str(variant.meme_id).is_empty() or not variant.get("meme_name") is String or str(variant.get("meme_name", "")).is_empty() or not variant.get("deviation_anchor") is Dictionary or not variant.get("retired") is bool or not _number(variant.get("split_distance")) or not _integer(variant.get("meme_name_index", -1)):
+			errors.append("Saved meme identity, anchor or lifecycle field has the wrong type")
+			continue
+		var meme_id := str(variant.meme_id)
+		var id := str(variant.id)
+		if not variants_by_id.has(meme_id) or str(variants_by_id[meme_id].get("meme_id", "")) != meme_id:
+			errors.append("Saved meme identity must reference its independent birth revision")
+			continue
+		var birth: Dictionary = variants_by_id[meme_id]
+		var anchor: Dictionary = variant.deviation_anchor
+		_validate_semantic_anchor(anchor, errors)
+		if not errors.is_empty(): continue
+		if competition._canonical(anchor) != competition._canonical(birth.get("deviation_anchor", {})) or not is_zero_approx(MonitorMetrics.deviation(anchor, birth)):
+			errors.append("Saved meme deviations must use the unchanged birth expression")
+		var trigger := float(variant.split_distance)
+		if variant.has("legacy_identity") and (not variant.legacy_identity is bool or not variant.legacy_identity or id != meme_id or not is_zero_approx(trigger) or variant.has("split_from_id")): errors.append("Legacy meme initialization must retain its pre-existing independent expression")
+		if trigger < 0.0 or trigger > 1.0:
+			errors.append("Saved meme split distance is outside zero to one")
+		if id == meme_id and not variant.parent_ids.is_empty() and not bool(variant.get("legacy_identity", false)):
+			if not MonitorMetrics.should_split(trigger) or not variant.get("split_from_id") is String or not variants_by_id.has(str(variant.get("split_from_id", ""))):
+				errors.append("A new derived meme requires an observed deviation strictly above fifty percent")
+			else:
+				var source: Dictionary = variants_by_id[str(variant.split_from_id)]
+				var expected_trigger := MonitorMetrics.deviation(source.get("deviation_anchor", source), variant)
+				if not is_equal_approx(trigger, expected_trigger): errors.append("Saved split trigger differs from the actual source expression")
+				if str(variant.meme_name) == str(source.get("meme_name", "")) or not str(variant.meme_name).begins_with("MEME_SPLIT_NAME_"):
+					errors.append("A split meme requires an independent name")
+				var name_index := int(variant.get("meme_name_index", -1))
+				if name_index < 0 or str(variant.meme_name) != "MEME_SPLIT_NAME_%02d" % (name_index % 16): errors.append("Saved split name does not match its independent name index")
+				if split_names.has(name_index): errors.append("Split meme names must be unique")
+				split_names[name_index] = id
+			if not is_zero_approx(float(variant.semantic_distance)): errors.append("A newborn independent meme starts at zero deviation")
+		elif id != meme_id:
+			if MonitorMetrics.should_split(trigger) or variant.parent_ids.is_empty() or str(variants_by_id[str(variant.parent_ids[0])].get("meme_id", "")) != meme_id:
+				errors.append("A non-split revision must retain its source meme identity")
+			if not is_equal_approx(trigger, MonitorMetrics.deviation(anchor, variant)):
+				errors.append("Saved revision deviation differs from its expression")
+		var observed_deltas: Dictionary = variant.get("split_effect_deltas", {}) if variant.has("split_from_id") else variant.get("deviation_effect_deltas", {})
+		var expected_deltas := {} if variant.has("rollback_from_id") else _recorded_effect_deltas(variant, variants_by_id)
+		var observed_patches: Dictionary = variant.get("split_patch_effects", {}) if variant.has("split_from_id") else variant.get("deviation_patch_effects", {})
+		var expected_patches := {} if variant.has("rollback_from_id") else _recorded_patch_effects(variant, variants_by_id)
+		if not _equal_patch_effects(observed_patches, expected_patches): errors.append("Saved per-patch effects differ from their actual authored records")
+		if not _equal_effect_deltas(observed_deltas, expected_deltas): errors.append("Saved deviation effects differ from their actual authored patches")
+		if variant.has("split_from_id") and (not _equal_effect_deltas(variant.get("deviation_effect_deltas", {}), {}) or not _equal_patch_effects(variant.get("deviation_patch_effects", {}), {})): errors.append("A newborn independent meme starts without pending rollback effects")
+		if not variant.retired:
+			if active_ids.has(meme_id): errors.append("A meme may have only one live revision")
+			active_ids[meme_id] = id
+		else:
+			for country: Dictionary in data.competition_state.countries.values():
+				for field: String in ["adopted", "exposed", "attention"]:
+					if int(country[field].get(id, 0)) != 0: errors.append("A retired revision cannot retain map population or attention")
+		var entry: Dictionary = data.competition_state.registry[id]
+		if not variant.get("effective_content", {}) is Dictionary:
+			errors.append("Saved live effect overrides must be a dictionary")
+			continue
+		var effective: Dictionary = variant.get("effective_content", {})
+		for field: String in effective:
+			if field not in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "flow_draft", "flow_profile", "creator", "owned", "controlled", "semantic_distance"]:
+				errors.append("Saved effect overrides cannot replace identity or history: " + field)
+		if effective.has("flow_profile"):
+			if not effective.flow_profile is Dictionary or not variant.get("rollback_from_id") is String or not variants_by_id.has(str(variant.get("rollback_from_id", ""))):
+				errors.append("Effect rollback requires its actual split source and live profile")
+				continue
+			var candidate: Dictionary = variants_by_id[str(variant.rollback_from_id)]
+			var expected: Dictionary = MemeLifecycle.rollback_content(anchor, candidate)
+			for field: String in ["creator", "owned", "controlled"]: expected[field] = birth[field]
+			if competition._canonical(effective) != competition._canonical(expected): errors.append("Saved rollback changed unrelated effects or failed to restore its initial expression")
+			if not is_zero_approx(MonitorMetrics.deviation(anchor, MemeLifecycle.content(variant))): errors.append("The original meme must reset to zero deviation after splitting")
+			if competition._canonical(effective.flow_profile) != competition._canonical(entry.get("effective_profile", {})):
+				errors.append("Live propagation profile differs from the recorded semantic rollback")
+			_validate_live_profile(effective.flow_profile, errors)
+		elif entry.has("effective_profile") and competition._canonical(entry.effective_profile) != competition._canonical(variant.flow_profile):
+			errors.append("A custom live propagation profile requires a recorded effect rollback")
+		if effective.has("creator") and (not effective.creator is String or str(effective.creator).is_empty()): errors.append("Live creator must remain a named participant")
+		for field: String in ["owned", "controlled"]:
+			if effective.has(field) and not effective[field] is bool: errors.append("Live ownership and control must be boolean")
+		var live: Dictionary = MemeLifecycle.content(variant)
+		for field: String in ["creator", "owned", "controlled"]:
+			if live[field] != birth[field]: errors.append("A live revision must retain its independent meme ownership and control")
+		if bool(live.controlled) and (str(live.creator) != "player" or not bool(live.owned)): errors.append("Only an owned player meme can remain directly controlled")
+	for variant: Dictionary in data.variants:
+		if variant.has("meme_id") and not active_ids.has(str(variant.meme_id)): errors.append("Saved meme has no live revision")
+	var current_id := str(data.current_variant_id)
+	if variants_by_id.has(current_id) and bool(variants_by_id[current_id].get("retired", false)): errors.append("The current meme must reference its live revision")
+	return errors
+
+
+
+
+func _equal_effect_deltas(actual: Dictionary, expected: Dictionary) -> bool:
+	var fields := actual.duplicate()
+	fields.merge(expected)
+	for field: String in fields:
+		if field not in MemeLifecycle.PATCH_SCALAR_FIELDS or not is_equal_approx(float(actual.get(field, 0.0)), float(expected.get(field, 0.0))): return false
+	return true
+
+func _effect_delta_candidate(variant: Dictionary) -> Dictionary:
+	var candidate := variant.duplicate(true)
+	for field: String in ["split_effect_deltas", "split_patch_effects", "deviation_effect_deltas", "deviation_patch_effects"]: candidate.erase(field)
+	return candidate
+
+func _recorded_effect_deltas(variant: Dictionary, variants_by_id: Dictionary) -> Dictionary:
+	if variant.parent_ids.is_empty(): return {}
+	var source: Dictionary = variants_by_id[str(variant.parent_ids[0])]
+	return MemeLifecycle.effect_deltas(source.get("deviation_anchor", source), _effect_delta_candidate(variant), source)
+
+func _recorded_patch_effects(variant: Dictionary, variants_by_id: Dictionary) -> Dictionary:
+	if variant.parent_ids.is_empty(): return {}
+	var source: Dictionary = variants_by_id[str(variant.parent_ids[0])]
+	return MemeLifecycle.patch_effects(source.get("deviation_anchor", source), _effect_delta_candidate(variant), source)
+
+func _equal_patch_effects(actual: Dictionary, expected: Dictionary) -> bool:
+	var patches := actual.duplicate()
+	patches.merge(expected)
+	for patch: String in patches:
+		if not _equal_effect_deltas(actual.get(patch, {}), expected.get(patch, {})): return false
+	return true
+
+func _validate_lifecycle_field_types(variants: Array) -> PackedStringArray:
+	var errors := PackedStringArray()
+	for variant: Dictionary in variants:
+		if not variant.has("meme_id"): continue
+		if not variant.get("deviation_anchor") is Dictionary or not variant.get("effective_content", {}) is Dictionary or not variant.get("flow_profile") is Dictionary:
+			errors.append("Saved lifecycle effect and anchor fields must be dictionaries")
+			continue
+		for key: String in ["flow_draft", "flow_profile"]:
+			if not variant.deviation_anchor.get(key) is Dictionary:
+				errors.append("Saved semantic anchor configurations must be dictionaries")
+			if variant.get("effective_content", {}).has(key) and not variant.get("effective_content", {})[key] is Dictionary:
+				errors.append("Saved effect override configurations must be dictionaries")
+		_validate_semantic_anchor(variant.deviation_anchor, errors)
+		for field: String in ["deviation_patch_effects", "split_patch_effects"]:
+			if not variant.get(field, {}) is Dictionary:
+				errors.append("Saved per-patch effects must be a dictionary")
+				continue
+			for patch: Variant in variant.get(field, {}):
+				if not patch is String or not variant[field][patch] is Dictionary:
+					errors.append("Saved per-patch effects must contain named delta maps")
+					continue
+				for key: Variant in variant[field][patch]:
+					if not key is String or not _number(variant[field][patch][key]): errors.append("Saved per-patch effects must contain finite named values")
+		for field: String in ["deviation_effect_deltas", "split_effect_deltas"]:
+			if not variant.get(field, {}) is Dictionary:
+				errors.append("Saved deviation effect deltas must be a dictionary")
+				continue
+			for key: Variant in variant.get(field, {}):
+				if not key is String or not _number(variant[field][key]): errors.append("Saved deviation effect deltas must contain finite named values")
+	return errors
+
+func _validate_content_snapshots(data: Dictionary, variants_by_id: Dictionary) -> PackedStringArray:
+	var errors := PackedStringArray()
+	for variant: Dictionary in data.variants:
+		if variant.has("mutation_parent_content"):
+			if not variant.mutation_parent_content is Dictionary or variant.parent_ids.is_empty():
+				errors.append("Mutation history requires its actual source content snapshot")
+				continue
+			var source: Dictionary = variants_by_id[str(variant.parent_ids[0])]
+			if not _is_recorded_content(variant.mutation_parent_content, source, data.variants, variants_by_id):
+				errors.append("Mutation source content differs from its recorded expression history")
+		if variant.has("confluence_companion_content"):
+			var companion_id := str(variant.get("confluence_source_id", ""))
+			if not variant.confluence_companion_content is Dictionary or not variants_by_id.has(companion_id) or not _is_recorded_content(variant.confluence_companion_content, variants_by_id[companion_id], data.variants, variants_by_id):
+				errors.append("Confluence companion content differs from its immutable expression history")
+		if not errors.is_empty(): return errors
+		if variant.has("effective_history"):
+			if not variant.effective_history is Array:
+				errors.append("Effect rollback history must be an array")
+				continue
+			for historical: Variant in variant.effective_history:
+				if not historical is Dictionary or not _is_recorded_content(historical, variant, data.variants, variants_by_id):
+					errors.append("Historical rollback content must reconstruct from an actual split")
+		if not errors.is_empty(): return errors
+	var event_copies: Array = data.events.duplicate()
+	event_copies.append_array(data.pending_events)
+	if not data.active_event.is_empty(): event_copies.append(data.active_event)
+	for event: Dictionary in event_copies:
+		if not event.has("target_content_snapshot"): continue
+		var target_id := str(event.get("target_variant_id", ""))
+		if target_id.is_empty() and event.target_content_snapshot is Dictionary and event.target_content_snapshot.is_empty(): continue
+		if not variants_by_id.has(target_id) or not event.target_content_snapshot is Dictionary or not _is_recorded_content(event.target_content_snapshot, variants_by_id[target_id], data.variants, variants_by_id):
+			errors.append("Event target content differs from its immutable expression history")
+	if not data.get("ending", {}) is Dictionary:
+		errors.append("Saved ending must be a dictionary")
+	elif not data.ending.is_empty():
+		if data.ending.get("id") != "time_elapsed" or not _integer(data.ending.get("hour")) or int(data.ending.hour) != int(data.hour) or data.phase != "complete":
+			errors.append("Saved ending must describe the completed run without a victory state")
+	return errors
+
+
+func _same_content_snapshot(actual: Dictionary, expected: Dictionary) -> bool:
+	var a := actual.duplicate(true)
+	var b := expected.duplicate(true)
+	for record: Dictionary in [a, b]:
+		for field: String in ["deviation_effect_deltas", "deviation_patch_effects"]:
+			if record.get(field, {}) is Dictionary and record.get(field, {}).is_empty(): record.erase(field)
+	return competition._canonical(a) == competition._canonical(b)
+
+func _is_recorded_content(snapshot: Dictionary, source: Dictionary, variants: Array, variants_by_id: Dictionary) -> bool:
+	var pristine := source.duplicate(true)
+	pristine.erase("effective_content")
+	if source.has("meme_id"):
+		pristine.deviation_effect_deltas = {} if str(source.meme_id) == str(source.id) else _recorded_effect_deltas(source, variants_by_id)
+		pristine.deviation_patch_effects = {} if str(source.meme_id) == str(source.id) else _recorded_patch_effects(source, variants_by_id)
+	if _same_content_snapshot(snapshot, MemeLifecycle.revision_snapshot(pristine)): return true
+	if not source.get("deviation_anchor") is Dictionary: return false
+	var birth_id := str(source.get("meme_id", source.id))
+	if not variants_by_id.has(birth_id): return false
+	var birth: Dictionary = variants_by_id[birth_id]
+	var same_identity := pristine.duplicate(true)
+	same_identity.effective_content = {}
+	for field: String in ["creator", "owned", "controlled"]: same_identity.effective_content[field] = birth[field]
+	if _same_content_snapshot(snapshot, MemeLifecycle.revision_snapshot(same_identity)): return true
+	for candidate: Dictionary in variants:
+		if str(candidate.get("split_from_id", "")) != str(source.id): continue
+		var expected: Dictionary = MemeLifecycle.rollback_content(source.deviation_anchor, candidate)
+		for field: String in ["creator", "owned", "controlled"]: expected[field] = birth[field]
+		var reconstructed := source.duplicate(true)
+		reconstructed.effective_content = expected
+		reconstructed.deviation_effect_deltas = {}
+		reconstructed.deviation_patch_effects = {}
+		if _same_content_snapshot(snapshot, MemeLifecycle.revision_snapshot(reconstructed)): return true
+	return false
+
+func _validate_semantic_anchor(anchor: Dictionary, errors: PackedStringArray) -> void:
+	if not anchor.get("text") is String or not anchor.get("meaning", "") is String or not anchor.get("meaning_id", "") is String or not anchor.get("flow_profile") is Dictionary:
+		errors.append("A meme deviation anchor requires its original expression and semantic profile")
+		return
+	var profile: Dictionary = anchor.flow_profile
+	for key: String in ["political_position", "pragmatic_position"]:
+		if not profile.get(key) is Array or profile[key].size() != 2:
+			errors.append("Saved semantic anchor coordinates must contain two numbers")
+		else:
+			for value: Variant in profile[key]:
+				if not _number(value) or absf(float(value)) > 1.0: errors.append("Saved semantic anchor coordinates are invalid")
+	if not profile.get("political_known") is bool or not profile.get("topic_ids") is Array:
+		errors.append("Saved semantic anchor context has the wrong type")
+	for layer: String in ["language", "group"]:
+		if not profile.get(layer + "_id") is String: errors.append("Saved semantic anchor audience identity has the wrong type")
+		if profile.has(layer + "_ids"):
+			if not profile[layer + "_ids"] is Array: errors.append("Saved semantic anchor audiences must be arrays")
+			else:
+				for value: Variant in profile[layer + "_ids"]:
+					if not value is String: errors.append("Saved semantic anchor audiences must contain strings")
+
+func _validate_live_profile(profile: Dictionary, errors: PackedStringArray) -> void:
+	for key: String in ["language_access", "recognizability", "context_dependency", "remix_cost", "expression"]:
+		if not _number(profile.get(key)) or float(profile.get(key, -1.0)) < 0.0 or float(profile.get(key, 2.0)) > 1.0:
+			errors.append("Invalid live propagation parameter: " + key)
+	if not _number(profile.get("reach")) or float(profile.get("reach", 0.0)) <= 0.0: errors.append("Live reach must be finite and positive")
+	for key: String in ["language_id", "group_id", "channel_id", "text"]:
+		if not profile.get(key) is String: errors.append("Invalid live propagation identity: " + key)
+	if not profile.get("skill_ids") is Array: errors.append("Live propagation skills must be an array")
+	else:
+		for skill: Variant in profile.skill_ids:
+			if skill not in catalog.gameplay_rules.skill_reach: errors.append("Live propagation skill is not registered")
+	_validate_semantic_anchor({"text":profile.get("text", ""), "flow_profile":profile}, errors)
+	if profile.get("topic_ids") is Array:
+		for topic: Variant in profile.topic_ids:
+			if topic not in catalog.topics: errors.append("Live propagation topic is not registered")
+	if not profile.get("context_layer_attachment") is Dictionary or profile.context_layer_attachment.size() != 5:
+		errors.append("Live context attachment must describe all five layers")
+	else:
+		for layer: String in ["language", "group", "topics", "stance", "pragmatic"]:
+			if not profile.context_layer_attachment.get(layer) is bool: errors.append("Live context attachments must be boolean")
 
 func _validate_preset_sources(entry: Dictionary, label: String, errors: PackedStringArray) -> void:
 	if not entry.get("preset_id", "") is String or not entry.get("source_presets") is Array:
@@ -404,6 +686,9 @@ func _validate_preset_sources(entry: Dictionary, label: String, errors: PackedSt
 		errors.append(DeskLocalization.source_format("LOC_SAVED_S_CASE_SOURCE_DOES_NOT_MATCH_78BD2135", label))
 
 func _validate_event_copy(event: Dictionary, errors: PackedStringArray) -> void:
+	if event.has("target_content_snapshot") and not event.target_content_snapshot is Dictionary:
+		errors.append("Saved event target snapshots must be dictionaries")
+		return
 	for key in ["instance_id", "definition_id", "title", "narrative", "effect_text", "origin", "impact_text", "mentor_comment", "design_source_preset_id", "reward_text"]:
 		if not event.get(key) is String: errors.append(DeskLocalization.source("LOC_WRONG_SAVED_EVENT_TEXT_TYPE_5170C9D1") + key)
 	if not _integer(event.get("hour")) or not event.get("discoveries") is Array or not event.get("acknowledged") is bool or not event.get("design_rewards") is Array or not event.get("competition_variant_ids") is Array:
@@ -519,6 +804,7 @@ func restore(data: Dictionary) -> PackedStringArray:
 	simulation.resume_speed = int(decoded.resume_speed)
 	simulation.publish_count = int(decoded.publish_count)
 	simulation.phase = decoded.phase
+	simulation.ending = decoded.ending.duplicate(true)
 	simulation.country_id = decoded.country_id
 	simulation.country_title = decoded.country_title
 	simulation.status = decoded.status

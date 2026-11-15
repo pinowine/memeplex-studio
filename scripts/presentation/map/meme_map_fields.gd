@@ -6,32 +6,45 @@ const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 
 static func hover_info(control: Control) -> Dictionary:
+	if not control.help_info.is_empty(): return control.help_info
 	return {"title":str(control.help_title), "description":str(control.help_body),
 		"kind":"impact" if str(control.help_kind) == "metric" else str(control.help_kind)}
 
 class HelpLabel extends Label:
+	var help_info: Dictionary = {}
 	var help_title := ""
 	var help_body := ""
 	var help_kind := "source"
 
 	func set_help(title: String, body: String, kind: String = "source") -> void:
+		help_info = {}
 		help_title = title
 		help_body = body
 		help_kind = kind
 		tooltip_text = ""
 		mouse_filter = Control.MOUSE_FILTER_PASS if not body.is_empty() else Control.MOUSE_FILTER_IGNORE
 
+	func set_help_info(info: Dictionary) -> void:
+		set_help(str(info.get("title", "")), str(info.get("hover_description", info.get("description", ""))), str(info.get("kind", "source")))
+		help_info = info
+
 class HelpButton extends Button:
+	var help_info: Dictionary = {}
 	var help_title := ""
 	var help_body := ""
 	var help_kind := "source"
 
 	func set_help(title: String, body: String, kind: String = "source") -> void:
+		help_info = {}
 		help_title = title
 		help_body = body
 		help_kind = kind
 		tooltip_text = ""
 		mouse_filter = Control.MOUSE_FILTER_PASS
+
+	func set_help_info(info: Dictionary) -> void:
+		set_help(str(info.get("title", "")), str(info.get("hover_description", info.get("description", ""))), str(info.get("kind", "source")))
+		help_info = info
 
 class TagIcon extends Control:
 	var kind := "language"
@@ -46,6 +59,7 @@ class TagIcon extends Control:
 		Glyph.draw(self, Rect2(Vector2.ZERO, custom_minimum_size), kind, ink)
 
 class TagChip extends PanelContainer:
+	var help_info: Dictionary = {}
 	var help_title := ""
 	var help_body := ""
 	var help_kind := "language"
@@ -71,6 +85,7 @@ class TagChip extends PanelContainer:
 		line.add_child(_label)
 
 	func configure(tag: Dictionary, interactive: bool = true, compact: bool = false) -> void:
+		help_info = tag.get("hover_info", {})
 		help_title = str(tag.text)
 		help_body = str(tag.help)
 		help_kind = str(tag.kind)
@@ -78,7 +93,7 @@ class TagChip extends PanelContainer:
 		var font_size := 12 if compact else 14
 		_label.add_theme_font_size_override("font_size", font_size)
 		_icon.custom_minimum_size = Vector2(14, 14) if compact else Vector2(16, 16)
-		custom_minimum_size.x = minf(256.0, ceilf(Handwriting.BODY_FONT.get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + (30.0 if compact else 34.0)))
+		custom_minimum_size.x = minf(120.0 if compact else 256.0, ceilf(Handwriting.BODY_FONT.get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + (30.0 if compact else 34.0)))
 		_icon.kind = help_kind
 		var ink: Color
 		var fill: Color

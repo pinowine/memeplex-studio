@@ -59,6 +59,8 @@ var _meme_overlay: Control
 var _meme_ledger: Control
 var _meme_snapshot: Dictionary = {}
 var _meme_catalog: MemeDemoCatalog
+var _ledger_hovered_variant := ""
+var _ledger_hovered_country := ""
 
 func _ready() -> void:
 	set_process(false)
@@ -206,7 +208,10 @@ func _update_hover() -> void:
 	hover_note.visible = available and (hovered_country >= 0 or not hits.is_empty())
 	hover_note.set_pointer_following(hover_note.visible)
 	if _meme_overlay != null:
-		_meme_overlay.set_hovered_variants(PackedStringArray([str(hits[0].variant_id)]) if not hits.is_empty() else PackedStringArray())
+		if not _ledger_hovered_variant.is_empty():
+			_meme_overlay.set_hovered_variants(PackedStringArray([_ledger_hovered_variant]), _ledger_hovered_country)
+		else:
+			_meme_overlay.set_hovered_variants(PackedStringArray([str(hits[0].variant_id)]) if not hits.is_empty() else PackedStringArray())
 	if not hover_note.visible: return
 	var signature: Array = [hovered_country, TranslationServer.get_locale(), world.seed_value, hits.map(func(hit: Dictionary): return [str(hit.variant_id), str(hit.country_id), int(hit.country_adopted)]), _meme_snapshot.get("hour", -1)]
 	if signature == _hover_profile_signature: return
@@ -235,11 +240,15 @@ func configure_meme_tracking(overlay: Control, catalog: MemeDemoCatalog) -> void
 	_meme_ledger.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_meme_ledger.configure(catalog)
 	_meme_ledger.variant_selected.connect(select_meme)
-	_meme_ledger.country_focus_requested.connect(focus_meme_country)
+	_meme_ledger.variant_hovered.connect(_on_ledger_variant_hovered)
+	_meme_ledger.country_hovered.connect(_on_ledger_country_hovered)
 	_meme_ledger.details_changed.connect(func(_id: String, _expanded: bool): _on_map_exited())
 
 func update_meme_state(snapshot: Dictionary) -> void:
 	_meme_snapshot = snapshot
+	if not snapshot.world_competition.variants_by_id.has(_ledger_hovered_variant):
+		_ledger_hovered_variant = ""
+		_ledger_hovered_country = ""
 	if not snapshot.world_competition.variants_by_id.has(_meme_overlay.selected_variant_id):
 		_meme_overlay.set_selected_variant("")
 	_meme_ledger.sync_state(snapshot, _meme_overlay.colors())
@@ -254,11 +263,15 @@ func select_meme(id: String) -> void:
 	_hover_profile_signature.clear()
 	_update_hover()
 
-func focus_meme_country(id: String) -> void:
-	for index in settings.countries.size():
-		if str(settings.countries[index].id) == id:
-			focus_country(index)
-			return
+func _on_ledger_variant_hovered(id: String) -> void:
+	_ledger_hovered_variant = id
+	_ledger_hovered_country = ""
+	_update_hover()
+
+func _on_ledger_country_hovered(variant_id: String, country_id: String) -> void:
+	_ledger_hovered_variant = variant_id
+	_ledger_hovered_country = country_id
+	_update_hover()
 
 func meme_field_hover_info(point: Vector2) -> Dictionary:
 	return _meme_ledger.hover_info(point) if _meme_ledger != null else {}

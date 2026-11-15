@@ -10,19 +10,14 @@
     "en": "No memes yet"
   },
   "MAP_MEME_OWN": {
-    "source": "作者版本",
-    "zh_CN": "作者版本",
-    "en": "Your version"
-  },
-  "MAP_MEME_REMIX": {
-    "source": "外部改写",
-    "zh_CN": "外部改写",
-    "en": "External remix"
+    "source": "自己的模因",
+    "zh_CN": "自己的模因",
+    "en": "Your meme"
   },
   "MAP_MEME_INDEPENDENT": {
-    "source": "独立竞争",
-    "zh_CN": "独立竞争",
-    "en": "Independent rival"
+    "source": "独立传播模因",
+    "zh_CN": "独立传播模因",
+    "en": "Independent meme"
   },
   "MM_COUNTRIES": {
     "source": "传播国家",
@@ -155,109 +150,109 @@
     "en": "Attention"
   },
   "MM_HELP_NAME": {
-    "source": "该版本所属模因的概括性名称。完整表达和实际含义在详情中分别显示。",
-    "zh_CN": "该版本所属模因的概括性名称。完整表达和实际含义在详情中分别显示。",
-    "en": "The short name of the meme behind this version. Details show its expression and meaning separately."
+    "source": "这个模因的独立名称。完整表达和实际含义在详情中分别显示。",
+    "zh_CN": "这个模因的独立名称。完整表达和实际含义在详情中分别显示。",
+    "en": "The independent name of this meme. Details show its expression and meaning separately."
   },
   "MM_HELP_ORIGIN": {
-    "source": "该版本第一次发布或诞生的国家。后续传播不会改变起源国。",
-    "zh_CN": "该版本第一次发布或诞生的国家。后续传播不会改变起源国。",
-    "en": "The country where this version was first published or born. Later spread does not change its origin."
+    "source": "这个模因第一次发布或诞生的国家。后续传播不会改变起源国。",
+    "zh_CN": "这个模因第一次发布或诞生的国家。后续传播不会改变起源国。",
+    "en": "The country where this meme was first published or born. Later spread does not change its origin."
   },
   "MM_HELP_ADOPTION": {
-    "source": "当前全球采用这个版本的人数。各版本的采用人数互不重复。",
-    "zh_CN": "当前全球采用这个版本的人数。各版本的采用人数互不重复。",
-    "en": "People currently adopting this version worldwide. Adoption counts are disjoint across versions."
+    "source": "当前全球采用这个模因的人数。各模因的采用人数互不重复。",
+    "zh_CN": "当前全球采用这个模因的人数。各模因的采用人数互不重复。",
+    "en": "People currently adopting this meme worldwide. Adoption counts are disjoint across memes."
   },
   "MM_HELP_EXPOSURE": {
-    "source": "当前全球接触这个版本的人数，包含采用者。",
-    "zh_CN": "当前全球接触这个版本的人数，包含采用者。",
-    "en": "People currently exposed to this version worldwide, including adopters."
+    "source": "当前全球接触这个模因的人数，包含采用者。",
+    "zh_CN": "当前全球接触这个模因的人数，包含采用者。",
+    "en": "People currently exposed to this meme worldwide, including adopters."
   },
   "MM_HELP_ATTENTION": {
-    "source": "当前分配给这个版本的全球注意力规模。它影响后续曝光和采用。",
-    "zh_CN": "当前分配给这个版本的全球注意力规模。它影响后续曝光和采用。",
-    "en": "The current worldwide attention allocation for this version. It affects later exposure and adoption."
+    "source": "当前分配给这个模因的全球注意力规模。它影响后续曝光和采用。",
+    "zh_CN": "当前分配给这个模因的全球注意力规模。它影响后续曝光和采用。",
+    "en": "The current worldwide attention allocation for this meme. It affects later exposure and adoption."
   },
   "MM_HELP_SPREAD": {
-    "source": "全球采用人数占世界人口的百分比。",
-    "zh_CN": "全球采用人数占世界人口的百分比。",
-    "en": "The percentage of the world population currently adopting this version."
+    "source": "采用、曝光和注意力各自占全球容量的比例，取平均得到传播度，最高为100%。",
+    "zh_CN": "采用、曝光和注意力各自占全球容量的比例，取平均得到传播度，最高为100%。",
+    "en": "The average of adoption, exposure and attention as fractions of their worldwide capacities, capped at 100%."
   },
   "MM_HELP_COUNTRY_SPREAD": {
-    "source": "该国采用这个版本的人数占该国人口的百分比。",
-    "zh_CN": "该国采用这个版本的人数占该国人口的百分比。",
-    "en": "The percentage of this country's population currently adopting this version."
+    "source": "悬停国家名称，高亮该国的这个模因传播点。",
+    "zh_CN": "悬停国家名称，高亮该国的这个模因传播点。",
+    "en": "Hover the country name to highlight this meme’s points in that country."
   },
   "MM_HELP_LOCAL_ADOPTION": {
-    "source": "当前在这个国家采用该版本的人数。",
-    "zh_CN": "当前在这个国家采用该版本的人数。",
-    "en": "People currently adopting this version in this country."
+    "source": "当前在这个国家采用这个模因的人数。",
+    "zh_CN": "当前在这个国家采用这个模因的人数。",
+    "en": "People currently adopting this meme in this country."
   },
   "MM_HELP_LOCAL_EXPOSURE": {
-    "source": "当前在这个国家接触该版本的人数，包含采用者。",
-    "zh_CN": "当前在这个国家接触该版本的人数，包含采用者。",
-    "en": "People currently exposed to this version in this country, including adopters."
+    "source": "当前在这个国家接触这个模因的人数，包含采用者。",
+    "zh_CN": "当前在这个国家接触这个模因的人数，包含采用者。",
+    "en": "People currently exposed to this meme in this country, including adopters."
   },
   "MM_HELP_LOCAL_ATTENTION": {
-    "source": "当前该国分配给这个版本的注意力规模。",
-    "zh_CN": "当前该国分配给这个版本的注意力规模。",
-    "en": "The current attention allocation for this version in this country."
+    "source": "当前该国分配给这个模因的注意力规模。",
+    "zh_CN": "当前该国分配给这个模因的注意力规模。",
+    "en": "The current attention allocation for this meme in this country."
   },
   "MM_HELP_EXPRESSION_TEXT": {
-    "source": "该版本实际传播的文字。语境和改写可能让它与最初版本不同。",
-    "zh_CN": "该版本实际传播的文字。语境和改写可能让它与最初版本不同。",
-    "en": "The words actually circulating in this version. Context and remixing can change them from the original."
+    "source": "这个模因实际传播的文字。语境和改写可能让它与最初版本不同。",
+    "zh_CN": "这个模因实际传播的文字。语境和改写可能让它与最初版本不同。",
+    "en": "The words actually circulating in this meme. Context and remixing can change them from the original."
   },
   "MM_HELP_MEANING": {
-    "source": "该版本记录的含义。事件产生的模因会显示事件中的解读。",
-    "zh_CN": "该版本记录的含义。事件产生的模因会显示事件中的解读。",
-    "en": "The version's recorded meaning. Event memes show their recorded reading."
+    "source": "这个模因记录的含义。事件产生的模因会显示事件中的解读。",
+    "zh_CN": "这个模因记录的含义。事件产生的模因会显示事件中的解读。",
+    "en": "The meme's recorded meaning. Event memes show their recorded reading."
   },
   "MM_HELP_CONTENT": {
-    "source": "这个版本的完整表达和记录含义。",
-    "zh_CN": "这个版本的完整表达和记录含义。",
-    "en": "The actual expression and recorded meaning of this version."
+    "source": "这个模因的完整表达和记录含义。",
+    "zh_CN": "这个模因的完整表达和记录含义。",
+    "en": "The actual expression and recorded meaning of this meme."
   },
   "MM_HELP_COUNTRIES": {
-    "source": "当前已有采用者或曝光者的国家，按采用人数排列。",
-    "zh_CN": "当前已有采用者或曝光者的国家，按采用人数排列。",
-    "en": "Countries with current adoption or exposure, ordered by adoption."
+    "source": "当前已有采用或曝光的国家。悬停国家名可高亮该国的模因点。",
+    "zh_CN": "当前已有采用或曝光的国家。悬停国家名可高亮该国的模因点。",
+    "en": "Countries with adoption or exposure. Hover a country name to highlight its meme points."
   },
   "MM_HELP_CONTEXT": {
-    "source": "该版本发布或诞生时确定的语境。之后编辑草稿不会改写已传播版本。",
-    "zh_CN": "该版本发布或诞生时确定的语境。之后编辑草稿不会改写已传播版本。",
-    "en": "The context fixed when this version was published or born. Later draft edits do not rewrite a circulating version."
+    "source": "这个模因当前生效的语境，分裂时只回退与偏移相关的效果。",
+    "zh_CN": "这个模因当前生效的语境，分裂时只回退与偏移相关的效果。",
+    "en": "The active context of this meme. Splitting rolls back only effects that contribute to deviation."
   },
   "MM_HELP_TRANSMISSION": {
-    "source": "当前传播规模，以及这个版本实际使用的传播参数。",
-    "zh_CN": "当前传播规模，以及这个版本实际使用的传播参数。",
-    "en": "Current spread and the transmission parameters used by this version."
+    "source": "传播度、增长率和相对当前初始表达的偏移度。",
+    "zh_CN": "传播度、增长率和相对当前初始表达的偏移度。",
+    "en": "Composite spread, hourly growth and deviation from this meme's anchor expression."
   },
   "MM_HELP_LANGUAGE": {
-    "source": "该版本使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
-    "zh_CN": "该版本使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
-    "en": "Languages used by this version to match each country's language distribution. Multiple languages use the strongest match."
+    "source": "这个模因使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
+    "zh_CN": "这个模因使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
+    "en": "Languages used by this meme to match each country's language distribution. Multiple languages use the strongest match."
   },
   "MM_HELP_GROUP": {
-    "source": "该版本面向的人群。多个人群取匹配最强者，不叠加人口。",
-    "zh_CN": "该版本面向的人群。多个人群取匹配最强者，不叠加人口。",
-    "en": "Audiences addressed by this version. Multiple audiences use the strongest match without adding population."
+    "source": "这个模因面向的人群。多个人群取匹配最强者，不叠加人口。",
+    "zh_CN": "这个模因面向的人群。多个人群取匹配最强者，不叠加人口。",
+    "en": "Audiences addressed by this meme. Multiple audiences use the strongest match without adding population."
   },
   "MM_HELP_TOPICS": {
-    "source": "该版本涉及的话题，按所在国家对这些话题的偏好计算匹配。",
-    "zh_CN": "该版本涉及的话题，按所在国家对这些话题的偏好计算匹配。",
-    "en": "Topics addressed by this version, matched against each country's topic preferences."
+    "source": "这个模因涉及的话题，按所在国家对这些话题的偏好计算匹配。",
+    "zh_CN": "这个模因涉及的话题，按所在国家对这些话题的偏好计算匹配。",
+    "en": "Topics addressed by this meme, matched against each country's topic preferences."
   },
   "MM_HELP_STANCE": {
-    "source": "该版本在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
-    "zh_CN": "该版本在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
-    "en": "The version's stance on liberty and authority, and equality and hierarchy, used to match country context."
+    "source": "这个模因在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
+    "zh_CN": "这个模因在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
+    "en": "The meme's stance on liberty and authority, and equality and hierarchy, used to match country context."
   },
   "MM_HELP_PRAGMATICS": {
-    "source": "该版本表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
-    "zh_CN": "该版本表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
-    "en": "How this version conveys sincerity or irony, and support or opposition, used to match country context."
+    "source": "这个模因表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
+    "zh_CN": "这个模因表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
+    "en": "How this meme conveys sincerity or irony, and support or opposition, used to match country context."
   },
   "MM_HELP_DETACHED": {
     "source": "这一层已经脱离表达，在传播适配中使用中性匹配值。",
@@ -265,9 +260,9 @@
     "en": "This layer is detached from the expression and uses a neutral match in transmission fitness."
   },
   "MM_HELP_CHANNEL": {
-    "source": "发布这个版本时使用的渠道，决定基础触达系数。",
-    "zh_CN": "发布这个版本时使用的渠道，决定基础触达系数。",
-    "en": "The channel used to publish this version, which determines its base reach factor."
+    "source": "发布这个模因时使用的渠道，决定基础触达系数。",
+    "zh_CN": "发布这个模因时使用的渠道，决定基础触达系数。",
+    "en": "The channel used to publish this meme, which determines its base reach factor."
   },
   "MM_HELP_REACH": {
     "source": "渠道触达系数结合已学习传播技能后的实际倍数，用来放大传播压力。",
@@ -300,8 +295,168 @@
     "en": "Expression strength calculated from distinct characters in the actual text, used in competition fitness."
   },
   "MM_HELP_LEGEND": {
-    "source": "同一颜色表示同一家族。空心点标记起源位置，实心点按各国采用人数抽样。",
-    "zh_CN": "同一颜色表示同一家族。空心点标记起源位置，实心点按各国采用人数抽样。",
-    "en": "One color represents one family. Hollow markers show origins, and filled dots sample adoption within countries."
+    "source": "带外圈的点表示起始位置，后续传播使用实心点。悬停模因即可高亮对应的地图点。",
+    "zh_CN": "带外圈的点表示起始位置，后续传播使用实心点。悬停模因即可高亮对应的地图点。",
+    "en": "Ringed dots mark origins; solid dots mark later spread. Hover a meme to highlight its map points."
+  },
+  "MAP_MEME_MONITOR": {
+    "source": "模因监控",
+    "zh_CN": "模因监控",
+    "en": "Meme monitor"
+  },
+  "MAP_MEME_COLLAPSE": {
+    "source": "收起监控",
+    "zh_CN": "收起监控",
+    "en": "Collapse monitor"
+  },
+  "MAP_MEME_EXPAND": {
+    "source": "展开监控",
+    "zh_CN": "展开监控",
+    "en": "Expand monitor"
+  },
+  "MM_GROWTH": {
+    "source": "增长率",
+    "zh_CN": "增长率",
+    "en": "Growth"
+  },
+  "MM_DEVIATION": {
+    "source": "偏移度",
+    "zh_CN": "偏移度",
+    "en": "Deviation"
+  },
+  "MM_HELP_GROWTH": {
+    "source": "传播度相对上一小时的变化率，范围为-100%至100%。新发布或刚恢复的模因在首次采样前显示0%。",
+    "zh_CN": "传播度相对上一小时的变化率，范围为-100%至100%。新发布或刚恢复的模因在首次采样前显示0%。",
+    "en": "The hourly change in composite spread, capped at -100% to 100%. Newly published or restored memes show 0% before their first sample."
+  },
+  "MM_HELP_DEVIATION": {
+    "source": "相对初始表达的综合差异。严格超过50%时分裂，恰好50%不分裂。分裂后原模因回退相关效果并归零，新模因独立命名；地图传播量按回退造成的传播能力损失分配，总量不增加。",
+    "zh_CN": "相对初始表达的综合差异。严格超过50%时分裂，恰好50%不分裂。分裂后原模因回退相关效果并归零，新模因独立命名；地图传播量按回退造成的传播能力损失分配，总量不增加。",
+    "en": "Difference from this meme's anchor expression. Splitting occurs strictly above 50%; at exactly 50%, no split occurs. The original rolls back relevant effects and resets to zero; the new meme receives an independent name. Existing spread is divided by the capability lost during rollback, without increasing the total."
+  },
+  "MM_ENDING_TITLE": {
+    "source": "结局",
+    "zh_CN": "结局",
+    "en": "Outcome"
+  },
+  "MM_ENDING_REASON": {
+    "source": "本次传播观察已结束。",
+    "zh_CN": "本次传播观察已结束。",
+    "en": "This transmission run has ended."
+  },
+  "MM_ENDING_COMMENT": {
+    "source": "每个模因保留独立的传播结果。",
+    "zh_CN": "每个模因保留独立的传播结果。",
+    "en": "Each meme retains its own transmission result."
+  },
+  "MM_ENDING_MEMES": {
+    "source": "模因数量",
+    "zh_CN": "模因数量",
+    "en": "Meme count"
+  },
+  "MM_ENDING_OWN": {
+    "source": "己方采用",
+    "zh_CN": "己方采用",
+    "en": "Your meme adoption"
+  },
+  "MM_ENDING_OTHER": {
+    "source": "其他模因采用",
+    "zh_CN": "其他模因采用",
+    "en": "Other meme adoption"
+  },
+  "MM_ENDING_UNADOPTED": {
+    "source": "未采用份额",
+    "zh_CN": "未采用份额",
+    "en": "Unadopted share"
+  },
+  "MM_ENDING_STATISTICS": {
+    "source": "时间 %d 小时 · 世界人口 %d · 模因 %d · 模因点 %s",
+    "zh_CN": "时间 %d 小时 · 世界人口 %d · 模因 %d · 模因点 %s",
+    "en": "Hour %d · World population %d · Memes %d · Meme points %s"
+  },
+  "MEME_SPLIT_NAME_00": {
+    "source": "余响",
+    "zh_CN": "余响",
+    "en": "Afterecho"
+  },
+  "MEME_SPLIT_NAME_01": {
+    "source": "回声室",
+    "zh_CN": "回声室",
+    "en": "Echo Chamber"
+  },
+  "MEME_SPLIT_NAME_02": {
+    "source": "逆流",
+    "zh_CN": "逆流",
+    "en": "Countercurrent"
+  },
+  "MEME_SPLIT_NAME_03": {
+    "source": "破圈",
+    "zh_CN": "破圈",
+    "en": "Open Circuit"
+  },
+  "MEME_SPLIT_NAME_04": {
+    "source": "翻面",
+    "zh_CN": "翻面",
+    "en": "Other Side"
+  },
+  "MEME_SPLIT_NAME_05": {
+    "source": "旁白",
+    "zh_CN": "旁白",
+    "en": "Aside"
+  },
+  "MEME_SPLIT_NAME_06": {
+    "source": "错拍",
+    "zh_CN": "错拍",
+    "en": "Offbeat"
+  },
+  "MEME_SPLIT_NAME_07": {
+    "source": "共振",
+    "zh_CN": "共振",
+    "en": "Resonance"
+  },
+  "MEME_SPLIT_NAME_08": {
+    "source": "新潮",
+    "zh_CN": "新潮",
+    "en": "New Wave"
+  },
+  "MEME_SPLIT_NAME_09": {
+    "source": "暗线",
+    "zh_CN": "暗线",
+    "en": "Undercurrent"
+  },
+  "MEME_SPLIT_NAME_10": {
+    "source": "折光",
+    "zh_CN": "折光",
+    "en": "Refraction"
+  },
+  "MEME_SPLIT_NAME_11": {
+    "source": "解码",
+    "zh_CN": "解码",
+    "en": "Decode"
+  },
+  "MEME_SPLIT_NAME_12": {
+    "source": "换位",
+    "zh_CN": "换位",
+    "en": "New Angle"
+  },
+  "MEME_SPLIT_NAME_13": {
+    "source": "异口",
+    "zh_CN": "异口",
+    "en": "Another Voice"
+  },
+  "MEME_SPLIT_NAME_14": {
+    "source": "留白",
+    "zh_CN": "留白",
+    "en": "Open Space"
+  },
+  "MEME_SPLIT_NAME_15": {
+    "source": "火花",
+    "zh_CN": "火花",
+    "en": "Spark"
+  },
+  "MEME_REWRITE_OBSERVED": {
+    "source": "群体 %s 更新了模因表达。",
+    "zh_CN": "群体 %s 更新了模因表达。",
+    "en": "Community %s changed the meme expression."
   }
 }

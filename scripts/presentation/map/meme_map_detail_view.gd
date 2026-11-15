@@ -1,11 +1,10 @@
 extends VBoxContainer
 
-signal country_selected(id: String)
+signal country_hovered(id: String)
 
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
-const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 const Fields = preload("res://scripts/presentation/map/meme_map_fields.gd")
 
@@ -26,7 +25,8 @@ var _layout_key := ""
 var _row_views: Array[Dictionary] = []
 var _headers: Array[Dictionary] = []
 var _help_controls: Array[Control] = []
-var _country_buttons: Dictionary = {}
+var _country_tags: Dictionary = {}
+var _country_flows: Array[HFlowContainer] = []
 var _compact_layout := false
 var _interactive_countries := true
 
@@ -53,16 +53,19 @@ func set_details(details: Dictionary, interactive_countries: bool = true) -> voi
 		_rebuild(interactive_countries)
 	for header: Dictionary in _headers:
 		var section: Dictionary = details.sections[int(header.section)]
-		_assign_help(header.control, str(section.title), str(section.help), str(section.kind), interactive_countries)
+		_assign_help(header.control, str(section.title), str(section.help), str(section.kind), interactive_countries, section.get("hover_info", {}))
 	for view: Dictionary in _row_views:
 		var section: Dictionary = details.sections[int(view.section)]
 		var row: Dictionary = section.rows[int(view.index)]
-		_assign_help(view.label, str(row.label), str(row.help), str(section.kind), interactive_countries)
-		if view.tags.is_empty():
+		if not str(row.get("country_id", "")).is_empty():
+			_configure_country_tag(view.label, row, interactive_countries)
+			continue
+		_assign_help(view.label, str(row.label), str(row.help), str(section.kind), interactive_countries, row.get("hover_info", {}))
+		if view.value != null and view.tags.is_empty():
 			view.value.text = str(row.value)
-			_assign_help(view.value, str(row.label), str(row.help), str(section.kind), interactive_countries)
+			_assign_help(view.value, str(row.label), str(row.help), str(section.kind), interactive_countries, row.get("hover_info", {}))
 		else:
-			for index in view.tags.size(): view.tags[index].configure(row.tags[index], interactive_countries)
+			for index in view.tags.size(): view.tags[index].configure(row.tags[index], interactive_countries, bool(view.context))
 
 func set_compact_layout(value: bool) -> void:
 	if _compact_layout == value: return
@@ -79,9 +82,11 @@ func inspection() -> Dictionary:
 			"tooltip_text":control.tooltip_text, "mouse_filter":control.mouse_filter, "tooltip_style":"receipt",
 			"rect":control.get_global_rect(), "visible":control.is_visible_in_tree()})
 	return {"section_count":_details.get("sections", []).size(), "rows":rows,
-		"country_ids":_country_buttons.keys(), "country_button_count":_country_buttons.size(),
+		"country_ids":_country_tags.keys(), "country_tag_count":_country_tags.size(),
+		"country_tag_rows":_country_flows.map(func(flow: HFlowContainer): return flow.get_line_count()),
+		"country_tags":_country_tags.values().map(func(chip: Control): return chip.inspection()),
 		"minimum_size":get_combined_minimum_size(), "size":size, "nested_paper":false,
-		"compact_layout":_compact_layout, "help_controls":helps}
+		"compact_layout":_compact_layout, "context_columns":2, "help_controls":helps}
 
 func _rebuild(interactive_countries: bool) -> void:
 	for child in get_children():
@@ -90,23 +95,15 @@ func _rebuild(interactive_countries: bool) -> void:
 	_row_views.clear()
 	_headers.clear()
 	_help_controls.clear()
-	_country_buttons.clear()
-	var compact_columns: HBoxContainer
+	_country_tags.clear()
+	_country_flows.clear()
 	for section_index in _details.sections.size():
 		var section: Dictionary = _details.sections[section_index]
 		var section_body := VBoxContainer.new()
 		section_body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		section_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		section_body.add_theme_constant_override("separation", 8)
-		if _compact_layout and section_index > 0:
-			if compact_columns == null:
-				compact_columns = HBoxContainer.new()
-				compact_columns.mouse_filter = Control.MOUSE_FILTER_IGNORE
-				compact_columns.add_theme_constant_override("separation", 16)
-				add_child(compact_columns)
-			compact_columns.add_child(section_body)
-		else:
-			add_child(section_body)
+		add_child(section_body)
 		section_body.add_child(_rule())
 		var header := HBoxContainer.new()
 		header.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -121,7 +118,25 @@ func _rebuild(interactive_countries: bool) -> void:
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		header.add_child(title)
 		_headers.append({"section":section_index, "control":title})
-		var content := VBoxContainer.new()
+		var context := str(section.kind) == "language"
+		var content: Container
+		if context:
+			var grid := GridContainer.new()
+			grid.name = "MemeContextColumns"
+			grid.columns = 2
+			grid.add_theme_constant_override("h_separation", 12)
+			grid.add_theme_constant_override("v_separation", 8)
+			content = grid
+		elif str(section.kind) == "group":
+			var flow := HFlowContainer.new()
+			flow.name = "SpreadCountryTags"
+			flow.add_theme_constant_override("h_separation", 6)
+			flow.add_theme_constant_override("v_separation", 6)
+			_country_flows.append(flow)
+			content = flow
+		else:
+			content = VBoxContainer.new()
+		content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		content.add_theme_constant_override("separation", 8)
 		section_body.add_child(content)
@@ -132,28 +147,27 @@ func _rebuild(interactive_countries: bool) -> void:
 		for row_index in section.rows.size():
 			var row: Dictionary = section.rows[row_index]
 			var country_id := str(row.get("country_id", ""))
-			if not country_id.is_empty() and row_index > 0: content.add_child(_rule())
-			var prose := str(section.kind) == "meme" or not (row.get("tags", []) as Array).is_empty()
+			if not country_id.is_empty():
+				var chip := Fields.TagChip.new()
+				chip.name = "CountryTag_" + country_id
+				_configure_country_tag(chip, row, interactive_countries)
+				if interactive_countries:
+					chip.mouse_entered.connect(func(): country_hovered.emit(country_id))
+					chip.mouse_exited.connect(func(): country_hovered.emit(""))
+				content.add_child(chip)
+				_country_tags[country_id] = chip
+				_help_controls.append(chip)
+				_row_views.append({"section":section_index, "index":row_index, "label":chip, "value":null, "tags":[], "context":false})
+				continue
+			var prose := context or str(section.kind) == "meme" or not (row.get("tags", []) as Array).is_empty()
 			var fields: BoxContainer = VBoxContainer.new() if prose else HBoxContainer.new()
 			fields.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			fields.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			fields.add_theme_constant_override("separation", 8 if prose else 12)
 			content.add_child(fields)
 			var label: Control
-			if interactive_countries and not country_id.is_empty():
-				var button := Fields.HelpButton.new()
-				button.text = str(row.label)
-				button.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-				button.clip_text = true
-				button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-				button.add_theme_font_size_override("font_size", 14)
-				PaperStyle.apply_button(button, true)
-				button.pressed.connect(func(): country_selected.emit(country_id))
-				_country_buttons[country_id] = button
-				_help_controls.append(button)
-				label = button
-			else:
-				label = _label(str(row.label), 12, Style.SECONDARY_INK)
-			if not prose: label.custom_minimum_size.x = 88
+			label = _label(str(row.label), 12, Style.SECONDARY_INK)
+			if not prose and country_id.is_empty(): label.custom_minimum_size.x = 88
 			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			label.size_flags_stretch_ratio = 0.75
 			label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
@@ -167,7 +181,7 @@ func _rebuild(interactive_countries: bool) -> void:
 				flow.add_theme_constant_override("v_separation", 6)
 				for tag: Dictionary in row.tags:
 					var chip := Fields.TagChip.new()
-					chip.configure(tag, interactive_countries)
+					chip.configure(tag, interactive_countries, context)
 					flow.add_child(chip)
 					_help_controls.append(chip)
 					tags.append(chip)
@@ -177,10 +191,20 @@ func _rebuild(interactive_countries: bool) -> void:
 			value.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			value.size_flags_stretch_ratio = 1.25
 			fields.add_child(value)
-			_row_views.append({"section":section_index, "index":row_index, "label":label, "value":value, "tags":tags})
+			_row_views.append({"section":section_index, "index":row_index, "label":label, "value":value, "tags":tags, "context":context})
 
-func _assign_help(control: Control, title: String, body: String, kind: String, interactive: bool) -> void:
-	control.set_help(title, body, kind)
+func _configure_country_tag(chip: Control, row: Dictionary, interactive: bool) -> void:
+	chip.configure({"text":str(row.label), "help":str(row.help), "kind":"group", "hover_info":row.get("hover_info", {})}, interactive)
+	chip.get("_icon").hide()
+	chip.custom_minimum_size.x = minf(256.0, ceilf(Handwriting.BODY_FONT.get_string_size(str(row.label), HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 14.0))
+	chip.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	chip.mouse_filter = Control.MOUSE_FILTER_STOP if interactive else Control.MOUSE_FILTER_IGNORE
+
+func _assign_help(control: Control, title: String, body: String, kind: String, interactive: bool, info: Dictionary = {}) -> void:
+	if info.is_empty():
+		control.set_help(title, body, kind)
+	else:
+		control.set_help_info(info)
 	if not interactive:
 		control.tooltip_text = ""
 		control.mouse_filter = Control.MOUSE_FILTER_IGNORE

@@ -3,6 +3,11 @@ extends RefCounted
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 
 static func name(catalog: MemeDemoCatalog, raw: Dictionary) -> String:
+	var meme_name := str(raw.get("meme_name", ""))
+	if not meme_name.is_empty():
+		var title := DeskLocalization.text(meme_name)
+		var name_index := int(raw.get("meme_name_index", -1))
+		return "%s %d" % [title, name_index / 16 + 1] if name_index >= 16 else title
 	var preset := catalog.find_preset(_preset_id(raw))
 	if preset != null: return ExpressionText.preset_name(preset, true)
 	return " ".join(display_text(str(raw.get("text", ""))).split("\n", false))
@@ -16,11 +21,9 @@ static func resolve(catalog: MemeDemoCatalog, raw: Dictionary) -> Dictionary:
 	if meaning.is_empty():
 		var preset := catalog.find_preset(_preset_id(raw))
 		if preset != null: meaning = str(preset.context_hint)
-	var id := str(raw.get("id", ""))
-	var suffix := id.get_slice("_", id.get_slice_count("_") - 1)
-	var kind := "MAP_MEME_OWN" if bool(raw.get("controlled", false)) and str(raw.get("creator", "")) == "player" else ("MAP_MEME_REMIX" if not raw.get("parent_ids", []).is_empty() else "MAP_MEME_INDEPENDENT")
+	var kind := "MAP_MEME_OWN" if bool(raw.get("controlled", false)) and str(raw.get("creator", "")) == "player" else "MAP_MEME_INDEPENDENT"
 	return {"name":name(catalog, raw), "expression":display_text(str(raw.get("text", ""))),
-		"meaning":display_text(meaning), "version":str(int(suffix)) if suffix.is_valid_int() else id,
+		"meaning":display_text(meaning),
 		"kind":DeskLocalization.text(kind)}
 
 static func display_text(value: String) -> String:

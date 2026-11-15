@@ -6,6 +6,8 @@ signal changed
 signal completed(result: Dictionary)
 
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
+const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const Lifecycle = preload("res://scripts/gameplay/competition/meme_lifecycle.gd")
 const DesignState = preload("res://scripts/gameplay/design/design_state.gd")
 const SaveCodec = preload("res://scripts/services/persistence/save_codec.gd")
 const EventScheduler = preload("res://scripts/gameplay/events/event_scheduler.gd")
@@ -21,6 +23,7 @@ var design_state: MemeDemoDesignState
 var hour: int = 0
 var run_end_hour: int = 48
 var phase: String = "draft"
+var ending: Dictionary = {}
 var speed: int = 0
 var resume_speed: int = 1
 var seed_value: int = 20261003
@@ -63,6 +66,7 @@ func reset(run_seed: int, world: RefCounted = null) -> void:
 	run_end_hour = catalog.run_hours
 	resume_speed = 1
 	phase = "draft"
+	ending.clear()
 	speed = 0
 	_serial = 0
 	publish_count = 0
@@ -395,7 +399,8 @@ func publish(data: Dictionary) -> PackedStringArray:
 		status = DeskLocalization.source_join("；",errors)
 		changed.emit()
 		return errors
-	# 校验通过后才扣款并创建身份。
+	var pristine := _capture_lifecycle_state()
+	# Publication and distribution commit together after validation.
 	economy.charge(cost, DeskLocalization.source("LOC_FIRST_DEPLOYMENT_23FC9181") if publish_count == 0 else DeskLocalization.source("LOC_REVISED_DEPLOYMENT_AF934607"), hour)
 	var kernel := find_kernel(str(data.kernel_id))
 	var preset_id := str(data.get("preset_id", ""))
@@ -404,13 +409,13 @@ func publish(data: Dictionary) -> PackedStringArray:
 	var anchor := preset.family_anchor if preset != null else kernel.family_anchor
 	var family_id := ""
 	var parent_ids: Array[String] = []
-	var old := variant_by_id(current_variant_id)
+	var old := Lifecycle.new(self).active_source(variant_by_id(current_variant_id))
 	if not old.is_empty() and old.kernel_id == str(kernel.id) and str(old.get("preset_id", "")) == preset_id:
 		family_id = old.family_id
 		parent_ids.append(old.id)
 	else:
 		family_id = _new_id("family")
-		families[family_id] = {"id":family_id, "owner":"player", "anchor":anchor, "split_threshold":kernel.split_threshold, "derived_from":[], "preset_id":preset_id, "source_presets":source_presets.duplicate(true)}
+		families[family_id] = {"id":family_id, "owner":"player", "anchor":anchor, "split_threshold":MonitorMetrics.SPLIT_THRESHOLD, "derived_from":[], "preset_id":preset_id, "source_presets":source_presets.duplicate(true)}
 	var id := _new_id("variant")
 	var composed: Dictionary = ExpressionText.compose(catalog, data)
 	var text: String = str(composed.expression)
@@ -425,6 +430,12 @@ func publish(data: Dictionary) -> PackedStringArray:
 	variants.back().flow_profile = competition.profile(profile_draft)
 	competition.register(variants.back(),variants.back().flow_profile,country_id,hour)
 	design_state.record_publish(variants.back())
+	var activation: Dictionary = Lifecycle.new(self).activate(variants.back(), old)
+	if activation.has("error"):
+		_restore_lifecycle_state(pristine)
+		status = str(activation.error)
+		changed.emit()
+		return PackedStringArray([status])
 	current_variant_id = id
 	latest_draft = data.duplicate(true)
 	draft_distance = 0.0
@@ -459,7 +470,9 @@ func begin_revision(draft: Dictionary = {}) -> PackedStringArray:
 	if phase == "complete":
 		run_end_hour = hour + catalog.run_hours
 		competition._state.victory = {}
+		ending.clear()
 	phase = "draft"
+	ending.clear()
 	speed = 0
 	status = DeskLocalization.source("LOC_CREATE_YOUR_OWN_NEW_VERSION_CIRCULATING_EXTERNAL_00887F90")
 	changed.emit()
@@ -484,7 +497,7 @@ func step_hour() -> bool:
 	_spread_world()
 	_schedule_events()
 	_open_next_event()
-	if phase == "running" and (hour >= run_end_hour or not competition._state.victory.is_empty()):
+	if phase == "running" and hour >= run_end_hour:
 		_finish()
 	changed.emit()
 	return true
@@ -496,14 +509,15 @@ func _expire_modifiers() -> void:
 
 func _spread_world() -> void:
 	var factors := {}
+	var runtime_modifiers := _runtime_modifiers()
 	for country: Dictionary in catalog.gameplay_rules.countries:
 		var cid := str(country.id)
 		factors[cid] = {}
-		for variant: Dictionary in variants:
+		for variant: Dictionary in competition.active_variants(variants):
 			var entry: Dictionary = competition._state.registry[str(variant.id)]
-			var profile: Dictionary = entry.profile.duplicate(true)
+			var profile: Dictionary = entry.get("effective_profile", entry.profile).duplicate(true)
 			profile.topic_ids = Array(competition.active_topics(profile))
-			factors[cid][str(variant.id)] = _audience_factor(entry.profile) * EffectRules.country_factor(modifiers, hour, cid, str(variant.id), profile)
+			factors[cid][str(variant.id)] = _audience_factor(profile) * EffectRules.country_factor(runtime_modifiers, hour, cid, str(variant.id), profile)
 	competition.step(hour,variants,factors)
 	var view: Dictionary = competition.snapshot(variants,false)
 	attention = view.attention
@@ -528,13 +542,15 @@ func _audience_factor(profile: Dictionary) -> float:
 		total += EffectRules.attraction_factor(modifiers, hour, id, competition.active_topics(profile)) * maxf(0.05, float(state.trust)) * maxf(0.05, 1.0 - float(state.fatigue))
 	return total / seen.size()
 
-func _register_external_world(variant: Dictionary, event_country: String = "") -> void:
+func _register_external_world(variant: Dictionary, event_country: String = "") -> Dictionary:
 	var parent_id: String = str(variant.parent_ids[0]) if not variant.parent_ids.is_empty() else ""
 	var profile_data: Dictionary = competition.inherited_profile(variant,parent_id)
 	variant.flow_profile = profile_data.duplicate(true)
 	var origin: String = str(competition._state.registry.get(parent_id,{}).get("origin_country",""))
 	if not event_country.is_empty(): origin = event_country
 	competition.register(variant,profile_data,origin,hour)
+	var source := variant_by_id(parent_id) if not parent_id.is_empty() else {}
+	return Lifecycle.new(self).activate(variant, source)
 
 func _reward_milestones() -> void:
 	var totals := totals_state()
@@ -572,6 +588,7 @@ func _schedule_events() -> void:
 
 ## 统一创建事件身份、应用效果并登记来源，界面只接收记录副本。
 func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -> void:
+	var pristine := _capture_lifecycle_state()
 	var id := str(definition.id)
 	var cid := occurring_country if not occurring_country.is_empty() else _event_country(definition)
 	var country: Dictionary = catalog.gameplay_rules.country(cid)
@@ -604,7 +621,7 @@ func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -
 		match str(effect.effect_id):
 			"remix":
 				if effect.amount > 0.0: observed.append(_spawn_remix(event_id, str(effect.group_ids[0]) if not effect.group_ids.is_empty() else str(target.flow_profile.group_id), id, str(target.id), cid))
-			"adoption": competition.adoption_pulse(str(target.id), effect.amount, cid)
+			"adoption": competition.adoption_pulse(_active_variant_id(str(target.id)), effect.amount, cid)
 			"revival":
 				modifier.amount = effect.amount
 				modifiers.append(modifier)
@@ -614,12 +631,17 @@ func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -
 	var remix_created := false
 	for index in range(first_variant,variants.size()):
 		if variants[index].parent_ids.is_empty(): _assign_event_context(variants[index], country, response)
-		_register_external_world(variants[index], cid)
+		var activation := _register_external_world(variants[index], cid)
+		if activation.has("error"):
+			_restore_lifecycle_state(pristine)
+			status = str(activation.error)
+			return
 		remix_created = remix_created or not variants[index].parent_ids.is_empty()
 	event_counts[id] = int(event_counts.get(id, 0)) + 1
 	last_event_hours[id] = hour
 	var rewards := design_state.unique_event_rewards(definition.design_rewards, events)
 	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(remix_created), "mentor_comment":definition.mentor_comment, "effect_text":definition.title if observed.is_empty() else DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
+	record.target_content_snapshot = Lifecycle.revision_snapshot(target) if not target.is_empty() else {}
 	record.merge({"country_id":cid, "country_title":title, "category":str(definition.category), "response":response, "response_duration_hours":duration, "applied_effects":applied, "target_variant_id":str(target.get("id", "")), "target_variant_text":str(target.get("text", ""))})
 	var response_text := EventResponse.summary(response)
 	if not response_text.is_empty(): record.impact_text = response_text
@@ -673,11 +695,12 @@ func _event_candidates(cid: String, definition: MemeDemoEvent = null) -> Array[D
 			requires_rewrite = requires_rewrite or (effect.effect_id == &"remix" and effect.amount > 0.0)
 			for id: String in effect.group_ids:
 				if id not in reacting_groups: reacting_groups.append(id)
-	for variant: Dictionary in variants:
+	for variant: Dictionary in competition.active_variants(variants):
 		if variant.origin_ids.is_empty() or not competition._state.registry.has(str(variant.id)): continue
 		var entry: Dictionary = competition._state.registry[str(variant.id)]
 		if not reacting_groups.is_empty():
-			var target_groups: Array = entry.profile.get("group_ids", [str(entry.profile.group_id)])
+			var effective: Dictionary = entry.get("effective_profile", entry.profile)
+			var target_groups: Array = effective.get("group_ids", [str(effective.group_id)])
 			var matches_group := false
 			for id: String in target_groups: matches_group = matches_group or id in reacting_groups
 			if not matches_group: continue
@@ -696,8 +719,8 @@ func _confluence_companion(parent: Dictionary, definition: MemeDemoEvent, cid: S
 	var selected: Dictionary = {}
 	var shared_reach := 0.0
 	var parent_exposed := float(competition._state.countries[cid].exposed[str(parent.id)])
-	for candidate: Dictionary in variants:
-		if str(candidate.family_id) == str(parent.family_id) or not competition._state.registry.has(str(candidate.id)): continue
+	for candidate: Dictionary in competition.active_variants(variants):
+		if str(candidate.get("meme_id", candidate.id)) == str(parent.get("meme_id", parent.id)) or not competition._state.registry.has(str(candidate.id)): continue
 		var relevant := false
 		for topic: String in competition.active_topics(candidate.flow_profile): relevant = relevant or topic in definition.mutation_topic_ids
 		if not relevant: continue
@@ -755,7 +778,8 @@ func _event_hours(value: float) -> float:
 	return value * catalog.gameplay_rules.event_time_scale
 
 func _spawn_remix(event_id: String, creator: String, definition_id: String = "", parent_id: String = "", event_country: String = "") -> String:
-	var parent := variant_by_id(current_variant_id if parent_id.is_empty() else parent_id)
+	var parent := Lifecycle.new(self).active_source(variant_by_id(current_variant_id if parent_id.is_empty() else parent_id))
+	var parent_content := Lifecycle.revision_snapshot(parent)
 	var event_definition := _event_definition(definition_id)
 	var event_mutation := event_definition != null and not event_definition.mutation_kind.is_empty()
 	if parent.is_empty():
@@ -766,47 +790,49 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "",
 		# Newer circulating descendants can become the source of the next community rewrite.
 		for index in range(variants.size() - 1, -1, -1):
 			var source: Dictionary = variants[index]
+			if bool(source.get("retired", false)): continue
+			if str(source.get("meme_id", source.id)) != str(parent.get("meme_id", parent.id)): continue
 			if source.origin_ids != origins or not competition._state.registry.has(str(source.id)): continue
 			if not source.get("flow_draft") is Dictionary or source.flow_draft.get("reuse_permission", "unknown") == "restricted": continue
-			mutation = EventMutation.candidate(catalog, source, event_definition) if event_mutation else MutationRules.candidate(catalog, source, definition_id)
+			parent_content = Lifecycle.revision_snapshot(source)
+			mutation = EventMutation.candidate(catalog, parent_content, event_definition) if event_mutation else MutationRules.candidate(catalog, parent_content, definition_id)
 			if not mutation.is_empty():
 				parent = source
 				break
 	else:
-		if not parent.get("flow_draft") is Dictionary: return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
-		if parent.flow_draft.get("reuse_permission", "unknown") == "restricted":
+		if not parent_content.get("flow_draft") is Dictionary: return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
+		if parent_content.flow_draft.get("reuse_permission", "unknown") == "restricted":
 			return DeskLocalization.source("LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C")
-		if parent.patch_ids.size() >= catalog.DESIGN_RULES.module_slots and (not event_mutation or event_definition.mutation_kind != &"expression"):
+		if parent_content.patch_ids.size() >= catalog.DESIGN_RULES.module_slots and (not event_mutation or event_definition.mutation_kind != &"expression"):
 			return DeskLocalization.source("LOC_MUTATION_PATCHES_FULL")
-		mutation = EventMutation.candidate(catalog, parent, event_definition) if event_mutation else MutationRules.candidate(catalog, parent, definition_id)
+		mutation = EventMutation.candidate(catalog, parent_content, event_definition) if event_mutation else MutationRules.candidate(catalog, parent_content, definition_id)
 	if mutation.is_empty(): return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
+	var companion_content := {}
 	if event_mutation and event_definition.mutation_kind == &"confluence":
 		var cid := event_country if not event_country.is_empty() else str(competition._state.registry[str(parent.id)].origin_country)
 		var companion := _confluence_companion(parent, event_definition, cid)
 		if companion.is_empty(): return DeskLocalization.source("LOC_MUTATION_NO_COMPATIBLE_PATCH")
-		mutation = EventMutation.merge_with(mutation, companion)
+		companion_content = Lifecycle.revision_snapshot(companion)
+		mutation = EventMutation.merge_with(mutation, companion_content)
 	var composed: Dictionary = mutation.composition
 	var family_id: String = parent.family_id
-	var distance := (0.7 if event_mutation and event_definition.mutation_kind == &"confluence" else (0.45 if event_mutation else draft_distance)) if bool(mutation.meaning_changed) else 0.0
-	var split := distance >= float(families[family_id].split_threshold)
-	if split:
-		var previous := family_id
-		family_id = _new_id("family")
-		families[family_id] = {"id":family_id, "owner":creator, "anchor":DeskLocalization.source("LOC_REINTERPRETED_BY_AN_EXTERNAL_COMMUNITY_6264171E"), "split_threshold":families[previous].split_threshold, "derived_from":[previous], "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true)}
 	var id := _new_id("variant")
-	var source_draft: Dictionary = parent.flow_draft
+	var source_draft: Dictionary = parent_content.flow_draft
 	var reuse_factor := EffectRules.reuse_factor(str(source_draft.reuse_permission),
 		PackedStringArray(source_draft.replaceable_slots).size(), find_kernel(parent.kernel_id).required_slots.size(),
 		float(source_draft.remix_cost), float(source_draft.context_dependency))
-	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":bool(parent.owned) and not split, "controlled":false, "text":str(composed.expression), "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":distance, "language_id":str(source_draft.language_id), "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor, "patch_ids":mutation.patch_ids.duplicate(), "flow_draft":mutation.flow_draft.duplicate(true)})
+	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":bool(parent_content.owned), "controlled":false, "text":str(composed.expression), "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":0.0, "language_id":str(source_draft.language_id), "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor, "patch_ids":mutation.patch_ids.duplicate(), "flow_draft":mutation.flow_draft.duplicate(true)})
+	variants.back().mutation_parent_content = parent_content
 	for field: String in ["meaning", "meaning_id", "language_versions"]: variants.back()[field] = composed[field]
 	if event_mutation:
 		variants.back().mutation_definition_id = definition_id
 		variants.back().mutation_patch_id = str(mutation.patch_id)
 		variants.back().topic_ids = Array(mutation.flow_draft.topic_ids)
 		variants.back().language_id = str(mutation.flow_draft.language_id)
-		if mutation.has("companion_id"): variants.back().confluence_source_id = str(mutation.companion_id)
-	return DeskLocalization.source_format("LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714", [DeskLocalization.source("LOC_NEW_FAMILY_A5AC4668") if split else DeskLocalization.source("LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C"), family_id, id, creator], [0])
+		if mutation.has("companion_id"):
+			variants.back().confluence_source_id = str(mutation.companion_id)
+			variants.back().confluence_companion_content = companion_content
+	return DeskLocalization.source("LOC_AUDIENCE_REWRITE_FD322DDD")
 
 func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> String:
 	var preset := catalog.find_preset(str(definition.external_preset_id))
@@ -817,7 +843,7 @@ func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> Stri
 	var family_id := _new_id("family")
 	var id := _new_id("variant")
 	var source_presets: Array = [preset.source_record()]
-	families[family_id] = {"id":family_id, "owner":"environment", "anchor":preset.family_anchor, "split_threshold":kernel.split_threshold, "derived_from":[], "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true)}
+	families[family_id] = {"id":family_id, "owner":"environment", "anchor":preset.family_anchor, "split_threshold":MonitorMetrics.SPLIT_THRESHOLD, "derived_from":[], "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true)}
 	variants.append({"id":id, "family_id":family_id, "parent_ids":[], "origin_ids":[], "creator":"environment", "owned":false, "controlled":false, "text":" / ".join(preset.default_values), "kernel_id":str(preset.kernel_id), "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":"seowon", "source_event":event_id, "topic_ids":Array(definition.topic_ids)})
 	variants.back().patch_ids = []
 	return DeskLocalization.source_format("LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912", preset.title, [0])
@@ -856,7 +882,7 @@ func acknowledge_event() -> void:
 	phase = "running"
 	speed = resume_speed
 	_open_next_event()
-	if phase == "running" and (hour >= run_end_hour or not competition._state.victory.is_empty()):
+	if phase == "running" and hour >= run_end_hour:
 		_finish()
 	changed.emit()
 
@@ -864,16 +890,18 @@ func _finish() -> void:
 	phase = "complete"
 	speed = 0
 	status = DeskLocalization.source("LOC_RUN_COMPLETE_RETAIN_THE_RESULTS_UNDER_YOUR_3E988C72")
-	if not competition._state.victory.is_empty(): status = DeskLocalization.source_format("%s%s", ["LOC_VICTORY_5FFA76AC", str(competition._state.victory.id)], [0])
+	competition._state.victory = {}
+	ending = {"id":"time_elapsed", "hour":hour}
 	completed.emit(snapshot())
 
 func snapshot() -> Dictionary:
 	var state := totals_state()
-	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "families":families.size(), "variants":variants.size(), "events":events.duplicate(true), "lineage":variants.duplicate(true), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
+	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "variants":competition.active_variants(variants).size(), "events":events.duplicate(true), "lineage":competition.active_variants(variants), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
 	state.current_variant_id = current_variant_id
 	state.guide_progress = guidance_progress()
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}
 	state.world_competition = competition.snapshot(variants)
+	state.world_competition.ending = ending.duplicate(true)
 	state.design_state = design_state.snapshot(variants)
 	state.design_state.event_materials = event_materials(state.design_state)
 	state.event_materials = state.design_state.event_materials.duplicate(true)
@@ -905,3 +933,46 @@ func _number(value: Variant) -> bool:
 ## 解析与候选账本构造由存档边界完成，失败不改变当前局。
 func restore(data: Dictionary) -> PackedStringArray:
 	return SaveCodec.new(self).restore(data)
+
+func _capture_lifecycle_state() -> Dictionary:
+	var result := {}
+	for field: String in ["families", "variants", "deployments", "group_state", "events", "discoveries", "modifiers", "event_counts", "last_event_hours", "pending_events", "active_event", "attention", "current_variant_id", "draft_distance", "publish_count", "_serial", "_event_clock_arrivals", "phase", "speed", "resume_speed", "status", "latest_draft", "ending"]:
+		var value: Variant = get(field)
+		result[field] = value.duplicate(true) if value is Dictionary or value is Array else value
+	result.competition = competition._state.duplicate(true)
+	result.monitor_previous = competition._monitor_previous_scores.duplicate(true)
+	result.design = design_state.payload()
+	result.economy = economy.payload()
+	result.rng_state = _rng.state
+	return result
+
+func _restore_lifecycle_state(pristine: Dictionary) -> void:
+	for field: String in pristine:
+		if field not in ["competition", "monitor_previous", "design", "economy", "rng_state"]: set(field, pristine[field])
+	competition._state = pristine.competition.duplicate(true)
+	competition._monitor_previous_scores = pristine.monitor_previous.duplicate(true)
+	competition._fitness_cache.clear()
+	design_state._state = pristine.design.duplicate(true)
+	economy.restore(pristine.economy)
+	_rng.state = pristine.rng_state
+
+func _active_variant_id(id: String) -> String:
+	var raw := variant_by_id(id)
+	return str(Lifecycle.new(self).active_source(raw).id) if not raw.is_empty() else id
+
+func _runtime_modifiers() -> Array[Dictionary]:
+	var current := {}
+	for raw: Dictionary in variants:
+		if not bool(raw.get("retired", false)): current[str(raw.get("meme_id", raw.id))] = str(raw.id)
+	var meme_by_revision := {}
+	for raw: Dictionary in variants: meme_by_revision[str(raw.id)] = str(raw.get("meme_id", raw.id))
+	var result: Array[Dictionary] = []
+	for original: Dictionary in modifiers:
+		var modifier := original.duplicate(true)
+		var ids: Array = []
+		for id: String in original.variant_ids:
+			var active := str(current.get(str(meme_by_revision.get(id, id)), id))
+			if active not in ids: ids.append(active)
+		modifier.variant_ids = ids
+		result.append(modifier)
+	return result

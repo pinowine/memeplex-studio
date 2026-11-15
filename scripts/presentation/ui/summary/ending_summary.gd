@@ -6,15 +6,12 @@ signal return_menu_requested
 const TEMPLATE = preload("res://scenes/ui/summary/ending_summary.tscn")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const ENDINGS := {
-	"own_world": ["LOC_YOUR_MEME_HAS_TAKEN_OVER_THE_WORLD_B77F0A22", "LOC_EVERYONE_IS_SAYING_YOUR_WORDS_NOW_PLEASE_41ADB542"],
-	"autonomous_lineage": ["LOC_THE_UNCONTROLLED_MUTANT_LINEAGE_IS_SURVIVING_ON_0D828D42", "LOC_IT_S_OUT_OF_YOUR_HANDS_CONGRATULATIONS_C2D7631D"],
-	"competitor_equilibrium": ["LOC_YOU_AND_YOUR_COMPETITORS_HAVE_REACHED_EQUILIBRIUM_7117C232", "LOC_NEITHER_SIDE_PRINTED_THE_OTHER_OUT_OF_C3A5D603"],
-	"lineage_diversity": ["LOC_MULTIPLE_DISTINCT_VERSIONS_HAVE_SPREAD_TOGETHER_C71AB8B3", "LOC_SEVERAL_DRAFTS_SURVIVED_TOGETHER_APPARENTLY_A_SINGLE_E053C7C9"]
+	"time_elapsed": ["MM_ENDING_REASON", "MM_ENDING_COMMENT"]
 }
 
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
-const METRIC_KEYS := ["HOUR", "POPULATION", "VARIANTS", "MEME_POINTS"]
-const SHARE_KEYS := ["OWNED", "LINEAGE", "ESCAPED"]
+const METRIC_KEYS := ["LOC_SUMMARY_HOUR", "LOC_SUMMARY_POPULATION", "MM_ENDING_MEMES", "LOC_SUMMARY_MEME_POINTS"]
+const SHARE_KEYS := ["MM_ENDING_OWN", "MM_ENDING_OTHER", "MM_ENDING_UNADOPTED"]
 const SHARE_COLORS := [Color("667951"), Color("8b724c"), Color("9a5c45")]
 
 class MetricIcon extends Control:
@@ -72,7 +69,7 @@ func configure(_options: Dictionary = {}) -> void:
 
 func show_result(snapshot: Dictionary, ending: Dictionary = {}) -> bool:
 	var competition: Dictionary = snapshot.get("world_competition", {})
-	var result: Dictionary = competition.get("victory", {}) if ending.is_empty() else ending
+	var result: Dictionary = competition.get("ending", {}) if ending.is_empty() else ending
 	if not ENDINGS.has(str(result.get("id", ""))): return false
 	_snapshot = snapshot.duplicate(true)
 	_ending = result.duplicate(true)
@@ -83,25 +80,25 @@ func show_result(snapshot: Dictionary, ending: Dictionary = {}) -> bool:
 func _refresh() -> void:
 	if not is_instance_valid(_ui) or _ending.is_empty(): return
 	var copy: Array = ENDINGS[str(_ending.id)]
-	_content.get_node("Title").text = DeskLocalization.text("LOC_VICTORY_943874EC")
+	_content.get_node("Title").text = DeskLocalization.text("MM_ENDING_TITLE")
 	_content.get_node("Reason").text = DeskLocalization.text(copy[0])
 	_content.get_node("Verdict/Comment").text = DeskLocalization.text(copy[1])
 	_content.get_node("ReturnMenu").text = DeskLocalization.text("LOC_RETURN_TO_MAIN_MENU_E34E61A2")
 	var world: Dictionary = _snapshot.get("world_competition", {})
 	var hour := int(_ending.get("hour", _snapshot.get("hour", 0)))
 	var own := float(_ending.get("owned_share", world.get("owned_share", 0))) * 100
-	var lineage := float(_ending.get("lineage_share", world.get("lineage_share", 0))) * 100
-	var escaped := float(_ending.get("escaped_share", world.get("escaped_share", 0))) * 100
+	var unadopted := float(world.get("unadopted_share", 1.0)) * 100
+	var others := maxf(0.0, 100.0 - own - unadopted)
 	var variants: Variant = world.get("variants", [])
 	var count: int = variants.size() if variants is Array or variants is Dictionary else 0
-	_statistics = DeskLocalization.text("LOC_HOUR_D_WORLD_POPULATION_D_AUTHOR_OWNERSHIP_877C9AE3") % [hour, int(world.get("world_population", 0)), own, lineage, escaped, count, str(_snapshot.get("meme_points", 0))]
+	_statistics = DeskLocalization.text("MM_ENDING_STATISTICS") % [hour, int(world.get("world_population", 0)), count, str(_snapshot.get("meme_points", 0))]
 	var values := [str(hour), _group_number(int(world.get("world_population", 0))), str(count), str(_snapshot.get("meme_points", 0))]
 	for index in _metrics.size():
-		_metrics[index].title.text = DeskLocalization.text("LOC_SUMMARY_" + METRIC_KEYS[index])
+		_metrics[index].title.text = DeskLocalization.text(METRIC_KEYS[index])
 		_metrics[index].value.text = values[index]
-	var shares := [own, lineage, escaped]
+	var shares := [own, others, unadopted]
 	for index in _shares.size():
-		_shares[index].title.text = DeskLocalization.text("LOC_SUMMARY_" + SHARE_KEYS[index])
+		_shares[index].title.text = DeskLocalization.text(SHARE_KEYS[index])
 		_shares[index].value.text = "%.2f%%" % shares[index]
 		_shares[index].bar.value = shares[index]
 	_layout()
@@ -176,7 +173,7 @@ func _layout() -> void:
 	_content.get_node("Metrics").columns = 2 if scroll.size.x < 540 else 4
 
 func inspection() -> Dictionary:
-	return {"visible": is_visible_in_tree(), "ending": _ending.duplicate(true), "snapshot": _snapshot.duplicate(true), "ending_ids": ENDINGS.keys(), "title": "" if not is_instance_valid(_ui) else _content.get_node("Title").text, "reason": "" if not is_instance_valid(_ui) else _content.get_node("Reason").text, "statistics": _statistics, "metric_count":_metrics.size(), "share_values":_shares.map(func(row: Dictionary): return row.bar.value), "scrollable":true, "comment": "" if not is_instance_valid(_ui) else _content.get_node("Verdict/Comment").text, "scope": "Presentation of confirmed backend victory; no threshold calculation or economy writes"}
+	return {"visible": is_visible_in_tree(), "ending": _ending.duplicate(true), "snapshot": _snapshot.duplicate(true), "ending_ids": ENDINGS.keys(), "title": "" if not is_instance_valid(_ui) else _content.get_node("Title").text, "reason": "" if not is_instance_valid(_ui) else _content.get_node("Reason").text, "statistics": _statistics, "metric_count":_metrics.size(), "share_values":_shares.map(func(row: Dictionary): return row.bar.value), "scrollable":true, "comment": "" if not is_instance_valid(_ui) else _content.get_node("Verdict/Comment").text, "scope": "Presentation of confirmed backend ending; no victory thresholds or economy writes"}
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
