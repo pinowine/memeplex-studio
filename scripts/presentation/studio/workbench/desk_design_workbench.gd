@@ -25,6 +25,7 @@ const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_f
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
 const HEADING_FONT = preload("res://assets/image/fonts/body_semibold_font.tres")
+const BODY_FONT = preload("res://assets/image/fonts/development_font.tres")
 const INK := Color("384238")
 const SECONDARY_INK := Color("594d3f")
 const SPACE_WITHIN := 8
@@ -114,6 +115,8 @@ var _skill_buttons: Dictionary = {}
 var _skill_title: Label
 var _skill_details: RichTextLabel
 var _spread_heading: HBoxContainer
+var _spread_heading_font: FontVariation
+var _spread_heading_labels: Array[Label] = []
 var _spread_column_rule: VSeparator
 var _skill_heading: HBoxContainer
 var _skill_scroll: ScrollContainer
@@ -129,6 +132,7 @@ var _textures: Dictionary = {}
 var _sync_count := 0
 var _sheet_hosts: Dictionary = {}
 var _spread_tree: Control
+var _spread_tree_scroll: ScrollContainer
 var _module_edits: Dictionary = {}
 var _selected_installed_slot := -1
 var _context_slice: Control
@@ -266,7 +270,7 @@ func get_draft() -> Dictionary:
 
 func sync_state(snapshot: Dictionary) -> void:
 	var design: Dictionary=snapshot.get("design_state",{})
-	var relevant := {"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0),"current_variant_id":snapshot.get("current_variant_id","")}
+	var relevant := {"propagation_delivery":snapshot.get("propagation_delivery", {}),"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0),"current_variant_id":snapshot.get("current_variant_id",""),"propagation_research_ready":snapshot.get("propagation_research_ready",false)}
 	if _state == relevant: return
 	_state=relevant.duplicate(true)
 	if _publish != null: _publish.visible = _tab == "edit" and int(_state.get("publish_count", 0)) > 0
@@ -590,9 +594,15 @@ func _build_spread() -> void:
 	pencil.thickness = 1
 	_spread_column_rule.add_theme_stylebox_override("separator", pencil)
 	page.add_child(_spread_column_rule)
+	_spread_tree_scroll = ScrollContainer.new()
+	_spread_tree_scroll.name = "SpreadTreeScroll"
+	_spread_tree_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	page.add_child(_spread_tree_scroll)
 	_spread_tree = DendriteTree.new()
 	_spread_tree.name = "DendriteTree"
-	page.add_child(_spread_tree)
+	_spread_tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_spread_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_spread_tree_scroll.add_child(_spread_tree)
 	_spread_tree.node_selected.connect(_select_skill)
 	_skill_heading = _spread_section(page, "spread", "LOC_TEXT_DD818618", "SkillHeading", 20)
 	_skill_heading.minimum_size_changed.connect(_queue_text_layout)
@@ -624,11 +634,62 @@ func _build_spread() -> void:
 	_skill_cost = _skill_metric(metrics, "cost", "LOC_WB_COST", "SkillCost")
 	_skill_balance = _skill_metric(metrics, "balance", "LOC_WB_BALANCE", "SkillBalance")
 	_buy = _button(_skill_purchase, "", "BuySkill")
+	_buy.set_meta("disabled_cursor_shape", Control.CURSOR_FORBIDDEN)
 	_buy.custom_minimum_size.y = 48
 	_spread_button_ink(_buy)
 	_buy.pressed.connect(_purchase_selected_skill)
 	_apply_skill=_button(page,DeskLocalization.source("LOC_APPLY_ABILITY_TO_DRAFT_DD49D83A"),"ApplySkill")
 	_apply_skill.pressed.connect(func() -> void: _request("apply_skill",{"skill_id":_selected_skill}))
+
+
+func _spread_section(parent: Node, kind: String, key: String, node_name: String, font_size: int = 18) -> HBoxContainer:
+	if _spread_heading_font == null:
+		_spread_heading_font = HEADING_FONT.duplicate() as FontVariation
+		var axes := _spread_heading_font.variation_opentype.duplicate()
+		axes[2003265652] = 800.0
+		_spread_heading_font.variation_opentype = axes
+	var row := HBoxContainer.new()
+	row.name = node_name
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", SPACE_WITHIN)
+	parent.add_child(row)
+	var icon := _paper_icon(row, kind)
+	icon.custom_minimum_size = Vector2(24, 24)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var title := _label(row, DeskLocalization.text(key), node_name + "Label", font_size)
+	title.set_meta("spread_caption", key)
+	title.set_meta("paper_section_heading", true)
+	title.set_meta("paper_section_font", _spread_heading_font)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	title.add_theme_font_override("font", _spread_heading_font)
+	_spread_heading_labels.append(title)
+	return row
+
+
+func _skill_metric(parent: Node, kind: String, key: String, node_name: String) -> Label:
+	var column := VBoxContainer.new()
+	column.name = node_name + "Column"
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.size_flags_stretch_ratio = 1
+	column.add_theme_constant_override("separation", SPACE_WITHIN)
+	parent.add_child(column)
+	_spread_section(column, kind, key, node_name + "Heading")
+	var value := _label(column, "", node_name, 16)
+	value.add_theme_font_override("font", BODY_FONT)
+	return value
+
+
+func _purchase_selected_skill() -> void:
+	if not _interaction_enabled or _tab != "spread" or _buy.disabled: return
+	skill_purchase_requested.emit(_selected_skill)
+
+
+func _spread_button_ink(button: Button) -> void:
+	for state: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
+		button.add_theme_color_override(state, INK)
+	button.add_theme_color_override("font_disabled_color", Color(SECONDARY_INK, .65))
 
 
 func _refresh_starters() -> void:
@@ -819,38 +880,63 @@ func _refresh_skills() -> void:
 			var button:=_button(_pages.spread,str(skill.title),"Skill"+id.capitalize())
 			button.pressed.connect(_select_skill.bind(id))
 			_skill_buttons[id]=button
-		var unlocked: bool=id in _design.get("unlocked_skills",["text"])
+		var unlocked: bool=id in _design.get("unlocked_skills",[])
 		(_skill_buttons[id] as Button).text=("● " if unlocked else "○ ")+DeskLocalization.text(str(skill.title))
-	_spread_tree.configure(_rules.skills.duplicate(true))
-	_spread_tree.sync_state(_design.get("unlocked_skills",["text"]),_selected_skill)
-	_select_skill(_selected_skill)
+	_configure_spread_tree()
+	_select_skill(_selected_skill, false)
 	_layout()
 
 
-func _select_skill(id: String) -> void:
+func _configure_spread_tree() -> void:
+	_spread_tree.configure(_rules.skills.duplicate(true))
+	_spread_tree.sync_state(_design.get("unlocked_skills", []), _selected_skill, bool(_state.get("propagation_research_ready", false)))
+
+
+func _select_skill(id: String, reveal: bool = true) -> void:
 	_selected_skill = id
-	var unlocked_ids: Array = _design.get("unlocked_skills", ["text"])
-	if _spread_tree != null: _spread_tree.sync_state(unlocked_ids, id)
-	for skill: Dictionary in _rules.skills:
-		if str(skill.id) != id: continue
-		var unlocked := id in unlocked_ids
-		var missing: Array = []
-		for dependency: String in skill.get("requires", []):
-			if dependency not in unlocked_ids: missing.append(dependency)
-		var balance := int(_state.get("meme_points", 0))
-		var cost := int(skill.get("cost", 0))
-		_skill_title.text = DeskLocalization.text(str(skill.title))
-		_skill_details.text = DeskLocalization.text(str(skill.get("description", "")))
-		_skill_effect.text = DeskLocalization.text(str(skill.get("effect_text", "")))
-		_skill_cost.text = "%d MEME" % cost
-		_skill_balance.text = "%d MEME" % balance
-		var status := "unlocked" if unlocked else ("locked" if not missing.is_empty() else ("unaffordable" if balance < cost else "available"))
-		_skill_balance.add_theme_color_override("font_color", Color("a44635") if not unlocked and balance < cost else INK)
-		_buy.disabled = not _interaction_enabled or _tab != "spread" or status != "available"
-		_buy.text = DeskLocalization.text("LOC_WB_UNLOCK")
-		_skill_presentation = {"balance":balance, "cost":cost, "status":status, "dependencies":skill.get("requires", []).duplicate(), "description":_skill_details.text, "effect":_skill_effect.text}
+	var unlocked_ids: Array = _design.get("unlocked_skills", [])
+	var skill: Dictionary = _rules.find("skills", id)
+	var route := str(skill.get("route", "common"))
+	_configure_spread_tree()
+	var unlocked := id in unlocked_ids
+	var prerequisites_met := _rules.skill_requirements_met(skill, unlocked_ids)
+	var research_ready: bool = id == "text" or bool(_state.get("propagation_research_ready", false))
+	var balance := int(_state.get("meme_points", 0))
+	var cost := int(skill.get("cost", 0))
+	_skill_title.text = DeskLocalization.text(str(skill.title))
+	_skill_details.text = DeskLocalization.text(str(skill.get("description", "")))
+	_skill_effect.text = DeskLocalization.text(str(skill.get("effect_text", "")))
+	var delivery: Dictionary = _state.get("propagation_delivery", {})
+	if route == "accessibility" and delivery.has("format"):
+		var format_key := "LOC_PROP_FORMAT_" + str(delivery.format).to_upper()
+		_skill_effect.text += "\n" + DeskLocalization.format_text("LOC_PROP_CURRENT_FORMAT", DeskLocalization.text(format_key))
+		var languages := PackedStringArray()
+		for language: String in delivery.get("languages", []): languages.append(DeskLocalization.text("LOC_LANGUAGE_" + language.to_upper()))
+		if not languages.is_empty(): _skill_effect.text += "\n" + DeskLocalization.format_text("LOC_PROP_COVERED_LANGUAGES", " / ".join(languages))
+	_skill_cost.text = "%d MEME" % cost
+	_skill_balance.text = "%d MEME" % balance
+	var status := "unlocked" if unlocked else ("locked" if not prerequisites_met else ("research_pending" if not research_ready else ("unaffordable" if balance < cost else "available")))
+	_skill_balance.add_theme_color_override("font_color", Color("a44635") if not unlocked and balance < cost else INK)
+	_buy.disabled = not _interaction_enabled or _tab != "spread" or status != "available"
+	_buy.mouse_default_cursor_shape = Control.CURSOR_FORBIDDEN if _buy.disabled else Control.CURSOR_POINTING_HAND
+	_buy.text = "" if unlocked else DeskLocalization.text("LOC_WB_UNLOCK")
+	_skill_presentation = {"balance":balance, "cost":cost, "status":status, "route":route, "research_ready":research_ready, "dependencies":skill.get("requires", []).duplicate(), "requires_any":skill.get("requires_any", []).duplicate(), "description":_skill_details.text, "effect":_skill_effect.text}
+	_buy.visible = not unlocked
 	_apply_skill.hide()
+	if reveal: _ensure_spread_skill_visible.call_deferred(id)
 	_queue_text_layout()
+
+
+func _ensure_spread_skill_visible(id: String) -> void:
+	var area: Rect2 = _spread_tree.node_rect(id)
+	var top := float(_spread_tree_scroll.scroll_vertical)
+	var page_height := _spread_tree_scroll.size.y
+	if area.position.y < top:
+		_spread_tree_scroll.scroll_vertical = floori(area.position.y)
+	elif area.end.y > top + page_height:
+		_spread_tree_scroll.scroll_vertical = ceili(area.end.y - page_height)
+
+
 
 
 func _layout() -> void:
@@ -918,9 +1004,14 @@ func _layout_spread_sheet(w: float,h: float) -> void:
 	var right := split + SPACE_BETWEEN
 	var span := w - right - SPACE_BETWEEN
 	var top := 144.0
+	for title: Label in _spread_heading_labels:
+		if title.get_theme_font("font") != _spread_heading_font: title.add_theme_font_override("font", _spread_heading_font)
+	for value: Label in [_skill_cost, _skill_balance]:
+		if value.get_theme_font("font") != BODY_FONT: value.add_theme_font_override("font", BODY_FONT)
 	var tree_top := maxf(top, h * .19)
 	_place(_spread_heading, Rect2(SPACE_BETWEEN, tree_top, split - SPACE_BETWEEN * 2, 32))
-	_place(_spread_tree, Rect2(SPACE_BETWEEN, tree_top + 40, split - SPACE_BETWEEN * 2, h - tree_top - 64))
+	_place(_spread_tree_scroll, Rect2(SPACE_BETWEEN, tree_top + 40, split - SPACE_BETWEEN * 2, h - tree_top - 64))
+	_spread_tree.custom_minimum_size.y = _spread_tree.content_minimum_height()
 	_place(_spread_column_rule, Rect2(split, top, 1, h - top - SPACE_BETWEEN))
 	_place(_skill_heading, Rect2(right, top, span, 32))
 	var details_y := top + maxf(32, _skill_heading.get_combined_minimum_size().y) + SPACE_BETWEEN
@@ -940,7 +1031,7 @@ func set_interaction_enabled(enabled: bool) -> void:
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
 	_sync_hover_enabled()
-	if _buy != null: _select_skill(_selected_skill)
+	if _buy != null: _select_skill(_selected_skill, false)
 
 
 func _sync_hover_enabled() -> void:
@@ -1038,6 +1129,17 @@ func set_hover_enabled(enabled: bool) -> void:
 	if _hover_enabled == enabled: return
 	_hover_enabled = enabled
 	_sync_hover_enabled()
+
+
+func _spread_layout_inspection() -> Dictionary:
+	var result := _skill_presentation.duplicate(true)
+	result.merge({"single_tree":true,"visible_skill_ids":_spread_tree._points.keys(),"tree_rect":_spread_tree.get_global_rect(), "tree_scroll_rect":_spread_tree_scroll.get_global_rect(), "tree_scroll_vertical":_spread_tree_scroll.scroll_vertical, "tree_scroll_horizontal_disabled":_spread_tree_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED, "heading_rect":_skill_heading.get_global_rect(),
+		"column_rule_rect":_spread_column_rule.get_global_rect(), "details_scroll_rect":_skill_scroll.get_global_rect(),
+		"purchase_rect":_skill_purchase.get_global_rect(), "buy_rect":_buy.get_global_rect(),
+		"icon_sections":5, "instruction_text_visible":false, "body_font_size":_skill_details.get_theme_font_size("normal_font_size"),
+		"title_font":_skill_title.get_theme_font("font").resource_path, "buy_text":_buy.text,
+		"status_text_visible":false, "prerequisites_visible":false, "scroll_horizontal_disabled":_skill_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED})
+	return result
 
 
 func hover_info(viewport_point: Vector2) -> Dictionary:
@@ -1170,7 +1272,7 @@ func _refresh_overview() -> void:
 	rows.append(_summary_value("stance", "LOC_WB_IDEOLOGY", _axis_values("stance", "political_position")))
 	rows.append(_summary_value("pragmatic", "LOC_PRAGMATICS_7063D1D8", _axis_values("pragmatic", "pragmatic_position")))
 	var skills := PackedStringArray()
-	for id: String in _design.get("unlocked_skills", ["text"]): skills.append(_entry_title("skills", id))
+	for id: String in _design.get("unlocked_skills", []): skills.append(_entry_title("skills", id))
 	rows.append(_summary_value("spread", "LOC_SPREAD_1A2DA4D4", skills))
 	_summary_text = "\n".join(rows)
 	_refresh_composition()
@@ -1336,54 +1438,3 @@ func context_slice() -> Control:
 	return _context_slice
 
 
-func _spread_section(parent: Node, kind: String, key: String, node_name: String, font_size: int = 16) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.name = node_name
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_theme_constant_override("separation", SPACE_WITHIN)
-	parent.add_child(row)
-	var icon := _paper_icon(row, kind)
-	icon.custom_minimum_size = Vector2(24, 24)
-	icon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	var title := _label(row, DeskLocalization.text(key), node_name + "Label", font_size)
-	title.set_meta("spread_caption", key)
-	title.set_meta("paper_section_heading", true)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title.add_theme_font_override("font", HEADING_FONT)
-	return row
-
-
-func _skill_metric(parent: Node, kind: String, key: String, node_name: String) -> Label:
-	var column := VBoxContainer.new()
-	column.name = node_name + "Column"
-	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	column.size_flags_stretch_ratio = 1
-	column.add_theme_constant_override("separation", SPACE_WITHIN)
-	parent.add_child(column)
-	_spread_section(column, kind, key, node_name + "Heading")
-	var value := _label(column, "", node_name, 24)
-	value.add_theme_font_override("font", HEADING_FONT)
-	return value
-
-
-func _purchase_selected_skill() -> void:
-	if not _interaction_enabled or _tab != "spread" or _buy.disabled: return
-	skill_purchase_requested.emit(_selected_skill)
-
-
-func _spread_button_ink(button: Button) -> void:
-	for state: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_hover_pressed_color"]:
-		button.add_theme_color_override(state, INK)
-	button.add_theme_color_override("font_disabled_color", Color(SECONDARY_INK, .65))
-
-
-func _spread_layout_inspection() -> Dictionary:
-	var result := _skill_presentation.duplicate(true)
-	result.merge({"tree_rect":_spread_tree.get_global_rect(), "heading_rect":_skill_heading.get_global_rect(),
-		"column_rule_rect":_spread_column_rule.get_global_rect(), "details_scroll_rect":_skill_scroll.get_global_rect(),
-		"purchase_rect":_skill_purchase.get_global_rect(), "buy_rect":_buy.get_global_rect(),
-		"icon_sections":5, "instruction_text_visible":false, "body_font_size":_skill_details.get_theme_font_size("normal_font_size"),
-		"title_font":_skill_title.get_theme_font("font").resource_path, "buy_text":_buy.text,
-		"status_text_visible":false, "prerequisites_visible":false, "scroll_horizontal_disabled":_skill_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED})
-	return result

@@ -16,7 +16,7 @@ func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int
 			control = control.get_parent_control()
 			continue
 		if control is BaseButton:
-			return Input.CURSOR_FORBIDDEN if control.disabled else _control_shape(control, Input.CURSOR_POINTING_HAND)
+			return int(control.get_meta("disabled_cursor_shape", Input.CURSOR_FORBIDDEN)) if control.disabled else _control_shape(control, Input.CURSOR_POINTING_HAND)
 		if control is LineEdit or control is TextEdit:
 			return Input.CURSOR_POINTING_HAND if control.editable else (Input.CURSOR_HELP if _has_help(control) else Input.CURSOR_ARROW)
 		if control is Slider:

@@ -5,12 +5,14 @@ const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
 const IndependentEndings = preload("res://scripts/gameplay/competition/independent_endings.gd")
+const PropagationRules = preload("res://scripts/gameplay/propagation/propagation_rules.gd")
 static var _geography_cache: Dictionary = {}
 var rules: MemeGameplayRules
 var catalog: MemeDemoCatalog
 var _state: Dictionary = {}
 var _fitness_cache: Dictionary = {}
 var _monitor_previous_scores: Dictionary = {}
+var propagation_rules := PropagationRules.new()
 
 func _init(content: MemeDemoCatalog = null) -> void:
 	catalog = content
@@ -19,7 +21,7 @@ func _init(content: MemeDemoCatalog = null) -> void:
 func reset(world: RefCounted = null) -> void:
 	_monitor_previous_scores.clear()
 	_fitness_cache.clear()
-	_state = {"competition_version":1,"policy_signature":rules.signature(),"world_seed":rules.reference_geometry_seed,"world":[],"populations":{},"countries":{},"registry":{},"hour":0,"active_seconds":0.0,"hour_credit":0.0,"ending_evaluated_hour":0,"equilibrium_hours":0,"equilibrium_candidate_hour":-1,"equilibrium_ranges":{},"autonomous_hours":0,"previous_shares":{},"ending_progress":{},"victory":{}}
+	_state = {"competition_version":1,"policy_signature":rules.signature(),"world_seed":rules.reference_geometry_seed,"world":[],"populations":{},"countries":{},"registry":{},"hour":0,"active_seconds":0.0,"hour_credit":0.0,"ending_evaluated_hour":0,"equilibrium_hours":0,"equilibrium_candidate_hour":-1,"equilibrium_ranges":{},"autonomous_hours":0,"previous_shares":{},"ending_progress":{},"victory":{},"propagation":_empty_propagation_state()}
 	if world == null:
 		_set_world(_reference_world(int(rules.reference_geometry_seed)))
 	else:
@@ -109,6 +111,8 @@ func register(variant: Dictionary, profile: Dictionary, country_id: String, hour
 	var origin := country_id
 	if not has_country(origin): origin = str(_state.world[posmod(str(variant.id).hash(),_state.world.size())].id)
 	_state.registry[str(variant.id)] = {"birth_hour":hour,"origin_country":origin,"parent_ids":variant.parent_ids.duplicate(),"profile":profile.duplicate(true)}
+	if str(variant.get("creator", "")) == "player" or not variant.get("origin_ids", []).is_empty():
+		if str(variant.id) not in _state.propagation.lineage_ids: _state.propagation.lineage_ids.append(str(variant.id))
 	for row in _state.world:
 		var country: Dictionary = _state.countries[str(row.id)]
 		for field in ["adopted","exposed","attention"]: country[field][str(variant.id)] = 0
@@ -153,6 +157,7 @@ func profile(draft: Dictionary) -> Dictionary:
 		for effect: Dictionary in skill.get("draft_effects",[]):
 			var field := str(effect.field)
 			result[field] = clampf(float(result[field]) + float(effect.amount),0.0,1.0)
+	result.propagation_meta = propagation_rules.metadata(result,draft)
 	return result
 
 func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionary:
@@ -193,7 +198,8 @@ func _pair(value: Variant) -> Array:
 func fitness(profile_data: Dictionary, country_id: String) -> Dictionary:
 	var country: Dictionary = rules.country(country_id)
 	var components := {}
-	components.language = _context_match(country.languages,profile_data,"language") if attached(profile_data,"language") else 0.5
+	var delivery: Dictionary = propagation_rules.delivery(profile_data,country)
+	components.language = float(delivery.language) if attached(profile_data,"language") else 0.5
 	components.group = _context_match(country.groups,profile_data,"group") if attached(profile_data,"group") else 0.5
 	var topic_score := 0.0
 	for topic in profile_data.topic_ids: topic_score += float(country.topics.get(str(topic),0.08))
@@ -202,10 +208,10 @@ func fitness(profile_data: Dictionary, country_id: String) -> Dictionary:
 	components.pragmatic = _axis_match(profile_data.pragmatic_position,country.pragmatic) if attached(profile_data,"pragmatic") else 0.5
 	components.expression = float(profile_data.expression)
 	var matched: float = _context_match(country.groups,profile_data,"group") if attached(profile_data,"group") else 0.5
-	components.access = float(profile_data.language_access) * float(profile_data.recognizability) * (1.0 - float(profile_data.context_dependency) * (1.0 - matched))
+	components.access = float(profile_data.language_access) * float(profile_data.recognizability) * (1.0 - float(delivery.context_dependency) * (1.0 - matched)) * float(delivery.quality)
 	var score := 0.0
 	for key in components: score += float(components[key]) * float(rules.fitness_weights[key])
-	return {"components":components,"score":clampf(score,0.01,1.0),"reach":float(profile_data.reach)}
+	return {"components":components,"score":clampf(score,0.01,1.0),"reach":float(profile_data.reach),"delivery":delivery}
 
 func _context_match(distribution: Dictionary, profile_data: Dictionary, layer: String) -> float:
 	var ids: Variant = profile_data.get(layer+"_ids",[str(profile_data.get(layer+"_id",""))])
@@ -225,17 +231,18 @@ func _axis_match(a: Array,b: Array) -> float:
 	return clampf(1.0 - (absf(float(a[0])-float(b[0])) + absf(float(a[1])-float(b[1]))) / 4.0,0.0,1.0)
 
 func _community_reuse(variant: Dictionary) -> float:
-	if bool(variant.controlled): return 1.0
+	if bool(variant.controlled) and not variant.has("mutation_parent_content"): return 1.0
 	if not variant.get("flow_draft") is Dictionary:
 		return float(variant.get("reuse_factor",1.0)) if bool(variant.owned) else 1.0
 	var draft: Dictionary = variant.flow_draft
 	var entry: Dictionary = _state.registry[str(variant.id)]
-	var source: Dictionary = entry.get("effective_profile", entry.profile)
+	var source: Dictionary = live_profile(str(variant.id))
 	var required_slots := 0
 	for kernel: MemeDemoKernel in catalog.kernels:
 		if str(kernel.id) == str(draft.kernel_id): required_slots = kernel.required_slots.size()
-	return EffectRules.reuse_factor(str(draft.reuse_permission),draft.replaceable_slots.size(),required_slots,
+	var baseline := EffectRules.reuse_factor(str(draft.reuse_permission),draft.replaceable_slots.size(),required_slots,
 		float(source.remix_cost),float(source.context_dependency))
+	return propagation_rules.community_reuse(source,draft,required_slots,baseline)
 
 func _monitor_scores(variants: Array) -> Dictionary:
 	var totals := {}
@@ -258,6 +265,7 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 	_monitor_previous_scores = _monitor_scores(variants)
 	_state.hour = hour
 	var previous: Dictionary = _state.countries.duplicate(true)
+	_plan_propagation(previous,variants,modifier_factors,hour)
 	var reuse_factors := {}
 	for variant: Dictionary in variants: reuse_factors[str(variant.id)] = _community_reuse(variant)
 	for row: Dictionary in _state.world:
@@ -269,10 +277,10 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 		for variant: Dictionary in variants:
 			var id := str(variant.id)
 			var entry: Dictionary = _state.registry[id]
-			var live_profile: Dictionary = entry.get("effective_profile", entry.profile)
+			var live_data: Dictionary = live_profile(id)
 			var own: float = float(previous[cid].adopted[id]) / population
-			var pressure := own
-			var travel: float = rules.network_contact_multiplier if "network" in live_profile.get("skill_ids",[]) else 1.0
+			var pressure := own + float(_state.propagation.pressure.get(cid,{}).get(id,0.0))
+			var travel: float = rules.network_contact_multiplier if "network" in live_data.get("skill_ids",[]) else 1.0
 			for neighbor in row.contacts:
 				var neighbor_population := _population(str(neighbor))
 				if neighbor_population > 0: pressure += float(previous[neighbor].adopted[id]) / neighbor_population * float(row.contacts[neighbor]) * travel
@@ -280,7 +288,7 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 			if hour-int(entry.birth_hour) <= rules.seed_hours:
 				for parent_id in entry.parent_ids: pressure += float(previous[cid].adopted.get(parent_id,0))/population * rules.parent_relay
 			if not _fitness_cache.has(id): _fitness_cache[id] = {}
-			if not _fitness_cache[id].has(cid): _fitness_cache[id][cid] = fitness(live_profile,cid)
+			if not _fitness_cache[id].has(cid): _fitness_cache[id][cid] = fitness(live_data,cid)
 			var fit: Dictionary = _fitness_cache[id][cid]
 			fits[id] = fit.score
 			var age: int = hour - int(entry.birth_hour)
@@ -433,7 +441,7 @@ func snapshot(variants: Array, details: bool = true) -> Dictionary:
 		variant_rows.back().monitor_spread = monitor_spread
 		variant_rows.back().monitor_growth = MonitorMetrics.growth(monitor_spread, float(_monitor_previous_scores.get(id, monitor_spread)))
 		variants_by_id[id] = variant_rows.back().duplicate(true)
-	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"ending_progress":_state.ending_progress.get("rows", []).duplicate(true),"victory":_state.victory.duplicate(true),"population_evidence":"configured_game_population","metric_explanation":DeskLocalization.source("LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087"),"autonomy_explanation":DeskLocalization.source("LOC_THE_UNCONTROLLED_SHARE_COUNTS_ONLY_MUTANT_DESCENDANTS_A4F94F3A")}
+	return {"world_seed":_state.world_seed,"world_population":world_population,"countries":country_rows,"variants":variant_rows,"variants_by_id":variants_by_id,"owned_adopted":owned,"adopted":adopted_total,"exposed":exposed_total,"lineage_adopted":lineage,"escaped_adopted":escaped,"controlled_lineage_adopted":controlled_lineage,"mutant_adopted":mutant,"autonomous_mutant_adopted":autonomous_mutant,"controlled_mutant_adopted":controlled_mutant,"mutant_share":float(mutant)/maxf(1.0,world_population),"mutation_control_ratio":float(autonomous_mutant)/maxf(1.0,mutant),"owned_share":float(owned)/maxf(1.0,world_population),"lineage_share":float(lineage)/maxf(1.0,world_population),"escaped_share":float(escaped)/maxf(1.0,world_population),"unadopted_share":1.0-float(adopted_total)/maxf(1.0,world_population),"attention":attention,"equilibrium_days":float(_state.equilibrium_hours)/24.0,"ending_progress":_state.ending_progress.get("rows", []).duplicate(true),"victory":_state.victory.duplicate(true),"propagation":propagation_inspection(),"population_evidence":"configured_game_population","metric_explanation":DeskLocalization.source("LOC_EXPOSURE_IS_NOT_DOUBLE_COUNTED_ACROSS_VERSIONS_51B1D087"),"autonomy_explanation":DeskLocalization.source("LOC_THE_UNCONTROLLED_SHARE_COUNTS_ONLY_MUTANT_DESCENDANTS_A4F94F3A")}
 
 func payload() -> Dictionary:
 	return _state.duplicate(true)
@@ -518,6 +526,8 @@ func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStrin
 			errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_VERSION_SOURCE_B3378E3E"))
 			continue
 		var p: Dictionary = entry.profile
+		errors.append_array(propagation_rules.validate_profile(p))
+		if p.get("propagation_meta",{}).get("preset_id","") != str(ids[id].get("preset_id","")): errors.append("propagation: profile content identity mismatch")
 		if _canonical(entry.parent_ids) != _canonical(ids[id].get("parent_ids",[])): errors.append(DeskLocalization.source("LOC_COMPETITION_PARENT_VERSION_CONFLICTS_WITH_ITS_LINEAGE_E744B567"))
 		for key in ["language_access","recognizability","context_dependency","remix_cost","expression"]:
 			if not _number(p.get(key)) or float(p.get(key,-1)) < 0.0 or float(p.get(key,2)) > 1.0: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_FIT_NUMERIC_VALUE_C134EA06"))
@@ -558,6 +568,7 @@ func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStrin
 	errors.append_array(IndependentEndings.validate_state(data.ending_progress, variants, verifier, hour))
 	if not data.ending_progress.is_empty() and int(data.ending_progress.get("last_hour", -1)) != evaluated_hour: errors.append("Ending progress and competition evaluation clocks must match")
 	if errors.is_empty() and not data.victory.is_empty(): errors.append_array(IndependentEndings.validate_result(data.victory, data.ending_progress, variants, verifier, hour))
+	errors.append_array(_validate_propagation_state(data.get("propagation"),data,ids,hour))
 	return errors
 
 func _number(value: Variant) -> bool:
@@ -601,6 +612,13 @@ func replace_revision(old_id: String, new_id: String) -> Dictionary:
 	if _monitor_previous_scores.has(old_id):
 		_monitor_previous_scores[new_id] = _monitor_previous_scores[old_id]
 		_monitor_previous_scores.erase(old_id)
+	for field: String in ["requests", "successful_contacts"]:
+		var remapped := {}
+		for record: Dictionary in _state.propagation[field].values():
+			var updated := record.duplicate(true)
+			if str(updated.variant_id) == old_id: updated.variant_id = new_id
+			remapped[str(updated.variant_id)+"|"+str(updated.source)+"|"+str(updated.target)] = updated
+		_state.propagation[field] = remapped
 	_fitness_cache.erase(old_id)
 	_fitness_cache.erase(new_id)
 	return {"old_id":old_id, "new_id":new_id, "retained_ratio":1.0}
@@ -650,3 +668,282 @@ func _transfer_error(old_id: String, new_id: String) -> String:
 		for field: String in ["adopted", "exposed", "attention"]:
 			if int(country[field].get(new_id, 0)) != 0: return "Meme transfer destination must be empty"
 	return ""
+
+func _empty_propagation_state() -> Dictionary:
+	return {"schema":1,"content_signature":propagation_rules.signature(),"live_skill_ids":[],"lineage_ids":[],"last_hour":0,"requests":{},"successful_contacts":{},"hubs":{},"transfers":[],"pressure":{},"budget_total":0.0,"allocated_total":0.0,"last_exposed":{}}
+
+func set_live_skills(skill_ids: Array, variants: Array) -> void:
+	_state.propagation.live_skill_ids = skill_ids.duplicate()
+	_state.propagation.lineage_ids = []
+	for variant: Dictionary in variants:
+		if str(variant.get("creator", "")) == "player" or not variant.get("origin_ids", []).is_empty():
+			_state.propagation.lineage_ids.append(str(variant.id))
+	_fitness_cache.clear()
+
+
+func live_profile(id: String, state: Dictionary = {}) -> Dictionary:
+	var world: Dictionary = _state if state.is_empty() else state
+	var entry: Dictionary = world.registry.get(id, {})
+	var result: Dictionary = entry.get("effective_profile", entry.get("profile", {})).duplicate(true)
+	var runtime: Dictionary = world.get("propagation", {})
+	if id in runtime.get("lineage_ids", []): result.skill_ids = runtime.get("live_skill_ids", []).duplicate()
+	return result
+
+
+func _country_row(id: String) -> Dictionary:
+	for row: Dictionary in _state.world:
+		if str(row.id) == id: return row
+	return {}
+
+func _published_groups(profile_data: Dictionary) -> Array:
+	if not attached(profile_data,"group"): return []
+	return profile_data.get("group_ids",[str(profile_data.group_id)]).duplicate()
+
+func _landed(countries: Dictionary, variant_id: String, country_id: String) -> bool:
+	return _population(country_id) > 0 and int(countries[country_id].adopted.get(variant_id,0)) >= maxi(1,ceili(float(_population(country_id))*0.000001))
+
+func _has_hub_origin(variant_id: String, country_id: String, profile_data: Dictionary) -> bool:
+	if str(_state.registry[variant_id].origin_country) == country_id: return true
+	if "community_relay" not in profile_data.skill_ids: return false
+	for entry: Dictionary in _state.propagation.successful_contacts.values():
+		if str(entry.variant_id) == variant_id and str(entry.target) == country_id: return true
+	return false
+
+func _hub_groups(countries: Dictionary, variant_id: String, country_id: String, profile_data: Dictionary) -> Array:
+	var result: Array = []
+	if "community_hub" not in profile_data.skill_ids or not _landed(countries,variant_id,country_id) or not _has_hub_origin(variant_id,country_id,profile_data): return result
+	var country: Dictionary = rules.country(country_id)
+	for group: Variant in _published_groups(profile_data):
+		if float(country.groups.get(str(group),0.0)) >= 0.25: result.append(str(group))
+	return result
+
+func _route_errors(source: String, target: String, variant_id: String, countries: Dictionary) -> PackedStringArray:
+	if not _state.registry.has(variant_id) or not countries.has(source) or not countries.has(target) or source == target or _population(source) == 0 or _population(target) == 0: return PackedStringArray(["propagation: select a released meme and two different countries"])
+	var p: Dictionary = live_profile(variant_id)
+	var source_groups := _hub_groups(countries,variant_id,source,p)
+	if source_groups.is_empty(): return PackedStringArray(["propagation: the source needs a landed community hub"])
+	var row := _country_row(target)
+	if not row.contacts.has(source): return PackedStringArray(["propagation: the selected directed contact does not exist"])
+	var land: bool = source in row.land_neighbors
+	if ("neighbor_forward" if land else "sea_forward") not in p.skill_ids: return PackedStringArray(["propagation: research the matching land or sea contact"])
+	var target_groups: Dictionary = rules.country(target).groups
+	var matched := false
+	for group: Variant in source_groups: matched = matched or float(target_groups.get(str(group),0.0)) >= 0.25
+	if not matched and "group_bridge" in p.skill_ids and _published_groups(p).size() >= 2:
+		for group: Variant in _published_groups(p): matched = matched or float(target_groups.get(str(group),0.0)) >= 0.25
+	if not matched: return PackedStringArray(["propagation: no published group connects these countries"])
+	return PackedStringArray()
+
+func configure_route(source_country: String, target_country: String, variant_id: String) -> PackedStringArray:
+	var errors := _route_errors(source_country,target_country,variant_id,_state.countries)
+	if not errors.is_empty(): return errors
+	var requests: Dictionary = _state.propagation.requests.duplicate(true)
+	var p: Dictionary = live_profile(variant_id)
+	if "distributed_network" not in p.skill_ids:
+		for key: String in requests.keys():
+			if str(requests[key].variant_id) == variant_id: requests.erase(key)
+	var key := variant_id+"|"+source_country+"|"+target_country
+	requests[key] = {"variant_id":variant_id,"source":source_country,"target":target_country}
+	_state.propagation.requests = requests
+	return errors
+
+func _cached_fitness(id: String, country_id: String) -> Dictionary:
+	if not _fitness_cache.has(id): _fitness_cache[id] = {}
+	if not _fitness_cache[id].has(country_id): _fitness_cache[id][country_id] = fitness(live_profile(id),country_id)
+	return _fitness_cache[id][country_id]
+
+func _transfer(owner: String, source_variant: String, target_variant: String, source: String, target: String, kind: String, weight: float) -> Dictionary:
+	return {"owner":owner,"source_variant":source_variant,"target_variant":target_variant,"source":source,"target":target,"kind":kind,"weight":maxf(0.0,weight),"pressure":0.0}
+
+func _plan_propagation(previous: Dictionary, variants: Array, modifiers: Dictionary, hour: int) -> void:
+	var runtime: Dictionary = _state.propagation
+	var candidates: Array[Dictionary] = []
+	var by_id := {}
+	var families := {}
+	for variant: Dictionary in variants:
+		by_id[str(variant.id)] = variant
+		if variant.get("origin_ids",[]).is_empty(): continue
+		var key := str(variant.origin_ids[0])
+		if not families.has(key): families[key] = []
+		families[key].append(str(variant.id))
+	# A completed transfer creates a relay only after adoption is observed in its receiver.
+	for transfer: Dictionary in runtime.transfers:
+		if str(transfer.kind) != "community" or not _landed(previous,str(transfer.target_variant),str(transfer.target)): continue
+		var key := str(transfer.target_variant)+"|"+str(transfer.source)+"|"+str(transfer.target)
+		runtime.successful_contacts[key] = {"variant_id":str(transfer.target_variant),"source":str(transfer.source),"target":str(transfer.target),"hour":hour}
+	runtime.hubs = {}
+	for variant: Dictionary in variants:
+		var id := str(variant.id)
+		var p: Dictionary = live_profile(id)
+		var skills: Array = p.skill_ids
+		var hubs := {}
+		for row: Dictionary in _state.world:
+			var cid := str(row.id)
+			var groups := _hub_groups(previous,id,cid,p)
+			if not groups.is_empty(): hubs[cid] = groups
+		if not hubs.is_empty(): runtime.hubs[id] = hubs
+		var explicit: Array[Dictionary] = []
+		for request: Dictionary in runtime.requests.values():
+			if str(request.variant_id) == id: explicit.append(request)
+		var community_candidates: Array[Dictionary] = []
+		for source: String in hubs:
+			for target_row: Dictionary in _state.world:
+				var target := str(target_row.id)
+				if not _route_errors(source,target,id,previous).is_empty(): continue
+				var allowed := explicit.is_empty()
+				for request: Dictionary in explicit: allowed = allowed or (request.source == source and request.target == target)
+				if not allowed: continue
+				var gap := 1.0-float(previous[target].adopted[id])/maxf(1.0,float(_population(target)))
+				community_candidates.append(_transfer(id,id,id,source,target,"community",gap*float(previous[source].adopted[id])/maxf(1.0,float(_population(source)))))
+		community_candidates.sort_custom(func(a:Dictionary,b:Dictionary)->bool: return float(a.weight)>float(b.weight))
+		if "distributed_network" in skills: candidates.append_array(community_candidates)
+		elif not community_candidates.is_empty(): candidates.append(community_candidates[0])
+		if variant.get("origin_ids",[]).is_empty(): continue
+		var siblings: Array = families.get(str(variant.origin_ids[0]),[])
+		for row: Dictionary in _state.world:
+			var cid := str(row.id)
+			var gained := maxi(0,int(previous[cid].exposed[id])-int(runtime.last_exposed.get(cid,{}).get(id,0)))
+			if "derivative_backlink" in skills and not bool(variant.controlled) and gained > 0:
+				for parent_id: Variant in variant.parent_ids:
+					if not by_id.has(str(parent_id)) or by_id[str(parent_id)].get("origin_ids",[]) != variant.origin_ids: continue
+					candidates.append(_transfer(id,id,str(parent_id),cid,cid,"backlink",float(gained)/maxf(1.0,float(_population(cid)))))
+			if not _landed(previous,id,cid): continue
+			if "version_index" in skills and siblings.size() >= 2:
+				var best := id
+				var baseline := float(_cached_fitness(id,cid).score)
+				var best_score := baseline
+				for sibling: String in siblings:
+					var score := float(_cached_fitness(sibling,cid).score)
+					if score > best_score+0.000001:
+						best = sibling
+						best_score = score
+				if best != id: candidates.append(_transfer(id,id,best,cid,cid,"index",best_score-baseline))
+			if "template_archive" in skills and siblings.size() >= 2 and propagation_rules.can_template(p) and hour-int(_state.registry[id].birth_hour) >= 48 and int(previous[cid].attention.get(id,0)) < floori(float(previous[cid].adopted.get(id,0))*rules.attention_fraction):
+				var local: Dictionary = modifiers.get(cid,modifiers)
+				var demand := maxf(0.0,float(local.get(id,1.0))-1.0)
+				for sibling: String in siblings:
+					if sibling == id or bool(by_id[sibling].controlled): continue
+					if int(previous[cid].exposed.get(sibling,0)) > int(runtime.last_exposed.get(cid,{}).get(sibling,0)): demand = maxf(demand,0.25)
+				if demand > 0.0: candidates.append(_transfer(id,id,id,cid,cid,"archive",demand))
+	var weight_by_owner := {}
+	var pool_by_owner := {}
+	for request: Dictionary in candidates:
+		var owner := str(request.owner)
+		weight_by_owner[owner] = float(weight_by_owner.get(owner,0.0))+float(request.weight)
+		if pool_by_owner.has(owner): continue
+		var adopted_pressure := 0.0
+		for cid: String in previous: adopted_pressure += float(previous[cid].adopted.get(owner,0))/maxf(1.0,float(_population(cid)))
+		pool_by_owner[owner] = minf(0.006,adopted_pressure*0.02)
+	runtime.pressure = {}
+	runtime.transfers = []
+	runtime.budget_total = 0.0
+	runtime.allocated_total = 0.0
+	for pool: Variant in pool_by_owner.values(): runtime.budget_total += float(pool)
+	for request: Dictionary in candidates:
+		var owner := str(request.owner)
+		var total := float(weight_by_owner[owner])
+		var amount := float(pool_by_owner[owner])*float(request.weight)/total if total > 0.0 else 0.0
+		if amount <= 0.0: continue
+		request.pressure = amount
+		runtime.transfers.append(request)
+		var target := str(request.target)
+		var target_id := str(request.target_variant)
+		if not runtime.pressure.has(target): runtime.pressure[target] = {}
+		runtime.pressure[target][target_id] = float(runtime.pressure[target].get(target_id,0.0))+amount
+		runtime.allocated_total += amount
+	runtime.last_exposed = {}
+	for cid: String in previous: runtime.last_exposed[cid] = previous[cid].exposed.duplicate()
+	runtime.last_hour = hour
+
+func propagation_inspection() -> Dictionary:
+	return _state.get("propagation",_empty_propagation_state()).duplicate(true)
+
+func _validate_propagation_state(value: Variant, state: Dictionary, ids: Dictionary, hour: int) -> PackedStringArray:
+	var errors := PackedStringArray()
+	if not value is Dictionary or not value.has_all(["schema","content_signature","live_skill_ids","lineage_ids","last_hour","requests","successful_contacts","hubs","transfers","pressure","budget_total","allocated_total","last_exposed"]): return PackedStringArray(["propagation: incomplete runtime"])
+	if value.schema != 1 or value.content_signature != propagation_rules.signature() or not _integer(value.last_hour) or int(value.last_hour) < 0 or int(value.last_hour) > hour: errors.append("propagation: invalid runtime version or clock")
+	for field: String in ["requests","successful_contacts","hubs","pressure","last_exposed"]:
+		if not value[field] is Dictionary: errors.append("propagation: invalid runtime object "+field)
+	if not value.transfers is Array: errors.append("propagation: invalid transfer list")
+	if not value.live_skill_ids is Array or not value.lineage_ids is Array: errors.append("propagation: invalid live research state")
+	else:
+		var seen_skills := {}
+		for skill: Variant in value.live_skill_ids:
+			if not skill is String or skill not in rules.skill_reach or seen_skills.has(skill): errors.append("propagation: invalid live research ability")
+			seen_skills[skill] = true
+		var expected_lineage := {}
+		for id: String in ids:
+			if str(ids[id].get("creator", "")) == "player" or not ids[id].get("origin_ids", []).is_empty(): expected_lineage[id] = true
+		var observed_lineage := {}
+		for id: Variant in value.lineage_ids:
+			if not id is String or not expected_lineage.has(id) or observed_lineage.has(id): errors.append("propagation: invalid live research lineage")
+			observed_lineage[id] = true
+		if expected_lineage.size() != observed_lineage.size(): errors.append("propagation: incomplete live research lineage")
+	for field: String in ["budget_total","allocated_total"]:
+		if not _number(value[field]) or float(value[field]) < 0.0: errors.append("propagation: invalid pressure budget")
+	if not errors.is_empty(): return errors
+	if float(value.allocated_total) > float(value.budget_total)+0.000000001: errors.append("propagation: pressure budget exceeded")
+	var allocated := 0.0
+	var pressure := {}
+	var owner_spending := {}
+	var eligible_owners := 0
+	for id: String in ids:
+		if not ids[id].get("origin_ids",[]).is_empty(): eligible_owners += 1
+	if float(value.budget_total) > float(eligible_owners)*0.006+0.000000001: errors.append("propagation: source pressure budget is unbounded")
+	for request: Variant in value.transfers:
+		if not request is Dictionary or not request.has_all(["owner","source_variant","target_variant","source","target","kind","weight","pressure"]): errors.append("propagation: incomplete transfer"); continue
+		if not ids.has(str(request.owner)) or not ids.has(str(request.source_variant)) or not ids.has(str(request.target_variant)) or not state.countries.has(str(request.source)) or not state.countries.has(str(request.target)) or request.kind not in ["community","backlink","index","archive"] or not _number(request.weight) or not _number(request.pressure) or float(request.weight) < 0.0 or float(request.pressure) <= 0.0: errors.append("propagation: invalid transfer provenance"); continue
+		var owner := str(request.owner)
+		if ids[owner].get("origin_ids",[]).is_empty(): errors.append("propagation: independent memes cannot spend player network pressure")
+		if str(request.source_variant) != owner: errors.append("propagation: source owner mismatch")
+		var source_profile: Dictionary = live_profile(owner,state)
+		var skill: String = {"community":"community_hub","backlink":"derivative_backlink","index":"version_index","archive":"template_archive"}[str(request.kind)]
+		if skill not in source_profile.skill_ids: errors.append("propagation: transfer ability was not researched")
+		if request.kind == "community":
+			var row := {}
+			for world_row: Dictionary in state.world:
+				if str(world_row.id) == str(request.target): row = world_row
+			if str(request.source) not in row.contacts or owner != str(request.target_variant): errors.append("propagation: invalid community transfer edge")
+			else:
+				var edge_skill := "neighbor_forward" if str(request.source) in row.land_neighbors else "sea_forward"
+				if edge_skill not in source_profile.skill_ids: errors.append("propagation: edge ability was not researched")
+		elif request.kind == "backlink":
+			if bool(ids[owner].controlled) or str(request.target_variant) not in ids[owner].parent_ids or ids[owner].origin_ids != ids[str(request.target_variant)].origin_ids: errors.append("propagation: backlink has no derivative source")
+		elif request.kind == "index":
+			if ids[owner].origin_ids != ids[str(request.target_variant)].origin_ids or owner == str(request.target_variant): errors.append("propagation: index contains an unrelated version")
+		elif request.kind == "archive":
+			if owner != str(request.target_variant) or not propagation_rules.can_template(source_profile) or hour-int(state.registry[owner].birth_hour) < 48: errors.append("propagation: invalid archive retrieval")
+		owner_spending[owner] = float(owner_spending.get(owner,0.0))+float(request.pressure)
+		if float(owner_spending[owner]) > 0.006+0.000000001: errors.append("propagation: one source copied its pressure budget")
+		allocated += float(request.pressure)
+		var key := str(request.target)+"|"+str(request.target_variant)
+		pressure[key] = float(pressure.get(key,0.0))+float(request.pressure)
+	var total := 0.0
+	for cid: Variant in value.pressure:
+		if not state.countries.has(str(cid)) or not value.pressure[cid] is Dictionary: errors.append("propagation: invalid pressure country"); continue
+		for id: Variant in value.pressure[cid]:
+			var amount: Variant = value.pressure[cid][id]
+			if not ids.has(str(id)) or not _number(amount) or float(amount) < 0.0: errors.append("propagation: invalid pressure target"); continue
+			if not is_equal_approx(float(amount),float(pressure.get(str(cid)+"|"+str(id),0.0))): errors.append("propagation: transfer allocation mismatch")
+			total += float(amount)
+	if not is_equal_approx(total,allocated) or not is_equal_approx(allocated,float(value.allocated_total)): errors.append("propagation: pressure is not conserved")
+	for field: String in ["requests","successful_contacts"]:
+		for record: Variant in value[field].values():
+			if not record is Dictionary or not record.has_all(["variant_id","source","target"]) or not ids.has(str(record.get("variant_id",""))) or not state.countries.has(str(record.get("source",""))) or not state.countries.has(str(record.get("target",""))): errors.append("propagation: invalid directed contact"); continue
+			var target := {}
+			for row: Dictionary in state.world:
+				if str(row.id) == str(record.target): target = row
+			if not target.get("contacts",{}).has(str(record.source)): errors.append("propagation: contact does not follow world geography")
+			if field == "successful_contacts" and (not _integer(record.get("hour")) or int(record.hour) < 0 or int(record.hour) > hour): errors.append("propagation: invalid successful contact hour")
+	for cid: Variant in value.last_exposed:
+		if not state.countries.has(str(cid)) or not value.last_exposed[cid] is Dictionary: errors.append("propagation: invalid observed exposure country"); continue
+		for id: Variant in value.last_exposed[cid]:
+			if not ids.has(str(id)) or not _integer(value.last_exposed[cid][id]) or int(value.last_exposed[cid][id]) < 0 or int(value.last_exposed[cid][id]) > int(rules.country(str(cid)).population): errors.append("propagation: invalid observed exposure")
+	for id: Variant in value.hubs:
+		if not ids.has(str(id)) or not value.hubs[id] is Dictionary: errors.append("propagation: invalid hub owner"); continue
+		var p: Dictionary = live_profile(str(id),state)
+		for cid: Variant in value.hubs[id]:
+			if not state.countries.has(str(cid)) or not value.hubs[id][cid] is Array: errors.append("propagation: invalid hub country"); continue
+			for group: Variant in value.hubs[id][cid]:
+				if group not in _published_groups(p) or float(rules.country(str(cid)).groups.get(str(group),0.0)) < 0.25: errors.append("propagation: hub group was not published")
+	return errors

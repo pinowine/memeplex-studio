@@ -581,6 +581,10 @@ func _finish_startup(preset_id: String) -> void:
 
 func _design_action(action: String, params: Dictionary) -> void:
 	if not _ready_to_run or not startup_ready() or _interface_paused(): return
+	if action == "configure_propagation_route":
+		hud.report_design_errors(simulation.configure_propagation_route(str(params.get("source_country", "")), str(params.get("target_country", ""))))
+		_render()
+		return
 	var input := params.duplicate(true)
 	var changes_draft := action in ["apply_context", "apply_skill", "install_module", "remove_module", "edit_module_content", "take_apply_context", "install_context", "remove_context", "move_context_axis", "detach_context_layer", "attach_context_layer"]
 	if changes_draft: input["draft"] = hud.get_draft()
@@ -617,6 +621,10 @@ func _request_event_material(record: Dictionary) -> PackedStringArray:
 func _render() -> void:
 	if simulation == null: return
 	var snapshot := simulation.snapshot()
+	if not simulation.current_variant_id.is_empty() and atlas.selected_country >= 0:
+		var selected: String = str(atlas.settings.countries[atlas.selected_country].id)
+		var profile: Dictionary = simulation.competition.live_profile(simulation.current_variant_id)
+		snapshot.propagation_delivery = simulation.competition.fitness(profile, selected).get("delivery", {})
 	hud.render(snapshot)
 	_context_trial_skills = Array(snapshot.get("design_state", {}).get("unlocked_skills", []))
 	if _ready_to_run:

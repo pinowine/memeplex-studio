@@ -61,6 +61,7 @@ func configure(owner_page: Node2D) -> void:
 		tutorial.observe_action("monitor_mode_changed", {"mode":page.desk._monitor.MODES.find(id)}))
 	tutorial.drag_cancelled.connect(_cancel_tutorial_drag)
 	tutorial.finished.connect(func(skipped: bool):
+		if skipped and not main_mode: _settle_text_propagation()
 		if skipped and page.desk._fax.inspection().focused: page.desk._show_component_details())
 	tutorial.skip_requested.connect(func():
 		if not page.startup_ready(): page._show_direct_starters())
@@ -110,7 +111,9 @@ func enter_game(guide: bool) -> void:
 	starter_dialog.skip()
 	starter_dialog.hide()
 	if guide and main_menu.guide_enabled(): tutorial.begin()
-	else: tutorial.skip()
+	else:
+		tutorial.skip()
+		_settle_text_propagation()
 	if page._direct_starter_selection: page._show_direct_starters()
 
 func blocks_input() -> bool:
@@ -124,7 +127,13 @@ func _sync_guide_settings(_settings: Dictionary) -> void:
 	context_guidance.set_enabled(enabled)
 	if not enabled:
 		tutorial.skip()
+		if not main_mode: _settle_text_propagation()
 		if not main_mode and not page.startup_ready(): page._show_direct_starters()
+
+func _settle_text_propagation() -> void:
+	var errors: PackedStringArray = page.simulation.ensure_text_propagation()
+	page.hud.report_design_errors(errors)
+	page._render()
 
 func pauses_clock() -> bool:
 	var guide: Dictionary = tutorial.inspection()
@@ -159,6 +168,8 @@ func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
 		sync_starter_options()
 	if _id in ["meme_name", "editor_context", "expression", "module_result"]: _reveal_editor_readout(_id)
 	if _id in ["spread_tree", "spread_details", "skill"]: page.hud.design_workbench()._select_skill("text")
+	if _id == "skill" and "text" in page.simulation.design_state.snapshot().unlocked_skills:
+		tutorial.observe_action.call_deferred("skill_purchased", {"id":"text"})
 	var action := str(step.get("action", ""))
 	if action == "country_selected" and page.atlas.selected_country >= 0:
 		tutorial.observe_action("country_selected", {"index":page.atlas.selected_country})
@@ -486,7 +497,8 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 			if not button.disabled: areas.append(_tutorial_project_rect(button))
 	elif id == "spread/skill" and editor._spread_tree.is_visible_in_tree():
 		var tree: Control = editor._spread_tree
-		areas.append(_tutorial_project_rect(_area_target(tree, Rect2(tree._points["text"] - Vector2(22, 22), Vector2(44, 44)))))
+		if "text" not in editor._design.get("unlocked_skills", []) and tree._points.has("text"):
+			areas.append(_tutorial_project_rect(_area_target(tree, tree.node_rect("text"))))
 		if editor._selected_skill == "text" and editor._buy.is_visible_in_tree() and not editor._buy.disabled:
 			areas.append(_tutorial_project_rect(editor._buy))
 	else:
@@ -508,9 +520,10 @@ func _tutorial_input_contains(step: Dictionary, point: Vector2) -> bool:
 func _skill_target(editor: Control) -> Control:
 	var tree: Control = editor._spread_tree
 	if not tree.is_visible_in_tree(): return page.desk._stack.tab_control("spread")
+	if "text" in editor._design.get("unlocked_skills", []): return null
 	var buy: Button = editor._buy
 	if editor._selected_skill == "text" and buy.is_visible_in_tree() and not buy.disabled: return buy
-	return _area_target(tree, Rect2(tree._points["text"] - Vector2(22, 22), Vector2(44, 44)))
+	return _area_target(tree, tree.node_rect("text"))
 
 func _country_target() -> Control:
 	var atlas: Node2D = page.atlas

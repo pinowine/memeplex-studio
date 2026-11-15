@@ -205,16 +205,6 @@ func validate(catalog: Resource) -> PackedStringArray:
 	var skill_ids := {}
 	for skill in skills: skill_ids[str(skill.get("id", ""))] = true
 	for skill in skills:
-		var effects: Variant = skill.get("draft_effects", [])
-		if not effects is Array:
-			errors.append("Invalid skill draft effects")
-		else:
-			for effect: Variant in effects:
-				if not effect is Dictionary:
-					errors.append("Invalid skill draft effect")
-					continue
-				var amount: Variant = effect.get("amount")
-				if not (amount is int or amount is float) or not is_finite(float(amount)) or absf(float(amount)) > 1.0 or str(effect.get("field", "")) not in ["remix_cost", "context_dependency", "language_access", "recognizability"]: errors.append("Skill effects must be finite bounded author fields")
 		if skill.get("kind", "") not in ["root", "medium", "carrier", "instance"] or not skill.get("target_ids") is Array or str(skill.get("effect_text", "")).is_empty():
 			errors.append("Missing skill layer, targets or effect")
 		else:
@@ -222,14 +212,19 @@ func validate(catalog: Resource) -> PackedStringArray:
 				var found := false
 				for channel in catalog.channels: found = found or str(channel.id) == str(target)
 				if not found: errors.append("Unknown skill channel target")
-		if not _integer(skill.get("cost")) or int(skill.cost) < 0 or not skill.get("requires") is Array:
+		if skill.get("route", "") not in ["common", "accessibility", "open_source", "community"] or str(skill.get("effect_kind", "")).is_empty(): errors.append("Missing propagation route or mechanism")
+		if skill.has("draft_effects"): errors.append("Propagation mechanisms use their own rules")
+		if not _integer(skill.get("cost")) or int(skill.cost) <= 0 or not skill.get("requires") is Array or not skill.get("requires_any", []) is Array:
 			errors.append("Invalid skill cost or dependencies")
 			continue
-		for dependency in skill.requires:
-			if not dependency is String or not skill_ids.has(dependency) or dependency == str(skill.id): errors.append("Unknown skill dependency")
+		var dependencies: Array = skill.requires + skill.get("requires_any", [])
+		var seen := {}
+		for dependency in dependencies:
+			if not dependency is String or not skill_ids.has(dependency) or dependency == str(skill.id) or seen.has(dependency): errors.append("Unknown or repeated skill dependency")
+			seen[dependency] = true
 		if _cycle(str(skill.id), {}, {}): errors.append("Cyclic skill dependency")
 	var root := find("skills", "text")
-	if root.is_empty() or root.get("cost", -1) != 0 or root.get("requires", ["invalid"]) != []: errors.append("Text skill must be a free root")
+	if root.is_empty() or root.get("cost", -1) != 10 or root.get("requires", ["invalid"]) != [] or root.get("requires_any", []) != []: errors.append("Text propagation requires its paid root purchase")
 	return errors
 
 func _expression_route_errors() -> PackedStringArray:
@@ -287,10 +282,19 @@ func _cycle(id: String, visiting: Dictionary, done: Dictionary) -> bool:
 	var entry := find("skills", id)
 	if not entry.get("requires") is Array: return false
 	visiting[id] = true
-	for dependency in entry.requires:
+	for dependency in entry.requires + entry.get("requires_any", []):
 		if _cycle(str(dependency), visiting, done): return true
 	visiting.erase(id)
 	done[id] = true
+	return false
+
+func skill_requirements_met(entry: Dictionary, unlocked: Array) -> bool:
+	for dependency: String in entry.get("requires", []):
+		if dependency not in unlocked: return false
+	var alternatives: Array = entry.get("requires_any", [])
+	if alternatives.is_empty(): return true
+	for dependency: String in alternatives:
+		if dependency in unlocked: return true
 	return false
 
 func _integer(value: Variant) -> bool:

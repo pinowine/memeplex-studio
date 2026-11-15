@@ -63,5 +63,415 @@
     "source": "解锁",
     "zh_CN": "解锁",
     "en": "Unlock"
+  },
+  "LOC_PROP_NODE_TEXT_TITLE": {
+    "source": "文本传播",
+    "zh_CN": "文本传播",
+    "en": "Text"
+  },
+  "LOC_PROP_NODE_TEXT_DESCRIPTION": {
+    "source": "以文字发布当前模因。",
+    "zh_CN": "以文字发布当前模因。",
+    "en": "Release the current meme as text."
+  },
+  "LOC_PROP_NODE_TEXT_EFFECT": {
+    "source": "开放基础文字投放。",
+    "zh_CN": "开放基础文字投放。",
+    "en": "Open basic text distribution."
+  },
+  "LOC_PROP_NODE_MACHINE_TRANSLATION_TITLE": {
+    "source": "机器翻译",
+    "zh_CN": "机器翻译",
+    "en": "Machine translation"
+  },
+  "LOC_PROP_NODE_MACHINE_TRANSLATION_DESCRIPTION": {
+    "source": "将已有文字层转成受支持语言的译文。",
+    "zh_CN": "将已有文字层转成受支持语言的译文。",
+    "en": "Translate existing text layers into supported languages."
+  },
+  "LOC_PROP_NODE_MACHINE_TRANSLATION_EFFECT": {
+    "source": "以平台支持的语言版本生成文字译文。",
+    "zh_CN": "以平台支持的语言版本生成文字译文。",
+    "en": "Generate readable translations from supported platform language versions."
+  },
+  "LOC_PROP_NODE_IMAGE_TITLE": {
+    "source": "图像传播",
+    "zh_CN": "图像传播",
+    "en": "Image delivery"
+  },
+  "LOC_PROP_NODE_IMAGE_DESCRIPTION": {
+    "source": "使用图像承载表达。",
+    "zh_CN": "使用图像承载表达。",
+    "en": "Carry the expression through images."
+  },
+  "LOC_PROP_NODE_IMAGE_EFFECT": {
+    "source": "独立视觉信息承担部分的语言理解障碍降低90%。",
+    "zh_CN": "独立视觉信息承担部分的语言理解障碍降低90%。",
+    "en": "Reduce the language barrier for independently conveyed visual information by 90 percent."
+  },
+  "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_TITLE": {
+    "source": "多语嵌字",
+    "zh_CN": "多语嵌字",
+    "en": "Multilingual type"
+  },
+  "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_DESCRIPTION": {
+    "source": "将对应译文排入原图文字区域。",
+    "zh_CN": "将对应译文排入原图文字区域。",
+    "en": "Place translations in the image text regions."
+  },
+  "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_EFFECT": {
+    "source": "将对应译文排入图中文字区域，形成多语图文版本。",
+    "zh_CN": "将对应译文排入图中文字区域，形成多语图文版本。",
+    "en": "Place translated captions into image text regions to produce multilingual editions."
+  },
+  "LOC_PROP_NODE_CONTEXT_NOTE_TITLE": {
+    "source": "语境附注",
+    "zh_CN": "语境附注",
+    "en": "Context note"
+  },
+  "LOC_PROP_NODE_CONTEXT_NOTE_DESCRIPTION": {
+    "source": "为传播副本附上出处和用法。",
+    "zh_CN": "为传播副本附上出处和用法。",
+    "en": "Attach source and usage notes to delivered copies."
+  },
+  "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT": {
+    "source": "随传播附上出处与用法，有效语境依赖降至原值60%。",
+    "zh_CN": "随传播附上出处与用法，有效语境依赖降至原值60%。",
+    "en": "Attach source and usage notes; effective context dependency becomes 60 percent of its original value."
+  },
+  "LOC_PROP_NODE_ALTERNATIVE_TEXT_TITLE": {
+    "source": "替代文本",
+    "zh_CN": "替代文本",
+    "en": "Alt text"
+  },
+  "LOC_PROP_NODE_ALTERNATIVE_TEXT_DESCRIPTION": {
+    "source": "为图像提供可读的文字出口。",
+    "zh_CN": "为图像提供可读的文字出口。",
+    "en": "Provide a readable text version of an image."
+  },
+  "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT": {
+    "source": "通过文字渠道送出经编写的图像信息说明。",
+    "zh_CN": "通过文字渠道送出经编写的图像信息说明。",
+    "en": "Deliver authored image descriptions through text channels."
+  },
+  "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE": {
+    "source": "多格式分发",
+    "zh_CN": "多格式分发",
+    "en": "Format delivery"
+  },
+  "LOC_PROP_NODE_FORMAT_DISTRIBUTION_DESCRIPTION": {
+    "source": "按接收地区和渠道选择可用版本。",
+    "zh_CN": "按接收地区和渠道选择可用版本。",
+    "en": "Choose an available version for the receiving country and channel."
+  },
+  "LOC_PROP_NODE_FORMAT_DISTRIBUTION_EFFECT": {
+    "source": "按目标语言和渠道格式，从已有版本中选择适配版本。",
+    "zh_CN": "按目标语言和渠道格式，从已有版本中选择适配版本。",
+    "en": "Select a suitable existing edition for the receiving language and channel format."
+  },
+  "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE": {
+    "source": "公开模板",
+    "zh_CN": "公开模板",
+    "en": "Open template"
+  },
+  "LOC_PROP_NODE_PUBLIC_TEMPLATE_DESCRIPTION": {
+    "source": "让社区填写模板中的开放部分。",
+    "zh_CN": "让社区填写模板中的开放部分。",
+    "en": "Let communities fill the open parts of a template."
+  },
+  "LOC_PROP_NODE_PUBLIC_TEMPLATE_EFFECT": {
+    "source": "社区填写开放槽位，形成参与传播的衍生版本。",
+    "zh_CN": "社区填写开放槽位，形成参与传播的衍生版本。",
+    "en": "Community members fill open slots to create circulating derivatives."
+  },
+  "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE": {
+    "source": "源包发布",
+    "zh_CN": "源包发布",
+    "en": "Source package"
+  },
+  "LOC_PROP_NODE_SOURCE_PACKAGE_DESCRIPTION": {
+    "source": "向社区提供可编辑源包。",
+    "zh_CN": "向社区提供可编辑源包。",
+    "en": "Share an editable source package with communities."
+  },
+  "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT": {
+    "source": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
+    "zh_CN": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
+    "en": "Provide editable source assets; remix cost in community reuse calculations becomes 40 percent."
+  },
+  "LOC_PROP_NODE_SEMANTIC_DETACHMENT_TITLE": {
+    "source": "语义剥离",
+    "zh_CN": "语义剥离",
+    "en": "Semantic freedom"
+  },
+  "LOC_PROP_NODE_SEMANTIC_DETACHMENT_DESCRIPTION": {
+    "source": "保留形式时容纳更大的内容变化。",
+    "zh_CN": "保留形式时容纳更大的内容变化。",
+    "en": "Allow broader content changes while preserving the form."
+  },
+  "LOC_PROP_NODE_SEMANTIC_DETACHMENT_EFFECT": {
+    "source": "保持模板形式的衍生，其分裂阈值提高至至少0.75。",
+    "zh_CN": "保持模板形式的衍生，其分裂阈值提高至至少0.75。",
+    "en": "Raise the split threshold to at least 0.75 for form-preserving derivatives."
+  },
+  "LOC_PROP_NODE_DERIVATIVE_BACKLINK_TITLE": {
+    "source": "衍生回链",
+    "zh_CN": "衍生回链",
+    "en": "Backlinks"
+  },
+  "LOC_PROP_NODE_DERIVATIVE_BACKLINK_DESCRIPTION": {
+    "source": "从社区版本建立返回原模板的入口。",
+    "zh_CN": "从社区版本建立返回原模板的入口。",
+    "en": "Link community versions back to their original template."
+  },
+  "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT": {
+    "source": "真实衍生曝光带回原模板的发现入口。",
+    "zh_CN": "真实衍生曝光带回原模板的发现入口。",
+    "en": "Turn real derivative exposure into discovery opportunities for the source template."
+  },
+  "LOC_PROP_NODE_VERSION_INDEX_TITLE": {
+    "source": "版本索引",
+    "zh_CN": "版本索引",
+    "en": "Version index"
+  },
+  "LOC_PROP_NODE_VERSION_INDEX_DESCRIPTION": {
+    "source": "让受众找到适合当地的已有版本。",
+    "zh_CN": "让受众找到适合当地的已有版本。",
+    "en": "Help audiences find an existing local version."
+  },
+  "LOC_PROP_NODE_VERSION_INDEX_EFFECT": {
+    "source": "索引同源的已有版本，引荐更适配当地的表达。",
+    "zh_CN": "索引同源的已有版本，引荐更适配当地的表达。",
+    "en": "Index existing related versions and recommend expressions better suited to local audiences."
+  },
+  "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE": {
+    "source": "模板仓库",
+    "zh_CN": "模板仓库",
+    "en": "Template library"
+  },
+  "LOC_PROP_NODE_TEMPLATE_ARCHIVE_DESCRIPTION": {
+    "source": "让社区在原帖降温后继续检索和复用模板。",
+    "zh_CN": "让社区在原帖降温后继续检索和复用模板。",
+    "en": "Keep templates available for discovery and reuse after the original post cools."
+  },
+  "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT": {
+    "source": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
+    "zh_CN": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
+    "en": "Recommend the template again after 48 hours when the original cools and reuse demand appears."
+  },
+  "LOC_PROP_NODE_COMMUNITY_HUB_TITLE": {
+    "source": "社群联络点",
+    "zh_CN": "社群联络点",
+    "en": "Community hub"
+  },
+  "LOC_PROP_NODE_COMMUNITY_HUB_DESCRIPTION": {
+    "source": "在形成真实采用的地区建立联络点。",
+    "zh_CN": "在形成真实采用的地区建立联络点。",
+    "en": "Establish a hub in a country with real adoption."
+  },
+  "LOC_PROP_NODE_COMMUNITY_HUB_EFFECT": {
+    "source": "真实采用与有效群体联系形成当地传播联络点。",
+    "zh_CN": "真实采用与有效群体联系形成当地传播联络点。",
+    "en": "Real adoption and relevant group ties establish a local propagation hub."
+  },
+  "LOC_PROP_NODE_NEIGHBOR_FORWARD_TITLE": {
+    "source": "邻地联络",
+    "zh_CN": "邻地联络",
+    "en": "Neighbor relay"
+  },
+  "LOC_PROP_NODE_NEIGHBOR_FORWARD_DESCRIPTION": {
+    "source": "沿陆地接触边发起定向转发。",
+    "zh_CN": "沿陆地接触边发起定向转发。",
+    "en": "Send a directed invitation along a land contact."
+  },
+  "LOC_PROP_NODE_NEIGHBOR_FORWARD_EFFECT": {
+    "source": "从活跃联络点沿既有陆地接触边转发。",
+    "zh_CN": "从活跃联络点沿既有陆地接触边转发。",
+    "en": "Forward from active hubs along existing directed land contacts."
+  },
+  "LOC_PROP_NODE_SEA_FORWARD_TITLE": {
+    "source": "跨海联络",
+    "zh_CN": "跨海联络",
+    "en": "Sea relay"
+  },
+  "LOC_PROP_NODE_SEA_FORWARD_DESCRIPTION": {
+    "source": "沿跨海接触边发起定向转发。",
+    "zh_CN": "沿跨海接触边发起定向转发。",
+    "en": "Send a directed invitation along a sea contact."
+  },
+  "LOC_PROP_NODE_SEA_FORWARD_EFFECT": {
+    "source": "从活跃联络点沿既有跨海接触边转发。",
+    "zh_CN": "从活跃联络点沿既有跨海接触边转发。",
+    "en": "Forward from active hubs along existing directed sea contacts."
+  },
+  "LOC_PROP_NODE_COMMUNITY_RELAY_TITLE": {
+    "source": "中继接力",
+    "zh_CN": "中继接力",
+    "en": "Relay node"
+  },
+  "LOC_PROP_NODE_COMMUNITY_RELAY_DESCRIPTION": {
+    "source": "让产生真实采用的接收国继续转发。",
+    "zh_CN": "让产生真实采用的接收国继续转发。",
+    "en": "Let a receiving country with real adoption relay the meme onward."
+  },
+  "LOC_PROP_NODE_COMMUNITY_RELAY_EFFECT": {
+    "source": "接收国形成真实采用后，作为新联络点继续转发。",
+    "zh_CN": "接收国形成真实采用后，作为新联络点继续转发。",
+    "en": "Receiving countries with real adoption become new forwarding hubs."
+  },
+  "LOC_PROP_NODE_GROUP_BRIDGE_TITLE": {
+    "source": "跨圈引荐",
+    "zh_CN": "跨圈引荐",
+    "en": "Group bridge"
+  },
+  "LOC_PROP_NODE_GROUP_BRIDGE_DESCRIPTION": {
+    "source": "用已发布版本中的两个群体连接圈层。",
+    "zh_CN": "用已发布版本中的两个群体连接圈层。",
+    "en": "Connect groups using two groups in the published version."
+  },
+  "LOC_PROP_NODE_GROUP_BRIDGE_EFFECT": {
+    "source": "通过已发布版本中的有效群体联系开展跨圈引荐。",
+    "zh_CN": "通过已发布版本中的有效群体联系开展跨圈引荐。",
+    "en": "Introduce the meme across communities through group ties in published versions."
+  },
+  "LOC_PROP_NODE_DISTRIBUTED_NETWORK_TITLE": {
+    "source": "跨域接力网",
+    "zh_CN": "跨域接力网",
+    "en": "Relay network"
+  },
+  "LOC_PROP_NODE_DISTRIBUTED_NETWORK_DESCRIPTION": {
+    "source": "按联络点状态运行多段传播路径。",
+    "zh_CN": "按联络点状态运行多段传播路径。",
+    "en": "Run multi-step paths according to hub conditions."
+  },
+  "LOC_PROP_NODE_DISTRIBUTED_NETWORK_EFFECT": {
+    "source": "让陆海中继与跨圈联络点共同运行多段并行接力。",
+    "zh_CN": "让陆海中继与跨圈联络点共同运行多段并行接力。",
+    "en": "Run parallel multistage relays through land, sea and cross-community hubs."
+  },
+  "LOC_PROP_ROUTE_ACCESSIBILITY": {
+    "source": "无障碍传播",
+    "zh_CN": "无障碍传播",
+    "en": "Accessibility"
+  },
+  "LOC_PROP_ROUTE_OPEN_SOURCE": {
+    "source": "开源共创",
+    "zh_CN": "开源共创",
+    "en": "Open source"
+  },
+  "LOC_PROP_ROUTE_COMMUNITY": {
+    "source": "社群接力",
+    "zh_CN": "社群接力",
+    "en": "Community"
+  },
+  "LOC_PROP_ANY_PREREQUISITE": {
+    "source": "任选 · %s",
+    "zh_CN": "任选 · %s",
+    "en": "Either · %s"
+  },
+  "LOC_PROP_RESEARCH_READY": {
+    "source": "首次采用后开放研究",
+    "zh_CN": "首次采用后开放研究",
+    "en": "Research opens after first adoption"
+  },
+  "LOC_PROP_FIRST_ADOPTION": {
+    "source": "首次采用",
+    "zh_CN": "首次采用",
+    "en": "First adoption"
+  },
+  "LOC_PROP_ADOPTION_RETURN": {
+    "source": "传播成果",
+    "zh_CN": "传播成果",
+    "en": "Transmission milestone"
+  },
+  "LOC_PROP_RELAY_CONFIGURED": {
+    "source": "接力路线已建立",
+    "zh_CN": "接力路线已建立",
+    "en": "Relay route established"
+  },
+  "LOC_PROP_ROUTE_CONDITION": {
+    "source": "选择具备联络点的来源与接收地区",
+    "zh_CN": "选择具备联络点的来源与接收地区",
+    "en": "Select a relay source and receiving country"
+  },
+  "LOC_PROP_TEXT_REQUIRED": {
+    "source": "研究文本传播",
+    "zh_CN": "研究文本传播",
+    "en": "Research text propagation"
+  },
+  "LOC_PROP_TEMPLATE_REUSE": {
+    "source": "社区填写了公开模板",
+    "zh_CN": "社区填写了公开模板",
+    "en": "The community filled the public template"
+  },
+  "LOC_PROP_GROWTH_RETURN": {
+    "source": "第%d次传播成果",
+    "zh_CN": "第%d次传播成果",
+    "en": "Transmission milestone %d"
+  },
+  "LOC_PROP_COUNTRY_RETURN": {
+    "source": "第%d次扩张成果",
+    "zh_CN": "第%d次扩张成果",
+    "en": "Expansion milestone %d"
+  },
+  "LOC_PROP_PREREQUISITES": {
+    "source": "先研究前置能力",
+    "zh_CN": "先研究前置能力",
+    "en": "Research prerequisites"
+  },
+  "LOC_PROP_SOURCE_COUNTRY": {
+    "source": "来源地区",
+    "zh_CN": "来源地区",
+    "en": "Source country"
+  },
+  "LOC_PROP_TARGET_COUNTRY": {
+    "source": "接收地区",
+    "zh_CN": "接收地区",
+    "en": "Receiving country"
+  },
+  "LOC_PROP_CONFIGURE_RELAY": {
+    "source": "建立接力",
+    "zh_CN": "建立接力",
+    "en": "Establish relay"
+  },
+  "LOC_PROP_RELAY_STATUS": {
+    "source": "国别采用 %d · 联络点 %d · 接力 %d",
+    "zh_CN": "国别采用 %d · 联络点 %d · 接力 %d",
+    "en": "Country adoption %d · Hubs %d · Relays %d"
+  },
+  "LOC_PROP_CURRENT_FORMAT": {
+    "source": "当前格式：%s",
+    "zh_CN": "当前格式：%s",
+    "en": "Current format: %s"
+  },
+  "LOC_PROP_FORMAT_TEXT": {
+    "source": "文字",
+    "zh_CN": "文字",
+    "en": "Text"
+  },
+  "LOC_PROP_FORMAT_TRANSLATED_TEXT": {
+    "source": "译文",
+    "zh_CN": "译文",
+    "en": "Translated text"
+  },
+  "LOC_PROP_FORMAT_IMAGE": {
+    "source": "图像",
+    "zh_CN": "图像",
+    "en": "Image"
+  },
+  "LOC_PROP_FORMAT_LOCALIZED_IMAGE": {
+    "source": "多语图文",
+    "zh_CN": "多语图文",
+    "en": "Localized image"
+  },
+  "LOC_PROP_FORMAT_ALTERNATIVE_TEXT": {
+    "source": "替代文本",
+    "zh_CN": "替代文本",
+    "en": "Alt text"
+  },
+  "LOC_PROP_COVERED_LANGUAGES": {
+    "source": "覆盖语言：%s",
+    "zh_CN": "覆盖语言：%s",
+    "en": "Languages: %s"
   }
 }

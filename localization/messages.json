@@ -1005,9 +1005,9 @@
     "en": "Choose a country, then write and deploy a meme."
   },
   "LOC_NEW_RUN_D_MEME_MEME_TRADING_IS_74CC0B27": {
-    "source": "新局：%d Meme；模因交易不可用。",
-    "zh_CN": "新局：%d Meme；模因交易不可用。",
-    "en": "New run: %d Meme. Meme trading is unavailable."
+    "source": "新局：%d Meme；研究文本传播，开启传播路线。",
+    "zh_CN": "新局：%d Meme；研究文本传播，开启传播路线。",
+    "en": "New run: %d Meme. Research text propagation to begin your route."
   },
   "LOC_THE_WORLD_CANNOT_BE_REPLACED_AFTER_FIRST_58DB6321": {
     "source": "首发后不能替换世界。",

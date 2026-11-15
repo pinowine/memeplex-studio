@@ -360,9 +360,9 @@
     "en": "Spread sheet"
   },
   "LOC_OPENING_SPREAD_TEXT": {
-    "source": "再看看传播页。酒香也怕巷子深，尤其当隔壁酒厂也雇了模因产品经理的时候。",
-    "zh_CN": "最后看看传播页。酒香也怕巷子深，尤其当隔壁酒厂也雇了产品经理的时候。",
-    "en": "Open Spread next. Even a good product can go unnoticed—especially when the business next door has hired its own meme product manager."
+    "source": "传播页：研究能力，安排传播。",
+    "zh_CN": "传播页：研究能力，安排传播。",
+    "en": "Spread: research abilities and organize delivery."
   },
   "LOC_OPENING_SPREAD_TREE_TITLE": {
     "source": "传播能力树",
@@ -370,9 +370,9 @@
     "en": "Ability tree"
   },
   "LOC_OPENING_SPREAD_TREE_TEXT": {
-    "source": "左侧是传播能力树，连线表示依赖关系。先从第一个文字传播节点开始。",
-    "zh_CN": "左侧是传播能力树，连线表示依赖关系。先从第一个文字传播节点开始。",
-    "en": "The ability tree is on the left; its lines show prerequisites. Start with the first node, text transmission."
+    "source": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
+    "zh_CN": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
+    "en": "The ability tree on the left starts with text delivery, then branches into accessibility, open source and community relay. Lines show dependencies."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
     "source": "能力详情",
@@ -380,19 +380,19 @@
     "en": "Ability details"
   },
   "LOC_OPENING_SPREAD_DETAILS_TEXT": {
-    "source": "右侧可以滚动查看能力说明和效果，下方是费用、余额和解锁按钮。不要瞎买，亏钱了自行离职吧。",
-    "zh_CN": "右侧可以滚动查看能力说明和效果，下方是费用、余额和解锁按钮。不要瞎买，亏钱了自行离职吧。",
-    "en": "Scroll through the ability description and effects on the right. The cost, balance and Unlock button stay below. If you lose money, hand in your resignation."
+    "source": "右侧查看能力名称和传播效果，下方确认费用与余额并完成研究。",
+    "zh_CN": "右侧查看能力名称和传播效果，下方确认费用与余额并完成研究。",
+    "en": "Read the ability name and propagation effects on the right. Review the cost and balance below, then complete research."
   },
   "LOC_OPENING_SKILL_TITLE": {
-    "source": "买一项能力",
-    "zh_CN": "买一项能力",
-    "en": "Buy an ability"
+    "source": "研究文本传播",
+    "zh_CN": "研究文本传播",
+    "en": "Research text propagation"
   },
   "LOC_OPENING_SKILL_TEXT": {
-    "source": "选一项你买得起、也已经满足前提的能力，然后购买。只看说明是不会学会的，我很遗憾。",
-    "zh_CN": "选一项你买得起、也已经满足前提的能力，然后购买。",
-    "en": "Choose an affordable ability whose prerequisites you meet, then buy it. Reading the description alone won’t teach it to you, I’m afraid."
+    "source": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
+    "zh_CN": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
+    "en": "Spend the starting 10 MEME to research text delivery; skipping the tutorial settles the same cost. First genuine adoption rewards 20 MEME and opens research on all three routes."
   },
   "LOC_OPENING_MAP_INTRO_TITLE": {
     "source": "地图页",

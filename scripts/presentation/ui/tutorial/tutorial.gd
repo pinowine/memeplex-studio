@@ -166,6 +166,7 @@ func _continue_pressed() -> void:
 		advance()
 
 func _skip_pressed() -> void:
+	if not _active: return
 	skip()
 	skip_requested.emit()
 
@@ -708,7 +709,10 @@ func inspection() -> Dictionary:
 	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.svg", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index, "dialogue_visible": _ui.get_node("Card").visible if _ui != null else false, "body_text":_body_text, "hover_target":_hover_target, "emotion":str(_steps[_index].get("emotion", "")), "centered":bool(_steps[_index].get("centered", false)), "portrait_rotation":_ui.get_node("Card/Portrait67").rotation if _ui != null else 0.0, "portrait_scale":_ui.get_node("Card/Portrait67").scale if _ui != null else Vector2.ONE, "card_destination":_card_destination, "card_scale":_ui.get_node("Card").scale if _ui != null else Vector2.ONE, "focus_visible":_focus.visible if _focus != null else false, "source_rect":_drag_source, "text_source":_ui.get_node("Card/Content/Body").get_meta(&"text_workbench_source", {}) if _ui != null else {}}
 
 func default_steps() -> Array[Dictionary]:
-	return OpeningSteps.steps()
+	var steps: Array[Dictionary] = OpeningSteps.steps()
+	for step: Dictionary in steps:
+		if str(step.get("id", "")) == "skill": step["match"] = {"id":"text"}
+	return steps
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():

@@ -9,6 +9,7 @@ const WorldWar = preload("res://scripts/gameplay/events/world_war.gd")
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
 const Lifecycle = preload("res://scripts/gameplay/competition/meme_lifecycle.gd")
+const PropagationRewards = preload("res://scripts/gameplay/economy/propagation_rewards.gd")
 const DesignState = preload("res://scripts/gameplay/design/design_state.gd")
 const SaveCodec = preload("res://scripts/services/persistence/save_codec.gd")
 const EventScheduler = preload("res://scripts/gameplay/events/event_scheduler.gd")
@@ -278,8 +279,23 @@ func _encoded_draft(draft: Dictionary) -> Dictionary:
 		if encoded.has(key): encoded[key] = Array(encoded[key])
 	return encoded
 
+func propagation_research_ready() -> bool:
+	return economy.rewarded_keys.has("propagation:first_adoption")
+
+func ensure_text_propagation() -> PackedStringArray:
+	if "text" in design_state.snapshot().unlocked_skills: return PackedStringArray()
+	return buy_propagation_skill("text", context_draft())
+
+func configure_propagation_route(source_country: String, target_country: String) -> PackedStringArray:
+	var errors: PackedStringArray = competition.configure_route(source_country, target_country, current_variant_id)
+	if errors.is_empty(): status = DeskLocalization.source("LOC_PROP_RELAY_CONFIGURED")
+	changed.emit()
+	return errors
+
 func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringArray:
 	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
+	if id != "text" and not propagation_research_ready():
+		return PackedStringArray([DeskLocalization.source("LOC_PROP_RESEARCH_READY")])
 	var errors: PackedStringArray = design_state.skill_errors(id)
 	if not errors.is_empty(): return errors
 	var cost: int = int(design_state.rules.find("skills", id).cost)
@@ -301,7 +317,9 @@ func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringAr
 		if not errors.is_empty(): return errors
 	elif not candidate.rules.find("skills", id).get("draft_effects", []).is_empty(): return PackedStringArray([DeskLocalization.source("LOC_CONFIRM_YOUR_OWN_MEME_DRAFT_FIRST_C8D61D07")])
 	if not economy.charge(cost, DeskLocalization.source_format("%s%s", ["LOC_SKILL_UNLOCKED_811EF328", id], [0]), hour): return PackedStringArray([DeskLocalization.source("LOC_NOT_ENOUGH_MEME_89E627E2")])
+	economy.transactions.back().propagation_skill_id = id
 	design_state = candidate
+	competition.set_live_skills(Array(design_state.snapshot().unlocked_skills), variants)
 	changed.emit()
 	return errors
 
@@ -383,6 +401,8 @@ func _draft_layer_attached(data: Dictionary,layer: String) -> bool:
 ## 校验来源、语境和费用后投放；外部版本不获得作者控制权。
 func publish(data: Dictionary) -> PackedStringArray:
 	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
+	if "text" not in design_state.snapshot().unlocked_skills:
+		return PackedStringArray([DeskLocalization.source("LOC_PROP_TEXT_REQUIRED")])
 	var errors := validate_draft(data)
 	var patch_ids := MutationRules.authored_patch_ids(data)
 	errors.append_array(catalog.DESIGN_RULES.patch_errors(str(data.get("preset_id", "")), patch_ids))
@@ -527,7 +547,7 @@ func _spread_world() -> void:
 		factors[cid] = {}
 		for variant: Dictionary in competition.active_variants(variants):
 			var entry: Dictionary = competition._state.registry[str(variant.id)]
-			var profile: Dictionary = entry.get("effective_profile", entry.profile).duplicate(true)
+			var profile: Dictionary = competition.live_profile(str(variant.id))
 			profile.topic_ids = Array(competition.active_topics(profile))
 			factors[cid][str(variant.id)] = _audience_factor(profile) * EffectRules.country_factor(runtime_modifiers, hour, cid, str(variant.id), profile)
 	competition.step(hour,variants,factors)
@@ -540,6 +560,7 @@ func _spread_world() -> void:
 		state.external = group.sample_size * float(view.lineage_adopted-view.owned_adopted) / maxf(1.0,view.world_population)
 		state.external = maxf(0.0,state.external)
 		state.fatigue = clampf(float(state.fatigue)+float(attention.player)/maxf(1.0,attention.budget)*catalog.gameplay_rules.fatigue_gain-catalog.gameplay_rules.fatigue_recovery,0.0,1.0)
+	_produce_template_variants()
 	_reward_milestones()
 
 func _audience_factor(profile: Dictionary) -> float:
@@ -566,10 +587,60 @@ func _register_external_world(variant: Dictionary, event_country: String = "") -
 
 func _reward_milestones() -> void:
 	var totals := totals_state()
-	var milestone_size: int = maxi(1,floori(competition.snapshot(variants,false).world_population * catalog.gameplay_rules.milestone_population_fraction))
-	var milestone := floori(float(totals.owned_adopted) / milestone_size)
-	for index in range(1, milestone + 1):
-		economy.reward("adoption_%d" % index, catalog.milestone_reward, DeskLocalization.source_format("LOC_AUTHOR_OWNED_ADOPTION_MILESTONE_D_85F3EA92", (index * milestone_size)), hour)
+	var population := int(competition.snapshot(variants, false).world_population)
+	var landed := 0
+	for row: Dictionary in competition._state.world:
+		var adopted := 0
+		var country: Dictionary = competition._state.countries[str(row.id)]
+		for variant: Dictionary in competition.active_variants(variants):
+			if bool(variant.owned): adopted += int(country.adopted.get(str(variant.id), 0))
+		if adopted >= maxi(1, floori(float(row.population) * 0.0001)): landed += 1
+	var first_hour: int = int(deployments[0].hour) if not deployments.is_empty() else hour
+	for reward: Dictionary in PropagationRewards.due_rewards(hour, first_hour, int(totals.owned_adopted), population, landed, economy.transactions, economy.rewarded_keys):
+		var reason := DeskLocalization.source_format(str(reward.reason_key), reward.get("reason_inputs", [])) if not reward.get("reason_inputs", []).is_empty() else DeskLocalization.source(str(reward.reason_key))
+		if economy.reward(str(reward.key), int(reward.amount), reason, hour):
+			economy.transactions.back().merge(reward.ledger_fields, true)
+
+func _produce_template_variants() -> void:
+	if hour % 48 != 0: return
+	var unlocked: Array = design_state.snapshot().unlocked_skills
+	if "public_template" not in unlocked: return
+	for raw: Dictionary in competition.active_variants(variants):
+		var parent: Dictionary = Lifecycle.revision_snapshot(raw)
+		parent.flow_profile = competition.live_profile(str(raw.id))
+		if parent.get("origin_ids", []).is_empty() or not parent.get("flow_profile") is Dictionary: continue
+		if not competition.propagation_rules.can_template(parent.flow_profile): continue
+		var host := ""
+		for row: Dictionary in competition._state.world:
+			if int(competition._state.countries[str(row.id)].adopted.get(str(parent.id), 0)) > 0:
+				host = str(row.id)
+				break
+		if host.is_empty(): continue
+		var mutation: Dictionary = MutationRules.candidate(catalog, parent)
+		if mutation.is_empty(): continue
+		var duplicate := false
+		for item: Dictionary in variants:
+			if item.get("origin_ids", []) == parent.origin_ids and str(item.get("text", "")) == str(mutation.composition.expression) and str(item.get("meaning_id", "")) == str(mutation.composition.meaning_id): duplicate = true
+		if duplicate: continue
+		var pristine := _capture_lifecycle_state()
+		var previous_count := variants.size()
+		_spawn_remix("", str(parent.flow_profile.group_id), "", str(parent.id), host, true)
+		if variants.size() <= previous_count: continue
+		var activation := _register_external_world(variants.back(), host)
+		if activation.has("error"):
+			_restore_lifecycle_state(pristine)
+			status = str(activation.error)
+			return
+		attention = competition.snapshot(variants, false).attention
+		status = DeskLocalization.source("LOC_PROP_TEMPLATE_REUSE")
+		return
+
+
+func template_rewrite_distance(parent: Dictionary, mutation: Dictionary) -> float:
+	var composed: Dictionary = mutation.get("composition", {})
+	var candidate := {"text":str(composed.get("expression", "")), "meaning":str(composed.get("meaning", "")), "meaning_id":str(composed.get("meaning_id", "")), "flow_profile":competition.profile(mutation.get("flow_draft", {}))}
+	return MonitorMetrics.deviation(parent.get("deviation_anchor", Lifecycle.semantic_snapshot(parent)), candidate)
+
 
 func totals_state() -> Dictionary:
 	var view: Dictionary = competition.snapshot(variants,false)
@@ -711,7 +782,7 @@ func _event_candidates(cid: String, definition: MemeDemoEvent = null) -> Array[D
 		if variant.origin_ids.is_empty() or not competition._state.registry.has(str(variant.id)): continue
 		var entry: Dictionary = competition._state.registry[str(variant.id)]
 		if not reacting_groups.is_empty():
-			var effective: Dictionary = entry.get("effective_profile", entry.profile)
+			var effective: Dictionary = competition.live_profile(str(variant.id))
 			var target_groups: Array = effective.get("group_ids", [str(effective.group_id)])
 			var matches_group := false
 			for id: String in target_groups: matches_group = matches_group or id in reacting_groups
@@ -789,7 +860,7 @@ func _produce_event_memes() -> void:
 func _event_hours(value: float) -> float:
 	return value * catalog.gameplay_rules.event_time_scale
 
-func _spawn_remix(event_id: String, creator: String, definition_id: String = "", parent_id: String = "", event_country: String = "") -> String:
+func _spawn_remix(event_id: String, creator: String, definition_id: String = "", parent_id: String = "", event_country: String = "", propagation_template: bool = false) -> String:
 	var parent := Lifecycle.new(self).active_source(variant_by_id(current_variant_id if parent_id.is_empty() else parent_id))
 	var parent_content := Lifecycle.revision_snapshot(parent)
 	var event_definition := _event_definition(definition_id)
@@ -835,6 +906,7 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "",
 		float(source_draft.remix_cost), float(source_draft.context_dependency))
 	variants.append({"id":id, "family_id":family_id, "parent_ids":[parent.id], "origin_ids":parent.origin_ids.duplicate(), "creator":creator, "owned":bool(parent_content.owned), "controlled":false, "text":str(composed.expression), "kernel_id":parent.kernel_id, "preset_id":str(parent.get("preset_id", "")), "source_presets":parent.get("source_presets", []).duplicate(true), "semantic_distance":0.0, "language_id":str(source_draft.language_id), "source_event":event_id, "topic_ids":parent.get("topic_ids", []).duplicate(), "reuse_factor":reuse_factor, "patch_ids":mutation.patch_ids.duplicate(), "flow_draft":mutation.flow_draft.duplicate(true)})
 	variants.back().mutation_parent_content = parent_content
+	if propagation_template: variants.back().propagation_template = {"country_id":event_country, "hour":hour, "adopted":int(competition._state.countries.get(event_country, {}).get("adopted", {}).get(str(parent.id), 0))}
 	for field: String in ["meaning", "meaning_id", "language_versions"]: variants.back()[field] = composed[field]
 	if event_mutation:
 		variants.back().mutation_definition_id = definition_id
@@ -881,10 +953,8 @@ func acknowledge_event() -> void:
 		changed.emit()
 		return
 	var id: String = active_event.instance_id
-	if economy.reward("event_" + id, catalog.event_research_reward, DeskLocalization.source("LOC_COLLECT_TRANSMISSION_RESEARCH_FINDINGS_07296438"), hour):
-		for item: String in active_event.discoveries:
-			if item not in discoveries:
-				discoveries.append(item)
+	for item: String in active_event.discoveries:
+		if item not in discoveries: discoveries.append(item)
 	for event in events:
 		if event.instance_id == id:
 			event.acknowledged = true
@@ -943,6 +1013,8 @@ func _finish(result: Dictionary) -> void:
 func snapshot() -> Dictionary:
 	var state := totals_state()
 	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "variants":competition.active_variants(variants).size(), "events":events.duplicate(true), "lineage":competition.active_variants(variants), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
+	state.propagation_research_ready = propagation_research_ready()
+	state.propagation = competition.propagation_inspection()
 	state.current_variant_id = current_variant_id
 	state.guide_progress = guidance_progress()
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}

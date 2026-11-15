@@ -74,6 +74,7 @@ static func rollback_content(anchor: Dictionary, candidate: Dictionary) -> Dicti
 		var calculator: RefCounted = load("res://scripts/gameplay/competition/competition_state.gd").new(load("res://data/catalogs/catalog.tres"))
 		var evaluated: Dictionary = calculator.profile(result.flow_draft)
 		for field: String in PATCH_SCALAR_FIELDS: result.flow_profile[field] = evaluated[field]
+		result.flow_profile.propagation_meta = evaluated.propagation_meta.duplicate(true)
 	var before_profile: Dictionary = visible.get("flow_profile", {})
 	var reference_profile: Dictionary = anchor.get("flow_profile", {})
 	if not bool(reference_profile.get("political_known", false)):
@@ -186,7 +187,11 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	raw.deviation_effect_deltas = effect_deltas(reference, raw, parent)
 	var distance := Metrics.deviation(reference, content(raw))
 	raw.split_distance = distance
-	if not Metrics.should_split(distance):
+	var policy_parent := revision_snapshot(parent)
+	policy_parent.flow_profile = _simulation.competition.live_profile(str(parent.id))
+	var threshold: float = _simulation.competition.propagation_rules.split_threshold(Metrics.SPLIT_THRESHOLD, policy_parent, {"flow_draft":content(raw).get("flow_draft", {})})
+	raw.mutation_policy = {"schema":1, "source_id":str(parent.id), "skill_ids":policy_parent.flow_profile.get("skill_ids", []).duplicate(), "threshold":threshold, "hour":int(_simulation.hour), "ledger_size":_simulation.economy.transactions.size()}
+	if distance <= threshold:
 		raw.meme_id = str(parent.meme_id)
 		raw.meme_name = str(parent.meme_name)
 		raw.meme_name_index = int(parent.get("meme_name_index", -1))
@@ -200,6 +205,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 		var transfer: Dictionary = _simulation.competition.replace_revision(str(parent.id), str(raw.id))
 		if transfer.has("error"): return transfer
 		if str(_simulation.current_variant_id) == str(parent.id): _simulation.current_variant_id = str(raw.id)
+		_simulation.attention = _simulation.competition.snapshot(_simulation.variants, false).attention
 		return {"split":false, "new_meme":false, "meme_id":str(raw.meme_id), "distance":distance}
 	var rolled := rollback_content(reference, raw)
 	var identity := content(parent)
@@ -229,4 +235,5 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	raw.deviation_anchor = semantic_snapshot(raw)
 	var allocation: Dictionary = _simulation.competition.split_revision(str(parent.id), str(raw.id), raw.flow_profile, rolled.flow_profile)
 	if allocation.has("error"): return allocation
+	_simulation.attention = _simulation.competition.snapshot(_simulation.variants, false).attention
 	return {"split":true, "new_meme":true, "meme_id":str(raw.meme_id), "distance":distance, "allocation":allocation}

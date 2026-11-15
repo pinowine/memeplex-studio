@@ -500,6 +500,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			_state.claimed_events.append(instance_id)
 			if not labels.is_empty(): _state.inventory_log.append(DeskLocalization.source_format("LOC_EVENT_S_S_6E3B7EEE", [instance_id, "、".join(labels)]))
 		"publish":
+			if "text" not in _state.unlocked_skills: return PackedStringArray([DeskLocalization.source("LOC_PROP_TEXT_REQUIRED")])
 			if source.is_empty() or not source.get("controlled", false) or not source.get("owned", false) or source.get("creator", "") != "player": return PackedStringArray([DeskLocalization.source("LOC_ONLY_PLAYER_PUBLISHED_VERSIONS_MAY_REGISTER_MODULES_C45E35C2")])
 			errors = _current_patch_errors(source)
 			if not errors.is_empty(): return errors
@@ -582,8 +583,7 @@ func skill_errors(id: String) -> PackedStringArray:
 	var entry: Dictionary = rules.find("skills", id)
 	if entry.is_empty(): return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_SPREAD_SKILL_8953144F")])
 	if id in _state.unlocked_skills: return PackedStringArray([DeskLocalization.source("LOC_THIS_SKILL_IS_ALREADY_UNLOCKED_IT_CANNOT_9F356EAA")])
-	for dependency in entry.requires:
-		if str(dependency) not in _state.unlocked_skills: return PackedStringArray([DeskLocalization.source("LOC_UNLOCK_REQUIRED_SKILLS_FIRST_B8C8D8A4") + str(dependency)])
+	if not rules.skill_requirements_met(entry, _state.unlocked_skills): return PackedStringArray([DeskLocalization.source("LOC_PROP_PREREQUISITES")])
 	if _state.operations.size() >= RECORD_LIMIT: return PackedStringArray([DeskLocalization.source("LOC_DESIGN_ACTION_RECORD_HAS_REACHED_ITS_FINITE_37CDC932")])
 	return PackedStringArray()
 

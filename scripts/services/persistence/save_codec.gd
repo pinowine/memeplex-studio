@@ -5,6 +5,7 @@ const MemeLifecycle = preload("res://scripts/gameplay/competition/meme_lifecycle
 ## 当前存档格式的唯一边界：先解析和验证，再一次性安装完整候选状态。
 
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
+const PropagationRewards = preload("res://scripts/gameplay/economy/propagation_rewards.gd")
 const DesignState = preload("res://scripts/gameplay/design/design_state.gd")
 const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
 const EventMutation = preload("res://scripts/gameplay/events/event_mutation.gd")
@@ -112,6 +113,8 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 	if data.phase in ["event", "draft", "complete"] and data.speed != 0:
 		errors.append(DeskLocalization.source("LOC_NON_RUNNING_PHASES_MUST_BE_PAUSED_03C4597B"))
 	errors.append_array(economy.validate_payload(data.economy))
+	errors.append_array(PropagationRewards.validate_ledger(data.economy.get("transactions", [])))
+	if competition._canonical(data.competition_state.get("propagation", {}).get("live_skill_ids", [])) != competition._canonical(data.design_state.get("unlocked_skills", [])): errors.append("Live propagation research differs from the author unlock ledger")
 	for key in ["variants", "deployments", "events", "modifiers", "pending_events"]:
 		for entry in data[key]:
 			if not entry is Dictionary: errors.append(DeskLocalization.source("LOC_WRONG_SAVED_RECORD_TYPE_879E5C19") + key)
@@ -332,6 +335,45 @@ func _validate_event_reading(variant: Dictionary, event: Dictionary, world: Dict
 	if not matched: errors.append("Independent event memes require a country audience")
 	if str(world.registry[str(variant.id)].origin_country) != str(event.country_id): errors.append("Event meme origin differs from its country")
 
+func _mutation_threshold(variant: Dictionary, parent: Dictionary, _variants_by_id: Dictionary, data: Dictionary, errors: PackedStringArray) -> float:
+	var base: float = MonitorMetrics.SPLIT_THRESHOLD
+	if not variant.has("mutation_policy"):
+		if variant.has("propagation_template"): errors.append("Community templates require their historical propagation policy")
+		return base
+	var policy: Variant = variant.mutation_policy
+	if not policy is Dictionary or policy.get("schema") != 1 or not policy.get("skill_ids") is Array or not _number(policy.get("threshold")) or not _integer(policy.get("hour")) or not _integer(policy.get("ledger_size")) or str(policy.get("source_id", "")) != str(parent.id):
+		errors.append("Community propagation policy requires its actual source, research ledger and finite threshold")
+		return base
+	var ledger_size := int(policy.ledger_size)
+	if int(policy.hour) < 0 or int(policy.hour) > int(data.hour) or ledger_size < 0 or ledger_size > data.economy.transactions.size():
+		errors.append("Community propagation policy clock or ledger boundary is invalid")
+		return base
+	var expected_skills: Array = []
+	var lineage: bool = str(parent.get("creator", "")) == "player" or not parent.get("origin_ids", []).is_empty()
+	if lineage:
+		for transaction: Dictionary in data.economy.transactions.slice(0, ledger_size):
+			if int(transaction.hour) > int(policy.hour): errors.append("Propagation policy cannot use a future research transaction")
+			if transaction.has("propagation_skill_id"):
+				var skill := str(transaction.propagation_skill_id)
+				if skill in expected_skills or skill not in data.design_state.unlocked_skills: errors.append("Propagation policy research provenance is invalid")
+				expected_skills.append(skill)
+	if competition._canonical(policy.skill_ids) != competition._canonical(expected_skills): errors.append("Community propagation skills differ from the recorded research at birth")
+	var historical_parent: Dictionary = variant.get("mutation_parent_content", parent).duplicate(true)
+	var historical_profile: Dictionary = historical_parent.get("flow_profile", {}).duplicate(true)
+	historical_profile.skill_ids = policy.skill_ids.duplicate()
+	historical_parent.flow_profile = historical_profile
+	var expected: float = competition.propagation_rules.split_threshold(base, historical_parent, {"flow_draft":variant.get("flow_draft", {})})
+	if not is_equal_approx(float(policy.threshold), expected): errors.append("Community propagation threshold provenance is invalid")
+	if variant.has("propagation_template"):
+		var record: Variant = variant.propagation_template
+		if not record is Dictionary or not record.get("country_id") is String or not _integer(record.get("hour")) or not _integer(record.get("adopted")):
+			errors.append("Community template source requires its country, time and observed adoption")
+		elif not competition.has_country(str(record.country_id)) or int(record.hour) != int(policy.hour) or int(record.adopted) <= 0 or int(record.adopted) > int(catalog.gameplay_rules.country(str(record.country_id)).get("population", 0)):
+			errors.append("Community template source country, time or adoption is invalid")
+		if "public_template" not in policy.skill_ids or not competition.propagation_rules.can_template(historical_profile): errors.append("Community template publication provenance is invalid")
+	return expected
+
+
 func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	for variant: Dictionary in variants:
@@ -421,13 +463,15 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 		if not errors.is_empty(): continue
 		if competition._canonical(anchor) != competition._canonical(birth.get("deviation_anchor", {})) or not is_zero_approx(MonitorMetrics.deviation(anchor, birth)):
 			errors.append("Saved meme deviations must use the unchanged birth expression")
+		var threshold: float = MonitorMetrics.SPLIT_THRESHOLD
+		if not variant.parent_ids.is_empty(): threshold = _mutation_threshold(variant, variants_by_id[str(variant.parent_ids[0])], variants_by_id, data, errors)
 		var trigger := float(variant.split_distance)
 		if variant.has("legacy_identity") and (not variant.legacy_identity is bool or not variant.legacy_identity or id != meme_id or not is_zero_approx(trigger) or variant.has("split_from_id")): errors.append("Legacy meme initialization must retain its pre-existing independent expression")
 		if trigger < 0.0 or trigger > 1.0:
 			errors.append("Saved meme split distance is outside zero to one")
 		if id == meme_id and not variant.parent_ids.is_empty() and not bool(variant.get("legacy_identity", false)):
-			if not MonitorMetrics.should_split(trigger) or not variant.get("split_from_id") is String or not variants_by_id.has(str(variant.get("split_from_id", ""))):
-				errors.append("A new derived meme requires an observed deviation strictly above fifty percent")
+			if trigger <= threshold or not variant.get("split_from_id") is String or not variants_by_id.has(str(variant.get("split_from_id", ""))):
+				errors.append("A new derived meme requires an observed deviation strictly above its recorded propagation threshold")
 			else:
 				var source: Dictionary = variants_by_id[str(variant.split_from_id)]
 				var expected_trigger := MonitorMetrics.deviation(source.get("deviation_anchor", source), variant)
@@ -440,7 +484,7 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 				split_names[name_index] = id
 			if not is_zero_approx(float(variant.semantic_distance)): errors.append("A newborn independent meme starts at zero deviation")
 		elif id != meme_id:
-			if MonitorMetrics.should_split(trigger) or variant.parent_ids.is_empty() or str(variants_by_id[str(variant.parent_ids[0])].get("meme_id", "")) != meme_id:
+			if trigger > threshold or variant.parent_ids.is_empty() or str(variants_by_id[str(variant.parent_ids[0])].get("meme_id", "")) != meme_id:
 				errors.append("A non-split revision must retain its source meme identity")
 			if not is_equal_approx(trigger, MonitorMetrics.deviation(anchor, variant)):
 				errors.append("Saved revision deviation differs from its expression")
@@ -717,6 +761,7 @@ func _validate_semantic_anchor(anchor: Dictionary, errors: PackedStringArray) ->
 					if not value is String: errors.append("Saved semantic anchor audiences must contain strings")
 
 func _validate_live_profile(profile: Dictionary, errors: PackedStringArray) -> void:
+	errors.append_array(competition.propagation_rules.validate_profile(profile))
 	for key: String in ["language_access", "recognizability", "context_dependency", "remix_cost", "expression"]:
 		if not _number(profile.get(key)) or float(profile.get(key, -1.0)) < 0.0 or float(profile.get(key, 2.0)) > 1.0:
 			errors.append("Invalid live propagation parameter: " + key)
@@ -901,7 +946,7 @@ func restore(data: Dictionary) -> PackedStringArray:
 	return errors
 
 func content_signature() -> String:
-	return JSON.stringify(_resource_data(catalog), "", true, true).sha256_text()
+	return JSON.stringify({"catalog":_resource_data(catalog),"rewards":PropagationRewards.signature(),"propagation_content":FileAccess.get_file_as_string("res://data/propagation/content_profiles.json").sha256_text()}, "", true, true).sha256_text()
 
 func _collect_precision(value: Variant, path: String, precision: Dictionary) -> void:
 	if value is float and is_finite(value) and value != floor(value):
