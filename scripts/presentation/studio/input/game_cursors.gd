@@ -33,6 +33,7 @@ static func texture_for(shape: int) -> Texture2D:
 
 static func hotspot_for(shape: int) -> Vector2:
 	match shape:
+		Input.CURSOR_HELP: return Vector2(16, 16)
 		Input.CURSOR_POINTING_HAND: return Vector2(15, 3)
 		Input.CURSOR_CROSS: return Vector2(14, 14)
 		Input.CURSOR_FORBIDDEN: return Vector2(16, 16)
