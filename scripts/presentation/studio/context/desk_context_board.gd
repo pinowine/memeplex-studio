@@ -404,6 +404,8 @@ func _draw_axis(id: String) -> void:
 	_draw_pencil_path(PackedVector2Array([Vector2(center.x+1,plot.end.y),center-Vector2(1,4),Vector2(center.x,plot.position.y)]),Color(INK,.75),1.2)
 	_draw_pencil_path(PackedVector2Array([Vector2(plot.end.x-10,center.y-6),Vector2(plot.end.x,center.y+1),Vector2(plot.end.x-9,center.y+7)]),Color(INK,.75),1.2)
 	_draw_pencil_path(PackedVector2Array([Vector2(center.x-6,plot.position.y+10),Vector2(center.x,plot.position.y),Vector2(center.x+6,plot.position.y+10)]),Color(INK,.75),1.2)
+	_draw_pencil_path(PackedVector2Array([Vector2(plot.position.x+9,center.y-6),Vector2(plot.position.x,center.y),Vector2(plot.position.x+9,center.y+6)]),Color(INK,.75),1.2)
+	_draw_pencil_path(PackedVector2Array([Vector2(center.x-6,plot.end.y-9),Vector2(center.x,plot.end.y),Vector2(center.x+6,plot.end.y-9)]),Color(INK,.75),1.2)
 	var label_layouts := _axis_label_layouts(id)
 	for key: String in ["x_negative", "x_positive", "y_negative", "y_positive"]:
 		for line: Dictionary in label_layouts[key].lines: draw_rect((line.rect as Rect2).grow(2), Color("eee6d3", .94))
@@ -440,18 +442,22 @@ func _axis_label_layouts(id: String) -> Dictionary:
 	var center := plot.get_center()
 	var labels := _axis_labels(id)
 	var font := get_theme_default_font()
-	var side_width := plot.size.x * .5 - 16
+	var side_width := plot.size.x * .5 - 12
 	var areas := {
-		"x_negative":Rect2(Vector2(plot.position.x + 8, center.y - 42), Vector2(side_width, 26)),
-		"x_positive":Rect2(Vector2(center.x + 8, center.y - 42), Vector2(side_width, 26)),
-		"y_negative":Rect2(plot.position + Vector2(8, 8), Vector2(plot.size.x - 16, 26)),
-		"y_positive":Rect2(Vector2(plot.position.x + 8, plot.end.y - 34), Vector2(plot.size.x - 16, 26))}
+		"x_negative":Rect2(Vector2(plot.position.x + 4, center.y + 8), Vector2(side_width, 18)),
+		"x_positive":Rect2(Vector2(center.x + 8, center.y + 8), Vector2(side_width, 18)),
+		"y_negative":Rect2(Vector2(center.x + 8, plot.position.y + 2), Vector2(side_width, 18)),
+		"y_positive":Rect2(Vector2(center.x + 8, plot.end.y - 20), Vector2(side_width, 18))}
 	var known := id != "stance" or bool(_layers().get(id, {}).get("known", false))
 	var anchor := _axis_point(id) if known else _axis_origin(id)
 	var marker := Rect2(anchor - Vector2.ONE * 16, Vector2.ONE * 32)
 	var result := {}
 	for key: String in areas:
-		var layout := ResourceGraphic.fit_text(font, str(labels[key]), areas[key], 16, 16, 1)
+		var area: Rect2 = areas[key]
+		var label_width := minf(area.size.x, ceilf(font.get_string_size(str(labels[key]), HORIZONTAL_ALIGNMENT_LEFT, -1, 12).x) + 2)
+		if key == "x_positive": area.position.x = plot.end.x - label_width - 4
+		area.size.x = label_width
+		var layout := ResourceGraphic.fit_text(font, str(labels[key]), area, 12, 12, 1)
 		if not layout.lines.is_empty() and (layout.lines[0].rect as Rect2).grow(2).intersects(marker):
 			var alternate: Rect2 = areas[key]
 			if key.begins_with("x_"):
@@ -459,7 +465,7 @@ func _axis_label_layouts(id: String) -> Dictionary:
 			else:
 				alternate.position.x = plot.position.x + 4 if anchor.x >= center.x else center.x + 4
 				alternate.size.x = plot.size.x * .5 - 8
-			var candidate := ResourceGraphic.fit_text(font, str(labels[key]), alternate, 16, 16, 1)
+			var candidate := ResourceGraphic.fit_text(font, str(labels[key]), alternate, 12, 12, 1)
 			if not candidate.truncated and not candidate.lines.is_empty() and not (candidate.lines[0].rect as Rect2).grow(2).intersects(marker): layout = candidate
 		result[key] = layout
 	return result

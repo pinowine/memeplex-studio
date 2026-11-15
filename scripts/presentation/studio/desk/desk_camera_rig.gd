@@ -84,12 +84,16 @@ func capture_view() -> Dictionary:
 
 func focus_slot(id: String, world_rect: Rect2, magnification := 2.0) -> bool:
 	if not world_rect.has_area() or not world_rect.position.is_finite(): return false
-	var scale := _fit_zoom() * clampf(magnification, 1.0, 2.2)
+	var axes := id in ["slot/stance", "slot/pragmatic"]
+	var limit := 3.8 if axes else 2.2
 	var view := get_viewport_rect().size
+	if axes: magnification = minf(view.x * .52 / world_rect.size.x, view.y * .80 / world_rect.size.y) / _fit_zoom()
+	var zoom_factor := clampf(magnification, 1.0, limit)
+	var scale := _fit_zoom() * zoom_factor
 	# Leave the right side for the explanation paper, not for a second object move.
 	var offset := Vector2(view.x * 0.18, -view.y * 0.02) / scale
 	var target := Rect2(world_rect.position + offset.rotated(rotation), world_rect.size)
-	return focus_on(id, target, clampf(magnification, 1.0, 2.2), rotation)
+	return focus_on(id, target, zoom_factor, rotation)
 
 func restore_view(view: Dictionary) -> bool:
 	if not view.get("position") is Vector2 or not view.get("zoom") is Vector2: return false

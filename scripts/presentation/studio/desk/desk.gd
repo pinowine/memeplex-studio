@@ -93,6 +93,9 @@ func _can_focus_slot(sheet: String) -> bool:
 
 func _context_slot_pressed(layer: String, _index: int, viewport_rect: Rect2) -> void:
 	if not _can_focus_slot("cultivate"): return
+	if layer in ["stance", "pragmatic"]:
+		var board: Control = _page.hud.design_workbench().context_slice()
+		viewport_rect = board._viewport_rect(board._layout_layers[layer].plot_rect)
 	_focus_slot(layer,viewport_rect)
 
 func _module_slots_pressed(viewport_rect: Rect2) -> void:
