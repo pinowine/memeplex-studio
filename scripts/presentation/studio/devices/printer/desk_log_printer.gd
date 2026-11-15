@@ -231,7 +231,7 @@ func _draw() -> void:
 		_receipt_rule(top + _receipt_header_height() - 4.0)
 	for row: Dictionary in _visible_rows():
 		var lines: PackedStringArray = row.lines
-		if hierarchical_typography and bool(row.complete):
+		if bool(row.complete):
 			_receipt_rule(float(row.y) + float(row.height) - 4.0)
 		for index in lines.size():
 			var baseline := float(row.y) + index * line_height + (line_height - font.get_height(_font_size())) * .5 + font.get_ascent(_font_size())
@@ -258,6 +258,7 @@ func receipt_details() -> Dictionary:
 	var sections: Array[Dictionary] = []
 	for index in range(_entries.size() - 1, -1, -1):
 		sections.append({"body":_entry_details(_entries[index])})
+		if index > 0: sections.append({"body":"────────────────"})
 	return {"title":DeskLocalization.source("LOC_EVENT_LOG_F77E28E6"), "sections":sections,
 		"document_kind":"log_receipt", "receipt_width":size.x, "receipt_code":str(_entries.size()).pad_zeros(8),
 		"body":DeskLocalization.source("LOC_LOG_RECEIPT_EMPTY") if sections.is_empty() else ""}
@@ -308,7 +309,7 @@ func _ensure_layout() -> void:
 		var lines := _wrap(displayed)
 		_rows[index].display_text = displayed
 		_rows[index].lines = lines
-		_rows[index].height = lines.size() * _line_height() + (10.0 if hierarchical_typography else 0.0)
+		_rows[index].height = lines.size() * _line_height() + 10.0
 		if bool(_rows[index].complete): _rows[index].printed_chars = displayed.length()
 	if _active >= 0:
 		_feed_height = fraction * float(_rows[_active].height)
@@ -432,5 +433,8 @@ func _entry_details(entry: Dictionary) -> String:
 		for position: Variant in entry.get("localize_arguments",[]):
 			if position is int and position >= 0 and position < values.size() and (values[position] is String or values[position] is StringName):
 				values[position] = _localized_block(str(values[position]))
-		return DeskLocalization.format_text(str(entry.display_template),values)
-	return _localized_block(str(entry.text))
+		return _log_lines(DeskLocalization.format_text(str(entry.display_template),values))
+	return _log_lines(_localized_block(str(entry.text)))
+
+func _log_lines(text: String) -> String:
+	return text.replace(" / ", "\n").replace(" · ", "\n")
