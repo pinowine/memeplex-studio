@@ -424,7 +424,7 @@ func _update_hover() -> int:
 	var point := get_viewport().get_mouse_position()
 	if not page._shell.tutorial.allows_hover(point):
 		hover_outline.clear()
-		return _blocked_cursor_shape(point)
+		return Input.CURSOR_ARROW
 	var desktop_position: Vector2 = logical.get_canvas_transform() * input_router.desktop_point(point)
 	var material_input: bool = desktop.material_handles_viewport_point(desktop_position)
 	var physical_hit: Dictionary = {} if material_input else input_router.hit(point)
