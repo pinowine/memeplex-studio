@@ -190,10 +190,12 @@ func _build_layout() -> void:
 			_heading_icons[id].position = data.icon_rect.position
 			_heading_icons[id].size = data.icon_rect.size
 		if id in ["stance","pragmatic"]:
-			var plot_area := Rect2(rect.position + Vector2(64, 70), Vector2(maxf(42, rect.size.x - 128), maxf(32, rect.size.y - 104)))
+			var plot_area := Rect2(rect.position + Vector2(8, 48), Vector2(maxf(42, rect.size.x - 16), maxf(32, rect.size.y - 56)))
 			var side := minf(plot_area.size.x, plot_area.size.y)
 			var plot := Rect2(plot_area.get_center() - Vector2.ONE * side * .5, Vector2.ONE * side)
 			data.plot_rect = plot
+			data.plot_available_rect = plot_area
+			data.plot_fill_ratio = side / minf(plot_area.size.x, plot_area.size.y)
 			data.grid_step = float(_layers().get(id, {}).get("step", _rules.axis_step if _rules != null else .1))
 			data.grid_divisions = roundi(2.0 / float(data.grid_step))
 			data.grid_spacing = side / float(data.grid_divisions)
@@ -378,6 +380,7 @@ func _draw_axis(id: String) -> void:
 	_draw_pencil_path(PackedVector2Array([Vector2(center.x-6,plot.position.y+10),Vector2(center.x,plot.position.y),Vector2(center.x+6,plot.position.y+10)]),Color(INK,.75),1.2)
 	var label_layouts := _axis_label_layouts(id)
 	for key: String in ["x_negative", "x_positive", "y_negative", "y_positive"]:
+		for line: Dictionary in label_layouts[key].lines: draw_rect((line.rect as Rect2).grow(2), Color("eee6d3", .94))
 		_draw_text_layout(label_layouts[key])
 	var known := id != "stance" or bool(data.get("known", false))
 	var anchor := _axis_point(id) if known else _axis_origin(id)
@@ -409,19 +412,30 @@ func _draw_text_layout(layout: Dictionary, color: Color = INK) -> void:
 func _axis_label_layouts(id: String) -> Dictionary:
 	var plot: Rect2 = _layout_layers.get(id, {}).get("plot_rect", Rect2())
 	var center := plot.get_center()
-	var info: Dictionary = _layout_layers[id]
 	var labels := _axis_labels(id)
 	var font := get_theme_default_font()
-	var rect: Rect2 = info.rect
-	var side_width := maxf(58, rect.size.x * .36 - 4)
-	var middle_width := rect.size.x - 64
+	var side_width := plot.size.x * .5 - 16
 	var areas := {
-		"x_negative":Rect2(Vector2(rect.position.x, center.y + 8), Vector2(side_width, 24)),
-		"x_positive":Rect2(Vector2(rect.end.x - side_width, center.y + 8), Vector2(side_width, 24)),
-		"y_negative":Rect2(Vector2(rect.get_center().x - middle_width * .5, plot.position.y - 26), Vector2(middle_width, 26)),
-		"y_positive":Rect2(Vector2(rect.get_center().x - middle_width * .5, plot.end.y + 7), Vector2(middle_width, 24))}
+		"x_negative":Rect2(Vector2(plot.position.x + 8, center.y - 42), Vector2(side_width, 26)),
+		"x_positive":Rect2(Vector2(center.x + 8, center.y - 42), Vector2(side_width, 26)),
+		"y_negative":Rect2(plot.position + Vector2(8, 8), Vector2(plot.size.x - 16, 26)),
+		"y_positive":Rect2(Vector2(plot.position.x + 8, plot.end.y - 34), Vector2(plot.size.x - 16, 26))}
+	var known := id != "stance" or bool(_layers().get(id, {}).get("known", false))
+	var anchor := _axis_point(id) if known else _axis_origin(id)
+	var marker := Rect2(anchor - Vector2.ONE * 16, Vector2.ONE * 32)
 	var result := {}
-	for key: String in areas: result[key]=ResourceGraphic.fit_text(font,str(labels[key]),areas[key],16,16,1)
+	for key: String in areas:
+		var layout := ResourceGraphic.fit_text(font, str(labels[key]), areas[key], 16, 16, 1)
+		if not layout.lines.is_empty() and (layout.lines[0].rect as Rect2).grow(2).intersects(marker):
+			var alternate: Rect2 = areas[key]
+			if key.begins_with("x_"):
+				alternate.position.y = center.y + 16
+			else:
+				alternate.position.x = plot.position.x + 4 if anchor.x >= center.x else center.x + 4
+				alternate.size.x = plot.size.x * .5 - 8
+			var candidate := ResourceGraphic.fit_text(font, str(labels[key]), alternate, 16, 16, 1)
+			if not candidate.truncated and not candidate.lines.is_empty() and not (candidate.lines[0].rect as Rect2).grow(2).intersects(marker): layout = candidate
+		result[key] = layout
 	return result
 
 func _axis_point(id: String) -> Vector2:
@@ -696,6 +710,10 @@ func inspection() -> Dictionary:
 			info.axis_labels = _axis_labels(id)
 			info.axis_label_positions = _axis_label_positions(id)
 			info.axis_label_layouts = _axis_label_layouts(id)
+			info.axis_label_rects = {}
+			for key: String in info.axis_label_layouts:
+				var lines: Array = info.axis_label_layouts[key].lines
+				info.axis_label_rects[key] = lines[0].rect if not lines.is_empty() else Rect2()
 			info.axis_handle_radius = AXIS_HANDLE_RADIUS
 			info.marker_known = bool(_layers().get(id, {}).get("known", false)) if id == "stance" else true
 			info.axis_point = _axis_point(id)
