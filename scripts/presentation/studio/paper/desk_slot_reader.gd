@@ -299,17 +299,17 @@ func _layout_paper() -> void:
 	var padding := 16.0 if log_receipt else 20.0
 	var width := maxf(1, dimensions.x - padding * 2.0)
 	var font := _font if _font != null else ThemeDB.fallback_font
-	var title_font := _title_label.get_theme_font("font")
 	var title_width := maxf(1,width - 36)
-	var measured := title_font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,title_width,title_size)
-	var title_height := minf(ceilf(measured.y),ceilf(title_font.get_height(title_size)*2)) if not _title.is_empty() else 0.0
-	_full_title_in_body = event_document or (not _title.is_empty() and measured.y>title_height+1)
+	_title_label.size.x = title_width
+	var title_height := _title_label.get_combined_minimum_size().y if not _title.is_empty() else 0.0
+	_full_title_in_body = event_document or _title_label.get_line_count()>2
 	_title_label.visible = not event_document and not _title.is_empty()
-	_title_label.position = Vector2(padding+36,20)
+	var header_height := maxf(28,title_height)
+	_title_label.position = Vector2(padding+36,20+(header_height-title_height)*.5)
 	_title_label.size = Vector2(title_width,title_height)
 	_title_icon.visible = _title_label.visible
 	_title_icon.kind = str(_details.get("kind", _details.get("stack_kind", "source")))
-	_title_icon.position = Vector2(padding,20)
+	_title_icon.position = Vector2(padding,20+(header_height-28)*.5)
 	_title_icon.size = Vector2(28,28)
 	_title_icon.queue_redraw()
 	_footer.visible = not event_document and not log_receipt

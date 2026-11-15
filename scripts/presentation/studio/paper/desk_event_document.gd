@@ -132,12 +132,13 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 		var headline := HBoxContainer.new()
 		headline.name = "HeadlineRow"
 		headline.add_theme_constant_override("separation", 8)
-		headline.add_child(_icon("source"))
+		headline.add_child(_icon("source", true))
 		_header.add_child(headline)
 		var title := _label(full_title, 22, Style.INK)
 		title.name = "Headline"
 		title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		headline.add_child(title)
 	for block: Dictionary in blocks:
 		match str(block.get("role", "")):
@@ -221,9 +222,10 @@ func _add_rule(container: VBoxContainer = null) -> HSeparator:
 	(_column if container == null else container).add_child(rule)
 	return rule
 
-func _icon(kind: String) -> Control:
+func _icon(kind: String, centered: bool = false) -> Control:
 	var icon := SectionIcon.new()
 	icon.kind = kind
+	if centered: icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	icon.ink = Style.SECTION_BROWN if kind == "mentor" else Style.SECTION_TEAL
 	return icon
 
@@ -277,9 +279,10 @@ func _add_impact(block: Dictionary) -> void:
 		var heading := HBoxContainer.new()
 		heading.add_theme_constant_override("separation", 8)
 		section.add_child(heading)
-		heading.add_child(_icon(str(icons[group])))
+		heading.add_child(_icon(str(icons[group]), true))
 		var title := _label(DeskLocalization.text("LOC_EVENT_SECTION_" + group.to_upper()), 12, Style.SECONDARY_INK)
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
 		heading.add_child(title)
 		for row_indices: Array in groups[group]: _add_impact_row(section, segments, row_indices)
@@ -468,13 +471,14 @@ func _rebuild_meme_header(details: Dictionary) -> void:
 	heading.name = "MemeHeadline"
 	heading.add_theme_constant_override("separation", 12)
 	_header.add_child(heading)
-	heading.add_child(_icon("source"))
+	heading.add_child(_icon("source", true))
 	var title := _label(str(details.title), 22, Style.INK)
 	title.name = "Headline"
 	title.max_lines_visible = 2
 	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	title.tooltip_text = str(details.title)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
 	heading.add_child(title)
 	_meme_close = Button.new()

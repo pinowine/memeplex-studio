@@ -169,11 +169,17 @@ func _layout_content() -> void:
 	_icon_rect = Rect2(PADDING,Vector2(32,32))
 	if not _title.is_empty():
 		var title_x := PADDING.x+40
-		y += _add_text(_title,Vector2(title_x,y),width-40,BOLD_FONT,18,ReceiptStyle.INK,"title")
+		var title_height := _add_text(_title,Vector2(title_x,y),width-40,BOLD_FONT,18,ReceiptStyle.INK,"title")
+		var header_height := maxf(_icon_rect.size.y,title_height)
+		var title_block: Dictionary = _text_blocks.back()
+		title_block.position.y += (header_height-title_height)*.5
+		title_block.rect.position = title_block.position
+		_icon_rect.position.y += (header_height-_icon_rect.size.y)*.5
+		y += header_height
 		var badge := str(_presentation.get("badge",""))
 		if not badge.is_empty():
 			y += 6
-			var badge_width := minf(width-40,BODY_FONT.get_string_size(badge,HORIZONTAL_ALIGNMENT_LEFT,-1,11).x+12)
+			var badge_width := minf(width-40,BODY_FONT.get_string_size(badge,HORIZONTAL_ALIGNMENT_LEFT,-1,Typography.point_size("annotation")).x+12)
 			var badge_height := _add_text(badge,Vector2(title_x+6,y+3),badge_width-12,BODY_FONT,11,ReceiptStyle.INK,"badge")+6
 			_badge_rect = Rect2(title_x,y,badge_width,badge_height)
 			y += badge_height
@@ -200,8 +206,9 @@ func _layout_content() -> void:
 		var value_x := PADDING.x
 		if not category.is_empty():
 			var kind := str(row.get("kind","source"))
-			_row_glyphs.append({"rect":Rect2(PADDING.x,y+2,16,16),"kind":kind,"color":_section_color(kind)})
-			row_height = _add_text(category,Vector2(PADDING.x+24,y+2),label_width-24,BOLD_FONT,12,ReceiptStyle.SECONDARY_INK,"category")+2
+			var category_height := _add_text(category,Vector2(PADDING.x+24,y+2),label_width-24,BOLD_FONT,12,ReceiptStyle.SECONDARY_INK,"category")
+			_row_glyphs.append({"rect":Rect2(PADDING.x,y+2+(category_height-16)*.5,16,16),"kind":kind,"color":_section_color(kind)})
+			row_height = category_height+2
 			value_x += label_width+ROW_GAP
 		row_height = maxf(row_height,_add_text(value,Vector2(value_x,y),PADDING.x+width-value_x,BODY_FONT,14,ReceiptStyle.INK,"value"))
 		y += maxf(20,row_height)

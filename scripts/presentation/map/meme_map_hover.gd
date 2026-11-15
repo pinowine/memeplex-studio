@@ -12,7 +12,7 @@ class MemeIcon extends Control:
 	func _init() -> void:
 		custom_minimum_size = Vector2(24, 24)
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 	func _draw() -> void:
 		Glyph.draw(self, Rect2(Vector2.ZERO, Vector2(24, 24)), "meme", ReceiptStyle.SECTION_TEAL)
@@ -113,6 +113,7 @@ func _build_meme_content() -> void:
 	header.add_child(MemeIcon.new())
 	_meme_title = _meme_label(16, MemeHandwriting.BOLD_FONT, ReceiptStyle.INK)
 	_meme_title.name = "MemeHoverTitle"
+	_meme_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	header.add_child(_meme_title)
 	var share := HBoxContainer.new()
 	share.mouse_filter = Control.MOUSE_FILTER_IGNORE

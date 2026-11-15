@@ -184,7 +184,7 @@ func _build_layout() -> void:
 		var area: Rect2 = areas[id]
 		var rect := Rect2(area.position*size,area.size*size)
 		var data := {"rect":rect,"handle_rect":Rect2(rect.end.x-28,rect.position.y,28,32),"slot_centres":[],"slot_rects":[],"slot_pickup_rects":[]}
-		data.icon_rect = Rect2(rect.position + Vector2(0, 3), Vector2(24, 24))
+		data.icon_rect = Rect2(rect.position + Vector2(0, 4), Vector2(24, 24))
 		data.title_rect = Rect2(rect.position + Vector2(32, 0), Vector2(rect.size.x - 68, 32))
 		data.heading_rule = Rect2(rect.position + Vector2(0, 40), Vector2(rect.size.x, 1))
 		_layout_layers[id] = data
@@ -297,7 +297,7 @@ func _draw() -> void:
 		var rect: Rect2 = info.rect
 		var attached := _attached(id)
 		var title: Rect2 = info.title_rect
-		draw_string(HEADING_FONT, title.position + Vector2(0, 24), DeskLocalization.text(TITLES[id]), HORIZONTAL_ALIGNMENT_LEFT, title.size.x, HEADING_SIZE, INK)
+		draw_string(HEADING_FONT, title.position + Vector2(0, (title.size.y-HEADING_FONT.get_height(HEADING_SIZE))*.5+HEADING_FONT.get_ascent(HEADING_SIZE)), DeskLocalization.text(TITLES[id]), HORIZONTAL_ALIGNMENT_LEFT, title.size.x, HEADING_SIZE, INK)
 		var rule: Rect2 = info.heading_rule
 		draw_line(rule.position, rule.end, Color(INK, .35), 1.0, true)
 		if id == _layer: draw_line(rule.position, rule.position + Vector2(32, 0), Color(INK, .85), 2.0, true)

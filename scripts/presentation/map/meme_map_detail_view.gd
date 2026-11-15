@@ -15,7 +15,7 @@ class SectionIcon extends Control:
 
 	func _init() -> void:
 		custom_minimum_size = Vector2(24, 24)
-		size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	func _draw() -> void:
@@ -117,6 +117,7 @@ func _rebuild(interactive_countries: bool) -> void:
 		var title := _label(str(section.title), 14, icon.ink)
 		title.add_theme_font_override("font", Handwriting.SEMIBOLD_FONT)
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		header.add_child(title)
 		_headers.append({"section":section_index, "control":title})
 		var context := str(section.kind) == "language"

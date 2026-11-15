@@ -459,22 +459,31 @@ func _build_summary(parent: Node) -> void:
 	_overview_data.add_theme_constant_override("v_separation", SPACE_WITHIN)
 	parent.add_child(_overview_data)
 	for kind: String in ["language", "group", "topic", "stance", "pragmatic", "spread"]:
-		var cell := HBoxContainer.new()
+		var cell := VBoxContainer.new()
 		cell.name = kind.capitalize()
 		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		cell.add_theme_constant_override("separation", SPACE_WITHIN)
+		cell.add_theme_constant_override("separation", 0)
 		_overview_data.add_child(cell)
-		var icon := _paper_icon(cell, kind)
+		var heading := HBoxContainer.new()
+		heading.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		heading.add_theme_constant_override("separation", SPACE_WITHIN)
+		cell.add_child(heading)
+		var icon := _paper_icon(heading, kind)
 		icon.custom_minimum_size = Vector2(20, 20)
-		icon.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		var title := _label(heading, "", "Category", 12)
+		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		title.add_theme_color_override("font_color", SECONDARY_INK)
+		var inset := MarginContainer.new()
+		inset.add_theme_constant_override("margin_left", 20+SPACE_WITHIN)
+		cell.add_child(inset)
 		var words := VBoxContainer.new()
 		words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		words.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		words.add_theme_constant_override("separation", 0)
-		cell.add_child(words)
-		var title := _label(words, "", "Category", 12)
-		title.add_theme_color_override("font_color", SECONDARY_INK)
+		inset.add_child(words)
 		var entry := {"title":"", "value":"", "title_label":title, "control":cell, "icon_control":icon}
 		if kind == "spread":
 			entry.value_label = _label(words, "", "Value", 14)
@@ -503,7 +512,9 @@ func _section_heading(parent: Node, kind: String, title: String, node_name: Stri
 	parent.add_child(row)
 	var icon := _paper_icon(row, kind)
 	icon.custom_minimum_size = Vector2(20, 20)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var label := _label(row, title, node_name, 12)
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.add_theme_color_override("font_color", SECONDARY_INK)
 	return label
