@@ -8,7 +8,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_LANGUAGE_NINGHUA_DESCRIPTION",
 "id": "language_ninghua",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_LANGUAGE_NINGHUA",
 "value": "ninghua"
@@ -16,7 +16,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_LANGUAGE_SHIOHARA_DESCRIPTION",
 "id": "language_shiohara",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_LANGUAGE_SHIOHARA",
 "value": "shiohara"
@@ -24,7 +24,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_LANGUAGE_SEOWON_DESCRIPTION",
 "id": "language_seowon",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_LANGUAGE_SEOWON",
 "value": "seowon"
@@ -32,7 +32,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_ALDEN_DESCRIPTION",
 "id": "language_alden",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_ALDEN",
 "value": "alden"
@@ -40,7 +40,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_VERESK_DESCRIPTION",
 "id": "language_veresk",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_VERESK",
 "value": "veresk"
@@ -48,7 +48,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_LINDAL_DESCRIPTION",
 "id": "language_lindal",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_LINDAL",
 "value": "lindal"
@@ -56,7 +56,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_MARASU_DESCRIPTION",
 "id": "language_marasu",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_MARASU",
 "value": "marasu"
@@ -64,7 +64,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_SERRANOVA_DESCRIPTION",
 "id": "language_serranova",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_SERRANOVA",
 "value": "serranova"
@@ -72,7 +72,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_ORUVIA_DESCRIPTION",
 "id": "language_oruvia",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_ORUVIA",
 "value": "oruvia"
@@ -80,7 +80,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_NASHIR_DESCRIPTION",
 "id": "language_nashir",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_NASHIR",
 "value": "nashir"
@@ -88,7 +88,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_SOLERIA_DESCRIPTION",
 "id": "language_soleria",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_SOLERIA",
 "value": "soleria"
@@ -96,7 +96,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_AVENDON_DESCRIPTION",
 "id": "language_avendon",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_AVENDON",
 "value": "avendon"
@@ -104,7 +104,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_RHENIVIA_DESCRIPTION",
 "id": "language_rhenivia",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_RHENIVIA",
 "value": "rhenivia"
@@ -112,7 +112,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_MEHRAN_DESCRIPTION",
 "id": "language_mehran",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_MEHRAN",
 "value": "mehran"
@@ -120,7 +120,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_CANTALIA_DESCRIPTION",
 "id": "language_cantalia",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_CANTALIA",
 "value": "cantalia"
@@ -128,7 +128,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_LANGUAGE_VISHARA_DESCRIPTION",
 "id": "language_vishara",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "language",
 "title": "LOC_WORLD_LANGUAGE_VISHARA",
 "value": "vishara"
@@ -136,7 +136,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_ADDRESS_THE_EXPRESSION_TO_COMMUTING_OFFICE_WORKERS_EB817EB1",
 "id": "group_commuters",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_COMMUTING_OFFICE_WORKERS_5AD7C5FF",
 "value": "commuters"
@@ -144,7 +144,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_ADDRESS_THE_EXPRESSION_TO_STUDENTS_CE2E94A8",
 "id": "group_students",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_STUDENTS_13A58EC2",
 "value": "students"
@@ -152,7 +152,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_ADDRESS_THE_EXPRESSION_TO_URBAN_CULTURE_ENTHUSIASTS_6EE935C4",
 "id": "group_culture_fans",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_URBAN_CULTURE_ENTHUSIASTS_B05B8BC9",
 "value": "culture_fans"
@@ -160,7 +160,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS_DESCRIPTION",
 "id": "group_agricultural_workers",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS",
 "value": "agricultural_workers"
@@ -168,7 +168,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS_DESCRIPTION",
 "id": "group_industrial_workers",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS",
 "value": "industrial_workers"
@@ -176,7 +176,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_SERVICE_WORKERS_DESCRIPTION",
 "id": "group_service_workers",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_SERVICE_WORKERS",
 "value": "service_workers"
@@ -184,7 +184,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_HEALTH_WORKERS_DESCRIPTION",
 "id": "group_health_workers",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_HEALTH_WORKERS",
 "value": "health_workers"
@@ -192,7 +192,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_EDUCATORS_DESCRIPTION",
 "id": "group_educators",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_EDUCATORS",
 "value": "educators"
@@ -200,7 +200,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_SMALL_BUSINESS_DESCRIPTION",
 "id": "group_small_business",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_SMALL_BUSINESS",
 "value": "small_business"
@@ -208,7 +208,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_TECH_WORKERS_DESCRIPTION",
 "id": "group_tech_workers",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_TECH_WORKERS",
 "value": "tech_workers"
@@ -216,7 +216,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_RETIREES_DESCRIPTION",
 "id": "group_retirees",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_RETIREES",
 "value": "retirees"
@@ -224,7 +224,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_GROUP_DIASPORAS_DESCRIPTION",
 "id": "group_diasporas",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "group",
 "title": "LOC_WORLD_GROUP_DIASPORAS",
 "value": "diasporas"
@@ -232,7 +232,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_POLITICS_0A464A6F",
 "id": "topic_policy",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_POLITICS_50ECCBD0",
 "value": "policy"
@@ -240,7 +240,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_THE_COST_OF_299985F1",
 "id": "topic_cost_of_living",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_COST_OF_LIVING_2A2CD785",
 "value": "cost_of_living"
@@ -328,7 +328,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_HOUSING_DESCRIPTION",
 "id": "topic_housing",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_HOUSING",
 "value": "housing"
@@ -336,7 +336,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_HEALTHCARE_DESCRIPTION",
 "id": "topic_healthcare",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_HEALTHCARE",
 "value": "healthcare"
@@ -344,7 +344,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_CLIMATE_DESCRIPTION",
 "id": "topic_climate",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_CLIMATE",
 "value": "climate"
@@ -352,7 +352,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_ENERGY_DESCRIPTION",
 "id": "topic_energy",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_ENERGY",
 "value": "energy"
@@ -360,7 +360,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_FOOD_DESCRIPTION",
 "id": "topic_food",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_FOOD",
 "value": "food"
@@ -368,7 +368,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_TRANSPORT_DESCRIPTION",
 "id": "topic_transport",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_TRANSPORT",
 "value": "transport"
@@ -376,7 +376,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_MIGRATION_DESCRIPTION",
 "id": "topic_migration",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_MIGRATION",
 "value": "migration"
@@ -384,7 +384,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_TOURISM_DESCRIPTION",
 "id": "topic_tourism",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_TOURISM",
 "value": "tourism"
@@ -392,7 +392,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_TRADE_DESCRIPTION",
 "id": "topic_trade",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_TRADE",
 "value": "trade"
@@ -400,7 +400,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_SCIENCE_DESCRIPTION",
 "id": "topic_science",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_SCIENCE",
 "value": "science"
@@ -408,7 +408,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_CARE_DESCRIPTION",
 "id": "topic_care",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_CARE",
 "value": "care"
@@ -416,7 +416,7 @@ entries = Array[Dictionary]([
 {
 "description": "LOC_WORLD_TOPIC_PUBLIC_SAFETY_DESCRIPTION",
 "id": "topic_public_safety",
-"initial_count": 1,
+"initial_count": 0,
 "kind": "topic",
 "title": "LOC_WORLD_TOPIC_PUBLIC_SAFETY",
 "value": "public_safety"

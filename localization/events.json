@@ -1623,5 +1623,590 @@
     "source": "先看仍有人生活的地方；模因需要有人接住。",
     "zh_CN": "先看仍有人生活的地方；模因需要有人接住。",
     "en": "Watch where people still live. A meme needs someone to carry it."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_ALDEN_TITLE": {
+    "source": "远洋译电",
+    "zh_CN": "远洋译电",
+    "en": "Ocean telegrams"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_ALDEN_NARRATIVE": {
+    "source": "港口译员把同一份船期译成几种版本，随信夹来一本日常短语册。",
+    "zh_CN": "港口译员把同一份船期译成几种版本，随信夹来一本日常短语册。",
+    "en": "Harbor interpreters circulate several versions of the sailing schedule, with a pocket phrasebook enclosed."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_VERESK_TITLE": {
+    "source": "旧车站广播",
+    "zh_CN": "旧车站广播",
+    "en": "Station voices"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_VERESK_NARRATIVE": {
+    "source": "车站把旧广播录音整理上网。认出家乡口音的乘客逐句补上字幕。",
+    "zh_CN": "车站把旧广播录音整理上网。认出家乡口音的乘客逐句补上字幕。",
+    "en": "An old station uploads its announcements. Passengers recognize familiar accents and supply the missing captions."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_LINDAL_TITLE": {
+    "source": "林间书箱",
+    "zh_CN": "林间书箱",
+    "en": "The traveling library"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_LINDAL_NARRATIVE": {
+    "source": "流动图书车驶进山谷，读者在借书单背面写下常用的问候。",
+    "zh_CN": "流动图书车驶进山谷，读者在借书单背面写下常用的问候。",
+    "en": "A library van reaches the valley. Readers fill the backs of loan slips with everyday greetings."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_MARASU_TITLE": {
+    "source": "群岛潮汐表",
+    "zh_CN": "群岛潮汐表",
+    "en": "Island tide tables"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_MARASU_NARRATIVE": {
+    "source": "几座岛上的渔民合印潮汐表，给各港口的地名加上当地读音。",
+    "zh_CN": "几座岛上的渔民合印潮汐表，给各港口的地名加上当地读音。",
+    "en": "Fishers print a shared tide table, adding local pronunciations beside each harbor name."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_SERRANOVA_TITLE": {
+    "source": "山路长谈",
+    "zh_CN": "山路长谈",
+    "en": "Names along the road"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_SERRANOVA_NARRATIVE": {
+    "source": "夜班长途车上，乘客争着教司机念对新站名，录音在沿线流传。",
+    "zh_CN": "夜班长途车上，乘客争着教司机念对新站名，录音在沿线流传。",
+    "en": "Passengers on the night coach teach the driver the new stop names. Their recording travels along the route."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_ORUVIA_TITLE": {
+    "source": "海峡渡轮",
+    "zh_CN": "海峡渡轮",
+    "en": "Across the strait"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_ORUVIA_NARRATIVE": {
+    "source": "渡轮恢复通航，售票员把两岸乘客常问的话写成了小册。",
+    "zh_CN": "渡轮恢复通航，售票员把两岸乘客常问的话写成了小册。",
+    "en": "Ferry services resume. Ticket clerks compile a booklet of questions heard on both shores."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_NASHIR_TITLE": {
+    "source": "绿洲来信",
+    "zh_CN": "绿洲来信",
+    "en": "Letters from the well"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_NASHIR_NARRATIVE": {
+    "source": "水井修好后，工匠寄来一封答谢信，信旁逐行标着读音。",
+    "zh_CN": "水井修好后，工匠寄来一封答谢信，信旁逐行标着读音。",
+    "en": "After repairing the well, its builders send a thank-you letter with pronunciation notes in the margin."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_SOLERIA_TITLE": {
+    "source": "沿岸配音棚",
+    "zh_CN": "沿岸配音棚",
+    "en": "Coastal voices"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_SOLERIA_NARRATIVE": {
+    "source": "沿海小影院征集本地方言配音，一段对白引来许多版本。",
+    "zh_CN": "沿海小影院征集本地方言配音，一段对白引来许多版本。",
+    "en": "A small cinema invites local voice-overs. One exchange acquires a surprising number of versions."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_AVENDON_TITLE": {
+    "source": "公用词典",
+    "zh_CN": "公用词典",
+    "en": "An open dictionary"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_AVENDON_NARRATIVE": {
+    "source": "网络词典开放编辑。几位常客为一句招呼的语气争论到深夜。",
+    "zh_CN": "网络词典开放编辑。几位常客为一句招呼的语气争论到深夜。",
+    "en": "An online dictionary opens to contributions. Regular editors debate the tone of a greeting late into the night."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_RHENIVIA_TITLE": {
+    "source": "河谷工作手册",
+    "zh_CN": "河谷工作手册",
+    "en": "The valley handbook"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_RHENIVIA_NARRATIVE": {
+    "source": "河谷的工坊联印学徒手册，把口授多年的步骤记了下来。",
+    "zh_CN": "河谷的工坊联印学徒手册，把口授多年的步骤记了下来。",
+    "en": "Workshops publish an apprentice handbook, writing down instructions passed on by ear for years."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_MEHRAN_TITLE": {
+    "source": "高原说书夜",
+    "zh_CN": "高原说书夜",
+    "en": "Story night"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_MEHRAN_NARRATIVE": {
+    "source": "说书人带来一段祖辈传下的故事，听众把最喜欢的句子抄在票根上。",
+    "zh_CN": "说书人带来一段祖辈传下的故事，听众把最喜欢的句子抄在票根上。",
+    "en": "A storyteller performs an inherited tale. Listeners copy favorite lines onto their tickets."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_CANTALIA_TITLE": {
+    "source": "街坊会议录",
+    "zh_CN": "街坊会议录",
+    "en": "The neighborhood transcript"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_CANTALIA_NARRATIVE": {
+    "source": "街坊会议录音公开后，志愿者做出带停顿标记的逐字稿。",
+    "zh_CN": "街坊会议录音公开后，志愿者做出带停顿标记的逐字稿。",
+    "en": "Volunteers transcribe a neighborhood meeting, marking the pauses as carefully as the words."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_VISHARA_TITLE": {
+    "source": "季风开学信",
+    "zh_CN": "季风开学信",
+    "en": "A monsoon school letter"
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_VISHARA_NARRATIVE": {
+    "source": "雨季开学，老师寄来一张双语通知，孩子在边上补满了注音。",
+    "zh_CN": "雨季开学，老师寄来一张双语通知，孩子在边上补满了注音。",
+    "en": "School opens in the rainy season. A bilingual notice arrives covered in a child’s pronunciation notes."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_STUDENTS_TITLE": {
+    "source": "自习室便签",
+    "zh_CN": "自习室便签",
+    "en": "Study-room notes"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_STUDENTS_NARRATIVE": {
+    "source": "考试前的自习室里，一句吐槽从桌角传到了班级群。",
+    "zh_CN": "考试前的自习室里，一句吐槽从桌角传到了班级群。",
+    "en": "Before the exams, a scribbled complaint makes its way from a desk corner to the class chat."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_CULTURE_FANS_TITLE": {
+    "source": "散场之后",
+    "zh_CN": "散场之后",
+    "en": "After the show"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_CULTURE_FANS_NARRATIVE": {
+    "source": "演出散场，观众仍在门口交换自己记住的台词。",
+    "zh_CN": "演出散场，观众仍在门口交换自己记住的台词。",
+    "en": "Outside the theater, the audience keeps trading lines remembered from the performance."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_AGRICULTURAL_WORKERS_TITLE": {
+    "source": "收成留言板",
+    "zh_CN": "收成留言板",
+    "en": "Harvest messages"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_AGRICULTURAL_WORKERS_NARRATIVE": {
+    "source": "收购站挂起留言板，种植户在价格表旁写下这季的遭遇。",
+    "zh_CN": "收购站挂起留言板，种植户在价格表旁写下这季的遭遇。",
+    "en": "Growers add accounts of their season beside the prices on the collection depot’s noticeboard."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_INDUSTRIAL_WORKERS_TITLE": {
+    "source": "换班交接本",
+    "zh_CN": "换班交接本",
+    "en": "Shift handover"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_INDUSTRIAL_WORKERS_NARRATIVE": {
+    "source": "工人把一道难题画进交接本，下一班接着补全了解法。",
+    "zh_CN": "工人把一道难题画进交接本，下一班接着补全了解法。",
+    "en": "A worker sketches a stubborn fault in the handover book. The next shift finishes the solution."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_SERVICE_WORKERS_TITLE": {
+    "source": "夜班小票",
+    "zh_CN": "夜班小票",
+    "en": "Closing-time receipts"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_SERVICE_WORKERS_NARRATIVE": {
+    "source": "深夜打烊，店员把顾客的奇怪要求写在作废的小票背面。",
+    "zh_CN": "深夜打烊，店员把顾客的奇怪要求写在作废的小票背面。",
+    "en": "At closing time, staff jot down the day’s oddest requests on voided receipts."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_HEALTH_WORKERS_TITLE": {
+    "source": "诊室交班",
+    "zh_CN": "诊室交班",
+    "en": "Clinic handover"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_HEALTH_WORKERS_NARRATIVE": {
+    "source": "诊室开始用一页纸交班。最先被大家记住的，是提醒休息的那句话。",
+    "zh_CN": "诊室开始用一页纸交班。最先被大家记住的，是提醒休息的那句话。",
+    "en": "The clinic adopts a one-page handover. The line everyone remembers is the reminder to take a break."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_EDUCATORS_TITLE": {
+    "source": "备课室短笺",
+    "zh_CN": "备课室短笺",
+    "en": "Staff-room notes"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_EDUCATORS_NARRATIVE": {
+    "source": "备课室传来一张短笺，老师们在上面接着写课堂里的新发现。",
+    "zh_CN": "备课室传来一张短笺，老师们在上面接着写课堂里的新发现。",
+    "en": "A note circulates through the staff room. Teachers add discoveries from their classrooms."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_SMALL_BUSINESS_TITLE": {
+    "source": "沿街店主群",
+    "zh_CN": "沿街店主群",
+    "en": "The shopkeepers’ chat"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_SMALL_BUSINESS_NARRATIVE": {
+    "source": "街道施工，店主们建群商量送货路线，顺便交换各自的招牌话。",
+    "zh_CN": "街道施工，店主们建群商量送货路线，顺便交换各自的招牌话。",
+    "en": "During roadworks, shopkeepers coordinate deliveries in a new chat and trade their favorite sales pitches."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_TECH_WORKERS_TITLE": {
+    "source": "深夜故障单",
+    "zh_CN": "深夜故障单",
+    "en": "The overnight ticket"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_TECH_WORKERS_NARRATIVE": {
+    "source": "一张深夜故障单附上了极短的注释，早班同事一眼就懂。",
+    "zh_CN": "一张深夜故障单附上了极短的注释，早班同事一眼就懂。",
+    "en": "A late-night incident ticket carries a very short note. The morning team understands it immediately."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_RETIREES_TITLE": {
+    "source": "公园长椅",
+    "zh_CN": "公园长椅",
+    "en": "The park bench"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_RETIREES_NARRATIVE": {
+    "source": "公园翻修，常坐同一张长椅的人把告示改成了自己的聊天话题。",
+    "zh_CN": "公园翻修，常坐同一张长椅的人把告示改成了自己的聊天话题。",
+    "en": "During park repairs, the regulars at one bench turn the closure notice into their morning conversation."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_DIASPORAS_TITLE": {
+    "source": "远方家宴",
+    "zh_CN": "远方家宴",
+    "en": "Dinner across time zones"
+  },
+  "LOC_EVENT_CONTEXT_GROUP_DIASPORAS_NARRATIVE": {
+    "source": "远方的亲友隔着时差一起做饭，旧称呼和新说法在通话里交错。",
+    "zh_CN": "远方的亲友隔着时差一起做饭，旧称呼和新说法在通话里交错。",
+    "en": "Relatives cook together across time zones, mixing old family names with newly learned expressions."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_IDENTITY_TITLE": {
+    "source": "名字登记处",
+    "zh_CN": "名字登记处",
+    "en": "The name field"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_IDENTITY_NARRATIVE": {
+    "source": "登记表增加了自填称呼一栏，人们讨论起该如何介绍自己。",
+    "zh_CN": "登记表增加了自填称呼一栏，人们讨论起该如何介绍自己。",
+    "en": "A form adds a space for a preferred name. People begin discussing how they introduce themselves."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_LANGUAGE_TITLE": {
+    "source": "字幕校订",
+    "zh_CN": "字幕校订",
+    "en": "Caption corrections"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_LANGUAGE_NARRATIVE": {
+    "source": "字幕组开放校订，一句难译的笑话收到了十几种建议。",
+    "zh_CN": "字幕组开放校订，一句难译的笑话收到了十几种建议。",
+    "en": "A captioning team asks for corrections. One difficult joke draws a dozen suggestions."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRUST_TITLE": {
+    "source": "消息求证",
+    "zh_CN": "消息求证",
+    "en": "Checking a rumor"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRUST_NARRATIVE": {
+    "source": "一则消息反复转发后，最早的发帖人贴出了完整记录。",
+    "zh_CN": "一则消息反复转发后，最早的发帖人贴出了完整记录。",
+    "en": "After a message spreads widely, its first author publishes the complete record."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_HOUSING_TITLE": {
+    "source": "租约重印",
+    "zh_CN": "租约重印",
+    "en": "The new lease"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_HOUSING_NARRATIVE": {
+    "source": "房东重印租约，租客在群里逐条对照新的条款。",
+    "zh_CN": "房东重印租约，租客在群里逐条对照新的条款。",
+    "en": "A landlord reprints the lease. Tenants compare the revised terms in their chat."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_HEALTHCARE_TITLE": {
+    "source": "诊所预约表",
+    "zh_CN": "诊所预约表",
+    "en": "Clinic appointments"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_HEALTHCARE_NARRATIVE": {
+    "source": "社区诊所更换预约办法，候诊的人互相说明怎样挂上号。",
+    "zh_CN": "社区诊所更换预约办法，候诊的人互相说明怎样挂上号。",
+    "en": "A neighborhood clinic changes its booking system. Patients explain the new procedure to one another."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_CLIMATE_TITLE": {
+    "source": "入夏观测",
+    "zh_CN": "入夏观测",
+    "en": "Early summer readings"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_CLIMATE_NARRATIVE": {
+    "source": "连续几天闷热，居民把窗边的温度读数贴进同一张表。",
+    "zh_CN": "连续几天闷热，居民把窗边的温度读数贴进同一张表。",
+    "en": "During several muggy days, residents combine the temperatures recorded at their windows."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_ENERGY_TITLE": {
+    "source": "停电通知",
+    "zh_CN": "停电通知",
+    "en": "A planned outage"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_ENERGY_NARRATIVE": {
+    "source": "计划停电的通知贴出来，商户开始安排冰柜和夜间照明。",
+    "zh_CN": "计划停电的通知贴出来，商户开始安排冰柜和夜间照明。",
+    "en": "A power-cut notice goes up. Shopkeepers make arrangements for freezers and evening lights."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_FOOD_TITLE": {
+    "source": "市场试吃",
+    "zh_CN": "市场试吃",
+    "en": "Market tastings"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_FOOD_NARRATIVE": {
+    "source": "市场试吃摊前排起队，不同的家常做法被写在包装纸上。",
+    "zh_CN": "市场试吃摊前排起队，不同的家常做法被写在包装纸上。",
+    "en": "A tasting stall draws a queue. Customers write their own recipes on the wrapping paper."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRANSPORT_TITLE": {
+    "source": "末班车时刻",
+    "zh_CN": "末班车时刻",
+    "en": "The last bus"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRANSPORT_NARRATIVE": {
+    "source": "末班车调整时刻，晚归的人把新的换乘办法传给同伴。",
+    "zh_CN": "末班车调整时刻，晚归的人把新的换乘办法传给同伴。",
+    "en": "The last bus changes its timetable. Late commuters pass around their new connections."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_MIGRATION_TITLE": {
+    "source": "新邻居登记",
+    "zh_CN": "新邻居登记",
+    "en": "New neighbors"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_MIGRATION_NARRATIVE": {
+    "source": "街坊迎来几户新住户，接待处把常见问题整理成多语便条。",
+    "zh_CN": "街坊迎来几户新住户，接待处把常见问题整理成多语便条。",
+    "en": "New households arrive. The welcome desk prepares multilingual notes answering common questions."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TOURISM_TITLE": {
+    "source": "淡季旅店",
+    "zh_CN": "淡季旅店",
+    "en": "Off-season walks"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TOURISM_NARRATIVE": {
+    "source": "淡季旅店推出步行地图，住客在背面留下沿途的发现。",
+    "zh_CN": "淡季旅店推出步行地图，住客在背面留下沿途的发现。",
+    "en": "An inn offers walking maps in the quiet season. Guests record discoveries on the back."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRADE_TITLE": {
+    "source": "货单核对",
+    "zh_CN": "货单核对",
+    "en": "Checking the shipment"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRADE_NARRATIVE": {
+    "source": "一批货延迟抵港，买卖双方逐行核对货单和承诺的日期。",
+    "zh_CN": "一批货延迟抵港，买卖双方逐行核对货单和承诺的日期。",
+    "en": "A delayed shipment leads buyers and sellers to compare the manifest with the promised dates."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_SCIENCE_TITLE": {
+    "source": "观测笔记",
+    "zh_CN": "观测笔记",
+    "en": "Observation notes"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_SCIENCE_NARRATIVE": {
+    "source": "观测站公布一页笔记，爱好者尝试复现其中的测量。",
+    "zh_CN": "观测站公布一页笔记，爱好者尝试复现其中的测量。",
+    "en": "An observatory publishes a page of notes. Enthusiasts try to reproduce its measurements."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_CARE_TITLE": {
+    "source": "轮值照看表",
+    "zh_CN": "轮值照看表",
+    "en": "A care rota"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_CARE_NARRATIVE": {
+    "source": "邻居排出轮值表，轮流替需要帮助的住户买菜和取药。",
+    "zh_CN": "邻居排出轮值表，轮流替需要帮助的住户买菜和取药。",
+    "en": "Neighbors arrange turns collecting groceries and medicine for residents who need help."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_PUBLIC_SAFETY_TITLE": {
+    "source": "路口报修",
+    "zh_CN": "路口报修",
+    "en": "The dark crossing"
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_PUBLIC_SAFETY_NARRATIVE": {
+    "source": "一处路口的照明坏了，居民附上夜间照片申请报修。",
+    "zh_CN": "一处路口的照明坏了，居民附上夜间照片申请报修。",
+    "en": "Residents submit night photographs to request repairs to the lights at a crossing."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_ALDEN_COMMENT": {
+    "source": "船期会改，码头上的叫法倒留得久。",
+    "zh_CN": "船期会改，码头上的叫法倒留得久。",
+    "en": "Schedules change. Harbor names tend to linger."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_VERESK_COMMENT": {
+    "source": "听惯的广播，换个人念就觉得路也变了。",
+    "zh_CN": "听惯的广播，换个人念就觉得路也变了。",
+    "en": "A different voice on the announcements can make the route feel unfamiliar."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_LINDAL_COMMENT": {
+    "source": "借书单背面常有比书目更亲近的话。",
+    "zh_CN": "借书单背面常有比书目更亲近的话。",
+    "en": "The back of a loan slip can sound warmer than its list of titles."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_MARASU_COMMENT": {
+    "source": "有些地名，要出过海才听得出差别。",
+    "zh_CN": "有些地名，要出过海才听得出差别。",
+    "en": "Some place names sound different once you have sailed past them."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_SERRANOVA_COMMENT": {
+    "source": "司机学会之前，乘客已经替他报站了。",
+    "zh_CN": "司机学会之前，乘客已经替他报站了。",
+    "en": "The passengers are calling the stops before the driver learns them."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_ORUVIA_COMMENT": {
+    "source": "对岸同一句问路，尾音未必一样。",
+    "zh_CN": "对岸同一句问路，尾音未必一样。",
+    "en": "The same question may end on a different note across the water."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_NASHIR_COMMENT": {
+    "source": "信上的注音，也记着写信人的耐心。",
+    "zh_CN": "信上的注音，也记着写信人的耐心。",
+    "en": "The pronunciation notes record the writer’s patience too."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_SOLERIA_COMMENT": {
+    "source": "大家笑出声的地方，并不总在同一秒。",
+    "zh_CN": "大家笑出声的地方，并不总在同一秒。",
+    "en": "The laughter does not always arrive at the same second."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_AVENDON_COMMENT": {
+    "source": "一句早上好，也够词典编辑忙上一晚。",
+    "zh_CN": "一句早上好，也够词典编辑忙上一晚。",
+    "en": "A single good morning can keep dictionary editors up all night."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_RHENIVIA_COMMENT": {
+    "source": "师傅说得太快的地方，学徒终于有字可查。",
+    "zh_CN": "师傅说得太快的地方，学徒终于有字可查。",
+    "en": "An apprentice can finally look up the instruction a master says too quickly."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_MEHRAN_COMMENT": {
+    "source": "票根小，记住的那句倒很长。",
+    "zh_CN": "票根小，记住的那句倒很长。",
+    "en": "The ticket is small; the remembered line takes up more room."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_CANTALIA_COMMENT": {
+    "source": "停顿也抄下来，才听得见是谁在犹豫。",
+    "zh_CN": "停顿也抄下来，才听得见是谁在犹豫。",
+    "en": "Keep the pauses and you can hear who hesitated."
+  },
+  "LOC_EVENT_CONTEXT_LANGUAGE_VISHARA_COMMENT": {
+    "source": "孩子的注音，比通知写得密。",
+    "zh_CN": "孩子的注音，比通知写得密。",
+    "en": "The child’s notes are denser than the notice itself."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_STUDENTS_COMMENT": {
+    "source": "能传到别班的便签，通常写得够短。",
+    "zh_CN": "能传到别班的便签，通常写得够短。",
+    "en": "A note that reaches another class is usually short enough to carry."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_CULTURE_FANS_COMMENT": {
+    "source": "灯已经关了，台词还在门外接着演。",
+    "zh_CN": "灯已经关了，台词还在门外接着演。",
+    "en": "The lights are out, but the lines keep going outside."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_AGRICULTURAL_WORKERS_COMMENT": {
+    "source": "价格表只写数字，留言板把那一季补全了。",
+    "zh_CN": "价格表只写数字，留言板把那一季补全了。",
+    "en": "The prices give the numbers. The messages supply the season."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_INDUSTRIAL_WORKERS_COMMENT": {
+    "source": "交接本翻到最后，常能找到前人的办法。",
+    "zh_CN": "交接本翻到最后，常能找到前人的办法。",
+    "en": "Turn far enough through a handover book and an earlier solution often appears."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_SERVICE_WORKERS_COMMENT": {
+    "source": "作废的小票，也能把一天记得很准。",
+    "zh_CN": "作废的小票，也能把一天记得很准。",
+    "en": "A voided receipt can still keep an accurate account of a day."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_HEALTH_WORKERS_COMMENT": {
+    "source": "交班时能说清的一句话，值一夜安稳。",
+    "zh_CN": "交班时能说清的一句话，值一夜安稳。",
+    "en": "A clear sentence at handover is worth a calmer night."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_EDUCATORS_COMMENT": {
+    "source": "同一节课，隔壁教室可能有另一种讲法。",
+    "zh_CN": "同一节课，隔壁教室可能有另一种讲法。",
+    "en": "The next classroom may have another way of teaching the same lesson."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_SMALL_BUSINESS_COMMENT": {
+    "source": "送货车绕了路，店主的消息反而走得更近。",
+    "zh_CN": "送货车绕了路，店主的消息反而走得更近。",
+    "en": "The vans take a detour; the shopkeepers’ messages take a shorter route."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_TECH_WORKERS_COMMENT": {
+    "source": "注释短，是因为大家都见过那个故障。",
+    "zh_CN": "注释短，是因为大家都见过那个故障。",
+    "en": "The note is short because everyone has seen that fault."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_RETIREES_COMMENT": {
+    "source": "椅子暂时撤走，话题却没少一个。",
+    "zh_CN": "椅子暂时撤走，话题却没少一个。",
+    "en": "The bench is gone for now. The conversation has lost nothing."
+  },
+  "LOC_EVENT_CONTEXT_GROUP_DIASPORAS_COMMENT": {
+    "source": "菜还没出锅，家里的旧称呼已经叫遍了。",
+    "zh_CN": "菜还没出锅，家里的旧称呼已经叫遍了。",
+    "en": "The family names have all been called before dinner is ready."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_IDENTITY_COMMENT": {
+    "source": "表格留白以后，人们才开始认真填名字。",
+    "zh_CN": "表格留白以后，人们才开始认真填名字。",
+    "en": "Once the form leaves space, people start choosing their names carefully."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_LANGUAGE_COMMENT": {
+    "source": "一个笑话译不顺，往往要先问清谁在笑。",
+    "zh_CN": "一个笑话译不顺，往往要先问清谁在笑。",
+    "en": "Before fixing a translated joke, ask who is laughing."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRUST_COMMENT": {
+    "source": "转发走得快，求证总要多走几步。",
+    "zh_CN": "转发走得快，求证总要多走几步。",
+    "en": "Forwarding is quick. Checking takes a few more steps."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_HOUSING_COMMENT": {
+    "source": "租客关心的字，常藏在每页最下面。",
+    "zh_CN": "租客关心的字，常藏在每页最下面。",
+    "en": "The words tenants need are often near the bottom of the page."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_HEALTHCARE_COMMENT": {
+    "source": "挂号的路讲清了，候诊室就少一点着急。",
+    "zh_CN": "挂号的路讲清了，候诊室就少一点着急。",
+    "en": "Clear booking instructions take some of the worry out of waiting."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_CLIMATE_COMMENT": {
+    "source": "窗边那支温度计，终于有了同伴。",
+    "zh_CN": "窗边那支温度计，终于有了同伴。",
+    "en": "The thermometer by the window finally has company."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_ENERGY_COMMENT": {
+    "source": "一张停电单，能改掉整条街的晚饭时间。",
+    "zh_CN": "一张停电单，能改掉整条街的晚饭时间。",
+    "en": "An outage notice can change dinnertime along the whole street."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_FOOD_COMMENT": {
+    "source": "同一道菜，排队的人能说出许多来处。",
+    "zh_CN": "同一道菜，排队的人能说出许多来处。",
+    "en": "The people in the queue can give the same dish several histories."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRANSPORT_COMMENT": {
+    "source": "赶末班车的人，最记得时刻表改了哪一行。",
+    "zh_CN": "赶末班车的人，最记得时刻表改了哪一行。",
+    "en": "Last-bus passengers know exactly which line of the timetable changed."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_MIGRATION_COMMENT": {
+    "source": "安顿下来之前，总要先问几遍路。",
+    "zh_CN": "安顿下来之前，总要先问几遍路。",
+    "en": "Getting settled usually begins with asking directions more than once."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TOURISM_COMMENT": {
+    "source": "地图没印出来的小路，住客替它补上了。",
+    "zh_CN": "地图没印出来的小路，住客替它补上了。",
+    "en": "The guests add paths the printed map left out."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_TRADE_COMMENT": {
+    "source": "等货的时候，日期上的每个字都格外显眼。",
+    "zh_CN": "等货的时候，日期上的每个字都格外显眼。",
+    "en": "When you are waiting for goods, every word beside the date stands out."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_SCIENCE_COMMENT": {
+    "source": "数据抄下来以后，下一步是自己量一次。",
+    "zh_CN": "数据抄下来以后，下一步是自己量一次。",
+    "en": "Once you have copied the readings, try taking your own."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_CARE_COMMENT": {
+    "source": "轮值表上的空格，填的是谁能腾出一个下午。",
+    "zh_CN": "轮值表上的空格，填的是谁能腾出一个下午。",
+    "en": "Each blank on the rota asks who can spare an afternoon."
+  },
+  "LOC_EVENT_CONTEXT_TOPIC_PUBLIC_SAFETY_COMMENT": {
+    "source": "报修单写得具体，别人才能找到那盏灯。",
+    "zh_CN": "报修单写得具体，别人才能找到那盏灯。",
+    "en": "A precise repair report helps someone find the right lamp."
   }
 }
