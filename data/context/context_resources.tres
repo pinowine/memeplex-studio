@@ -4,133 +4,424 @@
 
 [resource]
 script = ExtResource("1")
-entries = Array[Dictionary]([{
+entries = Array[Dictionary]([
+{
 "description": "LOC_LANGUAGE_NINGHUA_DESCRIPTION",
 "id": "language_ninghua",
 "initial_count": 1,
 "kind": "language",
 "title": "LOC_LANGUAGE_NINGHUA",
 "value": "ninghua"
-}, {
+},
+{
 "description": "LOC_LANGUAGE_SHIOHARA_DESCRIPTION",
 "id": "language_shiohara",
 "initial_count": 1,
 "kind": "language",
 "title": "LOC_LANGUAGE_SHIOHARA",
 "value": "shiohara"
-}, {
+},
+{
 "description": "LOC_LANGUAGE_SEOWON_DESCRIPTION",
 "id": "language_seowon",
 "initial_count": 1,
 "kind": "language",
 "title": "LOC_LANGUAGE_SEOWON",
 "value": "seowon"
-}, {
+},
+{
+"description": "LOC_WORLD_LANGUAGE_ALDEN_DESCRIPTION",
+"id": "language_alden",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_ALDEN",
+"value": "alden"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_VERESK_DESCRIPTION",
+"id": "language_veresk",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_VERESK",
+"value": "veresk"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_LINDAL_DESCRIPTION",
+"id": "language_lindal",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_LINDAL",
+"value": "lindal"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_MARASU_DESCRIPTION",
+"id": "language_marasu",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_MARASU",
+"value": "marasu"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_SERRANOVA_DESCRIPTION",
+"id": "language_serranova",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_SERRANOVA",
+"value": "serranova"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_ORUVIA_DESCRIPTION",
+"id": "language_oruvia",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_ORUVIA",
+"value": "oruvia"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_NASHIR_DESCRIPTION",
+"id": "language_nashir",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_NASHIR",
+"value": "nashir"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_SOLERIA_DESCRIPTION",
+"id": "language_soleria",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_SOLERIA",
+"value": "soleria"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_AVENDON_DESCRIPTION",
+"id": "language_avendon",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_AVENDON",
+"value": "avendon"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_RHENIVIA_DESCRIPTION",
+"id": "language_rhenivia",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_RHENIVIA",
+"value": "rhenivia"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_MEHRAN_DESCRIPTION",
+"id": "language_mehran",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_MEHRAN",
+"value": "mehran"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_CANTALIA_DESCRIPTION",
+"id": "language_cantalia",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_CANTALIA",
+"value": "cantalia"
+},
+{
+"description": "LOC_WORLD_LANGUAGE_VISHARA_DESCRIPTION",
+"id": "language_vishara",
+"initial_count": 1,
+"kind": "language",
+"title": "LOC_WORLD_LANGUAGE_VISHARA",
+"value": "vishara"
+},
+{
 "description": "LOC_ADDRESS_THE_EXPRESSION_TO_COMMUTING_OFFICE_WORKERS_EB817EB1",
 "id": "group_commuters",
 "initial_count": 1,
 "kind": "group",
 "title": "LOC_COMMUTING_OFFICE_WORKERS_5AD7C5FF",
 "value": "commuters"
-}, {
+},
+{
 "description": "LOC_ADDRESS_THE_EXPRESSION_TO_STUDENTS_CE2E94A8",
 "id": "group_students",
 "initial_count": 1,
 "kind": "group",
 "title": "LOC_STUDENTS_13A58EC2",
 "value": "students"
-}, {
+},
+{
 "description": "LOC_ADDRESS_THE_EXPRESSION_TO_URBAN_CULTURE_ENTHUSIASTS_6EE935C4",
 "id": "group_culture_fans",
 "initial_count": 1,
 "kind": "group",
 "title": "LOC_URBAN_CULTURE_ENTHUSIASTS_B05B8BC9",
 "value": "culture_fans"
-}, {
+},
+{
+"description": "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS_DESCRIPTION",
+"id": "group_agricultural_workers",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS",
+"value": "agricultural_workers"
+},
+{
+"description": "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS_DESCRIPTION",
+"id": "group_industrial_workers",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS",
+"value": "industrial_workers"
+},
+{
+"description": "LOC_WORLD_GROUP_SERVICE_WORKERS_DESCRIPTION",
+"id": "group_service_workers",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_SERVICE_WORKERS",
+"value": "service_workers"
+},
+{
+"description": "LOC_WORLD_GROUP_HEALTH_WORKERS_DESCRIPTION",
+"id": "group_health_workers",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_HEALTH_WORKERS",
+"value": "health_workers"
+},
+{
+"description": "LOC_WORLD_GROUP_EDUCATORS_DESCRIPTION",
+"id": "group_educators",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_EDUCATORS",
+"value": "educators"
+},
+{
+"description": "LOC_WORLD_GROUP_SMALL_BUSINESS_DESCRIPTION",
+"id": "group_small_business",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_SMALL_BUSINESS",
+"value": "small_business"
+},
+{
+"description": "LOC_WORLD_GROUP_TECH_WORKERS_DESCRIPTION",
+"id": "group_tech_workers",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_TECH_WORKERS",
+"value": "tech_workers"
+},
+{
+"description": "LOC_WORLD_GROUP_RETIREES_DESCRIPTION",
+"id": "group_retirees",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_RETIREES",
+"value": "retirees"
+},
+{
+"description": "LOC_WORLD_GROUP_DIASPORAS_DESCRIPTION",
+"id": "group_diasporas",
+"initial_count": 1,
+"kind": "group",
+"title": "LOC_WORLD_GROUP_DIASPORAS",
+"value": "diasporas"
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_POLITICS_0A464A6F",
 "id": "topic_policy",
 "initial_count": 1,
 "kind": "topic",
 "title": "LOC_POLITICS_50ECCBD0",
 "value": "policy"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_THE_COST_OF_299985F1",
 "id": "topic_cost_of_living",
 "initial_count": 1,
 "kind": "topic",
 "title": "LOC_COST_OF_LIVING_2A2CD785",
 "value": "cost_of_living"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_LABOR_770D8436",
 "id": "topic_work",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_LABOUR_E82F854C",
 "value": "work"
-}, {
+},
+{
 "description": "LOC_EVENT_TOPIC_TECHNOLOGY_HELP",
 "id": "topic_platform_tools",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_EVENT_TOPIC_TECHNOLOGY",
 "value": "platform_tools"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_SPORTS_8C701C37",
 "id": "topic_sport",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_SPORTS_EF7BE5BE",
 "value": "sport"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_EDUCATION_8DC099E6",
 "id": "topic_education",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_EDUCATION_C883995F",
 "value": "education"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_IDENTITY_F49C248B",
 "id": "topic_identity",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_IDENTITY_2A9C9E99",
 "value": "identity"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_LANGUAGE_BCEC0A9D",
 "id": "topic_language",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_LANGUAGE_9F6FEE1A",
 "value": "language"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_CULTURAL_ACTIVITIES_703CA01A",
 "id": "topic_entertainment",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_CULTURAL_ACTIVITIES_2995B8F6",
 "value": "entertainment"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_ARCHIVES_452FACCA",
 "id": "topic_archive",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_ARCHIVE_B03D2FBD",
 "value": "archive"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_TRUST_1FA7DE72",
 "id": "topic_trust",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_TRUST_D1CD931B",
 "value": "trust"
-}, {
+},
+{
 "description": "LOC_CONNECT_THE_EXPRESSION_TO_COMMUNITY_236C788F",
 "id": "topic_community",
 "initial_count": 0,
 "kind": "topic",
 "title": "LOC_COMMUNITY_ED6613C5",
 "value": "community"
-}, {
+},
+{
+"description": "LOC_WORLD_TOPIC_HOUSING_DESCRIPTION",
+"id": "topic_housing",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_HOUSING",
+"value": "housing"
+},
+{
+"description": "LOC_WORLD_TOPIC_HEALTHCARE_DESCRIPTION",
+"id": "topic_healthcare",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_HEALTHCARE",
+"value": "healthcare"
+},
+{
+"description": "LOC_WORLD_TOPIC_CLIMATE_DESCRIPTION",
+"id": "topic_climate",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_CLIMATE",
+"value": "climate"
+},
+{
+"description": "LOC_WORLD_TOPIC_ENERGY_DESCRIPTION",
+"id": "topic_energy",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_ENERGY",
+"value": "energy"
+},
+{
+"description": "LOC_WORLD_TOPIC_FOOD_DESCRIPTION",
+"id": "topic_food",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_FOOD",
+"value": "food"
+},
+{
+"description": "LOC_WORLD_TOPIC_TRANSPORT_DESCRIPTION",
+"id": "topic_transport",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_TRANSPORT",
+"value": "transport"
+},
+{
+"description": "LOC_WORLD_TOPIC_MIGRATION_DESCRIPTION",
+"id": "topic_migration",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_MIGRATION",
+"value": "migration"
+},
+{
+"description": "LOC_WORLD_TOPIC_TOURISM_DESCRIPTION",
+"id": "topic_tourism",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_TOURISM",
+"value": "tourism"
+},
+{
+"description": "LOC_WORLD_TOPIC_TRADE_DESCRIPTION",
+"id": "topic_trade",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_TRADE",
+"value": "trade"
+},
+{
+"description": "LOC_WORLD_TOPIC_SCIENCE_DESCRIPTION",
+"id": "topic_science",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_SCIENCE",
+"value": "science"
+},
+{
+"description": "LOC_WORLD_TOPIC_CARE_DESCRIPTION",
+"id": "topic_care",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_CARE",
+"value": "care"
+},
+{
+"description": "LOC_WORLD_TOPIC_PUBLIC_SAFETY_DESCRIPTION",
+"id": "topic_public_safety",
+"initial_count": 1,
+"kind": "topic",
+"title": "LOC_WORLD_TOPIC_PUBLIC_SAFETY",
+"value": "public_safety"
+},
+{
 "axis": "x",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_LIBERTY_08CB87E2",
 "direction": -1,
@@ -139,7 +430,8 @@ entries = Array[Dictionary]([{
 "kind": "stance_token",
 "title": "LOC_FREEDOM_D1047EED",
 "value": "freedom"
-}, {
+},
+{
 "axis": "x",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_AUTHORITY_58CFA1AD",
 "direction": 1,
@@ -148,7 +440,8 @@ entries = Array[Dictionary]([{
 "kind": "stance_token",
 "title": "LOC_AUTHORITY_E9D827BA",
 "value": "authority"
-}, {
+},
+{
 "axis": "y",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_EQUALITY_818B5277",
 "direction": -1,
@@ -157,7 +450,8 @@ entries = Array[Dictionary]([{
 "kind": "stance_token",
 "title": "LOC_EQUALITY_14DD2491",
 "value": "equality"
-}, {
+},
+{
 "axis": "y",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_HIERARCHY_70FB0689",
 "direction": 1,
@@ -166,7 +460,8 @@ entries = Array[Dictionary]([{
 "kind": "stance_token",
 "title": "LOC_HIERARCHY_33771717",
 "value": "hierarchy"
-}, {
+},
+{
 "axis": "x",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_SINCERITY_ABBEE73B",
 "direction": -1,
@@ -175,7 +470,8 @@ entries = Array[Dictionary]([{
 "kind": "pragmatic_token",
 "title": "LOC_SINCERITY_8BB7FF57",
 "value": "sincere"
-}, {
+},
+{
 "axis": "x",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_IRONY_BC2FB2EB",
 "direction": 1,
@@ -184,7 +480,8 @@ entries = Array[Dictionary]([{
 "kind": "pragmatic_token",
 "title": "LOC_IRONY_06D9BA32",
 "value": "ironic"
-}, {
+},
+{
 "axis": "y",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_SUPPORT_3ADE79DB",
 "direction": -1,
@@ -193,7 +490,8 @@ entries = Array[Dictionary]([{
 "kind": "pragmatic_token",
 "title": "LOC_SUPPORT_D93373F8",
 "value": "support"
-}, {
+},
+{
 "axis": "y",
 "description": "LOC_MOVE_THE_EXPRESSION_TOWARD_OPPOSITION_640DA58C",
 "direction": 1,
@@ -202,4 +500,5 @@ entries = Array[Dictionary]([{
 "kind": "pragmatic_token",
 "title": "LOC_OPPOSITION_454F03C9",
 "value": "opposition"
-}])
+}
+])

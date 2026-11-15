@@ -223,8 +223,8 @@ func _update_hover() -> void:
 		return
 	var country := settings.countries[hovered_country]
 	var profile := COUNTRY_RULES.country(str(country.id))
-	var tags := _profile_tags(profile.groups, "group")
-	tags.append_array(_profile_tags(profile.languages, "language"))
+	var tags := _profile_tags(profile.groups, "group", 3)
+	tags.append_array(_profile_tags(profile.languages, "language", 3))
 	tags.append_array(_profile_tags(profile.topics, "topic", 4))
 	var rows := [{"tags":tags}]
 	hover_note.set_width(360)

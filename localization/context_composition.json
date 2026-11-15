@@ -1,0 +1,802 @@
+{
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_ALDEN_V": {
+    "source": "倒也没费什么劲，",
+    "zh_CN": "倒也没费什么劲，",
+    "en": "It was hardly any trouble, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_ALDEN_N": {
+    "source": "索性就开始",
+    "zh_CN": "索性就开始",
+    "en": "takes the chance to start "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_ALDEN_B": {
+    "source": "当然，您最懂了",
+    "zh_CN": "当然，您最懂了",
+    "en": "Of course. You know best"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_VERESK_V": {
+    "source": "不过是碰巧罢了，",
+    "zh_CN": "不过是碰巧罢了，",
+    "en": "Just a lucky break, really, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_VERESK_N": {
+    "source": "忍不住又接着",
+    "zh_CN": "忍不住又接着",
+    "en": "cannot help carrying on "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_VERESK_B": {
+    "source": "行，就照您的老办法吧",
+    "zh_CN": "行，就照您的老办法吧",
+    "en": "Sure. Keep doing it the old way"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_LINDAL_V": {
+    "source": "本来只打算试一下，",
+    "zh_CN": "本来只打算试一下，",
+    "en": "I only meant to give it a try, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_LINDAL_N": {
+    "source": "倒好饮料就开始",
+    "zh_CN": "倒好饮料就开始",
+    "en": "pours a drink and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_LINDAL_B": {
+    "source": "嗯，我们听过这段了",
+    "zh_CN": "嗯，我们听过这段了",
+    "en": "Yes. We have heard this one before"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_MARASU_V": {
+    "source": "说出来怕你见笑，",
+    "zh_CN": "说出来怕你见笑，",
+    "en": "You might laugh, but "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_MARASU_N": {
+    "source": "招呼身边的人一起",
+    "zh_CN": "招呼身边的人一起",
+    "en": "waves everyone over and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_MARASU_B": {
+    "source": "好呀，您再讲一遍当年",
+    "zh_CN": "好呀，您再讲一遍当年",
+    "en": "All right. Tell us about the old days again"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_SERRANOVA_V": {
+    "source": "也就是随手一做，",
+    "zh_CN": "也就是随手一做，",
+    "en": "I just threw it together, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_SERRANOVA_N": {
+    "source": "一聊起这个就开始",
+    "zh_CN": "一聊起这个就开始",
+    "en": "gets onto the subject and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_SERRANOVA_B": {
+    "source": "是是是，从前样样都好",
+    "zh_CN": "是是是，从前样样都好",
+    "en": "Yes, yes. Everything used to be better"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_ORUVIA_V": {
+    "source": "其实只是顺路，",
+    "zh_CN": "其实只是顺路，",
+    "en": "It was just on my way, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_ORUVIA_N": {
+    "source": "停下手里的事就开始",
+    "zh_CN": "停下手里的事就开始",
+    "en": "puts everything down and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_ORUVIA_B": {
+    "source": "知道了，可现在不是从前",
+    "zh_CN": "知道了，可现在不是从前",
+    "en": "I hear you. But this is not back then"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_NASHIR_V": {
+    "source": "本没想惊动大家，",
+    "zh_CN": "本没想惊动大家，",
+    "en": "I did not mean to cause a stir, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_NASHIR_N": {
+    "source": "把话题接过去就开始",
+    "zh_CN": "把话题接过去就开始",
+    "en": "picks up the conversation and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_NASHIR_B": {
+    "source": "受教了，账单还是今天的",
+    "zh_CN": "受教了，账单还是今天的",
+    "en": "Lesson received. The bills are still due today"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_SOLERIA_V": {
+    "source": "别太当回事啊，",
+    "zh_CN": "别太当回事啊，",
+    "en": "Please do not make a fuss, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_SOLERIA_N": {
+    "source": "一拍桌子就开始",
+    "zh_CN": "一拍桌子就开始",
+    "en": "taps the table and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_SOLERIA_B": {
+    "source": "好吧，怀旧这局您赢了",
+    "zh_CN": "好吧，怀旧这局您赢了",
+    "en": "Fine. You win the nostalgia contest"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_AVENDON_V": {
+    "source": "也可能只是运气好，",
+    "zh_CN": "也可能只是运气好，",
+    "en": "Maybe I was just fortunate, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_AVENDON_N": {
+    "source": "端着杯子又开始",
+    "zh_CN": "端着杯子又开始",
+    "en": "holds up a cup and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_AVENDON_B": {
+    "source": "收到，这段我会背了",
+    "zh_CN": "收到，这段我会背了",
+    "en": "Noted. I know this speech by heart"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_RHENIVIA_V": {
+    "source": "说到底也没多复杂，",
+    "zh_CN": "说到底也没多复杂，",
+    "en": "It was not all that complicated, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_RHENIVIA_N": {
+    "source": "摊开笔记就开始",
+    "zh_CN": "摊开笔记就开始",
+    "en": "opens the notes and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_RHENIVIA_B": {
+    "source": "嗯，您的时代确实很特别",
+    "zh_CN": "嗯，您的时代确实很特别",
+    "en": "Indeed. Your era was quite something"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_MEHRAN_V": {
+    "source": "借大家的光而已，",
+    "zh_CN": "借大家的光而已，",
+    "en": "I only had a little help, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_MEHRAN_N": {
+    "source": "循着一个话头就开始",
+    "zh_CN": "循着一个话头就开始",
+    "en": "follows one small cue and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_MEHRAN_B": {
+    "source": "您说得热闹，现实还得面对",
+    "zh_CN": "您说得热闹，现实还得面对",
+    "en": "Quite a story. We still have to face today"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_CANTALIA_V": {
+    "source": "这么说可能太随便，",
+    "zh_CN": "这么说可能太随便，",
+    "en": "This may sound rather casual, but "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_CANTALIA_N": {
+    "source": "顺着聊天的节奏开始",
+    "zh_CN": "顺着聊天的节奏开始",
+    "en": "finds a moment in the conversation and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_CANTALIA_B": {
+    "source": "行，这些旧账就讲到这儿吧",
+    "zh_CN": "行，这些旧账就讲到这儿吧",
+    "en": "Right. Enough of the old stories"
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_VISHARA_V": {
+    "source": "不过是先动了动手，",
+    "zh_CN": "不过是先动了动手，",
+    "en": "I only got started a bit early, "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_VISHARA_N": {
+    "source": "想到另一种说法就开始",
+    "zh_CN": "想到另一种说法就开始",
+    "en": "thinks of another way to put it and starts "
+  },
+  "LOC_CONTEXT_COMPOSE_LANGUAGE_VISHARA_B": {
+    "source": "好的，我们还得过现在的日子",
+    "zh_CN": "好的，我们还得过现在的日子",
+    "en": "All right. We still have to live in the present"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_LABEL": {
+    "source": "每天挤车上班的人",
+    "zh_CN": "每天挤车上班的人",
+    "en": "people who squeeze onto the train each morning"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_ACTIVITY": {
+    "source": "核对通勤路线",
+    "zh_CN": "核对通勤路线",
+    "en": "checking the commute"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_CONCERN": {
+    "source": "来回车费和加班时间",
+    "zh_CN": "来回车费和加班时间",
+    "en": "return fares and overtime"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_EFFORT": {
+    "source": "只在车上看了两眼路线图",
+    "zh_CN": "只在车上看了两眼路线图",
+    "en": "only glanced at the route map on the train"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_RESULT": {
+    "source": "被整个办公室追着问诀窍",
+    "zh_CN": "被整个办公室追着问诀窍",
+    "en": "had the whole office asking for tips"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_PEER": {
+    "source": "对着线路图算了一晚上",
+    "zh_CN": "对着线路图算了一晚上",
+    "en": "spent all evening comparing routes"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_CAUSE": {
+    "source": "我那班车刚好一路绿灯",
+    "zh_CN": "我那班车刚好一路绿灯",
+    "en": "my bus happened to get every green light"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_DEPARTURE": {
+    "source": "我还得去赶最后一班车",
+    "zh_CN": "我还得去赶最后一班车",
+    "en": "I have a last train to catch"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_LABEL": {
+    "source": "在课堂和社团之间奔走的人",
+    "zh_CN": "在课堂和社团之间奔走的人",
+    "en": "people rushing between classes and clubs"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_ACTIVITY": {
+    "source": "整理课堂笔记",
+    "zh_CN": "整理课堂笔记",
+    "en": "sorting class notes"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_CONCERN": {
+    "source": "学费和课业负担",
+    "zh_CN": "学费和课业负担",
+    "en": "tuition fees and coursework"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_EFFORT": {
+    "source": "只在课间翻了半页笔记",
+    "zh_CN": "只在课间翻了半页笔记",
+    "en": "only read half a page of notes between classes"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_RESULT": {
+    "source": "被老师叫去分享经验",
+    "zh_CN": "被老师叫去分享经验",
+    "en": "was asked by the teacher to share some advice"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_PEER": {
+    "source": "花了整个周末准备",
+    "zh_CN": "花了整个周末准备",
+    "en": "spent the whole weekend preparing"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_CAUSE": {
+    "source": "我正好选了熟悉的题目",
+    "zh_CN": "我正好选了熟悉的题目",
+    "en": "I happened to pick a familiar subject"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_DEPARTURE": {
+    "source": "我还得赶去下一堂课",
+    "zh_CN": "我还得赶去下一堂课",
+    "en": "I have another class to get to"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_LABEL": {
+    "source": "演出散场后还在聊作品的人",
+    "zh_CN": "演出散场后还在聊作品的人",
+    "en": "people still talking about the show after it ends"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_ACTIVITY": {
+    "source": "交换作品和演出消息",
+    "zh_CN": "交换作品和演出消息",
+    "en": "sharing art and gig recommendations"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_CONCERN": {
+    "source": "门票开销和创作时间",
+    "zh_CN": "门票开销和创作时间",
+    "en": "ticket costs and time to create"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_EFFORT": {
+    "source": "只随手发了一条观后感",
+    "zh_CN": "只随手发了一条观后感",
+    "en": "only posted a quick reaction to the show"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_RESULT": {
+    "source": "被大家当成了圈内行家",
+    "zh_CN": "被大家当成了圈内行家",
+    "en": "was treated as the resident expert"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_PEER": {
+    "source": "写了整整三天长评",
+    "zh_CN": "写了整整三天长评",
+    "en": "spent three days writing a review"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_CAUSE": {
+    "source": "我碰巧坐在最能看清细节的位置",
+    "zh_CN": "我碰巧坐在最能看清细节的位置",
+    "en": "I happened to have a seat with a perfect view"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_DEPARTURE": {
+    "source": "我还得去把租来的乐器还掉",
+    "zh_CN": "我还得去把租来的乐器还掉",
+    "en": "I have a rented instrument to return"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_LABEL": {
+    "source": "种植和养殖的同行",
+    "zh_CN": "种植和养殖的同行",
+    "en": "fellow crop and livestock workers"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_ACTIVITY": {
+    "source": "核对收成和灌溉记录",
+    "zh_CN": "核对收成和灌溉记录",
+    "en": "checking harvest and irrigation records"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_CONCERN": {
+    "source": "水费、饲料和收购价",
+    "zh_CN": "水费、饲料和收购价",
+    "en": "water bills, feed costs and farm-gate prices"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_EFFORT": {
+    "source": "只随手记了一行灌溉数据",
+    "zh_CN": "只随手记了一行灌溉数据",
+    "en": "only jotted down one irrigation reading"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_RESULT": {
+    "source": "被合作社请去讲了一下午",
+    "zh_CN": "被合作社请去讲了一下午",
+    "en": "was asked to brief the cooperative all afternoon"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_PEER": {
+    "source": "守着田里的数据看了半个月",
+    "zh_CN": "守着田里的数据看了半个月",
+    "en": "watched the field readings for a fortnight"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_CAUSE": {
+    "source": "我家那块地刚好赶上了一场雨",
+    "zh_CN": "我家那块地刚好赶上了一场雨",
+    "en": "our plot happened to catch a timely shower"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_DEPARTURE": {
+    "source": "我还得去看刚出苗的那块地",
+    "zh_CN": "我还得去看刚出苗的那块地",
+    "en": "I have a field of new seedlings to check"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_LABEL": {
+    "source": "在车间和工地轮班的同行",
+    "zh_CN": "在车间和工地轮班的同行",
+    "en": "fellow shift workers in workshops and on building sites"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_ACTIVITY": {
+    "source": "交接班和核对设备记录",
+    "zh_CN": "交接班和核对设备记录",
+    "en": "handing over a shift and checking equipment logs"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_CONCERN": {
+    "source": "排班、工伤和到手工资",
+    "zh_CN": "排班、工伤和到手工资",
+    "en": "rosters, injuries and take-home pay"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_EFFORT": {
+    "source": "只在交班单上添了一句话",
+    "zh_CN": "只在交班单上添了一句话",
+    "en": "only added one line to the shift handover"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_RESULT": {
+    "source": "被叫去给整条生产线做示范",
+    "zh_CN": "被叫去给整条生产线做示范",
+    "en": "was asked to demonstrate it to the entire production line"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_PEER": {
+    "source": "停机后还在逐项排查",
+    "zh_CN": "停机后还在逐项排查",
+    "en": "kept checking each item after the machinery stopped"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_CAUSE": {
+    "source": "我碰巧记得那台旧设备的脾气",
+    "zh_CN": "我碰巧记得那台旧设备的脾气",
+    "en": "I happened to remember that old machine’s quirks"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_DEPARTURE": {
+    "source": "我还得去接下一班岗",
+    "zh_CN": "我还得去接下一班岗",
+    "en": "I have another shift to take over"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_LABEL": {
+    "source": "在柜台、餐桌和配送路上忙的人",
+    "zh_CN": "在柜台、餐桌和配送路上忙的人",
+    "en": "people working counters, tables and delivery rounds"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_ACTIVITY": {
+    "source": "核对订单和交班零钱",
+    "zh_CN": "核对订单和交班零钱",
+    "en": "checking orders and counting the handover cash"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_CONCERN": {
+    "source": "客诉、抽成和休息时间",
+    "zh_CN": "客诉、抽成和休息时间",
+    "en": "customer complaints, commission and rest breaks"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_EFFORT": {
+    "source": "只在交班前多记了一笔订单",
+    "zh_CN": "只在交班前多记了一笔订单",
+    "en": "only logged one extra order before the handover"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_RESULT": {
+    "source": "被整家店追着问怎么做到的",
+    "zh_CN": "被整家店追着问怎么做到的",
+    "en": "had the whole shop asking how I managed it"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_PEER": {
+    "source": "高峰期忙得连水都没喝",
+    "zh_CN": "高峰期忙得连水都没喝",
+    "en": "worked through the rush without a drink of water"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_CAUSE": {
+    "source": "我刚好遇到一个不催单的客人",
+    "zh_CN": "我刚好遇到一个不催单的客人",
+    "en": "I happened to meet a customer who was not in a rush"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_DEPARTURE": {
+    "source": "我还得去接下一桌客人",
+    "zh_CN": "我还得去接下一桌客人",
+    "en": "I have another table of customers to serve"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_LABEL": {
+    "source": "在诊室和病区值班的同行",
+    "zh_CN": "在诊室和病区值班的同行",
+    "en": "fellow staff on duty in clinics and wards"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_ACTIVITY": {
+    "source": "核对交班和随访记录",
+    "zh_CN": "核对交班和随访记录",
+    "en": "checking handover and follow-up records"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_CONCERN": {
+    "source": "病区人手和连续值班",
+    "zh_CN": "病区人手和连续值班",
+    "en": "ward staffing and back-to-back shifts"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_EFFORT": {
+    "source": "只把交班记录顺手归了类",
+    "zh_CN": "只把交班记录顺手归了类",
+    "en": "only sorted the handover notes"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_RESULT": {
+    "source": "被整个科室拿去当作样板",
+    "zh_CN": "被整个科室拿去当作样板",
+    "en": "had the whole department use it as a model"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_PEER": {
+    "source": "下了夜班还在补记录",
+    "zh_CN": "下了夜班还在补记录",
+    "en": "kept finishing notes after the night shift"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_CAUSE": {
+    "source": "我刚好接到了完整的随访资料",
+    "zh_CN": "我刚好接到了完整的随访资料",
+    "en": "I happened to receive a complete set of follow-up records"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_DEPARTURE": {
+    "source": "我还得去做下一轮交班",
+    "zh_CN": "我还得去做下一轮交班",
+    "en": "I have another handover to attend"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_LABEL": {
+    "source": "在备课和批改之间挤时间的人",
+    "zh_CN": "在备课和批改之间挤时间的人",
+    "en": "people fitting their day around lesson planning and marking"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_ACTIVITY": {
+    "source": "准备教案和批改作业",
+    "zh_CN": "准备教案和批改作业",
+    "en": "preparing lessons and marking assignments"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_CONCERN": {
+    "source": "班级人数和备课时间",
+    "zh_CN": "班级人数和备课时间",
+    "en": "class sizes and lesson-planning time"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_EFFORT": {
+    "source": "只把一道题换了个问法",
+    "zh_CN": "只把一道题换了个问法",
+    "en": "only rephrased one exercise"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_RESULT": {
+    "source": "被教研组请去分享整堂课",
+    "zh_CN": "被教研组请去分享整堂课",
+    "en": "was asked to share the entire lesson with the teaching team"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_PEER": {
+    "source": "为那堂课准备了整整一周",
+    "zh_CN": "为那堂课准备了整整一周",
+    "en": "spent a full week planning that lesson"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_CAUSE": {
+    "source": "我正好记得学生上回卡住的地方",
+    "zh_CN": "我正好记得学生上回卡住的地方",
+    "en": "I happened to remember where the class got stuck last time"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_DEPARTURE": {
+    "source": "我还得去印下一堂课的讲义",
+    "zh_CN": "我还得去印下一堂课的讲义",
+    "en": "I have handouts to print for the next class"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_LABEL": {
+    "source": "自己守店和跑生意的人",
+    "zh_CN": "自己守店和跑生意的人",
+    "en": "people running their own shops and small businesses"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_ACTIVITY": {
+    "source": "核对进货和当天流水",
+    "zh_CN": "核对进货和当天流水",
+    "en": "checking stock deliveries and the day’s takings"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_CONCERN": {
+    "source": "铺租、进货价和现金周转",
+    "zh_CN": "铺租、进货价和现金周转",
+    "en": "shop rent, wholesale prices and cash flow"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_EFFORT": {
+    "source": "只在门口随手摆了一件货",
+    "zh_CN": "只在门口随手摆了一件货",
+    "en": "only put one item by the door"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_RESULT": {
+    "source": "被隔壁几家店追着问门道",
+    "zh_CN": "被隔壁几家店追着问门道",
+    "en": "had the neighbouring shopkeepers asking for advice"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_PEER": {
+    "source": "为招揽客人忙了整个旺季",
+    "zh_CN": "为招揽客人忙了整个旺季",
+    "en": "spent the whole busy season trying to bring people in"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_CAUSE": {
+    "source": "我那天刚好赶上街口的集市",
+    "zh_CN": "我那天刚好赶上街口的集市",
+    "en": "I happened to catch market day on our street"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_DEPARTURE": {
+    "source": "我还得回店里接下一批货",
+    "zh_CN": "我还得回店里接下一批货",
+    "en": "I have another delivery to take at the shop"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_LABEL": {
+    "source": "在开发、运维和数据工作里忙的人",
+    "zh_CN": "在开发、运维和数据工作里忙的人",
+    "en": "people working in development, operations and data"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_ACTIVITY": {
+    "source": "核对版本和线上监控",
+    "zh_CN": "核对版本和线上监控",
+    "en": "checking releases and service monitors"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_CONCERN": {
+    "source": "夜间值守和需求变动",
+    "zh_CN": "夜间值守和需求变动",
+    "en": "night-time on-call work and changing requirements"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_EFFORT": {
+    "source": "只顺手改了一行配置",
+    "zh_CN": "只顺手改了一行配置",
+    "en": "only changed one configuration line"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_RESULT": {
+    "source": "被全组拉去讲性能优化",
+    "zh_CN": "被全组拉去讲性能优化",
+    "en": "was asked to explain performance tuning to the whole team"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_PEER": {
+    "source": "为了同一个问题追了三天日志",
+    "zh_CN": "为了同一个问题追了三天日志",
+    "en": "spent three days tracing the same issue through logs"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_CAUSE": {
+    "source": "我碰巧翻到了最早那份监控记录",
+    "zh_CN": "我碰巧翻到了最早那份监控记录",
+    "en": "I happened to find the earliest monitoring record"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_DEPARTURE": {
+    "source": "我还得去看刚响的值班告警",
+    "zh_CN": "我还得去看刚响的值班告警",
+    "en": "I have an on-call alert to check"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_LABEL": {
+    "source": "退休后在社区照应彼此的人",
+    "zh_CN": "退休后在社区照应彼此的人",
+    "en": "people looking out for one another in retirement"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_ACTIVITY": {
+    "source": "核对社区活动和复诊日期",
+    "zh_CN": "核对社区活动和复诊日期",
+    "en": "checking community activities and appointment dates"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_CONCERN": {
+    "source": "养老金、就医和日常照护",
+    "zh_CN": "养老金、就医和日常照护",
+    "en": "pensions, medical visits and daily care"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_EFFORT": {
+    "source": "只帮邻居抄了一遍活动日期",
+    "zh_CN": "只帮邻居抄了一遍活动日期",
+    "en": "only copied out the activity dates for a neighbour"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_RESULT": {
+    "source": "被大家请去张罗整个社区",
+    "zh_CN": "被大家请去张罗整个社区",
+    "en": "was asked to organise things for the whole neighbourhood"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_PEER": {
+    "source": "挨家挨户问了整个星期",
+    "zh_CN": "挨家挨户问了整个星期",
+    "en": "spent a week asking door to door"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_CAUSE": {
+    "source": "我刚好带着那份社区通知",
+    "zh_CN": "我刚好带着那份社区通知",
+    "en": "I happened to have the community notice with me"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_DEPARTURE": {
+    "source": "我还得去陪邻居取药",
+    "zh_CN": "我还得去陪邻居取药",
+    "en": "I have a neighbour to accompany to the pharmacy"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_LABEL": {
+    "source": "在异乡维系家乡联系的人",
+    "zh_CN": "在异乡维系家乡联系的人",
+    "en": "people keeping ties to home while living elsewhere"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_ACTIVITY": {
+    "source": "核对两地消息和汇款记录",
+    "zh_CN": "核对两地消息和汇款记录",
+    "en": "checking news from both places and remittance records"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_CONCERN": {
+    "source": "居留手续、汇款和跨地照护",
+    "zh_CN": "居留手续、汇款和跨地照护",
+    "en": "residency paperwork, remittances and care across borders"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_EFFORT": {
+    "source": "只顺手翻译了半页办事说明",
+    "zh_CN": "只顺手翻译了半页办事说明",
+    "en": "only translated half a page of official instructions"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_RESULT": {
+    "source": "被同乡群请去讲了一整晚",
+    "zh_CN": "被同乡群请去讲了一整晚",
+    "en": "was asked to explain it to the hometown chat all evening"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_PEER": {
+    "source": "为了同一张表格来回问了半个月",
+    "zh_CN": "为了同一张表格来回问了半个月",
+    "en": "spent a fortnight asking about the same form"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_CAUSE": {
+    "source": "我刚好听懂了窗口那句补充说明",
+    "zh_CN": "我刚好听懂了窗口那句补充说明",
+    "en": "I happened to understand the extra instruction at the counter"
+  },
+  "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_DEPARTURE": {
+    "source": "我还得赶在时差前给家里回电话",
+    "zh_CN": "我还得赶在时差前给家里回电话",
+    "en": "I have to call home before it gets too late there"
+  },
+  "LOC_CONTEXT_COMPOSE_V_EFFORT": {
+    "source": "%s，顺带聊了聊%s",
+    "zh_CN": "%s，顺带聊了聊%s",
+    "en": "%s while discussing %s"
+  },
+  "LOC_CONTEXT_COMPOSE_V_RESULT": {
+    "source": "%s",
+    "zh_CN": "%s",
+    "en": "%s"
+  },
+  "LOC_CONTEXT_COMPOSE_V_PEER": {
+    "source": "%s",
+    "zh_CN": "%s",
+    "en": "%s"
+  },
+  "LOC_CONTEXT_COMPOSE_V_CAUSE": {
+    "source": "%s",
+    "zh_CN": "%s",
+    "en": "%s"
+  },
+  "LOC_CONTEXT_COMPOSE_V_SUBJECT": {
+    "source": "自己跟%s聊%s时得到的好评",
+    "zh_CN": "自己跟%s聊%s时得到的好评",
+    "en": "the praise I got from %s while discussing %s"
+  },
+  "LOC_CONTEXT_COMPOSE_N_SPEAKER": {
+    "source": "%s中的我：",
+    "zh_CN": "%s中的我：",
+    "en": "Me among %s: "
+  },
+  "LOC_CONTEXT_COMPOSE_N_ACTION": {
+    "source": "逐条讲%s，连%s的间隙也不停",
+    "zh_CN": "逐条讲%s，连%s的间隙也不停",
+    "en": "explaining %s in detail while %s"
+  },
+  "LOC_CONTEXT_COMPOSE_N_REASON": {
+    "source": "在%s时，正好有人问起%s",
+    "zh_CN": "在%s时，正好有人问起%s",
+    "en": "during %s, someone happened to mention %s"
+  },
+  "LOC_CONTEXT_COMPOSE_N_PEER": {
+    "source": "忙完%s就散场",
+    "zh_CN": "忙完%s就散场",
+    "en": "go home after %s"
+  },
+  "LOC_CONTEXT_COMPOSE_N_SUBJECT": {
+    "source": "解释%s，连%s的间隙也不停",
+    "zh_CN": "解释%s，连%s的间隙也不停",
+    "en": "explaining %s at length while %s"
+  },
+  "LOC_CONTEXT_COMPOSE_B_CONTEXT": {
+    "source": "%s中有人说：关于%s，我们从前根本没这么多事。",
+    "zh_CN": "%s中有人说：关于%s，我们从前根本没这么多事。",
+    "en": "Someone among %s says: We never had all this fuss about %s."
+  },
+  "LOC_CONTEXT_COMPOSE_B_QUESTION": {
+    "source": "现在谈%s还得把%s放在一边吗",
+    "zh_CN": "现在谈%s还得把%s放在一边吗",
+    "en": "when we talk about %s, do we have to ignore %s"
+  },
+  "LOC_CONTEXT_COMPOSE_B_COMPARISON": {
+    "source": "以前只说%s，现在连%s都绕不开",
+    "zh_CN": "以前只说%s，现在连%s都绕不开",
+    "en": "you used to talk only about %s; now we cannot avoid %s"
+  },
+  "LOC_CONTEXT_COMPOSE_B_REASON": {
+    "source": "%s这笔账不会因为怀旧就消失",
+    "zh_CN": "%s这笔账不会因为怀旧就消失",
+    "en": "nostalgia does not make %s disappear"
+  },
+  "LOC_CONTEXT_COMPOSE_B_DEPARTURE": {
+    "source": "%s",
+    "zh_CN": "%s",
+    "en": "%s"
+  },
+  "LOC_CONTEXT_COMPOSE_B_SUBJECT_NOUN": {
+    "source": "%s里拿%s的老经验压人的话",
+    "zh_CN": "%s里拿%s的老经验压人的话",
+    "en": "a lecture among %s using old experience of %s to talk down to others"
+  },
+  "LOC_CONTEXT_COMPOSE_DETACHED_TOPICS": {
+    "source": "手头正在忙的事情",
+    "zh_CN": "手头正在忙的事情",
+    "en": "the matter at hand"
+  },
+  "LOC_CONTEXT_COMPOSE_TOPICS_2": {
+    "source": "%s与%s",
+    "zh_CN": "%s与%s",
+    "en": "%s and %s"
+  },
+  "LOC_CONTEXT_COMPOSE_TOPICS_3": {
+    "source": "%s、%s与%s",
+    "zh_CN": "%s、%s与%s",
+    "en": "%s, %s and %s"
+  },
+  "LOC_CONTEXT_COMPOSE_LIST_PAIR": {
+    "source": "%s和%s",
+    "zh_CN": "%s和%s",
+    "en": "%s and %s"
+  },
+  "LOC_CONTEXT_COMPOSE_LIST_MORE": {
+    "source": "%s、%s",
+    "zh_CN": "%s、%s",
+    "en": "%s, %s"
+  },
+  "LOC_CONTEXT_COMPOSE_AUDIENCE_V": {
+    "source": "当着%s的面：",
+    "zh_CN": "当着%s的面：",
+    "en": "In front of %s: "
+  },
+  "LOC_CONTEXT_COMPOSE_AUDIENCE_N": {
+    "source": "跟%s越聊越起劲的我：",
+    "zh_CN": "跟%s越聊越起劲的我：",
+    "en": "Me, getting carried away with %s: "
+  },
+  "LOC_CONTEXT_COMPOSE_AUDIENCE_B": {
+    "source": "当着%s的面，",
+    "zh_CN": "当着%s的面，",
+    "en": "In front of %s, "
+  },
+  "LOC_CONTEXT_COMPOSE_AUDIENCE_M": {
+    "source": "在%s面前，",
+    "zh_CN": "在%s面前，",
+    "en": "Among %s, "
+  }
+}

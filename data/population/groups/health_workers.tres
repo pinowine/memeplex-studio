@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MemeDemoGroup" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/population/meme_demo_group.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"health_workers"
+title = "LOC_WORLD_GROUP_HEALTH_WORKERS"
+tag_ids = PackedStringArray("audience.health_workers", "sample.disjoint_health_workers")
+topic_ids = PackedStringArray("healthcare", "care", "work", "science", "public_safety")
+topic_affinities = PackedFloat32Array(0.96, 0.92, 0.83, 0.84, 0.81)
+sample_size = 2000
+language_id = &"lindal"
+political_position = Vector2(0.0, 0.0)
+evidence_status = &"design"
+language_access = 0.8
+recognizability = 0.75
+attention_fraction = 0.12

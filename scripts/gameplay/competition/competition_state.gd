@@ -186,7 +186,9 @@ func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionar
 		source.recognizability = rules.autonomous_recognizability
 		source.context_dependency = rules.autonomous_context_dependency
 		source.erase("group_ids")
-		source.group_id = str(variant.creator) if str(variant.creator) in ["commuters","students","culture_fans"] else "culture_fans"
+		source.group_id = "culture_fans"
+		for group: Resource in catalog.groups:
+			if str(group.id) == str(variant.creator): source.group_id = str(group.id)
 	source.reach = maxf(1.0,float(source.reach))
 	return source
 

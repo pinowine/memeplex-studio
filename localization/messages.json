@@ -8325,9 +8325,9 @@
     "en": "Ninghuan"
   },
   "LOC_LANGUAGE_NINGHUA_DESCRIPTION": {
-    "source": "虚构国家宁华的语言；表示传播语境，不翻译模因原句。",
-    "zh_CN": "虚构国家宁华的语言；表示传播语境，不翻译模因原句。",
-    "en": "The fictional language of Ninghua. Defines the audience context, not a translation of the original meme."
+    "source": "宁华的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "宁华的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Ninghua, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
   },
   "LOC_LANGUAGE_SHIOHARA": {
     "source": "汐原语",
@@ -8335,9 +8335,9 @@
     "en": "Shioharan"
   },
   "LOC_LANGUAGE_SHIOHARA_DESCRIPTION": {
-    "source": "虚构国家汐原的语言；表示传播语境，不翻译模因原句。",
-    "zh_CN": "虚构国家汐原的语言；表示传播语境，不翻译模因原句。",
-    "en": "The fictional language of Shiohara. Defines the audience context, not a translation of the original meme."
+    "source": "汐原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "汐原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Shiohara, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
   },
   "LOC_LANGUAGE_SEOWON": {
     "source": "瑞原语",
@@ -8345,9 +8345,9 @@
     "en": "Seowonic"
   },
   "LOC_LANGUAGE_SEOWON_DESCRIPTION": {
-    "source": "虚构国家瑞原的语言；表示传播语境，不翻译模因原句。",
-    "zh_CN": "虚构国家瑞原的语言；表示传播语境，不翻译模因原句。",
-    "en": "The fictional language of Seowon. Defines the audience context, not a translation of the original meme."
+    "source": "瑞原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "瑞原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Seowon, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
   },
   "LOC_EVENT_QUEUE_STATE_MISMATCH": {
     "source": "存档中的事件队列与未确认事件记录不一致。",

@@ -1,0 +1,342 @@
+{
+  "LOC_WORLD_LANGUAGE_ALDEN": {
+    "source": "阿尔登语",
+    "zh_CN": "阿尔登语",
+    "en": "Aldenian"
+  },
+  "LOC_WORLD_LANGUAGE_ALDEN_DESCRIPTION": {
+    "source": "阿尔登的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "阿尔登的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Alden, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_VERESK": {
+    "source": "韦列斯克语",
+    "zh_CN": "韦列斯克语",
+    "en": "Vereskian"
+  },
+  "LOC_WORLD_LANGUAGE_VERESK_DESCRIPTION": {
+    "source": "韦列斯克的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "韦列斯克的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Veresk, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_LINDAL": {
+    "source": "林达尔语",
+    "zh_CN": "林达尔语",
+    "en": "Lindalic"
+  },
+  "LOC_WORLD_LANGUAGE_LINDAL_DESCRIPTION": {
+    "source": "林达尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "林达尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Lindal, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_MARASU": {
+    "source": "马拉苏语",
+    "zh_CN": "马拉苏语",
+    "en": "Marasan"
+  },
+  "LOC_WORLD_LANGUAGE_MARASU_DESCRIPTION": {
+    "source": "马拉苏的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "马拉苏的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Marasu, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_SERRANOVA": {
+    "source": "塞拉诺瓦语",
+    "zh_CN": "塞拉诺瓦语",
+    "en": "Serranovan"
+  },
+  "LOC_WORLD_LANGUAGE_SERRANOVA_DESCRIPTION": {
+    "source": "塞拉诺瓦的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "塞拉诺瓦的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Serranova, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_ORUVIA": {
+    "source": "奥鲁维亚语",
+    "zh_CN": "奥鲁维亚语",
+    "en": "Oruvian"
+  },
+  "LOC_WORLD_LANGUAGE_ORUVIA_DESCRIPTION": {
+    "source": "奥鲁维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "奥鲁维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Oruvia, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_NASHIR": {
+    "source": "纳希尔语",
+    "zh_CN": "纳希尔语",
+    "en": "Nashiri"
+  },
+  "LOC_WORLD_LANGUAGE_NASHIR_DESCRIPTION": {
+    "source": "纳希尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "纳希尔的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Nashir, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_SOLERIA": {
+    "source": "索莱里亚语",
+    "zh_CN": "索莱里亚语",
+    "en": "Solerian"
+  },
+  "LOC_WORLD_LANGUAGE_SOLERIA_DESCRIPTION": {
+    "source": "索莱里亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "索莱里亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Soleria, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_AVENDON": {
+    "source": "阿文顿语",
+    "zh_CN": "阿文顿语",
+    "en": "Avendonian"
+  },
+  "LOC_WORLD_LANGUAGE_AVENDON_DESCRIPTION": {
+    "source": "阿文顿的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "阿文顿的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Avendon, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_RHENIVIA": {
+    "source": "莱茵维亚语",
+    "zh_CN": "莱茵维亚语",
+    "en": "Rhenivian"
+  },
+  "LOC_WORLD_LANGUAGE_RHENIVIA_DESCRIPTION": {
+    "source": "莱茵维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "莱茵维亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Rhenivia, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_MEHRAN": {
+    "source": "米赫兰语",
+    "zh_CN": "米赫兰语",
+    "en": "Mehrani"
+  },
+  "LOC_WORLD_LANGUAGE_MEHRAN_DESCRIPTION": {
+    "source": "米赫兰的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "米赫兰的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Mehran, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_CANTALIA": {
+    "source": "坎塔利亚语",
+    "zh_CN": "坎塔利亚语",
+    "en": "Cantalian"
+  },
+  "LOC_WORLD_LANGUAGE_CANTALIA_DESCRIPTION": {
+    "source": "坎塔利亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "坎塔利亚的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Cantalia, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_LANGUAGE_VISHARA": {
+    "source": "维沙拉语",
+    "zh_CN": "维沙拉语",
+    "en": "Visharan"
+  },
+  "LOC_WORLD_LANGUAGE_VISHARA_DESCRIPTION": {
+    "source": "维沙拉的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "维沙拉的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "en": "The local language context of Vishara, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+  },
+  "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS": {
+    "source": "农业从业者",
+    "zh_CN": "农业从业者",
+    "en": "Agricultural workers"
+  },
+  "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS_DESCRIPTION": {
+    "source": "把表达放进种植、养殖与农产品流通的日常讨论。",
+    "zh_CN": "把表达放进种植、养殖与农产品流通的日常讨论。",
+    "en": "Addresses people discussing farming, livestock and the movement of agricultural goods."
+  },
+  "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS": {
+    "source": "产业工人",
+    "zh_CN": "产业工人",
+    "en": "Industrial workers"
+  },
+  "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS_DESCRIPTION": {
+    "source": "把表达放进车间、生产排班和劳动条件的讨论。",
+    "zh_CN": "把表达放进车间、生产排班和劳动条件的讨论。",
+    "en": "Addresses people discussing workshops, production shifts and working conditions."
+  },
+  "LOC_WORLD_GROUP_SERVICE_WORKERS": {
+    "source": "服务业从业者",
+    "zh_CN": "服务业从业者",
+    "en": "Service workers"
+  },
+  "LOC_WORLD_GROUP_SERVICE_WORKERS_DESCRIPTION": {
+    "source": "把表达放进餐饮、零售与接待工作的日常交流。",
+    "zh_CN": "把表达放进餐饮、零售与接待工作的日常交流。",
+    "en": "Addresses people exchanging experiences of hospitality, retail and customer service."
+  },
+  "LOC_WORLD_GROUP_HEALTH_WORKERS": {
+    "source": "医护人员",
+    "zh_CN": "医护人员",
+    "en": "Health workers"
+  },
+  "LOC_WORLD_GROUP_HEALTH_WORKERS_DESCRIPTION": {
+    "source": "把表达放进医疗服务、照护分工与轮班工作的讨论。",
+    "zh_CN": "把表达放进医疗服务、照护分工与轮班工作的讨论。",
+    "en": "Addresses people discussing health services, care responsibilities and shift work."
+  },
+  "LOC_WORLD_GROUP_EDUCATORS": {
+    "source": "教育工作者",
+    "zh_CN": "教育工作者",
+    "en": "Educators"
+  },
+  "LOC_WORLD_GROUP_EDUCATORS_DESCRIPTION": {
+    "source": "把表达放进教学、学习资源与社区教育的讨论。",
+    "zh_CN": "把表达放进教学、学习资源与社区教育的讨论。",
+    "en": "Addresses people discussing teaching, learning resources and community education."
+  },
+  "LOC_WORLD_GROUP_SMALL_BUSINESS": {
+    "source": "小商户",
+    "zh_CN": "小商户",
+    "en": "Small business owners"
+  },
+  "LOC_WORLD_GROUP_SMALL_BUSINESS_DESCRIPTION": {
+    "source": "把表达放进店铺经营、采购与街坊生意的讨论。",
+    "zh_CN": "把表达放进店铺经营、采购与街坊生意的讨论。",
+    "en": "Addresses people discussing shopkeeping, supplies and neighbourhood businesses."
+  },
+  "LOC_WORLD_GROUP_TECH_WORKERS": {
+    "source": "技术从业者",
+    "zh_CN": "技术从业者",
+    "en": "Tech workers"
+  },
+  "LOC_WORLD_GROUP_TECH_WORKERS_DESCRIPTION": {
+    "source": "把表达放进技术工具、研发协作与工作变化的讨论。",
+    "zh_CN": "把表达放进技术工具、研发协作与工作变化的讨论。",
+    "en": "Addresses people discussing technical tools, research collaboration and changes at work."
+  },
+  "LOC_WORLD_GROUP_RETIREES": {
+    "source": "退休居民",
+    "zh_CN": "退休居民",
+    "en": "Retired residents"
+  },
+  "LOC_WORLD_GROUP_RETIREES_DESCRIPTION": {
+    "source": "把表达放进退休生活、社区往来与代际照护的讨论。",
+    "zh_CN": "把表达放进退休生活、社区往来与代际照护的讨论。",
+    "en": "Addresses people discussing retirement, community life and care across generations."
+  },
+  "LOC_WORLD_GROUP_DIASPORAS": {
+    "source": "跨境社群",
+    "zh_CN": "跨境社群",
+    "en": "Diaspora communities"
+  },
+  "LOC_WORLD_GROUP_DIASPORAS_DESCRIPTION": {
+    "source": "把表达放进跨境生活、异地家庭与多语交流的讨论。",
+    "zh_CN": "把表达放进跨境生活、异地家庭与多语交流的讨论。",
+    "en": "Addresses people discussing life across borders, families living apart and multilingual exchange."
+  },
+  "LOC_WORLD_TOPIC_HOUSING": {
+    "source": "住房",
+    "zh_CN": "住房",
+    "en": "Housing"
+  },
+  "LOC_WORLD_TOPIC_HOUSING_DESCRIPTION": {
+    "source": "把表达接到租住、房屋负担与居住条件上。",
+    "zh_CN": "把表达接到租住、房屋负担与居住条件上。",
+    "en": "Connects the expression to rent, housing costs and living conditions."
+  },
+  "LOC_WORLD_TOPIC_HEALTHCARE": {
+    "source": "医疗健康",
+    "zh_CN": "医疗健康",
+    "en": "Healthcare"
+  },
+  "LOC_WORLD_TOPIC_HEALTHCARE_DESCRIPTION": {
+    "source": "把表达接到就医、健康服务与公共卫生上。",
+    "zh_CN": "把表达接到就医、健康服务与公共卫生上。",
+    "en": "Connects the expression to medical visits, health services and public health."
+  },
+  "LOC_WORLD_TOPIC_CLIMATE": {
+    "source": "气候环境",
+    "zh_CN": "气候环境",
+    "en": "Climate"
+  },
+  "LOC_WORLD_TOPIC_CLIMATE_DESCRIPTION": {
+    "source": "把表达接到天气变化、生态与气候适应上。",
+    "zh_CN": "把表达接到天气变化、生态与气候适应上。",
+    "en": "Connects the expression to changing weather, ecosystems and climate adaptation."
+  },
+  "LOC_WORLD_TOPIC_ENERGY": {
+    "source": "能源",
+    "zh_CN": "能源",
+    "en": "Energy"
+  },
+  "LOC_WORLD_TOPIC_ENERGY_DESCRIPTION": {
+    "source": "把表达接到电力、燃料与能源使用上。",
+    "zh_CN": "把表达接到电力、燃料与能源使用上。",
+    "en": "Connects the expression to electricity, fuel and energy use."
+  },
+  "LOC_WORLD_TOPIC_FOOD": {
+    "source": "饮食与粮食",
+    "zh_CN": "饮食与粮食",
+    "en": "Food"
+  },
+  "LOC_WORLD_TOPIC_FOOD_DESCRIPTION": {
+    "source": "把表达接到餐桌、食品供应与农业收成上。",
+    "zh_CN": "把表达接到餐桌、食品供应与农业收成上。",
+    "en": "Connects the expression to meals, food supplies and agricultural harvests."
+  },
+  "LOC_WORLD_TOPIC_TRANSPORT": {
+    "source": "交通出行",
+    "zh_CN": "交通出行",
+    "en": "Transport"
+  },
+  "LOC_WORLD_TOPIC_TRANSPORT_DESCRIPTION": {
+    "source": "把表达接到通勤、公共交通与物流上。",
+    "zh_CN": "把表达接到通勤、公共交通与物流上。",
+    "en": "Connects the expression to commuting, public transport and logistics."
+  },
+  "LOC_WORLD_TOPIC_MIGRATION": {
+    "source": "迁移与侨居",
+    "zh_CN": "迁移与侨居",
+    "en": "Migration"
+  },
+  "LOC_WORLD_TOPIC_MIGRATION_DESCRIPTION": {
+    "source": "把表达接到迁居、跨境生活与异地联系上。",
+    "zh_CN": "把表达接到迁居、跨境生活与异地联系上。",
+    "en": "Connects the expression to relocation, life across borders and long-distance ties."
+  },
+  "LOC_WORLD_TOPIC_TOURISM": {
+    "source": "旅游",
+    "zh_CN": "旅游",
+    "en": "Tourism"
+  },
+  "LOC_WORLD_TOPIC_TOURISM_DESCRIPTION": {
+    "source": "把表达接到旅行、游客接待与地方体验上。",
+    "zh_CN": "把表达接到旅行、游客接待与地方体验上。",
+    "en": "Connects the expression to travel, visitor services and local experiences."
+  },
+  "LOC_WORLD_TOPIC_TRADE": {
+    "source": "贸易",
+    "zh_CN": "贸易",
+    "en": "Trade"
+  },
+  "LOC_WORLD_TOPIC_TRADE_DESCRIPTION": {
+    "source": "把表达接到货物流通、市场交易与跨境生意上。",
+    "zh_CN": "把表达接到货物流通、市场交易与跨境生意上。",
+    "en": "Connects the expression to goods, market exchange and cross-border business."
+  },
+  "LOC_WORLD_TOPIC_SCIENCE": {
+    "source": "科学",
+    "zh_CN": "科学",
+    "en": "Science"
+  },
+  "LOC_WORLD_TOPIC_SCIENCE_DESCRIPTION": {
+    "source": "把表达接到研究发现、科学解释与实验上。",
+    "zh_CN": "把表达接到研究发现、科学解释与实验上。",
+    "en": "Connects the expression to research findings, scientific explanations and experiments."
+  },
+  "LOC_WORLD_TOPIC_CARE": {
+    "source": "家庭照护",
+    "zh_CN": "家庭照护",
+    "en": "Care"
+  },
+  "LOC_WORLD_TOPIC_CARE_DESCRIPTION": {
+    "source": "把表达接到育儿、养老与日常照护分工上。",
+    "zh_CN": "把表达接到育儿、养老与日常照护分工上。",
+    "en": "Connects the expression to childcare, elder care and everyday care responsibilities."
+  },
+  "LOC_WORLD_TOPIC_PUBLIC_SAFETY": {
+    "source": "公共安全",
+    "zh_CN": "公共安全",
+    "en": "Public safety"
+  },
+  "LOC_WORLD_TOPIC_PUBLIC_SAFETY_DESCRIPTION": {
+    "source": "把表达接到事故预防、应急与社区安全上。",
+    "zh_CN": "把表达接到事故预防、应急与社区安全上。",
+    "en": "Connects the expression to accident prevention, emergency response and community safety."
+  }
+}

@@ -126,13 +126,21 @@ static func apply_to(details: Dictionary) -> void:
  details.hover_note = details.get("hover_note", hover_note(id))
 
 static func hover_description(id: String) -> String:
- return DeskLocalization.source(str(HOVER_DESCRIPTIONS.get(id, "")))
+ if HOVER_DESCRIPTIONS.has(id): return DeskLocalization.source(str(HOVER_DESCRIPTIONS[id]))
+ var definitions: Resource = load("res://data/context/context_resources.tres")
+ for entry: Dictionary in definitions.entries:
+  if str(entry.id) == id: return str(entry.description)
+ return ""
 
 static func stack_description(kind: String) -> String:
  return DeskLocalization.source(str(STACK_DESCRIPTIONS.get(kind, "")))
 
 static func hover_note(id: String) -> String:
- return DeskLocalization.source(str(HOVER_NOTES.get(id, "")))
+ if HOVER_NOTES.has(id): return DeskLocalization.source(str(HOVER_NOTES[id]))
+ var definitions: Resource = load("res://data/context/context_resources.tres")
+ for entry: Dictionary in definitions.entries:
+  if str(entry.id) == id: return stack_note(str(entry.kind))
+ return ""
 
 static func stack_note(kind: String) -> String:
  return DeskLocalization.source(str(STACK_NOTES.get(kind, "")))

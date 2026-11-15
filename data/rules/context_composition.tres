@@ -1,0 +1,337 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/memes/meme_composition_profiles.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+definitions = {
+  "legacy_groups": [
+    "commuters",
+    "students",
+    "culture_fans"
+  ],
+  "legacy_audiences": [
+    "COMMUTERS_CULTURE_FANS",
+    "COMMUTERS_STUDENTS",
+    "CULTURE_FANS_STUDENTS",
+    "COMMUTERS_CULTURE_FANS_STUDENTS"
+  ],
+  "languages": {
+    "ninghua": {
+      "V": "LOC_TEXT_COMPOSE_V2_V_LEAD_NINGHUA",
+      "N": "LOC_TEXT_COMPOSE_V2_N_LANGUAGE_NINGHUA",
+      "B": "LOC_TEXT_COMPOSE_V2_B_REPLY_NINGHUA"
+    },
+    "shiohara": {
+      "V": "LOC_TEXT_COMPOSE_V2_V_LEAD_SHIOHARA",
+      "N": "LOC_TEXT_COMPOSE_V2_N_LANGUAGE_SHIOHARA",
+      "B": "LOC_TEXT_COMPOSE_V2_B_REPLY_SHIOHARA"
+    },
+    "seowon": {
+      "V": "LOC_TEXT_COMPOSE_V2_V_LEAD_SEOWON",
+      "N": "LOC_TEXT_COMPOSE_V2_N_LANGUAGE_SEOWON",
+      "B": "LOC_TEXT_COMPOSE_V2_B_REPLY_SEOWON"
+    },
+    "alden": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_ALDEN_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_ALDEN_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_ALDEN_B"
+    },
+    "veresk": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_VERESK_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_VERESK_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_VERESK_B"
+    },
+    "lindal": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_LINDAL_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_LINDAL_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_LINDAL_B"
+    },
+    "marasu": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_MARASU_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_MARASU_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_MARASU_B"
+    },
+    "serranova": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_SERRANOVA_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_SERRANOVA_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_SERRANOVA_B"
+    },
+    "oruvia": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_ORUVIA_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_ORUVIA_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_ORUVIA_B"
+    },
+    "nashir": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_NASHIR_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_NASHIR_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_NASHIR_B"
+    },
+    "soleria": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_SOLERIA_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_SOLERIA_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_SOLERIA_B"
+    },
+    "avendon": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_AVENDON_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_AVENDON_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_AVENDON_B"
+    },
+    "rhenivia": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_RHENIVIA_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_RHENIVIA_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_RHENIVIA_B"
+    },
+    "mehran": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_MEHRAN_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_MEHRAN_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_MEHRAN_B"
+    },
+    "cantalia": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_CANTALIA_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_CANTALIA_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_CANTALIA_B"
+    },
+    "vishara": {
+      "V": "LOC_CONTEXT_COMPOSE_LANGUAGE_VISHARA_V",
+      "N": "LOC_CONTEXT_COMPOSE_LANGUAGE_VISHARA_N",
+      "B": "LOC_CONTEXT_COMPOSE_LANGUAGE_VISHARA_B"
+    }
+  },
+  "groups": {
+    "commuters": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_DEPARTURE"
+    },
+    "students": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_DEPARTURE"
+    },
+    "culture_fans": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_DEPARTURE"
+    },
+    "agricultural_workers": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_DEPARTURE"
+    },
+    "industrial_workers": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_DEPARTURE"
+    },
+    "service_workers": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_DEPARTURE"
+    },
+    "health_workers": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_DEPARTURE"
+    },
+    "educators": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_DEPARTURE"
+    },
+    "small_business": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_DEPARTURE"
+    },
+    "tech_workers": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_DEPARTURE"
+    },
+    "retirees": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_DEPARTURE"
+    },
+    "diasporas": {
+      "label": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_LABEL",
+      "activity": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_ACTIVITY",
+      "concern": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_CONCERN",
+      "effort": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_EFFORT",
+      "result": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_RESULT",
+      "peer": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_PEER",
+      "cause": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_CAUSE",
+      "departure": "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_DEPARTURE"
+    }
+  },
+  "fields": {
+    "V": {
+      "EFFORT": {
+        "key": "LOC_CONTEXT_COMPOSE_V_EFFORT",
+        "arguments": [
+          "effort",
+          "topics"
+        ]
+      },
+      "RESULT": {
+        "key": "LOC_CONTEXT_COMPOSE_V_RESULT",
+        "arguments": [
+          "result"
+        ]
+      },
+      "PEER": {
+        "key": "LOC_CONTEXT_COMPOSE_V_PEER",
+        "arguments": [
+          "peer"
+        ]
+      },
+      "CAUSE": {
+        "key": "LOC_CONTEXT_COMPOSE_V_CAUSE",
+        "arguments": [
+          "cause"
+        ]
+      },
+      "SUBJECT": {
+        "key": "LOC_CONTEXT_COMPOSE_V_SUBJECT",
+        "arguments": [
+          "label",
+          "topics"
+        ]
+      }
+    },
+    "N": {
+      "SPEAKER": {
+        "key": "LOC_CONTEXT_COMPOSE_N_SPEAKER",
+        "arguments": [
+          "label"
+        ]
+      },
+      "ACTION": {
+        "key": "LOC_CONTEXT_COMPOSE_N_ACTION",
+        "arguments": [
+          "topics",
+          "activity"
+        ]
+      },
+      "REASON": {
+        "key": "LOC_CONTEXT_COMPOSE_N_REASON",
+        "arguments": [
+          "activity",
+          "topics"
+        ]
+      },
+      "PEER": {
+        "key": "LOC_CONTEXT_COMPOSE_N_PEER",
+        "arguments": [
+          "activity"
+        ]
+      },
+      "SUBJECT": {
+        "key": "LOC_CONTEXT_COMPOSE_N_SUBJECT",
+        "arguments": [
+          "topics",
+          "activity"
+        ]
+      }
+    },
+    "B": {
+      "CONTEXT": {
+        "key": "LOC_CONTEXT_COMPOSE_B_CONTEXT",
+        "arguments": [
+          "label",
+          "topics"
+        ]
+      },
+      "QUESTION": {
+        "key": "LOC_CONTEXT_COMPOSE_B_QUESTION",
+        "arguments": [
+          "topics",
+          "concern"
+        ]
+      },
+      "COMPARISON": {
+        "key": "LOC_CONTEXT_COMPOSE_B_COMPARISON",
+        "arguments": [
+          "topics",
+          "concern"
+        ]
+      },
+      "REASON": {
+        "key": "LOC_CONTEXT_COMPOSE_B_REASON",
+        "arguments": [
+          "concern"
+        ]
+      },
+      "DEPARTURE": {
+        "key": "LOC_CONTEXT_COMPOSE_B_DEPARTURE",
+        "arguments": [
+          "departure"
+        ]
+      },
+      "SUBJECT_NOUN": {
+        "key": "LOC_CONTEXT_COMPOSE_B_SUBJECT_NOUN",
+        "arguments": [
+          "label",
+          "topics"
+        ]
+      }
+    }
+  },
+  "detached_topics": "LOC_CONTEXT_COMPOSE_DETACHED_TOPICS"
+}
