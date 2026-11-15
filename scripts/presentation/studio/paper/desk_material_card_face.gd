@@ -12,6 +12,11 @@ const PALETTES := {
 	"topic":{"edge":Color("765b32"), "body":Color("c7a05c"), "panel":Color("e7d5a8"), "ink":Color("594523"), "light":Color("f3e4bf")}
 }
 
+var paper_view := false:
+	set(value):
+		paper_view = value
+		queue_redraw()
+
 var _record: Dictionary = {}
 var _font: Font
 var _kind := "language"
@@ -223,11 +228,20 @@ func _stroke(points: PackedVector2Array, color: Color, width: float = 1.0) -> vo
 	draw_polyline(closed, color, width, true)
 
 
+func _palette() -> Dictionary:
+	var palette: Dictionary = PALETTES[_kind]
+	if not paper_view: return palette
+	var reading_palette := palette.duplicate()
+	reading_palette.body = palette.body.lerp(palette.light, .36)
+	reading_palette.panel = palette.panel.lerp(palette.light, .18)
+	return reading_palette
+
+
 func _draw() -> void:
 	_draw_count += 1
 	_layout = _build_layout()
 	var body: Rect2 = _layout.body
-	var palette: Dictionary = PALETTES[_kind]
+	var palette := _palette()
 	var thickness: float = _layout.thickness
 	if shadow_enabled:
 		for offset in [Vector2(2, 6), Vector2(1, 4)]:

@@ -14,13 +14,19 @@ const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwri
 const StarterContextCard = preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
 const PaperSurface = preload("res://scripts/presentation/studio/paper/desk_popup_paper.gd")
 const EventDocument = preload("res://scripts/presentation/studio/paper/desk_event_document.gd")
+const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 
 class PencilRule extends Control:
+	var receipt := false
+
 	func _init() -> void:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 		resized.connect(queue_redraw)
 
 	func _draw() -> void:
+		if receipt:
+			draw_line(Vector2.ZERO, Vector2(size.x, 0), ReceiptStyle.EDGE, 1.0)
+			return
 		draw_polyline(PackedVector2Array([Vector2.ZERO, Vector2(size.x * .42, -.5), Vector2(size.x * .78, .4), Vector2(size.x, -.2)]), Color("777766"), .8, true)
 
 var _choice_scroll: ScrollContainer
@@ -31,6 +37,7 @@ var _choice_rows: Array = []
 var _built := false
 var _paper_holder: Control
 var _surface: Control
+var _stack_surface: Panel
 var _title_label: Label
 var _body_label: RichTextLabel
 var _event_document: Control
@@ -39,6 +46,7 @@ var _stack_host: Control
 var _stack_rule: Control
 var _stack_label: Label
 var _font: Font
+var _title_font: Font
 var _paper: Texture2D
 var _details := {}
 var _title := ""
@@ -71,6 +79,7 @@ func _exit_tree() -> void:
 func configure(hand_font: Font, paper: Texture2D) -> void:
 	_build()
 	_font = Handwriting.BODY_FONT
+	_title_font = Handwriting.HEADING_FONT if hand_font != null else null
 	_paper = paper
 	_surface.paper = paper
 	_surface.queue_redraw()
@@ -101,6 +110,15 @@ func show_details(details: Dictionary, viewport_rect: Rect2) -> bool:
 	_build()
 	_cancel_motion()
 	_details = details.duplicate(true)
+	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
+	if has_stack or _title_font != null:
+		_title_label.add_theme_font_override("font", Handwriting.BOLD_FONT if has_stack else _title_font)
+	else:
+		_title_label.remove_theme_font_override("font")
+	_title_label.add_theme_font_size_override("font_size", 22 if has_stack else 25)
+	_title_label.add_theme_color_override("font_color", ReceiptStyle.INK if has_stack else Color("373d33"))
+	_rule.receipt = has_stack
+	_rule.queue_redraw()
 	_viewport_rect = viewport_rect
 	_build_choices(details)
 	_refresh_translation(true)
@@ -147,6 +165,12 @@ func _build() -> void:
 	_surface = PaperSurface.new()
 	_surface.name = "HighDensityPaperFibers"
 	_paper_holder.add_child(_surface)
+	_stack_surface = Panel.new()
+	_stack_surface.name = "InventoryReceiptPaper"
+	_stack_surface.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stack_surface.add_theme_stylebox_override("panel", ReceiptStyle.new())
+	_stack_surface.hide()
+	_paper_holder.add_child(_stack_surface)
 	_title_label = Label.new()
 	_title_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_title_label.name = "HandwrittenTitle"
@@ -210,19 +234,24 @@ func _layout_paper() -> void:
 	var top := clampf(view.size.y * .055, 18.0, 48.0)
 	var starter := bool(_details.get("starter_pending", false))
 	var event_document := str(_details.get("document_kind", "")) == "event"
-	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter or event_document else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
+	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
+	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter or event_document or has_stack else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
 	_target_rect = Rect2(Vector2(view.end.x - margin - dimensions.x, view.position.y + top).round(), dimensions)
 	_offscreen_rect = Rect2(Vector2(view.end.x + margin, _target_rect.position.y).round(), dimensions)
 	# This is a screen-layer paper: whole-pixel poses keep fibers and ink sharp.
 	_paper_holder.position = _offscreen_rect.position.lerp(_target_rect.position, _slide_progress).round()
 	_paper_holder.size = dimensions
 	_surface.size = dimensions
-	var padding := minf(30.0, dimensions.x * .075)
+	_stack_surface.position = Vector2(4, 4)
+	_stack_surface.size = dimensions - Vector2(8, 8)
+	_stack_surface.visible = has_stack
+	var title_size := 22 if has_stack else 25
+	var padding := 24.0 if has_stack else minf(30.0, dimensions.x * .075)
 	var width := maxf(1, dimensions.x - padding * 2.0)
 	var font := _font if _font != null else ThemeDB.fallback_font
 	var title_font := _title_label.get_theme_font("font")
-	var measured := title_font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,width,25)
-	var title_height := minf(ceilf(measured.y),ceilf(title_font.get_height(25)*2)) if not _title.is_empty() else 0.0
+	var measured := title_font.get_multiline_string_size(_title,HORIZONTAL_ALIGNMENT_LEFT,width,title_size)
+	var title_height := minf(ceilf(measured.y),ceilf(title_font.get_height(title_size)*2)) if not _title.is_empty() else 0.0
 	_full_title_in_body = event_document or (not _title.is_empty() and measured.y>title_height+1)
 	_title_label.visible = not event_document and not _title.is_empty()
 	_title_label.position = Vector2(padding,25)
@@ -255,12 +284,11 @@ func _layout_paper() -> void:
 	_choice_box.size = Vector2(content_width,natural_height)
 	_body_label.position = Vector2(padding,body_y)
 	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(34 if choice_height>0 else 28)))
-	_body_label.visible = not event_document
-	_surface.visible = not event_document
+	_body_label.visible = not event_document and not (has_stack and _body.is_empty())
+	_surface.visible = not event_document and not has_stack
 	_event_document.visible = event_document
 	_event_document.position = Vector2(4, 4)
 	_event_document.size = dimensions - Vector2(8, 8)
-	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
 	var stack_only := has_stack and _body.is_empty()
 	_stack_host.visible = has_stack
 	_stack_rule.visible = has_stack and not stack_only

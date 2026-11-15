@@ -141,7 +141,9 @@ class StackCard extends Control:
 				overlay.add_child(_ghost)
 				_ghost.z_index = 100
 				if token: _ghost.configure(record)
-				else: _ghost.configure(record, font)
+				else:
+					_ghost.paper_view = true
+					_ghost.configure(record, font)
 				_ghost.size = size
 				face.modulate.a = .35
 			if _dragging:
@@ -414,15 +416,6 @@ func _refresh_focus_list() -> void:
 	var token := _focus_kind in ["stance_token", "pragmatic_token"]
 	var dimensions := Vector2(112, 100) if token else CardFace.minimum_card_size(_focus_kind)
 	_focus_grid.columns = maxi(1, floori((_focus_rect.size.x - 12) / (dimensions.x + 8)))
-	if records.is_empty():
-		var empty := Label.new()
-		empty.text = DeskLocalization.text("LOC_NO_MATERIALS_AVAILABLE_COLLECT_A_FAX_TO_3DE42B95")
-		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		empty.custom_minimum_size = Vector2(maxf(100, _focus_rect.size.x - 18), 72)
-		empty.add_theme_font_size_override("font_size", 15)
-		empty.add_theme_color_override("font_color", Color("60664f"))
-		_focus_grid.add_child(empty)
-		return
 	for record: Dictionary in records:
 		var row := StackCard.new()
 		row.name = "StackItem" + str(record.id).to_pascal_case()
@@ -444,6 +437,7 @@ func _refresh_focus_list() -> void:
 			count.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			row.add_child(count)
 		else:
+			row.face.paper_view = true
 			row.face.configure(record, row.font)
 			row.face.set_selected(_selected_key == str(record.kind) + "/" + str(record.id))
 		row.chosen.connect(_select_expanded.bind(str(record.kind), str(record.id)))
