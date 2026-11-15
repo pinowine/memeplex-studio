@@ -16,6 +16,7 @@ const StarterContextCard = preload("res://scripts/presentation/studio/paper/star
 const PaperSurface = preload("res://scripts/presentation/studio/paper/desk_popup_paper.gd")
 const EventDocument = preload("res://scripts/presentation/studio/paper/desk_event_document.gd")
 const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
+const ReceiptPanel = preload("res://scripts/presentation/studio/paper/desk_receipt_panel.gd")
 
 class PencilRule extends Control:
 	var receipt := false
@@ -39,6 +40,7 @@ var _built := false
 var _paper_holder: Control
 var _surface: Control
 var _stack_surface: Panel
+var _log_surface: Panel
 var _title_label: Label
 var _body_label: RichTextLabel
 var _event_document: Control
@@ -116,13 +118,24 @@ func show_details(details: Dictionary, viewport_rect: Rect2) -> bool:
 	_cancel_motion()
 	_details = details.duplicate(true)
 	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
-	if has_stack or _title_font != null:
+	var log_receipt := str(_details.get("document_kind", "")) == "log_receipt"
+	if log_receipt:
+		_title_label.add_theme_font_override("font", ReceiptStyle.FONT)
+	elif has_stack or _title_font != null:
 		_title_label.add_theme_font_override("font", Handwriting.BOLD_FONT if has_stack else _title_font)
 	else:
 		_title_label.remove_theme_font_override("font")
 	_title_label.add_theme_font_size_override("font_size", 22 if has_stack else 25)
 	_title_label.add_theme_color_override("font_color", ReceiptStyle.INK if has_stack else Color("373d33"))
-	_rule.receipt = has_stack
+	_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER if log_receipt else HORIZONTAL_ALIGNMENT_LEFT
+	for kind: String in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:
+		if log_receipt: _body_label.add_theme_font_override(kind, ReceiptStyle.FONT)
+		elif _font != null: _body_label.add_theme_font_override(kind, Handwriting.BOLD_FONT if "bold" in kind else Handwriting.BODY_FONT)
+		else: _body_label.remove_theme_font_override(kind)
+	_body_label.add_theme_font_size_override("normal_font_size", 16 if log_receipt else 18)
+	_body_label.add_theme_constant_override("line_separation", 4 if log_receipt else 6)
+	_body_label.add_theme_constant_override("paragraph_separation", 8 if log_receipt else 10)
+	_rule.receipt = has_stack or log_receipt
 	_rule.queue_redraw()
 	_viewport_rect = viewport_rect
 	_build_choices(details)
@@ -159,7 +172,8 @@ func inspection() -> Dictionary:
 		"scroll_active":_body_label.scroll_active if _built else false, "font_bound":_font != null, "paper_texture_bound":_paper != null,
 		"event_document":_event_document.inspection() if _built and _event_document.visible else {},
 		"meme_mode":_meme_mode(), "meme_id":str(_details.get("meme_id", "")), "variant_id":str(_details.get("id", "")),
-		"source_pixels_per_world_unit":SOURCE_PIXELS_PER_UNIT, "slide_duration":SLIDE_DURATION}
+		"source_pixels_per_world_unit":SOURCE_PIXELS_PER_UNIT, "slide_duration":SLIDE_DURATION,
+		"receipt_panel":_log_surface.visible if _built else false, "receipt_width":_target_rect.size.x, "receipt_code":_log_surface.receipt_code if _built else ""}
 
 func _build() -> void:
 	if _built: return
@@ -178,6 +192,12 @@ func _build() -> void:
 	_stack_surface.add_theme_stylebox_override("panel", ReceiptStyle.new())
 	_stack_surface.hide()
 	_paper_holder.add_child(_stack_surface)
+	_log_surface = ReceiptPanel.new()
+	_log_surface.name = "LogReceiptPaper"
+	_log_surface.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_log_surface.paper_margin = 16.0
+	_log_surface.hide()
+	_paper_holder.add_child(_log_surface)
 	_title_label = Label.new()
 	_title_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_title_label.name = "HandwrittenTitle"
@@ -243,10 +263,12 @@ func _layout_paper() -> void:
 	var view := _viewport_rect
 	var margin := clampf(view.size.x * .018, 12.0, 28.0)
 	var top := clampf(view.size.y * .055, 18.0, 48.0)
+	var log_receipt := str(_details.get("document_kind", "")) == "log_receipt"
 	var starter := bool(_details.get("starter_pending", false))
 	var event_document := str(_details.get("document_kind", "")) in ["event", "meme"]
 	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
 	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter or event_document or has_stack else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
+	if log_receipt: dimensions.x = minf(float(_details.receipt_width), view.size.x - margin * 2.0)
 	_target_rect = Rect2(Vector2(view.end.x - margin - dimensions.x, view.position.y + top).round(), dimensions)
 	_offscreen_rect = Rect2(Vector2(view.end.x + margin, _target_rect.position.y).round(), dimensions)
 	# This is a screen-layer paper: whole-pixel poses keep fibers and ink sharp.
@@ -256,8 +278,13 @@ func _layout_paper() -> void:
 	_stack_surface.position = Vector2(4, 4)
 	_stack_surface.size = dimensions - Vector2(8, 8)
 	_stack_surface.visible = has_stack
-	var title_size := 22 if has_stack else 25
-	var padding := 24.0 if has_stack else minf(30.0, dimensions.x * .075)
+	_log_surface.size = dimensions
+	_log_surface.visible = log_receipt
+	_log_surface.receipt_code = str(_details.get("receipt_code", "00000000"))
+	_log_surface.queue_redraw()
+	var title_size := 18 if log_receipt else (22 if has_stack else 25)
+	_title_label.add_theme_font_size_override("font_size", title_size)
+	var padding := 16.0 if log_receipt else (24.0 if has_stack else minf(30.0, dimensions.x * .075))
 	var width := maxf(1, dimensions.x - padding * 2.0)
 	var font := _font if _font != null else ThemeDB.fallback_font
 	var title_font := _title_label.get_theme_font("font")
@@ -294,9 +321,9 @@ func _layout_paper() -> void:
 	_choice_box.custom_minimum_size.x = content_width
 	_choice_box.size = Vector2(content_width,natural_height)
 	_body_label.position = Vector2(padding,body_y)
-	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(34 if choice_height>0 else 28)))
+	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-(64 if log_receipt else (34 if choice_height>0 else 28))))
 	_body_label.visible = not event_document and not (has_stack and _body.is_empty())
-	_surface.visible = not event_document and not has_stack
+	_surface.visible = not event_document and not has_stack and not log_receipt
 	_event_document.visible = event_document
 	_event_document.position = Vector2(4, 4)
 	_event_document.size = dimensions - Vector2(8, 8)

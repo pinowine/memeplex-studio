@@ -340,6 +340,7 @@ func configure(page: Node2D) -> void:
 	_receipt_layer.add_child(_printer)
 	_printer.configure(_textures.blank_print_paper, _textures.paper_texture)
 	_printer.event_requested.connect(_open_event_archive)
+	_printer.details_changed.connect(_printer_details_changed)
 	_monitor = MonitorPanel.new()
 	_monitor.name = "MemeMonitor"
 	_monitor.font_size = 11
@@ -530,7 +531,8 @@ func _camera_arrived(id: String) -> void:
 		_fax.reveal_after_camera("phone")
 	elif id.begins_with("fax/"):
 		_fax.reveal_after_camera(id.trim_prefix("fax/"))
-	if not _component_target.is_empty(): _show_component_details()
+	if _component_target == "printer": _printer_details_changed.call_deferred()
+	elif not _component_target.is_empty(): _show_component_details()
 	if id in ["fax", "fax/phone", "crt"]:
 		_page._tutorial_observe("component_focused", {"id":"monitor" if id == "crt" else "fax"})
 	_fit_settings()
@@ -1085,10 +1087,11 @@ func sync_state(state: Dictionary) -> void:
 			entry.display_template = DeskLocalization.source("LOC_POINT_TRANSACTIONS_H_D_S_D_MEME_2F37D2F6")
 			entry.display_arguments = [transaction.hour,"+" if int(transaction.delta)>=0 else "",transaction.delta,transaction.reason,transaction.balance]
 			entry.localize_arguments = [3]
+			entry.receipt = {"kind":"points", "hour":transaction.hour, "title":transaction.reason, "delta":transaction.delta, "balance":transaction.balance}
 		sources.append(entry)
 	for event in state.get("events", []):
 		var text := "H%d / %s\n%s\n67：%s" % [int(event.get("hour", 0)), str(event.get("title", DeskLocalization.source("LOC_EVENT_C560201B"))), str(event.get("impact_text", "")), str(event.get("mentor_comment", ""))]
-		sources.append({"id":"event/"+str(event.get("instance_id",""))+"/"+text.sha256_text(),"event_id":str(event.get("instance_id","")),"text":text,"display_template":"H%d / %s\n%s\n67：%s","display_arguments":[int(event.get("hour",0)),str(event.get("title",DeskLocalization.source("LOC_EVENT_C560201B"))),str(event.get("impact_text","")),str(event.get("mentor_comment",""))],"localize_arguments":[1,2,3]})
+		sources.append({"id":"event/"+str(event.get("instance_id",""))+"/"+text.sha256_text(),"event_id":str(event.get("instance_id","")),"text":text,"display_template":"H%d / %s\n%s\n67：%s","display_arguments":[int(event.get("hour",0)),str(event.get("title",DeskLocalization.source("LOC_EVENT_C560201B"))),str(event.get("impact_text","")),str(event.get("mentor_comment",""))],"localize_arguments":[1,2,3],"receipt":{"kind":"event", "hour":int(event.get("hour",0)), "title":str(event.get("title",DeskLocalization.source("LOC_EVENT_C560201B")))}})
 	for source in sources: keys[source.id] = true
 	var replace := int(state.get("seed", _page.simulation.seed_value)) != _journal_seed or int(state.get("hour", 0)) < _journal_hour
 	for key in _journal_known:
@@ -1110,7 +1113,7 @@ func sync_state(state: Dictionary) -> void:
 		var id := "status/%d" % _journal.size()
 		var arguments: Array = [_journal_hour,status,int(state.get("meme_points",0)),int(state.get("attention_budget",0)),int(state.get("exposed",0)),int(state.get("adopted",0))]
 		var template := DeskLocalization.source("LOC_H_D_S_MEME_D_ATTENTION_D_ED191286")
-		_journal.append({"id":id,"text":template%arguments,"display_template":template,"display_arguments":arguments,"localize_arguments":[1]})
+		_journal.append({"id":id,"text":template%arguments,"display_template":template,"display_arguments":arguments,"localize_arguments":[1],"receipt":{"kind":"status", "hour":_journal_hour, "title":status}})
 		_journal_known[id] = true
 	_printer.sync_entries(_journal)
 
@@ -1270,6 +1273,15 @@ func _component_detail_inspection() -> Dictionary:
 	return {"active":not _component_target.is_empty(),"target":_component_target,"paper":_slot_reader.inspection() if _slot_reader != null else {},"occluders":_occluder_positions.duplicate()}
 
 func _component_details() -> Dictionary:
+	if _component_target == "printer":
+		var details := _printer.receipt_details()
+		if _page.has_meta("studio3d"):
+			var projected: Rect2 = _page.get_meta("studio3d").project_target(_printer)
+			details.receipt_width = projected.size.x
+		else:
+			var frame := _printer.get_global_transform_with_canvas()
+			details.receipt_width = frame.basis_xform(Vector2(_printer.size.x, 0)).length()
+		return details
 	if _component_target in ["fax","phonebook"] or _component_target.begins_with("fax/"):
 		var mode := "archive" if _component_target == "fax/archive" else ("phonebook" if _component_target == "phonebook" else "phone")
 		var details: Dictionary = _fax.component_details(mode)
@@ -1331,7 +1343,7 @@ func _show_component_details() -> void:
 	# Avoid restarting the slide or resetting scroll when nothing changed.
 	var reader_state: Dictionary = _slot_reader.inspection()
 	if reader_state.details != details or not _slot_reader.is_visible_in_tree() or reader_state.phase in ["hidden","exiting"]:
-		_slot_reader.show_details(details,get_viewport().get_visible_rect())
+		_slot_reader.show_details(details,_slot_reader.get_viewport().get_visible_rect())
 
 func _reader_choice_selected(index: int) -> void:
 	if _page._direct_starter_selection:
@@ -1345,6 +1357,9 @@ func _reader_choice_selected(index: int) -> void:
 
 func _reader_choice_hovered(index: int) -> void:
 	if _page._shell != null: _page._shell.hover_starter(index)
+
+func _printer_details_changed() -> void:
+	if _component_target == "printer" and _camera != null and _camera.inspection().state == "focused": _show_component_details()
 
 func _fax_details_changed(_record: Dictionary) -> void:
 	if not _component_target.is_empty() and _camera != null and _camera.inspection().state == "focused": _show_component_details()

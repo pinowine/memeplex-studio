@@ -108,5 +108,35 @@
     "source": "隔壁的声音已经传到街角。你的话还在门口，等一阵顺路的风。",
     "zh_CN": "“其实地上本没有路，走的人多了，也便成了路。”\n鲁迅《故乡》（1921）",
     "en": "“There was no road on the ground; as more people walked, a road came into being.”\nLu Xun, My Old Home (1921)"
+  },
+  "LOC_LOG_RECEIPT_HEADING": {
+    "source": "运行小票",
+    "zh_CN": "运行小票",
+    "en": "RUN RECEIPT"
+  },
+  "LOC_LOG_RECEIPT_POINTS": {
+    "source": "点数收支",
+    "zh_CN": "点数收支",
+    "en": "POINTS"
+  },
+  "LOC_LOG_RECEIPT_EVENT": {
+    "source": "事件记录",
+    "zh_CN": "事件记录",
+    "en": "EVENT"
+  },
+  "LOC_LOG_RECEIPT_STATUS": {
+    "source": "运行进展",
+    "zh_CN": "运行进展",
+    "en": "PROGRESS"
+  },
+  "LOC_LOG_RECEIPT_BALANCE": {
+    "source": "结余",
+    "zh_CN": "结余",
+    "en": "BAL."
+  },
+  "LOC_LOG_RECEIPT_EMPTY": {
+    "source": "尚无日志。",
+    "zh_CN": "尚无日志。",
+    "en": "No log entries yet."
   }
 }

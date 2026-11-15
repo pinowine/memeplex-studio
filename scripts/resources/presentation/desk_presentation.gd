@@ -9,8 +9,8 @@ class_name DeskPresentation
 @export_range(0, 1) var ao_strength := 0.35
 @export var shadow_color := Color(0.12, 0.10, 0.08, 1)
 @export_range(0.1, 3) var event_feed_duration := 0.85
-@export_range(5, 150) var log_chars_per_second := 48.0
-@export_range(20, 500) var log_feed_speed := 150.0
+@export_range(5, 600) var log_chars_per_second := 240.0
+@export_range(20, 1200) var log_feed_speed := 600.0
 @export_range(4, 40) var dot_pitch := 14.0
 @export_range(0, 1) var ink_strength := 0.28
 @export var ink_color := Color(0.16, 0.20, 0.17, 1)

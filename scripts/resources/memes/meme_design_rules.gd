@@ -135,7 +135,8 @@ func signature() -> String:
 	if not card_replacements.is_empty(): data.card_replacements = card_replacements
 	return JSON.stringify(data, "", true, true).sha256_text()
 
-func validate(catalog: MemeDemoCatalog) -> PackedStringArray:
+# The catalog preloads these rules, so validation must not import its script.
+func validate(catalog: Resource) -> PackedStringArray:
 	var errors := PackedStringArray()
 	if catalog == null:
 		return PackedStringArray(["Design rules require a catalog"])

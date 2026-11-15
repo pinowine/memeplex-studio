@@ -2,9 +2,10 @@ class_name DeskLogPrinter
 extends Control
 
 signal event_requested(instance_id: String)
+signal details_changed
 
-@export var chars_per_second: float = 45.0
-@export var feed_speed: float = 96.0
+@export var chars_per_second: float = 240.0
+@export var feed_speed: float = 600.0
 @export var row_height: float = 24.0
 @export var font_size: int = 16
 @export var paper_padding: float = 12.0
@@ -42,7 +43,9 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready(): _invalidate_layout()
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
+		_invalidate_layout()
+		details_changed.emit()
 
 func configure(texture: Texture2D, grain: Texture2D) -> void:
 	_paper_texture = texture
@@ -86,6 +89,7 @@ func sync_entries(entries: Array) -> void:
 		_queue.append(index)
 	_invalidate_layout()
 	_update_processing()
+	details_changed.emit()
 
 
 func advance(delta: float) -> void:
@@ -93,8 +97,8 @@ func advance(delta: float) -> void:
 		return
 	_ensure_layout()
 	var remaining := delta
-	var characters := _positive(chars_per_second, 45.0)
-	var feed := _positive(feed_speed, 96.0)
+	var characters := _positive(chars_per_second, 240.0)
+	var feed := _positive(feed_speed, 600.0)
 	# Consume elapsed time, not frame counts, including several queued records.
 	while remaining > 0.0:
 		if _active < 0:
@@ -117,7 +121,7 @@ func advance(delta: float) -> void:
 			remaining = maxf(0.0, remaining - consumed)
 			if _feed_height < height:
 				break
-		var length := str(_entries[_active].text).length()
+		var length := str(_rows[_active].display_text).length()
 		var print_time := maxf(0.0, float(length) - _char_cursor) / characters
 		var consumed := minf(remaining, print_time)
 		_char_cursor = minf(float(length), _char_cursor + consumed * characters)
@@ -153,8 +157,8 @@ func inspection() -> Dictionary:
 	var visual_rows := 0
 	for index in _printed:
 		characters += int(_rows[index].printed_chars)
-		visual_rows += _wrap(_display_prefix(index)).size()
-	var active_length := str(_entries[_active].text).length() if _active >= 0 else 0
+		visual_rows += _prefix_lines(index).size()
+	var active_length := str(_rows[_active].display_text).length() if _active >= 0 else 0
 	return {
 		"entry_count": _entries.size(), "entries": _entries.duplicate(true),
 		"source_order": "oldest_first", "newest_on_top": true,
@@ -168,6 +172,7 @@ func inspection() -> Dictionary:
 		"scroll_offset": _scroll_offset, "scroll_max": _scroll_max(),
 		"mouse_filter": mouse_filter, "clip_contents": clip_contents,
 		"minimum_size": get_combined_minimum_size(), "layout_rect": Rect2(position, size),
+		"receipt_style":"thermal_receipt", "chars_per_second":chars_per_second, "feed_speed":feed_speed,
 		"hierarchical_typography": hierarchical_typography, "texture_configured": _paper_texture != null, "grain_configured": _grain_texture != null
 	}
 
@@ -218,18 +223,44 @@ func _draw() -> void:
 	var font := _font()
 	var line_height := _line_height()
 	var padding := _padding()
+	if hierarchical_typography:
+		var top := padding - _scroll_offset
+		var width := maxf(1.0, size.x - padding * 2.0)
+		draw_string(font, Vector2(padding, top + font.get_ascent(_font_size())), "MEMEPLEX", HORIZONTAL_ALIGNMENT_CENTER, width, _font_size(), ink_color)
+		draw_string(font, Vector2(padding, top + line_height + font.get_ascent(_font_size())), DeskLocalization.text("LOC_LOG_RECEIPT_HEADING"), HORIZONTAL_ALIGNMENT_CENTER, width, _font_size(), ink_color)
+		_receipt_rule(top + _receipt_header_height() - 4.0)
 	for row: Dictionary in _visible_rows():
-		var lines := _wrap(str(row.text))
-		if hierarchical_typography and int(row.printed_chars) > 0:
-			draw_line(Vector2(padding, float(row.y) - 3.0), Vector2(size.x - padding, float(row.y) - 3.0), Color("686b52"), 0.6)
+		var lines: PackedStringArray = row.lines
+		if hierarchical_typography and bool(row.complete):
+			_receipt_rule(float(row.y) + float(row.height) - 4.0)
 		for index in lines.size():
 			var baseline := float(row.y) + index * line_height + (line_height - font.get_height(_font_size())) * .5 + font.get_ascent(_font_size())
-			var color := ink_color
-			if hierarchical_typography and index > 0: color = Color("505443")
-			draw_string(font, Vector2(padding, baseline), lines[index], HORIZONTAL_ALIGNMENT_LEFT, -1.0, _font_size(), color)
-			if hierarchical_typography and index == 0:
+			var color := Color("68604f") if hierarchical_typography and index == 0 else ink_color
+			var alignment := HORIZONTAL_ALIGNMENT_RIGHT if bool(row.amount_line) and index == lines.size() - 1 and bool(row.complete) else HORIZONTAL_ALIGNMENT_LEFT
+			draw_string(font, Vector2(padding, baseline), lines[index], alignment, maxf(1.0, size.x - padding * 2.0), _font_size(), color)
+			if hierarchical_typography and index == 1:
 				# A light second ink pass gives headings weight without wider glyph metrics.
 				draw_string(font, Vector2(padding + 0.3, baseline), lines[index], HORIZONTAL_ALIGNMENT_LEFT, -1.0, _font_size(), color)
+
+
+func _receipt_rule(y: float) -> void:
+	var x := _padding()
+	while x < size.x - _padding():
+		draw_line(Vector2(x, y), Vector2(minf(x + 3.0, size.x - _padding()), y), Color("b8ad96"), 0.7)
+		x += 6.0
+
+
+func _receipt_header_height() -> float:
+	return _line_height() * 2.0 + 8.0 if hierarchical_typography else 0.0
+
+
+func receipt_details() -> Dictionary:
+	var sections: Array[Dictionary] = []
+	for index in range(_entries.size() - 1, -1, -1):
+		sections.append({"body":_entry_details(_entries[index])})
+	return {"title":DeskLocalization.source("LOC_EVENT_LOG_F77E28E6"), "sections":sections,
+		"document_kind":"log_receipt", "receipt_width":size.x, "receipt_code":str(_entries.size()).pad_zeros(8),
+		"body":DeskLocalization.source("LOC_LOG_RECEIPT_EMPTY") if sections.is_empty() else ""}
 
 
 func _normalize(entries: Array) -> Array[Dictionary]:
@@ -270,12 +301,19 @@ func _ensure_layout() -> void:
 		return
 	_layout_signature = signature
 	var fraction := _feed_height / float(_rows[_active].height) if _active >= 0 and float(_rows[_active].height) > 0.0 else 0.0
+	var old_length := str(_rows[_active].get("display_text", "")).length() if _active >= 0 else 0
+	var print_fraction := _char_cursor / float(old_length) if old_length > 0 else 0.0
 	for index in _rows.size():
-		var lines := _wrap(_entry_display(_entries[index]))
+		var displayed := _entry_display(_entries[index])
+		var lines := _wrap(displayed)
+		_rows[index].display_text = displayed
 		_rows[index].lines = lines
-		_rows[index].height = lines.size() * _line_height()
+		_rows[index].height = lines.size() * _line_height() + (10.0 if hierarchical_typography else 0.0)
+		if bool(_rows[index].complete): _rows[index].printed_chars = displayed.length()
 	if _active >= 0:
 		_feed_height = fraction * float(_rows[_active].height)
+		_char_cursor = print_fraction * str(_rows[_active].display_text).length()
+		_rows[_active].printed_chars = int(floor(_char_cursor))
 	_clamp_scroll()
 
 
@@ -309,7 +347,7 @@ func _wrap(text: String) -> PackedStringArray:
 
 func _visible_rows() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
-	var y := _padding() - _scroll_offset
+	var y := _padding() + _receipt_header_height() - _scroll_offset
 	for printed_index in range(_printed.size() - 1, -1, -1):
 		var index := _printed[printed_index]
 		var height := _feed_height if index == _active else float(_rows[index].height)
@@ -317,6 +355,7 @@ func _visible_rows() -> Array[Dictionary]:
 			result.append({
 				"id": str(_entries[index].id), "event_id":str(_entries[index].get("event_id", "")), "text": _display_prefix(index), "canonical_text":str(_entries[index].text).left(int(_rows[index].printed_chars)),
 				"printed_chars": int(_rows[index].printed_chars), "complete": bool(_rows[index].complete),
+				"lines":_prefix_lines(index), "amount_line":str(_entries[index].get("receipt", {}).get("kind", "")) == "points",
 				"y": y, "height": height
 			})
 		y += height
@@ -326,7 +365,7 @@ func _visible_rows() -> Array[Dictionary]:
 func _paper_length() -> float:
 	if _printed.is_empty():
 		return 0.0
-	var length := _padding() * 2.0
+	var length := _padding() * 2.0 + _receipt_header_height()
 	for index in _printed:
 		length += _feed_height if index == _active else float(_rows[index].height)
 	return length
@@ -364,11 +403,11 @@ func _positive(value: float, fallback: float) -> float:
 	return value if is_finite(value) and value > 0.0 else fallback
 
 func _display_prefix(index: int) -> String:
-	var canonical := str(_entries[index].text)
-	var displayed := _entry_display(_entries[index])
-	if canonical.is_empty(): return displayed
-	var fraction := clampf(float(_rows[index].printed_chars)/float(canonical.length()),0.0,1.0)
-	return displayed.left(int(floor(displayed.length()*fraction+0.000000001)))
+	return str(_rows[index].display_text).left(int(_rows[index].printed_chars))
+
+func _prefix_lines(index: int) -> PackedStringArray:
+	if bool(_rows[index].complete): return _rows[index].lines
+	return _wrap(_display_prefix(index))
 
 func _localized_block(source: String) -> String:
 	var exact := str(TranslationServer.translate(StringName(source)))
@@ -376,6 +415,18 @@ func _localized_block(source: String) -> String:
 	return "\n".join(DeskLocalization.lines(Array(source.split("\n",true))))
 
 func _entry_display(entry: Dictionary) -> String:
+	if not entry.has("receipt"): return _entry_details(entry)
+	var receipt: Dictionary = entry.receipt
+	var kind := str(receipt.kind)
+	var label := DeskLocalization.text("LOC_LOG_RECEIPT_" + kind.to_upper())
+	var heading := "H%03d  %s" % [int(receipt.hour), label]
+	var title := _localized_block(str(receipt.title)).replace("\n", " ").strip_edges()
+	var lines := PackedStringArray([heading, title])
+	if kind == "points":
+		lines.append("%+d  %s %d" % [int(receipt.delta), DeskLocalization.text("LOC_LOG_RECEIPT_BALANCE"), int(receipt.balance)])
+	return "\n".join(lines)
+
+func _entry_details(entry: Dictionary) -> String:
 	if entry.get("display_template") is String and entry.get("display_arguments") is Array:
 		var values: Array = entry.display_arguments.duplicate()
 		for position: Variant in entry.get("localize_arguments",[]):

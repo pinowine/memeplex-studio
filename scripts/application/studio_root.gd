@@ -56,7 +56,8 @@ func _ready() -> void:
 		startup_error = "; ".join(fbx_loader.errors)
 		_loading.fail()
 		return
-	paths.append_array(PackedStringArray(["res://scenes/studio/desk/game_page.tscn", "res://data/catalogs/catalog.tres"]))
+	# The game-page dependency graph owns its catalog load.
+	paths.append("res://scenes/studio/desk/game_page.tscn")
 	if await _loading.load_resources(paths) != OK:
 		startup_error = "Cannot load studio resources"
 		_loading.fail()
