@@ -8,7 +8,6 @@ signal skill_purchase_requested(id: String)
 signal material_tabletop_requested(kind: String, id: String)
 signal sheet_requested(id: String)
 signal context_resource_detached(record: Dictionary, global_point: Vector2)
-signal context_layer_detached(record: Dictionary, global_point: Vector2)
 signal module_slots_pressed(viewport_rect: Rect2)
 
 const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
@@ -587,7 +586,6 @@ func _build_culture() -> void:
 	_context_slice.resource_detached.connect(func(record: Dictionary,point: Vector2) -> void:
 		material_tabletop_requested.emit(str(record.get("kind","")),str(record.get("id","")))
 		context_resource_detached.emit(record,point))
-	_context_slice.context_layer_detached.connect(func(record: Dictionary,point: Vector2): context_layer_detached.emit(record,point))
 	_context_title = _label(page,DeskLocalization.source("LOC_CORTEX_LANGUAGE_0D41EBCC"),"ContextLayerTitle",20)
 	_context_details = RichTextLabel.new()
 	_context_details.name = "ContextLayerDetails"
@@ -881,7 +879,7 @@ func _request(action: String, params: Dictionary) -> void:
 		if not errors.is_empty():
 			_show_module_errors(errors)
 			return
-	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context_axis", "move_context_axes","detach_context_layer","attach_context_layer"]:
+	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context_axis", "move_context_axes"]:
 		request["draft"]=get_draft()
 		if action=="install_module":
 			var module_id := str(request.get("module_id",""))

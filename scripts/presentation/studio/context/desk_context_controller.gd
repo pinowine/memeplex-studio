@@ -18,13 +18,6 @@ static func resource(state: Dictionary, rules: MemeDesignRules, id: String) -> D
 			return record
 	return rules.context_resource(id) if rules != null else {}
 
-static func can_attach(state: Dictionary, layer: String, packet: Dictionary) -> bool:
-	if layer not in LAYERS or str(packet.get("layer", "")) != layer:
-		return false
-	var actual: Dictionary = state.get("context_layers", {}).get(layer, {})
-	var plane_id: String = str(actual.get("plane_id", ""))
-	return not bool(actual.get("attached", true)) and not plane_id.is_empty() and plane_id == str(packet.get("plane_id", ""))
-
 static func can_install(state: Dictionary, rules: MemeDesignRules, layer: String, slot: int, packet: Dictionary) -> bool:
 	var actual: Dictionary = state.get("context_layers", {}).get(layer, {})
 	if layer not in ["language", "group", "topics"] or not bool(actual.get("attached", true)) or str(packet.get("type", "")) != "context_resource":

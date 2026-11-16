@@ -235,7 +235,7 @@ func design_action(action: String, params: Dictionary = {}) -> PackedStringArray
 		if not params.get("position") is Vector2: return PackedStringArray([DeskLocalization.source("LOC_PATCH_PLACEMENT_REQUIRES_PAPER_LOCAL_COORDINATES_FC1D71FE")])
 		params = params.duplicate(true)
 		params.position = _vector_array(params.position)
-	if action in ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context_axis", "move_context_axes", "detach_context_layer", "attach_context_layer"]:
+	if action in ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context_axis", "move_context_axes"]:
 		var draft: Variant = params.get("draft")
 		if not draft is Dictionary or not draft.get("slots") is Dictionary or not draft.get("political_position") is Vector2 or not draft.get("pragmatic_position") is Vector2:
 			return PackedStringArray([DeskLocalization.source("LOC_APPLYING_A_SOLID_REQUIRES_A_VALID_AUTHOR_CAF24FE0")])

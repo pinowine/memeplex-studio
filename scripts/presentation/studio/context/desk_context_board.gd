@@ -1,4 +1,3 @@
-## The five context blocks share commands with detached context slices.
 class_name DeskContextBoard
 extends Control
 
@@ -6,7 +5,6 @@ signal action_requested(action: String, params: Dictionary)
 signal selected_info_changed(info: Dictionary)
 signal depth_changed(layer: String, depth: float)
 signal resource_detached(record: Dictionary, global_point: Vector2)
-signal context_layer_detached(record: Dictionary, global_point: Vector2)
 signal slot_pressed(layer: String, index: int, viewport_rect: Rect2)
 
 const ContextController := preload("res://scripts/presentation/studio/context/desk_context_controller.gd")
@@ -183,9 +181,9 @@ func _build_layout() -> void:
 	for id: String in LAYERS:
 		var area: Rect2 = areas[id]
 		var rect := Rect2(area.position*size,area.size*size)
-		var data := {"rect":rect,"handle_rect":Rect2(rect.end.x-28,rect.position.y,28,32),"slot_centres":[],"slot_rects":[],"slot_pickup_rects":[]}
+		var data := {"rect":rect,"slot_centres":[],"slot_rects":[],"slot_pickup_rects":[]}
 		data.icon_rect = Rect2(rect.position + Vector2(0, 4), Vector2(24, 24))
-		data.title_rect = Rect2(rect.position + Vector2(32, 0), Vector2(rect.size.x - 68, 32))
+		data.title_rect = Rect2(rect.position + Vector2(32, 0), Vector2(rect.size.x - 32, 32))
 		data.heading_rule = Rect2(rect.position + Vector2(0, 40), Vector2(rect.size.x, 1))
 		_layout_layers[id] = data
 		data.region_polygon = _region_points(id)
@@ -294,45 +292,18 @@ func _draw() -> void:
 	for id: String in LAYERS:
 		if not _layout_layers.has(id): continue
 		var info: Dictionary = _layout_layers[id]
-		var rect: Rect2 = info.rect
-		var attached := _attached(id)
 		var title: Rect2 = info.title_rect
 		draw_string(HEADING_FONT, title.position + Vector2(0, (title.size.y-HEADING_FONT.get_height(HEADING_SIZE))*.5+HEADING_FONT.get_ascent(HEADING_SIZE)), DeskLocalization.text(TITLES[id]), HORIZONTAL_ALIGNMENT_LEFT, title.size.x, HEADING_SIZE, INK)
 		var rule: Rect2 = info.heading_rule
 		draw_line(rule.position, rule.end, Color(INK, .35), 1.0, true)
 		if id == _layer: draw_line(rule.position, rule.position + Vector2(32, 0), Color(INK, .85), 2.0, true)
-		_draw_section_handle(id)
-		if not attached:
-			_draw_detached_slot(rect)
-			continue
 		if id in ["stance","pragmatic"]: _draw_axis(id)
 		else: _draw_slots(id)
-	if _held_moved and _held == "layer":
-		var point := get_global_transform_with_canvas().affine_inverse()*_last_point
-		draw_arc(point,17,0.2,TAU-0.2,32,Color(0.20,0.32,0.25,0.65),1.5,true)
-		draw_rect(Rect2(point + Vector2(-7, -10), Vector2(14, 20)), Color(INK, .65), false, 1.2)
 
 func _column_rules() -> Array[Rect2]:
 	return [Rect2(Vector2(size.x * .38, size.y * .19), Vector2(0, size.y * .735)),
 		Rect2(Vector2(size.x * .675, size.y * .075), Vector2(0, size.y * .39)),
 		Rect2(Vector2(size.x * .055, size.y * .525), Vector2(size.x * .89, 0))]
-
-func _draw_section_handle(id: String) -> void:
-	var handle: Rect2 = _layout_layers[id].handle_rect
-	var active := _enabled and (_hover_target == id + "/handle" or (_held == "layer" and _held_layer == id))
-	if active: draw_circle(handle.get_center(), 15, Color(INK, .07))
-	for x in [-3, 3]:
-		for y in [-6, 0, 6]: draw_circle(handle.get_center() + Vector2(x, y), 1.3, Color(INK, .85 if active else .5))
-
-func _draw_detached_slot(rect: Rect2) -> void:
-	var center := Vector2(rect.get_center().x, rect.position.y + 64 + (rect.size.y - 64) * .5)
-	var frame := Rect2(center - Vector2(36, 24), Vector2(72, 48))
-	draw_dashed_line(frame.position, Vector2(frame.end.x, frame.position.y), Color(MUTED, .45), 1.0, 5.0)
-	draw_dashed_line(Vector2(frame.position.x, frame.end.y), frame.end, Color(MUTED, .45), 1.0, 5.0)
-	draw_dashed_line(frame.position, Vector2(frame.position.x, frame.end.y), Color(MUTED, .45), 1.0, 5.0)
-	draw_dashed_line(Vector2(frame.end.x, frame.position.y), frame.end, Color(MUTED, .45), 1.0, 5.0)
-	draw_arc(center + Vector2(2, 0), 11, -.5, PI + .5, 24, Color(INK, .55), 1.5, true)
-	draw_polyline(PackedVector2Array([center + Vector2(-12, -9), center + Vector2(-8, -4), center + Vector2(-2, -8)]), Color(INK, .55), 1.5, true)
 
 func _slot_shape(id: String) -> String:
 	return CardFace.SHAPES.get("topic" if id == "topics" else id, "xy_plane")
@@ -484,9 +455,6 @@ func _layer_at(point: Vector2) -> String:
 	# Card hit areas take precedence over the surrounding section.
 	for id: String in LAYERS:
 		if not _layout_layers.has(id): continue
-		if (_layout_layers[id].handle_rect as Rect2).has_point(point): return id
-	for id: String in LAYERS:
-		if not _layout_layers.has(id): continue
 		var info: Dictionary = _layout_layers[id]
 		for pickup: Rect2 in info.slot_pickup_rects:
 			if pickup.has_point(point): return id
@@ -507,8 +475,6 @@ func _can_drop_data(point: Vector2, data: Variant) -> bool:
 	if not _enabled or not data is Dictionary:
 		return false
 	var layer := _layer_at(point)
-	if str(data.get("type", "")) == "design_context_layer":
-		return ContextController.can_attach(_state, layer, data)
 	return ContextController.can_install(_state, _rules, layer, _slot_at(layer, point), data)
 
 func _drop_data(point: Vector2, data: Variant) -> void:
@@ -517,11 +483,8 @@ func _drop_data(point: Vector2, data: Variant) -> void:
 		return
 	var id := _layer_at(point)
 	select_layer(id)
-	if str(data.get("type", "")) == "design_context_layer":
-		perform("attach_context_layer", {"layer":id, "plane_id":str(data.plane_id)})
-	else:
-		_selected_slot = _slot_at(id, point)
-		perform("install_context", {"layer":id, "slot":_selected_slot, "resource_id":str(data.resource_id)})
+	_selected_slot = _slot_at(id, point)
+	perform("install_context", {"layer":id, "slot":_selected_slot, "resource_id":str(data.resource_id)})
 	selected_info_changed.emit(selected_info())
 	queue_redraw()
 
@@ -534,17 +497,6 @@ func accept_tabletop_item(kind: String, id: String, global_position: Vector2) ->
 	_drop_data(point, data)
 	var slots: Array = _layers().get(layer, {}).get("slots", [])
 	return slot >= 0 and slot < slots.size() and str(slots[slot].get("resource_id", slots[slot].get("id", ""))) == id
-
-func accept_tabletop_layer(record: Dictionary, global_point: Vector2) -> bool:
-	var point := get_global_transform_with_canvas().affine_inverse() * global_point
-	if not _can_drop_data(point, record): return false
-	_drop_data(point, record)
-	return _attached(str(record.get("layer", "")))
-
-func plane_record(id: String = "") -> Dictionary:
-	if id.is_empty(): id = _layer
-	var data: Dictionary = _layers().get(id, {})
-	return {"type":"design_context_layer", "layer":id, "plane_id":str(data.get("plane_id", "")), "depth":float(data.get("depth", DEPTHS[LAYERS.find(id)])), "snapshot":_state.duplicate(true)}
 
 func _gui_input(event: InputEvent) -> void:
 	if not _enabled: return
@@ -584,8 +536,7 @@ func _begin_pointer(point: Vector2) -> void:
 	_held_slot = _selected_slot
 	_held = "selection"
 	if _attached(id):
-		if (_layout_layers[id].handle_rect as Rect2).has_point(point): _held = "layer"
-		elif id in ["stance", "pragmatic"]:
+		if id in ["stance", "pragmatic"]:
 			var anchor := _axis_point(id)
 			if id == "stance" and not bool(_layers().get(id, {}).get("known", false)): anchor = _axis_origin(id)
 			if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS:
@@ -613,10 +564,7 @@ func _update_pointer(point: Vector2) -> void:
 	var target := id
 	var cursor := Control.CURSOR_POINTING_HAND if not id.is_empty() else Control.CURSOR_ARROW
 	if not id.is_empty() and _attached(id):
-		if (_layout_layers[id].handle_rect as Rect2).has_point(point):
-			target += "/handle"
-			cursor = Control.CURSOR_DRAG
-		elif id in ["stance", "pragmatic"]:
+		if id in ["stance", "pragmatic"]:
 			var anchor := _axis_point(id)
 			if id == "stance" and not bool(_layers().get(id, {}).get("known", false)): anchor = _axis_origin(id)
 			if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS:
@@ -663,14 +611,7 @@ func _release_pointer(point: Vector2) -> void:
 		var index := slot if slot >= 0 else _slot_at(id,point)
 		slot_pressed.emit(id,index,layer_viewport_rect(id))
 		return
-	if held == "layer" and _layer_at(point) != id:
-		var record := plane_record(id)
-		if str(record.plane_id).is_empty() or not _attached(id): return
-		perform("detach_context_layer", {"layer":id, "plane_id":str(record.plane_id)})
-		if not _attached(id):
-			record.snapshot = _state.duplicate(true)
-			context_layer_detached.emit(record, _last_point)
-	elif held == "resource" and resource_dragged and _slot_at(id, point) != slot:
+	if held == "resource" and resource_dragged and _slot_at(id, point) != slot:
 		var slots: Array = _layers().get(id, {}).get("slots", [])
 		if slot < 0 or slot >= slots.size() or slots[slot].is_empty(): return
 		var record := _resource(str(slots[slot].get("resource_id", slots[slot].get("id", "")))).duplicate(true)
@@ -711,13 +652,6 @@ func _get_drag_data(_position: Vector2) -> Variant:
 	# Commit inventory changes on release after distinguishing a drag from a click.
 	return null
 
-func create_slice_item(record: Dictionary) -> Control:
-	var code: Script = load("res://scripts/presentation/studio/context/desk_context_slice_item.gd")
-	var item: Control = code.new()
-	item.theme = theme
-	item.configure(record, _rules, _resource_factory)
-	return item
-
 func inspection() -> Dictionary:
 	var layers := {}
 	var visible: Array = []
@@ -731,7 +665,6 @@ func inspection() -> Dictionary:
 		info.heading_rect = Rect2(info.rect.position, Vector2(info.rect.size.x, 32))
 		info.heading_font_size = HEADING_SIZE
 		info.heading_emphasis = "semibold"
-		info.handle_style = "six_dot_grip"
 		info.empty_slot_style = "card_silhouette_plus" if id in ["language", "group", "topics"] else "axis_drag_handle"
 		var quads: Array = []
 		for rect: Rect2 in info.get("slot_rects", []):

@@ -63,7 +63,6 @@ var _fax: DeskFaxStation
 var _speed_strip: DeskSpeedStrip
 var _token_boxes: Dictionary = {}
 var _material_cards: DeskMaterialCards
-var _context_layer_items: Dictionary = {}
 var _receipt_layer: CanvasLayer
 var _event_archive: Dictionary = {}
 var _dependent_updates := 0
@@ -411,8 +410,6 @@ func configure(page: Node2D) -> void:
 	_material_cards.release_module.connect(_unclip_module)
 	page.hud.material_tabletop_requested.connect(_material_cards.request_item)
 	var editor: Control = page.hud.design_workbench()
-	if editor.has_signal("context_layer_detached"):
-		editor.context_layer_detached.connect(_place_context_layer)
 	if editor.has_signal("context_resource_detached"):
 		editor.context_resource_detached.connect(func(record: Dictionary,point: Vector2) -> void:
 			_material_cards.place_existing_item(str(record.get("kind","")),str(record.get("id","")),point))
@@ -1064,7 +1061,6 @@ func _sync_reward_input() -> void:
 
 
 func sync_state(state: Dictionary) -> void:
-	_sync_context_layers(state)
 	for box: Control in _token_boxes.values(): box.sync_state(state)
 	if _material_cards != null:
 		_material_cards.sync_state(state)
@@ -1127,8 +1123,6 @@ func sync_state(state: Dictionary) -> void:
 
 
 func reset_journal() -> void:
-	for item: Control in _context_layer_items.values(): item.queue_free()
-	_context_layer_items.clear()
 	if _material_cards != null: _material_cards.clear_cards()
 	_event_archive.clear()
 	_journal.clear()
@@ -1173,7 +1167,6 @@ func _process(_delta: float) -> void:
 		elif _fax_drop_preview:
 			_material_cards.clear_drop_preview()
 			_fax_drop_preview = false
-	for item: Control in _context_layer_items.values(): item.set_interaction_enabled(enabled)
 	var editor: Control = _page.hud.design_workbench()
 	var dragged: Dictionary = _material_cards.focused_dragged_material()
 	editor.context_slice().set_token_drag(_monitor._drag_id if _monitor._dragging else str(dragged.get("id", "")))
@@ -1194,7 +1187,7 @@ func inspection() -> Dictionary:
 	var shades: Dictionary = {}
 	for id in _shadows: shades[id] = _shadows[id].inspection()
 	return {"component_details":_component_detail_inspection(),"environment":_environment.inspection(),"fixed_layout":true,"world_size":DESK_SIZE,"desktop_camera":_camera.inspection() if _camera != null else {},"revealed_focus":_revealed_focus,"focus_reveal_count":_focus_reveal_count,"free_placement_enabled":false,"layout_persistence_enabled":false,"layout_version":8,"reference_layout":true,"handwritten_font":Handwriting.FONT.resource_path,"slot_details":_slot_detail_inspection(),"hover_strip":_hover_strip.inspection() if _hover_strip != null else {},"wood_texels_per_world":1254.0/384.0,"active_sheet":_active_sheet,"stack_rect":_stack_rect,"map_rect":_stack.map_rect(),
-		"context_layer_items":_context_layer_inspection(), "tabletop_materials":_material_cards.inspection() if _material_cards != null else {},
+		"tabletop_materials":_material_cards.inspection() if _material_cards != null else {},
 		"archive":{}, "speed_strip":_speed_strip.inspection(),"token_boxes":{},"token_drawers_merged":true,"material_storage_visible":_material_storage_visible,"dependent_updates":_dependent_updates,"receipt_layer":_receipt_layer.layer,
 		"paper_stack":_stack.inspection(), "fax_station":_fax.inspection(), "interaction":_props.inspection(),
 		"clock":_clock_presenter.inspection(), "clock_rect":clock_rect(),"clock_texture":_art.clock.texture.resource_path,
@@ -1206,54 +1199,6 @@ func inspection() -> Dictionary:
 		"silkscreen_shader":FixedInk.resource_path,"hover_shader":TornHover.resource_path,"shadows":shades,
 		"paper_texture":_textures.map_print_paper.resource_path,"layout_error":_layout_error}
 
-
-func _layer_storage_position(layer: String) -> Vector2:
-	var index := ["language","group","topics","stance","pragmatic"].find(layer)
-	return Vector2(150 + maxi(0,index) * 215, 930)
-
-func _place_context_layer(record: Dictionary, point: Vector2) -> void:
-	var id := str(record.get("plane_id",""))
-	if id.is_empty(): return
-	if _context_layer_items.has(id):
-		var existing: Control = _context_layer_items[id]
-		existing.position = _layer_storage_position(str(record.get("layer","")))
-		return
-	var slice: Control = _page.hud.design_workbench().context_slice()
-	var item: Control = slice.create_slice_item(record)
-	item.name = "Layer_" + str(record.layer)
-	_page.hud.add_child(item)
-	item.size = Vector2(200,54)
-	item.position = _layer_storage_position(str(record.get("layer","")))
-	item.z_index = 21
-	for prop: Dictionary in _props.inspection().props:
-		_props.add_exclusion(str(prop.id),item)
-	_context_layer_items[id] = item
-	item.item_dropped.connect(func(_layer: String,plane_id: String,drop_point: Vector2):
-		if _active_sheet == "cultivate" and not _page._interface_paused() and slice.accept_tabletop_layer(item.record,drop_point):
-			_context_layer_items.erase(plane_id)
-			item.queue_free()
-		else:
-			item.position = _layer_storage_position(str(item.record.get("layer",""))))
-
-func _sync_context_layers(state: Dictionary) -> void:
-	var design: Dictionary = state.get("design_state",{})
-	for layer: String in design.get("context_layers",{}):
-		var row: Dictionary = design.context_layers[layer]
-		var id := str(row.get("plane_id",""))
-		if id.is_empty(): continue
-		if bool(row.get("attached",true)):
-			if _context_layer_items.has(id):
-				var item: Control = _context_layer_items[id]
-				_context_layer_items.erase(id)
-				item.queue_free()
-		elif not _context_layer_items.has(id):
-			var index: int = ["language","group","topics","stance","pragmatic"].find(layer)
-			_place_context_layer({"layer":layer,"plane_id":id,"snapshot":state.duplicate(true),"depth":0.1+index*0.2},Vector2(190+index*34,size.y-155))
-
-func _context_layer_inspection() -> Dictionary:
-	var result := {}
-	for id: String in _context_layer_items: result[id] = _context_layer_items[id].inspection()
-	return result
 
 func _layout_cable(id: String, machine: Control, port: Vector2, dimensions: Vector2, angle: float) -> void:
 	var cable: TextureRect = _wires[id]

@@ -76,11 +76,7 @@ func drag_cursor_shape(point: Vector2) -> int:
 		elif not board._layer_at(local).is_empty():
 			return Input.CURSOR_POINTING_HAND if board._can_drop_data(local, {"type":"context_resource", "kind":kind, "resource_id":id}) else Input.CURSOR_FORBIDDEN
 		return Input.CURSOR_POINTING_HAND if _desk._material_cards._enabled else Input.CURSOR_FORBIDDEN
-	for item: Control in _desk._context_layer_items.values():
-		if item._dragging or item._native_drag:
-			if not item._enabled: return Input.CURSOR_FORBIDDEN
-			if not board._layer_at(local).is_empty(): return Input.CURSOR_POINTING_HAND if board._can_drop_data(local, item.record) else Input.CURSOR_FORBIDDEN
-	if board._resource_dragging or board._axis_drag or (board._held == "layer" and board._held_moved):
+	if board._resource_dragging or board._axis_drag:
 		return Input.CURSOR_POINTING_HAND if board._enabled else Input.CURSOR_FORBIDDEN
 	if editor._neuron._dragging: return Input.CURSOR_POINTING_HAND if editor._neuron._interaction_enabled else Input.CURSOR_FORBIDDEN
 	return Input.CURSOR_POINTING_HAND
@@ -91,12 +87,10 @@ func pointer_dragging() -> bool:
 	var editor: Control = _desk._page.hud.design_workbench()
 	if editor._neuron._dragging: return true
 	var board: Control = editor.context_slice()
-	if board._resource_dragging or board._axis_drag or (board._held == "layer" and board._held_moved): return true
+	if board._resource_dragging or board._axis_drag: return true
 	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
 	for slip: Control in slips:
 		if slip.is_dragging(): return true
-	for item: Control in _desk._context_layer_items.values():
-		if item._dragging or item._native_drag: return true
 	return false
 
 func foreground_ui_handles(point: Vector2) -> bool:

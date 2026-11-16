@@ -26,7 +26,6 @@ func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int
 		if control is DeskMaterialCards.StackCard: return _material_shape(control.record)
 		if control is DeskEventMaterialSlip:
 			return _material_shape(control.record) if control._enabled else Input.CURSOR_FORBIDDEN
-		if control is DeskContextSliceItem: return Input.CURSOR_POINTING_HAND if control._enabled else Input.CURSOR_FORBIDDEN
 		if control is DeskModulePaperClip: return Input.CURSOR_CROSS if _desk._can_focus_slot("edit") else Input.CURSOR_POINTING_HAND
 		var local := control.get_global_transform_with_canvas().affine_inverse() * point
 		if control is DeskContextBoard:
@@ -87,9 +86,6 @@ func target_at(point: Vector2) -> Dictionary:
 	target = _inventory_target(point)
 	if not target.is_empty(): return target
 	if _desk._props.enabled and String(_desk._props._hit_prop(point)) in ["crt", "printer", "fax", "clock", "speed"]: return {}
-	for item: Control in _desk._context_layer_items.values():
-		if item._enabled and _contains(item, point):
-			return _target("layer/" + str(item.record.layer), item._view, item._view._quad)
 	if _desk._props.enabled:
 		var key := String(_desk._props._hit_prop(point))
 		if key.begins_with("sheet/"):

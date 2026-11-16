@@ -869,7 +869,13 @@ func validate_payload(data: Dictionary, events: Array, variants: Array, economy:
 
 func restore(data: Dictionary, events: Array = [], variants: Array = [], economy: Dictionary = {}) -> PackedStringArray:
 	var errors := validate_payload(data, events, variants, economy)
-	if errors.is_empty(): _state = _normalize_empty_context_slots(data)
+	if not errors.is_empty(): return errors
+	_state = _normalize_empty_context_slots(data)
+	# Old runs can contain layers detached through the retired slice view.
+	for layer: String in _state.context_layers:
+		var row: Dictionary = _state.context_layers[layer]
+		if not bool(row.attached):
+			errors.append_array(_perform("attach_context_layer", {"layer":layer, "plane_id":row.plane_id, "base":_state.context_draft}))
 	return errors
 
 func _skill_ids(data: Dictionary) -> Array:

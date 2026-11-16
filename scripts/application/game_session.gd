@@ -586,7 +586,7 @@ func _design_action(action: String, params: Dictionary) -> void:
 		_render()
 		return
 	var input := params.duplicate(true)
-	var changes_draft := action in ["apply_context", "apply_skill", "install_module", "remove_module", "edit_module_content", "take_apply_context", "install_context", "remove_context", "move_context_axis", "move_context_axes", "detach_context_layer", "attach_context_layer"]
+	var changes_draft := action in ["apply_context", "apply_skill", "install_module", "remove_module", "edit_module_content", "take_apply_context", "install_context", "remove_context", "move_context_axis", "move_context_axes"]
 	if changes_draft: input["draft"] = hud.get_draft()
 	var errors := simulation.design_action(action, input)
 	if errors.is_empty() and changes_draft:
