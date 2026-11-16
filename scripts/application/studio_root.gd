@@ -219,6 +219,7 @@ func _setup_lighting() -> void:
 	sun.light_color = Color("ffefd7")
 	sun.light_energy = 1.05
 	sun.shadow_enabled = true
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_max_distance = 8.0
 	add_child(sun)
 	for point in [Vector3(-.6,1.2,-.5), Vector3(.8,1.5,-.9)]:
