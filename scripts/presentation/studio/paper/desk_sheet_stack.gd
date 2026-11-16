@@ -106,6 +106,7 @@ var _water_source: CanvasGroup
 var _water_signature: Array = []
 var _water_refreshes := 0
 var _tab_edge_cache: Dictionary = {}
+var _tab_title_signatures: Dictionary = {}
 
 func _ready() -> void:
 	process_priority = 25
@@ -385,8 +386,12 @@ func _sync_tab_attachment() -> void:
 
 func _sync_tab_title(tab: Control) -> void:
 	var title := tab.get_node("Title") as Label
+	var font := title.get_theme_font("font")
+	var signature: Array = [title.text, font, TranslationServer.get_locale()]
+	if _tab_title_signatures.get(tab, []) == signature: return
+	_tab_title_signatures[tab] = signature
 	var writing_area := Rect2(Vector2(4,8),Vector2(TAB_SIZE.x-TAB_EDGE_OVERLAP-8,44))
-	var layout := TextFlow.fit_text(title.get_theme_font("font"),title.text,writing_area,22,14,2)
+	var layout := TextFlow.fit_text(font,title.text,writing_area,22,14,2)
 	var font_size := int(layout.font_size)
 	if title.get_theme_font_size("font_size") != font_size: title.add_theme_font_size_override("font_size",font_size)
 	title.position = writing_area.position
