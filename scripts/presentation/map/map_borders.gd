@@ -14,6 +14,13 @@ var zoom_value: float = 1.0
 var detail_level: int = 0
 var water_opacity: float = 0.0
 
+func _ready() -> void:
+	var borders := preload("res://scripts/presentation/map/map_border_cache.gd").new()
+	borders.name = "CachedBorders"
+	add_child(borders)
+	move_child(borders, 0)
+	borders.configure(self)
+
 func set_world(value: AtlasWorldData) -> void:
 	world = value
 	terrain_material = settings.terrain_material.duplicate()
@@ -79,16 +86,16 @@ func _country_color(country: int) -> Color:
 		color = color.blend(settings.hover_color)
 	return color
 
-func _draw() -> void:
+func draw_borders(canvas: Node2D) -> void:
 	if meshes.is_empty():
 		return
-	draw_multiline(border_lines, settings.border_color, settings.border_width, true)
+	canvas.draw_multiline(border_lines, settings.border_color, settings.border_width, true)
 	if selected_country >= 0:
 		var width := settings.selected_border_width / pow(zoom_value, settings.selected_border_zoom_exponent)
 		for ring in world.territories[selected_country].outlines + world.territories[selected_country].holes:
 			var outline: PackedVector2Array = ring.duplicate()
 			outline.append(ring[0])
-			draw_polyline(outline, settings.selected_border_color, width, true)
+			canvas.draw_polyline(outline, settings.selected_border_color, width, true)
 
 func _build_water_meshes() -> void:
 	var vertices := PackedVector3Array()
