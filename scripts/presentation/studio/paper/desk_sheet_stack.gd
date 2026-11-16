@@ -407,17 +407,20 @@ func _sync_water_view() -> void:
 	var final_scale := get_viewport().get_final_transform().get_scale().abs()
 	var pixels := Vector2i((_map_input.size * final_scale).ceil()).max(Vector2i.ONE)
 	var opacity: float = _water_terrain.water_opacity if _water_source.visible else 0.0
-	var signature: Array = [_water_terrain.world, view, _map_input.size, pixels, opacity]
+	if _water_composite.opacity != opacity:
+		_water_composite.opacity = opacity
+		_water_composite.queue_redraw()
+	var signature: Array = [_water_terrain.world, view, _map_input.size, pixels]
 	if signature == _water_signature: return
+	var world_changed: bool = _water_signature.is_empty() or _water_signature[0] != _water_terrain.world
 	_water_signature = signature
 	_water_refreshes += 1
 	_water_viewport.size = pixels
 	_water_ink.transform = Transform2D.IDENTITY.scaled(Vector2(pixels) / _map_input.size) * view
-	_water_ink.queue_redraw()
+	if world_changed: _water_ink.queue_redraw()
 	_water_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 	_water_composite.view = view
 	_water_composite.map_size = _map_input.size
-	_water_composite.opacity = opacity
 	_water_composite.queue_redraw()
 
 func layout_area(rectangle: Rect2) -> void:
