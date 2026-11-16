@@ -4,7 +4,6 @@ extends RefCounted
 
 const LAYERS := ["language", "group", "topics", "stance", "pragmatic"]
 const DEPTHS := [0.1, 0.3, 0.5, 0.7, 0.9]
-const MAX_AXIS_STEPS := 20
 
 var _prefix: String
 var _session := Crypto.new().generate_random_bytes(12).hex_encode()

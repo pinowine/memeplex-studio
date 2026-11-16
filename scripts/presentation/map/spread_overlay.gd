@@ -4,7 +4,6 @@ extends Control
 const MAX_TOTAL_DOTS := 12000
 const HIT_CELL_SIZE := 16.0
 const DOT_RADIUS := 1.6
-const HOVER_RADIUS := 2.5
 const OTHER_HOVER_OPACITY := 0.25
 const POINT_SHADER := """
 shader_type canvas_item;
@@ -465,48 +464,8 @@ func _upload_segments(segments: Array[Dictionary]) -> void:
 	_update_hover_uniforms()
 	_last_upload_usec = Time.get_ticks_usec() - started
 
-func _upload_points() -> void:
-	var started := Time.get_ticks_usec()
-	_hit_grid = {}
-	for point: Dictionary in _points:
-		var meme := str(point.meme_id)
-		if not _meme_draw_indices.has(meme): _meme_draw_indices[meme] = _meme_draw_indices.size()
-		_variant_draw_indices[str(point.variant_id)] = _meme_draw_indices[meme]
-	var data := PackedFloat32Array()
-	data.resize(_points.size() * 16)
-	for index in _points.size():
-		var point: Dictionary = _points[index]
-		var position: Vector2 = point.world_position
-		var color: Color = point.color
-		var offset := index * 16
-		data[offset] = 1.0
-		data[offset + 3] = position.x
-		data[offset + 5] = 1.0
-		data[offset + 7] = position.y
-		data[offset + 8] = color.r
-		data[offset + 9] = color.g
-		data[offset + 10] = color.b
-		data[offset + 11] = color.a
-		data[offset + 12] = float(_meme_draw_indices[str(point.meme_id)])
-		data[offset + 13] = float(_country_indices[str(point.country_id)]) * 2.0 + (1.0 if bool(point.origin) else 0.0)
-		data[offset + 14] = position.x
-		data[offset + 15] = position.y
-		var cell := _hit_cell(position)
-		if not _hit_grid.has(cell): _hit_grid[cell] = []
-		_hit_grid[cell].append(index)
-	_point_multimesh.instance_count = _points.size()
-	_point_multimesh.buffer = data
-	var world: AtlasWorldData = _atlas.get("world")
-	var bounds := world.bounds.grow(64.0)
-	_point_multimesh.custom_aabb = AABB(Vector3(bounds.position.x, bounds.position.y, -1), Vector3(bounds.size.x, bounds.size.y, 2))
-	_update_hover_uniforms()
-	_last_upload_usec = Time.get_ticks_usec() - started
-
 func _point_highlighted(point: Dictionary) -> bool:
 	return str(point.variant_id) in hovered_variant_ids and (hovered_country_id.is_empty() or str(point.country_id) == hovered_country_id)
-
-func _point_opacity(point: Dictionary) -> float:
-	return OTHER_HOVER_OPACITY if not hovered_variant_ids.is_empty() and not _point_highlighted(point) else 1.0
 
 func _draw() -> void:
 	var started := Time.get_ticks_usec()

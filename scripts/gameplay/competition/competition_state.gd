@@ -367,18 +367,6 @@ func evaluate_ending(variants: Array, hour: int, current_id: String = "", countr
 	if not result.is_empty(): _state.victory = result.duplicate(true)
 	return result
 
-func _legacy_eligibility(view: Dictionary,hour: int,autonomous_hours: int,equilibrium_hours: int) -> Dictionary:
-	var ids: Array = []
-	if view.owned_share >= rules.ownership_victory_share: ids.append("own_world")
-	if view.mutant_adopted > 0 and view.controlled_mutant_adopted == 0 and view.mutant_share >= rules.autonomous_min_share and autonomous_hours >= rules.autonomous_survival_hours: ids.append("autonomous_lineage")
-	var external_share: float = maxf(0.0,1.0-view.lineage_share-view.unadopted_share)
-	if hour >= rules.equilibrium_min_hours and equilibrium_hours >= rules.equilibrium_window_hours and view.lineage_share >= rules.equilibrium_min_side_share and external_share >= rules.equilibrium_min_side_share: ids.append("competitor_equilibrium")
-	var distinct := 0
-	for row: Dictionary in view.variants:
-		if row.lineage and row.share >= rules.distinct_variant_min_share: distinct += 1
-	if distinct >= 2 and view.lineage_share >= rules.lineage_victory_share: ids.append("lineage_diversity")
-	return {"ids":ids,"distinct":distinct}
-
 func snapshot(variants: Array, details: bool = true) -> Dictionary:
 	variants = active_variants(variants)
 	var world_population := 0

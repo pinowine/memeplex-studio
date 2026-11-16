@@ -3,7 +3,6 @@ extends RefCounted
 const CONTENT_PATH := "res://data/propagation/content_profiles.json"
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
-const FORMATS := ["text", "translated_text", "image", "localized_image", "alternative_text"]
 static var _content: Dictionary = {}
 static var _signature := ""
 
