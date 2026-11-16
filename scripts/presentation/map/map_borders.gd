@@ -1,5 +1,10 @@
 extends Node2D
 
+class SelectedBorderInk extends Node2D:
+	var terrain: Node2D
+	func _draw() -> void:
+		terrain.draw_selected_borders(self)
+
 @export var settings: AtlasMapSettings
 var world: AtlasWorldData
 var terrain_material: ShaderMaterial
@@ -13,19 +18,25 @@ var selected_country: int = -1
 var zoom_value: float = 1.0
 var detail_level: int = 0
 var water_opacity: float = 0.0
+var _borders: Node2D
+var _selection: SelectedBorderInk
 
 func _ready() -> void:
-	var borders := preload("res://scripts/presentation/map/map_border_cache.gd").new()
-	borders.name = "CachedBorders"
-	add_child(borders)
-	move_child(borders, 0)
-	borders.configure(self)
+	_borders = preload("res://scripts/presentation/map/map_border_cache.gd").new()
+	_borders.name = "StaticBorders"
+	add_child(_borders)
+	_borders.configure(self)
+	_selection = SelectedBorderInk.new()
+	_selection.name = "SelectedBorders"
+	_selection.terrain = self
+	add_child(_selection)
 
 func set_world(value: AtlasWorldData) -> void:
 	world = value
 	terrain_material = settings.terrain_material.duplicate()
 	terrain_material.set_shader_parameter("elevation_field", ImageTexture.create_from_image(world.terrain.elevation_image(Vector2i(settings.world_size))))
 	terrain_material.set_shader_parameter("world_size", settings.world_size)
+	terrain_material.set_shader_parameter("detail_level", float(detail_level))
 	$Surface.material = terrain_material
 	meshes.clear()
 	coast_lines.clear()
@@ -54,26 +65,30 @@ func set_world(value: AtlasWorldData) -> void:
 	hovered_country = -1
 	selected_country = -1
 	$Water.visible = true
-	$Surface.queue_redraw()
-	queue_redraw()
+	_borders.set_lines(border_lines, settings.border_color, settings.border_width)
+	$Surface.rebuild()
+	_selection.queue_redraw()
 
 func set_highlight(hovered: int, selected: int) -> void:
+	var changed: Array[int] = []
+	if hovered != hovered_country: changed.append_array([hovered_country, hovered])
+	if selected != selected_country:
+		changed.append_array([selected_country, selected])
+		_selection.queue_redraw()
 	hovered_country = hovered
 	selected_country = selected
-	$Surface.queue_redraw()
-	queue_redraw()
+	$Surface.refresh_countries(changed)
 
 func set_view(zoom: float, level: int) -> void:
+	if zoom_value != zoom and selected_country >= 0: _selection.queue_redraw()
 	zoom_value = zoom
+	if detail_level == level: return
 	detail_level = level
 	terrain_material.set_shader_parameter("detail_level", float(level))
-	$Surface.queue_redraw()
-	queue_redraw()
 
 func set_zoom_ratio(ratio: float) -> void:
 	water_opacity = water_opacity_at(ratio)
 	$Water.self_modulate.a = water_opacity
-	$Water/Fill.queue_redraw()
 
 func water_opacity_at(ratio: float) -> float:
 	return settings.water_max_opacity * smoothstep(settings.water_fade_start, settings.water_fade_end, ratio)
@@ -86,10 +101,9 @@ func _country_color(country: int) -> Color:
 		color = color.blend(settings.hover_color)
 	return color
 
-func draw_borders(canvas: Node2D) -> void:
+func draw_selected_borders(canvas: Node2D) -> void:
 	if meshes.is_empty():
 		return
-	canvas.draw_multiline(border_lines, settings.border_color, settings.border_width, true)
 	if selected_country >= 0:
 		var width := settings.selected_border_width / pow(zoom_value, settings.selected_border_zoom_exponent)
 		for ring in world.territories[selected_country].outlines + world.territories[selected_country].holes:
