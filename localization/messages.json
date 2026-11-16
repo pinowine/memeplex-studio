@@ -126,7 +126,7 @@
   },
   "LOC_EVENT_ORIGIN_WORLD_HELP": {
     "source": "随着世界的运行发生的事件，看起来似乎和模因没有什么关系。",
-    "zh_CN": "随着世界的运行发生的事件，看起来似乎和模因没有什么关系。",
+    "zh_CN": "世界各地发生的新闻与日常事件。",
     "en": "Events arising as the world runs its course. They seem to have little to do with memes."
   },
   "LOC_EVENT_ORIGIN_WORLD_NOTE": {
@@ -436,7 +436,7 @@
   },
   "LOC_PUBLICATION_COSTS_AND_YOUR_MEME_BALANCE_COME_7F026B09": {
     "source": "发布成本与点数余额由当前运行状态提供；不足时不扣款。",
-    "zh_CN": "发布成本与点数余额由当前运行状态提供；不足时不扣款。",
+    "zh_CN": "发布成本与当前点数余额。",
     "en": "Publication costs and your Meme balance come from the current run. Insufficient funds are not deducted."
   },
   "LOC_MEME_TRADING_UNAVAILABLE_6F00CE34": {
@@ -526,7 +526,7 @@
   },
   "LOC_ARROWS_SHOW_CONFIGURED_EFFECT_DIRECTIONS_NOT_NEW_93062346": {
     "source": "箭头表示已配置的作用方向，不表示新增注意力。话题箭头表示相关表达的吸引系数；双箭头表示乘数增量绝对值至少0.3。适用群体、时长、实际数值与许可阻止记录见执行详情。",
-    "zh_CN": "箭头表示已配置的作用方向，不表示新增注意力。话题箭头表示相关表达的吸引系数；双箭头表示乘数增量绝对值至少0.3。适用群体、时长、实际数值与许可阻止记录见执行详情。",
+    "zh_CN": "箭头表示已配置的作用方向。话题箭头表示相关表达的吸引系数；双箭头表示乘数增量绝对值至少0.3。适用群体、时长、实际数值与许可阻止记录见执行详情。",
     "en": "Arrows show configured effect directions, not new attention. Topic arrows indicate the attraction multiplier for related expressions; double arrows indicate an absolute multiplier change of at least 0.3. See execution details for affected audiences, duration, actual values and permission blocks."
   },
   "LOC_EXPAND_COLLAPSE_EXECUTION_DETAILS_57B235E9": {
@@ -566,7 +566,7 @@
   },
   "LOC_CTRL_D_TO_TOGGLE_RUNTIME_CONTENT_IS_3C2C62C7": {
     "source": "Ctrl+D 开关；运行时内容与编辑副本相互隔离。",
-    "zh_CN": "Ctrl+D 开关；运行时内容与编辑副本相互隔离。",
+    "zh_CN": "Ctrl+D 开关开发菜单；在独立副本中编辑内容。",
     "en": "Ctrl+D to toggle. Runtime content is isolated from the editable copy."
   },
   "LOC_NO_CONTENT_CONFIGURED_BC36B6B8": {
@@ -886,7 +886,7 @@
   },
   "LOC_CURRENT_CONTENT_D_CASE_PRESETS_THE_EVENT_922995D7": {
     "source": "当前内容：%d 个案例预设；事件工具仅修改开发内容副本。",
-    "zh_CN": "当前内容：%d 个案例预设；事件工具仅修改开发内容副本。",
+    "zh_CN": "当前内容：%d 个案例预设；事件工具编辑开发内容副本。",
     "en": "Current content: %d case presets. The event tool edits only the developer content copy."
   },
   "LOC_MEME_B54CDAD8": {
@@ -1171,7 +1171,7 @@
   },
   "LOC_DEPLOYED_TO_S_LATER_EXTERNAL_VERSIONS_CANNOT_CAE6EE96": {
     "source": "已投放到 %s；后续外部版本不能直接编辑。",
-    "zh_CN": "已投放到 %s；后续外部版本不能直接编辑。",
+    "zh_CN": "已投放到 %s。",
     "en": "Deployed to %s. Later external versions cannot be edited directly."
   },
   "LOC_COLLECT_OR_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_A156F2DD": {
@@ -1201,7 +1201,7 @@
   },
   "LOC_S_ATTRACTION_MULTIPLIER_F_FOR_F_GAME_C6C49FBD": {
     "source": "%s：吸引系数 ×%.2f，持续 %.0f 游戏小时；总注意力预算不增加。",
-    "zh_CN": "%s：吸引系数 ×%.2f，持续 %.0f 游戏小时；总注意力预算不增加。",
+    "zh_CN": "%s：吸引系数 ×%.2f，持续 %.0f 游戏小时。",
     "en": "%s: attraction multiplier ×%.2f for %.0f game hours; the total attention budget does not increase."
   },
   "LOC_TRUST_D1CD931B": {
@@ -1221,7 +1221,7 @@
   },
   "LOC_S_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_BA3D841D": {
     "source": "%s：已曝光而未采用者中新增采用 %d；未凭空增加曝光。",
-    "zh_CN": "%s：已曝光而未采用者中新增采用 %d；未凭空增加曝光。",
+    "zh_CN": "%s：已曝光而未采用者中新增采用 %d。",
     "en": "%s: %d previously exposed non-adopters now adopt; no exposure is created from nothing."
   },
   "LOC_EXTERNAL_REWRITES_SEMANTIC_DRIFT_FROM_THE_FIXED_35C3A40D": {
@@ -1231,12 +1231,12 @@
   },
   "LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C": {
     "source": "再利用许可受限：这次规范内的重混未产生版本；许可不是对外部世界的强制控制。",
-    "zh_CN": "再利用许可受限，本次重混未生成版本；该许可不能强制约束外部世界。",
+    "zh_CN": "再利用许可受限，本次重混未生成版本。",
     "en": "Reuse permission is restricted, so this remix produced no version. Permission cannot force the outside world to comply."
   },
   "LOC_S_FATIGUE_DECREASES_BY_F_AND_THE_40D510A3": {
     "source": "%s：疲劳降低 %.2f，旧表达重新进入使用；不恢复对外部分家的控制。",
-    "zh_CN": "%s：疲劳最多降低 %.2f；不会恢复对外部分家的控制。",
+    "zh_CN": "%s：疲劳最多降低 %.2f。",
     "en": "%s: fatigue decreases by up to %.2f. This does not restore control of external offshoot families."
   },
   "LOC_NO_DEPLOYED_VERSION_IS_AVAILABLE_TO_REWRITE_151CB474": {
@@ -1276,7 +1276,7 @@
   },
   "LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714": {
     "source": "%s %s；版本 %s 由 %s 制作，玩家不可编辑；来源保留。",
-    "zh_CN": "%s %s；版本 %s 由 %s 制作，玩家不可编辑；来源保留。",
+    "zh_CN": "%s %s；版本 %s 由 %s 制作；来源保留。",
     "en": "%s %s; version %s was created by %s and cannot be edited by the player. Its source is retained."
   },
   "LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C": {
@@ -1296,7 +1296,7 @@
   },
   "LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912": {
     "source": "%s 正被其他人接续传播；发声者没有署名，你还无法接管它。",
-    "zh_CN": "%s 正被其他人接续传播；发声者没有署名，你还无法接管它。",
+    "zh_CN": "%s 正被其他人接续传播；发声者没有署名。",
     "en": "%s is being carried on by others. Its speaker is unnamed, so you cannot take control of it yet."
   },
   "LOC_EVENT_PAUSE_NARRATIVE_AND_ACTUAL_EFFECTS_ARE_C7BD1B68": {
@@ -1316,7 +1316,7 @@
   },
   "LOC_RUN_COMPLETE_RETAIN_THE_RESULTS_UNDER_YOUR_3E988C72": {
     "source": "本轮结束：保留作者归属成果，也看见已经脱离控制的来源影响。",
-    "zh_CN": "本轮结束：保留作者归属成果，也看见已经脱离控制的来源影响。",
+    "zh_CN": "本轮结束：作者归属成果与来源影响已记录。",
     "en": "Run complete: retain the results under your authorship, and see the source influence that has escaped your control."
   },
   "LOC_VICTORY_5FFA76AC": {
@@ -2311,7 +2311,7 @@
   },
   "LOC_DIAL_CALLS_THE_SELECTED_NUMBER_PICK_UP_6D7A3316": {
     "source": "拨号：呼叫已选号码。接听：拿起听筒。挂断：结束通话。三个听筒图标对应这三个实体键，来信仍会继续打印。",
-    "zh_CN": "拨号：呼叫已选号码。接听：拿起听筒。挂断：结束通话。三个听筒图标对应这三个实体键，来信仍会继续打印。",
+    "zh_CN": "拨号：呼叫已选号码。接听：拿起听筒。挂断：结束通话。来信会继续打印。",
     "en": "Dial calls the selected number. Pick up lifts the receiver. Hang up ends the call. The three receiver icons correspond to these physical keys; incoming messages keep printing."
   },
   "LOC_DELETE_ONE_DIGIT_732D612B": {
@@ -2601,7 +2601,7 @@
   },
   "LOC_EVERYONE_IS_SAYING_YOUR_WORDS_NOW_PLEASE_41ADB542": {
     "source": "67：现在大家都在说你的话。请不要把这理解为大家都理解你。",
-    "zh_CN": "67：现在到处都有人顺口说你那句话。各人听进去的意思，可能又有些出入。",
+    "zh_CN": "67：现在到处都有人顺口说你那句话。不过人家愿意拿去用，不等于都照着你的意思听懂了。",
     "en": "67: People all over are repeating your words now. Just don't assume that means they all understand you."
   },
   "LOC_YOUR_MEME_HAS_TAKEN_OVER_THE_WORLD_B77F0A22": {
@@ -2611,7 +2611,7 @@
   },
   "LOC_IT_S_OUT_OF_YOUR_HANDS_CONGRATULATIONS_C2D7631D": {
     "source": "67：它不归你管了。恭喜，你终于有了一份不用签字的成果。",
-    "zh_CN": "67：外头的人会自己接着改、接着传。恭喜，这份成果可以自己拿主意了。",
+    "zh_CN": "67：它已经不归你管了，外头的人会自己接着改、接着传。恭喜，终于有份不用你签字的成果了。",
     "en": "67: It's out of your hands now, and people out there are carrying it forward on their own. Congratulations on a result that no longer needs your signature."
   },
   "LOC_THE_UNCONTROLLED_MUTANT_LINEAGE_IS_SURVIVING_ON_0D828D42": {
@@ -2621,7 +2621,7 @@
   },
   "LOC_NEITHER_SIDE_PRINTED_THE_OTHER_OUT_OF_C3A5D603": {
     "source": "67：谁也没把谁印没。机器可以休息，意见暂时不必一致。",
-    "zh_CN": "67：两边的稿子都留下了。机器可以歇歇，意见各留一份。",
+    "zh_CN": "67：谁也没把另一边印到绝版。机器可以歇歇，意见暂时不必统一。",
     "en": "67: Neither side printed the other out of existence. The presses can rest without everyone settling on a single line."
   },
   "LOC_YOU_AND_YOUR_COMPETITORS_HAVE_REACHED_EQUILIBRIUM_7117C232": {
@@ -2631,7 +2631,7 @@
   },
   "LOC_SEVERAL_DRAFTS_SURVIVED_TOGETHER_APPARENTLY_A_SINGLE_E053C7C9": {
     "source": "67：几份稿子一起活下来了。看来统一口径不是唯一的出路。",
-    "zh_CN": "67：几份不同的稿子居然一起留下来了。好，这回就让几种声音一块儿收尾。",
+    "zh_CN": "67：几份不同的稿子居然一起留下来了。看来事情走到最后，也未必非得合成同一种声音才算收尾。",
     "en": "67: Several drafts survived side by side. Turns out a single voice wasn't the only way for this round to end."
   },
   "LOC_MULTIPLE_DISTINCT_VERSIONS_HAVE_SPREAD_TOGETHER_C71AB8B3": {
@@ -3151,7 +3151,7 @@
   },
   "LOC_THIS_SKILL_IS_ALREADY_UNLOCKED_IT_CANNOT_9F356EAA": {
     "source": "该技能已解锁，不能重复扣款。",
-    "zh_CN": "该技能已解锁，不能重复扣款。",
+    "zh_CN": "该技能已解锁。",
     "en": "This skill is already unlocked; it cannot charge again."
   },
   "LOC_UNLOCK_REQUIRED_SKILLS_FIRST_B8C8D8A4": {
@@ -3321,7 +3321,7 @@
   },
   "LOC_CREATES_AN_INDEPENDENT_ENVIRONMENTAL_FAMILY_PRESET_S_65E572E8": {
     "source": "生成独立环境家族（预设 %s），非玩家归属与控制；争夺现有注意力预算",
-    "zh_CN": "生成独立环境家族（预设 %s），非玩家归属与控制；争夺现有注意力预算",
+    "zh_CN": "生成独立环境家族（预设 %s），争夺现有注意力预算",
     "en": "Creates an independent environmental family (preset %s), not owned or controlled by the player; it competes for the existing attention budget"
   },
   "LOC_SPORTS_EF7BE5BE": {
@@ -5091,7 +5091,7 @@
   },
   "LOC_SEMANTICS_AFTER_THE_ORIGINAL_LYRIC_S_MEANING_B1F02D62": {
     "source": "语义：原歌词词义退场后，声音成为“可爱动物”的泛称与背景标记。\n语用：用户用它召唤猫狗视频、表现可爱或测试圈内识别；语义主要靠伴随画面。\n跨语境：跨语言传播保留声音而丢失词义，正适合观察“误听”如何建立新的本地语义。",
-    "zh_CN": "语义：原歌词词义退场后，声音成为“可爱动物”的泛称与背景标记。\n语用：用户用它召唤猫狗视频、表现可爱或测试圈内识别；语义主要靠伴随画面。\n跨语境：跨语言传播保留声音而丢失词义，正适合观察“误听”如何建立新的本地语义。",
+    "zh_CN": "语义：原歌词词义退场后，声音成为“可爱动物”的泛称与背景标记。\n语用：用户用它召唤猫狗视频、表现可爱或测试圈内识别；语义主要靠伴随画面。\n跨语境：声音跨语言保留下来，词义则在误听中变成了新的本地含义。",
     "en": "Semantics: after the original lyric's meaning falls away, the sound becomes a general label and background cue for cute animals.\nPragmatics: users invoke cat and dog videos, express cuteness, or test insider recognition; accompanying images supply most of the meaning.\nAcross contexts: cross-language circulation retains sound while losing lexical meaning, revealing how mishearing establishes new local meanings."
   },
   "LOC_B06_CITY_OR_NOT_CITY_44D11A3F": {
@@ -5616,7 +5616,7 @@
   },
   "LOC_SEMANTICS_CHANGING_ATTITUDES_BECOME_A_THREE_STEP_F0D8B3CE": {
     "source": "语义：把态度变化压成三步身份迁移，暗示体验会击败先前判断。\n语用：用于承认真香、群体入坑和自嘲；也可讽刺制度如何同化批评者。\n跨语境：它把个人时间线变成低成本模板，不依赖单一原图，适合作为纯语言仪式样本。",
-    "zh_CN": "语义：把态度变化压成三步身份迁移，暗示体验会击败先前判断。\n语用：用于承认真香、群体入坑和自嘲；也可讽刺制度如何同化批评者。\n跨语境：它把个人时间线变成低成本模板，不依赖单一原图，适合作为纯语言仪式样本。",
+    "zh_CN": "语义：把态度变化压成三步身份迁移，暗示体验会击败先前判断。\n语用：用于承认真香、群体入坑和自嘲；也可讽刺制度如何同化批评者。\n跨语境：它把个人时间线变成低成本的文字模板，不依赖单一原图。",
     "en": "Semantics: changing attitudes become a three-step identity migration, suggesting experience defeats earlier judgment.\nPragmatics: it admits unexpected appreciation, entry into a fandom, or self-mockery, and can satirize institutions assimilating their critics.\nAcross contexts: a personal timeline becomes a low-cost template independent of one source image, making it a useful purely verbal ritual example."
   },
   "LOC_SHOW_INDIRECT_EVIDENCE_FAEDEA7C": {
@@ -6201,7 +6201,7 @@
   },
   "LOC_SEMANTICS_REPETITIVE_LOW_LEVEL_COMPETITION_BECOMES_A_186DD22F": {
     "source": "语义：把低水平重复竞争概括为自我消耗的系统关系。\n语用：用于解释教育、劳动和消费压力，也常被泛化成“任何忙碌”，导致概念稀释。\n跨语境：与“躺平”构成行动/退出的对立词组；从结构批评到日常抱怨的迁移值得分层标注。",
-    "zh_CN": "语义：把低水平重复竞争概括为自我消耗的系统关系。\n语用：用于解释教育、劳动和消费压力，也常被泛化成“任何忙碌”，导致概念稀释。\n跨语境：与“躺平”构成行动/退出的对立词组；从结构批评到日常抱怨的迁移值得分层标注。",
+    "zh_CN": "语义：把低水平重复竞争概括为自我消耗的系统关系。\n语用：用于解释教育、劳动和消费压力，也常被泛化成“任何忙碌”，导致概念稀释。\n跨语境：与“躺平”构成行动/退出的对立词组；含义也从结构批评扩展到日常抱怨。",
     "en": "Semantics: repetitive, low-level competition becomes a self-consuming systemic relationship.\nPragmatics: explains pressure in education, work and consumption, but is often generalized to any busyness, diluting the concept.\nAcross contexts: it contrasts action with exit through the paired term lying flat. Its movement from structural critique to everyday complaint deserves differentiated annotation."
   },
   "LOC_R07_ACTIVITY_BUDDY_A398620F": {
@@ -6611,7 +6611,7 @@
   },
   "LOC_SEMANTICS_AN_ORDINARY_ACTION_BECOMES_AN_ALMOST_95AA2C09": {
     "source": "语义：把普通行为提升为近乎不可能的史诗任务，或反讽夸张困难。\n语用：用于否定过度简化的方案，也可把琐事戏剧化；句法槽位 X 是主要可玩接口。\n跨语境：模板早于本语料时间窗，但它展示经典图像宏如何沉淀为可脱图使用的英语构式。",
-    "zh_CN": "语义：把普通行为提升为近乎不可能的史诗任务，或反讽夸张困难。\n语用：用于否定过度简化的方案，也可把琐事戏剧化；句法槽位 X 是主要可玩接口。\n跨语境：模板早于本语料时间窗，但它展示经典图像宏如何沉淀为可脱图使用的英语构式。",
+    "zh_CN": "语义：把普通行为提升为近乎不可能的史诗任务，或反讽夸张困难。\n语用：用于否定过度简化的方案，也可把琐事戏剧化；句法槽位 X 是主要可玩接口。\n跨语境：经典图像宏逐渐沉淀为可脱图使用的英语构式。",
     "en": "Semantics: an ordinary action becomes an almost impossible epic task, or ironically exaggerated difficulty.\nPragmatics: rejects oversimplified solutions or dramatizes trivial tasks; the syntactic slot X is the main playable interface.\nAcross contexts: the template predates this corpus window, but demonstrates how a classic image macro can settle into an English construction usable without its image."
   },
   "LOC_S03_I_DON_T_UNDERSTAND_BUT_I_8A822B0A": {
@@ -7096,7 +7096,7 @@
   },
   "LOC_SEMANTICS_ABSURD_CONFLICTS_WITH_LITTLE_LANGUAGE_AND_363E3C52": {
     "source": "语义：单集弱语言、强视觉的荒诞冲突累积成可追更的战争神话。\n语用：儿童与青少年通过角色等级、剧情解释和复刻进入共同世界；“看不懂”也成为代际边界。\n跨语境：短时长算法内容并未排斥长线 lore，反而通过高频升级和评论考据维持世界。",
-    "zh_CN": "语义：单集弱语言、强视觉的荒诞冲突累积成可追更的战争神话。\n语用：儿童与青少年通过角色等级、剧情解释和复刻进入共同世界；“看不懂”也成为代际边界。\n跨语境：短时长算法内容并未排斥长线 lore，反而通过高频升级和评论考据维持世界。",
+    "zh_CN": "语义：单集弱语言、强视觉的荒诞冲突累积成可追更的战争神话。\n语用：儿童与青少年通过角色等级、剧情解释和复刻进入共同世界；“看不懂”也成为代际边界。\n跨语境：短时长的算法内容靠高频升级和评论考据，维持着可长期追更的世界。",
     "en": "Semantics: absurd conflicts with little language and strong visuals accumulate into a continuing war mythology.\nPragmatics: children and teenagers enter the shared world through character tiers, plot explanations, and reenactment; not understanding it also becomes a generational boundary.\nAcross contexts: short algorithmic content does not exclude long-term lore; frequent upgrades and comment-based investigation sustain it."
   },
   "LOC_SHARED_ANCHOR_RHYMING_NAMES_SUCH_AS_TRALALERO_03A6E594": {
@@ -7271,7 +7271,7 @@
   },
   "LOC_SEMANTICS_SUCCESS_ADVICE_AND_LONE_WOLF_MASCULINITY_174DC94D": {
     "source": "语义：把成功学与孤狼男性气质夸张到真假难辨的后讽刺状态。\n语用：既可认真认同也可嘲笑 hustle culture；缺少语境时两种读法会叠加。\n跨语境：同一素材可服务男性气质认同、批判和纯审美剪辑，适合测试立场漂移。",
-    "zh_CN": "语义：把成功学与孤狼男性气质夸张到真假难辨的后讽刺状态。\n语用：既可认真认同也可嘲笑 hustle culture；缺少语境时两种读法会叠加。\n跨语境：同一素材可服务男性气质认同、批判和纯审美剪辑，适合测试立场漂移。",
+    "zh_CN": "语义：把成功学与孤狼男性气质夸张到真假难辨的后讽刺状态。\n语用：既可认真认同也可嘲笑 hustle culture；缺少语境时两种读法会叠加。\n跨语境：同一素材可用于男性气质认同、批判和纯审美剪辑。",
     "en": "Semantics: success advice and lone-wolf masculinity are exaggerated into a post-ironic state where sincerity is unclear.\nPragmatics: it can sincerely endorse or mock hustle culture; without context, the readings overlap.\nAcross contexts: the same material supports masculine identification, criticism, and purely aesthetic edits, making it useful for testing stance drift."
   },
   "LOC_THE_NEXT_HIDDEN_SHAPE_DC3D77A6": {
@@ -7371,7 +7371,7 @@
   },
   "LOC_SEMANTICS_THE_EMPTINESS_OF_FAMILIAR_OFFICES_BECOMES_D0EFE070": {
     "source": "语义：熟悉办公空间的空无感被建模为可无限延伸的恐怖世界。\n语用：参与者通过层级档案、实体设计、游戏和 found-footage 补写；多个正典并存。\n跨语境：它连接 liminal space 审美、协作恐怖写作与个人作者影像，展示共享世界的分叉治理。",
-    "zh_CN": "语义：熟悉办公空间的空无感被建模为可无限延伸的恐怖世界。\n语用：参与者通过层级档案、实体设计、游戏和 found-footage 补写；多个正典并存。\n跨语境：它连接 liminal space 审美、协作恐怖写作与个人作者影像，展示共享世界的分叉治理。",
+    "zh_CN": "语义：熟悉办公空间的空无感被建模为可无限延伸的恐怖世界。\n语用：参与者通过层级档案、实体设计、游戏和 found-footage 补写；多个正典并存。\n跨语境：它连接 liminal space 审美、协作恐怖写作与个人作者影像，不同创作者各自补写出不同正典。",
     "en": "Semantics: the emptiness of familiar offices becomes an infinitely extendable horror world.\nPragmatics: participants add level files, entities, games, and found footage; several canons coexist.\nAcross contexts: liminal-space aesthetics, collaborative horror writing, and individual filmmakers connect, revealing the branching governance of a shared world."
   },
   "LOC_THE_NEXT_EXPLOITS_2367BD38": {
@@ -8366,7 +8366,7 @@
   },
   "LOC_CARD_LANGUAGE_NINGHUA_DESCRIPTION": {
     "source": "宁华的官方语言，一种历史悠久的象形文字，目前已逐渐转变成分析语",
-    "zh_CN": "宁华的官方语言，一种历史悠久的象形文字，目前已逐渐转变成分析语",
+    "zh_CN": "宁华的官方语言，有悠久的象形文字传统，语法逐渐转向依靠词序和虚词。",
     "en": "The official language of Ninghua: an ancient pictographic language that has gradually become analytic."
   },
   "LOC_CARD_LANGUAGE_NINGHUA_COMMENTARY": {
@@ -8376,7 +8376,7 @@
   },
   "LOC_CARD_LANGUAGE_SHIOHARA_DESCRIPTION": {
     "source": "汐原的通行语言，街头传闻与日常寒暄在这里交汇。",
-    "zh_CN": "汐原的通行语言，街头传闻与日常寒暄在这里交汇。",
+    "zh_CN": "汐原的通行语言，街头传闻、日常寒暄都用它来讲。",
     "en": "The common language of Shiohara, where street rumours meet everyday conversation."
   },
   "LOC_CARD_LANGUAGE_SHIOHARA_COMMENTARY": {
@@ -8386,7 +8386,7 @@
   },
   "LOC_CARD_LANGUAGE_SEOWON_DESCRIPTION": {
     "source": "瑞原的通行语言，连接城市里的讲述者与听众。",
-    "zh_CN": "瑞原的通行语言，连接城市里的讲述者与听众。",
+    "zh_CN": "瑞原的通行语言，城市里的人用它讲故事，也听别人讲。",
     "en": "The common language of Seowon, connecting the city’s storytellers and listeners."
   },
   "LOC_CARD_LANGUAGE_SEOWON_COMMENTARY": {

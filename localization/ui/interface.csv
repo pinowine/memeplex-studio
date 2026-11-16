@@ -268,7 +268,7 @@ PRINT_SPEED_FAST,加速 · F3 · 2秒/天,Fast · F3 · 2s/day
 PRINT_WORKBENCH_OPEN,打开模因工作台,Open meme workbench
 PRINT_CLOSE,关闭,Close
 PRINT_WORKBENCH_TITLE,模因工作台,Meme workbench
-PRINT_WORKBENCH_PLACEHOLDER,独立地图页不提供模因编辑，Meme点数与收入也未接入。请从游戏主界面使用工作台。,"This standalone map page does not provide meme editing, meme points or income. Use the workbench in the main game."
+PRINT_WORKBENCH_PLACEHOLDER,请从游戏主界面打开模因工作台。,"This standalone map page does not provide meme editing, meme points or income. Use the workbench in the main game."
 PRINT_DATE_FORMAT,%d年%d月%d日,%04d-%02d-%02d
 PRINT_SEASON_SPRING,春季,Spring
 PRINT_SEASON_SUMMER,夏季,Summer

@@ -206,7 +206,7 @@
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_COMMENT": {
     "source": "观众会把舞台上的房间带回自己的日常。",
-    "zh_CN": "索娜在同一套布景里演活了五代租客，谢幕持续十七分钟。住过出租屋的观众很容易认出自己的经历，下一站也加售了门票。",
+    "zh_CN": "五代租客的日子都挤在同一套布景里。索娜谢幕用了十七分钟，下一站也加售了门票。",
     "en": "Sona plays five generations of tenants without changing the set, which helps explain a seventeen-minute curtain call. Packing so many lives into one rented room gives audiences plenty to recognize from their own experience, and the next stop is already adding tickets."
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_POSITIVE": {
@@ -231,7 +231,7 @@
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_COMMENT": {
     "source": "一本书的争论，会写出书外的另一段故事。",
-    "zh_CN": "《第七码头》发行前就已售罄，书店安排了通宵签售。寄错地址的遗嘱、真假难辨的叙述者，让人想拉个朋友一起猜。",
+    "zh_CN": "《第七码头》从一封寄错地址的遗嘱写起，读者连叙述者是否存在也争了起来。书还没发行就已售罄，书店准备通宵签售。",
     "en": "The Seventh Pier sold out before release, and bookshops have scheduled overnight signings. A will sent to the wrong address is hook enough, and the dispute over whether the narrator even exists gives readers a puzzle to argue through together."
   },
   "LOC_EVENT_WORLD_CAPTION_GUIDELINE_POSITIVE": {
@@ -256,7 +256,7 @@
   },
   "LOC_EVENT_WORLD_CAPTION_GUIDELINE_COMMENT": {
     "source": "重复的台词给不同场景留出了入口。",
-    "zh_CN": "低成本的《纸月车站》连续三周领跑票房。售票员每说一次告别语，照片里就少一名乘客，观众走出影院还惦记着这句话。",
+    "zh_CN": "低成本的《纸月车站》连续三周领跑票房。“南生一直在等那辆车，十年后，大概也没人记得他了。”观众走出影院还惦记着这句话。",
     "en": "Paper Moon Station was made on a small budget, yet it has led the box office for three straight weeks. Every time the ticket clerk repeats that farewell, another passenger vanishes from the photo—a simple, unsettling device that stays with viewers after they leave."
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_POSITIVE": {
@@ -266,7 +266,7 @@
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_NEGATIVE": {
     "source": "未来的自己先收到今天的门票账单",
-    "zh_CN": "修好园区花了七年，寄给未来的明信片却只给一小时写完",
+    "zh_CN": "修好园区花了七年，给未来的明信片却只留一小时寄出",
     "en": "The park took seven years to build, then gave visitors one hour to write to the future"
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_TITLE": {
@@ -306,7 +306,7 @@
   },
   "LOC_EVENT_CITY_TOURNAMENT_COMMENT": {
     "source": "人们会记住最后一球，也会记住谁明天还要上班。",
-    "zh_CN": "快递员组成的灰鸥队在补时阶段反超职业队，夺冠后打算用奖金修好长期借用的学校球场。这笔奖金的去向也让人高兴。",
+    "zh_CN": "灰鸥队的快递员们在补时反超职业队，冠军奖金将用来修好那块长期借用的学校球场。",
     "en": "The Grey Gulls—a team of delivery riders—beat a professional side in added time and earmarked the prize money to repair the school pitch they have long borrowed. The comeback alone is exciting, and putting the winnings back into that field makes them easy to root for."
   },
   "LOC_EVENT_WORLD_BRIDGE_DETOUR_POSITIVE": {
@@ -406,7 +406,7 @@
   },
   "LOC_EVENT_WORLD_FIRST_FROST_COMMENT": {
     "source": "人们讨论季节，也会讨论谁替坏天气买单。",
-    "zh_CN": "初霜提前三周到来，毁了过半青梨。果农让居民自取落果，批发市场却上调鲜果报价，让人惦记这一季的损失要怎样熬过去。",
+    "zh_CN": "初霜提前三周到来，毁了过半青梨。果农让居民自取落果，批发市场却上调了鲜果报价。",
     "en": "Frost arrived three weeks early and wiped out more than half the green-pear crop. Growers opened their orchards so residents could gather fallen fruit, while wholesale markets raised fresh-fruit prices—a contrast that leaves people worrying about how the growers will get through the season."
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_POSITIVE": {
@@ -431,7 +431,7 @@
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_COMMENT": {
     "source": "旱情会把水位和社会地位放在同一张照片里。",
-    "zh_CN": "水库退到七十年来最低，水下旧城的钟楼都露出来了。居民家里分时供水，湖岸酒店的泳池却还在补水，难怪有人追问凭什么。",
+    "zh_CN": "水库退到七十年来最低，水下旧城的钟楼都露出来了。居民家里开始分时供水，湖岸酒店的泳池却还在补水，居民要求把它停掉。",
     "en": "The reservoir has dropped to a seventy-year low, exposing the bell tower of a submerged old town. With households already on timed water rationing, it is no wonder residents are demanding that lakeside hotels stop refilling their pools."
   },
   "LOC_EVENT_WORLD_RED_SNOW_POSITIVE": {
@@ -481,7 +481,7 @@
   },
   "LOC_EVENT_WORLD_GENERATIVE_AI_COMMENT": {
     "source": "同一项技术，会被当作能力、饭碗或审查员。",
-    "zh_CN": "“织灯”免费生成文字、图像和语音，设计公司宣布缩减外包。靠接单吃饭的人看着订单变化，政府采购部门则在试用自动审件。",
+    "zh_CN": "“织灯”免费生成文字、图像和语音。设计公司宣布缩减外包，政府采购部门则在试用自动审件。",
     "en": "Weavelight offers free text, image and voice generation, which sounds useful. Design firms have announced fewer freelance contracts, so someone who lives on that work may find the convenience hard to celebrate. Government buyers are testing automated review too; how these tools are used deserves as much attention as what they can produce."
   },
   "LOC_EVENT_WORLD_ROBILAZZI_PROOF_POSITIVE": {
@@ -531,7 +531,7 @@
   },
   "LOC_EVENT_PLATFORM_TOOL_COMMENT": {
     "source": "发布会说的是性能，评论区算的是工资。",
-    "zh_CN": "按厂商的说法，“萤石”的离线语音识别能耗只有旧款十分之一。首批售价却抵得上普通职员两个月工资，买之前得把两个数字放在一起掂量。",
+    "zh_CN": "“萤石”只有掌心大小，按厂商的说法，离线语音识别能耗降到了旧款的十分之一。首批售价相当于普通职员两个月工资。",
     "en": "Fluorite claims offline speech recognition at one-tenth the energy use of the previous model, which is impressive on paper. The first batch costs two months of an ordinary clerk's pay, though. Anyone thinking of buying one has another number to consider alongside the performance claims."
   },
   "LOC_EVENT_WORLD_STAFF_RETRAINING_POSITIVE": {
@@ -631,7 +631,7 @@
   },
   "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_COMMENT": {
     "source": "找到出处能解决证据问题，未必解决站队问题。",
-    "zh_CN": "百年前老地图的馆藏编号查清了，石阶和潮汐两个论坛又追问对方为何只截一半图例。争论转到了被裁掉的那一半上。",
+    "zh_CN": "百年前老地图的馆藏编号已经查清，石阶和潮汐两个论坛还在追问：对方为什么只截了一半图例？",
     "en": "Even after the archive number of that century-old map was verified, Stone Steps and Tide kept right on fighting. Both forums are asking why the other side cropped half the legend. Knowing the source does not answer that on its own; the missing half still needs to be considered."
   },
   "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_POSITIVE": {
@@ -681,7 +681,7 @@
   },
   "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_COMMENT": {
     "source": "平台关闭时，人们才看清关系寄存在哪些按钮里。",
-    "zh_CN": "开了十九年的“回声巷”只留三十天告别，旧帖还得逐页导出。公共页面镜像仍在协商，想留下旧帖的用户得抓紧一页页保存。",
+    "zh_CN": "开了十九年的“回声巷”只留三十天告别。公共页面镜像还在协商，用户只能一页页导出旧帖。",
     "en": "Echo Lane is shutting down after nineteen years with only thirty days’ notice, and users can export old posts only page by page. A nonprofit is still negotiating a mirror for public pages, so anyone who wants to keep their own copy now has those thirty days to work through the export."
   },
   "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_POSITIVE": {
@@ -706,7 +706,7 @@
   },
   "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_COMMENT": {
     "source": "没有旁白的画面，也会让人写出很多句子。",
-    "zh_CN": "《夜班之后》新一集只放了十六段清晨归途的固定镜头，旁白留空。多家平台开始推荐，上过夜班、赶过早路的人能从画面里认出自己的经历。",
+    "zh_CN": "十六段固定镜头，只拍夜班清洁工清晨回家的路。《夜班之后》新一集没有旁白，已经得到多家平台推荐。",
     "en": "The new episode of After the Night Shift has no narration at all, just sixteen fixed phone shots on the way home at dawn. Several platforms have started recommending it. Without a voice spelling out how to feel, viewers have room to recognize something of their own early journeys in those images."
   },
   "LOC_EVENT_WORLD_OPEN_PROTOCOL_POSITIVE": {
@@ -906,7 +906,7 @@
   },
   "LOC_EVENT_ENVIRONMENT_CORNER_STORY_COMMENT": {
     "source": "世界设定会给观众留下比单个笑点更长的接力。",
-    "zh_CN": "马桶头与摄像头的交战拍成连续短片，每次升级都配同一段音乐。观众循着这个信号整理装备，荒唐的设定也攒出了可供核对的细节。",
+    "zh_CN": "马桶头与摄像头的交战拍成连续短片，每次升级都配同一段音乐。评论区里，观众已经开始整理双方的装备谱系。",
     "en": "A serial about warring toilet-head and camera-head factions sounds absurd, but each upgrade comes with the same music. That recurring cue gives viewers a point of reference as they compile the two sides’ equipment histories. There are shared details to return to, so the discussion has something more specific to follow than the premise alone."
   },
   "LOC_EVENT_ENVIRONMENT_GATE_REPLY_POSITIVE": {
@@ -1356,7 +1356,7 @@
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_COMMENT": {
     "source": "出处争议会把表达与使用者一起拖进讨论。",
-    "zh_CN": "一名早期使用者的歧视性发言被翻出，转发者开始删除旧帖。借用一句话与认同原作者之间的关系，成了这次争论的焦点。",
+    "zh_CN": "一名早期使用者的歧视性发言被翻出，转发者开始删除旧帖。继续用这句话，是否也算认同他的立场，成了争论的焦点。",
     "en": "Readers uncovered a discriminatory remark by an early user, and reposters began deleting older posts. The dispute is about whether using a borrowed phrase also endorses its source. A repost on its own cannot tell us everything the person repeating it believes."
   },
   "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_POSITIVE": {

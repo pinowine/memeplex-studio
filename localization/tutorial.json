@@ -441,22 +441,22 @@
   },
   "LOC_OPENING_HOVER_PEAK": {
     "source": "哦，巅峰之作。希望大家是在夸你的模因，而不是在反讽。",
-    "zh_CN": "写着“巅峰”呢。但愿大家刷这个词时，是真心在夸你的作品。",
+    "zh_CN": "写着“巅峰”呢。但愿大家刷这个词是在真心夸你的作品，不是拿它说反话。",
     "en": "It says 'peak.' Let's hope people mean that as praise for your meme and aren't using it ironically."
   },
   "LOC_OPENING_HOVER_67": {
     "source": "哦？事先声明，这不会影响我对你的绩效评估。",
-    "zh_CN": "嗯？随便看，绩效评估照旧。",
+    "zh_CN": "嗯？随便看，这不会影响我对你的绩效评估。",
     "en": "Hm? This won't affect your performance review."
   },
   "LOC_OPENING_HOVER_IDEOLOGY": {
     "source": "这是你目前可用的意识形态点数，它们可以用于扭转你的模因的政治色彩。点数有限，立场倒是可以很坚定。",
-    "zh_CN": "意识形态点数用来调整模因的政治倾向。点数有限，想好再分配。",
+    "zh_CN": "这是你手头能用的意识形态点数，用来调整模因的政治倾向。点数有限，往哪边偏可得想清楚。",
     "en": "These are your available ideology points, used to shift your meme's political leaning. You only have so many, so choose the direction carefully."
   },
   "LOC_OPENING_HOVER_PRAGMATICS": {
     "source": "这些是可用的语用学点数。话怎么说，和说了什么一样重要……有时候更重要。",
-    "zh_CN": "用语用学点数调整模因说话的姿态。",
+    "zh_CN": "这些是可用的语用学点数，用来调整模因说话的姿态。话怎么说，和说了什么一样重要，有时甚至更重要。",
     "en": "These are your available pragmatics points. They shape how your meme comes across; how you say something matters as much as what you say, sometimes more."
   },
   "LOC_GUIDE_STARTER_PAPER": {

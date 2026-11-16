@@ -10,7 +10,7 @@
   "LOC_EVENT_REWARD_KIND_TOPIC": {"source":"话题材料","zh_CN":"话题材料","en":"Topic material"},
   "LOC_EVENT_REWARD_KIND_STANCE_TOKEN": {"source":"立场材料","zh_CN":"立场材料","en":"Stance material"},
   "LOC_EVENT_REWARD_KIND_PRAGMATIC_TOKEN": {"source":"表达材料","zh_CN":"表达材料","en":"Expression material"},
-  "LOC_EVENT_REWARD_MATERIAL_HELP": {"source":"事件提供的实体材料，可用于模因设计，不是传播数值加成。","zh_CN":"事件提供的实体材料，用于模因设计。","en":"A physical material supplied by the event for meme design, not a numerical boost to circulation."},
+  "LOC_EVENT_REWARD_MATERIAL_HELP": {"source":"事件提供的实体材料，可用于模因设计，不是传播数值加成。","zh_CN":"事件提供的实体材料，可用于模因设计。","en":"A physical material supplied by the event for meme design, not a numerical boost to circulation."},
   "LOC_EVENT_CATEGORY_POLITICAL": {"source":"政治事件","zh_CN":"政治事件","en":"Politics"},
   "LOC_EVENT_CATEGORY_CULTURE": {"source":"文娱事件","zh_CN":"文娱事件","en":"Culture and entertainment"},
   "LOC_EVENT_CATEGORY_NATURE": {"source":"自然事件","zh_CN":"自然事件","en":"Nature"},
