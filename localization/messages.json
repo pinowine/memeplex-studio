@@ -489,11 +489,6 @@
     "zh_CN": "事件日志",
     "en": "Event log"
   },
-  "LOC_FAMILY_LINEAGE_BD88EA11": {
-    "source": "家族谱系",
-    "zh_CN": "家族谱系",
-    "en": "Family lineage"
-  },
   "LOC_MEME_LEDGER_C8C9111D": {
     "source": "点数记录",
     "zh_CN": "点数记录",
@@ -824,26 +819,6 @@
     "zh_CN": "未提供作用记录",
     "en": "No effect record provided"
   },
-  "LOC_EXTERNAL_FAMILY_4A76EB88": {
-    "source": "外部家族",
-    "zh_CN": "外部家族",
-    "en": "External family"
-  },
-  "LOC_PLAYER_FAMILY_4C35ED8C": {
-    "source": "玩家家族",
-    "zh_CN": "玩家家族",
-    "en": "Player family"
-  },
-  "LOC_S_S_DRIFT_F_5E4194C7": {
-    "source": "%s · %s · 偏移 %.2f",
-    "zh_CN": "%s · %s · 偏移 %.2f",
-    "en": "%s · %s · Drift %.2f"
-  },
-  "LOC_FAMILY_S_DIRECT_CREATOR_S_PARENT_VERSION_A445BF1F": {
-    "source": "家族：%s\n直接创作者：%s\n父版本：%s\n表达：%s\n源头：%s",
-    "zh_CN": "家族：%s\n直接创作者：%s\n父版本：%s\n表达：%s\n源头：%s",
-    "en": "Family: %s\nDirect creator: %s\nParent version: %s\nExpression: %s\nOrigin: %s"
-  },
   "LOC_COLLECTED_S_9534F75E": {
     "source": "已收录：%s",
     "zh_CN": "已收录：%s",
@@ -878,11 +853,6 @@
     "source": "本轮观察完成",
     "zh_CN": "本轮观察完成",
     "en": "Observation complete"
-  },
-  "LOC_OBSERVED_THROUGH_GAME_HOUR_D_SYNTHETIC_SAMPLE_72EC36A4": {
-    "source": "观察至第 %d 游戏小时\n曝光 %d · 采用 %d\n作者归属 %d · 来源影响 %d\n家族 %d · 版本 %d\nMeme 点数余额 %d\n注意力预算 %d = 玩家 %d + 外部 %d + 背景 %d",
-    "zh_CN": "观察至第 %d 游戏小时\n曝光 %d · 采用 %d\n作者归属 %d · 来源影响 %d\n家族 %d · 版本 %d\nMeme 点数余额 %d\n注意力预算 %d = 玩家 %d + 外部 %d + 背景 %d",
-    "en": "Observed through game hour %d\nExposure %d · Adoption %d\nAuthor ownership %d · Source influence %d\nFamilies %d · Versions %d\nMeme balance %d\nAttention budget %d = Player %d + External %d + Background %d"
   },
   "LOC_CURRENT_CONTENT_D_CASE_PRESETS_THE_EVENT_922995D7": {
     "source": "当前内容：%d 个案例预设；事件工具仅修改开发内容副本。",
@@ -933,11 +903,6 @@
     "source": "未选择投放国家",
     "zh_CN": "未选择投放国家",
     "en": "No deployment country selected"
-  },
-  "LOC_CREATIVE_RESOURCES_NOT_FOR_SALE_45AE45C3": {
-    "source": "创作资源 · 不可购买",
-    "zh_CN": "创作资源 · 不可购买",
-    "en": "Creative resources · Not for sale"
   },
   "LOC_RECEIVED_D_MESSAGES_B3820ECB": {
     "source": "收到 %d 条消息。",
@@ -1244,11 +1209,6 @@
     "zh_CN": "没有可改写的已投放版本。",
     "en": "No deployed version is available to rewrite."
   },
-  "LOC_REINTERPRETED_BY_AN_EXTERNAL_COMMUNITY_6264171E": {
-    "source": "外部共同体重新解释",
-    "zh_CN": "外部共同体重新解释",
-    "en": "Reinterpreted by an external community"
-  },
   "LOC_AUDIENCE_REWRITE_FD322DDD": {
     "source": "群体重写：",
     "zh_CN": "群体重写：",
@@ -1304,25 +1264,10 @@
     "zh_CN": "事件暂停：叙事描述与实际作用分别显示。",
     "en": "Event pause: narrative and actual effects are displayed separately."
   },
-  "LOC_COLLECT_TRANSMISSION_RESEARCH_FINDINGS_07296438": {
-    "source": "收录传播研究发现",
-    "zh_CN": "收录传播研究发现",
-    "en": "Collect transmission research findings"
-  },
   "LOC_CLAIMED_9C9021A0": {
     "source": "已领取：",
     "zh_CN": "已领取：",
     "en": "Claimed: "
-  },
-  "LOC_RUN_COMPLETE_RETAIN_THE_RESULTS_UNDER_YOUR_3E988C72": {
-    "source": "本轮结束：保留作者归属成果，也看见已经脱离控制的来源影响。",
-    "zh_CN": "本轮结束：作者归属成果与来源影响已记录。",
-    "en": "Run complete: retain the results under your authorship, and see the source influence that has escaped your control."
-  },
-  "LOC_VICTORY_5FFA76AC": {
-    "source": "胜利：",
-    "zh_CN": "胜利：",
-    "en": "Victory: "
   },
   "LOC_WRONG_NUMERIC_TYPE_IN_SAVE_8A2D94B8": {
     "source": "存档数值类型错误：",
@@ -1664,11 +1609,6 @@
     "zh_CN": "存档67评价不是单行。",
     "en": "67's saved comment is not a single line."
   },
-  "LOC_SOLID_DOTS_SAMPLE_ADOPTION_IN_EACH_COUNTRY_741CDCE6": {
-    "source": "实心点按各国已采用人数抽样；空心是出生或投放位置。颜色区分模因家族。",
-    "zh_CN": "实心点按各国已采用人数抽样；空心是出生或投放位置。颜色区分模因家族。",
-    "en": "Solid dots sample adoption in each country; hollow dots mark emergence or deployment. Colours identify meme families."
-  },
   "LOC_SAVE_IS_NOT_A_VALID_JSON_OBJECT_5324AFC6": {
     "source": "存档不是有效的 JSON 对象。",
     "zh_CN": "存档不是有效的 JSON 对象。",
@@ -1749,26 +1689,6 @@
     "zh_CN": "单击聚焦区块；拖动卡片取下。",
     "en": "Click to focus this section; drag a card to remove it."
   },
-  "LOC_CLICK_TO_FOCUS_THIS_SECTION_901FD24F": {
-    "source": "单击聚焦区块",
-    "zh_CN": "单击聚焦区块",
-    "en": "Click to focus this section"
-  },
-  "LOC_VIEW_DB8DB053": {
-    "source": "查看",
-    "zh_CN": "查看",
-    "en": "View"
-  },
-  "LOC_EMPTY_STACK_4498EADD": {
-    "source": "空卡摞",
-    "zh_CN": "空卡摞",
-    "en": "Empty stack"
-  },
-  "LOC_RELEASE_TO_STORE_5DA913B8": {
-    "source": "松开收纳",
-    "zh_CN": "松开收纳",
-    "en": "Release to store"
-  },
   "LOC_CLICK_TO_OPEN_STACK_97B40CE3": {
     "source": "单击展开卡摞",
     "zh_CN": "单击展开卡摞",
@@ -1778,11 +1698,6 @@
     "source": "回车收取并归堆 · 拖拽自由摆放",
     "zh_CN": "回车收取并归堆 · 拖拽自由摆放",
     "en": "Enter to collect into stacks · Drag to place freely"
-  },
-  "LOC_NO_MATERIALS_AVAILABLE_COLLECT_A_FAX_TO_3DE42B95": {
-    "source": "暂无可用材料\n收取传真后会放入对应卡摞。",
-    "zh_CN": "暂无可用材料\n收取传真后会放入对应卡摞。",
-    "en": "No materials available.\nCollect a fax to fill this stack."
   },
   "LOC_S_STACK_430C52F7": {
     "source": "%s卡摞",
@@ -1839,21 +1754,6 @@
     "zh_CN": "未填写对象",
     "en": "No target entered"
   },
-  "LOC_REPLACE_724E8987": {
-    "source": "放回",
-    "zh_CN": "放回",
-    "en": "Replace"
-  },
-  "LOC_AWAITING_RETURN_A4746B64": {
-    "source": "待放回",
-    "zh_CN": "待放回",
-    "en": "Awaiting return"
-  },
-  "LOC_RELEASE_TO_DETACH_09EF1937": {
-    "source": "松手取下",
-    "zh_CN": "松手取下",
-    "en": "Release to detach"
-  },
   "LOC_UNREGISTERED_0DB3DB44": {
     "source": "未登记",
     "zh_CN": "未登记",
@@ -1898,11 +1798,6 @@
     "source": "自由",
     "zh_CN": "自由",
     "en": "Freedom"
-  },
-  "LOC_EMPTY_SLOT_INSERT_D029F95E": {
-    "source": "空槽 · 放入",
-    "zh_CN": "空槽 · 放入",
-    "en": "Empty slot · Insert"
   },
   "LOC_DEPTH_D1B31CF8": {
     "source": "深度",
@@ -2054,11 +1949,6 @@
     "zh_CN": "文本",
     "en": "Text"
   },
-  "LOC_RESEARCH_THIS_NODE_9222A1F7": {
-    "source": "研究此节点",
-    "zh_CN": "研究此节点",
-    "en": "Research this node"
-  },
   "LOC_APPLY_ABILITY_TO_DRAFT_DD49D83A": {
     "source": "应用能力到草稿",
     "zh_CN": "应用能力到草稿",
@@ -2089,30 +1979,10 @@
     "zh_CN": "由此前表达改写而来。",
     "en": "Rewritten from an earlier expression."
   },
-  "LOC_REQUIREMENTS_NOT_MET_114C5744": {
-    "source": "依赖尚未满足",
-    "zh_CN": "依赖尚未满足",
-    "en": "Requirements not met"
-  },
-  "LOC_AVAILABLE_TO_UNLOCK_097705A8": {
-    "source": "可解锁",
-    "zh_CN": "可解锁",
-    "en": "Available to unlock"
-  },
-  "LOC_UNLOCKED_E4CF2DE9": {
-    "source": "已解锁",
-    "zh_CN": "已解锁",
-    "en": "Unlocked"
-  },
   "LOC_NONE_484D5561": {
     "source": "无",
     "zh_CN": "无",
     "en": "None"
-  },
-  "LOC_SPEND_D_MEME_UNLOCK_45B2FF07": {
-    "source": "消耗 %d Meme / 解锁",
-    "zh_CN": "消耗 %d Meme / 解锁",
-    "en": "Spend %d Meme / Unlock"
   },
   "LOC_NOT_SELECTED_1182C545": {
     "source": "未选择",
@@ -2599,60 +2469,10 @@
     "zh_CN": "一份工作",
     "en": "A job"
   },
-  "LOC_EVERYONE_IS_SAYING_YOUR_WORDS_NOW_PLEASE_41ADB542": {
-    "source": "67：现在大家都在说你的话。请不要把这理解为大家都理解你。",
-    "zh_CN": "67：现在到处都有人顺口说你那句话。不过人家愿意拿去用，不等于都照着你的意思听懂了。",
-    "en": "67: People all over are repeating your words now. Just don't assume that means they all understand you."
-  },
-  "LOC_YOUR_MEME_HAS_TAKEN_OVER_THE_WORLD_B77F0A22": {
-    "source": "你的模因占据了世界。",
-    "zh_CN": "你的模因占据了世界。",
-    "en": "You own the world."
-  },
-  "LOC_IT_S_OUT_OF_YOUR_HANDS_CONGRATULATIONS_C2D7631D": {
-    "source": "67：它不归你管了。恭喜，你终于有了一份不用签字的成果。",
-    "zh_CN": "67：它已经不归你管了，外头的人会自己接着改、接着传。恭喜，终于有份不用你签字的成果了。",
-    "en": "67: It's out of your hands now, and people out there are carrying it forward on their own. Congratulations on a result that no longer needs your signature."
-  },
-  "LOC_THE_UNCONTROLLED_MUTANT_LINEAGE_IS_SURVIVING_ON_0D828D42": {
-    "source": "失控的突变谱系已经独自生存。",
-    "zh_CN": "失控的突变谱系已经独自生存。",
-    "en": "An autonomous mutant lineage survived."
-  },
-  "LOC_NEITHER_SIDE_PRINTED_THE_OTHER_OUT_OF_C3A5D603": {
-    "source": "67：谁也没把谁印没。机器可以休息，意见暂时不必一致。",
-    "zh_CN": "67：谁也没把另一边印到绝版。机器可以歇歇，意见暂时不必统一。",
-    "en": "67: Neither side printed the other out of existence. The presses can rest without everyone settling on a single line."
-  },
-  "LOC_YOU_AND_YOUR_COMPETITORS_HAVE_REACHED_EQUILIBRIUM_7117C232": {
-    "source": "你与竞争者的格局达到均衡。",
-    "zh_CN": "你与竞争者的格局达到均衡。",
-    "en": "You reached equilibrium with competitors."
-  },
-  "LOC_SEVERAL_DRAFTS_SURVIVED_TOGETHER_APPARENTLY_A_SINGLE_E053C7C9": {
-    "source": "67：几份稿子一起活下来了。看来统一口径不是唯一的出路。",
-    "zh_CN": "67：几份不同的稿子居然一起留下来了。看来事情走到最后，也未必非得合成同一种声音才算收尾。",
-    "en": "67: Several drafts survived side by side. Turns out a single voice wasn't the only way for this round to end."
-  },
-  "LOC_MULTIPLE_DISTINCT_VERSIONS_HAVE_SPREAD_TOGETHER_C71AB8B3": {
-    "source": "多个不同版本共同完成了扩散。",
-    "zh_CN": "多个不同版本共同完成了扩散。",
-    "en": "Distinct versions spread together."
-  },
-  "LOC_VICTORY_943874EC": {
-    "source": "胜利",
-    "zh_CN": "胜利",
-    "en": "Victory"
-  },
   "LOC_RETURN_TO_MAIN_MENU_E34E61A2": {
     "source": "返回主菜单",
     "zh_CN": "返回主菜单",
     "en": "Return to menu"
-  },
-  "LOC_HOUR_D_WORLD_POPULATION_D_AUTHOR_OWNERSHIP_877C9AE3": {
-    "source": "第 %d 小时 · 世界人口 %d\n作者归属 %.2f%% · 原生谱系 %.2f%% · 外部分家 %.2f%%\n流通版本 %d · Meme %s",
-    "zh_CN": "第 %d 小时 · 世界人口 %d\n作者归属 %.2f%% · 原生谱系 %.2f%% · 外部分家 %.2f%%\n流通版本 %d · Meme %s",
-    "en": "Hour %d · Population %d\nOwned %.2f%% · Lineage %.2f%% · Escaped %.2f%%\nVariants %d · Meme %s"
   },
   "LOC_TRANSMISSION_HAS_STARTED_WORLD_GEOGRAPHY_CANNOT_BE_D0B074A3": {
     "source": "已开始传播，不能替换世界地理。",
@@ -2848,36 +2668,6 @@
     "source": "采用超过曝光。",
     "zh_CN": "采用超过曝光。",
     "en": "Adoption exceeds exposure."
-  },
-  "LOC_INVALID_VICTORY_RECORD_FIELDS_24269A0D": {
-    "source": "胜利记录字段非法。",
-    "zh_CN": "胜利记录字段非法。",
-    "en": "Invalid victory-record fields."
-  },
-  "LOC_INVALID_VICTORY_RECORD_INTEGER_F78EABDD": {
-    "source": "胜利记录整数非法。",
-    "zh_CN": "胜利记录整数非法。",
-    "en": "Invalid victory-record integer."
-  },
-  "LOC_INVALID_VICTORY_RECORD_SHARE_CA8D53A4": {
-    "source": "胜利记录占比非法。",
-    "zh_CN": "胜利记录占比非法。",
-    "en": "Invalid victory-record share."
-  },
-  "LOC_VICTORY_RECORD_CLOCK_MISMATCH_796E3FFC": {
-    "source": "胜利记录时钟不一致。",
-    "zh_CN": "胜利记录时钟不一致。",
-    "en": "Victory-record clock mismatch."
-  },
-  "LOC_VICTORY_CONDITIONS_CONFLICT_WITH_ACTUAL_VERSIONS_7109142A": {
-    "source": "胜利条件与真实版本不一致。",
-    "zh_CN": "胜利条件与真实版本不一致。",
-    "en": "Victory conditions conflict with actual versions."
-  },
-  "LOC_VICTORY_CONDITIONS_WERE_NOT_ACHIEVED_THROUGH_ACTUAL_8AE0D6C4": {
-    "source": "胜利条件未由真实传播达成。",
-    "zh_CN": "胜利条件未由真实传播达成。",
-    "en": "Victory conditions were not achieved through actual transmission."
   },
   "LOC_PRESET_LACKS_AN_AVAILABLE_LANGUAGE_OR_AUDIENCE_267B3DA7": {
     "source": "预设缺少可用的语言或群体语境资源。",
@@ -3153,11 +2943,6 @@
     "source": "该技能已解锁，不能重复扣款。",
     "zh_CN": "该技能已解锁。",
     "en": "This skill is already unlocked; it cannot charge again."
-  },
-  "LOC_UNLOCK_REQUIRED_SKILLS_FIRST_B8C8D8A4": {
-    "source": "请先解锁依赖技能：",
-    "zh_CN": "请先解锁依赖技能：",
-    "en": "Unlock required skills first: "
   },
   "LOC_APPLYING_AN_ABILITY_REQUIRES_YOUR_OWN_VALID_5A5FFD6C": {
     "source": "能力应用需要自己的合法草稿记录。",
@@ -3539,11 +3324,6 @@
     "zh_CN": "把表达接入劳动话题。",
     "en": "Connect the expression to labor."
   },
-  "LOC_CONNECT_THE_EXPRESSION_TO_PLATFORM_TOOLS_8AE6C9C9": {
-    "source": "把表达接入平台工具话题。",
-    "zh_CN": "把表达接入平台工具话题。",
-    "en": "Connect the expression to platform tools."
-  },
   "LOC_CONNECT_THE_EXPRESSION_TO_SPORTS_8C701C37": {
     "source": "把表达接入体育话题。",
     "zh_CN": "把表达接入体育话题。",
@@ -3724,36 +3504,6 @@
     "zh_CN": "续写补丁",
     "en": "Continue"
   },
-  "LOC_POST_THE_EXPRESSION_ON_THE_NEIGHBORHOOD_BOARD_CBD7BF79": {
-    "source": "把表达贴进街区留言板。",
-    "zh_CN": "街区留言板上，一句短话也会被邻里记住、转述。",
-    "en": "On the neighborhood board, even a short phrase can become something neighbors remember and repeat."
-  },
-  "LOC_NEIGHBORHOOD_BOARD_CHANNEL_UNLOCKED_64B49366": {
-    "source": "街区留言板渠道已解锁。",
-    "zh_CN": "解锁“街区留言板”投放渠道。",
-    "en": "Unlocks the neighborhood board launch channel."
-  },
-  "LOC_BRING_IMAGES_INTO_THE_PUBLIC_RECOMMENDATION_FEED_2E4CFFD6": {
-    "source": "让图像进入公开推荐流。",
-    "zh_CN": "公开推荐流在人们的屏幕间传递图像，让陌生人看见同一个瞬间。",
-    "en": "The public feed passes images between screens, bringing the same moment into the lives of strangers."
-  },
-  "LOC_PUBLIC_RECOMMENDATION_FEED_CHANNEL_UNLOCKED_7C60B262": {
-    "source": "公开推荐流渠道已解锁。",
-    "zh_CN": "解锁“公开推荐流”投放渠道。",
-    "en": "Unlocks the public feed launch channel."
-  },
-  "LOC_IMAGE_MEDIUM_74F473C4": {
-    "source": "图像媒介",
-    "zh_CN": "图像媒介",
-    "en": "Image medium"
-  },
-  "LOC_BUILD_A_BRIDGE_BETWEEN_READERS_OF_DIFFERENT_A7CA0150": {
-    "source": "给不同语言的读者搭一座桥。",
-    "zh_CN": "城邦之间口音各异，同一句话在不同语言里寻找自己的回声。",
-    "en": "Each city speaks in its own voice. The same phrase finds a new echo in another language."
-  },
   "LOC_LANGUAGE_ACCESS_5317F083": {
     "source": "语言可达性 +0.1。",
     "zh_CN": "语言可达性 +0.1。",
@@ -3763,931 +3513,6 @@
     "source": "语言媒介",
     "zh_CN": "语言媒介",
     "en": "Language medium"
-  },
-  "LOC_SEND_THE_EXPRESSION_TO_THE_OPEN_REMIX_29B5AC84": {
-    "source": "把表达送进开放改写工坊。",
-    "zh_CN": "开放改写工坊把熟悉的表达拆成模板，每个人都能续上自己的版本。",
-    "en": "At the open remix workshop, familiar expressions become templates for someone else's version."
-  },
-  "LOC_OPEN_REMIX_WORKSHOP_CHANNEL_UNLOCKED_D45AD777": {
-    "source": "开放改写工坊渠道已解锁。",
-    "zh_CN": "解锁“开放改写工坊”投放渠道。",
-    "en": "Unlocks the open remix workshop launch channel."
-  },
-  "LOC_TEMPLATE_CARRIER_515C52BE": {
-    "source": "模板载体",
-    "zh_CN": "模板载体",
-    "en": "Template carrier"
-  },
-  "LOC_LET_A_PHRASE_INVITE_A_RESPONSE_IN_0444E668": {
-    "source": "让一句话在新的场合也能接上回应。",
-    "zh_CN": "一句话离开最初的场合，在陌生人的回应里找到新的落脚点。",
-    "en": "A phrase leaves its first setting behind and finds a new home in a stranger's response."
-  },
-  "LOC_CONTEXT_DEPENDENCY_A5CCA14B": {
-    "source": "语境依赖 −0.1。",
-    "zh_CN": "语境依赖 −0.1。",
-    "en": "Context dependency −0.1."
-  },
-  "LOC_RESPONSE_INSTANCE_EF1C7315": {
-    "source": "响应实例",
-    "zh_CN": "响应实例",
-    "en": "Response instance"
-  },
-  "LOC_AN_ARCHIVE_EXHIBITION_BRINGS_AN_OLD_TOPIC_71AF401B": {
-    "source": "档案社展出旧版短图，旧话题重返讨论",
-    "zh_CN": "档案社展出旧版短图，旧话题重返讨论",
-    "en": "An archive exhibition brings an old topic back into discussion"
-  },
-  "LOC_THE_CITY_ARCHIVE_SOCIETY_EXHIBITS_A_COLLECTION_8DB4DF6C": {
-    "source": "城市档案社展出了早先收藏的一组短图，并附上当年的转发记录。参观者把图中的说法与眼下的处境联系起来，原本被搁置的回应重新出现在聊天里。",
-    "zh_CN": "城市档案社展出了早先收藏的一组短图，并附上当年的转发记录。参观者把图中的说法与眼下的处境联系起来，原本被搁置的回应重新出现在聊天里。",
-    "en": "The city archive society exhibits a collection of short image posts alongside their original sharing records. Visitors connect the images' claims to present circumstances, and responses once set aside return to the conversation."
-  },
-  "LOC_AN_OLD_PHRASE_CAN_STILL_BE_DUG_3CA6F83C": {
-    "source": "旧句子还能被翻出来，先看它这次解决什么，别忙着给复兴剪彩。",
-    "zh_CN": "旧句子还能被翻出来，先看它这次解决什么，别忙着给复兴剪彩。",
-    "en": "An old phrase can still be dug up. Find out what it does this time before cutting the ribbon on its revival."
-  },
-  "LOC_THE_HARBOR_RELAY_OPENS_ITS_TEAM_SUPPORT_F9175C41": {
-    "source": "港口接力赛开幕，队伍应援栏开放",
-    "zh_CN": "港口接力赛开幕，队伍应援栏开放",
-    "en": "The harbor relay opens its team-support board"
-  },
-  "LOC_PAPER_LANTERN_HARBOR_S_SPORTS_ASSOCIATION_OPENS_5B986208": {
-    "source": "纸灯港体育会宣布港口接力赛开幕，码头与学院代表队陆续入场。现场开放队伍应援栏，学生和居民开始套用熟悉的短句为各队造势，赛场之外也出现了应援帖。",
-    "zh_CN": "纸灯港体育会宣布港口接力赛开幕，码头与学院代表队陆续入场。现场开放队伍应援栏，学生和居民开始套用熟悉的短句为各队造势，赛场之外也出现了应援帖。",
-    "en": "Paper Lantern Harbor's sports association opens the harbor relay as dockside and college teams arrive. A public support board invites students and residents to adapt familiar phrases for their teams; cheering posts soon appear beyond the venue."
-  },
-  "LOC_THE_CHEERING_BOARD_DOES_NOT_CHECK_ARGUMENTS_30955C02": {
-    "source": "应援栏不查论据，别因此把嗓门当成证据。",
-    "zh_CN": "应援栏不查论据，别因此把嗓门当成证据。",
-    "en": "The cheering board does not check arguments. That is no reason to count volume as evidence."
-  },
-  "LOC_THE_MISSING_MINUTE_IMAGE_POSTS_CIRCULATE_ON_959C5000": {
-    "source": "“漏掉一分钟”短图在街角流传",
-    "zh_CN": "“漏掉一分钟”短图在街角流传",
-    "en": "\"The Missing Minute\" image posts circulate on street corners"
-  },
-  "LOC_A_SERIES_OF_SHORT_IMAGE_POSTS_CALLED_7E1ED957": {
-    "source": "纸灯港街角出现了一组名为“漏掉一分钟”的短图，发布者邀请路人补写各自错过的小事。几家本地群聊开始转发这些续篇，原先讨论其他表达的人也加入了接写。",
-    "zh_CN": "纸灯港街角出现了一组名为“漏掉一分钟”的短图，发布者邀请路人补写各自错过的小事。几家本地群聊开始转发这些续篇，原先讨论其他表达的人也加入了接写。",
-    "en": "A series of short image posts called \"The Missing Minute\" appears around Paper Lantern Harbor, inviting passersby to add small things they have missed. Local group chats share these continuations, drawing people away from other expressions to contribute."
-  },
-  "LOC_SOMEONE_LEFT_A_MISSING_MINUTE_FOR_OTHERS_C1328F16": {
-    "source": "别人漏掉一分钟就留出了接写的位置，你的长文先别把最后一个空位占满。",
-    "zh_CN": "别人漏掉一分钟就留出了接写的位置，你的长文先别把最后一个空位占满。",
-    "en": "Someone left a missing minute for others to fill. Do not let your essay occupy the last empty space."
-  },
-  "LOC_A_CULTURE_CRITIC_QUOTES_THE_ORIGINAL_POST_A19457AF": {
-    "source": "文化评论者引用原帖，质疑其结论",
-    "zh_CN": "文化评论者引用原帖，质疑其结论",
-    "en": "A culture critic quotes the original post to challenge its conclusion"
-  },
-  "LOC_A_CULTURE_CRITIC_QUOTES_THE_ORIGINAL_POST_A32BD99C": {
-    "source": "一位文化评论者把原帖放进批评文章，指出其中的公平说法忽略了被排除的人。读者沿着引用链接展开争论，原句开始以反讽的语气出现在转发中。",
-    "zh_CN": "一位文化评论者把原帖放进批评文章，指出其中的公平说法忽略了被排除的人。读者沿着引用链接展开争论，原句开始以反讽的语气出现在转发中。",
-    "en": "A culture critic quotes the original post in an essay, arguing that its account of fairness overlooks those excluded. Readers follow the citation link into debate, and the original phrase begins appearing in ironic reposts."
-  },
-  "LOC_OPPOSITION_LIVES_IN_THOSE_SHARE_COUNTS_TOO_1C965444": {
-    "source": "转发量里也住着反对票，先把那段批评读完再庆祝。",
-    "zh_CN": "转发量里也住着反对票，先把那段批评读完再庆祝。",
-    "en": "Opposition lives in those share counts too. Finish reading the criticism before celebrating."
-  },
-  "LOC_A_CULTURE_WORKSHOP_SUBMITS_A_BILINGUAL_REWRITE_FD1223D0": {
-    "source": "文化工坊提交双语短句改写",
-    "zh_CN": "文化工坊提交双语短句改写",
-    "en": "A culture workshop submits a bilingual rewrite"
-  },
-  "LOC_A_CULTURE_WORKSHOP_SUBMITS_A_PROPOSAL_FOR_2EDD55FB": {
-    "source": "文化工坊提交了一份双语短句方案，在图角保留原帖链接。新说法沿用原来的对照关系，工坊正在确认再利用条款，准备把它带进另一种语言的讨论。",
-    "zh_CN": "文化工坊提交了一份双语短句方案，在图角保留原帖链接。新说法沿用原来的对照关系，工坊正在确认再利用条款，准备把它带进另一种语言的讨论。",
-    "en": "A culture workshop submits a proposal for a bilingual phrase, retaining a link to the original in the image corner. It keeps the original contrast and is checking reuse terms before entering a discussion in another language."
-  },
-  "LOC_THE_REWRITE_KEPT_ITS_SOURCE_INTERPRETIVE_AUTHORITY_0A399954": {
-    "source": "改写方案保留了出处，解释权可没附赠返程票。",
-    "zh_CN": "改写方案保留了出处，解释权可没附赠返程票。",
-    "en": "The rewrite kept its source. Interpretive authority did not come with a return ticket."
-  },
-  "LOC_STUDENTS_REVISIT_AN_OLD_MEME_AND_RECOVER_55B71E6F": {
-    "source": "学生回看旧梗，翻出早先回应",
-    "zh_CN": "学生回看旧梗，翻出早先回应",
-    "en": "Students revisit an old meme and recover earlier responses"
-  },
-  "LOC_WHILE_REVISITING_AN_OLD_MEME_A_STUDENT_2EC76E3B": {
-    "source": "学生读书群回看一则旧梗时，有人翻出了早先收藏的回应截图。几名原本觉得这个话题已经说尽的成员重新读完了全文，聊天也从敷衍表情转回具体经历。",
-    "zh_CN": "学生读书群回看一则旧梗时，有人翻出了早先收藏的回应截图。几名原本觉得这个话题已经说尽的成员重新读完了全文，聊天也从敷衍表情转回具体经历。",
-    "en": "While revisiting an old meme, a student reading group recovers screenshots of earlier responses. Members who thought the subject exhausted reread the full text, and the chat shifts from perfunctory reactions back to specific experiences."
-  },
-  "LOC_OLD_SCREENSHOTS_KEEP_BETTER_THAN_NEW_SLOGANS_29E0577B": {
-    "source": "旧截图比新口号更耐放，补一句具体处境就够了，不必再刷防腐漆。",
-    "zh_CN": "旧截图比新口号更耐放，补一句具体处境就够了，不必再刷防腐漆。",
-    "en": "Old screenshots keep better than new slogans. Add one concrete situation; it does not need another coat of preservative."
-  },
-  "LOC_ARCHIVE_ENTHUSIASTS_AGREE_ON_WAYS_TO_REVISIT_224B42B3": {
-    "source": "档案爱好者约定回看与告别方式",
-    "zh_CN": "档案爱好者约定回看与告别方式",
-    "en": "Archive enthusiasts agree on ways to revisit and say goodbye"
-  },
-  "LOC_ARCHIVE_ENTHUSIASTS_PUBLISH_A_RESPONSE_CHAIN_CONVENTION_CB04143A": {
-    "source": "档案爱好者公布了一套回看旧资料的接句约定，参与者既可以补充记忆，也可以用约定短句结束回应。几个收藏群按这一节奏轮流贴出旧材料，档案讨论出现了自己的聚集时刻。",
-    "zh_CN": "档案爱好者公布了一套回看旧资料的接句约定，参与者既可以补充记忆，也可以用约定短句结束回应。几个收藏群按这一节奏轮流贴出旧材料，档案讨论出现了自己的聚集时刻。",
-    "en": "Archive enthusiasts publish a response-chain convention for revisiting old material. Participants can add memories or use an agreed phrase to end their responses. Collection groups take turns posting old items, giving archive discussions their own recurring gathering times."
-  },
-  "LOC_OLD_ARCHIVES_NOW_HAVE_A_WAY_TO_D86BAE41": {
-    "source": "旧档案有了告别方式，至少不会把礼貌回应续成无期限合同。",
-    "zh_CN": "旧档案有了告别方式，至少不会把礼貌回应续成无期限合同。",
-    "en": "Old archives now have a way to say goodbye. At least a polite reply need not become an indefinite contract."
-  },
-  "LOC_AN_OUTSIDE_COMMUNITY_PROPOSES_REVERSING_THE_ORIGINAL_D2A71D0C": {
-    "source": "外部社群提议反用原来的入圈暗号",
-    "zh_CN": "外部社群提议反用原来的入圈暗号",
-    "en": "An outside community proposes reversing the original entry signal"
-  },
-  "LOC_AN_OUTSIDE_COMMUNITY_PROPOSES_SWAPPING_THE_WELCOMING_CE9CBBF4": {
-    "source": "一个外部社群公布了改写提案，把原帖中欢迎与排斥的位置交换。提案保留原链接，却将原来面向圈内人的暗号用于拒绝旧圈子的规则，正在等待再利用确认。",
-    "zh_CN": "一个外部社群公布了改写提案，把原帖中欢迎与排斥的位置交换。提案保留原链接，却将原来面向圈内人的暗号用于拒绝旧圈子的规则，正在等待再利用确认。",
-    "en": "An outside community proposes swapping the welcoming and exclusionary positions in the original post. The proposal retains its source link but turns an insider signal against the old circle's rules, pending reuse confirmation."
-  },
-  "LOC_THE_WELCOME_SIGNAL_NOW_SAYS_NO_ENTRY_0130D5C3": {
-    "source": "欢迎暗号改成谢绝入内，门牌没报废，只是换了收件人。",
-    "zh_CN": "欢迎暗号改成谢绝入内，门牌没报废，只是换了收件人。",
-    "en": "The welcome signal now says \"No entry.\" The sign was not scrapped; it just changed addressees."
-  },
-  "LOC_A_CULTURAL_CLUB_INTRODUCES_ITS_OWN_INSIDER_15790447": {
-    "source": "文化社团推出自己的入圈暗号",
-    "zh_CN": "文化社团推出自己的入圈暗号",
-    "en": "A cultural club introduces its own insider signal"
-  },
-  "LOC_A_CULTURAL_CLUB_INTRODUCES_ITS_OWN_INSIDER_7872A6ED": {
-    "source": "一支文化社团推出了自己的入圈暗号，并给新成员列出使用场景。其他社群开始围绕这套暗号辨认同伴，本地身份话题不再只围着原先几种说法展开。",
-    "zh_CN": "一支文化社团推出了自己的入圈暗号，并给新成员列出使用场景。其他社群开始围绕这套暗号辨认同伴，本地身份话题不再只围着原先几种说法展开。",
-    "en": "A cultural club introduces its own insider signal and lists situations in which new members can use it. Other communities start using it to recognize peers, and local identity discussions no longer revolve around the same familiar expressions."
-  },
-  "LOC_THE_CLUB_GAVE_ITS_SIGNAL_INSTRUCTIONS_YOU_F0877526": {
-    "source": "社团给暗号配了使用说明，你不能把每一扇新门都登记成自己的入口。",
-    "zh_CN": "社团给暗号配了使用说明，你不能把每一扇新门都登记成自己的入口。",
-    "en": "The club gave its signal instructions. You cannot register every new door as your own entrance."
-  },
-  "LOC_A_STREET_CORNER_STORY_GROUP_SERIALIZES_EVERYDAY_D9B18680": {
-    "source": "街角故事小组连载日常片段",
-    "zh_CN": "街角故事小组连载日常片段",
-    "en": "A street-corner story group serializes everyday scenes"
-  },
-  "LOC_A_STREET_CORNER_STORY_GROUP_BEGINS_SERIALIZING_036B4B80": {
-    "source": "街角故事小组开始连载一组日常片段，邀请读者为同一个街区补写人物经历。几家社区群聊接过连载继续讲述，晚间讨论逐渐围着这个小世界展开。",
-    "zh_CN": "街角故事小组开始连载一组日常片段，邀请读者为同一个街区补写人物经历。几家社区群聊接过连载继续讲述，晚间讨论逐渐围着这个小世界展开。",
-    "en": "A street-corner story group begins serializing everyday scenes, inviting readers to add characters' experiences in the same neighborhood. Community chats pick up the series and continue it, drawing evening discussions into this small shared world."
-  },
-  "LOC_A_NEIGHBORHOOD_THAT_LETS_OTHERS_WRITE_THE_AFD0820B": {
-    "source": "一个街区肯让别人续写，就比贴满作者简介的空房间更像个世界。",
-    "zh_CN": "一个街区肯让别人续写，就比贴满作者简介的空房间更像个世界。",
-    "en": "A neighborhood that lets others write the next chapter feels more like a world than an empty room covered in author biographies."
-  },
-  "LOC_A_STUDENT_CLUB_LAUNCHES_A_RESPONSE_CHAIN_0B9D6565": {
-    "source": "学生社团开办接句活动",
-    "zh_CN": "学生社团开办接句活动",
-    "en": "A student club launches a response-chain activity"
-  },
-  "LOC_A_STUDENT_CLUB_PUBLISHES_AN_OPENING_LINE_E7DC24FA": {
-    "source": "学生社团发布了接句活动的开场语、回应方式和退出短句。成员在几个群里轮流接写，原本同时参与其他讨论的学生开始抱怨消息过密。",
-    "zh_CN": "学生社团发布了接句活动的开场语、回应方式和退出短句。成员在几个群里轮流接写，原本同时参与其他讨论的学生开始抱怨消息过密。",
-    "en": "A student club publishes an opening line, response method, and exit phrase for a collaborative chain. Members take turns continuing it across group chats, while students involved in other discussions begin complaining about the volume of messages."
-  },
-  "LOC_THE_ACTIVITY_FINALLY_HAS_AN_EXIT_PHRASE_C4224593": {
-    "source": "活动总算配了退出短句，参与者暂时不用以沉默申请辞职。",
-    "zh_CN": "活动总算配了退出短句，参与者暂时不用以沉默申请辞职。",
-    "en": "The activity finally has an exit phrase. For now, participants need not resign by remaining silent."
-  },
-  "LOC_A_BILINGUAL_READING_GROUP_PUBLISHES_CONTRASTING_RELATIONSHIP_2032171A": {
-    "source": "双语读书组发布关系对照短句",
-    "zh_CN": "双语读书组发布关系对照短句",
-    "en": "A bilingual reading group publishes contrasting relationship phrases"
-  },
-  "LOC_A_BILINGUAL_READING_GROUP_PUBLISHES_PAIRED_PHRASES_7F9C3F58": {
-    "source": "双语读书组发布了一套对照短句，说明两种语言中相似关系的不同说法。成员将它带进课程群与读书群，语言话题的讨论开始围绕这套新表达聚集。",
-    "zh_CN": "双语读书组发布了一套对照短句，说明两种语言中相似关系的不同说法。成员将它带进课程群与读书群，语言话题的讨论开始围绕这套新表达聚集。",
-    "en": "A bilingual reading group publishes paired phrases showing how similar relationships are expressed differently in two languages. Members bring them into course and reading chats, drawing language discussions toward these new expressions."
-  },
-  "LOC_TWO_LANGUAGES_SET_OUT_THE_SAME_RELATIONSHIP_7ADB7222": {
-    "source": "两种语言把同一关系摆了两次，含糊的话不会自动获得双倍解释。",
-    "zh_CN": "两种语言把同一关系摆了两次，含糊的话不会自动获得双倍解释。",
-    "en": "Two languages set out the same relationship twice. A vague claim does not automatically earn twice the explanation."
-  },
-  "LOC_SIMILAR_TEMPLATES_FLOOD_CHATS_AND_OFFICE_WORKERS_87F9EC73": {
-    "source": "相似模板挤满群聊，职员跳过开头",
-    "zh_CN": "相似模板挤满群聊，职员跳过开头",
-    "en": "Similar templates flood chats, and office workers skip the opening"
-  },
-  "LOC_SIMILAR_TEMPLATES_FROM_SEVERAL_COMMUNITIES_ARRIVE_IN_BBC93601": {
-    "source": "几种来自不同社群的相似模板同时进入本地群聊。职员反复看到近似的开头，开始略过整段消息，连原先愿意参与的社区话题也少了回应。",
-    "zh_CN": "几种来自不同社群的相似模板同时进入本地群聊。职员反复看到近似的开头，开始略过整段消息，连原先愿意参与的社区话题也少了回应。",
-    "en": "Similar templates from several communities arrive in local group chats at once. Office workers repeatedly see nearly identical openings and begin skipping entire messages; even community topics they previously joined receive fewer replies."
-  },
-  "LOC_THE_TEMPLATES_HAVE_SQUEEZED_EVERY_OPENING_INTO_98B218E7": {
-    "source": "几种模板把开头挤成同一张脸，先别再给它添一份复印件。",
-    "zh_CN": "几种模板把开头挤成同一张脸，先别再给它添一份复印件。",
-    "en": "The templates have squeezed every opening into the same face. Do not add another photocopy."
-  },
-  "LOC_OFFICE_WORKERS_BRING_A_DORMANT_TOPIC_BACK_7D55E540": {
-    "source": "职员重新提起一则沉寂旧话题",
-    "zh_CN": "职员重新提起一则沉寂旧话题",
-    "en": "Office workers bring a dormant topic back to the conversation"
-  },
-  "LOC_OFFICE_WORKERS_BRING_A_LONG_QUIET_TOPIC_F078DEF9": {
-    "source": "一则安静了一阵的旧话题被职员带回交班聊天，有人顺手贴出了当年的回应。几名读者说这次读来没有先前那么厌烦，工作与档案相关的讨论又有了短暂交集。",
-    "zh_CN": "一则安静了一阵的旧话题被职员带回交班聊天，有人顺手贴出了当年的回应。几名读者说这次读来没有先前那么厌烦，工作与档案相关的讨论又有了短暂交集。",
-    "en": "Office workers bring a long-quiet topic into a shift-handover chat, where someone reposts an earlier response. Some readers find it less irritating this time, briefly reconnecting discussions of work and archives."
-  },
-  "LOC_AN_OLD_TOPIC_CAME_BACK_FOR_A_A1916444": {
-    "source": "旧话题回来坐了坐，不是来给你的成果表签字，先听它这次被用在哪里。",
-    "zh_CN": "旧话题回来坐了坐，不是来给你的成果表签字，先听它这次被用在哪里。",
-    "en": "An old topic came back for a visit, not to sign off your results sheet. Listen to what people use it for this time."
-  },
-  "LOC_A_TWO_BILL_COMPARISON_CATCHES_ON_AMONG_ECA22A93": {
-    "source": "职员圈流行两张账单的对照说法",
-    "zh_CN": "职员圈流行两张账单的对照说法",
-    "en": "A two-bill comparison catches on among office workers"
-  },
-  "LOC_A_SMALL_CIRCLE_OF_OFFICE_WORKERS_PLACES_BDA74F82": {
-    "source": "一个职员小圈把两张日常账单并排，配上自己的对照说法。其他同事开始拿各自的账单接写，通勤群里的生活成本讨论转向这套新表达。",
-    "zh_CN": "一个职员小圈把两张日常账单并排，配上自己的对照说法。其他同事开始拿各自的账单接写，通勤群里的生活成本讨论转向这套新表达。",
-    "en": "A small circle of office workers places two everyday bills side by side with its own comparison. Colleagues continue the pattern with their own bills, turning commuting chats' cost-of-living discussions toward this new expression."
-  },
-  "LOC_TWO_BILLS_SAY_MORE_THAN_TWO_PAGES_767D6192": {
-    "source": "两张账单比两页态度更会说话，至少前者写清了谁在付钱。",
-    "zh_CN": "两张账单比两页态度更会说话，至少前者写清了谁在付钱。",
-    "en": "Two bills say more than two pages of attitude. At least the bills state who pays."
-  },
-  "LOC_AN_OFFICE_CHAT_PROPOSES_REVERSING_THE_ORIGINAL_B5C3FFB8": {
-    "source": "职员群提议翻转原帖的对照结论",
-    "zh_CN": "职员群提议翻转原帖的对照结论",
-    "en": "An office chat proposes reversing the original comparison"
-  },
-  "LOC_AN_OFFICE_CHAT_PUBLISHES_A_REWRITE_THAT_041EB821": {
-    "source": "一个职员群公布了改写方案，把原帖的对照关系翻转成相反结论。方案仍附原链接，但署名者表示这次推论与原作者不同，正在核对可再利用的部分。",
-    "zh_CN": "一个职员群公布了改写方案，把原帖的对照关系翻转成相反结论。方案仍附原链接，但署名者表示这次推论与原作者不同，正在核对可再利用的部分。",
-    "en": "An office chat publishes a rewrite that flips the original comparison to the opposite conclusion. It retains the source link but states that its reasoning differs from the original author's, while checking which parts can be reused."
-  },
-  "LOC_TURN_A_COMPARISON_TABLE_OVER_AND_IT_E2703D34": {
-    "source": "对照表翻过来还是对照表，结论却换了户主，先把搬走的那一步标出来。",
-    "zh_CN": "对照表翻过来还是对照表，结论却换了户主，先把搬走的那一步标出来。",
-    "en": "Turn a comparison table over and it is still a comparison table, but its conclusion has a new owner. Mark the step where it moved out."
-  },
-  "LOC_OUTSIDE_PARTICIPANTS_PROPOSE_TURNING_A_RESPONSE_INTO_FA417605": {
-    "source": "外部参与者提议把回应改成离场宣言",
-    "zh_CN": "外部参与者提议把回应改成离场宣言",
-    "en": "Outside participants propose turning a response into an exit statement"
-  },
-  "LOC_OUTSIDE_PARTICIPANTS_PROPOSE_REPLACING_THE_ORIGINAL_RESPONSE_19F44864": {
-    "source": "几名外部参与者提出改写原来的回应结构，将接句改成离场宣言。提案保留来源链接，强调参与者可以结束讨论；他们正在确认改写范围后再发布正式版本。",
-    "zh_CN": "几名外部参与者提出改写原来的回应结构，将接句改成离场宣言。提案保留来源链接，强调参与者可以结束讨论；他们正在核对改写范围，确认后再发布正式版本。",
-    "en": "Outside participants propose replacing the original response structure with a statement of departure. Their proposal keeps the source link and emphasizes that participants may end the discussion; they will publish after confirming the scope of reuse."
-  },
-  "LOC_A_RESPONSE_BECAME_AN_EXIT_STATEMENT_THE_3835D32F": {
-    "source": "回应被改成离场宣言，说明仪式还能派上用场，只是不一定替你留人。",
-    "zh_CN": "回应被改成离场宣言，说明仪式还能派上用场，只是不一定替你留人。",
-    "en": "A response became an exit statement. The ritual still works; it just may not keep people here for you."
-  },
-  "LOC_ANOTHER_GROUP_OF_OFFICE_WORKERS_POSTS_A_A18C6F0A": {
-    "source": "下班前，另一批职员发布排班立场句",
-    "zh_CN": "下班前，另一批职员发布排班立场句",
-    "en": "Another group of office workers posts a stance on shift schedules"
-  },
-  "LOC_BEFORE_LEAVING_WORK_ANOTHER_GROUP_OF_OFFICE_BDE8CB06": {
-    "source": "另一批职员在下班前发布了自己的排班立场句，用反说的致谢表达不满。几家职员群将它与现有说法并排比较，对各种来源的结论都更谨慎了。",
-    "zh_CN": "另一批职员在下班前发布了自己的排班立场句，用反说的致谢表达不满。几家职员群将它与现有说法并排比较，对各种来源的结论都更谨慎了。",
-    "en": "Before leaving work, another group of office workers posts its own stance on scheduling, expressing dissatisfaction through ironic thanks. Office chats compare it with existing expressions and grow more cautious about conclusions from every source."
-  },
-  "LOC_THAT_THANK_YOU_SOUNDS_LIKE_A_RETURNED_EF0DA375": {
-    "source": "这声谢谢像一张退回的工单，先看备注，别拿礼貌字面验收。",
-    "zh_CN": "这声谢谢像一张退回的工单，先看备注，别拿礼貌字面验收。",
-    "en": "That \"thank you\" sounds like a returned work order. Read the notes before accepting its polite wording at face value."
-  },
-  "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_USING_THE_ORIGINAL_4699A441": {
-    "source": "外部工坊提议反向使用原帖规则",
-    "zh_CN": "外部工坊提议反向使用原帖规则",
-    "en": "An outside workshop proposes using the original rules in reverse"
-  },
-  "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_APPLYING_THE_ORIGINAL_541E242F": {
-    "source": "外部工坊公布了一份反向使用原帖规则的提案，并保留原句供读者对照。提案把原来的判断推向相反方向，发布者正在核对再利用条款，准备以自己的署名说明这条新结论。",
-    "zh_CN": "外部工坊公布了一份反向使用原帖规则的提案，并保留原句供读者对照。提案把原来的判断推向相反方向，发布者正在核对再利用条款，准备以自己的署名说明这条新结论。",
-    "en": "An outside workshop proposes applying the original post's rules in reverse and keeps the original phrase for comparison. The proposal drives the judgment toward the opposite conclusion; its authors check reuse terms before presenting that conclusion under their own names."
-  },
-  "LOC_A_RULE_CAN_WORK_IN_REVERSE_CHECK_0F53AD2A": {
-    "source": "规则能被反着用，先看它给谁留了门，别忙着给门牌抛光。",
-    "zh_CN": "规则能被反着用，先看它给谁留了门，别忙着给门牌抛光。",
-    "en": "A rule can work in reverse. Check whom it leaves a door for before polishing the nameplate."
-  },
-  "LOC_SPECTATORS_CONTINUE_SHORT_STORIES_BETWEEN_GAMES_43EB334A": {
-    "source": "球场观众接写赛间小故事",
-    "zh_CN": "球场观众接写赛间小故事",
-    "en": "Spectators continue short stories between games"
-  },
-  "LOC_SPECTATORS_AT_THE_ROOFTOP_COURT_BEGIN_CONTINUING_C78D97CF": {
-    "source": "屋顶球场的观众开始在比赛间隙接写小故事，为看台上的人物补充各自的遭遇。故事被转进体育和娱乐群，观众在比分讨论之外又找到了一个共同话题。",
-    "zh_CN": "屋顶球场的观众开始在比赛间隙接写小故事，为看台上的人物补充各自的遭遇。故事被转进体育和娱乐群，观众在比分讨论之外又找到了一个共同话题。",
-    "en": "Spectators at the rooftop court begin continuing short stories between games, adding experiences for characters in the stands. The stories reach sports and entertainment chats, giving spectators a shared subject beyond the score."
-  },
-  "LOC_THEY_TURNED_THE_INTERVAL_INTO_A_SERIAL_95B5C654": {
-    "source": "他们把比赛间隙写成连续剧，你的口号别急着插播广告。",
-    "zh_CN": "他们把比赛间隙写成连续剧，你的口号别急着插播广告。",
-    "en": "They turned the interval into a serial drama. Your slogan need not interrupt it with an advertisement."
-  },
-  "LOC_TWO_CREATORS_PUBLICLY_DEBATE_THE_BOUNDARIES_OF_3BD88189": {
-    "source": "两名创作者公开争论来源边界",
-    "zh_CN": "两名创作者公开争论来源边界",
-    "en": "Two creators publicly debate the boundaries of attribution"
-  },
-  "LOC_TWO_CREATORS_PUBLICLY_DEBATE_HOW_TO_ATTRIBUTE_74B58F7B": {
-    "source": "两名创作者在文化群里公开争论，一处相似轮廓究竟该怎样标注来源。双方贴出了各自的材料和改写记录，旁观者却对现有来源说明提出了更多疑问。",
-    "zh_CN": "两名创作者在文化群里公开争论，一处相似轮廓究竟该怎样标注来源。旁观者看过双方贴出的材料和改写记录后，对现有来源说明提出了更多疑问。",
-    "en": "Two creators publicly debate how to attribute a similar outline in a culture chat. Both provide their materials and rewrite records, but observers raise further questions about the existing source explanations."
-  },
-  "LOC_BOTH_SIDES_BROUGHT_DOCUMENTS_READ_THE_ATTACHMENTS_5A656B6B": {
-    "source": "双方都带了材料，先读附件，来源声明通常不包售后。",
-    "zh_CN": "双方都带了材料，先读附件，来源声明通常不包售后。",
-    "en": "Both sides brought documents. Read the attachments first; a source declaration rarely includes after-sales service."
-  },
-  "LOC_A_PHRASE_FROM_THE_STANDS_REACHES_STUDENT_9ADE2DB7": {
-    "source": "看台短句走出球场，进入学生群",
-    "zh_CN": "看台短句走出球场，进入学生群",
-    "en": "A phrase from the stands reaches student chats"
-  },
-  "LOC_SPECTATORS_CARRY_A_POPULAR_SPORTS_PHRASE_BEYOND_5E2836A9": {
-    "source": "看台上流行的体育短句被观众带到场外，又进入了几个学生群。文化爱好者把它改配到赛后片段上，体育与娱乐话题吸引了新的围观讨论。",
-    "zh_CN": "看台上流行的体育短句被观众带到场外，又进入了几个学生群。文化爱好者把它改配到赛后片段上，体育与娱乐话题吸引了新的围观讨论。",
-    "en": "Spectators carry a popular sports phrase beyond the venue and into student chats. Culture enthusiasts pair it with post-match clips, attracting new discussions around sports and entertainment."
-  },
-  "LOC_THE_PHRASE_IS_STILL_MOVING_AFTER_LEAVING_9D5F056C": {
-    "source": "看台短句离场后还在走，先检查它是不是只靠比分续命。",
-    "zh_CN": "看台短句离场后还在走，先检查它是不是只靠比分续命。",
-    "en": "The phrase is still moving after leaving the stands. Check whether the score is its only life support."
-  },
-  "LOC_REPEATED_RECOMMENDATIONS_OF_THE_SAME_PHRASE_LEAD_DD21F52D": {
-    "source": "推荐流反复推送同一句，转发渐少",
-    "zh_CN": "推荐流反复推送同一句，转发渐少",
-    "en": "Repeated recommendations of the same phrase lead to fewer shares"
-  },
-  "LOC_THE_SAME_EXPRESSION_APPEARS_REPEATEDLY_IN_THE_020B983A": {
-    "source": "同一句表达连续出现在公开推荐流和几个本地群聊里。部分使用者开始跳过熟悉的开头，仍认得这套说法，却不愿再为每次重复写一条回应。",
-    "zh_CN": "同一句表达连续出现在公开推荐流和几个本地群聊里。部分使用者开始跳过熟悉的开头，仍认得这套说法，却不愿再为每次重复写一条回应。",
-    "en": "The same expression appears repeatedly in the public recommendation feed and local group chats. Some users skip its familiar opening: they still recognize it, but no longer want to compose a response to every repetition."
-  },
-  "LOC_THAT_FAMILIAR_OPENING_ALREADY_SOUNDS_LIKE_AN_43F3C26E": {
-    "source": "熟悉的开头已经够像闹钟，先别给它安排下一次响铃。",
-    "zh_CN": "熟悉的开头已经够像闹钟，先别给它安排下一次响铃。",
-    "en": "That familiar opening already sounds like an alarm clock. Do not schedule its next ring yet."
-  },
-  "LOC_THE_PUBLIC_FEED_LAUNCHES_AN_ATTRIBUTED_COLLAGE_7CCA2DA7": {
-    "source": "公开流上线署名拼贴工具",
-    "zh_CN": "公开流上线署名拼贴工具",
-    "en": "The public feed launches an attributed collage tool"
-  },
-  "LOC_THE_PUBLIC_FEED_LAUNCHES_A_COLLAGE_TOOL_B6031507": {
-    "source": "公开流上线署名拼贴工具，用户可以把引用文字与新图片编排在同一张卡片上。平台保留原帖链接并开放作品转发，使用者可据此把旧句子改写成新的配文。",
-    "zh_CN": "公开流上线署名拼贴工具，用户可以把引用文字与新图片编排在同一张卡片上。平台保留原帖链接并开放作品转发，使用者可据此把旧句子改写成新的配文。",
-    "en": "The public feed launches a collage tool that places quotations and new images on one card. It keeps the original link and allows sharing, giving users a way to turn old phrases into new captions."
-  },
-  "LOC_THE_COLLAGE_TOOL_MADE_BORROWING_LOOK_RESPECTABLE_1A3CD1A0": {
-    "source": "剪贴工具已把借用做得很体面，缺的那点判断仍要自己补上。",
-    "zh_CN": "剪贴工具已把借用做得很体面，缺的那点判断仍要自己补上。",
-    "en": "The collage tool made borrowing look respectable. You still have to supply the missing judgment yourself."
-  },
-  "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_A_REWRITE_WITH_ACC80A3F": {
-    "source": "外部工坊提出相反规则的改写",
-    "zh_CN": "外部工坊提出相反规则的改写",
-    "en": "An outside workshop proposes a rewrite with the opposite rule"
-  },
-  "LOC_AN_OUTSIDE_WORKSHOP_PROPOSES_KEEPING_THE_ORIGINAL_388B93C4": {
-    "source": "外部工坊提出了一份沿用原图轮廓的改写方案，把核心关系改成相反的规则。提案附上原帖链接，并明确表示新结论由工坊负责；发布前的再利用确认仍在进行。",
-    "zh_CN": "外部工坊提出了一份沿用原图轮廓的改写方案，把核心关系改成相反的规则。提案附上原帖链接，并明确表示新结论由工坊负责；发布前的再利用确认仍在进行。",
-    "en": "An outside workshop proposes keeping the original image's outline but replacing its core relationship with the opposite rule. It links to the source and takes responsibility for the new conclusion; reuse confirmation is still pending publication."
-  },
-  "LOC_THEY_KEPT_THE_ORIGINAL_LINK_LIKE_A_298ED39C": {
-    "source": "他们保留原链接，像退货时保留小票，不代表还打算照原说明使用。",
-    "zh_CN": "他们保留原链接，像退货时保留小票，不代表还打算照原说明使用。",
-    "en": "They kept the original link like a receipt for a return. That does not mean they intend to follow the original instructions."
-  },
-  "LOC_PAPER_LANTERN_HARBOR_TRIALS_NEW_NIGHT_FARES_429AE0C8": {
-    "source": "纸灯港试行新的夜间票价",
-    "zh_CN": "纸灯港试行新的夜间票价",
-    "en": "Paper Lantern Harbor trials new night fares"
-  },
-  "LOC_PAPER_LANTERN_HARBOR_S_TRANSPORT_BUREAU_ANNOUNCES_8EA0C5EC": {
-    "source": "纸灯港交通局宣布试行新的夜间票价，夜班乘客的通勤账单随之调整。各站台公开新旧价目对照，乘客开始交换实际支出，并追问调价依据及账单来源。",
-    "zh_CN": "纸灯港交通局宣布试行新的夜间票价，夜班乘客的通勤账单随之调整。各站台公开新旧价目对照，乘客开始交换实际支出，并追问调价依据及账单来源。",
-    "en": "Paper Lantern Harbor's transport bureau announces a trial of new night fares, changing night-shift passengers' commuting bills. Stations display old and new prices side by side, and passengers exchange actual costs while questioning the pricing rationale and sources."
-  },
-  "LOC_YOUR_RHETORIC_WILL_NOT_REMOVE_A_LINE_42DAE3E6": {
-    "source": "账单不会因为你的修辞少一行，先把多出来的那行找出来。",
-    "zh_CN": "账单不会因为你的修辞少一行，先把多出来的那行找出来。",
-    "en": "Your rhetoric will not remove a line from the bill. Find the extra line first."
-  },
-  "LOC_STUDENTS_CONTINUE_THE_ORIGINAL_OPENING_WITH_THEIR_82719415": {
-    "source": "学生沿着原句开头接写回应",
-    "zh_CN": "学生沿着原句开头接写回应",
-    "en": "Students continue the original opening with their own responses"
-  },
-  "LOC_STUDENTS_USE_THE_SAME_OPENING_AS_THE_7CD26677": {
-    "source": "学生群沿着原句的同一开头接写各自的回应，并将前一位的短句留在下面。几名此前只围观的读者也开始使用这种说法，接句从转发变成了参与。",
-    "zh_CN": "学生群沿着原句的同一开头接写各自的回应，并将前一位的短句留在下面。几名此前只围观的读者也开始使用这种说法，接句从转发变成了参与。",
-    "en": "Students use the same opening as the original phrase to write their own responses, keeping the previous contributor's line beneath theirs. Readers who had only watched begin using the expression, turning a repost chain into participation."
-  },
-  "LOC_THE_RESPONSE_CHAIN_FINALLY_LEFT_ROOM_FOR_3F87C98A": {
-    "source": "接句总算给别人留了位置，独白少了一张继续扩建的许可证。",
-    "zh_CN": "接句总算给别人留了位置，独白少了一张继续扩建的许可证。",
-    "en": "The response chain finally left room for someone else. The monologue has lost one permit for further expansion."
-  },
-  "LOC_SEVERAL_STUDENTS_PUBLICLY_DECLINE_TO_USE_THE_A5326613": {
-    "source": "几名学生公开表示不愿跟用",
-    "zh_CN": "几名学生公开表示不愿跟用",
-    "en": "Several students publicly decline to use the expression"
-  },
-  "LOC_AFTER_SEEING_THE_ORIGINAL_POST_SEVERAL_STUDENTS_3A01BFDE": {
-    "source": "几名学生在看到原帖后公开表示，这个说法不适合他们的经历。讨论没有因此结束，但他们对原帖的判断更警惕，也拒绝照着现有版本接写。",
-    "zh_CN": "几名学生在看到原帖后公开表示，这个说法不适合他们的经历。讨论没有因此结束，但他们对原帖的判断更警惕，也拒绝照着现有版本接写。",
-    "en": "After seeing the original post, several students publicly state that its wording does not fit their experiences. Discussion continues, but they treat the original judgment more cautiously and refuse to continue the existing version."
-  },
-  "LOC_THE_AUDIENCE_DID_NOT_JOIN_IN_AT_5250B7E6": {
-    "source": "受众没有跟用，招募表上至少保住了一个诚实的空格，先读他们的理由。",
-    "zh_CN": "受众没有跟用，招募表上至少保住了一个诚实的空格，先读他们的理由。",
-    "en": "The audience did not join in. At least the recruitment form kept one honest blank. Read their reasons first."
-  },
-  "LOC_A_STUDENT_PROPOSES_REDUCING_THE_EXPLANATION_TO_60D9D2ED": {
-    "source": "学生提议把长说明压成一行",
-    "zh_CN": "学生提议把长说明压成一行",
-    "en": "A student proposes reducing the explanation to one line"
-  },
-  "LOC_A_STUDENT_PROPOSES_REDUCING_THE_ORIGINAL_POST_BF5869DE": {
-    "source": "一名学生提出将原帖的长说明压成一行，把一段背景挪出主图。短版方案保留原链接，准备在确认再利用范围后用于群聊转发。",
-    "zh_CN": "一名学生提出将原帖的长说明压成一行，把一段背景挪出主图。短版方案保留原链接，准备在确认再利用范围后用于群聊转发。",
-    "en": "A student proposes reducing the original post's long explanation to one line and moving some background outside the main image. The shorter proposal retains the source link and awaits confirmation of reuse scope before sharing in chats."
-  },
-  "LOC_ONE_LINE_IS_FINE_DO_NOT_CANCEL_DD8CF0AC": {
-    "source": "压成一行可以，别顺手把前提注销，误读本来就不缺捷径。",
-    "zh_CN": "压成一行可以，别顺手把前提注销，误读本来就不缺捷径。",
-    "en": "One line is fine. Do not cancel the premises while you are at it; misreading already has enough shortcuts."
-  },
-  "LOC_A_SCREENSHOT_OF_THE_MAIN_SENTENCE_CIRCULATES_D72B1BBA": {
-    "source": "主句截图脱离说明段落流传",
-    "zh_CN": "主句截图脱离说明段落流传",
-    "en": "A screenshot of the main sentence circulates without its explanation"
-  },
-  "LOC_A_SCREENSHOT_CONTAINING_ONLY_THE_MAIN_SENTENCE_9CEF7396": {
-    "source": "一张只剩主句的截图在学生群流传，原先的解释段落没有一同出现。几名读者将截图与原帖并排质疑，转发者随后提出无背景短版的改写方案。",
-    "zh_CN": "一张只剩主句的截图在学生群流传，原先的解释段落没有一同出现。几名读者将截图与原帖并排质疑，转发者随后提出无背景短版的改写方案。",
-    "en": "A screenshot containing only the main sentence circulates in student chats without the original explanatory paragraph. Readers question it beside the source post, and sharers subsequently propose a short rewrite without the background."
-  },
-  "LOC_THE_SCREENSHOT_LEFT_THE_EXPLANATION_OUTSIDE_BRING_E7853C38": {
-    "source": "截图把解释段落留在门外，先把它领回来，别指望主句独自作证。",
-    "zh_CN": "截图把解释段落留在门外，先把它领回来，别指望主句独自作证。",
-    "en": "The screenshot left the explanation outside. Bring it back in; the main sentence cannot testify alone."
-  },
-  "LOC_SHARERS_RESTORE_THE_ATTRIBUTION_MISSING_FROM_A_D6760691": {
-    "source": "转发者补回截图遗漏的署名",
-    "zh_CN": "转发者补回截图遗漏的署名",
-    "en": "Sharers restore the attribution missing from a screenshot"
-  },
-  "LOC_SHARERS_NOTICE_THAT_A_SCREENSHOT_OMITTED_THE_C8EBA58A": {
-    "source": "一批转发者发现截图漏掉了原作者署名，开始在说明里补回原链接。学生和文化爱好者沿着链接核对早先版本，对这些转发的来源说明更愿意相信。",
-    "zh_CN": "一批转发者发现截图漏掉了原作者署名，开始在说明里补回原链接。学生和文化爱好者沿着链接核对早先版本，对这些转发的来源说明更愿意相信。",
-    "en": "Sharers notice that a screenshot omitted the original author's name and restore the source link in its description. Students and culture enthusiasts follow it to earlier versions and become more willing to trust these reposts' attribution."
-  },
-  "LOC_THE_ATTRIBUTION_FINALLY_CAME_BACK_THE_IDEAS_9820B2B3": {
-    "source": "署名总算回来了，思想并没有一同归队，记账时分开两栏。",
-    "zh_CN": "署名总算回来了，思想并没有一同归队，记账时分开两栏。",
-    "en": "The attribution finally came back. The ideas did not return to formation with it. Keep separate columns in the ledger."
-  },
-  "LOC_STUDENTS_PROPOSE_ADDING_AN_EXIT_PHRASE_TO_76DB60D1": {
-    "source": "学生提议给接句加一句退出语",
-    "zh_CN": "学生提议给接句加一句退出语",
-    "en": "Students propose adding an exit phrase to the response chain"
-  },
-  "LOC_STUDENTS_IN_A_RESPONSE_CHAIN_PROPOSE_A_BC7BF7F2": {
-    "source": "参与接句的学生提出加一句温和的退出语，允许成员不再继续回应。改写方案保留原帖链接，并等待再利用确认；群里有人因此不再担心沉默会被当成失礼。",
-    "zh_CN": "参与接句的学生提出加一句温和的退出语，允许成员不再继续回应。改写方案保留原帖链接，并等待再利用确认；群里有人因此不再担心沉默会被当成失礼。",
-    "en": "Students in a response chain propose a gentle exit phrase allowing members to stop replying. Their rewrite retains the original link and awaits reuse confirmation; some members feel less worried that silence will seem rude."
-  },
-  "LOC_THE_EXIT_PHRASE_FINALLY_ADMITS_ONE_THING_3EA99628": {
-    "source": "退出语终于承认了一个事实，礼貌不是永久出勤记录。",
-    "zh_CN": "退出语终于承认了一个事实，礼貌不是永久出勤记录。",
-    "en": "The exit phrase finally admits one thing: politeness is not a permanent attendance record."
-  },
-  "LOC_A_FAMILIAR_GROUP_SHORTENS_THE_ORIGINAL_PHRASE_75F3C8D0": {
-    "source": "熟人群把原句缩成一个暗号",
-    "zh_CN": "熟人群把原句缩成一个暗号",
-    "en": "A familiar group shortens the original phrase into a signal"
-  },
-  "LOC_CULTURE_ENTHUSIASTS_IN_A_FAMILIAR_GROUP_SHORTEN_F95005F4": {
-    "source": "文化爱好者在熟人群里把原句缩成一个暗号，发出时不再附上完整解释。看过早先讨论的成员开始跟用，外来读者则仍在询问它指的是哪件事。",
-    "zh_CN": "文化爱好者在熟人群里把原句缩成一个暗号，发出时不再附上完整解释。看过早先讨论的成员开始跟用，外来读者则仍在询问它指的是哪件事。",
-    "en": "Culture enthusiasts in a familiar group shorten the original phrase into a signal and stop including its full explanation. Members who saw the earlier discussion adopt it, while newcomers still ask what it refers to."
-  },
-  "LOC_THE_SIGNAL_SAVES_EXPLANATION_FOR_FRIENDS_AND_955D7866": {
-    "source": "暗号省下了熟人的解释，也替陌生人加了一道安检，别把两边算成同一种顺畅。",
-    "zh_CN": "暗号省下了熟人的解释，也替陌生人加了一道安检，别把两边算成同一种顺畅。",
-    "en": "The signal saves explanation for friends and adds a checkpoint for strangers. Those are not the same kind of convenience."
-  },
-  "LOC_READERS_ADD_A_SHORT_GLOSSARY_TO_THE_8F4E8935": {
-    "source": "读者为原帖补写简短词表",
-    "zh_CN": "读者为原帖补写简短词表",
-    "en": "Readers add a short glossary to the original post"
-  },
-  "LOC_READERS_EXPLAIN_TWO_EASILY_MISUNDERSTOOD_WORDS_IN_FF7C9288": {
-    "source": "读者将原帖中两个容易误会的词写成小词表，并在旁边保留原句链接。学生把词表贴回群聊，几处重复追问有了可核对的解释，相关短句也更容易被接着讨论。",
-    "zh_CN": "读者将原帖中两个容易误会的词写成小词表，并在旁边保留原句链接。学生把词表贴回群聊，几处重复追问有了可核对的解释，相关短句也更容易被接着讨论。",
-    "en": "Readers explain two easily misunderstood words in a small glossary and retain a link to the original phrase. Students repost it in chats, providing checkable explanations for recurring questions and making the related phrases easier to discuss."
-  },
-  "LOC_TWO_WORDS_FINALLY_HAVE_EXPLANATIONS_YOU_CAN_26AD30BD": {
-    "source": "两个词终于有了说明，大家都懂这块招牌可以暂时摘了。",
-    "zh_CN": "两个词终于有了说明，大家都懂这块招牌可以暂时摘了。",
-    "en": "Two words finally have explanations. You can take down the \"everyone understands\" sign for now."
-  },
-  "LOC_AN_OFFICE_WORKER_RETRIEVES_AN_OLD_RESPONSE_6DD12118": {
-    "source": "职员翻出旧回应解释眼下经历",
-    "zh_CN": "职员翻出旧回应解释眼下经历",
-    "en": "An office worker retrieves an old response to explain a current experience"
-  },
-  "LOC_AN_OFFICE_WORKER_RETRIEVES_A_SAVED_RESPONSE_4499600C": {
-    "source": "一名职员翻出早先收藏的回应，用它解释眼下遇到的一件事。几位同事重新读完了原文，先前对重复话题的厌烦暂时退去。",
-    "zh_CN": "一名职员翻出早先收藏的回应，用它解释眼下遇到的一件事。几位同事重新读完了原文，先前对重复话题的厌烦暂时退去。",
-    "en": "An office worker retrieves a saved response to explain something that happened today. Colleagues reread the original text, and their earlier irritation with the repetitive topic briefly recedes."
-  },
-  "LOC_THE_OLD_PHRASE_IS_BACK_ON_DUTY_609DBFD8": {
-    "source": "旧句子又上岗了，先注明今天的处境，别让它冒领全勤。",
-    "zh_CN": "旧句子又上岗了，先注明今天的处境，别让它冒领全勤。",
-    "en": "The old phrase is back on duty. Specify today's circumstances before it claims perfect attendance."
-  },
-  "LOC_AN_OFFICE_WORKER_PROPOSES_FILLING_THE_ORIGINAL_9D8E086B": {
-    "source": "职员提议用自己的账单重填原图",
-    "zh_CN": "职员提议用自己的账单重填原图",
-    "en": "An office worker proposes filling the original image with personal bills"
-  },
-  "LOC_AN_OFFICE_WORKER_PROPOSES_FILLING_THE_ORIGINAL_DDE1D781": {
-    "source": "一位职员提出用自己的日常账单重填原图，其他同事跟着拿出各自的记录比较。改写方案保留原帖链接，准备在确认再利用条款后发布，原来的对照关系仍被沿用。",
-    "zh_CN": "一位职员提出用自己的日常账单重填原图，其他同事跟着拿出各自的记录比较。改写方案保留原帖链接，准备在确认再利用条款后发布，原来的对照关系仍被沿用。",
-    "en": "An office worker proposes filling the original image with everyday bills, prompting colleagues to compare their own records. The proposal retains the source link and the original comparison, and will be published once reuse terms are confirmed."
-  },
-  "LOC_THE_READERS_BROUGHT_THEIR_OWN_BILLS_YOUR_8D7B8D60": {
-    "source": "读者拿出了自己的账单，你的态度最好别占据金额栏。",
-    "zh_CN": "读者拿出了自己的账单，你的态度最好别占据金额栏。",
-    "en": "The readers brought their own bills. Your attitude had better stay out of the amount column."
-  },
-  "LOC_A_USER_PUBLICLY_CORRECTS_A_REFERENCE_IN_838BDE39": {
-    "source": "使用者公开补正原句的一处指称",
-    "zh_CN": "使用者公开补正原句的一处指称",
-    "en": "A user publicly corrects a reference in the original phrase"
-  },
-  "LOC_AFTER_SHARING_THE_PHRASE_A_USER_PUBLICLY_209A892C": {
-    "source": "一名使用者在转发后公开补正了一处不准确的指称，并将原句留在补记里。职员沿着补记核对前后说法，对这次明确承认边界的说明更愿意相信。",
-    "zh_CN": "一名使用者在转发后公开补正了一处不准确的指称，并将原句留在补记里。职员沿着补记核对前后说法，对这次明确承认边界的说明更愿意相信。",
-    "en": "After sharing the phrase, a user publicly corrects an inaccurate reference and retains the original wording in the addendum. Office workers compare the versions and become more willing to trust an explanation that openly acknowledges its limits."
-  },
-  "LOC_AT_LEAST_THE_CORRECTION_LEFT_A_RECORD_532D8ABF": {
-    "source": "更正至少留了痕迹，别再给错误办理从未发生的手续。",
-    "zh_CN": "更正至少留了痕迹，别再给错误办理从未发生的手续。",
-    "en": "At least the correction left a record. Do not file the error under \"never happened.\""
-  },
-  "LOC_STUDENTS_COMPARE_THE_ORIGINAL_POST_WITH_AN_E67BE5E4": {
-    "source": "学生并排比较原帖与外部重填",
-    "zh_CN": "学生并排比较原帖与外部重填",
-    "en": "Students compare the original post with an outside remix"
-  },
-  "LOC_STUDENTS_DISPLAY_THE_ORIGINAL_POST_BESIDE_AN_B53A80CE": {
-    "source": "学生将原帖与一次外部重填并排展示，指出两者轮廓相似，却被用来谈不同的事情。比较帖保留双方的署名和链接，语言与身份话题里随之出现了更多讨论。",
-    "zh_CN": "学生将原帖与一次外部重填并排展示，指出两者轮廓相似，却被用来谈不同的事情。比较帖保留双方的署名和链接，语言与身份话题里随之出现了更多讨论。",
-    "en": "Students display the original post beside an outside remix, noting similar outlines used to discuss different things. Their comparison retains both creators' names and links, prompting further discussions of language and identity."
-  },
-  "LOC_SIDE_BY_SIDE_RESEMBLANCE_AND_OWNERSHIP_FINALLY_8ED69689": {
-    "source": "两版并排以后，相似和占有终于不再挤在同一栏，照这个标准继续分账。",
-    "zh_CN": "两版并排以后，相似和占有终于不再挤在同一栏，照这个标准继续分账。",
-    "en": "Side by side, resemblance and ownership finally stop sharing a column. Keep the accounts separate on that basis."
-  },
-  "LOC_OFFICE_WORKERS_COMPLAIN_THAT_SEVERAL_CHATS_REPEAT_14850D5A": {
-    "source": "职员抱怨几处群聊都在重复原句",
-    "zh_CN": "职员抱怨几处群聊都在重复原句",
-    "en": "Office workers complain that several chats repeat the same phrase"
-  },
-  "LOC_OFFICE_WORKERS_COMPLAIN_THAT_THE_SAME_PHRASE_95FEB1B2": {
-    "source": "职员在群里抱怨，同一句话已经在几个聊天窗口反复出现。有人开始只扫过开头，不再为它停下来，原先愿意参与的回应也变少了。",
-    "zh_CN": "职员在群里抱怨，同一句话已经在几个聊天窗口反复出现。有人开始只扫过开头，不再为它停下来，原先愿意参与的回应也变少了。",
-    "en": "Office workers complain that the same phrase keeps appearing in several chat windows. Some skim its opening without stopping, and people who once participated begin responding less often."
-  },
-  "LOC_THE_PHRASE_CHANGED_CHAT_WINDOWS_BUT_FATIGUE_F125545E": {
-    "source": "同一句话换了几个窗口，疲劳倒不需要跨平台登录，先换用途。",
-    "zh_CN": "同一句话换了几个窗口，疲劳倒不需要跨平台登录，先换用途。",
-    "en": "The phrase changed chat windows, but fatigue does not need cross-platform login. Find it a new use first."
-  },
-  "LOC_USERS_AGREE_TO_RESPOND_ONCE_MORE_AT_3D3FD016": {
-    "source": "使用者约定散场时再回应一次",
-    "zh_CN": "使用者约定散场时再回应一次",
-    "en": "Users agree to respond once more at closing time"
-  },
-  "LOC_CULTURE_ENTHUSIASTS_AGREE_TO_USE_THE_ORIGINAL_466D29D8": {
-    "source": "一批文化爱好者约定在散场时用原来的开头再回应一次。短句随着散场时刻集中出现，随后又安静下来，娱乐与社区群聊呈现出自己的接写节奏。",
-    "zh_CN": "一批文化爱好者约定在散场时用原来的开头再回应一次。短句随着散场时刻集中出现，随后又安静下来，娱乐与社区群聊呈现出自己的接写节奏。",
-    "en": "Culture enthusiasts agree to use the original opening for one more response as an event ends. The phrases arrive together at closing time and then fall quiet, giving entertainment and community chats their own rhythm of continuation."
-  },
-  "LOC_THAT_CLOSING_CHORUS_WAS_PUNCTUAL_DO_NOT_67123D99": {
-    "source": "散场时的齐声回应很准时，别把一次点名记成终身出勤。",
-    "zh_CN": "散场时的齐声回应很准时，别把一次点名记成终身出勤。",
-    "en": "That closing chorus was punctual. Do not record one roll call as lifetime attendance."
-  },
-  "LOC_OFFICE_WORKERS_ASK_WHERE_A_SHARED_SCREENSHOT_7761A65C": {
-    "source": "职员追问转发截图的原句来源",
-    "zh_CN": "职员追问转发截图的原句来源",
-    "en": "Office workers ask where a shared screenshot's phrase came from"
-  },
-  "LOC_OFFICE_WORKERS_PLACE_THE_ORIGINAL_PHRASE_BESIDE_ACF7083A": {
-    "source": "职员将原句与转发截图并排，追问最早的出处和被省略的说明。几处链接仍未补齐，这一批读者开始对转发中的判断保持怀疑。",
-    "zh_CN": "职员将原句与转发截图并排，追问最早的出处和被省略的说明。几处链接仍未补齐，这一批读者开始对转发中的判断保持怀疑。",
-    "en": "Office workers place the original phrase beside a shared screenshot and ask for the earliest source and omitted explanation. Several links remain missing, leaving these readers skeptical of the judgments in the reposts."
-  },
-  "LOC_THE_SOURCE_FIELD_IS_EMPTY_THE_GRANDSTANDING_626E6374": {
-    "source": "出处栏还空着，气势倒已填满，先补上那条能点开的链接。",
-    "zh_CN": "出处栏还空着，气势倒已填满，先补上那条能点开的链接。",
-    "en": "The source field is empty; the grandstanding field is full. Start with a link people can actually open."
-  },
-  "LOC_AN_OFFICE_WORKER_USES_THE_PHRASE_IN_33A4EF3B": {
-    "source": "职员把原句写进交班说明",
-    "zh_CN": "职员把原句写进交班说明",
-    "en": "An office worker uses the phrase in a shift-handover note"
-  },
-  "LOC_AN_OFFICE_WORKER_QUOTES_THE_PHRASE_IN_3A3CF000": {
-    "source": "一位职员把原句引用进交班说明，并在旁边写出对应的工作情景。几名早先看过这句话的同事开始用它描述自己的交接经历，短句获得了明确的新用途。",
-    "zh_CN": "一位职员把原句引用进交班说明，并在旁边写出对应的工作情景。几名早先看过这句话的同事开始用它描述自己的交接经历，短句获得了明确的新用途。",
-    "en": "An office worker quotes the phrase in a handover note and describes the specific work situation beside it. Colleagues who saw it earlier begin using it for their own handovers, giving the phrase a clear new purpose."
-  },
-  "LOC_THE_HANDOVER_NOTE_FINALLY_FOUND_A_USEFUL_7132467A": {
-    "source": "交班说明终于找到了一句能用的话，先留在岗位上，别急着升格成时代共识。",
-    "zh_CN": "交班说明终于找到了一句能用的话，先留在岗位上，别急着升格成时代共识。",
-    "en": "The handover note finally found a useful phrase. Let it do its job before promoting it to the voice of an era."
-  },
-  "LOC_A_CULTURE_ENTHUSIAST_DEMONSTRATES_HOW_TO_REFILL_8366F155": {
-    "source": "文化爱好者演示怎样重填原图",
-    "zh_CN": "文化爱好者演示怎样重填原图",
-    "en": "A culture enthusiast demonstrates how to refill the original image"
-  },
-  "LOC_A_CULTURE_ENTHUSIAST_USES_PERSONAL_CONTENT_TO_3AB9175B": {
-    "source": "一名文化爱好者用自己的内容演示怎样重填原图，将空位和填写步骤逐一展示。几名此前只看过成品的读者开始照着使用，演示帖下面也出现了他们自己的例子。",
-    "zh_CN": "一名文化爱好者用自己的内容演示怎样重填原图，将空位和填写步骤逐一展示。几名此前只看过成品的读者开始照着使用，演示帖下面也出现了他们自己的例子。",
-    "en": "A culture enthusiast uses personal content to demonstrate the original image's blanks and filling steps. Readers who previously saw only finished examples begin trying it themselves and post their own examples beneath the demonstration."
-  },
-  "LOC_SHOWING_THE_EMPTY_SPACES_MAKES_IT_EASIER_C4821EBC": {
-    "source": "演示把空位亮了出来，比把作者履历填满整张图更方便别人动手。",
-    "zh_CN": "演示把空位亮了出来，比把作者履历填满整张图更方便别人动手。",
-    "en": "Showing the empty spaces makes it easier for others to begin than filling the whole image with the author's resume."
-  },
-  "LOC_THE_HARBOR_MUSEUM_RELEASES_OLD_STREET_PHOTOGRAPHS_36E8BEAE": {
-    "source": "港史馆公开旧街景照片",
-    "zh_CN": "港史馆公开旧街景照片",
-    "en": "The harbor museum releases old street photographs"
-  },
-  "LOC_THE_HARBOR_HISTORY_MUSEUM_RELEASES_A_CATALOGED_8BC39464": {
-    "source": "港史馆公开一组完成整理的旧街景照片，并附拍摄年代与地点索引。旧招牌和街角布局引起居民讨论，有人把照片与今天的街景并置，也有人重新寻找已消失的地标。",
-    "zh_CN": "港史馆公开一组完成整理的旧街景照片，并附拍摄年代与地点索引。旧招牌和街角布局引起居民讨论，有人把照片与今天的街景并置，也有人重新寻找已消失的地标。",
-    "en": "The harbor history museum releases a cataloged set of old street photographs with date and location indexes. Residents discuss old signs and street layouts, compare them with today's streets, and search for vanished landmarks."
-  },
-  "LOC_PHOTOGRAPHS_HAVE_DATES_NOSTALGIA_USUALLY_DOES_NOT_623AB42E": {
-    "source": "照片有日期，怀旧通常没有，先用前者给后者做个校对。",
-    "zh_CN": "照片有日期，怀旧通常没有，先用前者给后者做个校对。",
-    "en": "Photographs have dates. Nostalgia usually does not. Use the former to proofread the latter."
-  },
-  "LOC_BRIDGE_REPAIRS_MOVE_BUSES_TO_TEMPORARY_STOPS_9FF529DD": {
-    "source": "河桥检修，公交启用临时站台",
-    "zh_CN": "河桥检修，公交启用临时站台",
-    "en": "Bridge repairs move buses to temporary stops"
-  },
-  "LOC_THE_BRIDGE_AUTHORITY_BEGINS_REPAIRS_ON_THE_A2C34F3E": {
-    "source": "河桥管理处开始检修主桥，过桥公交临时改走绕行线。交通部门启用临时站台并公布换乘指引，通勤者反复确认上车地点，原站点附近的交流随之减少。",
-    "zh_CN": "河桥管理处开始检修主桥，过桥公交临时改走绕行线。交通部门启用临时站台并公布换乘指引，通勤者反复确认上车地点，原站点附近的交流随之减少。",
-    "en": "The bridge authority begins repairs on the main river bridge, diverting cross-river buses. The transport department opens temporary stops and posts transfer instructions. Commuters repeatedly check boarding locations, reducing exchanges near the old stops."
-  },
-  "LOC_THE_ROUTE_ALREADY_TAKES_A_DETOUR_THE_E4B95E89": {
-    "source": "路线已经绕了一圈，说明别再绕一圈，先把站台写清。",
-    "zh_CN": "路线已经绕了一圈，说明别再绕一圈，先把站台写清。",
-    "en": "The route already takes a detour. The explanation need not take another. Name the stop clearly."
-  },
-  "LOC_THE_CITY_COUNCIL_PUBLISHES_THE_PILOT_PROJECT_011C4DA1": {
-    "source": "城议会公开试行项目预算表",
-    "zh_CN": "城议会公开试行项目预算表",
-    "en": "The city council publishes the pilot project's budget"
-  },
-  "LOC_THE_CITY_COUNCIL_PUBLISHES_ITEMIZED_SPENDING_FOR_89B8C3DB": {
-    "source": "城议会公开试行项目的预算表，列出支出项目并附可查证的原始记录。市民可在公共档案栏核对此前存在争议的账目，部分职员表示愿意依据公开材料重新讨论方案。",
-    "zh_CN": "城议会公开试行项目的预算表，列出支出项目并附可查证的原始记录。市民可在公共档案栏核对此前存在争议的账目，部分职员表示愿意依据公开材料重新讨论方案。",
-    "en": "The city council publishes itemized spending for a pilot project alongside verifiable original records. Residents can check disputed accounts in the public archive, and some office workers are willing to reconsider the plan using the released materials."
-  },
-  "LOC_A_PUBLIC_CHANNEL_ISSUES_NEW_SUBTITLE_GUIDELINES_9D5230C6": {
-    "source": "公共频道发布新版字幕指引",
-    "zh_CN": "公共频道发布新版字幕指引",
-    "en": "A public channel issues new subtitle guidelines"
-  },
-  "LOC_A_PUBLIC_CHANNEL_ISSUES_NEW_SUBTITLE_PRODUCTION_F201AFE6": {
-    "source": "公共频道发布新版字幕制作指引，示例同时展示清晰字号与双语注释。创作者开始按指引补全字幕，原本难以辨读的配文获得了更清楚的展示。",
-    "zh_CN": "公共频道发布新版字幕制作指引，示例同时展示清晰字号与双语注释。创作者开始按指引补全字幕，原本难以辨读的配文获得了更清楚的展示。",
-    "en": "A public channel issues new subtitle-production guidelines with examples of clear type sizes and bilingual notes. Creators update their subtitles, giving previously hard-to-read captions a clearer presentation."
-  },
-  "LOC_SUBTITLES_CAN_RESCUE_ILLEGIBLE_WORDS_NOT_AN_FF6CB050": {
-    "source": "字幕能救回看不清的字，救不了一句绕到下班的解释。",
-    "zh_CN": "字幕能救回看不清的字，救不了一句绕到下班的解释。",
-    "en": "Subtitles can rescue illegible words, not an explanation that takes until the end of the workday."
-  },
-  "LOC_A_COURTYARD_RULES_MEETING_POSTPONES_ITS_DECISION_3B5A9769": {
-    "source": "庭院规则讨论会暂缓定案",
-    "zh_CN": "庭院规则讨论会暂缓定案",
-    "en": "A courtyard rules meeting postpones its decision"
-  },
-  "LOC_A_SHARED_COURTYARD_COMMITTEE_MEETS_TO_DISCUSS_DD846EC0": {
-    "source": "共享庭院管理会召开晚间使用规则讨论会，住户对活动时段和安静边界提出不同意见。多次发言被打断，管理会暂缓定案并继续征集书面意见，部分居民开始质疑会场上的承诺。",
-    "zh_CN": "共享庭院管理会召开晚间使用规则讨论会，住户对活动时段和安静边界提出不同意见。多次发言被打断，管理会暂缓定案并继续征集书面意见，部分居民开始质疑会场上的承诺。",
-    "en": "A shared-courtyard committee meets to discuss evening-use rules. Residents disagree on activity hours and quiet boundaries; repeated interruptions lead the committee to postpone its decision and seek written comments. Some residents question promises made at the meeting."
-  },
-  "LOC_CONSULTATION_CONTINUES_LISTENING_HAS_APPARENTLY_NOT_MADE_2D954A2B": {
-    "source": "意见征集继续，倾听似乎还没排进议程，先记下被打断的那句。",
-    "zh_CN": "意见征集继续，倾听似乎还没排进议程，先记下被打断的那句。",
-    "en": "Consultation continues. Listening has apparently not made the agenda. Write down the interrupted sentence first."
-  },
-  "LOC_THE_SHARED_COURTYARD_REOPENS_WITH_A_CRAFT_959137D7": {
-    "source": "共享庭院雨后开放手作展",
-    "zh_CN": "共享庭院雨后开放手作展",
-    "en": "The shared courtyard reopens with a craft exhibition"
-  },
-  "LOC_AFTER_RAIN_THE_COMMUNITY_AFFAIRS_OFFICE_REOPENS_3926FA45": {
-    "source": "社区事务处在雨后重新开放共享庭院，邀请居民摆出手作和小型展品。学生与城市文化爱好者沿展位交流，现场的作品照片和展摊短句陆续传入社区群聊。",
-    "zh_CN": "社区事务处在雨后重新开放共享庭院，邀请居民摆出手作和小型展品。学生与城市文化爱好者沿展位交流，现场的作品照片和展摊短句陆续传入社区群聊。",
-    "en": "After rain, the community affairs office reopens the shared courtyard for residents' crafts and small exhibits. Students and urban culture enthusiasts meet at the stalls, while photographs and stall-side phrases make their way into community chats."
-  },
-  "LOC_THE_STALLS_ARE_FULL_HELP_PEOPLE_UNDERSTAND_84E7388B": {
-    "source": "展位已经摆满，先让人看懂你那一件，热闹不会代签说明书。",
-    "zh_CN": "展位已经摆满，先让人看懂你那一件，热闹不会代签说明书。",
-    "en": "The stalls are full. Help people understand your one exhibit first; a crowd will not sign the instructions for you."
-  },
-  "LOC_THE_COLLEGE_SCHEDULES_TWO_TESTS_ON_THE_27DC5239": {
-    "source": "学院将两场测验排在同一天",
-    "zh_CN": "学院将两场测验排在同一天",
-    "en": "The college schedules two tests on the same day"
-  },
-  "LOC_THE_COLLEGE_ADJUSTS_ITS_TEST_CALENDAR_PLACING_D42FDCBA": {
-    "source": "学院教务处调整测验日程，将两场测验安排在同一天。学生转而集中备考，群聊中的闲谈减少，留下的消息多为题目提示与临考求助。",
-    "zh_CN": "学院教务处调整测验日程，将两场测验安排在同一天。学生转而集中备考，群聊中的闲谈减少，留下的消息多为题目提示与临考求助。",
-    "en": "The college adjusts its test calendar, placing two tests on the same day. Students concentrate on revision, casual chat declines, and the remaining messages mainly contain study hints and last-minute requests for help."
-  },
-  "LOC_TWO_TESTS_ALREADY_FILLED_THE_DAY_A_E9765166": {
-    "source": "两场测验已经把一天排满，第三份长篇感想可以先不参加考试。",
-    "zh_CN": "两场测验已经把一天排满，第三份长篇感想可以先不参加考试。",
-    "en": "Two tests already filled the day. A third long reflection can sit this examination out."
-  },
-  "LOC_A_COMMUNITY_CENTER_OPENS_A_BILINGUAL_INFORMATION_7A3D8B9E": {
-    "source": "社区服务中心开设双语说明窗口",
-    "zh_CN": "社区服务中心开设双语说明窗口",
-    "en": "A community center opens a bilingual information desk"
-  },
-  "LOC_A_COMMUNITY_SERVICE_CENTER_OPENS_A_BILINGUAL_C74B43FC": {
-    "source": "社区服务中心开设双语说明窗口，由志愿者轮班翻译公共通知。窗口保留原文供读者对照，并单独标明解释与引用内容，学生开始把完整说明转给各自的语言群。",
-    "zh_CN": "社区服务中心开设双语说明窗口，由志愿者轮班翻译公共通知。窗口保留原文供读者对照，并单独标明解释与引用内容，学生开始把完整说明转给各自的语言群。",
-    "en": "A community service center opens a bilingual information desk where volunteers take turns translating public notices. It keeps the originals for comparison and labels explanations separately from quotations. Students begin forwarding the full notices to their language groups."
-  },
-  "LOC_THE_ORIGINAL_IS_STILL_THERE_DO_NOT_FA5D5E5A": {
-    "source": "原文还在，别借第二种语言给第一种意思办失踪手续。",
-    "zh_CN": "原文还在，别借第二种语言给第一种意思办失踪手续。",
-    "en": "The original is still there. Do not use a second language to make the first meaning disappear."
-  },
-  "LOC_THE_SEAWALL_LIBRARY_EXTENDS_ITS_EVENING_OPENING_DA2B719C": {
-    "source": "海堤图书馆延长晚间开放",
-    "zh_CN": "海堤图书馆延长晚间开放",
-    "en": "The seawall library extends its evening opening hours"
-  },
-  "LOC_THE_SEAWALL_LIBRARY_TRIALS_LATER_EVENING_HOURS_54A191D6": {
-    "source": "海堤图书馆试行延长晚间开放，留出晚课后的学习座位。学生不必在闭馆后匆忙寻找去处，馆内的笔记交换区也为后来者提供了接续讨论的地方。",
-    "zh_CN": "海堤图书馆试行延长晚间开放，留出晚课后的学习座位。学生不必在闭馆后匆忙寻找去处，馆内的笔记交换区也为后来者提供了接续讨论的地方。",
-    "en": "The seawall library trials later evening hours, keeping study seats available after late classes. Students no longer have to rush elsewhere at closing time, and a note-exchange area offers later visitors a place to continue the discussion."
-  },
-  "LOC_THE_LIBRARY_IS_ONLY_CLOSING_LATER_LONG_4AFC33A3": {
-    "source": "图书馆只是晚点关门，长篇废话还没有拿到延期许可。",
-    "zh_CN": "图书馆只是晚点关门，长篇废话还没有拿到延期许可。",
-    "en": "The library is only closing later. Long-winded nonsense has not been granted an extension."
-  },
-  "LOC_THE_HARBOR_NETWORK_BEGINS_PHASED_MAINTENANCE_842E7458": {
-    "source": "港区网络开始分段维护",
-    "zh_CN": "港区网络开始分段维护",
-    "en": "The harbor network begins phased maintenance"
-  },
-  "LOC_THE_HARBOR_COMMUNICATIONS_STATION_BEGINS_PHASED_NETWORK_18A2B82F": {
-    "source": "港区通信站开始分段维护网络，公告列明受影响片区及恢复顺序。部分群聊消息延迟送达，公共平台上的帖子加载变慢，居民被提醒错开集中发送的时段。",
-    "zh_CN": "港区通信站开始分段维护网络，公告列明受影响片区及恢复顺序。部分群聊消息延迟送达，公共平台上的帖子加载变慢，居民被提醒错开集中发送的时段。",
-    "en": "The harbor communications station begins phased network maintenance and lists affected areas and restoration order. Some chat messages arrive late and public-platform posts load slowly; residents are advised to avoid concentrated sending periods."
-  },
-  "LOC_CHECK_THE_CONNECTION_FIRST_THE_MESSAGE_HAS_F766E0EA": {
-    "source": "先查线路，消息还没送达，宏大结论倒是已经准时上线。",
-    "zh_CN": "先查线路，消息还没送达，宏大结论倒是已经准时上线。",
-    "en": "Check the connection first. The message has not arrived, but the sweeping conclusion is already online on schedule."
-  },
-  "LOC_THE_DORMITORY_ANNOUNCES_NIGHTTIME_QUIET_HOURS_300BCE96": {
-    "source": "宿舍公布夜间安静时段",
-    "zh_CN": "宿舍公布夜间安静时段",
-    "en": "The dormitory announces nighttime quiet hours"
-  },
-  "LOC_THE_DORMITORY_DUTY_OFFICE_ANNOUNCES_NEW_NIGHTTIME_3770348A": {
-    "source": "宿舍值班室公布新的夜间安静时段，要求公共走廊停止聚集讨论。学生将部分娱乐活动和社群交流移到次日，值班人员负责提醒仍在走廊逗留的人。",
-    "zh_CN": "宿舍值班室公布新的夜间安静时段，要求公共走廊停止聚集讨论。学生将部分娱乐活动和社群交流移到次日，值班人员负责提醒仍在走廊逗留的人。",
-    "en": "The dormitory duty office announces new nighttime quiet hours and asks residents to stop gathering in public corridors. Students move some entertainment and community activities to the next day, while duty staff remind those still lingering in the corridors."
-  },
-  "LOC_QUIET_FINALLY_HAS_SOMEONE_ON_DUTY_CONSIDERATION_3999C8DC": {
-    "source": "安静终于有了值班人员，懂事还在等待编制，今晚先不补那段演说。",
-    "zh_CN": "安静终于有了值班人员，懂事还在等待编制，今晚先不补那段演说。",
-    "en": "Quiet finally has someone on duty. Consideration is still waiting for a staff position. Skip tonight's extra speech."
-  },
-  "LOC_THE_COMMUNITY_FEED_TRIALS_CHRONOLOGICAL_ORDERING_7D5D480B": {
-    "source": "社区信息流试行按时间排序",
-    "zh_CN": "社区信息流试行按时间排序",
-    "en": "The community feed trials chronological ordering"
-  },
-  "LOC_THE_COMMUNITY_FEED_TRIALS_ORDERING_POSTS_BY_6146AF83": {
-    "source": "社区信息流宣布在部分街区试行按发布时间排序，近期帖子将依次进入展示栏。使用者开始比较新旧页面，刚发布的工具说明与社区消息获得了更靠前的位置。",
-    "zh_CN": "社区信息流宣布在部分街区试行按发布时间排序，近期帖子将依次进入展示栏。使用者开始比较新旧页面，刚发布的工具说明与社区消息获得了更靠前的位置。",
-    "en": "The community feed trials ordering posts by publication time in selected neighborhoods. Users compare the old and new pages, while newly published tool guides and community notices gain earlier display positions."
-  },
-  "LOC_THE_ORDERING_IS_FINALLY_IMPARTIAL_NONSENSE_CAN_041F0151": {
-    "source": "排序终于一视同仁，废话也能按时上班，发布前自己筛一遍。",
-    "zh_CN": "排序终于一视同仁，废话也能按时上班，发布前自己筛一遍。",
-    "en": "The ordering is finally impartial. Nonsense can clock in on time too. Filter your post before publishing."
-  },
-  "LOC_A_PUBLIC_BRIEFING_ADDS_QUESTIONS_ABOUT_SOURCES_BDBCAA25": {
-    "source": "市民说明会增设来源问答",
-    "zh_CN": "市民说明会增设来源问答",
-    "en": "A public briefing adds questions about sources"
-  },
-  "LOC_A_PUBLIC_BRIEFING_ADDS_A_SOURCE_CHECKING_D0BDB7C2": {
-    "source": "市民公共说明会新增来源问答环节，参会者可以当场要求出示原始材料。主持人员确认一处数字仍待核对，并将补充结果列入后续公告，部分职员和学生对此表示认可。",
-    "zh_CN": "市民公共说明会新增来源问答环节，参会者可以当场要求出示原始材料。主持人员确认一处数字仍待核对，并将补充结果列入后续公告，部分职员和学生对此表示认可。",
-    "en": "A public briefing adds a source-checking session where participants can ask to see original materials. The moderator acknowledges that one figure still needs verification and promises an update. Some office workers and students welcome the admission."
-  },
-  "LOC_WE_DON_T_KNOW_FINALLY_MADE_THE_29FD075F": {
-    "source": "不知道终于列进议程，比临时编出的答案便宜一点，记住那处待核对的数字。",
-    "zh_CN": "不知道终于列进议程，比临时编出的答案便宜一点，记住那处待核对的数字。",
-    "en": "\"We don't know\" finally made the agenda. It costs a little less than an improvised answer. Remember the figure awaiting verification."
-  },
-  "LOC_THE_ROOFTOP_COURT_HOSTS_AN_IMPROMPTU_FRIENDLY_DE1E10B7": {
-    "source": "屋顶球场开放临时友谊赛",
-    "zh_CN": "屋顶球场开放临时友谊赛",
-    "en": "The rooftop court hosts an impromptu friendly match"
-  },
-  "LOC_THE_COMMUNITY_COURT_APPROVES_AN_IMPROMPTU_FRIENDLY_50FD635C": {
-    "source": "社区球场批准一场临时友谊赛，屋顶场地向附近学院和居民开放。比分播报带动看台上的短句应援，学生和城市文化爱好者在几轮攻防之间反复交换比赛片段。",
-    "zh_CN": "社区球场批准一场临时友谊赛，屋顶场地向附近学院和居民开放。比分播报带动看台上的短句应援，学生和城市文化爱好者在几轮攻防之间反复交换比赛片段。",
-    "en": "The community court approves an impromptu friendly match and opens its rooftop venue to nearby colleges and residents. Score announcements inspire short chants in the stands, and students and culture enthusiasts exchange clips between plays."
-  },
-  "LOC_A_COMEBACK_IN_THE_SCORE_HAS_VIDEO_1437886D": {
-    "source": "比分翻盘有录像，改说法时也留份记录，免得只剩事后说明。",
-    "zh_CN": "比分翻盘有录像，改说法时也留份记录，免得只剩事后说明。",
-    "en": "A comeback in the score has video. Keep a record when your account changes too, or all that remains is an explanation afterward."
-  },
-  "LOC_HARBOR_DISPATCH_PUBLISHES_STAGGERED_SHIFT_SCHEDULES_CE0749FD": {
-    "source": "港口调度室公布错峰排班表",
-    "zh_CN": "港口调度室公布错峰排班表",
-    "en": "Harbor dispatch publishes staggered shift schedules"
-  },
-  "LOC_HARBOR_DISPATCH_PUBLISHES_STAGGERED_SHIFTS_SO_THAT_21EB5BD9": {
-    "source": "港口调度室公布新的错峰排班表，两批工人的交班时间不再重合。候车站台出现新的等待间隔，职员开始比较班次与通勤安排，并在交班群里询问由此增加的等待时间。",
-    "zh_CN": "港口调度室公布新的错峰排班表，两批工人的交班时间不再重合。候车站台出现新的等待间隔，职员开始比较班次与通勤安排，并在交班群里询问由此增加的等待时间。",
-    "en": "Harbor dispatch publishes staggered shifts so that two crews no longer hand over at the same time. New gaps appear at the bus stops. Office workers compare their shifts and commutes and ask in handover chats about the extra waiting time."
-  },
-  "LOC_STAGGERING_SEPARATED_THE_WORKERS_BUT_LEFT_THE_947676E1": {
-    "source": "错峰把人错开了，等待时间仍整齐地留给同一批人，先把那一段单列出来。",
-    "zh_CN": "错峰把人错开了，等待时间仍整齐地留给同一批人，先把那一段单列出来。",
-    "en": "Staggering separated the workers, but left the waiting neatly with the same people. Give that interval its own line."
-  },
-  "LOC_THE_PUBLIC_SERVICE_DESK_BEGINS_TRAINING_ROTATIONS_E674A72F": {
-    "source": "市民服务窗口启动培训轮岗",
-    "zh_CN": "市民服务窗口启动培训轮岗",
-    "en": "The public service desk begins training rotations"
-  },
-  "LOC_THE_PUBLIC_SERVICE_DESK_BEGINS_TRAINING_ROTATIONS_21520BDF": {
-    "source": "市民服务窗口启动培训轮岗，由老职员带新同事接待咨询。常用说法和交接流程被逐项解释，职员也获得暂时离开原岗位整理经验的机会。",
-    "zh_CN": "市民服务窗口启动培训轮岗，由老职员带新同事接待咨询。常用说法和交接流程被逐项解释，职员也获得暂时离开原岗位整理经验的机会。",
-    "en": "The public service desk begins training rotations, pairing experienced staff with new colleagues. Common phrases and handover procedures are explained one by one, giving staff a temporary break from their regular posts to organize their experience."
-  },
-  "LOC_AT_LEAST_TRAINING_EXPLAINS_THINGS_ONE_BY_63E39173": {
-    "source": "培训至少肯逐项解释，熟练的套话只负责让疑问自行下班。",
-    "zh_CN": "培训至少肯逐项解释，熟练的套话只负责让疑问自行下班。",
-    "en": "At least training explains things one by one. Well-practiced stock phrases merely send the questions home early."
-  },
-  "LOC_THE_COLLEGE_ANNOUNCES_A_SHORT_BREAK_FB710962": {
-    "source": "学院发布短休整日通知",
-    "zh_CN": "学院发布短休整日通知",
-    "en": "The college announces a short break"
-  },
-  "LOC_THE_COLLEGE_ANNOUNCES_A_SCHEDULED_SHORT_BREAK_8FADFFA9": {
-    "source": "学院按原定安排发布短休整日通知，暂缓部分课程与例行活动。学生开始减少群聊提醒，把时间留给补眠和整理笔记，社群中的讨论也随之放缓。",
-    "zh_CN": "学院按原定安排发布短休整日通知，暂缓部分课程与例行活动。学生开始减少群聊提醒，把时间留给补眠和整理笔记，社群中的讨论也随之放缓。",
-    "en": "The college announces a scheduled short break, suspending some classes and routine activities. Students reduce chat reminders to catch up on sleep and notes, and community discussions slow down as well."
-  },
-  "LOC_THE_NOTICE_FINALLY_ALLOWS_A_REST_DO_42C0F56F": {
-    "source": "通知终于允许休息，别让你的下一条消息加班巡查。",
-    "zh_CN": "通知终于允许休息，别让你的下一条消息加班巡查。",
-    "en": "The notice finally allows a rest. Do not send your next message out on overtime patrol."
   },
   "LOC_COMMUTING_OFFICE_WORKERS_INDEPENDENT_SYNTHETIC_SAMPLE_C5ECC170": {
     "source": "通勤职员",
@@ -8139,45 +6964,10 @@
     "zh_CN": "话题",
     "en": "Topics"
   },
-  "LOC_EDIT_REQUIRES": {
-    "source": "前置能力",
-    "zh_CN": "前置能力",
-    "en": "Prerequisites"
-  },
   "LOC_SUMMARY_HOUR": {
     "source": "模拟小时",
     "zh_CN": "模拟小时",
     "en": "Simulation hour"
-  },
-  "LOC_SUMMARY_POPULATION": {
-    "source": "世界人口",
-    "zh_CN": "世界人口",
-    "en": "World population"
-  },
-  "LOC_SUMMARY_VARIANTS": {
-    "source": "流通版本",
-    "zh_CN": "流通版本",
-    "en": "Circulating variants"
-  },
-  "LOC_SUMMARY_MEME_POINTS": {
-    "source": "模因点数",
-    "zh_CN": "模因点数",
-    "en": "Meme points"
-  },
-  "LOC_SUMMARY_OWNED": {
-    "source": "作者归属",
-    "zh_CN": "作者归属",
-    "en": "Owned"
-  },
-  "LOC_SUMMARY_LINEAGE": {
-    "source": "原生谱系",
-    "zh_CN": "原生谱系",
-    "en": "Lineage"
-  },
-  "LOC_SUMMARY_ESCAPED": {
-    "source": "外部分家",
-    "zh_CN": "外部分家",
-    "en": "Escaped"
   },
   "LOC_PATCH_INCOMPATIBLE_MEME": {
     "source": "这张补丁不能安装到当前模因。",
