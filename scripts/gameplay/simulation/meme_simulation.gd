@@ -785,11 +785,12 @@ func _event_country_title(cid: String) -> String:
 func _event_country(definition: MemeDemoEvent) -> String:
 	var weights: Array[float] = []
 	var total := 0.0
+	var rewrite_cache := {}
 	for country: Dictionary in catalog.gameplay_rules.countries:
 		var weight := sqrt(float(country.population))
 		if definition.origin == &"transmission":
 			weight = 0.0
-			for item: Dictionary in _event_candidates(str(country.id), definition): weight += float(item.weight)
+			for item: Dictionary in _event_candidates(str(country.id), definition, rewrite_cache): weight += float(item.weight)
 		weights.append(weight)
 		total += weight
 	var cursor := _rng.randf() * total
@@ -799,7 +800,7 @@ func _event_country(definition: MemeDemoEvent) -> String:
 	return country_id
 
 func _event_target(cid: String, definition: MemeDemoEvent = null) -> Dictionary:
-	var candidates := _event_candidates(cid, definition)
+	var candidates := _event_candidates(cid, definition, {})
 	var total := 0.0
 	for item: Dictionary in candidates: total += float(item.weight)
 	var cursor := _rng.randf() * total
@@ -808,7 +809,7 @@ func _event_target(cid: String, definition: MemeDemoEvent = null) -> Dictionary:
 		if cursor < 0.0: return item.variant
 	return {}
 
-func _event_candidates(cid: String, definition: MemeDemoEvent = null) -> Array[Dictionary]:
+func _event_candidates(cid: String, definition: MemeDemoEvent, rewrite_cache: Dictionary) -> Array[Dictionary]:
 	var candidates: Array[Dictionary] = []
 	var reacting_groups: Array[String] = []
 	var requires_rewrite := false
@@ -820,6 +821,9 @@ func _event_candidates(cid: String, definition: MemeDemoEvent = null) -> Array[D
 	for variant: Dictionary in competition.active_variants(variants):
 		if variant.origin_ids.is_empty() or not competition._state.registry.has(str(variant.id)): continue
 		var entry: Dictionary = competition._state.registry[str(variant.id)]
+		var weight := float(competition._state.countries[cid].exposed[str(variant.id)])
+		if str(entry.origin_country) == cid: weight += 1.0
+		if weight <= 0.0: continue
 		if not reacting_groups.is_empty():
 			var effective: Dictionary = competition.live_profile(str(variant.id))
 			var target_groups: Array = effective.get("group_ids", [str(effective.group_id)])
@@ -828,13 +832,12 @@ func _event_candidates(cid: String, definition: MemeDemoEvent = null) -> Array[D
 			if not matches_group: continue
 		if requires_rewrite:
 			if not variant.get("flow_draft") is Dictionary or variant.flow_draft.get("reuse_permission", "unknown") == "restricted": continue
-			var rewrite: Dictionary = EventMutation.candidate(catalog, variant, definition) if not definition.mutation_kind.is_empty() else MutationRules.candidate(catalog, variant, str(definition.id))
-			if rewrite.is_empty(): continue
+			if not rewrite_cache.has(str(variant.id)):
+				var rewrite: Dictionary = EventMutation.candidate(catalog, variant, definition) if not definition.mutation_kind.is_empty() else MutationRules.candidate(catalog, variant, str(definition.id))
+				rewrite_cache[str(variant.id)] = not rewrite.is_empty()
+			if not rewrite_cache[str(variant.id)]: continue
 			if definition.mutation_kind == &"confluence" and _confluence_companion(variant, definition, cid).is_empty(): continue
-		var weight := float(competition._state.countries[cid].exposed[str(variant.id)])
-		if str(entry.origin_country) == cid: weight += 1.0
-		if weight > 0.0:
-			candidates.append({"variant":variant, "weight":weight})
+		candidates.append({"variant":variant, "weight":weight})
 	return candidates
 
 func _confluence_companion(parent: Dictionary, definition: MemeDemoEvent, cid: String) -> Dictionary:
