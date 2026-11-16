@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/design_print_paper.png" id="1"]
-[ext_resource type="Texture2D" path="res://assets/image/textures/studio/desk/portrait_67.svg" id="2"]
+[ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_receipt_panel.gd" id="1"]
 
 [node name="EndingUI" type="Control"]
 anchors_preset = 15
@@ -19,64 +18,40 @@ anchor_bottom = 1.0
 mouse_filter = 0
 color = Color(0.03,0.04,0.03,0.35)
 
-[node name="Paper" type="TextureRect" parent="."]
+[node name="Paper" type="Panel" parent="."]
 mouse_filter = 0
-texture = ExtResource("1")
-expand_mode = 1
-stretch_mode = 0
+script = ExtResource("1")
 
 [node name="Scroll" type="ScrollContainer" parent="Paper"]
-offset_left = 32.0
-offset_top = 28.0
-offset_right = 648.0
-offset_bottom = 597.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 424.0
+offset_bottom = 264.0
 horizontal_scroll_mode = 0
 follow_focus = true
 
 [node name="Content" type="VBoxContainer" parent="Paper/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 14
+theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="Paper/Scroll/Content"]
 layout_mode = 2
 text = "MM_ENDING_TITLE"
-theme_override_font_sizes/font_size = 32
+autowrap_mode = 3
 
 [node name="Reason" type="Label" parent="Paper/Scroll/Content"]
 layout_mode = 2
 text = ""
 autowrap_mode = 3
 
-[node name="Metrics" type="GridContainer" parent="Paper/Scroll/Content"]
+[node name="Rule" type="HSeparator" parent="Paper/Scroll/Content"]
 layout_mode = 2
-columns = 4
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 10
 
-[node name="Shares" type="VBoxContainer" parent="Paper/Scroll/Content"]
+[node name="Metrics" type="VBoxContainer" parent="Paper/Scroll/Content"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Verdict" type="HBoxContainer" parent="Paper/Scroll/Content"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Portrait67" type="TextureRect" parent="Paper/Scroll/Content/Verdict"]
-layout_mode = 2
-custom_minimum_size = Vector2(108,108)
-mouse_filter = 2
-texture = ExtResource("2")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Comment" type="Label" parent="Paper/Scroll/Content/Verdict"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = ""
-autowrap_mode = 3
-
-[node name="ReturnMenu" type="Button" parent="Paper/Scroll/Content"]
-layout_mode = 2
+[node name="ReturnMenu" type="Button" parent="Paper"]
 custom_minimum_size = Vector2(0,44)
 text = "LOC_RETURN_TO_MAIN_MENU_E34E61A2"
