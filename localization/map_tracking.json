@@ -151,12 +151,12 @@
   },
   "MM_HELP_NAME": {
     "source": "这个模因的独立名称。完整表达和实际含义在详情中分别显示。",
-    "zh_CN": "这个模因的独立名称。完整表达和实际含义在详情中分别显示。",
+    "zh_CN": "模因的独立名称。完整表达与实际含义见详情。",
     "en": "The independent name of this meme. Details show its expression and meaning separately."
   },
   "MM_HELP_ORIGIN": {
     "source": "这个模因第一次发布或诞生的国家。后续传播不会改变起源国。",
-    "zh_CN": "这个模因第一次发布或诞生的国家。后续传播不会改变起源国。",
+    "zh_CN": "模因首次发布或诞生的国家。",
     "en": "The country where this meme was first published or born. Later spread does not change its origin."
   },
   "MM_HELP_ADOPTION": {
@@ -181,7 +181,7 @@
   },
   "MM_HELP_COUNTRY_SPREAD": {
     "source": "悬停国家名称，高亮该国的这个模因传播点。",
-    "zh_CN": "悬停国家名称，高亮该国的这个模因传播点。",
+    "zh_CN": "悬停国家名，高亮该国的模因传播点。",
     "en": "Hover the country name to highlight this meme’s points in that country."
   },
   "MM_HELP_LOCAL_ADOPTION": {
@@ -231,12 +231,12 @@
   },
   "MM_HELP_LANGUAGE": {
     "source": "这个模因使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
-    "zh_CN": "这个模因使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
+    "zh_CN": "模因使用的语言，与各国的语言分布匹配。多种语言取匹配最强者。",
     "en": "Languages used by this meme to match each country's language distribution. Multiple languages use the strongest match."
   },
   "MM_HELP_GROUP": {
     "source": "这个模因面向的人群。多个人群取匹配最强者，不叠加人口。",
-    "zh_CN": "这个模因面向的人群。多个人群取匹配最强者，不叠加人口。",
+    "zh_CN": "模因面向的人群。多个群体按匹配最强者计算人口。",
     "en": "Audiences addressed by this meme. Multiple audiences use the strongest match without adding population."
   },
   "MM_HELP_TOPICS": {
@@ -296,7 +296,7 @@
   },
   "MM_HELP_LEGEND": {
     "source": "标记点持续显示；起始点带外圈，传播点为实心点。国家内的点密度反映采用、曝光和注意力的综合传播度。仅悬停时减淡其他模因的点，离开即恢复。",
-    "zh_CN": "标记点持续显示；起始点带外圈，传播点为实心点。国家内的点密度反映采用、曝光和注意力的综合传播度。仅悬停时减淡其他模因的点，离开即恢复。",
+    "zh_CN": "起始点带外圈，传播点为实心点，持续显示。各国点密度反映采用、曝光与注意力的综合传播度。悬停标签时，其他模因的点减淡；移开后恢复。",
     "en": "Markers stay visible. Origins have an outer ring and spread points are solid. Country density reflects adoption, exposure and attention together. Hover temporarily fades other memes; moving away restores every point."
   },
   "MAP_MEME_MONITOR": {
@@ -331,7 +331,7 @@
   },
   "MM_HELP_DEVIATION": {
     "source": "相对初始表达的综合差异。严格超过50%时分裂，恰好50%不分裂。分裂后原模因回退相关效果并归零，新模因独立命名；地图传播量按回退造成的传播能力损失分配，总量不增加。",
-    "zh_CN": "相对初始表达的综合差异。严格超过50%时分裂，恰好50%不分裂。分裂后原模因回退相关效果并归零，新模因独立命名；地图传播量按回退造成的传播能力损失分配，总量不增加。",
+    "zh_CN": "相对初始表达的综合差异。超过50%时分裂，原模因回退相关效果并将偏移归零，新模因独立命名。地图传播量按回退造成的传播能力损失分配，以分裂前总量为上限。",
     "en": "Difference from this meme's anchor expression. Splitting occurs strictly above 50%; at exactly 50%, no split occurs. The original rolls back relevant effects and resets to zero; the new meme receives an independent name. Existing spread is divided by the capability lost during rollback, without increasing the total."
   },
   "MM_ENDING_TITLE": {
@@ -466,7 +466,7 @@
   },
   "MM_ENDING_AUTONOMOUS_LINEAGE_COMMENT": {
     "source": "接力已不再由你安排，它仍在延续。",
-    "zh_CN": "接力已不再由你安排，它仍在延续。",
+    "zh_CN": "后代自行接力，继续流传。",
     "en": "You no longer direct the relay, but it continues."
   },
   "MM_ENDING_PLAYER_EXTINCTION_TITLE": {
@@ -551,7 +551,7 @@
   },
   "MM_ENDING_COMPETITOR_EQUILIBRIUM_COMMENT": {
     "source": "别人的表达留下了位置，你的表达也没有消失。",
-    "zh_CN": "别人的表达留下了位置，你的表达也没有消失。",
+    "zh_CN": "你的表达和别人的表达各自延续。",
     "en": "Other expressions have found a place without erasing yours."
   },
   "MM_ENDING_WORLD_EXTINCTION_TITLE": {
@@ -626,7 +626,7 @@
   },
   "MM_ENDING_PLAYER_EXTINCTION_COMMENT": {
     "source": "你的传播在这里停下。这不是胜利。",
-    "zh_CN": "你的传播在这里停下。这不是胜利。",
+    "zh_CN": "你的传播在这里停下。",
     "en": "Your transmission stops here. This is not a victory."
   },
   "MM_ENDING_OWN_WORLD_REASON": {
@@ -651,7 +651,7 @@
   },
   "MM_ENDING_WORLD_EXTINCTION_COMMENT": {
     "source": "没有人能接住下一句话。这不是胜利。",
-    "zh_CN": "没有人能接住下一句话。这不是胜利。",
+    "zh_CN": "最后一句话随人声一同沉寂。",
     "en": "No one remains to carry the next phrase. This is not a victory."
   },
   "MM_ENDING_LOCAL_CLASSIC_TITLE": {
@@ -716,7 +716,7 @@
   },
   "MM_ENDING_PROGRESS_HELP": {
     "source": "每行给出当前值、目标值与连续观察时间。",
-    "zh_CN": "每行给出当前值、目标值与连续观察时间。",
+    "zh_CN": "当前值、目标值与连续观察时间。",
     "en": "Each row shows current values, targets and consecutive observation time."
   },
   "MM_ENDING_PROGRESS_ADOPTION": {

@@ -128,7 +128,7 @@
       ],
       "visual_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"320\" height=\"240\"><rect width=\"320\" height=\"240\" fill=\"#eee8d7\"/><circle cx=\"70\" cy=\"70\" r=\"22\" fill=\"none\" stroke=\"#485046\" stroke-width=\"4\"/><circle cx=\"250\" cy=\"70\" r=\"22\" fill=\"none\" stroke=\"#485046\" stroke-width=\"4\"/><path d=\"M46 130L70 95L94 130M226 130L250 95L274 130M105 67H214M200 55L215 67L200 79M145 48L173 88M173 48L145 88\" fill=\"none\" stroke=\"#485046\" stroke-width=\"4\"/></svg>",
       "context_note": {
-        "ninghua": "用简短回应退出带有代际权威或说教意味的交流，而不是逐条反驳。",
+        "ninghua": "用简短回应退出带有代际权威或说教意味的交流。",
         "shiohara": "A brief dismissive reply declines advice rather than answering it point by point.",
         "seowon": "A brief dismissive reply declines advice rather than answering it point by point."
       },

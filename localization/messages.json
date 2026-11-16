@@ -2601,7 +2601,7 @@
   },
   "LOC_EVERYONE_IS_SAYING_YOUR_WORDS_NOW_PLEASE_41ADB542": {
     "source": "67：现在大家都在说你的话。请不要把这理解为大家都理解你。",
-    "zh_CN": "67：现在到处都有人顺口说你那句话。不过人家愿意拿去用，不等于都照着你的意思听懂了。",
+    "zh_CN": "67：现在到处都有人顺口说你那句话。各人听进去的意思，可能又有些出入。",
     "en": "67: People all over are repeating your words now. Just don't assume that means they all understand you."
   },
   "LOC_YOUR_MEME_HAS_TAKEN_OVER_THE_WORLD_B77F0A22": {
@@ -2611,7 +2611,7 @@
   },
   "LOC_IT_S_OUT_OF_YOUR_HANDS_CONGRATULATIONS_C2D7631D": {
     "source": "67：它不归你管了。恭喜，你终于有了一份不用签字的成果。",
-    "zh_CN": "67：它已经不归你管了，外头的人会自己接着改、接着传。恭喜，终于有份不用你签字的成果了。",
+    "zh_CN": "67：外头的人会自己接着改、接着传。恭喜，这份成果可以自己拿主意了。",
     "en": "67: It's out of your hands now, and people out there are carrying it forward on their own. Congratulations on a result that no longer needs your signature."
   },
   "LOC_THE_UNCONTROLLED_MUTANT_LINEAGE_IS_SURVIVING_ON_0D828D42": {
@@ -2621,7 +2621,7 @@
   },
   "LOC_NEITHER_SIDE_PRINTED_THE_OTHER_OUT_OF_C3A5D603": {
     "source": "67：谁也没把谁印没。机器可以休息，意见暂时不必一致。",
-    "zh_CN": "67：谁也没把另一边印到绝版。机器可以歇歇，意见暂时不必统一。",
+    "zh_CN": "67：两边的稿子都留下了。机器可以歇歇，意见各留一份。",
     "en": "67: Neither side printed the other out of existence. The presses can rest without everyone settling on a single line."
   },
   "LOC_YOU_AND_YOUR_COMPETITORS_HAVE_REACHED_EQUILIBRIUM_7117C232": {
@@ -2631,7 +2631,7 @@
   },
   "LOC_SEVERAL_DRAFTS_SURVIVED_TOGETHER_APPARENTLY_A_SINGLE_E053C7C9": {
     "source": "67：几份稿子一起活下来了。看来统一口径不是唯一的出路。",
-    "zh_CN": "67：几份不同的稿子居然一起留下来了。看来事情走到最后，也未必非得合成同一种声音才算收尾。",
+    "zh_CN": "67：几份不同的稿子居然一起留下来了。好，这回就让几种声音一块儿收尾。",
     "en": "67: Several drafts survived side by side. Turns out a single voice wasn't the only way for this round to end."
   },
   "LOC_MULTIPLE_DISTINCT_VERSIONS_HAVE_SPREAD_TOGETHER_C71AB8B3": {
@@ -8326,7 +8326,7 @@
   },
   "LOC_LANGUAGE_NINGHUA_DESCRIPTION": {
     "source": "宁华的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "宁华的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "宁华的本地语言语境，同语社群也分布在别国。组合句会据此选词。",
     "en": "The local language context of Ninghua, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
   },
   "LOC_LANGUAGE_SHIOHARA": {
@@ -8336,7 +8336,7 @@
   },
   "LOC_LANGUAGE_SHIOHARA_DESCRIPTION": {
     "source": "汐原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "汐原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "汐原的本地语言语境，同语社群也分布在别国。组合句会据此选词。",
     "en": "The local language context of Shiohara, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
   },
   "LOC_LANGUAGE_SEOWON": {
@@ -8346,7 +8346,7 @@
   },
   "LOC_LANGUAGE_SEOWON_DESCRIPTION": {
     "source": "瑞原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
-    "zh_CN": "瑞原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
+    "zh_CN": "瑞原的本地语言语境，同语社群也分布在别国。组合句会据此选词。",
     "en": "The local language context of Seowon, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
   },
   "LOC_EVENT_QUEUE_STATE_MISMATCH": {
@@ -8516,12 +8516,12 @@
   },
   "LOC_CARD_MODULE_RELATION_COMMENTARY": {
     "source": "多一个听众，旧话也可能有了新意。",
-    "zh_CN": "别人熬夜复习，你说自己没准备，两句话并排放，那点小得意根本不用明说。",
+    "zh_CN": "别人熬夜复习，你说自己没准备。两句话并排放，那点小得意就露出来了。",
     "en": "Everyone else studied all night; you say you didn't prepare. Set those lines side by side, and the pride is hard to hide."
   },
   "LOC_CARD_MODULE_RITUAL_COMMENTARY": {
     "source": "重复让一句话变成大家都认得的暗号。",
-    "zh_CN": "可以让别人不接话，也可以由自己说一句“到这里吧”。",
+    "zh_CN": "别人可以停在这里，你也可以说一句“到这里吧”。",
     "en": "You can let someone else sit out, or be the one to say, 'Let's leave it there.'"
   },
   "LOC_CARD_MODULE_BOUNDARY_COMMENTARY": {

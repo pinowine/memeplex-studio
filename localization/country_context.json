@@ -6,7 +6,7 @@
   },
   "LOC_WORLD_LANGUAGE_ALDEN_DESCRIPTION": {
     "source": "沿着航线和商路传播的语言，常从别处借来词语。简短的词序能交代事情，重音和惯用语又给同一句话添上不同意味。",
-    "zh_CN": "沿着航线和商路传播的语言，常从别处借来词语。简短的词序能交代事情，重音和惯用语又给同一句话添上不同意味。",
+    "zh_CN": "沿着航线和商路传播的语言，常从别处借来词语。词序交代句中关系，重音和惯用语让同一句话有不同意味。",
     "en": "A language carried along shipping lanes and trade routes, quick to borrow words. Word order carries much of its grammar; stress and idioms give the same sentence different shades of meaning."
   },
   "LOC_WORLD_LANGUAGE_VERESK": {
@@ -156,7 +156,7 @@
   },
   "LOC_WORLD_GROUP_SERVICE_WORKERS_DESCRIPTION": {
     "source": "从开门营业忙到送走最后一位客人。排班、客流和顾客的评价会穿进他们下班后的聊天。",
-    "zh_CN": "从开门营业忙到送走最后一位客人。排班、客流和顾客的评价会穿进他们下班后的聊天。",
+    "zh_CN": "从开门营业忙到送走最后一位客人。排班、客流和顾客评价，也是下班后的话题。",
     "en": "Their working day runs from opening time to the last customer. Rotas, busy periods and customer reviews follow them into conversations after work."
   },
   "LOC_WORLD_GROUP_HEALTH_WORKERS": {
@@ -226,7 +226,7 @@
   },
   "LOC_WORLD_TOPIC_HOUSING_DESCRIPTION": {
     "source": "从租金、搬家到买房，围绕住处作出的选择。房间的大小、离工作的远近和每月的账单都在里面。",
-    "zh_CN": "从租金、搬家到买房，围绕住处作出的选择。房间的大小、离工作的远近和每月的账单都在里面。",
+    "zh_CN": "从租房、搬家到买房，房间大小、离工作的远近和每月账单，都影响着住处的选择。",
     "en": "Choices about finding somewhere to live: rent, moving, buying, space, the journey to work and the monthly bill."
   },
   "LOC_WORLD_TOPIC_HEALTHCARE": {

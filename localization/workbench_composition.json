@@ -106,7 +106,7 @@
   },
   "LOC_PROP_NODE_IMAGE_EFFECT": {
     "source": "独立视觉信息承担部分的语言理解障碍降低90%。",
-    "zh_CN": "独立视觉信息承担部分的语言理解障碍降低90%。",
+    "zh_CN": "图像中由独立视觉信息承载的部分，语言理解障碍降低90%。",
     "en": "Reduce the language barrier for independently conveyed visual information by 90 percent."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_TITLE": {
@@ -146,12 +146,12 @@
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_DESCRIPTION": {
     "source": "为图像提供可读的文字出口。",
-    "zh_CN": "为图像提供可读的文字出口。",
+    "zh_CN": "为图像配上可读的文字说明。",
     "en": "Provide a readable text version of an image."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT": {
     "source": "通过文字渠道送出经编写的图像信息说明。",
-    "zh_CN": "通过文字渠道送出经编写的图像信息说明。",
+    "zh_CN": "通过文字渠道传播编写好的图像说明。",
     "en": "Deliver authored image descriptions through text channels."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE": {
@@ -226,7 +226,7 @@
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT": {
     "source": "真实衍生曝光带回原模板的发现入口。",
-    "zh_CN": "真实衍生曝光带回原模板的发现入口。",
+    "zh_CN": "衍生版本获得曝光时，带来发现原模板的机会。",
     "en": "Turn real derivative exposure into discovery opportunities for the source template."
   },
   "LOC_PROP_NODE_VERSION_INDEX_TITLE": {
@@ -266,7 +266,7 @@
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_DESCRIPTION": {
     "source": "在形成真实采用的地区建立联络点。",
-    "zh_CN": "在形成真实采用的地区建立联络点。",
+    "zh_CN": "在已有真实采用的地区建立联络点。",
     "en": "Establish a hub in a country with real adoption."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_EFFECT": {
@@ -281,12 +281,12 @@
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_DESCRIPTION": {
     "source": "沿陆地接触边发起定向转发。",
-    "zh_CN": "沿陆地接触边发起定向转发。",
+    "zh_CN": "沿陆地接触路线定向转发。",
     "en": "Send a directed invitation along a land contact."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有陆地接触边转发。",
-    "zh_CN": "从活跃联络点沿既有陆地接触边转发。",
+    "zh_CN": "从活跃联络点沿已有陆地接触路线转发。",
     "en": "Forward from active hubs along existing directed land contacts."
   },
   "LOC_PROP_NODE_SEA_FORWARD_TITLE": {
@@ -296,12 +296,12 @@
   },
   "LOC_PROP_NODE_SEA_FORWARD_DESCRIPTION": {
     "source": "沿跨海接触边发起定向转发。",
-    "zh_CN": "沿跨海接触边发起定向转发。",
+    "zh_CN": "沿跨海接触路线定向转发。",
     "en": "Send a directed invitation along a sea contact."
   },
   "LOC_PROP_NODE_SEA_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有跨海接触边转发。",
-    "zh_CN": "从活跃联络点沿既有跨海接触边转发。",
+    "zh_CN": "从活跃联络点沿已有跨海接触路线转发。",
     "en": "Forward from active hubs along existing directed sea contacts."
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_TITLE": {

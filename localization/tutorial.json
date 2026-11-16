@@ -281,7 +281,7 @@
   },
   "LOC_OPENING_EXPRESSION_TEXT": {
     "source": "右栏显示装配后的最终表达，可以滚动查看。把鼠标移到文字上，看看语言、群体、话题和补丁怎样影响了这句话。",
-    "zh_CN": "右栏显示装配后的最终表达，可以滚动查看。把鼠标移到文字上，看看语言、群体、话题和补丁怎样影响了这句话。",
+    "zh_CN": "右栏可滚动查看最终表达。悬停文字，查看语言、群体、话题和补丁的影响。",
     "en": "The right column shows the final expression. Scroll to read it, and hover over the text to see how language, audience, topics and patches shaped it."
   },
   "LOC_OPENING_PREVIEW_TITLE": {
@@ -291,7 +291,7 @@
   },
   "LOC_OPENING_PREVIEW_TEXT": {
     "source": "左侧的神经元图展示基模的结构。如果模因发生本质上的变化，它也会呈现出来。",
-    "zh_CN": "左侧的神经元图展示基模的结构。如果模因发生本质上的变化，它也会呈现出来。",
+    "zh_CN": "左侧神经元图展示基模结构，也会呈现模因的本质变化。",
     "en": "The neuron diagram on the left shows the base meme structure and changes to it."
   },
   "LOC_OPENING_MODULE_TITLE": {
@@ -371,7 +371,7 @@
   },
   "LOC_OPENING_SPREAD_TREE_TEXT": {
     "source": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
-    "zh_CN": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
+    "zh_CN": "从文本传播出发，研究无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
     "en": "The ability tree on the left starts with text delivery, then branches into accessibility, open source and community relay. Lines show dependencies."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
@@ -381,7 +381,7 @@
   },
   "LOC_OPENING_SPREAD_DETAILS_TEXT": {
     "source": "右侧查看能力名称和传播效果，下方确认费用与余额并完成研究。",
-    "zh_CN": "右侧查看能力名称和传播效果，下方确认费用与余额并完成研究。",
+    "zh_CN": "右侧查看传播能力和效果，在下方核对费用与余额，完成研究。",
     "en": "Read the ability name and propagation effects on the right. Review the cost and balance below, then complete research."
   },
   "LOC_OPENING_SKILL_TITLE": {
@@ -391,7 +391,7 @@
   },
   "LOC_OPENING_SKILL_TEXT": {
     "source": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
-    "zh_CN": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
+    "zh_CN": "用初始的10 MEME研究文本传播，跳过教程时照常扣除。首次真实采用奖励20 MEME，并开放三条路线的研究。",
     "en": "Spend the starting 10 MEME to research text delivery; skipping the tutorial settles the same cost. First genuine adoption rewards 20 MEME and opens research on all three routes."
   },
   "LOC_OPENING_MAP_INTRO_TITLE": {
@@ -441,22 +441,22 @@
   },
   "LOC_OPENING_HOVER_PEAK": {
     "source": "哦，巅峰之作。希望大家是在夸你的模因，而不是在反讽。",
-    "zh_CN": "写着“巅峰”呢。但愿大家刷这个词是在真心夸你的作品，不是拿它说反话。",
+    "zh_CN": "写着“巅峰”呢。但愿大家刷这个词时，是真心在夸你的作品。",
     "en": "It says 'peak.' Let's hope people mean that as praise for your meme and aren't using it ironically."
   },
   "LOC_OPENING_HOVER_67": {
     "source": "哦？事先声明，这不会影响我对你的绩效评估。",
-    "zh_CN": "嗯？随便看，这不会影响我对你的绩效评估。",
+    "zh_CN": "嗯？随便看，绩效评估照旧。",
     "en": "Hm? This won't affect your performance review."
   },
   "LOC_OPENING_HOVER_IDEOLOGY": {
     "source": "这是你目前可用的意识形态点数，它们可以用于扭转你的模因的政治色彩。点数有限，立场倒是可以很坚定。",
-    "zh_CN": "这是你手头能用的意识形态点数，用来调整模因的政治倾向。点数有限，往哪边偏可得想清楚。",
+    "zh_CN": "意识形态点数用来调整模因的政治倾向。点数有限，想好再分配。",
     "en": "These are your available ideology points, used to shift your meme's political leaning. You only have so many, so choose the direction carefully."
   },
   "LOC_OPENING_HOVER_PRAGMATICS": {
     "source": "这些是可用的语用学点数。话怎么说，和说了什么一样重要……有时候更重要。",
-    "zh_CN": "这些是可用的语用学点数，用来调整模因说话的姿态。话怎么说，和说了什么一样重要，有时甚至更重要。",
+    "zh_CN": "用语用学点数调整模因说话的姿态。",
     "en": "These are your available pragmatics points. They shape how your meme comes across; how you say something matters as much as what you say, sometimes more."
   },
   "LOC_GUIDE_STARTER_PAPER": {
@@ -531,7 +531,7 @@
   },
   "LOC_OPENING_MAP_MONITOR_TEXT": {
     "source": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
-    "zh_CN": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
+    "zh_CN": "投放后，地图会列出模因，你的排在前面。悬停标签高亮传播点，点击查看传播度、增长率和偏移度。",
     "en": "After launch, this panel lists the memes on the map, with yours first. Hover over a tag to highlight its spread points; click it to see spread, growth, deviation and other details."
   }
 }

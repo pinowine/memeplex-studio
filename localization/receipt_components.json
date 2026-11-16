@@ -137,7 +137,7 @@
   },
   "LOC_NEURON_RELATION": {
     "source": "表达的核心，说明两方或两个群体之间的关系。",
-    "zh_CN": "表达的核心，说明两方或两个群体之间的关系。",
+    "zh_CN": "两方或两个群体之间的关系。",
     "en": "The core expression of the relationship between two sides or groups."
   },
   "LOC_NEURON_TRIGGER": {
@@ -157,7 +157,7 @@
   },
   "LOC_NEURON_INVARIANT_TRACE": {
     "source": "改写后依然保留、让表达可被认出的痕迹。",
-    "zh_CN": "改写后依然保留、让表达可被认出的痕迹。",
+    "zh_CN": "改写后保留的、让人认出原表达的痕迹。",
     "en": "A recognizable trace retained through rewrites."
   },
   "LOC_NEURON_INSIDER_CONTEXT": {
@@ -167,7 +167,7 @@
   },
   "LOC_NEURON_RECOGNITION_RULE": {
     "source": "判断谁能识别表达、凭什么识别的规则。",
-    "zh_CN": "判断谁能识别表达、凭什么识别的规则。",
+    "zh_CN": "谁能识别这段表达，以及识别的依据。",
     "en": "The rule defining who recognizes the expression and on what basis."
   },
   "LOC_NEURON_PREMISE": {
