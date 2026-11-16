@@ -45,7 +45,6 @@ class MemeTag extends PanelContainer:
 	func _init() -> void:
 		mouse_filter = Control.MOUSE_FILTER_STOP
 		mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		mouse_force_pass_scroll_events = false
 		focus_mode = Control.FOCUS_ALL
 		size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 		var line := HBoxContainer.new()
@@ -134,7 +133,15 @@ func _ready() -> void:
 	_panel.name = "MemeLedgerPanel"
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_panel.mouse_force_pass_scroll_events = false
-	var paper := StyleBoxEmpty.new()
+	var paper := StyleBoxFlat.new()
+	paper.bg_color = Style.PAPER
+	paper.border_color = Style.EDGE
+	paper.set_border_width_all(1)
+	paper.set_corner_radius_all(3)
+	paper.set_content_margin_all(INSET)
+	paper.shadow_color = Color(Style.INK, 0.2)
+	paper.shadow_offset = Style.SHADOW_OFFSET
+	paper.shadow_size = Style.SHADOW_SPREAD
 	_panel.add_theme_stylebox_override("panel", paper)
 	add_child(_panel)
 	_column = VBoxContainer.new()
