@@ -46,7 +46,7 @@ func configure(target: MeshInstance3D, source: Control, source_rect: Rect2, _log
 	_viewport.msaa_2d = Viewport.MSAA_4X
 	_viewport.world_2d = World2D.new()
 	_viewport.gui_disable_input = true
-	_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 	_viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR
 	add_child(_viewport)
 	_background = ColorRect.new()
@@ -107,6 +107,7 @@ func sync() -> void:
 		var ink := _source.get_theme_color("font_color")
 		if _label.get_theme_color("font_color") != ink:
 			_label.add_theme_color_override("font_color", ink)
+			_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 		var text := (_source as Label).text
 		if _synced and text == _label.text: return
 		_label.text = text
@@ -115,6 +116,7 @@ func sync() -> void:
 		while font_size > 12 and (font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > _screen_size_px.x-24 or font.get_height(font_size) > _screen_size_px.y-12):
 			font_size -= 1
 		_label.add_theme_font_size_override("font_size", font_size)
+		_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 		_synced = true
 		return
 	var presentation: Dictionary = _source.screen_presentation()
@@ -127,6 +129,7 @@ func sync() -> void:
 	_meme.visible = _last_mode == "meme"
 	_inventory.visible = _last_mode != "meme"
 	_inventory.sync_inventory(_last_mode, presentation.get("balances", {}), bool(presentation.get("enabled", false)))
+	_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 
 ## UV 在屏幕外时返回 Vector2.INF；有效结果使用源控件的画布坐标。
 func input_from_uv(uv: Vector2) -> Vector2:
