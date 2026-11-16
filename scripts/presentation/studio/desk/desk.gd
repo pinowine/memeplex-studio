@@ -205,9 +205,9 @@ func _update_hover_strip() -> void:
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	process_priority = 30
-	for id in ["desk_surface", "folder", "paper_texture", "blank_print_paper"]:
+	for id in ["paper_texture", "blank_print_paper"]:
 		_textures[id] = load("res://assets/image/textures/studio/desk/" + id + ".png") as Texture2D
-	for id in ["fax_downward", "crt_clean", "phonebook", "stamp_prop", "stamp_67", "landscape_paper", "map_print_paper", "design_print_paper", "map_square_note", "design_square_note"]:
+	for id in ["fax_downward", "phonebook", "stamp_prop", "stamp_67", "landscape_paper", "map_print_paper", "design_print_paper", "map_square_note", "design_square_note"]:
 		_textures[id] = load("res://assets/image/textures/studio/desk/" + id + ".png") as Texture2D
 	_textures.portrait_67 = preload("res://assets/image/textures/studio/desk/portrait_67.svg")
 	_textures.fax = _textures.fax_downward
