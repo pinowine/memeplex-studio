@@ -7,12 +7,13 @@ const EXPLANATION := "module_boundary"
 const CONTINUATION := "module_shared_world"
 const EXIT := "module_ritual"
 const SEEDS := ["versailles_2020", "nobody_2020", "ok_boomer_2020"]
+const PROFILES = preload("res://data/rules/composition_profiles.tres")
 static var LANGUAGES: PackedStringArray = load("res://data/context/context_resources.tres").values("language")
 static var GROUPS: PackedStringArray = load("res://data/context/context_resources.tres").values("group")
 static var TOPICS: PackedStringArray = load("res://data/context/context_resources.tres").values("topic")
 static var CONTEXT_COMPOSITION: Dictionary = load("res://data/rules/context_composition.tres").definitions
 static var CONTEXT_COMPOSITION_SIGNATURE: String = JSON.stringify(CONTEXT_COMPOSITION,"",true,true).sha256_text()
-static var SCENES: Dictionary = load("res://data/rules/composition_profiles.tres").scenes
+static var SCENES: Dictionary = PROFILES.scenes
 static var profile_overrides: Dictionary = {}
 static var authoring_chinese_preview := false
 
@@ -21,13 +22,12 @@ static func supports(preset_id: String) -> bool:
 
 static func definition(preset_id: String) -> Dictionary:
 	if not supports(preset_id): return {}
-	var profiles: Resource = load("res://data/rules/composition_profiles.tres")
-	var result: Dictionary = profile_overrides.get(preset_id, profiles.definitions[preset_id]).duplicate(true)
+	var result: Dictionary = profile_overrides.get(preset_id, PROFILES.definitions[preset_id]).duplicate(true)
 	result.max_modules = 4
 	result.title = _text(_seed(preset_id)+"_TITLE")
 	result.media = DeskLocalization.source("LOC_COMPOSE_MEDIA_TEXT")
 	result.illustration = ""
-	result.scenes = profiles.scenes[preset_id].duplicate()
+	result.scenes = PROFILES.scenes[preset_id].duplicate()
 	result.context_composition_signature = CONTEXT_COMPOSITION_SIGNATURE
 	return result
 
