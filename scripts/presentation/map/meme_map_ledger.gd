@@ -10,6 +10,8 @@ const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwri
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const Details = preload("res://scripts/presentation/map/meme_map_details.gd")
 const INSET := 16.0
+# The monitor and clock cover the left side of the map's top edge.
+const TOP_INSET := Vector2(520.0, 32.0)
 
 class HeaderIcon extends Control:
 	func _init() -> void:
@@ -133,15 +135,7 @@ func _ready() -> void:
 	_panel.name = "MemeLedgerPanel"
 	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	_panel.mouse_force_pass_scroll_events = false
-	var paper := StyleBoxFlat.new()
-	paper.bg_color = Style.PAPER
-	paper.border_color = Style.EDGE
-	paper.set_border_width_all(1)
-	paper.set_corner_radius_all(3)
-	paper.set_content_margin_all(INSET)
-	paper.shadow_color = Color(Style.INK, 0.2)
-	paper.shadow_offset = Style.SHADOW_OFFSET
-	paper.shadow_size = Style.SHADOW_SPREAD
+	var paper := StyleBoxEmpty.new()
 	_panel.add_theme_stylebox_override("panel", paper)
 	add_child(_panel)
 	_column = VBoxContainer.new()
@@ -243,7 +237,7 @@ func show_candidates(ids: PackedStringArray) -> void:
 	if ids.size() == 1: _select(ids[0])
 
 func panel_width() -> float:
-	return maxf(1.0, size.x - 48.0)
+	return maxf(1.0, size.x - TOP_INSET.x - 24.0)
 
 func handles_point(viewport_point: Vector2) -> bool:
 	return is_visible_in_tree() and _contains_point(_panel, viewport_point)
@@ -351,7 +345,7 @@ func _layout() -> void:
 	for row: Dictionary in _rows.values(): row.tag.fit_width(content_width)
 	var height := _column.get_combined_minimum_size().y + INSET * 2.0
 	if _scroll.visible: height += _flow.get_combined_minimum_size().y - _scroll.get_combined_minimum_size().y
-	_panel.position = Vector2(24.0, 16.0)
+	_panel.position = TOP_INSET
 	_panel.size = Vector2(width, minf(maxf(1.0, size.y * 0.22), maxf(36.0, height)))
 
 func _contains_point(control: Control, viewport_point: Vector2) -> bool:

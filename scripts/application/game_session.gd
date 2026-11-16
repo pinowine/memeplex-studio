@@ -797,11 +797,7 @@ func create_studio_adapter() -> RefCounted:
 
 func mount_presentation_overlays(parent: Node) -> void:
 	_shell.reparent(parent)
-	var controls := get_node("DeskCameraControls")
-	controls.reparent(parent)
-	atlas._meme_ledger.reparent(controls, false)
-	controls.move_child(atlas._meme_ledger, 0)
-	atlas._meme_ledger.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	get_node("DeskCameraControls").reparent(parent)
 
 func presentation_blocks_input() -> bool:
 	return _shell.blocks_input()

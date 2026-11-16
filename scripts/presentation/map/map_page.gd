@@ -204,7 +204,7 @@ func _profile_tags(weights: Dictionary, kind: String, limit: int = 0) -> Array[D
 
 func _update_hover() -> void:
 	var available := _pointer_inside_map and map_input.is_visible_in_tree() and not panning
-	if _meme_ledger != null and _meme_ledger.handles_point(_meme_ledger.get_viewport().get_mouse_position()): available = false
+	if _meme_ledger != null and _meme_ledger.handles_point(_pointer): available = false
 	hover_note.visible = available and hovered_country >= 0
 	hover_note.set_pointer_following(hover_note.visible)
 	if _meme_overlay != null:
@@ -286,8 +286,8 @@ func _on_ledger_country_hovered(variant_id: String, country_id: String) -> void:
 	_ledger_hovered_country = country_id
 	_update_hover()
 
-func meme_field_hover_info() -> Dictionary:
-	return _meme_ledger.hover_info(_meme_ledger.get_viewport().get_mouse_position()) if _meme_ledger != null else {}
+func meme_field_hover_info(point: Vector2) -> Dictionary:
+	return _meme_ledger.hover_info(point) if _meme_ledger != null else {}
 
 func establish_studio() -> void:
 	clock.establish(selected_country, world.seed_value, settings.latitude_at(world.territories[selected_country].anchor))

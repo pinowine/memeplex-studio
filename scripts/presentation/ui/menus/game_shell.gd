@@ -85,7 +85,6 @@ func configure(owner_page: Node2D) -> void:
 
 func show_main() -> void:
 	main_mode = true
-	page.atlas._meme_ledger.hide()
 	page.desk.return_overview()
 	tutorial.skip()
 	starter_dialog.skip()
@@ -107,7 +106,6 @@ func _activate_main() -> void:
 func enter_game(guide: bool) -> void:
 	_session_started = true
 	main_mode = false
-	page.atlas._meme_ledger.show()
 	main_menu.hide_menu()
 	ending.hide()
 	starter_dialog.skip()

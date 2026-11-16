@@ -185,7 +185,7 @@ func _update_hover_strip() -> void:
 		_hover_strip.clear_hover()
 		return
 	var point := get_viewport().get_mouse_position()
-	var info: Dictionary = _page.atlas.meme_field_hover_info()
+	var info: Dictionary = _page.atlas.meme_field_hover_info(point)
 	if info.is_empty() and _material_cards != null: info = _material_cards.hover_info(point)
 	if info.is_empty(): info = editor.hover_info(point)
 	if info.is_empty(): info = _monitor.hover_info(point)
@@ -1390,7 +1390,7 @@ func _foreground_point(point: Vector2) -> Vector2:
 
 func _hover_pointer_position() -> Vector2:
 	var point := _slot_reader.get_viewport().get_mouse_position()
-	if _slot_reader.handles_viewport_point(point) or _page.atlas._meme_ledger.handles_point(point): return point
+	if _slot_reader.handles_viewport_point(point): return point
 	return _foreground_point(get_viewport().get_mouse_position())
 
 func _foreground_ui_handles(point: Vector2) -> bool:
