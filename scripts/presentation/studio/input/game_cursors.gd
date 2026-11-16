@@ -9,22 +9,22 @@ const CURSORS := {
 }
 
 var _previous_mouse_mode: Input.MouseMode
-var _previous_cursor_shape: Input.CursorShape
+var _shape := -1
 
 func install() -> void:
 	name = "GameCursor"
 	_previous_mouse_mode = Input.mouse_mode
-	_previous_cursor_shape = Input.get_current_cursor_shape()
-	for shape: int in CURSORS:
-		Input.set_custom_mouse_cursor(CURSORS[shape].texture, shape, CURSORS[shape].hotspot)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	apply(Input.CURSOR_ARROW)
 
 func apply(shape: int) -> void:
-	Input.set_default_cursor_shape(shape as Input.CursorShape)
+	if shape == _shape: return
+	_shape = shape
+	# Controls choose native shapes during input dispatch, before the desk resolves the target.
+	for native_shape in range(Input.CURSOR_HELP + 1):
+		Input.set_custom_mouse_cursor(CURSORS[shape].texture, native_shape, CURSORS[shape].hotspot)
 
 func _exit_tree() -> void:
-	for shape: int in CURSORS:
+	for shape in range(Input.CURSOR_HELP + 1):
 		Input.set_custom_mouse_cursor(null, shape)
-	Input.set_default_cursor_shape(_previous_cursor_shape)
 	Input.mouse_mode = _previous_mouse_mode

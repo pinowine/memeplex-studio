@@ -69,7 +69,8 @@ func _on_mouse_exited() -> void:
 
 
 func cursor_shape_at(point: Vector2) -> int:
-	return CURSOR_POINTING_HAND if _interaction_enabled and not _hit_id(point).is_empty() else CURSOR_ARROW
+	if _hit_id(point).is_empty(): return CURSOR_ARROW
+	return CURSOR_POINTING_HAND if _interaction_enabled else CURSOR_FORBIDDEN
 
 
 func _hit_id(at: Vector2) -> String:

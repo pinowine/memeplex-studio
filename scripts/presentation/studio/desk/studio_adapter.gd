@@ -31,8 +31,12 @@ func pointer_cursor_shape(point: Vector2) -> int:
 	for slip: Control in slips:
 		if not slip._enabled and _hover_targets._contains(slip, point): return Input.CURSOR_FORBIDDEN
 	var atlas: Node2D = _desk._page.atlas
-	if atlas._pointer_inside_map and atlas._meme_overlay != null and not atlas._meme_overlay.hit_at(point).is_empty(): return Input.CURSOR_POINTING_HAND
-	if _desk._hover_strip._has_hover or atlas.hover_note.is_visible_in_tree() or editor._source_hover.is_visible_in_tree(): return Input.CURSOR_HELP
+	if _hover_targets._contains(atlas.map_input, point) and atlas._pointer_inside_map:
+		if atlas._launch_selection_active or (atlas._meme_overlay != null and not atlas._meme_overlay.hit_at(point).is_empty()): return Input.CURSOR_POINTING_HAND
+		if atlas.world.country_at(atlas._world_position(point)) >= 0: return Input.CURSOR_HELP
+	if not editor.hover_info(point).is_empty() or not _desk._monitor.hover_info(point).is_empty() or not _desk._fax.hover_details(point).is_empty(): return Input.CURSOR_HELP
+	var board: Control = editor.context_slice()
+	if _hover_targets._contains(board, point) and not board.hover_info(point).is_empty(): return Input.CURSOR_HELP
 	return control_cursor_shape(_desk.get_viewport().gui_get_hovered_control(), point)
 
 func blocked_cursor_shape(point: Vector2) -> int:
@@ -42,7 +46,12 @@ func blocked_cursor_shape(point: Vector2) -> int:
 	if not String(cards._props._hit_prop(point)).is_empty() or not String(_desk._props._hit_prop(point)).is_empty(): return Input.CURSOR_FORBIDDEN
 	var target: Dictionary = _hover_targets.target_at(point)
 	if not target.is_empty() and int(target.cursor_shape) != Input.CURSOR_HELP: return Input.CURSOR_FORBIDDEN
-	return Input.CURSOR_ARROW
+	return shape if shape == Input.CURSOR_HELP else Input.CURSOR_ARROW
+
+func foreground_cursor_shape(point: Vector2) -> int:
+	var shape := control_cursor_shape(_desk._slot_reader.get_viewport().gui_get_hovered_control(), point)
+	if shape != Input.CURSOR_ARROW: return shape
+	return Input.CURSOR_HELP if not _desk._slot_reader.hover_info(point).is_empty() else Input.CURSOR_ARROW
 
 func _dragged_material() -> Dictionary:
 	var cards: Control = _desk._material_cards

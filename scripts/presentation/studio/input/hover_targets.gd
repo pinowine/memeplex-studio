@@ -35,8 +35,7 @@ func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int
 			return Input.CURSOR_ARROW
 		if control is DeskNeuralSketch: return _shape(control.cursor_shape_at(local))
 		if control is DeskDendriteTree:
-			if not control._hit_id(local).is_empty(): return Input.CURSOR_POINTING_HAND if control._interaction_enabled else Input.CURSOR_FORBIDDEN
-			return Input.CURSOR_ARROW
+			return control.cursor_shape_at(local)
 		if control.has_method("cursor_shape_at"): return _shape(int(control.cursor_shape_at(local)))
 		information = information or _has_help(control)
 		if control.mouse_default_cursor_shape != Control.CURSOR_ARROW:
@@ -77,7 +76,7 @@ func target_at(point: Vector2) -> Dictionary:
 		if cards._cards.has(key):
 			var card: Dictionary = cards._cards[key]
 			var shape := _material_shape(card)
-			if shape != Input.CURSOR_FORBIDDEN and (card.inventory_docked or not _desk.slot_details_active()): shape = Input.CURSOR_CROSS
+			if card.inventory_docked or not _desk.slot_details_active(): shape = Input.CURSOR_CROSS
 			return _card(card.face, key, shape)
 	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
 	for slip: Control in slips:
@@ -115,7 +114,7 @@ func control_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionar
 					return card
 			return {}
 		if control is BaseButton:
-			return _rect("control/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size), Input.CURSOR_FORBIDDEN if control.disabled else _control_shape(control, Input.CURSOR_POINTING_HAND))
+			return _rect("control/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size), control_cursor_shape(control, point))
 		if control is LineEdit or control is TextEdit:
 			return _rect("editor/" + str(control.get_instance_id()), control, Rect2(Vector2.ZERO, control.size), Input.CURSOR_POINTING_HAND) if control.editable else {}
 		if control is Slider:

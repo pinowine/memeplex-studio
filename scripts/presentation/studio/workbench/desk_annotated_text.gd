@@ -11,6 +11,7 @@ const CHANGED_INK := PaperStyle.ACCENT
 var _segments: Array = []
 var _annotations: Array[Dictionary] = []
 var _current_text := ""
+var _hovering_source := false
 
 
 func _init() -> void:
@@ -25,8 +26,8 @@ func _init() -> void:
 	add_theme_color_override("default_color", INK)
 	add_theme_constant_override("line_separation", 8)
 	meta_hover_started.connect(_hover_source)
-	meta_hover_ended.connect(func(_meta: Variant) -> void: source_hover_ended.emit())
-	mouse_exited.connect(func() -> void: source_hover_ended.emit())
+	meta_hover_ended.connect(func(_meta: Variant) -> void: _end_source_hover())
+	mouse_exited.connect(_end_source_hover)
 
 
 func set_segments(segments: Array, plain_text: String = "") -> void:
@@ -47,12 +48,20 @@ func set_segments(segments: Array, plain_text: String = "") -> void:
 			pieces.append("[url=%d][color=#%s][b]%s[/b][/color][/url]" % [index, CHANGED_INK.to_html(false), escaped])
 	text = "".join(pieces) if not _segments.is_empty() else _escape(DeskLocalization.text(plain_text))
 	_current_text = "".join(current_pieces) if not _segments.is_empty() else DeskLocalization.text(plain_text)
-	source_hover_ended.emit()
+	_end_source_hover()
 
 
 func _hover_source(meta: Variant) -> void:
 	var annotation: Dictionary = _annotations[int(str(meta))]
+	_hovering_source = true
 	source_hovered.emit(annotation.sources.duplicate(true), str(annotation.text))
+
+func _end_source_hover() -> void:
+	_hovering_source = false
+	source_hover_ended.emit()
+
+func cursor_shape_at(_point: Vector2) -> int:
+	return CURSOR_HELP if _hovering_source else CURSOR_ARROW
 
 
 func current_text() -> String:

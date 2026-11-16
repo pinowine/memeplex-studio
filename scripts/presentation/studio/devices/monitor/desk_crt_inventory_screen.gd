@@ -33,6 +33,12 @@ func cell_rect(index: int) -> Rect2:
 	var cell := (area.size - Vector2.ONE * gap) * 0.5
 	return Rect2(area.position + Vector2(index % 2, index / 2) * (cell + Vector2.ONE * gap), cell)
 
+func cursor_shape_at(point: Vector2) -> int:
+	for index in 4:
+		if cell_rect(index).has_point(point):
+			return CURSOR_POINTING_HAND if _enabled and int(_balances.get(IDS[_mode][index], 0)) > 0 else CURSOR_FORBIDDEN
+	return CURSOR_ARROW
+
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		_hover = -1

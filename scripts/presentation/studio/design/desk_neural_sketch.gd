@@ -165,10 +165,10 @@ func _on_mouse_exited() -> void:
 
 
 func cursor_shape_at(point: Vector2) -> int:
-	if not _interaction_enabled: return CURSOR_ARROW
-	if _pressed_module >= 0 or not _hit_id(point).is_empty(): return CURSOR_POINTING_HAND
+	var shape := CURSOR_POINTING_HAND if _interaction_enabled else CURSOR_FORBIDDEN
+	if _pressed_module >= 0 or not _hit_id(point).is_empty(): return shape
 	for index in _visible_lineage.size():
-		if point.distance_to(_lineage_point(index)) <= 18: return CURSOR_POINTING_HAND
+		if point.distance_to(_lineage_point(index)) <= 18: return shape
 	return CURSOR_ARROW
 
 

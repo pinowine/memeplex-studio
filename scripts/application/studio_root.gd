@@ -405,12 +405,12 @@ func _update_hover() -> int:
 	if not target.is_empty():
 		_show_hover_target(target)
 		return target.cursor_shape
+	if desktop.foreground_ui_handles(get_viewport().get_mouse_position()):
+		hover_outline.clear()
+		return desktop.foreground_cursor_shape(get_viewport().get_mouse_position())
 	if root_control != null and root_control != modal_image and (root_control.mouse_filter == Control.MOUSE_FILTER_STOP or desktop.control_cursor_shape(root_control) != Input.CURSOR_ARROW):
 		hover_outline.clear()
 		return desktop.control_cursor_shape(root_control)
-	if desktop.foreground_ui_handles(get_viewport().get_mouse_position()):
-		hover_outline.clear()
-		return desktop.control_cursor_shape(get_viewport().gui_get_hovered_control())
 	if modal_image.visible:
 		target = desktop.control_hover_target(logical.gui_get_hovered_control())
 		if not target.is_empty():
@@ -425,7 +425,7 @@ func _update_hover() -> int:
 	var point := get_viewport().get_mouse_position()
 	if not page._shell.tutorial.allows_hover(point):
 		hover_outline.clear()
-		return Input.CURSOR_ARROW
+		return _blocked_cursor_shape(point)
 	var desktop_position: Vector2 = logical.get_canvas_transform() * input_router.desktop_point(point)
 	var material_input: bool = desktop.material_handles_viewport_point(desktop_position)
 	var physical_hit: Dictionary = {} if material_input else input_router.hit(point)
