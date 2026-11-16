@@ -111,7 +111,7 @@
   },
   "LOC_EVENT_TRANSIT_FARE_POSITIVE": {
     "source": "远郊居民终于不用为距离支付额外代价",
-    "zh_CN": "改为每程固定收费后，远郊通勤者省下了月票开支",
+    "zh_CN": "改为每程固定收费后，远郊通勤者每月的车费减少了",
     "en": "A flat fare per trip saves outer-suburb commuters money on monthly passes"
   },
   "LOC_EVENT_TRANSIT_FARE_NEGATIVE": {
@@ -126,12 +126,12 @@
   },
   "LOC_EVENT_TRANSIT_FARE_NARRATIVE": {
     "source": "%s议会取消按里程计费，改为每程固定收费。远郊通勤者省下月票钱，短途乘客的单程支出却增加近一半。",
-    "zh_CN": "%s议会取消按里程计费，改为每程固定收费。远郊通勤者省下月票钱，短途乘客的单程支出却增加近一半。",
+    "zh_CN": "%s议会取消按里程计费，改为每程固定收费。远郊通勤者每月的车费减少，短途乘客的单程支出却增加近一半。",
     "en": "%s's parliament replaces distance-based transit fares with one flat fare per trip. Outer-suburb commuters save on monthly passes, while short-trip riders pay almost half again as much."
   },
   "LOC_EVENT_TRANSIT_FARE_COMMENT": {
     "source": "同一张票，远处的人和近处的人算出的账不同。",
-    "zh_CN": "每程固定收费，让远郊通勤者省了月票钱，短途乘客的单程支出却涨了近一半。两边谈起新票价，先报每天坐多远，大概就能明白彼此的感受。",
+    "zh_CN": "改成每程固定收费后，远郊通勤者每月少花了车费，短途乘客每程却多付近一半。两边谈起新票价，先报每天坐多远，大概就能明白彼此的感受。",
     "en": "Replacing distance fares with a flat rate saves outer-suburb commuters money on monthly passes while raising the cost of a short ride by nearly half. Their reactions need not match. Before deciding who has misunderstood the rule, it helps to ask how far each person travels."
   },
   "LOC_EVENT_WORLD_BORDER_WAR_POSITIVE": {
@@ -181,7 +181,7 @@
   },
   "LOC_EVENT_WORLD_ROOFTOP_MATCH_COMMENT": {
     "source": "排队的截图常常比第一场比赛先传出去。",
-    "zh_CN": "《玻璃海》上线就宣布了秋季邀请赛。想试试重力反转三人对战的玩家，首日先排了超过两小时的队。",
+    "zh_CN": "《玻璃海》的秋季邀请赛已经开始宣传，想试试重力反转三人对战的玩家，开服首日却先排了超过两小时的队。",
     "en": "Glass Sea already has an autumn invitational on the calendar, showing plenty of confidence in its reversible-gravity matches. With first-day server queues passing two hours, though, eager players have a long wait before they can try the new mechanics."
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_POSITIVE": {
@@ -196,17 +196,17 @@
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_TITLE": {
     "source": "索娜《空房间》巡演抵达新一站",
-    "zh_CN": "索娜独角戏《空房间》完成巡演新一站，下站加售门票",
+    "zh_CN": "索娜独角戏《空房间》谢幕十七分钟，下一站门票当晚售罄",
     "en": "Sona's Empty Rooms completes another tour stop; next stop adds tickets"
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_NARRATIVE": {
     "source": "%s演员索娜带着独角戏《空房间》完成新一站演出。她不换布景便扮演五代租客，本场谢幕持续十七分钟，下一站门票也开始加售。",
-    "zh_CN": "%s演员索娜带着独角戏《空房间》完成新一站演出。她不换布景便扮演五代租客，本场谢幕持续十七分钟，下一站门票也开始加售。",
+    "zh_CN": "%s演员索娜带着独角戏《空房间》完成新一站演出。她不换布景便扮演五代租客，本场谢幕持续十七分钟。当天晚上，下一站的门票就被抢购一空。",
     "en": "Actor Sona takes her solo play Empty Rooms to another stop in %s. She plays five generations of tenants without changing the set. The curtain call lasts seventeen minutes, and more tickets go on sale for the next stop."
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_COMMENT": {
     "source": "观众会把舞台上的房间带回自己的日常。",
-    "zh_CN": "五代租客的日子都挤在同一套布景里。索娜谢幕用了十七分钟，下一站也加售了门票。",
+    "zh_CN": "五代租客的日子都挤在同一套布景里。索娜谢幕用了十七分钟，当天晚上，下一站的门票就被抢购一空。",
     "en": "Sona plays five generations of tenants without changing the set, which helps explain a seventeen-minute curtain call. Packing so many lives into one rented room gives audiences plenty to recognize from their own experience, and the next stop is already adding tickets."
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_POSITIVE": {
@@ -331,7 +331,7 @@
   },
   "LOC_EVENT_WORLD_BRIDGE_DETOUR_COMMENT": {
     "source": "灾情里传播得快的，往往是求助地点和一句问责。",
-    "zh_CN": "五天连雨后，落石和涨水再次逼停铁路，救援车正沿山路转运居民。气象局说模型仍低估了上游汇水，救援过后，这个偏差还待追查。",
+    "zh_CN": "五天连雨后，落石和涨水再次逼停铁路，救援车正沿山路转运居民。气象局称预警模型仍低估了上游汇水。",
     "en": "Five days of rain brought rockfalls and rising water that shut down North Ridge rail service again, leaving rescue vehicles to evacuate residents along mountain roads. The weather service admits its model still underestimates upstream runoff, a gap that will need fixing."
   },
   "LOC_EVENT_WORLD_SHIFT_ROSTER_POSITIVE": {
@@ -361,7 +361,7 @@
   },
   "LOC_EVENT_WORLD_BLUE_COMET_POSITIVE": {
     "source": "公共空间短暂让位给所有人都能看的天空",
-    "zh_CN": "市政熄灭河岸广告屏、学校借出望远镜，方便市民凌晨看彗星",
+    "zh_CN": "市政同意为观测熄灭河岸广告屏，学校也借出望远镜，方便市民凌晨看彗星",
     "en": "Switched-off riverside screens and borrowed school telescopes help residents watch the comet"
   },
   "LOC_EVENT_WORLD_BLUE_COMET_NEGATIVE": {
@@ -381,7 +381,7 @@
   },
   "LOC_EVENT_WORLD_BLUE_COMET_COMMENT": {
     "source": "罕见的同一片天空，很容易成为共同记忆。",
-    "zh_CN": "蓝尾彗星周末凌晨肉眼可见，河岸广告屏将熄灭两小时，学校也借出了望远镜。市政和学校配合着，为凌晨抬头的人腾出一片暗些的天空。",
+    "zh_CN": "蓝尾彗星周末凌晨肉眼可见。为方便观测，市政同意让河岸广告屏熄灭两小时，学校也借出了望远镜。",
     "en": "The blue-tail comet will be visible to the naked eye before dawn this weekend, with riverside ad screens going dark for two hours and schools lending out telescopes. Those arrangements give people a clearer view and a chance to look more closely, a welcome bit of coordination for the night sky."
   },
   "LOC_EVENT_WORLD_FIRST_FROST_POSITIVE": {
@@ -401,12 +401,12 @@
   },
   "LOC_EVENT_WORLD_FIRST_FROST_NARRATIVE": {
     "source": "%s东部果园提前三周遭遇初霜，青梨收成损失过半。果农开放受损果园让居民自取落果，批发市场却同时上调鲜果报价。",
-    "zh_CN": "%s东部果园提前三周遭遇初霜，青梨收成损失过半。果农开放受损果园让居民自取落果，批发市场却同时上调鲜果报价。",
+    "zh_CN": "%s东部果园提前三周遭遇初霜，青梨收成损失过半。果农开放受损果园让居民自取落果，批发市场同时上调鲜果报价。",
     "en": "Frost reaches eastern %s's orchards three weeks early, destroying over half the green-pear crop. Growers invite residents to collect fallen fruit while wholesalers raise fresh-fruit prices."
   },
   "LOC_EVENT_WORLD_FIRST_FROST_COMMENT": {
     "source": "人们讨论季节，也会讨论谁替坏天气买单。",
-    "zh_CN": "初霜提前三周到来，毁了过半青梨。果农让居民自取落果，批发市场却上调了鲜果报价。",
+    "zh_CN": "初霜提前三周到来，青梨收成损失过半，批发市场已经上调了鲜果报价。果农开放受损果园，让居民把落果捡回家。",
     "en": "Frost arrived three weeks early and wiped out more than half the green-pear crop. Growers opened their orchards so residents could gather fallen fruit, while wholesale markets raised fresh-fruit prices—a contrast that leaves people worrying about how the growers will get through the season."
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_POSITIVE": {
@@ -506,7 +506,7 @@
   },
   "LOC_EVENT_WORLD_ROBILAZZI_PROOF_COMMENT": {
     "source": "能看懂证明的人不多，能借题发挥的人会多得多。",
-    "zh_CN": "“所有充分大的偶数都能拆成两个素数之和”，这句话好记，九十六页证明却费脑。三个独立小组逐行复核完，拿它说笑的人恐怕也能接上两句。",
+    "zh_CN": "“所有充分大的偶数都能拆成两个素数之和”，命题一句话就能说完，证明却写了九十六页。三个独立小组已经逐行完成复核。",
     "en": "Not everyone will follow all ninety-six pages, but the statement that every sufficiently large even integer is a sum of two primes is easier to remember. Three independent teams have checked the proof line by line. Borrowing that statement for a joke does not require the same work as proving it."
   },
   "LOC_EVENT_PLATFORM_TOOL_POSITIVE": {
@@ -531,7 +531,7 @@
   },
   "LOC_EVENT_PLATFORM_TOOL_COMMENT": {
     "source": "发布会说的是性能，评论区算的是工资。",
-    "zh_CN": "“萤石”只有掌心大小，按厂商的说法，离线语音识别能耗降到了旧款的十分之一。首批售价相当于普通职员两个月工资。",
+    "zh_CN": "掌心大小的“萤石”，按厂商的说法，离线语音识别能耗只有旧款的十分之一，首批售价却相当于普通职员两个月工资。",
     "en": "Fluorite claims offline speech recognition at one-tenth the energy use of the previous model, which is impressive on paper. The first batch costs two months of an ordinary clerk's pay, though. Anyone thinking of buying one has another number to consider alongside the performance claims."
   },
   "LOC_EVENT_WORLD_STAFF_RETRAINING_POSITIVE": {
@@ -756,7 +756,7 @@
   },
   "LOC_EVENT_WORLD_DELETED_SEARCH_COMMENT": {
     "source": "找不到的原文，会让截图承担更重的争论。",
-    "zh_CN": "“寻径”因维护开支超过广告收入，停掉了历史网页快照。调查记者随后发现，几起公共承诺的原始页面也已消失，核对旧话又多了一道难处。",
+    "zh_CN": "“寻径”停掉了历史网页快照，理由是维护开支超过广告收入。调查记者核对几起公共承诺时，发现现网站已经找不到原始页面，如今也少了快照可查。",
     "en": "Pathfind says it shut down its historical page cache because upkeep costs outgrew ad revenue. Reporters also found that the original pages for several public promises are gone from their current websites, making it harder to verify what was promised years ago."
   },
   "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_POSITIVE": {
@@ -781,7 +781,7 @@
   },
   "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_COMMENT": {
     "source": "权力移交时，留下的过渡条款也会成为话题。",
-    "zh_CN": "《春潮宪章》把预算和组阁权交给民选议会，首场听证就谈到了王室地产税。旧顾问院还有一年过渡任期，新旧权力先在税单上碰了面。",
+    "zh_CN": "《春潮宪章》把预算和组阁权交给民选议会。旧顾问院还有一年过渡任期，议会的首场听证已经开始讨论王室地产税。",
     "en": "The Springtide Charter hands budgets and cabinet formation to an elected parliament, and the first public hearing takes up taxes on royal estates. With the old advisory chamber staying on for a one-year transition, the way that tax is discussed may show something of how the new arrangement will work."
   },
   "LOC_EVENT_COMPETITOR_BIRTH_POSITIVE": {
@@ -1231,7 +1231,7 @@
   },
   "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_COMMENT": {
     "source": "传播有时需要的是同一刻，而非更多解释。",
-    "zh_CN": "交班前，晚班社群集中发出这句话，散在各处的人认出彼此刚熬完同一班。每天准时的招呼，也引来了圈外人的留意。",
+    "zh_CN": "交班前，晚班社群集中发出这句话。散在各处的人借这声招呼认出了同样快下班的同伴，圈外人也开始留意每天这个时段的动静。",
     "en": "A night-shift community has taken to posting the meme right before handover. That fixed window lets scattered workers spot who else is finishing the same stretch, and the daily repetition has started drawing outsiders' attention too."
   },
   "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_POSITIVE": {
@@ -1256,7 +1256,7 @@
   },
   "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_COMMENT": {
     "source": "旧表达复活时，带回来的不只是原来的受众。",
-    "zh_CN": "旧话题里翻出的截图，恰好说中了眼下的处境。当年的日期让新读者觉得新鲜，老用户也把歇过一阵的话重新捡了起来。",
+    "zh_CN": "旧话题里翻出的截图，日期还停在当年，话却恰好说中了眼下的处境。新读者接着转发，老用户也把歇过一阵的话重新捡了起来。",
     "en": "Someone dug the meme out of an old thread and found that it fits the present situation almost too well. Screenshots showing the original date are pulling in new readers while giving older users a reason to pick the phrase back up."
   },
   "LOC_EVENT_FATIGUE_WAVE_POSITIVE": {
@@ -1351,7 +1351,7 @@
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_NARRATIVE": {
     "source": "%s网友追出这条模因早期使用者的一段歧视性发言。转发者开始删除旧帖，争论集中在继续使用是否等于认同原作者。",
-    "zh_CN": "%s网友追出这条模因早期使用者的一段歧视性发言。转发者开始删除旧帖，争论集中在继续使用是否等于认同原作者。",
+    "zh_CN": "%s网友追出这条模因早期使用者的一段歧视性发言。转发者开始删除旧帖，争论集中在继续使用是否等于认同这名使用者的立场。",
     "en": "Readers in %s trace the meme to an early user with a discriminatory statement. Reposters delete older posts as debate turns to whether reuse endorses the source."
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_COMMENT": {
