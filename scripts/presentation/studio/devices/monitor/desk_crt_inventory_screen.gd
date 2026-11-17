@@ -1,6 +1,8 @@
 class_name DeskCRTInventoryScreen
 extends Control
 
+const TokenIcon = preload("res://scripts/presentation/context/context_token_icon.gd")
+
 const IDS := {"stance":["freedom", "authority", "equality", "hierarchy"], "pragmatic":["sincere", "ironic", "support", "opposition"]}
 const SEGMENTS := [[0,1,2,4,5,6], [2,5], [0,2,3,4,6], [0,2,3,5,6], [1,2,3,5], [0,1,3,5,6], [0,1,3,4,5,6], [0,2,5], [0,1,2,3,4,5,6], [0,1,2,3,5,6]]
 const INK := Color("9dc996")
@@ -91,37 +93,8 @@ func _digit(value: int, rect: Rect2, color: Color) -> void:
 	for index in 7:
 		draw_line(lines[index][0], lines[index][1], color if index in SEGMENTS[value] else Color(color, 0.08), thickness, true)
 
-func _stroke(points: Array, center: Vector2, radius: float, color: Color, width: float) -> void:
-	var path := PackedVector2Array()
-	for point: Vector2 in points: path.append(center + point * radius)
-	draw_polyline(path, color, width, true)
-
 func _symbol(id: String, center: Vector2, radius: float, color: Color) -> void:
-	var width := maxf(0.8, radius * 0.09)
-	match id:
-		"freedom":
-			_stroke([Vector2(-0.85,-0.2),Vector2(-0.34,0.08),Vector2(0,-0.52),Vector2(0.34,0.08),Vector2(0.85,-0.2)],center,radius,color,width)
-			_stroke([Vector2(-0.85,-0.2),Vector2(-0.26,0.55),Vector2(0,0.12),Vector2(0.26,0.55),Vector2(0.85,-0.2)],center,radius,color,width)
-		"authority":
-			_stroke([Vector2(-0.6,0.8),Vector2(-0.6,-0.35),Vector2(-0.28,-0.35),Vector2(-0.28,-0.76),Vector2(0.28,-0.76),Vector2(0.28,-0.35),Vector2(0.6,-0.35),Vector2(0.6,0.8),Vector2(-0.6,0.8)],center,radius,color,width)
-			_stroke([Vector2(0,-0.12),Vector2(0,0.62)],center,radius,color,width)
-		"equality":
-			for y in [-0.27,0.27]: draw_line(center+Vector2(-0.8,y)*radius,center+Vector2(0.8,y)*radius,color,width,true)
-		"hierarchy":
-			for row in 3:
-				var half := 0.25+row*0.25
-				draw_line(center+Vector2(-half,-0.7+row*0.52)*radius,center+Vector2(half,-0.7+row*0.52)*radius,color,width,true)
-			draw_line(center-Vector2(0,radius*0.9),center+Vector2(0,radius*0.68),color,width,true)
-		"sincere":
-			_stroke([Vector2(0,0.8),Vector2(-0.72,0.04),Vector2(-0.6,-0.55),Vector2(0,-0.25),Vector2(0.6,-0.55),Vector2(0.72,0.04),Vector2(0,0.8)],center,radius,color,width)
-		"ironic":
-			draw_arc(center,radius*0.8,-PI*0.86,PI*0.84,28,color,width,true)
-			_stroke([Vector2(-0.62,0.5),Vector2(0.6,-0.4),Vector2(0.65,0.1)],center,radius,color,width)
-			for x in [-0.3,0.3]: draw_circle(center+Vector2(x,-0.24)*radius,radius*0.085,color)
-		"support": _stroke([Vector2(-0.8,0.3),Vector2(-0.3,0.7),Vector2(0.8,-0.65)],center,radius,color,width*1.15)
-		"opposition":
-			draw_arc(center,radius*0.8,0,TAU,28,color,width,true)
-			draw_line(center+Vector2(-0.58,0.58)*radius,center+Vector2(0.58,-0.58)*radius,color,width,true)
+	TokenIcon.draw(self,id,center,radius,color,maxf(0.8,radius*0.09))
 
 func inspection() -> Dictionary:
 	var cells: Array[Dictionary] = []

@@ -66,20 +66,18 @@ func bind_monitor_icons(buttons: Dictionary) -> void:
 		var paths: Array[PackedVector2Array] = []
 		match mode:
 			"meme":
-				paths.append(_mode_icon_arc(Vector2.ZERO, .90, -PI * .9, PI * .6, 24))
-				paths.append(PackedVector2Array([Vector2(-.5, .72), Vector2(-.7, 1.10), Vector2(.06, .91)]))
-				for x in [-.35, .35]:
-					paths.append(_mode_icon_arc(Vector2(x, -.12), .055, 0, TAU, 12))
+				paths.append(PackedVector2Array([Vector2(-1,-1),Vector2(-1,1),Vector2(1,1)]))
+				paths.append(PackedVector2Array([Vector2(-.8,.6),Vector2(-.3,-.15),Vector2(.2,.2),Vector2(.9,-.8)]))
 			"stance":
-				paths.append(PackedVector2Array([Vector2(-1, 0), Vector2(1, 0)]))
-				paths.append(PackedVector2Array([Vector2(0, 1), Vector2(0, -1)]))
-				paths.append(PackedVector2Array([Vector2(.55, -.35), Vector2(1, 0), Vector2(.55, .35)]))
-				paths.append(PackedVector2Array([Vector2(-.35, -.55), Vector2(0, -1), Vector2(.35, -.55)]))
+				paths.append(PackedVector2Array([Vector2(0,-1),Vector2(0,1)]))
+				paths.append(PackedVector2Array([Vector2(-1,-.5),Vector2(1,-.5)]))
+				paths.append(PackedVector2Array([Vector2(-.6,1),Vector2(.6,1)]))
+				for x in [-.8,.8]:
+					paths.append(PackedVector2Array([Vector2(x-.35,.25),Vector2(x,-.5),Vector2(x+.35,.25)]))
+					paths.append(_mode_icon_arc(Vector2(x,.25),.35,0,PI,12))
 			"pragmatic":
-				paths.append(_mode_icon_arc(Vector2.ZERO, 1, 0, TAU, 28))
-				for x in [-.35, .35]:
-					paths.append(_mode_icon_arc(Vector2(x, -.3), .055, 0, TAU, 12))
-				paths.append(_mode_icon_arc(Vector2(0, .04), .57, .12, PI - .12, 16))
+				paths.append(PackedVector2Array([Vector2(-1,-.8),Vector2(1,-.8),Vector2(1,.5),Vector2(.1,.5),Vector2(-.6,1),Vector2(-.5,.5),Vector2(-1,.5),Vector2(-1,-.8)]))
+				for x in [-.5,0,.5]: paths.append(_mode_icon_arc(Vector2(x,-.15),.055,0,TAU,12))
 		var center := Vector3(bounds.get_center().x, bounds.end.y + .0002, bounds.get_center().z)
 		for path in paths:
 			for index in range(1, path.size()):

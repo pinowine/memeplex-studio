@@ -1,6 +1,7 @@
 class_name DeskContextResourceGraphic
 extends Control
 
+const TokenIcon = preload("res://scripts/presentation/context/context_token_icon.gd")
 const METAL := preload("res://assets/image/textures/studio/desk/metal_resources.png")
 const PAPER := preload("res://assets/image/textures/studio/desk/blank_print_paper.png")
 var definition: Dictionary = {}
@@ -192,6 +193,9 @@ func _line(points: Array,center: Vector2,radius: float,color: Color,width: float
 
 func _icon(center: Vector2,radius: float,color: Color,width: float) -> void:
 	var id := str(definition.get("id",""))
+	if str(definition.get("kind", "")) in ["stance_token", "pragmatic_token"]:
+		TokenIcon.draw(self,id,center,radius,color,width)
+		return
 	match id:
 		"language_ninghua":
 			_line([Vector2(0,-.85),Vector2(.72,-.3),Vector2(.45,.58),Vector2(-.45,.58),Vector2(-.72,-.3),Vector2(0,-.85)],center,radius,color,width)
@@ -216,33 +220,6 @@ func _icon(center: Vector2,radius: float,color: Color,width: float) -> void:
 			_line([Vector2(-.75,-.66),Vector2(.75,-.66),Vector2(.65,.2),Vector2(0,.75),Vector2(-.65,.2),Vector2(-.75,-.66)],center,radius,color,width)
 			draw_arc(center+Vector2(0,radius*.03),radius*.32,.15,PI-.15,18,color,width,true)
 			for x in [-.35,.35]: draw_circle(center+Vector2(x,-.32)*radius,radius*.09,color)
-		"freedom":
-			_line([Vector2(-.85,-.2),Vector2(-.34,.08),Vector2(0,-.52),Vector2(.34,.08),Vector2(.85,-.2)],center,radius,color,width)
-			_line([Vector2(-.85,-.2),Vector2(-.26,.55),Vector2(0,.12),Vector2(.26,.55),Vector2(.85,-.2)],center,radius,color,width)
-		"authority":
-			_line([Vector2(-.6,.8),Vector2(-.6,-.35),Vector2(-.28,-.35),Vector2(-.28,-.76),Vector2(.28,-.76),Vector2(.28,-.35),Vector2(.6,-.35),Vector2(.6,.8),Vector2(-.6,.8)],center,radius,color,width)
-			_line([Vector2(0,-.12),Vector2(0,.62)],center,radius,color,width)
-		"equality":
-			_line([Vector2(-.8,-.27),Vector2(.8,-.27)],center,radius,color,width)
-			_line([Vector2(-.8,.27),Vector2(.8,.27)],center,radius,color,width)
-			for x in [-.7,.7]: draw_arc(center+Vector2(x,0)*radius,radius*.8,-PI*.5,PI*.5,16,color,width*.6,true)
-		"hierarchy":
-			for row in 3:
-				var half := .25+row*.25
-				_line([Vector2(-half,-.7+row*.52),Vector2(half,-.7+row*.52)],center,radius,color,width)
-			_line([Vector2(0,-.9),Vector2(0,.68)],center,radius,color,width)
-		"sincere":
-			_line([Vector2(0,.8),Vector2(-.72,.04),Vector2(-.6,-.55),Vector2(0,-.25),Vector2(.6,-.55),Vector2(.72,.04),Vector2(0,.8)],center,radius,color,width)
-		"ironic":
-			draw_arc(center,radius*.8,-PI*.86,PI*.84,28,color,width,true)
-			_line([Vector2(-.62,.5),Vector2(.6,-.4),Vector2(.65,.1)],center,radius,color,width)
-			for x in [-.3,.3]: draw_circle(center+Vector2(x,-.24)*radius,radius*.085,color)
-		"support":
-			_line([Vector2(-.8,.3),Vector2(-.3,.7),Vector2(.8,-.65)],center,radius,color,width*1.15)
-			draw_arc(center,radius*.88,-PI*.65,PI*.9,26,color,width*.55,true)
-		"opposition":
-			draw_arc(center,radius*.8,0,TAU,28,color,width,true)
-			_line([Vector2(-.58,.58),Vector2(.58,-.58)],center,radius,color,width)
 		_:
 			_line([Vector2(-.5,-.7),Vector2(.5,-.7),Vector2(.5,.7),Vector2(-.5,.7),Vector2(-.5,-.7)],center,radius,color,width)
 

@@ -80,18 +80,23 @@ class ModeKeyInk extends Control:
 		var width := maxf(1.0, radius * 0.12)
 		match mode_id:
 			"meme":
-				draw_arc(center, radius * 0.90, -PI * 0.9, PI * 0.6, 24, ink, width, true)
-				draw_polyline(PackedVector2Array([center + Vector2(-0.5, 0.72) * radius, center + Vector2(-0.7, 1.10) * radius, center + Vector2(0.06, 0.91) * radius]), ink, width, true)
-				for x in [-0.35, 0.35]: draw_circle(center + Vector2(x, -0.12) * radius, width, ink)
+				draw_line(center + Vector2(-1,1)*radius, center + Vector2(1,1)*radius, ink, width, true)
+				draw_line(center + Vector2(-1,1)*radius, center + Vector2(-1,-1)*radius, ink, width, true)
+				draw_polyline(PackedVector2Array([center+Vector2(-.8,.6)*radius,center+Vector2(-.3,-.15)*radius,center+Vector2(.2,.2)*radius,center+Vector2(.9,-.8)*radius]),ink,width*1.5,true)
 			"stance":
-				draw_line(center + Vector2(-radius, 0), center + Vector2(radius, 0), ink, width, true)
-				draw_line(center + Vector2(0, radius), center - Vector2(0, radius), ink, width, true)
-				draw_polyline(PackedVector2Array([center + Vector2(0.55, -0.35) * radius, center + Vector2(1, 0) * radius, center + Vector2(0.55, 0.35) * radius]), ink, width, true)
-				draw_polyline(PackedVector2Array([center + Vector2(-0.35, -0.55) * radius, center + Vector2(0, -1) * radius, center + Vector2(0.35, -0.55) * radius]), ink, width, true)
+				draw_line(center-Vector2(0,radius),center+Vector2(0,radius),ink,width,true)
+				draw_line(center-Vector2(radius,radius*.5),center+Vector2(radius,-radius*.5),ink,width,true)
+				draw_line(center+Vector2(-.6,1)*radius,center+Vector2(.6,1)*radius,ink,width,true)
+				for x in [-.8,.8]:
+					var pan := center+Vector2(x,.25)*radius
+					draw_line(pan+Vector2(-.35,0)*radius,pan+Vector2(0,-.75)*radius,ink,width,true)
+					draw_line(pan+Vector2(.35,0)*radius,pan+Vector2(0,-.75)*radius,ink,width,true)
+					draw_arc(pan,radius*.35,0,PI,12,ink,width,true)
 			"pragmatic":
-				draw_arc(center, radius, 0, TAU, 28, ink, width, true)
-				for x in [-0.35, 0.35]: draw_circle(center + Vector2(x, -0.3) * radius, width, ink)
-				draw_arc(center + Vector2(0, 0.04) * radius, radius * 0.57, 0.12, PI - 0.12, 16, ink, width, true)
+				var bubble := Rect2(center-Vector2(radius,radius*.8),Vector2(2,1.3)*radius)
+				draw_rect(bubble,ink,false,width)
+				draw_polyline(PackedVector2Array([center+Vector2(-.5,.5)*radius,center+Vector2(-.6,1)*radius,center+Vector2(.1,.5)*radius]),ink,width,true)
+				for x in [-.5,0,.5]: draw_circle(center+Vector2(x,-.15)*radius,width,ink)
 
 	func inspection() -> Dictionary:
 		return {"hover":hover, "press":press, "pulse":pulse, "held":held, "hovered":key != null and key.is_hovered(), "selected":key != null and key.button_pressed}
