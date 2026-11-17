@@ -27,8 +27,15 @@ func configure(camera: Camera3D, logical: SubViewport, viewport: Viewport, butto
 	_feedback = feedback
 	_desktop = desktop
 
+func modal_rect() -> Rect2:
+	var view := _viewport.get_visible_rect().size
+	var source := _logical.get_visible_rect().size
+	var extent := source * minf(view.x / source.x, view.y / source.y)
+	return Rect2((view - extent) * .5, extent)
+
 func modal_to_logical(point: Vector2) -> Vector2:
-	return point * _logical.get_visible_rect().size / _viewport.get_visible_rect().size
+	var rect := modal_rect()
+	return (point - rect.position) * _logical.get_visible_rect().size / rect.size
 
 func root_pointer_from_logical(point: Vector2) -> Vector2:
 	if pointer_known: return pointer_position
@@ -120,7 +127,7 @@ func _route_mouse(event: InputEventMouse, modal_visible: bool) -> void:
 	forwarded.position = point
 	forwarded.global_position = point
 	if forwarded is InputEventMouseMotion:
-		forwarded.relative = modal_to_logical(event.relative) if modal_visible else point - screen_input(event.position - event.relative)
+		forwarded.relative = event.relative * _logical.get_visible_rect().size / modal_rect().size if modal_visible else point - screen_input(event.position - event.relative)
 	_logical.push_input(forwarded, true)
 	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed) or (event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT == 0):
 		_material_captured = false

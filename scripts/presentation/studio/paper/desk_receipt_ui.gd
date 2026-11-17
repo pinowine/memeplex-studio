@@ -68,10 +68,12 @@ static func create_theme() -> Theme:
 
 static func layout_menu(panel: Control, content: Control, view: Vector2) -> void:
 	panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	var width := minf(448, view.x - 32)
+	var width := maxf(448, content.get_combined_minimum_size().x + 64)
 	content.size.x = width - 64
 	panel.size = Vector2(width, content.get_combined_minimum_size().y + 96)
-	panel.position = (view - panel.size) * 0.5
+	var factor := minf(1.0, minf((view.x - 32) / panel.size.x, (view.y - 32) / panel.size.y))
+	panel.scale = Vector2.ONE * factor
+	panel.position = (view - panel.size * factor) * 0.5
 	content.position = Vector2(32, 32)
 	content.size = panel.size - Vector2(64, 96)
 

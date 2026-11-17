@@ -315,6 +315,7 @@ func _setup_postprocess() -> void:
 	modal_image.mouse_filter = Control.MOUSE_FILTER_STOP
 	modal_image.gui_input.connect(_route_input)
 	modal_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	modal_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	modal_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	modal_layer.add_child(modal_image)
 	modal_image.hide()
@@ -325,7 +326,8 @@ func _process(_delta: float) -> void:
 	var pose: Dictionary = desktop.camera_pose()
 	camera.position = Vector3((pose.position.x - 800) / 1000, 3.0, (pose.position.y - 450) / 1000)
 	camera.basis = Basis(Vector3.UP, -float(pose.rotation)) * Basis.from_euler(Vector3(-PI / 2, 0, 0))
-	camera.size = 0.9 / pose.zoom.y
+	var aspect := get_viewport().get_visible_rect().size.aspect()
+	camera.size = 0.9 / pose.zoom.y * maxf(1.0, float(LOGICAL_SIZE.x) / LOGICAL_SIZE.y / aspect)
 	if page._shell.main_mode:
 		camera.size *= .82
 		camera.position += Vector3(.15,0,.06)
@@ -415,7 +417,8 @@ func _update_hover() -> int:
 		target = desktop.control_hover_target(logical.gui_get_hovered_control())
 		if not target.is_empty():
 			var polygon: PackedVector2Array = target.polygon
-			for index in polygon.size(): polygon[index] *= get_viewport().get_visible_rect().size / logical.get_visible_rect().size
+			var rect: Rect2 = input_router.modal_rect()
+			for index in polygon.size(): polygon[index] = rect.position + polygon[index] * rect.size / logical.get_visible_rect().size
 			hover_outline.show_polygon(str(target.key), polygon)
 		else: hover_outline.clear()
 		return target.cursor_shape if not target.is_empty() else desktop.control_cursor_shape(logical.gui_get_hovered_control())

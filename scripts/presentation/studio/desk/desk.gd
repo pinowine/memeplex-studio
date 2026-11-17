@@ -258,8 +258,8 @@ func _shadow(id: String, texture: Texture2D, parent: Node) -> Control:
 
 func configure(page: Node2D) -> void:
 	_page = page
-	# Keep the reference composition at every window size without editing local plugin settings.
-	get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+	# The 3D camera fits the desk; the 2D presentation keeps its reference aspect.
+	get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND if page.has_meta("studio3d") else Window.CONTENT_SCALE_ASPECT_KEEP
 	var terminal_theme: Theme = page.hud.theme
 	Handwriting.apply_to(page.hud)
 	Handwriting.apply_to(page.atlas)

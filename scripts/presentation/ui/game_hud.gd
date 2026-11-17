@@ -530,11 +530,7 @@ func layout_screen_modals() -> void:
 		var desired := Vector2(600,650)
 		if panel == %SettingsMenu:
 			var column: VBoxContainer = panel.get_node("Column")
-			var screen := get_window().get_visible_rect().size
-			ReceiptUI.layout_menu(panel, column, screen)
-			# The modal texture stretches from desk coordinates to the window.
-			panel.scale = view / screen
-			panel.position *= panel.scale
+			ReceiptUI.layout_menu(panel, column, view)
 			continue
 		var dimensions := desired.max(panel.get_combined_minimum_size()).min(available)
 		_desk_place(panel,Rect2((view-dimensions)*.5,dimensions))
