@@ -201,8 +201,8 @@
   },
   "LOC_OPENING_MONITOR_POINTS_TEXT": {
     "source": "这就是你的模因点数和增长情况。数字会说话，不过通常不会说你爱听的话。",
-    "zh_CN": "这就是你的模因点数和增长情况。记得关注一下，你的前任就是因为花光了模因点数被开除的……当然，我不会这么对你，不过还是要好好干哦！",
-    "en": "Here are your meme points and growth figures. Numbers speak for themselves—though not always kindly."
+    "zh_CN": "上面是你能花的 Meme 点数。第一次有人采用你的模因，就能拿到20点。以后采用人数增加，或传到更多国家，也能再拿点数。研究和改写要花点数，可别一口气花光哦。下面两条线是当前语言的传播度和偏移度，看看传得多广、转述后的意思又偏了多少。",
+    "en": "The number above is your available Meme points. The first person to adopt your meme earns you 20 points. More adopters or more countries can earn you further points. Research and revisions cost points, so don’t spend them all at once. The two lines track the current language’s spread and deviation: how widely it travels and how much its meaning changes as people retell it."
   },
   "LOC_OPENING_MONITOR_IDEOLOGY_TITLE": {
     "source": "切换面板",
@@ -351,8 +351,8 @@
   },
   "LOC_OPENING_CONTEXT_ITEM_TEXT": {
     "source": "再把刚取出的那张话题卡拖回话题区，任意一个空槽都可以。模因会按装入的话题重新组织表达。",
-    "zh_CN": "再把刚取出的那张话题卡拖回话题区，模因会按装入的话题重新组织表达。",
-    "en": "Drag the topic card you just removed into any empty topic slot. The meme will use that topic to shape its expression."
+    "zh_CN": "初始模因的语言卡还在语言堆里。把它拖到语言区的空槽，别人才能按这个语言理解你的模因。",
+    "en": "The starting meme’s language card is still in the language stack. Drag it into an empty language slot so people can understand the meme in that language."
   },
   "LOC_OPENING_SPREAD_TITLE": {
     "source": "传播页",
@@ -371,8 +371,8 @@
   },
   "LOC_OPENING_SPREAD_TREE_TEXT": {
     "source": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
-    "zh_CN": "从文本传播出发，研究无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
-    "en": "The ability tree starts with text delivery, then branches into accessibility, open source and community relay. Lines show dependencies."
+    "zh_CN": "先从“文本传播”开始。点一下节点，就能查看它的效果和研究费用；连线表示需要先学会什么。",
+    "en": "Start with Text Delivery. Select a node to see its effect and research cost. Lines show what you need to learn first."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
     "source": "能力详情",
@@ -391,8 +391,8 @@
   },
   "LOC_OPENING_SKILL_TEXT": {
     "source": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
-    "zh_CN": "按住“文本传播”节点或名称1.5秒，花费初始的10 MEME完成研究。跳过教程时照常扣除。首次真实采用奖励20 MEME，并开放三条路线的研究。",
-    "en": "Hold the text delivery node or its name for 1.5 seconds to spend the starting 10 MEME on research. Skipping the tutorial settles the same cost. First genuine adoption rewards 20 MEME and opens research on all three routes."
+    "zh_CN": "按住“文本传播”节点或名称1.5秒，花费初始的10 Meme完成研究。等第一个人采用你的模因，就能拿到20 Meme。",
+    "en": "Hold the text delivery node or its name for 1.5 seconds to spend your starting 10 Meme on research. When the first person adopts your meme, you receive 20 Meme."
   },
   "LOC_OPENING_MAP_INTRO_TITLE": {
     "source": "地图页",
@@ -533,5 +533,15 @@
     "source": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
     "zh_CN": "投放后，地图会列出模因，你的排在前面。悬停标签高亮传播点，点击查看传播度、增长率和偏移度。",
     "en": "After launch, this panel lists the memes on the map, with yours first. Hover over a tag to highlight its spread points; click it to see spread, growth, deviation and other details."
+  },
+  "LOC_OPENING_LANGUAGE_WARNING": {
+    "source": "你的模因在这个国家因为语言不匹配，可能没有多少人能看懂。即便如此还要继续的话，我也不会管你的哦~",
+    "zh_CN": "你的模因在这个国家因为语言不匹配，可能没有多少人能看懂。即便如此还要继续的话，我也不会管你的哦~",
+    "en": "Your meme’s language does not match this country, so few people may understand it. If you still want to go ahead, I won’t stop you~"
+  },
+  "LOC_MUTATION_NOTICE": {
+    "source": "有人把你的模因改写了。\n\n现在的表达：\n%s\n\n现在的含义：\n%s",
+    "zh_CN": "有人把你的模因改写了。\n\n现在的表达：\n%s\n\n现在的含义：\n%s",
+    "en": "Someone has rewritten your meme.\n\nCurrent expression:\n%s\n\nCurrent meaning:\n%s"
   }
 }

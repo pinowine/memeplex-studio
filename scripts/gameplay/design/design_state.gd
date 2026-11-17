@@ -48,12 +48,13 @@ func _context_id(kind: String, value: String) -> String:
 		if str(entry.kind) == kind and str(entry.value) == value: return str(entry.id)
 	return ""
 
-func _initialize_layers(base: Dictionary) -> PackedStringArray:
+func _initialize_layers(base: Dictionary, install_language: bool = true) -> PackedStringArray:
 	base = _canonical(base)
 	for pair in [["language","language_id"],["group","group_id"]]:
 		var id := _context_id(pair[0],str(base.get(pair[1],"")))
 		if id.is_empty() or _context_available(id)-_installed_context(id) <= 0: return PackedStringArray([DeskLocalization.source("LOC_PRESET_LACKS_AN_AVAILABLE_LANGUAGE_OR_AUDIENCE_267B3DA7")])
-		_state.context_layers[pair[0]].slots[0] = {"resource_id":id,"source":_context_unit_source(id)}
+		if pair[0] != "language" or install_language:
+			_state.context_layers[pair[0]].slots[0] = {"resource_id":id,"source":_context_unit_source(id)}
 		_state.context_layers[pair[0]].origins[0] = id
 	var topics: Variant = base.get("topic_ids",[])
 	if not topics is Array or topics.size() > 3: return PackedStringArray([DeskLocalization.source("LOC_PRESET_TOPICS_EXCEED_THE_THREE_AVAILABLE_SLOTS_15C33F06")])
@@ -455,7 +456,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			for key in expected:
 				if _canonical(base.get(key)) != _canonical(expected[key]): return PackedStringArray([DeskLocalization.source("LOC_STARTING_CONTEXT_ORIGIN_MUST_COME_FROM_A_84C13427")] )
 			_grant_starter_context(base)
-			errors = _initialize_layers(base)
+			errors = _initialize_layers(base, bool(params.get("install_language", true)))
 			if not errors.is_empty(): return errors
 		"install_module":
 			var module_id := str(params.get("module_id", ""))

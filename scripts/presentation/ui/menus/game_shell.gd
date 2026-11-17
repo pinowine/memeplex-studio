@@ -163,6 +163,11 @@ func _preview_starter(index: int) -> void:
 	sync_starter_options()
 
 func _reconcile_startup_step(_id: String, step: Dictionary) -> void:
+	if _id == "language_warning":
+		var country_id := str(page.atlas.settings.countries[page.atlas.selected_country].id)
+		var language_id := str(page.hud.get_draft().get("language_id", ""))
+		if language_id in page.catalog.gameplay_rules.country(country_id).primary_languages:
+			tutorial.observe_action.call_deferred("continue")
 	if bool(step.get("auto_overview", false)): page._return_to_desktop()
 	if _id in ["starter", "starter_confirm"]:
 		page.desk._slot_reader.hide_details()
@@ -308,6 +313,7 @@ func _context_target(editor: Control) -> Control:
 	var board: Control = editor.context_slice()
 	if not board.is_visible_in_tree(): return page.desk._stack.tab_control("cultivate")
 	for resource: Dictionary in editor._design.get("resources", []):
+		if tutorial._active and str(tutorial._steps[tutorial._index].id) == "context_item" and str(resource.kind) != "language": continue
 		var target := _context_slot_target(board, str(resource.kind), str(resource.id))
 		if target != null: return target
 	return null
@@ -406,7 +412,7 @@ func _tutorial_drag_targets(step_id: String) -> Dictionary:
 	if not editor._pages[sheet].is_visible_in_tree() or editor._tab != sheet: return {}
 	if step_id == "context_remove": return _tutorial_context_remove_targets(editor.context_slice())
 	var kinds: Array[String] = ["module"]
-	if step_id == "context_item": kinds.assign(["language", "group", "topic"])
+	if step_id == "context_item": kinds.assign(["language"])
 	var preferred := _tutorial_context_card_key if step_id == "context_item" and not _tutorial_context_card_key.is_empty() else _tutorial_drag_source_key
 	for card: Dictionary in page.desk._material_cards.tutorial_drag_cards(kinds, preferred, _tutorial_drag_anchor_uv):
 		var target: Control = _logical_target("editor/clips") if step_id == "module" else _context_slot_target(editor.context_slice(), card.kind, card.id)
@@ -439,7 +445,7 @@ func _tutorial_context_drag_contains(point: Vector2) -> bool:
 	var key := String(cards._props._hit_prop(point))
 	if not cards._cards.has(key): return false
 	var card: Dictionary = cards._cards[key]
-	if card.kind not in ["language", "group", "topic"]: return false
+	if card.kind != "language": return false
 	var board: Control = page.hud.design_workbench().context_slice()
 	if _context_slot_target(board, card.kind, card.id) == null: return false
 	if cards._props._pressed == &"":

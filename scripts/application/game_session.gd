@@ -510,7 +510,7 @@ func _begin_startup() -> void:
 
 func _select_starter(preset_id: String) -> void:
 	if not _ready_to_run or hud.menu_mode() != "" or startup_ready(): return
-	var errors := simulation.design_action("choose_starter", {"preset_id":preset_id})
+	var errors := simulation.design_action("choose_starter", {"preset_id":preset_id, "install_language":not _shell.tutorial._active})
 	if not errors.is_empty():
 		desk._fax.reject_starter(DeskLocalization.source_join("；",errors))
 		return
