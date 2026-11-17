@@ -38,6 +38,7 @@ var families: Dictionary = {}
 var variants: Array[Dictionary] = []
 var deployments: Array[Dictionary] = []
 var group_state: Dictionary = {}
+var _meme_trends: Dictionary = {}
 var events: Array[Dictionary] = []
 var discoveries: Array[String] = []
 var modifiers: Array[Dictionary] = []
@@ -84,6 +85,7 @@ func reset(run_seed: int, world: RefCounted = null) -> void:
 	variants.clear()
 	deployments.clear()
 	group_state.clear()
+	_meme_trends.clear()
 	events.clear()
 	discoveries.clear()
 	modifiers.clear()
@@ -1062,12 +1064,30 @@ func snapshot() -> Dictionary:
 	state.guide_progress = guidance_progress()
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}
 	state.world_competition = competition.snapshot(variants)
+	_update_meme_trends(state.world_competition, state.lineage)
+	state.meme_trends = _meme_trends.duplicate(true)
 	state.world_competition.ending = ending.duplicate(true)
 	state.world_competition.endgame = endgame.duplicate(true)
 	state.design_state = design_state.snapshot(variants)
 	state.design_state.event_materials = event_materials(state.design_state)
 	state.event_materials = state.design_state.event_materials.duplicate(true)
 	return state
+
+func _update_meme_trends(world: Dictionary, active_variants: Array) -> void:
+	var raw_by_id := {}
+	for variant: Dictionary in active_variants: raw_by_id[str(variant.id)] = variant
+	for row: Dictionary in world.variants:
+		var raw: Dictionary = raw_by_id[str(row.id)]
+		var initial := MonitorMetrics.initial_variant(variants, raw)
+		var sample := {"hour":hour, "spread":float(row.monitor_spread), "deviation":MonitorMetrics.deviation(initial,raw)}
+		var key := str(row.meme_id)
+		if not _meme_trends.has(key): _meme_trends[key] = []
+		var history: Array = _meme_trends[key]
+		if not history.is_empty() and int(history[-1].hour) >= hour:
+			if int(history[-1].hour) > hour: history.clear()
+			else: history.pop_back()
+		history.append(sample)
+		if history.size() > 128: history.pop_front()
 
 func _vector_array(value: Vector2) -> Array[float]:
 	return [value.x, value.y]

@@ -43,6 +43,8 @@ static func build_hover(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_
 	for kind: String in ["language", "group", "topic", "stance", "pragmatic"]:
 		tags.append_array(groups[kind])
 	return {"id":variant_id, "title":Identity.name(catalog, raw),
+		"meaning":str(Identity.resolve(catalog, raw).meaning), "deviation":float(metrics.deviation),
+		"history":snapshot.get("meme_trends", {}).get(str(raw.meme_id), []),
 		"name_help_key":"MM_HELP_NAME", "name_help":DeskLocalization.text("MM_HELP_NAME"),
 		"share":float(metrics.spread), "share_label":DeskLocalization.text("MM_SPREAD"),
 		"share_value":_share(float(metrics.spread)), "share_help_key":"MM_HELP_SPREAD",

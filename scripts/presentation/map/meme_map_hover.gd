@@ -3,6 +3,7 @@ extends "res://scripts/presentation/studio/paper/desk_receipt_hover.gd"
 const Fields = preload("res://scripts/presentation/map/meme_map_fields.gd")
 const MemeHandwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 const ScrollBehavior = preload("res://scripts/presentation/ui/components/smooth_scrolling.gd")
+const TrendChart = preload("res://scripts/presentation/ui/components/spread_trend_chart.gd")
 const MEME_WIDTH := 300.0
 const MEME_GAP := 8.0
 const MEME_FOOTER_HEIGHT := 16.0
@@ -25,6 +26,9 @@ var _meme_content: VBoxContainer
 var _meme_title: Label
 var _meme_share_label: Label
 var _meme_share_value: Label
+var _meme_deviation: Label
+var _meme_meaning: Label
+var _meme_chart: Control
 var _meme_tags: HFlowContainer
 var _tag_key := ""
 var _tag_chips: Array[Control] = []
@@ -35,6 +39,7 @@ func set_content(title: String, rows: Array, body: String = "", presentation: Di
 	super.set_content(title, rows, body, presentation)
 
 func set_meme_details(details: Dictionary) -> void:
+	if _meme_mode and _meme_details == details: return
 	var changed_version := str(_meme_details.get("id", "")) != str(details.get("id", ""))
 	_meme_mode = true
 	_meme_details = details.duplicate(true)
@@ -49,6 +54,9 @@ func set_meme_details(details: Dictionary) -> void:
 	_meme_title.text = str(details.title)
 	_meme_share_label.text = str(details.share_label)
 	_meme_share_value.text = str(details.share_value)
+	_meme_deviation.text = "%s %.1f%%" % [DeskLocalization.text("MM_DEVIATION"), float(details.get("deviation", 0.0)) * 100.0]
+	_meme_meaning.text = str(details.get("meaning", ""))
+	_meme_chart.set_samples(details.get("history", []))
 	_update_tags(details.context_tags)
 	if changed_version:
 		ScrollBehavior.cancel(_meme_scroll.get_v_scroll_bar())
@@ -128,6 +136,14 @@ func _build_meme_content() -> void:
 	_meme_share_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_meme_share_value.size_flags_horizontal = Control.SIZE_SHRINK_END
 	share.add_child(_meme_share_value)
+	_meme_deviation = _meme_label(12, MemeHandwriting.BODY_FONT, ReceiptStyle.SECONDARY_INK)
+	_meme_content.add_child(_meme_deviation)
+	_meme_chart = TrendChart.new()
+	_meme_chart.show_deviation = false
+	_meme_chart.show_labels = false
+	_meme_content.add_child(_meme_chart)
+	_meme_meaning = _meme_label(14, MemeHandwriting.BODY_FONT, ReceiptStyle.INK)
+	_meme_content.add_child(_meme_meaning)
 	var rule := HSeparator.new()
 	rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var line := StyleBoxLine.new()
@@ -194,6 +210,8 @@ func _layout_content() -> void:
 	size = custom_minimum_size
 	scale = Vector2.ONE
 	var width := _layout_width - PADDING.x * 2.0
+	_meme_root.position = PADDING
+	_meme_root.size = Vector2(width, height - PADDING.y - MEME_BOTTOM_PADDING - MEME_FOOTER_HEIGHT - MEME_GAP)
 	_barcode_rect = Rect2(Vector2(PADDING.x, height - MEME_BOTTOM_PADDING - MEME_FOOTER_HEIGHT), Vector2(minf(72, width * 0.48), 12))
 	_footer_rule = _barcode_rect.position.y - MEME_GAP * 0.5
 	_barcode_digits = "%08d" % posmod(content_text().hash(), 100000000)

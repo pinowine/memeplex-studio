@@ -11,7 +11,7 @@ const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyp
 const Details = preload("res://scripts/presentation/map/meme_map_details.gd")
 const INSET := 16.0
 # The monitor and clock cover the left side of the map's top edge.
-const TOP_INSET := Vector2(520.0, 32.0)
+const TOP_INSET := Vector2(280.0, 32.0)
 
 class HeaderIcon extends Control:
 	func _init() -> void:
@@ -237,7 +237,7 @@ func show_candidates(ids: PackedStringArray) -> void:
 	if ids.size() == 1: _select(ids[0])
 
 func panel_width() -> float:
-	return maxf(1.0, size.x - TOP_INSET.x - 24.0)
+	return maxf(1.0, size.x - TOP_INSET.x - 340.0)
 
 func handles_point(viewport_point: Vector2) -> bool:
 	return is_visible_in_tree() and _contains_point(_panel, viewport_point)

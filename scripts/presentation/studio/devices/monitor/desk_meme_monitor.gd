@@ -1,6 +1,9 @@
 class_name DeskMemeMonitor
 extends Control
 
+const TrendChart = preload("res://scripts/presentation/ui/components/spread_trend_chart.gd")
+const Details = preload("res://scripts/presentation/map/meme_map_details.gd")
+
 @export var font_size: int = 13
 @export var screen_padding: float = 10.0
 @export var curve_height: float = 52.0
@@ -23,11 +26,20 @@ var _history: Array[Dictionary] = []
 var _dropped_samples: int = 0
 var _reset_count: int = 0
 var _last_error: String = ""
+var _language_id := ""
+var _language_title := ""
+var _spread_history: Array = []
+var _trend: Control
 
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	clip_contents = true
+	_trend = TrendChart.new()
+	_trend.custom_minimum_size = Vector2.ZERO
+	_trend.spread_ink = ink_color
+	_trend.deviation_ink = Color("ddba74")
+	add_child(_trend)
 
 
 func layout_screen(rect: Rect2) -> void:
@@ -38,6 +50,7 @@ func layout_screen(rect: Rect2) -> void:
 
 
 func sync_state(state: Dictionary) -> void:
+	_sync_language(state)
 	if not _nonnegative_integer(state.get("meme_points")) or not _nonnegative_integer(state.get("hour")):
 		_last_error = "meme_points and hour must be finite nonnegative integers"
 		return
@@ -68,6 +81,9 @@ func sync_state(state: Dictionary) -> void:
 
 
 func reset_history() -> void:
+	_spread_history.clear()
+	_language_id = ""
+	_trend.set_samples([])
 	_history.clear()
 	_title = DeskLocalization.source("LOC_MEME_AWAITING_PRINT_02E38C0D")
 	_title_source = "none"
@@ -94,12 +110,14 @@ func inspection() -> Dictionary:
 		"history": _history.duplicate(true), "sample_count": _history.size(),
 		"sample_limit": _sample_limit(), "dropped_samples": _dropped_samples,
 		"reset_count": _reset_count, "last_error": _last_error,
-		"curve_rect": _plot_rect(), "curve_points": _curve_points(),
-		"curve_x_mode": _x_mode(), "curve_range": _net_range(),
+		"curve_rect": _plot_rect(), "curve_points": _trend.curve_points("spread"),
+		"deviation_curve_points":_trend.curve_points("deviation"),
+		"curve_x_mode": "hour", "curve_range": _trend.value_range(),
 		"layout_mode": "compact" if _compact() else "full",
 		"title_rect": _title_rect(), "balance_rect": _balance_rect(), "axis_rect": _axis_rect(),
 		"title_text_layout": _title_text_layout(),
-		"measurement": "Snapshot balance changes, not parsed income/expense transactions",
+		"measurement": "Language spread and weighted meaning deviation", "tracked_language":_language_id,
+		"language_title":_language_title, "spread_history":_spread_history.duplicate(true),
 		"economic_log_parsed": false, "font_source": "theme Label font",
 		"layout_rect": Rect2(position, size), "minimum_size": get_combined_minimum_size(),
 		"mouse_filter": mouse_filter, "clip_contents": clip_contents
@@ -109,6 +127,10 @@ var _presentation_mirror := false
 
 func apply_presentation(snapshot: Dictionary) -> void:
 	_presentation_mirror = true
+	_language_id = str(snapshot.get("tracked_language", ""))
+	_language_title = str(snapshot.get("language_title", ""))
+	_spread_history = snapshot.get("spread_history", []).duplicate(true)
+	_trend.set_samples(_spread_history)
 	# A detached screen renderer mirrors existing history without advancing it.
 	_title = str(snapshot.get("title", _title))
 	_title_source = str(snapshot.get("title_source", _title_source))
@@ -127,38 +149,46 @@ func apply_presentation(snapshot: Dictionary) -> void:
 	queue_redraw()
 
 
+func _sync_language(state: Dictionary) -> void:
+	var draft: Dictionary = state.get("design_state", {}).get("context_draft", {})
+	var language := str(draft.get("language_id", ""))
+	if language != _language_id:
+		_language_id = language
+		_spread_history.clear()
+	_language_title = ""
+	for entry: Dictionary in load("res://data/context/context_resources.tres").entries:
+		if str(entry.kind) == "language" and str(entry.value) == language:
+			_language_title = DeskLocalization.text(str(entry.title))
+			break
+	var spread := 0.0
+	var deviation := 0.0
+	for raw: Dictionary in state.get("lineage", []):
+		var profile: Dictionary = raw.get("flow_profile", {})
+		if language.is_empty() or language not in profile.get("language_ids", [profile.get("language_id", "")]): continue
+		if not bool(profile.get("context_layer_attachment", {}).get("language", true)): continue
+		var metrics := Details.monitor_metrics(state, str(raw.id))
+		spread += float(metrics.spread)
+		deviation += float(metrics.deviation) * float(metrics.spread)
+	var sample := {"hour":int(state.get("hour", 0)), "spread":minf(1.0, spread), "deviation":deviation / spread if spread > 0.0 else 0.0}
+	if not _spread_history.is_empty() and int(_spread_history[-1].hour) > int(sample.hour): _spread_history.clear()
+	if not _spread_history.is_empty() and int(_spread_history[-1].hour) == int(sample.hour): _spread_history.pop_back()
+	_spread_history.append(sample)
+	if _spread_history.size() > maximum_samples: _spread_history.pop_front()
+	_trend.set_samples(_spread_history)
+	queue_redraw()
+
 func _draw() -> void:
-	if size.x <= 0.0 or size.y <= 0.0:
-		return
+	if size.x <= 0.0 or size.y <= 0.0: return
 	draw_rect(Rect2(Vector2.ZERO, size), background_color)
-	var opacity := clampf(scanline_opacity, 0.0, 0.35) if is_finite(scanline_opacity) else 0.07
-	for line in range(0, int(size.y), 3):
-		draw_line(Vector2(0, line), Vector2(size.x, line), Color(0, 0, 0, opacity))
 	var font := get_theme_font("font", "Label")
-	if _compact():
-		_draw_compact(font)
-		return
-	var fs := _font_size()
 	var padding := _padding()
-	var line_height := float(fs + 5)
-	_draw_mono(font, "MEME / H%d" % _hour, Vector2(padding, padding + font.get_ascent(fs)), fs, dim_color)
-	_draw_mono(font, str(_title_text_layout().text), Vector2(padding, padding + line_height + font.get_ascent(fs)), fs, ink_color)
-	_draw_mono(font, "Meme %s" % (str(_balance) if _has_balance else "--"), Vector2(padding, padding + line_height * 2.0 + font.get_ascent(fs + 5)), fs + 5, ink_color)
-	var delta_text := DeskLocalization.format_text("LOC_PREVIOUS_S_H_D_95575F25", [_signed(_last_delta), _last_change_hour]) if _has_change else DeskLocalization.text("LOC_PREVIOUS_FIRST_SNAPSHOT_F06FDAA1")
-	_draw_mono(font, delta_text, Vector2(padding, padding + line_height * 3.4 + font.get_ascent(fs)), fs, ink_color)
-	_draw_mono(font, DeskLocalization.text("LOC_NET_CHANGE_SNAPSHOT_BALANCE_026C4FD9"), Vector2(padding, padding + line_height * 4.5 + font.get_ascent(fs)), fs, dim_color)
-	var plot := _plot_rect()
-	if plot.size.x <= 0.0 or plot.size.y <= 0.0:
-		return
-	_draw_plot(plot)
-	var time_text := DeskLocalization.text("LOC_WAITING_FOR_A_BALANCE_SNAPSHOT_0C681C27")
-	if not _history.is_empty():
-		time_text = DeskLocalization.format_text("LOC_H_D_H_D_NET_S_1AB49822", [int(_history[0].hour), int(_history[-1].hour), _signed(_balance - _origin_balance)])
-		if _x_mode() == "change_index_same_hour":
-			time_text = DeskLocalization.format_text("LOC_H_D_D_SNAPSHOT_POINTS_7A93E233", [int(_history[0].hour), _history.size()])
-	_draw_mono(font, time_text, Vector2(padding, plot.end.y + line_height), fs, dim_color)
-	var scale := _net_range()
-	_draw_mono(font, "%s..%s" % [str(int(scale.x)), str(int(scale.y))], Vector2(padding, plot.end.y + line_height * 2.0), maxi(8, fs - 2), dim_color)
+	var fs := 11 if _compact() else _font_size()
+	_draw_mono(font, _language_title, Vector2(padding,padding+font.get_ascent(fs)), fs, ink_color)
+	_draw_mono(font, "Meme %d" % _balance, Vector2(padding,padding+fs+6+font.get_ascent(fs)), fs, ink_color)
+	var top := padding + (fs + 6) * 2.0
+	_trend.font_size = fs
+	_trend.position = Vector2(padding, top)
+	_trend.size = Vector2(maxf(0,size.x-padding*2),maxf(0,size.y-top-padding))
 
 
 func _draw_compact(font: Font) -> void:
@@ -218,14 +248,9 @@ func _trim_history() -> bool:
 
 func _plot_rect() -> Rect2:
 	var padding := _padding()
-	if _compact():
-		var top := minf(size.y, 42.0)
-		return Rect2(padding, top, maxf(0.0, size.x - padding * 2.0), maxf(0.0, size.y - 16.0 - top))
-	var line_height := float(_font_size() + 5)
-	var top := minf(size.y, padding + line_height * 5.5)
-	var available := maxf(0.0, size.y - top - padding - line_height * 2.3)
-	var height := minf(available, maxf(0.0, curve_height) if is_finite(curve_height) else 52.0)
-	return Rect2(padding, top, maxf(0.0, size.x - padding * 2.0), height)
+	var row_height := float((11 if _compact() else _font_size()) + 6)
+	var top := padding + row_height * 3.0
+	return Rect2(padding, top, maxf(0.0, size.x-padding*2), maxf(0.0,size.y-padding-top-row_height))
 
 
 func _compact() -> bool:
@@ -233,17 +258,16 @@ func _compact() -> bool:
 
 
 func _title_rect() -> Rect2:
-	var top := 3.0 if _compact() else _padding() + float(_font_size() + 5)
-	return _row_rect(top, 16.0 if _compact() else float(_font_size() + 5))
+	return _row_rect(_padding(), 16.0 if _compact() else float(_font_size() + 5))
 
 
 func _balance_rect() -> Rect2:
-	var top := 22.0 if _compact() else _padding() + float(_font_size() + 5) * 2.0
+	var top := _padding() + float((11 if _compact() else _font_size()) + 6)
 	return _row_rect(top, 18.0 if _compact() else float(_font_size() + 10))
 
 
 func _axis_rect() -> Rect2:
-	var top := maxf(0.0, size.y - 14.0) if _compact() else _plot_rect().end.y
+	var top := _plot_rect().end.y
 	return _row_rect(top, 12.0 if _compact() else float(_font_size() + 5) * 2.0)
 
 
@@ -298,9 +322,8 @@ func _mono_text_width(font: Font, text: String, fs: int) -> float:
 func _title_text_layout() -> Dictionary:
 	var font := get_theme_font("font", "Label")
 	var fs := 11 if _compact() else _font_size()
-	var title := DeskLocalization.text(_title) if _title_source == "none" else _title
+	var title := _language_title
 	var text := title.replace("\n", " ").replace("\r", " ")
-	if not _compact(): text = DeskLocalization.text("LOC_MEME_40BDE4F6") + text
 	var rect := _title_rect()
 	var truncated := _mono_text_width(font, text, fs) > rect.size.x
 	var visible := text

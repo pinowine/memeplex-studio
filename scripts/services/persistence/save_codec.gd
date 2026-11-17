@@ -913,6 +913,7 @@ func restore(data: Dictionary) -> PackedStringArray:
 	simulation._rng.seed = simulation.seed_value
 	simulation._rng.state = int(decoded.rng_state)
 	simulation._event_clock_arrivals.clear()
+	simulation._meme_trends.clear()
 	simulation.hour = int(decoded.hour)
 	simulation.run_end_hour = int(decoded.run_end_hour)
 	simulation.speed = int(decoded.speed)

@@ -2401,8 +2401,8 @@
   },
   "LOC_VIEW_BALANCE_AND_SNAPSHOT_CHANGES_47665A67": {
     "source": "查看余额与快照变化",
-    "zh_CN": "查看余额与快照变化",
-    "en": "View balance and snapshot changes"
+    "zh_CN": "查看当前语言的传播度、偏移度和可用点数",
+    "en": "View the current language's spread, deviation and available points"
   },
   "LOC_VIEW_AVAILABLE_TOKENS_IN_FOUR_STANCE_DIRECTIONS_B1B44E1F": {
     "source": "查看四个政治方向的可用点数",
