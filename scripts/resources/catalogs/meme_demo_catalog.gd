@@ -60,7 +60,7 @@ func validate() -> PackedStringArray:
 				environment_count += 1
 				if environment_presets.has(str(event.external_preset_id)): errors.append("Environment candidates must use distinct library memes")
 				environment_presets[str(event.external_preset_id)] = true
-		if environment_count < 10 or environment_count > 15: errors.append("Environment discovery requires 10 to 15 candidates")
+		if environment_count != 20: errors.append("Environment discovery requires 20 candidates")
 	for preset in presets:
 		if preset == null:
 			continue

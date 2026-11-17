@@ -809,106 +809,6 @@
     "zh_CN": "房间烧起来了，旁白还在说“一切正常”。大家把失控的工作安排填进这句平静的话里，火气已经在画面上了。",
     "en": "The room is on fire, yet the caption calmly says 'This Is Fine.' By dropping visibly failing work schedules into that composed narration, users can show how badly things are unravelling without raising their voices."
   },
-  "LOC_EVENT_ARCHIVE_REVIVAL_POSITIVE": {
-    "source": "共同虚构让陌生人能接着同一条线创作",
-    "zh_CN": "一张误印海报引来众人接力，给不存在的电影补齐了镜头与影评",
-    "en": "A misprinted poster sparks a shared game of inventing scenes, casts, and reviews"
-  },
-  "LOC_EVENT_ARCHIVE_REVIVAL_NEGATIVE": {
-    "source": "全网都看过，只有电影还没拍出来",
-    "zh_CN": "电影根本没拍过，结局倒已经有人认真争论了",
-    "en": "The film was never shot, yet people are debating its ending in dead earnest"
-  },
-  "LOC_EVENT_ARCHIVE_REVIVAL_TITLE": {
-    "source": "网友开始补写并不存在的电影《贡察洛夫》",
-    "zh_CN": "影迷围绕误印海报虚构电影《贡察洛夫》",
-    "en": "Film fans invent nonexistent movie Goncharov from misprinted poster"
-  },
-  "LOC_EVENT_ARCHIVE_REVIVAL_NARRATIVE": {
-    "source": "%s影迷从一张误印海报出发，给并不存在的《贡察洛夫》补出演员、镜头和影评。越来越多人认真讨论从未拍摄的结尾。",
-    "zh_CN": "%s影迷从一张误印海报出发，给并不存在的《贡察洛夫》补出演员、镜头和影评。越来越多人认真讨论从未拍摄的结尾。",
-    "en": "Film fans in %s turn a misprinted poster into the nonexistent film Goncharov, inventing actors, shots and reviews. More users discuss an ending never filmed."
-  },
-  "LOC_EVENT_ARCHIVE_REVIVAL_COMMENT": {
-    "source": "共同世界只需要一组能反复指认的细节。",
-    "zh_CN": "一张误印海报被影迷补出了演员、镜头和影评，连《贡察洛夫》的结尾都有人认真争论。电影全靠虚构，接着聊的人倒很认真。",
-    "en": "Film fans have supplied Goncharov with actors, shots, and reviews, and now they are debating an ending that was never filmed. There is no film to watch, but the shared details give people something to recognize and keep adding to. That is enough to keep this particular invention going."
-  },
-  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_POSITIVE": {
-    "source": "固定动作降低了参与共同创作的门槛",
-    "zh_CN": "保留饮用前的合影再接夸张倒地，固定结构方便路人跟拍",
-    "en": "Keeping the cheerful pre-drink photo before a staged collapse makes the format easy to copy"
-  },
-  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_NEGATIVE": {
-    "source": "喝的是同一杯，倒地的预算各不相同",
-    "zh_CN": "喝的是同一杯紫色奶昔，倒地的排场倒各有各的讲究",
-    "en": "The drink stays the same; staging the collapse is a production in itself"
-  },
-  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_TITLE": {
-    "source": "紫色奶昔短片形成固定接力",
-    "zh_CN": "短视频用户模仿“喝紫色奶昔后倒地”桥段",
-    "en": "Video users imitate purple-milkshake collapse clips"
-  },
-  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_NARRATIVE": {
-    "source": "%s短视频用户模仿“喝下紫色奶昔后倒地”的镜头，品牌店门外出现专门拍摄夸张结尾的小队。每条视频都保留饮用前的合影。",
-    "zh_CN": "%s短视频用户模仿“喝下紫色奶昔后倒地”的镜头，品牌店门外出现专门拍摄夸张结尾的小队。每条视频都保留饮用前的合影。",
-    "en": "Video users in %s imitate clips of collapsing after a purple milkshake. Groups gather outside shops to film exaggerated endings, always keeping the cheerful shot before drinking."
-  },
-  "LOC_EVENT_ENVIRONMENT_ARCHIVE_RITUAL_COMMENT": {
-    "source": "照着做一遍，比解释一遍更容易传开。",
-    "zh_CN": "品牌店门外，有人结伴拍喝紫色奶昔后倒地的夸张结尾。每条短片都保留饮用前的合影，观众认出开场，就等着看这回怎样倒下。",
-    "en": "Groups are gathering outside shops to film exaggerated collapses after drinking the purple milkshake, and every clip keeps the cheerful shot beforehand. That familiar opening gives viewers a way into the joke. The ending can vary without making people learn the whole setup again."
-  },
-  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_POSITIVE": {
-    "source": "声音上的小变化让熟人快速识别彼此",
-    "zh_CN": "熟人一听“尊嘟假嘟”的读音，就能用它轻轻岔开太严肃的解释",
-    "en": "People who know the sound of 'Zundu Jiadu' use it to puncture overly solemn explanations"
-  },
-  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_NEGATIVE": {
-    "source": "解释梗的人越来越认真，问句越来越不像问句",
-    "zh_CN": "不熟悉读音的新人还得不停追问这四个字到底是什么意思",
-    "en": "Newcomers keep asking what the four characters mean"
-  },
-  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_TITLE": {
-    "source": "“尊嘟假嘟”开始代替普通疑问",
-    "zh_CN": "聊天群流行把“真的假的”说成“尊嘟假嘟”",
-    "en": "Chat groups replace 'Really?' with 'Zundu Jiadu'"
-  },
-  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_NARRATIVE": {
-    "source": "%s聊天群流行把“真的假的”说成“尊嘟假嘟”。熟悉读音的人用它打断过分认真的解释，陌生人则不断询问这四个字是什么意思。",
-    "zh_CN": "%s聊天群流行把“真的假的”说成“尊嘟假嘟”。熟悉读音的人用它打断过分认真的解释，陌生人则不断询问这四个字是什么意思。",
-    "en": "Chat groups in %s replace Really? with Zundu Jiadu. People who know the sound use it to interrupt solemn explanations, while newcomers keep asking what the four characters mean."
-  },
-  "LOC_EVENT_ENVIRONMENT_CLUB_BOUNDARY_COMMENT": {
-    "source": "门槛藏在读音里，外人看文字很难猜中。",
-    "zh_CN": "“真的假的”换成“尊嘟假嘟”，熟人听出读音，就能借它岔开过分认真的解释。新人还在问这四个字是什么意思，笑声已经过去半拍。",
-    "en": "Turning 'Really?' into 'Zundu Jiadu' lets people who know the sound interrupt an overly serious explanation with a wink. At the same time, newcomers have to ask what the four characters mean, so the phrase marks who is already in on the habit."
-  },
-  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_POSITIVE": {
-    "source": "稳定的阵营与音乐让新一集容易被认出来",
-    "zh_CN": "沿用同一段升级音乐，让两阵营交战的连续短片很容易被认出来",
-    "en": "Recurring factions and upgrade music make each new episode easier to recognize"
-  },
-  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_NEGATIVE": {
-    "source": "剧情可以暂时不懂，战力榜不能不排",
-    "zh_CN": "剧情可以慢慢补，双方的装备谱系已经先排起来了",
-    "en": "The plot can wait; viewers already have both sides’ equipment to catalogue"
-  },
-  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_TITLE": {
-    "source": "马桶头与摄像头的连续短片出现",
-    "zh_CN": "马桶头对战摄像头的连续短片出现",
-    "en": "Toilet-head and camera-head factions clash in new animated serial"
-  },
-  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_NARRATIVE": {
-    "source": "%s动画社区出现以马桶头和摄像头阵营交战为主线的连续短片。每次升级都沿用同一段音乐，评论区开始整理双方的装备谱系。",
-    "zh_CN": "%s动画社区出现以马桶头和摄像头阵营交战为主线的连续短片。每次升级都沿用同一段音乐，评论区开始整理双方的装备谱系。",
-    "en": "An animated serial about toilet-head and camera-head factions appears in %s. Every upgrade uses the same music, and viewers compile equipment histories for both sides."
-  },
-  "LOC_EVENT_ENVIRONMENT_CORNER_STORY_COMMENT": {
-    "source": "世界设定会给观众留下比单个笑点更长的接力。",
-    "zh_CN": "马桶头与摄像头的交战拍成连续短片，每次升级都配同一段音乐。评论区里，观众已经开始整理双方的装备谱系。",
-    "en": "A serial about warring toilet-head and camera-head factions sounds absurd, but each upgrade comes with the same music. That recurring cue gives viewers a point of reference as they compile the two sides’ equipment histories. There are shared details to return to, so the discussion has something more specific to follow than the premise alone."
-  },
   "LOC_EVENT_ENVIRONMENT_GATE_REPLY_POSITIVE": {
     "source": "看穿结尾也能继续参与这套共同仪式",
     "zh_CN": "读者明知末尾要讨餐费，还是乐意帮着把前半段故事编得更离奇",
@@ -933,31 +833,6 @@
     "source": "预期中的转折，也能成为参与的理由。",
     "zh_CN": "每逢星期四，离奇长故事总在末尾讨一小笔餐费。读者早猜到结尾，还乐意把前半段编得更夸张，比比谁的铺垫更像回事。",
     "en": "Every Thursday brings another outrageous long story that swerves at the very end into asking for a bit of meal money. Readers know the twist by heart and still help write even wilder setups, because the fun now lies in how far the opening can go before the punchline lands."
-  },
-  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_POSITIVE": {
-    "source": "并排对照让不同社交需求容易被说出来",
-    "zh_CN": "把“i人”和“e人”并排对照，聚会与开会时的不同反应一看就懂",
-    "en": "Setting 'I-person' and 'E-person' reactions side by side makes social differences easy to compare"
-  },
-  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_NEGATIVE": {
-    "source": "人格测试做完了，团建还是全员参加",
-    "zh_CN": "聚会、会议、团建的种种反应，都被挤进了“i／e”两个标签里",
-    "en": "Reactions at parties, meetings, and team outings get reduced to two letters"
-  },
-  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_TITLE": {
-    "source": "“i人／e人”成为社交对照模板",
-    "zh_CN": "“i人”与“e人”并排对照从学生聚会传到职场",
-    "en": "'I-person' and 'E-person' contrast spreads from student gatherings to workplace accounts"
-  },
-  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_NARRATIVE": {
-    "source": "%s学生用“i人”和“e人”并排描述同一聚会里的不同反应，随后职场账号也开始拿这对称呼讨论开会与团建。",
-    "zh_CN": "%s学生用“i人”和“e人”并排描述同一聚会里的不同反应，随后职场账号也开始拿这对称呼讨论开会与团建。",
-    "en": "Students in %s contrast I-person and E-person reactions at the same gathering. Workplace accounts adopt the pair to discuss meetings and team outings."
-  },
-  "LOC_EVENT_ENVIRONMENT_LANGUAGE_PAIR_COMMENT": {
-    "source": "关系模板依靠对照成立，两个位置缺一不可。",
-    "zh_CN": "学生把“i人”和“e人”放在聚会里对照，职场账号又拿来谈开会和团建。两种反应一眼能看懂，一个人的其他模样却被挤到了标签外。",
-    "en": "Students put I-person and E-person reactions at the same gathering side by side, and workplace accounts later borrowed the pair for meetings and outings. A shared situation makes the reactions easier to compare. The format can travel between settings without making its two letters a complete description of anyone."
   },
   "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_POSITIVE": {
     "source": "时间对照让个人经历容易被别人理解",
@@ -1008,31 +883,6 @@
     "source": "感谢的字面没有变，语境把方向翻了过去。",
     "zh_CN": "上班族用“栓Q”回应临时加班，学生拿它回追加作业。那声夸张的谢谢配上任务截图，听出来的全是不情愿。",
     "en": "Workers are pairing exaggerated “Shuan Q” thanks with surprise overtime notices, and students use it for unexpected homework too. It still sounds like a thank-you, while the accompanying task gives that gratitude a reluctant edge. Taking the words literally would miss what the reply is doing in that situation."
-  },
-  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_POSITIVE": {
-    "source": "同一锚点让零散片段形成可继续扩展的世界",
-    "zh_CN": "同一标题和背景音把各地离奇街头片段拢进了同一个想象地带",
-    "en": "A shared title and soundtrack gather unrelated street oddities into one recognizable world"
-  },
-  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_NEGATIVE": {
-    "source": "地点不必在场，俄亥俄负责解释一切",
-    "zh_CN": "不管视频原本在哪拍的，最后都被算到“只有在俄亥俄”头上",
-    "en": "Clips filmed in completely different places all get filed under 'Only in Ohio'"
-  },
-  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_TITLE": {
-    "source": "“只有在俄亥俄”构成异常地带",
-    "zh_CN": "各地离奇街头视频被归入“只有在俄亥俄”标签",
-    "en": "Absurd street clips from different places get grouped under 'Only in Ohio'"
-  },
-  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_NARRATIVE": {
-    "source": "%s用户把离奇街头片段归入“只有在俄亥俄”的异常地带。视频地点彼此无关，但标题与背景音让观众把它们当成同一世界。",
-    "zh_CN": "%s用户把离奇街头片段归入“只有在俄亥俄”的异常地带。视频地点彼此无关，但标题与背景音让观众把它们当成同一世界。",
-    "en": "Users in %s place absurd street clips in an Only in Ohio zone. The locations differ, but a shared title and soundtrack make viewers treat them as one world."
-  },
-  "LOC_EVENT_ENVIRONMENT_SHARED_ROOFTOP_COMMENT": {
-    "source": "地点名在这里成了一种解释方式。",
-    "zh_CN": "各地的离奇街头片段，配上“只有在俄亥俄”和同一段背景音，就成了同一个想象世界里的事。实际拍摄地点各异，标题倒替它们认了同乡。",
-    "en": "These odd street clips were filmed in unrelated places, yet the shared 'Only in Ohio' title and soundtrack make viewers treat them as scenes from one strange territory. The real map stops mattering once the label holds the collection together."
   },
   "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_POSITIVE": {
     "source": "简短暗号让赞美能迅速跟上现场节奏",
@@ -2208,5 +2058,355 @@
     "source": "报修单写得具体，别人才能找到那盏灯。",
     "zh_CN": "报修单写得具体，别人才能找到那盏灯。",
     "en": "A precise repair report helps someone find the right lamp."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S03_TITLE": {
+    "source": "“看不懂但震撼”成了万能回复",
+    "zh_CN": "“看不懂但震撼”成了万能回复",
+    "en": "\"Impressed but confused\" becomes a stock reply"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S03_NARRATIVE": {
+    "source": "%s网友给复杂图解和离奇表演都配上“我看不懂，但我大受震撼”，评论区很快跟着复读。",
+    "zh_CN": "%s网友给复杂图解和离奇表演都配上“我看不懂，但我大受震撼”，评论区很快跟着复读。",
+    "en": "Users in %s caption complex diagrams and bizarre performances with \"I don't understand it, but I am deeply impressed.\" The comments repeat it."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S03_COMMENT": {
+    "source": "不懂也能参与，这句倒是给大家留了个位置。",
+    "zh_CN": "不懂也能参与，这句倒是给大家留了个位置。",
+    "en": "You don't have to understand it to join in. Convenient, isn't it?"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S03_POSITIVE": {
+    "source": "我没弄懂，先惊叹一下。",
+    "zh_CN": "我没弄懂，先惊叹一下。",
+    "en": "I don't get it. I'll be amazed first."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S03_NEGATIVE": {
+    "source": "到底在夸，还是觉得太离谱？",
+    "zh_CN": "到底在夸，还是觉得太离谱？",
+    "en": "Is that praise, or just disbelief?"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S04_TITLE": {
+    "source": "“躺平”回复挤满绩效讨论区",
+    "zh_CN": "“躺平”回复挤满绩效讨论区",
+    "en": "\"Lying flat\" fills a performance review thread"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S04_NARRATIVE": {
+    "source": "%s一场关于加码考核的讨论里，越来越多人用“我先躺平”回应，不再争谁能投入更多。",
+    "zh_CN": "%s一场关于加码考核的讨论里，越来越多人用“我先躺平”回应，不再争谁能投入更多。",
+    "en": "In %s, a debate about tougher performance targets fills with \"I'm lying flat\" replies instead of competing promises of more effort."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S04_COMMENT": {
+    "source": "考核还在加，先有人把竞赛牌放下了。你猜后面会不会有人跟？",
+    "zh_CN": "考核还在加，先有人把竞赛牌放下了。你猜后面会不会有人跟？",
+    "en": "The targets keep rising, but someone has put down their race number. Let's see who follows."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S04_POSITIVE": {
+    "source": "这一轮，我想少争一点。",
+    "zh_CN": "这一轮，我想少争一点。",
+    "en": "This round, I'd rather compete less."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S04_NEGATIVE": {
+    "source": "退出以后，压力就会消失吗？",
+    "zh_CN": "退出以后，压力就会消失吗？",
+    "en": "Does stepping out make the pressure disappear?"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S16_TITLE": {
+    "source": "“巅峰之作”刷进比赛与影评区",
+    "zh_CN": "“巅峰之作”刷进比赛与影评区",
+    "en": "\"Peak fiction\" crosses from reviews into sports"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S16_NARRATIVE": {
+    "source": "%s观众把精彩进球、剧情反转和粗糙恶搞都叫作“巅峰之作”，认真夸与开玩笑的评论混在一起。",
+    "zh_CN": "%s观众把精彩进球、剧情反转和粗糙恶搞都叫作“巅峰之作”，认真夸与开玩笑的评论混在一起。",
+    "en": "Viewers in %s call great goals, plot twists and rough joke videos \"peak fiction,\" mixing sincere praise with exaggeration."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S16_COMMENT": {
+    "source": "精彩的叫巅峰，离谱的也叫巅峰。你得看看他们在笑什么。",
+    "zh_CN": "精彩的叫巅峰，离谱的也叫巅峰。你得看看他们在笑什么。",
+    "en": "Great scenes are peak. Absurd scenes are peak too. Watch what they're laughing at."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S16_POSITIVE": {
+    "source": "这一幕值得反复看。",
+    "zh_CN": "这一幕值得反复看。",
+    "en": "This moment deserves a replay."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_S16_NEGATIVE": {
+    "source": "这也能封神，标准真灵活。",
+    "zh_CN": "这也能封神，标准真灵活。",
+    "en": "Apparently anything can be crowned a masterpiece."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R02_TITLE": {
+    "source": "一段沉默让“会更好吧”走红",
+    "zh_CN": "一段沉默让“会更好吧”走红",
+    "en": "A silent pause makes \"better, right?\" spread"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R02_NARRATIVE": {
+    "source": "%s有人把新方案说明剪成问答：一人保证要改变，另一人追问“会更好吧”，镜头却迟迟不给回答。",
+    "zh_CN": "%s有人把新方案说明剪成问答：一人保证要改变，另一人追问“会更好吧”，镜头却迟迟不给回答。",
+    "en": "An edit in %s pairs a promise of change with \"For the better, right?\" The camera lingers without an answer."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R02_COMMENT": {
+    "source": "沉默也能传话，而且听着还挺让人心慌。",
+    "zh_CN": "沉默也能传话，而且听着还挺让人心慌。",
+    "en": "Silence can say plenty. This one sounds rather worrying."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R02_POSITIVE": {
+    "source": "先把没说完的后果问清楚。",
+    "zh_CN": "先把没说完的后果问清楚。",
+    "en": "Ask about the consequences left unsaid."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R02_NEGATIVE": {
+    "source": "说要改变，可没说会变好。",
+    "zh_CN": "说要改变，可没说会变好。",
+    "en": "A promise of change leaves the result open."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R06_TITLE": {
+    "source": "“大家都加码”引来内卷接龙",
+    "zh_CN": "“大家都加码”引来内卷接龙",
+    "en": "\"Everyone raises the stakes\" starts an involution thread"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R06_NARRATIVE": {
+    "source": "%s学生和上班族接力晒出越拉越长的任务清单，用“内卷”概括投入增加、回报却没变的处境。",
+    "zh_CN": "%s学生和上班族接力晒出越拉越长的任务清单，用“内卷”概括投入增加、回报却没变的处境。",
+    "en": "Students and workers in %s share growing task lists, calling the rising effort without better rewards \"involution.\""
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R06_COMMENT": {
+    "source": "清单越写越长，回报还在原地。怪不得这两个字有人接。",
+    "zh_CN": "清单越写越长，回报还在原地。怪不得这两个字有人接。",
+    "en": "The lists keep growing and the rewards stay put. No wonder that word catches on."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R06_POSITIVE": {
+    "source": "大家都想从无效竞争里喘口气。",
+    "zh_CN": "大家都想从无效竞争里喘口气。",
+    "en": "People want a break from fruitless competition."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R06_NEGATIVE": {
+    "source": "忙得更多，就一定做得更多吗？",
+    "zh_CN": "忙得更多，就一定做得更多吗？",
+    "en": "Does being busier mean achieving more?"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R07_TITLE": {
+    "source": "“找搭子”从饭桌扩展到日常",
+    "zh_CN": "“找搭子”从饭桌扩展到日常",
+    "en": "Activity buddies spread beyond lunch plans"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R07_NARRATIVE": {
+    "source": "%s的同城帖子开始分别招饭搭子、学习搭子和散步搭子，发帖人先说明活动，再约定相处边界。",
+    "zh_CN": "%s的同城帖子开始分别招饭搭子、学习搭子和散步搭子，发帖人先说明活动，再约定相处边界。",
+    "en": "Local posts in %s seek separate lunch, study and walking buddies, spelling out the activity and expectations first."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R07_COMMENT": {
+    "source": "先约好一起做什么，认识起来省事多了。别忘了看看对方答应了什么。",
+    "zh_CN": "先约好一起做什么，认识起来省事多了。别忘了看看对方答应了什么。",
+    "en": "Agreeing on what to do makes meeting easier. Just read what the other person agreed to."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R07_POSITIVE": {
+    "source": "一起做这件事就够了。",
+    "zh_CN": "一起做这件事就够了。",
+    "en": "Doing this one thing together is enough."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_R07_NEGATIVE": {
+    "source": "活动合拍，也得慢慢建立信任。",
+    "zh_CN": "活动合拍，也得慢慢建立信任。",
+    "en": "Sharing an activity still takes trust."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P03_TITLE": {
+    "source": "“退退退”被拿来驱赶日常烦恼",
+    "zh_CN": "“退退退”被拿来驱赶日常烦恼",
+    "en": "\"Back, back, back\" chases away everyday troubles"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P03_NARRATIVE": {
+    "source": "%s短视频里，人们对着加班通知、坏天气和倒霉经历挥手跺脚，齐喊“退退退”。",
+    "zh_CN": "%s短视频里，人们对着加班通知、坏天气和倒霉经历挥手跺脚，齐喊“退退退”。",
+    "en": "Videos in %s show people shooing away overtime notices, bad weather and bad luck with repeated cries of \"Back!\""
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P03_COMMENT": {
+    "source": "喊完不一定有用，倒是很适合让旁边的人跟着喊。",
+    "zh_CN": "喊完不一定有用，倒是很适合让旁边的人跟着喊。",
+    "en": "It may not change the weather, but it's easy for everyone else to shout along."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P03_POSITIVE": {
+    "source": "今天先把烦心事赶远一点。",
+    "zh_CN": "今天先把烦心事赶远一点。",
+    "en": "Let's shoo the trouble away for today."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P03_NEGATIVE": {
+    "source": "通知还在，嗓子先哑了。",
+    "zh_CN": "通知还在，嗓子先哑了。",
+    "en": "The notice is still there. Now the voice is gone."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P11_TITLE": {
+    "source": "“Six Seven”手势传进校园",
+    "zh_CN": "“Six Seven”手势传进校园",
+    "en": "\"Six Seven\" gestures spread through schools"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P11_NARRATIVE": {
+    "source": "%s学生听到六和七就接上喊声，再把双手交替抬起。有人认真追问含义，其他人只又做了一遍。",
+    "zh_CN": "%s学生听到六和七就接上喊声，再把双手交替抬起。有人认真追问含义，其他人只又做了一遍。",
+    "en": "Students in %s answer six and seven with a chant and alternating hand gestures. Asked what it means, they simply do it again."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P11_COMMENT": {
+    "source": "诶，这个我熟。先跟上再说，解释有时还没手势管用。",
+    "zh_CN": "诶，这个我熟。先跟上再说，解释有时还没手势管用。",
+    "en": "Oh, I know this one. Follow along first. A gesture sometimes travels faster than an explanation."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P11_POSITIVE": {
+    "source": "听见数字，大家就能接上。",
+    "zh_CN": "听见数字，大家就能接上。",
+    "en": "Hear the numbers and everyone joins in."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P11_NEGATIVE": {
+    "source": "越问意思，他们越想再喊一次。",
+    "zh_CN": "越问意思，他们越想再喊一次。",
+    "en": "The more you ask what it means, the more they chant."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P20_TITLE": {
+    "source": "猫片段被剪成日常小剧场",
+    "zh_CN": "猫片段被剪成日常小剧场",
+    "en": "Cat clips become little stories of daily life"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P20_NARRATIVE": {
+    "source": "%s创作者用开心猫、哭泣猫和愤怒猫演出通勤、考试与家庭对话，熟悉片段换上新字幕又能接着讲。",
+    "zh_CN": "%s创作者用开心猫、哭泣猫和愤怒猫演出通勤、考试与家庭对话，熟悉片段换上新字幕又能接着讲。",
+    "en": "Creators in %s use happy, crying and angry cat clips to act out commutes, exams and family conversations with new captions."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P20_COMMENT": {
+    "source": "演员还是那几只猫，今天演的又是谁的生活？",
+    "zh_CN": "演员还是那几只猫，今天演的又是谁的生活？",
+    "en": "Same cat cast. Whose day are they acting out this time?"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P20_POSITIVE": {
+    "source": "不用露脸，也能把心情讲清楚。",
+    "zh_CN": "不用露脸，也能把心情讲清楚。",
+    "en": "A mood can come across without showing a face."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_P20_NEGATIVE": {
+    "source": "猫已经演完我一整天了。",
+    "zh_CN": "猫已经演完我一整天了。",
+    "en": "The cats have acted out my entire day."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W07_TITLE": {
+    "source": "网友开始为日常举止打气场分",
+    "zh_CN": "网友开始为日常举止打气场分",
+    "en": "Users score everyday moments in aura points"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W07_NARRATIVE": {
+    "source": "%s评论区给漂亮收场加气场分，给当众出糗扣分。有人补规则，有人把朋友的一天剪成分数结算。",
+    "zh_CN": "%s评论区给漂亮收场加气场分，给当众出糗扣分。有人补规则，有人把朋友的一天剪成分数结算。",
+    "en": "Comments in %s award aura for smooth moments and deduct it for embarrassment. Friends' days become edited scorecards."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W07_COMMENT": {
+    "source": "分数看不见，评委倒是随处都有。你也准备给自己打分？",
+    "zh_CN": "分数看不见，评委倒是随处都有。你也准备给自己打分？",
+    "en": "Invisible points, judges everywhere. Are you scoring yourself too?"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W07_POSITIVE": {
+    "source": "这个收场，气场加分。",
+    "zh_CN": "这个收场，气场加分。",
+    "en": "That finish deserves more aura."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W07_NEGATIVE": {
+    "source": "一个失误，刚攒的分全没了。",
+    "zh_CN": "一个失误，刚攒的分全没了。",
+    "en": "One mistake and all those points are gone."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W10_TITLE": {
+    "source": "“主角时刻”配乐流行起来",
+    "zh_CN": "“主角时刻”配乐流行起来",
+    "en": "\"Main character moments\" get their own soundtrack"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W10_NARRATIVE": {
+    "source": "%s网友给独自散步、坐车和看雨的片段配上电影音乐，把普通一天剪成自己的主角时刻。",
+    "zh_CN": "%s网友给独自散步、坐车和看雨的片段配上电影音乐，把普通一天剪成自己的主角时刻。",
+    "en": "Users in %s add film music to walks, rides and rainy windows, editing ordinary days into main character moments."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W10_COMMENT": {
+    "source": "走路还是走路，配乐一响，连等红灯都有戏了。",
+    "zh_CN": "走路还是走路，配乐一响，连等红灯都有戏了。",
+    "en": "The walk is the same. Add music and even waiting at a crossing feels dramatic."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W10_POSITIVE": {
+    "source": "今天也值得有自己的镜头。",
+    "zh_CN": "今天也值得有自己的镜头。",
+    "en": "Today deserves its own scene."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_W10_NEGATIVE": {
+    "source": "主角看得见，路人也在画面里。",
+    "zh_CN": "主角看得见，路人也在画面里。",
+    "en": "The lead is visible. So are all the passersby."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B07_TITLE": {
+    "source": "“班味”成了下班自拍的常见配文",
+    "zh_CN": "“班味”成了下班自拍的常见配文",
+    "en": "\"Work smell\" captions fill after-work selfies"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B07_NARRATIVE": {
+    "source": "%s上班族给下班自拍配上“班味”，有人用衣着和神情做前后对比，也有人分享休息后的变化。",
+    "zh_CN": "%s上班族给下班自拍配上“班味”，有人用衣着和神情做前后对比，也有人分享休息后的变化。",
+    "en": "Workers in %s caption tired selfies with \"work smell,\" comparing clothes and expressions before and after work or a break."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B07_COMMENT": {
+    "source": "原来上班还会留下这种气味。照片闻不到，表情倒是看得出。",
+    "zh_CN": "原来上班还会留下这种气味。照片闻不到，表情倒是看得出。",
+    "en": "So work leaves a smell. I can't smell a photo, but I can read those faces."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B07_POSITIVE": {
+    "source": "休息一下，先把精神养回来。",
+    "zh_CN": "休息一下，先把精神养回来。",
+    "en": "Take a break and get some energy back."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B07_NEGATIVE": {
+    "source": "这张脸像刚开完第三场会。",
+    "zh_CN": "这张脸像刚开完第三场会。",
+    "en": "That face looks fresh from its third meeting."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B14_TITLE": {
+    "source": "“包的”在自信与翻车之间流传",
+    "zh_CN": "“包的”在自信与翻车之间流传",
+    "en": "\"Guaranteed\" flips from confidence to failure jokes"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B14_NARRATIVE": {
+    "source": "%s网友用“包的”回应请求和预测，事情没办成时，又把同一句改成“包翻车”。",
+    "zh_CN": "%s网友用“包的”回应请求和预测，事情没办成时，又把同一句改成“包翻车”。",
+    "en": "Users in %s answer requests and predictions with \"guaranteed,\" then turn it into \"guaranteed disaster\" when things go wrong."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B14_COMMENT": {
+    "source": "答应得越快，后面的截图就越好找。话可别说太满哦。",
+    "zh_CN": "答应得越快，后面的截图就越好找。话可别说太满哦。",
+    "en": "The quicker the promise, the easier the screenshot is to find later. Don't get too confident."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B14_POSITIVE": {
+    "source": "这件事，放心交给我。",
+    "zh_CN": "这件事，放心交给我。",
+    "en": "You can leave this one to me."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B14_NEGATIVE": {
+    "source": "包的，包翻车的。",
+    "zh_CN": "包的，包翻车的。",
+    "en": "Guaranteed. Guaranteed to go wrong."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B15_TITLE": {
+    "source": "“已老实”成了认怂回复",
+    "zh_CN": "“已老实”成了认怂回复",
+    "en": "\"Lesson learned\" becomes a stock surrender"
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B15_NARRATIVE": {
+    "source": "%s学生和上班族晒出被难题、截止时间或高强度任务击败的瞬间，配文只剩“已老实，求放过”。",
+    "zh_CN": "%s学生和上班族晒出被难题、截止时间或高强度任务击败的瞬间，配文只剩“已老实，求放过”。",
+    "en": "Students and workers in %s post moments defeated by hard questions, deadlines or heavy workloads: \"Lesson learned. Go easy on me.\""
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B15_COMMENT": {
+    "source": "刚才还说能行，怎么现在已经在求饶了？先歇一会儿吧。",
+    "zh_CN": "刚才还说能行，怎么现在已经在求饶了？先歇一会儿吧。",
+    "en": "You sounded so confident a minute ago. Asking for mercy already? Take a breather."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B15_POSITIVE": {
+    "source": "认输一下，给自己喘口气。",
+    "zh_CN": "认输一下，给自己喘口气。",
+    "en": "Concede this round and catch your breath."
+  },
+  "LOC_EVENT_ENVIRONMENT_CASE_B15_NEGATIVE": {
+    "source": "任务还没完，人先服气了。",
+    "zh_CN": "任务还没完，人先服气了。",
+    "en": "The task isn't done. The resistance is."
   }
 }

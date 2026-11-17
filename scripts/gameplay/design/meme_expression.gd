@@ -9,7 +9,13 @@ static func patch_ids(draft: Dictionary) -> Array:
 static func compose(catalog: MemeDemoCatalog, draft: Dictionary) -> Dictionary:
 	if Composition.supports(str(draft.get("preset_id", ""))):
 		return Composition.compose(draft, patch_ids(draft))
-	return {"expression":render(catalog, draft), "meaning":"", "meaning_id":"", "language_versions":[], "media":"", "illustration":""}
+	var copy := preset_copy(str(draft.get("preset_id", "")))
+	return {"expression":render(catalog, draft), "meaning":str(copy.get("meaning", "")), "meaning_id":"", "language_versions":[], "media":"", "illustration":""}
+
+static func preset_copy(preset_id: String) -> Dictionary:
+	var expression_key := "LOC_PRESET_EXPRESSION_" + preset_id.to_upper()
+	if DeskLocalization.text_source(expression_key).is_empty(): return {}
+	return {"expression":DeskLocalization.source(expression_key), "meaning":DeskLocalization.source("LOC_PRESET_MEANING_" + preset_id.to_upper())}
 
 static func preset_name(preset: MemeDemoPreset, localized: bool = false) -> String:
 	var key := "MN_" + str(preset.id).to_upper()
@@ -33,6 +39,11 @@ static func render(catalog: MemeDemoCatalog, draft: Dictionary) -> String:
 	var record: Dictionary = draft.get("module_patch_record", {})
 	var suffixes: Array = record.get("suffixes", [])
 	var preset: MemeDemoPreset = catalog.find_preset(str(draft.get("preset_id", "")))
+	var copy := preset_copy(str(draft.get("preset_id", "")))
+	var preset_defaults := preset != null and not copy.is_empty()
+	if preset != null:
+		for index in preset.required_slots.size():
+			preset_defaults = preset_defaults and str(slots.get(preset.required_slots[index], "")) == preset.default_values[index]
 	var defaults := preset != null and str(preset.id) in catalog.DESIGN_RULES.starter_presets
 	if preset != null:
 		for index in preset.required_slots.size():
@@ -49,7 +60,9 @@ static func render(catalog: MemeDemoCatalog, draft: Dictionary) -> String:
 		if defaults and authored_default: route_modules.append(id)
 		else: authored_patches.append(content)
 	var parts := PackedStringArray()
-	if defaults:
+	if preset_defaults:
+		parts.append(str(copy.expression))
+	elif defaults:
 		parts.append(catalog.DESIGN_RULES.expression_route(str(preset.id), route_modules))
 	else:
 		# Preserve authored legacy text literally; the current editor exposes no text input.

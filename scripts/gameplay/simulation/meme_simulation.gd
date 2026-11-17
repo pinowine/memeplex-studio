@@ -971,8 +971,9 @@ func _spawn_external_preset(event_id: String, definition: MemeDemoEvent) -> Stri
 	var family_id := _new_id("family")
 	var id := _new_id("variant")
 	var source_presets: Array = [preset.source_record()]
+	var copy := ExpressionText.preset_copy(str(preset.id))
 	families[family_id] = {"id":family_id, "owner":"environment", "anchor":preset.family_anchor, "split_threshold":MonitorMetrics.SPLIT_THRESHOLD, "derived_from":[], "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true)}
-	variants.append({"id":id, "family_id":family_id, "parent_ids":[], "origin_ids":[], "creator":"environment", "owned":false, "controlled":false, "text":" / ".join(preset.default_values), "kernel_id":str(preset.kernel_id), "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":"seowon", "source_event":event_id, "topic_ids":Array(definition.topic_ids)})
+	variants.append({"id":id, "family_id":family_id, "parent_ids":[], "origin_ids":[], "creator":"environment", "owned":false, "controlled":false, "text":str(copy.expression), "meaning":str(copy.meaning), "kernel_id":str(preset.kernel_id), "preset_id":str(preset.id), "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":"seowon", "source_event":event_id, "topic_ids":Array(definition.topic_ids)})
 	variants.back().patch_ids = []
 	return DeskLocalization.source_format("LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912", preset.title, [0])
 

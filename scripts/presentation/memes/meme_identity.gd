@@ -14,16 +14,25 @@ static func name(catalog: MemeDemoCatalog, raw: Dictionary) -> String:
 	return " ".join(display_text(str(raw.get("text", ""))).split("\n", false))
 
 static func resolve(catalog: MemeDemoCatalog, raw: Dictionary) -> Dictionary:
+	var preset := catalog.find_preset(_preset_id(raw))
+	var copy := ExpressionText.preset_copy(_preset_id(raw))
+	var expression := str(raw.get("text", ""))
+	if preset != null and not copy.is_empty():
+		var legacy := " / ".join(preset.default_values)
+		var frame := str(raw.get("event_reading", {}).get("frame", ""))
+		# Old saves may contain the default slots followed by the event's response.
+		if expression == legacy: expression = str(copy.expression)
+		elif not frame.is_empty() and expression == legacy + "\n" + frame: expression = DeskLocalization.source_join("\n", [str(copy.expression), frame])
 	var meaning := str(raw.get("meaning", ""))
 	var draft: Dictionary = raw.get("flow_draft", {})
 	if meaning.is_empty() and not draft.is_empty() and ExpressionText.Composition.supports(str(draft.get("preset_id", ""))):
 		meaning = str(ExpressionText.compose(catalog, draft).get("meaning", ""))
+	if meaning.is_empty(): meaning = str(copy.get("meaning", ""))
 	if meaning.is_empty(): meaning = str(raw.get("event_reading", {}).get("frame", ""))
 	if meaning.is_empty():
-		var preset := catalog.find_preset(_preset_id(raw))
 		if preset != null: meaning = str(preset.context_hint)
 	var kind := "MAP_MEME_OWN" if bool(raw.get("controlled", false)) and str(raw.get("creator", "")) == "player" else "MAP_MEME_INDEPENDENT"
-	return {"name":name(catalog, raw), "expression":display_text(str(raw.get("text", ""))),
+	return {"name":name(catalog, raw), "expression":display_text(expression),
 		"meaning":display_text(meaning),
 		"kind":DeskLocalization.text(kind)}
 

@@ -385,7 +385,7 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 		if not errors.is_empty(): return errors
 		if str(variant.creator) != "player" and variant.parent_ids.is_empty():
 			var preset: MemeDemoPreset = catalog.find_preset(str(variant.preset_id))
-			var expected_expression := " / ".join(preset.default_values) if preset != null else ""
+			var expected_expression := str(ExpressionText.preset_copy(str(variant.preset_id)).get("expression", ""))
 			if variant.get("event_reading", {}).has("frame"): expected_expression = DeskLocalization.source_join("\n", [expected_expression, str(variant.event_reading.frame)])
 			if not variant.patch_ids.is_empty() or preset == null or str(variant.text) != expected_expression or variant.has("flow_draft"):
 				return PackedStringArray(["Independent event expressions must retain their registered preset"])
