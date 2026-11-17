@@ -769,7 +769,7 @@ func _request(action: String, params: Dictionary) -> void:
 		if not errors.is_empty():
 			_show_module_errors(errors)
 			return
-	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context_axis", "move_context_axes"]:
+	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context","move_context_axis", "move_context_axes"]:
 		request["draft"]=get_draft()
 		if action=="install_module":
 			var module_id := str(request.get("module_id",""))

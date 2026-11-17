@@ -465,6 +465,7 @@ func configure(page: Node2D) -> void:
 	editor.mount_hover_overlay(hover_notes, _hover_pointer_position)
 	var board: Control = editor.context_slice()
 	board.set_drag_preview_parent(_material_cards)
+	_material_cards.context_drop_pose = board.tabletop_drop_pose
 	board.slot_pressed.connect(_context_slot_pressed)
 	editor.module_slots_pressed.connect(_module_slots_pressed)
 	_props.pointer_guard = _desktop_pointer_guard
@@ -871,6 +872,8 @@ func _focus_material_stack(kind: String) -> void:
 	_component_target = ""
 	_slot_restoring = false
 	var rect := _material_cards.stack_viewport_rect(kind)
+	var layer: String = {"language":"language", "group":"group", "topic":"topics"}.get(kind, "")
+	if _active_sheet == "cultivate" and not layer.is_empty(): rect = _page.hud.design_workbench().context_slice().layer_viewport_rect(layer)
 	var world_rect: Rect2 = get_viewport().get_canvas_transform().affine_inverse()*rect
 	_camera.focus_slot("stack/"+kind,world_rect,1.55)
 	_sync_reader_blocks()

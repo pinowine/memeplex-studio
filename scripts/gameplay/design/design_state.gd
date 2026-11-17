@@ -160,13 +160,20 @@ func _perform_layer(action: String, params: Dictionary, apply_result: bool = tru
 		data.attached = target
 		return _apply_layers(params.base)
 	if not bool(_state.context_layers[layer].attached): return PackedStringArray([DeskLocalization.source("LOC_RETURN_THIS_SLICE_TO_THE_BRAIN_FIRST_4F3C38DA")] )
-	if action in ["install_context","remove_context"]:
+	if action in ["install_context","remove_context","move_context"]:
 		if layer not in ["language","group","topics"] or not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= context_slot_capacity(layer): return PackedStringArray([DeskLocalization.source("LOC_INVALID_CONTEXT_SLOT_17C28A5F") + " (%s[%s])" % [layer, str(params.get("slot", "?"))]])
 		var slot := int(params.slot)
 		while _state.context_layers[layer].slots.size() <= slot:
 			_state.context_layers[layer].slots.append({})
 			_state.context_layers[layer].origins.append("")
-		if action == "remove_context":
+		if action == "move_context":
+			if not _integer(params.get("target_slot")) or int(params.target_slot) < 0 or int(params.target_slot) >= _state.context_layers[layer].slots.size(): return PackedStringArray([DeskLocalization.source("LOC_INVALID_CONTEXT_SLOT_17C28A5F")])
+			if _state.context_layers[layer].slots[slot].is_empty(): return PackedStringArray([DeskLocalization.source("LOC_THIS_CONTEXT_SLOT_IS_EMPTY_F2C503FA")])
+			var target := int(params.target_slot)
+			var moving: Dictionary = _state.context_layers[layer].slots[slot]
+			_state.context_layers[layer].slots[slot] = _state.context_layers[layer].slots[target]
+			_state.context_layers[layer].slots[target] = moving
+		elif action == "remove_context":
 			if _state.context_layers[layer].slots[slot].is_empty(): return PackedStringArray([DeskLocalization.source("LOC_THIS_CONTEXT_SLOT_IS_EMPTY_F2C503FA")])
 			_state.context_layers[layer].slots[slot] = {}
 		else:
@@ -426,7 +433,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 		if not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= rules.module_slots:
 			return PackedStringArray([DeskLocalization.source("LOC_SLOT_IS_OUTSIDE_ITS_FINITE_RANGE_F48EA765")])
 		slot = int(params.slot)
-	if action in ["install_context", "remove_context", "move_context_axis", "move_context_axes", "set_context_depth", "detach_context_layer", "attach_context_layer"]:
+	if action in ["install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes", "set_context_depth", "detach_context_layer", "attach_context_layer"]:
 		errors = _perform_axes(params) if action == "move_context_axes" else _perform_layer(action, params)
 		if errors.is_empty() and not _layer_repeat:
 			_state.operations.append({"action":action,"params":params.duplicate(true)})

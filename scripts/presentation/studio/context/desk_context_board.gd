@@ -47,6 +47,7 @@ var _held_moved := false
 var _resource_dragging := false
 var _drag_preview: Control
 var _drag_preview_parent: Control
+var _drag_target := Vector2.ZERO
 var _axis_drag := false
 var _token_drag_layer := ""
 var _commands := ContextController.new("board")
@@ -230,7 +231,7 @@ func _build_layout() -> void:
 			var rows := ceili(float(count) / columns)
 			var content := Rect2(rect.position + Vector2(4, 64), rect.size - Vector2(8, 80))
 			var cell_size := Vector2((content.size.x - CARD_GAP * (columns - 1)) / columns, (content.size.y - CARD_GAP * (rows - 1)) / rows)
-			var card_scale := minf(1.5, minf(cell_size.x / card_size.x, cell_size.y / card_size.y))
+			var card_scale := minf(1.0, minf(cell_size.x / card_size.x, cell_size.y / card_size.y))
 			var graphic_size := card_size * card_scale
 			var row_width := graphic_size.x * columns + CARD_GAP * (columns - 1)
 			var rows_height := graphic_size.y * rows + CARD_GAP * (rows - 1)
@@ -325,9 +326,8 @@ func _socket_outline(id: String, rect: Rect2) -> PackedVector2Array:
 	return scaled
 
 func _draw_slot_socket(id: String, rect: Rect2, selected: bool, occupied: bool) -> void:
-	if occupied: return
-	var outline := _socket_outline(id, rect)
-	draw_colored_polygon(outline, Color(INK, .035))
+	var outline := _socket_outline(id, rect.grow(4))
+	draw_colored_polygon(outline, Color(INK, .02 if occupied else .035))
 	outline.append(outline[0])
 	draw_polyline(outline, Color(INK, .75 if selected else .38), 1.7 if selected else 1.0, true)
 
@@ -485,6 +485,12 @@ func _can_drop_data(point: Vector2, data: Variant) -> bool:
 	var layer := _layer_at(point)
 	return ContextController.can_install(_state, _rules, layer, _slot_at(layer, point), data)
 
+func tabletop_drop_pose(kind: String, id: String, global_point: Vector2) -> Dictionary:
+	var point := get_global_transform_with_canvas().affine_inverse() * global_point
+	if not _can_drop_data(point, {"type":"context_resource", "kind":kind, "resource_id":id}): return {}
+	var rect: Rect2 = _layout_layers[_layer_at(point)].slot_rects[_slot_at(_layer_at(point), point)]
+	return {"center":get_global_transform_with_canvas() * rect.get_center(), "rotation":get_global_transform_with_canvas().get_rotation()}
+
 func _drop_data(point: Vector2, data: Variant) -> void:
 	if not _can_drop_data(point, data):
 		_slot_rejections += 1
@@ -616,9 +622,17 @@ func _update_resource_drag() -> void:
 		var host_transform := _drag_preview_parent.get_global_transform_with_canvas().affine_inverse() * get_global_transform_with_canvas()
 		_drag_preview.rotation = host_transform.get_rotation()
 		_drag_preview.scale = host_transform.get_scale() * _layout_layers[_held_layer].slot_rects[_held_slot].size / _drag_preview.size
+		_drag_preview.position = host_transform * _layout_layers[_held_layer].slot_rects[_held_slot].position
 		_sync_graphics()
-	var center := _drag_preview_parent.get_global_transform_with_canvas().affine_inverse() * _last_point
-	_drag_preview.position = center - _drag_preview.get_transform().basis_xform(_drag_preview.size * .5)
+	var board_point := get_global_transform_with_canvas().affine_inverse() * _last_point
+	var slot := _slot_at(_held_layer, board_point)
+	var center := _last_point
+	if slot >= 0: center = get_global_transform_with_canvas() * _layout_layers[_held_layer].slot_rects[slot].get_center()
+	_drag_target = _drag_preview_parent.get_global_transform_with_canvas().affine_inverse() * center - _drag_preview.get_transform().basis_xform(_drag_preview.size * .5)
+
+func _process(delta: float) -> void:
+	if _resource_dragging:
+		_drag_preview.position = _drag_preview.position.lerp(_drag_target, 1.0 - exp(-24.0 * delta))
 
 func _release_pointer(point: Vector2) -> void:
 	var held := _held
@@ -635,10 +649,14 @@ func _release_pointer(point: Vector2) -> void:
 	if held == "resource" and resource_dragged and _slot_at(id, point) != slot:
 		var slots: Array = _layers().get(id, {}).get("slots", [])
 		if slot < 0 or slot >= slots.size() or slots[slot].is_empty(): return
-		var record := _resource(str(slots[slot].get("resource_id", slots[slot].get("id", "")))).duplicate(true)
-		perform("remove_context", {"layer":id, "slot":slot})
-		var current: Array = _layers().get(id, {}).get("slots", [])
-		if slot < current.size() and current[slot].is_empty(): resource_detached.emit(record, _last_point)
+		var target := _slot_at(id, point)
+		if target >= 0:
+			perform("move_context", {"layer":id, "slot":slot, "target_slot":target})
+		else:
+			var record := _resource(str(slots[slot].get("resource_id", slots[slot].get("id", "")))).duplicate(true)
+			perform("remove_context", {"layer":id, "slot":slot})
+			var current: Array = _layers().get(id, {}).get("slots", [])
+			if slot < current.size() and current[slot].is_empty(): resource_detached.emit(record, _last_point)
 	selected_info_changed.emit(selected_info())
 
 func _move_axis(point: Vector2) -> void:

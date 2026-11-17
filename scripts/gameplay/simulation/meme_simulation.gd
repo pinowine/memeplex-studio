@@ -235,13 +235,13 @@ func design_action(action: String, params: Dictionary = {}) -> PackedStringArray
 		if not params.get("position") is Vector2: return PackedStringArray([DeskLocalization.source("LOC_PATCH_PLACEMENT_REQUIRES_PAPER_LOCAL_COORDINATES_FC1D71FE")])
 		params = params.duplicate(true)
 		params.position = _vector_array(params.position)
-	if action in ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context_axis", "move_context_axes"]:
+	if action in ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes"]:
 		var draft: Variant = params.get("draft")
 		if not draft is Dictionary or not draft.get("slots") is Dictionary or not draft.get("political_position") is Vector2 or not draft.get("pragmatic_position") is Vector2:
 			return PackedStringArray([DeskLocalization.source("LOC_APPLYING_A_SOLID_REQUIRES_A_VALID_AUTHOR_CAF24FE0")])
 		for key in ["remix_cost", "context_dependency", "language_access", "recognizability"]:
 			if not _number(draft.get(key)): return PackedStringArray([DeskLocalization.source("LOC_AN_AUTHOR_DRAFT_NUMERIC_VALUE_HAS_THE_CCD0F240")])
-		var draft_errors := PackedStringArray() if action in ["install_context","remove_context","move_context_axis", "move_context_axes"] else validate_draft(draft)
+		var draft_errors := PackedStringArray() if action in ["install_context","remove_context","move_context","move_context_axis", "move_context_axes"] else validate_draft(draft)
 		draft_errors.append_array(_core_errors(draft))
 		if not draft_errors.is_empty(): return draft_errors
 		var encoded: Dictionary = draft.duplicate(true)

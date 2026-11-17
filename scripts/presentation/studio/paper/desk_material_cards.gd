@@ -120,6 +120,7 @@ class StackCard extends Control:
 	var _dragging := false
 	var _origin := Vector2.ZERO
 	var _ghost: Control
+	var _ghost_target: Dictionary = {}
 
 	func _ready() -> void:
 		mouse_filter = Control.MOUSE_FILTER_STOP
@@ -147,12 +148,23 @@ class StackCard extends Control:
 				_ghost.z_index = 100
 				if token: _ghost.configure(record)
 				else:
-					_ghost.paper_view = true
 					_ghost.configure(record, font)
-				_ghost.size = size
+				_ghost.size = size if token else CardFace.minimum_card_size(str(record.kind))
+				_ghost.pivot_offset = _ghost.size * .5
 				face.modulate.a = .35
 			if _dragging:
-				_ghost.global_position = event.position - size * .5
+				if token: _ghost.global_position = event.position - _ghost.size * .5
+				else:
+					var point: Vector2 = overlay._map_focus_point(event.position)
+					var transform := overlay.get_global_transform_with_canvas()
+					var pose: Dictionary = overlay.context_drop_pose.call(str(record.kind), str(record.id), point)
+					if pose.is_empty():
+						_ghost_target = {}
+						_ghost.position = transform.affine_inverse() * point - _ghost.size * .5
+						_ghost.rotation = 0.0
+					else:
+						if _ghost_target.is_empty(): _ghost.position = transform.affine_inverse() * point - _ghost.size * .5
+						_ghost_target = {"position":transform.affine_inverse() * pose.center - _ghost.size * .5, "rotation":float(pose.rotation) - transform.get_rotation()}
 				dragged.emit(event.position)
 			get_viewport().set_input_as_handled()
 		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
@@ -163,9 +175,16 @@ class StackCard extends Control:
 				_ghost.queue_free()
 				_ghost = null
 				_dragging = false
+				_ghost_target = {}
 				dropped.emit(event.position)
 			elif Rect2(Vector2.ZERO, size).has_point(get_global_transform_with_canvas().affine_inverse() * event.position):
 				chosen.emit()
+
+	func _process(delta: float) -> void:
+		if _dragging and not _ghost_target.is_empty():
+			var weight := 1.0 - exp(-24.0 * delta)
+			_ghost.position = _ghost.position.lerp(_ghost_target.position, weight)
+			_ghost.rotation = lerp_angle(_ghost.rotation, float(_ghost_target.rotation), weight)
 
 	func cancel_drag() -> void:
 		var was_active := _pressed or _dragging
@@ -174,6 +193,7 @@ class StackCard extends Control:
 		face.modulate.a = 1.0
 		if is_instance_valid(_ghost): _ghost.queue_free()
 		_ghost = null
+		_ghost_target = {}
 		if was_active: drag_cancelled.emit()
 
 	func _exit_tree() -> void:
@@ -207,6 +227,11 @@ var _drop_kind := ""
 var _drop_stack := ""
 var _selected_key := ""
 var _root_drop_position := Vector2.INF
+var context_drop_pose: Callable
+var _snap_key := ""
+var _snap_position := Vector2.ZERO
+var _snap_rotation := 0.0
+var _snap_target: Dictionary = {}
 
 func _ready() -> void:
 	mouse_filter = MOUSE_FILTER_IGNORE
@@ -354,6 +379,7 @@ func preview_drop(kind: String, point: Vector2) -> void:
 	_refresh_stack_surfaces()
 
 func clear_drop_preview() -> void:
+	_snap_key = ""
 	_drop_kind = ""
 	_drop_stack = ""
 	_refresh_stack_surfaces()
@@ -448,7 +474,7 @@ func _refresh_focus_list() -> void:
 		row.size = dimensions
 		row.record = record
 		row.font = get_theme_font("font", "Label")
-		row.overlay = _focus_host
+		row.overlay = _focus_host if token else self
 		row.token = token
 		row.face = ResourceGraphic.new() if token else CardFace.new()
 		row.face.size = dimensions
@@ -923,7 +949,24 @@ func _card_moved(key: StringName, point: Vector2) -> void:
 		_cards[String(key)].face.show()
 		if was_docked: _layout_inventory()
 		preview_drop(str(_cards[String(key)].kind), _props._input_diagnostic.last_point)
+		_preview_context_slot(String(key), _props._input_diagnostic.last_point)
 	_moved(key, point)
+
+func _preview_context_slot(key: String, point: Vector2) -> void:
+	var card: Dictionary = _cards[key]
+	var pose: Dictionary = context_drop_pose.call(str(card.kind), str(card.id), point)
+	if pose.is_empty():
+		_snap_key = ""
+		return
+	var host := card.node.get_parent() as Control
+	var transform := host.get_global_transform_with_canvas()
+	_snap_target = {"position":transform.affine_inverse() * pose.center - card.node.size * .5, "rotation":float(pose.rotation) - transform.get_rotation()}
+	if _snap_key != key:
+		_snap_position = card.node.position
+		_snap_rotation = card.node.rotation
+	_snap_key = key
+	card.node.position = _snap_position
+	card.node.rotation = _snap_rotation
 
 func _moved(key: StringName, _point: Vector2) -> void:
 	if not _cards.has(String(key)): return
@@ -966,6 +1009,7 @@ func clear_cards() -> void:
 	_event_positions.clear()
 
 func _released(key: StringName, point: Vector2, origin: Vector2) -> void:
+	_snap_key = ""
 	clear_drop_preview()
 	if _cards.has(String(key)):
 		var card: Dictionary = _cards[String(key)]
@@ -980,7 +1024,14 @@ func _released(key: StringName, point: Vector2, origin: Vector2) -> void:
 			_cards[String(key)].erase("return_docked")
 		_layout_inventory()
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	if not _snap_key.is_empty() and _props._dragging:
+		var weight := 1.0 - exp(-24.0 * delta)
+		_snap_position = _snap_position.lerp(_snap_target.position, weight)
+		_snap_rotation = lerp_angle(_snap_rotation, float(_snap_target.rotation), weight)
+		_cards[_snap_key].node.position = _snap_position
+		_cards[_snap_key].node.rotation = _snap_rotation
+		_moved(_snap_key, _cards[_snap_key].node.global_position)
 	if _light != null and not _light.global_position.is_equal_approx(_last_light):
 		_last_light = _light.global_position
 		for id in _cards: _moved(id,_cards[id].node.global_position)
