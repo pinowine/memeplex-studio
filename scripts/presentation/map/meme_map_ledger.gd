@@ -353,11 +353,12 @@ func _contains_point(control: Control, viewport_point: Vector2) -> bool:
 	return Rect2(Vector2.ZERO, control.size).has_point(point)
 
 func _label(font_size: int) -> Label:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_font_size_override("font_size", font_size)
-	Typography.apply_control(label, Typography.role_for_size(font_size), true)
+	Typography.apply_control(label, text_role, true)
 	return label

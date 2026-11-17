@@ -7,7 +7,7 @@ const CardCopy := preload("res://scripts/presentation/studio/paper/desk_material
 const ComponentCopy := preload("res://scripts/presentation/studio/desk/desk_component_hover_copy.gd")
 
 @export var title_font_size: int = 20
-@export var detail_font_size: int = 18
+@export var detail_font_size: int = 16
 @export var paper_texels_per_unit: float = 3.0
 @export var ink_color := Color("3f4338")
 

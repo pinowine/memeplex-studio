@@ -220,6 +220,7 @@ func _rule() -> HSeparator:
 	return rule
 
 func _label(text: String, font_size: int, ink: Color) -> Label:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var label := Fields.HelpLabel.new()
 	label.text = text
@@ -229,7 +230,7 @@ func _label(text: String, font_size: int, ink: Color) -> Label:
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", ink)
 	_help_controls.append(label)
-	Typography.apply_control(label, Typography.role_for_size(font_size), true)
+	Typography.apply_control(label, text_role, true)
 	return label
 
 func _section_ink(kind: String) -> Color:

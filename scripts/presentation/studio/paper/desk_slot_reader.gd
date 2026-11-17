@@ -225,6 +225,7 @@ func _build() -> void:
 	_rule.name = "PencilRule"
 	_paper_holder.add_child(_rule)
 	_body_label = RichTextLabel.new()
+	_body_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_body_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_body_label.name = "HandwrittenExplanation"
 	_body_label.bbcode_enabled = false

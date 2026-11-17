@@ -107,7 +107,7 @@ func _style_desktop_menu() -> void:
 		button.set_meta("hover_outline", false)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		Typography.apply_control(button, "subtitle", true)
+		Typography.apply_control(button, "section", true)
 		for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
 			var box := StyleBoxFlat.new()
 			box.content_margin_left = 24

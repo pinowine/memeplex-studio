@@ -12,16 +12,16 @@ const ROLES := {
  "title": {"size":32, "font":"heading", "weight":600, "color":INK, "tracking":0, "gap":16, "line_gap":6, "paragraph_gap":12},
  "subtitle": {"size":24, "font":"bold", "weight":700, "color":INK, "tracking":0, "gap":12, "line_gap":4, "paragraph_gap":10},
  "section": {"size":20, "font":"semibold", "weight":600, "color":INK, "tracking":0, "gap":8, "line_gap":4, "paragraph_gap":8},
- "body": {"size":16, "font":"body", "weight":400, "color":INK, "tracking":0, "gap":8, "line_gap":4, "paragraph_gap":8},
- "quote": {"size":16, "font":"body", "weight":400, "color":ACCENT, "tracking":0, "gap":8, "line_gap":4, "paragraph_gap":8},
- "reference": {"size":12, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
- "important": {"size":16, "font":"semibold", "weight":600, "color":ACCENT, "tracking":0, "gap":8, "line_gap":4, "paragraph_gap":8},
- "table_header": {"size":14, "font":"medium", "weight":500, "color":MUTED, "tracking":0, "gap":6, "line_gap":2, "paragraph_gap":4},
- "hint": {"size":14, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":6, "line_gap":2, "paragraph_gap":6},
- "annotation": {"size":12, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
- "special": {"size":16, "font":"medium", "weight":500, "color":ACCENT, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
- "label": {"size":14, "font":"medium", "weight":500, "color":INK, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
- "decoration": {"size":10, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":4, "line_gap":0, "paragraph_gap":0}
+ "body": {"size":14, "font":"body", "weight":400, "color":INK, "tracking":0, "gap":8, "line_gap":4, "paragraph_gap":8},
+ "quote": {"size":14, "font":"body", "weight":400, "color":ACCENT, "tracking":0, "gap":8, "line_gap":4, "paragraph_gap":8},
+ "reference": {"size":10, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
+ "important": {"size":14, "font":"semibold", "weight":600, "color":ACCENT, "tracking":0, "gap":8, "line_gap":4, "paragraph_gap":8},
+ "table_header": {"size":12, "font":"medium", "weight":500, "color":MUTED, "tracking":0, "gap":6, "line_gap":2, "paragraph_gap":4},
+ "hint": {"size":12, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":6, "line_gap":2, "paragraph_gap":6},
+ "annotation": {"size":10, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
+ "special": {"size":14, "font":"medium", "weight":500, "color":ACCENT, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
+ "label": {"size":12, "font":"medium", "weight":500, "color":INK, "tracking":0, "gap":4, "line_gap":2, "paragraph_gap":4},
+ "decoration": {"size":8, "font":"body", "weight":400, "color":MUTED, "tracking":0, "gap":4, "line_gap":0, "paragraph_gap":0}
 }
 const THEME_ROLES := {"DemoHeading":"subtitle", "PrintHeading":"subtitle", "ReceiptHeading":"subtitle", "DemoCaption":"reference", "PrintCaption":"reference"}
 
@@ -53,6 +53,7 @@ static func apply_control(control: Control, role: String, preserve_ink: bool = f
  control.set_meta("text_role", role)
  var spec: Dictionary = ROLES[role]
  if control is RichTextLabel:
+  control.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
   control.add_theme_font_override("normal_font", font(role))
   control.add_theme_font_override("italics_font", font(role))
   control.add_theme_font_override("bold_font", SEMIBOLD_FONT)
@@ -63,6 +64,8 @@ static func apply_control(control: Control, role: String, preserve_ink: bool = f
   control.add_theme_constant_override("paragraph_separation", int(spec.paragraph_gap))
   if not preserve_ink: control.add_theme_color_override("default_color", spec.color)
  else:
+  if control is Label and control.autowrap_mode != TextServer.AUTOWRAP_OFF:
+   control.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
   control.add_theme_font_override("font", font(role))
   control.add_theme_font_size_override("font_size", int(spec.size))
   control.add_theme_constant_override("line_spacing", int(spec.line_gap))
@@ -75,6 +78,9 @@ static func apply_theme(theme: Theme) -> void:
   theme.set_font("font", type, BODY_FONT)
   theme.set_font_size("font_size", type, point_size("body"))
   theme.set_color("font_color", type, INK)
+ for type: String in ["Button", "OptionButton", "CheckButton", "CheckBox", "TabBar", "PopupMenu", "Tree"]:
+  theme.set_font_size("font_size", type, point_size("body"))
+ theme.set_font_size("font_size", "TooltipLabel", point_size("label"))
  theme.set_color("default_color", "RichTextLabel", INK)
  for key: String in ["normal_font", "italics_font", "mono_font"]: theme.set_font(key, "RichTextLabel", BODY_FONT)
  for key: String in ["bold_font", "bold_italics_font"]: theme.set_font(key, "RichTextLabel", SEMIBOLD_FONT)

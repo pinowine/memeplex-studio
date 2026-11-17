@@ -28,7 +28,7 @@ func _ready() -> void:
 	_label = Label.new()
 	_label.text = tr(_stage)
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	Typography.apply_control(_label, "subtitle", true)
+	Typography.apply_control(_label, "section", true)
 	_label.add_theme_color_override("font_color", Style.INK)
 	content.add_child(_label)
 	_activity = ProgressBar.new()

@@ -202,14 +202,13 @@ func _tag_style(outlined: bool) -> StyleBoxFlat:
 	return style
 
 func _compact_field(field: Dictionary, node_name: String, font_size: int, ink: Color = Color.TRANSPARENT) -> RichTextLabel:
-	font_size = Typography.normalized_size(font_size)
 	var label := _body(font_size, FIELD_COLORS[str(field.field_kind)] if ink.a == 0.0 else ink)
 	label.name = node_name
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_constant_override("line_separation", 0)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	label.custom_minimum_size.x = ceilf(ReceiptHover.BODY_FONT.get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x) + 2
+	label.custom_minimum_size.x = ceilf(ReceiptHover.BODY_FONT.get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("normal_font_size")).x) + 2
 	_write_field(label, field, 0, ink)
 	_bind_fields(label, [field])
 	return label
@@ -401,6 +400,7 @@ func _add_comment(block: Dictionary) -> void:
 	body.add_text(str(block.content))
 
 func _label(text: String, font_size: int, ink: Color) -> Label:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
@@ -409,10 +409,11 @@ func _label(text: String, font_size: int, ink: Color) -> Label:
 	label.add_theme_font_override("font", ReceiptHover.BODY_FONT)
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", ink)
-	Typography.apply_control(label, Typography.role_for_size(font_size), true)
+	Typography.apply_control(label, text_role, true)
 	return label
 
 func _body(font_size: int, ink: Color) -> RichTextLabel:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var body := RichTextLabel.new()
 	body.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
@@ -428,7 +429,7 @@ func _body(font_size: int, ink: Color) -> RichTextLabel:
 	body.add_theme_font_size_override("bold_font_size", font_size)
 	body.add_theme_color_override("default_color", ink)
 	body.add_theme_constant_override("line_separation", 4)
-	Typography.apply_control(body, Typography.role_for_size(font_size), true)
+	Typography.apply_control(body, text_role, true)
 	return body
 
 func _write_content(label: RichTextLabel, text: String) -> void:

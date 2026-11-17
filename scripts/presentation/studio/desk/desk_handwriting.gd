@@ -54,6 +54,6 @@ static func _apply(node: Node, themes: Dictionary) -> void:
 			var size_key := "normal_font_size" if control is RichTextLabel else "font_size"
 			var current_size := control.get_theme_font_size(size_key)
 			if current_size <= 40:
-				var role := str(control.get_meta("text_role", Typography.THEME_ROLES.get(str(control.theme_type_variation), Typography.role_for_size(current_size))))
+				var role := str(control.get_meta("text_role", Typography.THEME_ROLES.get(str(control.theme_type_variation), Typography.role_for_size(current_size) if control.has_theme_font_size_override(size_key) else "body")))
 				Typography.apply_control(control, role)
 	for child in node.get_children(): _apply(child, themes)

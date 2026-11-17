@@ -154,4 +154,4 @@ TooltipLabel/colors/font_color = Color(0.247059, 0.262745, 0.219608, 1)
 TooltipLabel/colors/font_shadow_color = Color(0, 0, 0, 0)
 TooltipLabel/constants/outline_size = 0
 TooltipLabel/fonts/font = ExtResource("1")
-TooltipLabel/font_sizes/font_size = 14
+TooltipLabel/font_sizes/font_size = 12

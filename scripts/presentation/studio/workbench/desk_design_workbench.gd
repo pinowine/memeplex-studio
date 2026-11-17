@@ -502,6 +502,7 @@ func _section_heading(parent: Node, kind: String, title: String, node_name: Stri
 
 
 func _annotated_readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var label := AnnotatedText.new()
 	label.name = node_name
@@ -511,7 +512,7 @@ func _annotated_readout(parent: Node, node_name: String, font_size: int) -> Rich
 	parent.add_child(label)
 	label.source_hovered.connect(_show_source_hover)
 	label.source_hover_ended.connect(_hide_source_hover)
-	Typography.apply_control(label, Typography.role_for_size(font_size), true)
+	Typography.apply_control(label, text_role, true)
 	return label
 
 
@@ -541,6 +542,7 @@ func _information_rule(node_name: String, parent: Node) -> void:
 
 
 func _readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var label := RichTextLabel.new()
 	label.name = node_name
@@ -554,7 +556,7 @@ func _readout(parent: Node, node_name: String, font_size: int) -> RichTextLabel:
 	label.add_theme_constant_override("line_separation", 6)
 	label.add_theme_color_override("default_color", INK)
 	parent.add_child(label)
-	Typography.apply_control(label, Typography.role_for_size(font_size), true)
+	Typography.apply_control(label, text_role, true)
 	return label
 
 
@@ -926,6 +928,7 @@ func _button(parent: Node,text: String,name: String) -> Button:
 
 
 func _label(parent: Node,text: String,name: String,font_size: int=12) -> Label:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var node:=Label.new()
 	node.name=name
@@ -936,7 +939,7 @@ func _label(parent: Node,text: String,name: String,font_size: int=12) -> Label:
 	node.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	parent.add_child(node)
 	node.minimum_size_changed.connect(_queue_text_layout)
-	Typography.apply_control(node, Typography.role_for_size(font_size), true)
+	Typography.apply_control(node, text_role, true)
 	return node
 
 

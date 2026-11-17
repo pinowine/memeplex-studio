@@ -286,6 +286,7 @@ func _panel(id: String, parent: Node, color: Color) -> Panel:
 	return panel
 
 func _label(id: String, text: String, parent: Node, font_size: int) -> Label:
+	var text_role := Typography.role_for_size(font_size)
 	font_size = Typography.normalized_size(font_size)
 	var label := Label.new()
 	label.name = id
@@ -294,7 +295,7 @@ func _label(id: String, text: String, parent: Node, font_size: int) -> Label:
 	label.add_theme_color_override("font_color", Color("252a23"))
 	label.add_theme_font_size_override("font_size", font_size)
 	parent.add_child(label)
-	Typography.apply_control(label, Typography.role_for_size(font_size), true)
+	Typography.apply_control(label, text_role, true)
 	return label
 
 func _button(id: String, text: String, parent: Node) -> Button:
