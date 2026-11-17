@@ -12,6 +12,9 @@ var _source_id := ""
 var _drag_slip: Control
 var _map_anchor: Control
 var _fax_had_materials := false
+var _mutation_queue: Array[String] = []
+var _seen_mutations: Dictionary = {}
+var _world_seed := -1
 
 func configure(owner_shell: Node) -> void:
 	shell = owner_shell
@@ -47,11 +50,16 @@ func _on_fax_delivered(record: Dictionary, _paper: Control) -> void:
 
 func observe_world(world: Dictionary) -> void:
 	if page == null or page.simulation == null: return
-	if page.simulation.guidance_progress().has("mutation"): return
+	if _world_seed != int(world.world_seed):
+		_world_seed = int(world.world_seed)
+		_seen_mutations.clear()
+		_mutation_queue.clear()
 	for variant: Dictionary in world.get("variants", []):
-		if bool(variant.mutation):
+		var raw: Dictionary = page.simulation.variant_by_id(str(variant.id))
+		if str(raw.creator) != "player" and not raw.get("parent_ids", []).is_empty() and not raw.get("origin_ids", []).is_empty() and not _seen_mutations.has(str(variant.id)):
+			_seen_mutations[str(variant.id)] = true
+			_mutation_queue.append(str(variant.id))
 			_record("mutation", str(variant.id))
-			break
 
 func _process(_delta: float) -> void:
 	if mentor == null or not page._ready_to_run: return
@@ -70,22 +78,29 @@ func _process(_delta: float) -> void:
 			close()
 			return
 		mentor.set_interaction_blocked(blocked)
-		mentor.visible = enabled and not blocked
+		mentor.visible = (enabled or _lesson_id == "mutation") and not blocked
 		mentor.set_process_input(mentor.visible)
 		return
-	if not enabled or blocked: return
+	if blocked or (not enabled and _mutation_queue.is_empty()): return
 	progress = page.simulation.guidance_progress()
-	for id: String in ["fax", "competition", "mutation"]:
-		if not progress.has(id) or bool(progress[id].shown): continue
+	for id: String in ["mutation", "fax", "competition"]:
+		if not enabled and id != "mutation": continue
+		if id == "mutation":
+			if _mutation_queue.is_empty(): continue
+		elif not progress.has(id) or bool(progress[id].shown): continue
 		if id == "competition" and not map_visible: continue
-		if id == "mutation" and (page.desk._revealed_focus != "sheet/edit" or str(page.desk._camera.inspection().state) != "focused"): continue
 		_lesson_id = id
-		_source_id = str(progress[id].source_id)
-		if id == "mutation": page.hud.design_workbench()._detail_scroll.ensure_control_visible(page.hud.design_workbench()._final_expression)
+		_source_id = _mutation_queue[0] if id == "mutation" else str(progress[id].source_id)
+		if id == "mutation": page.hud.design_workbench()._select_variant(_source_id)
 		if not _target(id).has_area(): continue
 		_fax_had_materials = id == "fax" and page._event_has_pending_material(_source_id)
 		if id == "fax" and _unique_card_pending() and _drag_targets("fax").is_empty(): continue
 		var steps: Array[Dictionary] = [{"id":id, "text":LESSONS[id], "emotion":EMOTIONS[id], "action":"continue", "target":id, "contextual":true, "no_blur":true, "map_navigation":id == "competition", "contextual_drag":_fax_had_materials}]
+		if id == "mutation":
+			var raw: Dictionary = page.simulation.variant_by_id(_source_id)
+			steps[0].text = DeskLocalization.source_format("LOC_MUTATION_NOTICE", [str(raw.text),str(raw.meaning)], [0,1])
+			steps[0].centered = true
+			_mutation_queue.pop_front()
 		mentor.configure(steps, _target, _reserved_areas)
 		mentor.set_interaction_blocked(false)
 		mentor.set_process_input(true)
@@ -117,8 +132,7 @@ func _target(id: String) -> Rect2:
 			if slip != null and slip._face == null: return _project(slip)
 			return _project(page.desk._fax._output.page_for_event(_source_id))
 		"mutation":
-			var target: Variant = shell._target("editor/expression")
-			return target if target is Rect2 else _project(target)
+			return Rect2(mentor.get_viewport_rect().get_center() - Vector2(32,32), Vector2(64,64))
 		"competition":
 			for point: Dictionary in page.spread._screen_points:
 				if str(point.variant_id) != _source_id or not bool(point.visible): continue

@@ -754,6 +754,7 @@ func _select_variant(id: String) -> void:
 		_lineage_preview = {"id":id, "text":str(variant.get("text", "")), "meaning":meaning, "patch_ids":patches.duplicate(), "parent_ids":variant.get("parent_ids", []).duplicate()}
 		_module_errors.clear()
 		_setting=false
+		_refresh_composition()
 		return
 
 
@@ -1319,6 +1320,10 @@ func _summary_inspection() -> Dictionary:
 
 func _refresh_composition() -> void:
 	_composition = ExpressionText.compose(_catalog, _draft) if _catalog != null and not _draft.is_empty() else {}
+	if not _lineage_preview.is_empty():
+		_composition = {"expression":str(_lineage_preview.text), "meaning":str(_lineage_preview.meaning),
+			"expression_segments":[{"text":str(_lineage_preview.text), "sources":[]}],
+			"meaning_segments":[{"text":str(_lineage_preview.meaning), "sources":[]}], "context_segments":[]}
 	_hide_source_hover()
 	_final_expression.configure(str(_draft.get("preset_id", "")), _composition.get("expression_segments", []), _composition.get("context_segments", []), str(_composition.get("expression", "LOC_WB_NO_COMPOSITION")))
 	_meaning.set_segments(_composition.get("meaning_segments", []), str(_composition.get("meaning", "")))
