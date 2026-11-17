@@ -344,6 +344,10 @@ func _mutation_threshold(variant: Dictionary, parent: Dictionary, _variants_by_i
 	if not policy is Dictionary or policy.get("schema") != 1 or not policy.get("skill_ids") is Array or not _number(policy.get("threshold")) or not _integer(policy.get("hour")) or not _integer(policy.get("ledger_size")) or str(policy.get("source_id", "")) != str(parent.id):
 		errors.append("Community propagation policy requires its actual source, research ledger and finite threshold")
 		return base
+	var metric_version: Variant = policy.get("metric_version", 1)
+	if not _integer(metric_version) or int(metric_version) not in [1, MonitorMetrics.DEVIATION_VERSION]:
+		errors.append("Community propagation policy has an unknown deviation metric")
+		return base
 	var ledger_size := int(policy.ledger_size)
 	if int(policy.hour) < 0 or int(policy.hour) > int(data.hour) or ledger_size < 0 or ledger_size > data.economy.transactions.size():
 		errors.append("Community propagation policy clock or ledger boundary is invalid")
@@ -465,6 +469,8 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 			errors.append("Saved meme deviations must use the unchanged birth expression")
 		var threshold: float = MonitorMetrics.SPLIT_THRESHOLD
 		if not variant.parent_ids.is_empty(): threshold = _mutation_threshold(variant, variants_by_id[str(variant.parent_ids[0])], variants_by_id, data, errors)
+		if not errors.is_empty(): continue
+		var metric_version := int(variant.get("mutation_policy", {}).get("metric_version", 1))
 		var trigger := float(variant.split_distance)
 		if variant.has("legacy_identity") and (not variant.legacy_identity is bool or not variant.legacy_identity or id != meme_id or not is_zero_approx(trigger) or variant.has("split_from_id")): errors.append("Legacy meme initialization must retain its pre-existing independent expression")
 		if trigger < 0.0 or trigger > 1.0:
@@ -474,7 +480,7 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 				errors.append("A new derived meme requires an observed deviation strictly above its recorded propagation threshold")
 			else:
 				var source: Dictionary = variants_by_id[str(variant.split_from_id)]
-				var expected_trigger := MonitorMetrics.deviation(source.get("deviation_anchor", source), variant)
+				var expected_trigger := MonitorMetrics.deviation(source.get("deviation_anchor", source), variant, metric_version)
 				if not is_equal_approx(trigger, expected_trigger): errors.append("Saved split trigger differs from the actual source expression")
 				if str(variant.meme_name) == str(source.get("meme_name", "")) or not str(variant.meme_name).begins_with("MEME_SPLIT_NAME_"):
 					errors.append("A split meme requires an independent name")
@@ -486,7 +492,7 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 		elif id != meme_id:
 			if trigger > threshold or variant.parent_ids.is_empty() or str(variants_by_id[str(variant.parent_ids[0])].get("meme_id", "")) != meme_id:
 				errors.append("A non-split revision must retain its source meme identity")
-			if not is_equal_approx(trigger, MonitorMetrics.deviation(anchor, variant)):
+			if not is_equal_approx(trigger, MonitorMetrics.deviation(anchor, variant, metric_version)):
 				errors.append("Saved revision deviation differs from its expression")
 		var observed_deltas: Dictionary = variant.get("split_effect_deltas", {}) if variant.has("split_from_id") else variant.get("deviation_effect_deltas", {})
 		var expected_deltas := {} if variant.has("rollback_from_id") else _recorded_effect_deltas(variant, variants_by_id)
@@ -905,6 +911,8 @@ func restore(data: Dictionary) -> PackedStringArray:
 	if not errors.is_empty(): return errors
 	var restored_economy := MemeDemoEconomy.new()
 	restored_economy.restore(decoded.economy)
+	if decoded.phase != "complete" and not bool(decoded.endgame.war_started):
+		CompetitionState.IndependentEndings.refresh_metrics(restored_competition._state.ending_progress, decoded.variants, restored_competition)
 	# 所有解析、转换和账本校验结束后，才替换当前局。
 	simulation.competition = restored_competition
 	simulation.design_state = restored_design

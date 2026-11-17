@@ -191,7 +191,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	var policy_parent := revision_snapshot(parent)
 	policy_parent.flow_profile = _simulation.competition.live_profile(str(parent.id))
 	var threshold: float = _simulation.competition.propagation_rules.split_threshold(Metrics.SPLIT_THRESHOLD, policy_parent, {"flow_draft":content(raw).get("flow_draft", {})})
-	raw.mutation_policy = {"schema":1, "source_id":str(parent.id), "skill_ids":policy_parent.flow_profile.get("skill_ids", []).duplicate(), "threshold":threshold, "hour":int(_simulation.hour), "ledger_size":_simulation.economy.transactions.size()}
+	raw.mutation_policy = {"schema":1, "metric_version":Metrics.DEVIATION_VERSION, "source_id":str(parent.id), "skill_ids":policy_parent.flow_profile.get("skill_ids", []).duplicate(), "threshold":threshold, "hour":int(_simulation.hour), "ledger_size":_simulation.economy.transactions.size()}
 	if distance > threshold and not _simulation.can_add_meme(str(raw.id)):
 		return {"error":DeskLocalization.source("LOC_MEME_POOL_FULL")}
 	if distance <= threshold:

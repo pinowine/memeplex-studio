@@ -1,6 +1,7 @@
 extends RefCounted
 
 const SPLIT_THRESHOLD := 0.5
+const DEVIATION_VERSION := 2
 
 static func spread(counts: Dictionary, population: int, attention_budget: int) -> float:
 	if population == 0: return 0.0
@@ -22,13 +23,14 @@ static func initial_variant(variants: Array, variant: Dictionary) -> Dictionary:
 		initial = by_id[str(initial.parent_ids[0])]
 	return initial
 
-static func deviation(initial: Dictionary, current: Dictionary) -> float:
+static func deviation(initial: Dictionary, current: Dictionary, version: int = DEVIATION_VERSION) -> float:
 	var expression := _text_distance(str(initial.get("text", "")), str(current.get("text", "")))
 	var meaning := _text_distance(str(initial.get("meaning", "")), str(current.get("meaning", "")))
 	var initial_meaning := str(initial.get("meaning_id", ""))
 	var current_meaning := str(current.get("meaning_id", ""))
 	if not is_zero_approx(meaning) and (not initial_meaning.is_empty() or not current_meaning.is_empty()):
-		meaning = (meaning + (0.0 if initial_meaning == current_meaning else 1.0)) * 0.5
+		var identity := (0.0 if initial_meaning == current_meaning else 1.0) if version == 1 else _text_distance(initial_meaning, current_meaning)
+		meaning = (meaning + identity) * 0.5
 	var before: Dictionary = initial.get("flow_profile", initial.get("flow_draft", {}))
 	var after: Dictionary = current.get("flow_profile", current.get("flow_draft", {}))
 	var context := _context_distance(before, after)

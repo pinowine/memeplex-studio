@@ -50,7 +50,7 @@ static func record_publication(state: Dictionary, variants: Array, current_id: S
 	if state.is_empty() or str(state.target_meme_id) != meme_id or str(state.country_id) != country_id:
 		var windows: Dictionary = {}
 		for id: String in TARGET_WINDOWS: windows[id] = _window()
-		state = {"version":1, "target_meme_id":meme_id, "target_record_id":current_id, "country_id":country_id, "target_started_hour":hour, "last_hour":hour, "signature":signature, "stable_peak":0.0, "local_samples":[], "adaptation":{"baseline":0.0, "revision_hour":-1, "signature":"", "eligible":false}, "windows":windows, "pairs":{}, "rows":[]}
+		state = {"version":Metrics.DEVIATION_VERSION, "target_meme_id":meme_id, "target_record_id":current_id, "country_id":country_id, "target_started_hour":hour, "last_hour":hour, "signature":signature, "stable_peak":0.0, "local_samples":[], "adaptation":{"baseline":0.0, "revision_hour":-1, "signature":"", "eligible":false}, "windows":windows, "pairs":{}, "rows":[]}
 	else:
 		var previous_signature: String = str(state.signature)
 		if not current.get("parent_ids", []).is_empty() and records.has(str(current.parent_ids[0])):
@@ -64,10 +64,24 @@ static func record_publication(state: Dictionary, variants: Array, current_id: S
 			if Metrics.deviation(visible.get("deviation_anchor", visible), visible) > competition.rules.local_deviation_max: state.windows.local_classic = _window()
 		state.target_record_id = current_id
 		state.signature = signature
+	state.version = Metrics.DEVIATION_VERSION
 	state.rows = _rows(state, _metrics(variants, current_id, country_id, hour, competition), competition.rules)
 	return state
 
-static func _metrics(variants: Array, current_id: String, country_id: String, hour: int, competition: RefCounted) -> Dictionary:
+static func refresh_metrics(state: Dictionary, variants: Array, competition: RefCounted) -> void:
+	if state.is_empty() or int(state.version) == Metrics.DEVIATION_VERSION: return
+	var memes := {}
+	for visible: Dictionary in competition.active_variants(variants): memes[_meme_id(visible)] = visible
+	# Refresh cached drift without adding hours to a newly qualified observation.
+	for row: Dictionary in state.rows:
+		var winner := str(row.winner_meme_id)
+		if memes.has(winner):
+			var visible: Dictionary = memes[winner]
+			row.deviation = Metrics.deviation(visible.get("deviation_anchor", visible), visible)
+		row.qualified = _qualified(row)
+	state.version = Metrics.DEVIATION_VERSION
+
+static func _metrics(variants: Array, current_id: String, country_id: String, hour: int, competition: RefCounted, metric_version: int = Metrics.DEVIATION_VERSION) -> Dictionary:
 	var records: Dictionary = _records(variants)
 	var target_id: String = _meme_id(records[current_id]) if records.has(current_id) else ""
 	var population: int = 0
@@ -80,7 +94,7 @@ static func _metrics(variants: Array, current_id: String, country_id: String, ho
 	for visible: Dictionary in competition.active_variants(variants):
 		var id: String = str(visible.id)
 		var meme_id: String = _meme_id(visible)
-		var entry: Dictionary = {"record_id":id, "meme_id":meme_id, "adopted":0, "exposed":0, "attention":0, "local_adopted":0, "spread":0.0, "adoption":0.0, "deviation":Metrics.deviation(visible.get("deviation_anchor", visible), visible), "birth_hour":int(competition._state.registry[id].birth_hour)}
+		var entry: Dictionary = {"record_id":id, "meme_id":meme_id, "adopted":0, "exposed":0, "attention":0, "local_adopted":0, "spread":0.0, "adoption":0.0, "deviation":Metrics.deviation(visible.get("deviation_anchor", visible), visible, metric_version), "birth_hour":int(competition._state.registry[id].birth_hour)}
 		for row: Dictionary in competition._state.world:
 			var cid: String = str(row.id)
 			var country: Dictionary = competition._state.countries[cid]
@@ -129,6 +143,7 @@ static func evaluate(state: Dictionary, variants: Array, current_id: String, cou
 		state.clear()
 		state.merge(fresh, true)
 	if hour <= int(state.last_hour): return {}
+	state.version = Metrics.DEVIATION_VERSION
 	var rules: MemeGameplayRules = competition.rules
 	var target: Dictionary = metrics.memes[target_id]
 	var other_id: String = _strongest(metrics.memes, target_id)
@@ -261,7 +276,7 @@ static func validate_state(state: Dictionary, variants: Array, competition: RefC
 		if not variants.is_empty(): errors.append("Published independent memes require ending progress")
 		return errors
 	var keys: Array[String] = ["version", "target_meme_id", "target_record_id", "country_id", "target_started_hour", "last_hour", "signature", "stable_peak", "local_samples", "adaptation", "windows", "pairs", "rows"]
-	if state.size() != keys.size() or not state.has_all(keys) or state.version != 1: return PackedStringArray(["Independent ending progress has invalid fields"])
+	if state.size() != keys.size() or not state.has_all(keys) or not _integer(state.version) or int(state.version) not in [1, Metrics.DEVIATION_VERSION]: return PackedStringArray(["Independent ending progress has invalid fields"])
 	for key: String in ["target_meme_id", "target_record_id", "country_id", "signature"]:
 		if not state[key] is String: errors.append("Independent ending identity fields require text")
 	for key: String in ["target_started_hour", "last_hour"]:
@@ -348,7 +363,7 @@ static func validate_result(result: Dictionary, state: Dictionary, variants: Arr
 	var errors: PackedStringArray = validate_state(state, variants, competition, hour)
 	if not errors.is_empty(): return errors
 	if state.is_empty() or int(state.last_hour) != hour: return PackedStringArray(["An independent ending requires the current observed hour"])
-	var metrics: Dictionary = _metrics(variants, str(state.target_record_id), str(state.country_id), hour, competition)
+	var metrics: Dictionary = _metrics(variants, str(state.target_record_id), str(state.country_id), hour, competition, int(state.version))
 	var checked: Dictionary = state.duplicate(true)
 	checked.rows = _rows(checked, metrics, competition.rules)
 	if competition._canonical(checked.rows) != competition._canonical(state.rows): errors.append("Independent ending metrics must match the current meme and its strongest competitors")
