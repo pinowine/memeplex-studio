@@ -270,7 +270,13 @@ theme_override_fonts/font = ExtResource("3")
 layout_mode = 2
 custom_minimum_size = Vector2(0, 12)
 
-[node name="Rows" type="VBoxContainer" parent="KeysPanel/Content"]
+[node name="BindingScroll" type="ScrollContainer" parent="KeysPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 360)
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="KeysPanel/Content/BindingScroll"]
+size_flags_horizontal = 3
 layout_mode = 2
 theme_override_constants/separation = 12
 

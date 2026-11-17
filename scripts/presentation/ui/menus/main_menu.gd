@@ -177,7 +177,7 @@ func close_key_bindings() -> void:
 	_layout()
 
 func _install_key_bindings() -> void:
-	var rows: VBoxContainer = _ui.get_node("KeysPanel/Content/Rows")
+	var rows: VBoxContainer = _ui.get_node("KeysPanel/Content/BindingScroll/Rows")
 	for action: String in KeyBindings.ACTION_IDS:
 		var row := HBoxContainer.new()
 		row.custom_minimum_size.y = 44

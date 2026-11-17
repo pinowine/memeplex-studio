@@ -1695,9 +1695,9 @@
     "en": "Click to open stack"
   },
   "LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D": {
-    "source": "回车收取并归堆 · 拖拽自由摆放",
-    "zh_CN": "回车收取并归堆 · 拖拽自由摆放",
-    "en": "Enter to collect into stacks · Drag to place freely"
+    "source": "%s收取并归堆 · 拖拽自由摆放",
+    "zh_CN": "%s收取并归堆 · 拖拽自由摆放",
+    "en": "%s to collect into stacks · Drag to place freely"
   },
   "LOC_S_STACK_430C52F7": {
     "source": "%s卡摞",
@@ -7325,9 +7325,9 @@
     "en": "Once your story is told, leave the next line to someone who knows the feeling."
   },
   "LOC_GUIDANCE_FIRST_FAX": {
-    "source": "纸出来了。带来的材料有两种收法：按 Enter 快捷收取，或把纸上的卡片拖到卡片摞／工作纸。只读传真不会取走材料；先拿好，再继续传播。",
-    "zh_CN": "看这里。带卡片的事件打印出来后，游戏时间会暂停，等待你收取。\n⏎ Enter：快捷收取材料。\n↗ 拖拽：沿箭头把卡片拖到对应卡片摞，也可拖到桌面上。\n收齐待领卡片后，时间会继续运行。",
-    "en": "The fax is here. When an event with cards is printed, game time pauses until you collect them.\n⏎ Enter: collect the materials quickly.\n↗ Drag: follow the arrow to the matching card stack, or drop a card onto a work sheet.\nCollecting all waiting cards releases this pause; other pause states still apply."
+    "source": "纸出来了。带来的材料有两种收法：按 %s 快捷收取，或把纸上的卡片拖到卡片摞／工作纸。只读传真不会取走材料；先拿好，再继续传播。",
+    "zh_CN": "看这里。带卡片的事件打印出来后，游戏时间会暂停，等待你收取。\n⏎ %s：快捷收取材料。\n↗ 拖拽：沿箭头把卡片拖到对应卡片摞，也可拖到桌面上。\n收齐待领卡片后，时间会继续运行。",
+    "en": "The fax is here. When an event with cards is printed, game time pauses until you collect them.\n⏎ %s: collect the materials quickly.\n↗ Drag: follow the arrow to the matching card stack, or drop a card onto a work sheet.\nCollecting all waiting cards releases this pause; other pause states still apply."
   },
   "LOC_GUIDANCE_FIRST_COMPETITOR": {
     "source": "地图上出现了别人的模因。它们也在争取注意力；不同颜色区分家族，空心圈表示出生或投放位置，实心点是各国采用人数的抽样。",
@@ -7423,5 +7423,60 @@
     "source": "出字速度",
     "zh_CN": "出字速度",
     "en": "Typing speed"
+  },
+  "LOC_KEY_COLLECT": {
+    "source": "收取传真材料",
+    "zh_CN": "收取传真材料",
+    "en": "Collect fax materials"
+  },
+  "LOC_KEY_OVERVIEW": {
+    "source": "快捷聚焦桌面全景",
+    "zh_CN": "桌面全景",
+    "en": "Desk overview"
+  },
+  "LOC_KEY_MAP": {
+    "source": "快捷聚焦地图",
+    "zh_CN": "地图",
+    "en": "Map"
+  },
+  "LOC_KEY_CULTIVATE": {
+    "source": "快捷聚焦培育",
+    "zh_CN": "培育",
+    "en": "Cultivate"
+  },
+  "LOC_KEY_EDIT": {
+    "source": "快捷聚焦编辑",
+    "zh_CN": "编辑",
+    "en": "Edit"
+  },
+  "LOC_KEY_SPREAD": {
+    "source": "快捷聚焦传播",
+    "zh_CN": "传播",
+    "en": "Propagation"
+  },
+  "LOC_KEY_FAX": {
+    "source": "快捷聚焦传真机",
+    "zh_CN": "传真机",
+    "en": "Fax machine"
+  },
+  "LOC_KEY_MONITOR": {
+    "source": "快捷聚焦显示器",
+    "zh_CN": "显示器",
+    "en": "Monitor"
+  },
+  "LOC_KEY_PRINTER": {
+    "source": "快捷聚焦打印机",
+    "zh_CN": "打印机",
+    "en": "Printer"
+  },
+  "LOC_KEY_CLOCK": {
+    "source": "快捷聚焦时钟",
+    "zh_CN": "时钟",
+    "en": "Clock"
+  },
+  "LOC_KEY_SPEED": {
+    "source": "快捷聚焦时间控制器",
+    "zh_CN": "时间控制器",
+    "en": "Time controls"
   }
 }

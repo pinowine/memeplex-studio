@@ -397,7 +397,11 @@ func _input(event: InputEvent) -> void:
 		_toggle_menu("developer")
 	else:
 		var focus := get_viewport().gui_get_focus_owner()
-		if focus is LineEdit or focus is TextEdit or _clock_paused() or simulation.phase == "event": return
+		if focus is LineEdit or focus is TextEdit or hud.modal_visible() or (_shell != null and _shell.blocks_input()): return
+		if _focus_shortcut(event):
+			get_viewport().set_input_as_handled()
+			return
+		if _clock_paused() or simulation.phase == "event": return
 		if KeyBindings.matches(event, "pause"): _set_speed(atlas.clock.previous_speed if simulation.speed == 0 else 0)
 		elif KeyBindings.matches(event, "slower"): _set_speed(maxi(0, simulation.speed - 1))
 		elif KeyBindings.matches(event, "faster"): _set_speed(mini(2, simulation.speed + 1))
@@ -406,6 +410,16 @@ func _input(event: InputEvent) -> void:
 		elif KeyBindings.matches(event, "speed_fast"): _set_speed(2)
 		else: return
 	get_viewport().set_input_as_handled()
+
+func _focus_shortcut(event: InputEventKey) -> bool:
+	if desk._fax_phone_focused(): return false
+	for action: String in KeyBindings.ACTION_IDS:
+		if not action.begins_with("focus_") or not KeyBindings.matches(event, action): continue
+		if action == "focus_overview": _return_to_desktop()
+		elif action in ["focus_map", "focus_cultivate", "focus_edit", "focus_spread"]: desk.select_sheet(action.trim_prefix("focus_"))
+		else: desk.focus_component({"focus_fax":"fax", "focus_monitor":"crt", "focus_printer":"printer", "focus_clock":"clock", "focus_speed":"speed"}[action])
+		return true
+	return false
 
 func _save() -> void:
 	var paused_speed := simulation.speed

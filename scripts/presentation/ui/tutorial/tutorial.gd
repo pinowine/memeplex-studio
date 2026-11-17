@@ -227,8 +227,7 @@ func allows_input(event: InputEvent) -> bool:
 		if key == KEY_ESCAPE and bool(_steps[_index].get("contextual", false)):
 			if event.pressed and not event.echo: skip()
 			return false
-		if key in [KEY_ENTER, KEY_KP_ENTER] and bool(_steps[_index].get("contextual_drag", false)):
-			return not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed
+		if KeyBindings.matches(event, "collect") and bool(_steps[_index].get("contextual_drag", false)): return true
 		if key == KEY_ESCAPE and (str(_steps[_index].get("action", "")) == "overview_returned" or str(_steps[_index].get("target", "")).begins_with("map/")):
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
@@ -238,7 +237,7 @@ func allows_input(event: InputEvent) -> bool:
 		if key == KEY_ESCAPE: return true
 		if _return_overview: return false
 		if str(_steps[_index].get("action", "")) == "speed_changed":
-			for action: String in KeyBindings.ACTION_IDS:
+			for action: String in KeyBindings.SPEED_ACTION_IDS:
 				if KeyBindings.matches(event, action): return true
 		return false
 	if not event is InputEventMouse: return false
@@ -446,7 +445,7 @@ func _refresh() -> void:
 	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
 	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title", "")))
 	var text_key := _hover_text if _display_index == _index and not _hover_text.is_empty() else str(step.get("text", ""))
-	var text := DeskLocalization.text(text_key)
+	var text := DeskLocalization.format_text(text_key, KeyBindings.display_name("collect")) if text_key == "LOC_GUIDANCE_FIRST_FAX" else DeskLocalization.text(text_key)
 	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
 	body.custom_minimum_size.y = 72 if choosing else 0
 	body.set_meta(&"text_workbench_source", DeskLocalization.text_source(text_key))

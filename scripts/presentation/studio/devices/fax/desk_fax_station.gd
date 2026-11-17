@@ -20,6 +20,7 @@ signal details_changed(record: Dictionary)
 signal event_output_started(record: Dictionary, page: Control)
 signal event_output_delivered(record: Dictionary, page: Control)
 
+const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
 const StarterContextCard := preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
@@ -253,7 +254,7 @@ func hover_details(viewport_point: Vector2) -> String:
 	if not viewport_point.is_finite(): return ""
 	for slip: Control in _reward_slips.values():
 		if slip.can_collect() and Rect2(Vector2.ZERO,slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse()*viewport_point):
-			return DeskLocalization.text("LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D")
+			return DeskLocalization.format_text("LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D", KeyBindings.display_name("collect"))
 	for control: Button in ([] if _handset_only else _view.keys + [_view.dial_button,_view.pickup_button,_view.hangup_button]):
 		if control.is_visible_in_tree() and Rect2(Vector2.ZERO,control.size).has_point(control.get_global_transform_with_canvas().affine_inverse()*viewport_point):
 			return _key_action_label(control)
@@ -755,7 +756,7 @@ func inspection() -> Dictionary:
 
 func handle_key(event: InputEventKey) -> bool:
 	if _blocked or not event.pressed or event.echo: return false
-	if event.keycode in [KEY_ENTER,KEY_KP_ENTER] and request_collect_materials() > 0: return true
+	if KeyBindings.matches(event, "collect") and request_collect_materials() > 0: return true
 	if _handset_only: return false
 	if not _focused: return false
 	if event.keycode == KEY_ESCAPE:
