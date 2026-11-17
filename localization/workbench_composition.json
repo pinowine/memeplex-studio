@@ -76,8 +76,8 @@
   },
   "LOC_PROP_NODE_TEXT_EFFECT": {
     "source": "开放基础文字投放。",
-    "zh_CN": "模因开始通过文字传播。解锁在文字渠道发布。",
-    "en": "The meme travels as text. Unlock publishing through text channels."
+    "zh_CN": "允许通过文字渠道投放模因。",
+    "en": "Allow meme publication through text channels."
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_TITLE": {
     "source": "机器翻译",
@@ -91,8 +91,8 @@
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_EFFECT": {
     "source": "以平台支持的语言版本生成文字译文。",
-    "zh_CN": "模因获得其他语言的译文。文字传播时可使用平台支持的已有译文。",
-    "en": "The meme gains translations. Text delivery can use existing versions supported by the platform."
+    "zh_CN": "文字传播按目标国家对现有译文语言的最高掌握率计算语言匹配。",
+    "en": "Text delivery uses the highest local proficiency among available translation languages."
   },
   "LOC_PROP_NODE_IMAGE_TITLE": {
     "source": "图像传播",
@@ -106,8 +106,8 @@
   },
   "LOC_PROP_NODE_IMAGE_EFFECT": {
     "source": "独立视觉信息承担部分的语言理解障碍降低90%。",
-    "zh_CN": "模因开始通过图像传播。画面能独立传达的部分，语言障碍降低90%。",
-    "en": "The meme travels through images. Language barriers fall by 90 percent for the part conveyed by the image alone."
+    "zh_CN": "图像传播将独立视觉信息部分的语言障碍降低90%，图中文字仍按语言匹配计算。",
+    "en": "Image delivery reduces language barriers by 90 percent for independent visual information while embedded text retains its language requirement."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_TITLE": {
     "source": "多语嵌字",
@@ -121,8 +121,8 @@
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_EFFECT": {
     "source": "将对应译文排入图中文字区域，形成多语图文版本。",
-    "zh_CN": "译文可以放回图片中。图像渠道会使用已嵌入当地语言文字的版本。",
-    "en": "Translations fit back into the image. Image channels can use versions with local-language lettering."
+    "zh_CN": "图像传播按目标国家对图中文字现有译文语言的最高掌握率计算图中文字的语言匹配。",
+    "en": "Localized image delivery uses the highest local proficiency among available embedded translation languages for its lettering."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_TITLE": {
     "source": "语境附注",
@@ -136,8 +136,8 @@
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT": {
     "source": "随传播附上出处与用法，有效语境依赖降至原值60%。",
-    "zh_CN": "模因附上背景说明。理解它所需的语境减少40%。",
-    "en": "The meme includes background notes. Its context dependency falls by 40%."
+    "zh_CN": "附有背景说明的模因在传播计算中的语境依赖乘以0.6。",
+    "en": "Multiply context dependency by 0.6 when the meme has an accompanying context note."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_TITLE": {
     "source": "替代文本",
@@ -151,8 +151,8 @@
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT": {
     "source": "通过文字渠道送出经编写的图像信息说明。",
-    "zh_CN": "图片有了文字说明。无法显示图片时，可通过文字渠道传达图像内容，质量系数为0.85。",
-    "en": "The image gains a text description. Text channels can carry its content at a quality factor of 0.85."
+    "zh_CN": "无法使用图像渠道时，以0.85的质量系数通过文字渠道传播已有的图像说明。",
+    "en": "When images cannot be delivered, send an available image description through a text channel at a quality factor of 0.85."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE": {
     "source": "多格式分发",
@@ -166,8 +166,8 @@
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_EFFECT": {
     "source": "按目标语言和渠道格式，从已有版本中选择适配版本。",
-    "zh_CN": "模因按读者和渠道选择版本。投递时使用适合目标语言与媒介的已有版本。",
-    "en": "The meme picks a version for its readers and channel. Delivery uses an existing version suited to the target language and medium."
+    "zh_CN": "从渠道支持的已有版本中选择“目标国家语言掌握率×版本质量”最高的版本投递。",
+    "en": "Deliver the available channel-compatible version with the highest local language proficiency multiplied by version quality."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE": {
     "source": "公开模板",
@@ -181,8 +181,8 @@
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_EFFECT": {
     "source": "社区填写开放槽位，形成参与传播的衍生版本。",
-    "zh_CN": "模因开放可替换的模板槽位。每48小时检查社区复用需求，符合条件时产生衍生版本。",
-    "en": "The meme opens its replaceable template slots. Community reuse is checked every 48 hours and can produce derivatives."
+    "zh_CN": "每48小时为已有采用者且开放槽位的模板尝试生成1个不重复的二创版本。",
+    "en": "Every 48 hours, attempt to create one new derivative of an adopted template with open slots."
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE": {
     "source": "源包发布",
@@ -196,8 +196,8 @@
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT": {
     "source": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
-    "zh_CN": "模因提供可复用的源素材。社区二创的制作成本降低60%。",
-    "en": "The meme provides reusable source material. Community remix costs fall by 60%."
+    "zh_CN": "提供可编辑源素材的模板在社区复用计算中的重混成本乘以0.4。",
+    "en": "Multiply remix cost by 0.4 in community reuse calculations for templates with editable source material."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_TITLE": {
     "source": "语义剥离",
@@ -211,8 +211,8 @@
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_EFFECT": {
     "source": "保持模板形式的衍生，其分裂阈值提高至至少0.75。",
-    "zh_CN": "模因允许保留形式、另赋含义。二创分化阈值提高到至少0.75，最高0.9。",
-    "en": "Remixes can keep the form while changing its meaning. Their split threshold rises to at least 0.75, up to 0.9."
+    "zh_CN": "保留模板形式并填满开放槽位的二创版本，其分裂阈值提高到至少0.75、最高0.9。",
+    "en": "Raise the split threshold to at least 0.75, capped at 0.9, for derivatives that preserve the template form and fill its open slots."
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_TITLE": {
     "source": "衍生回链",
@@ -226,8 +226,8 @@
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT": {
     "source": "真实衍生曝光带回原模板的发现入口。",
-    "zh_CN": "衍生版本附上原模板的入口。衍生获得曝光时，会为原模板带来引荐。",
-    "en": "Derivatives link back to the original template. Their exposure can refer readers to the source."
+    "zh_CN": "非玩家衍生版本新增曝光时，按新增曝光占当地人口的比例为父版本增加当地引荐权重。",
+    "en": "When an external derivative gains exposure, add local referral weight to its parent equal to new exposure divided by local population."
   },
   "LOC_PROP_NODE_VERSION_INDEX_TITLE": {
     "source": "版本索引",
@@ -241,8 +241,8 @@
   },
   "LOC_PROP_NODE_VERSION_INDEX_EFFECT": {
     "source": "索引同源的已有版本，引荐更适配当地的表达。",
-    "zh_CN": "不同版本有了共同索引。向当地读者引荐更适合其语言与渠道的已有版本。",
-    "en": "Versions share an index. Local readers receive referrals to existing versions suited to their language and channel."
+    "zh_CN": "已有至少两个同源版本时，向当地适配分数最高且优于当前版本的版本增加引荐，权重为两者分数差。",
+    "en": "With at least two related versions, refer to the locally best-fitting version when its fitness score exceeds the current one, using the score difference as weight."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE": {
     "source": "模板仓库",
@@ -256,8 +256,8 @@
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT": {
     "source": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
-    "zh_CN": "旧模板可以被重新发现。发布满48小时、热度下降且仍有复用需求时，会再次获得引荐。",
-    "en": "Old templates can be rediscovered. After 48 hours, a template with falling attention and remaining reuse demand can receive new referrals."
+    "zh_CN": "已有二创的模板发布满48小时、当地注意力低于采用人数的活跃比例且出现复用需求时，增加原模板的当地引荐。",
+    "en": "Add local referrals to a template with derivatives after 48 hours when local attention falls below its active adoption share and reuse demand exists."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_TITLE": {
     "source": "社群联络点",
@@ -271,8 +271,8 @@
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_EFFECT": {
     "source": "真实采用与有效群体联系形成当地传播联络点。",
-    "zh_CN": "采用者开始组织本地联络点。有实际采用者和有效群体联系的地区可以建立节点。",
-    "en": "Adopters form local hubs. Regions with actual adopters and effective group ties can establish a node."
+    "zh_CN": "首发国的采用人数达到当地人口百万分之一时，为当地占比至少25%的已投放人群建立传播节点。",
+    "en": "At the origin country, create hubs for published groups with at least 25 percent local share once adopters reach one per million residents."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_TITLE": {
     "source": "邻地联络",
@@ -286,8 +286,8 @@
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有陆地接触边转发。",
-    "zh_CN": "本地联络点向邻国转发。活跃节点沿现有陆地联系传播模因。",
-    "en": "Local hubs forward to neighboring countries. Active nodes spread the meme along existing land connections."
+    "zh_CN": "允许传播节点沿现有陆地联系向同一目标人群占比至少25%的国家转发。",
+    "en": "Allow hubs to forward along existing land contacts to countries where the same published group has at least 25 percent share."
   },
   "LOC_PROP_NODE_SEA_FORWARD_TITLE": {
     "source": "跨海联络",
@@ -301,8 +301,8 @@
   },
   "LOC_PROP_NODE_SEA_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有跨海接触边转发。",
-    "zh_CN": "联络点可以跨海转发。活跃节点沿现有跨海联系传播模因。",
-    "en": "Hubs can forward across the sea. Active nodes spread the meme along existing maritime connections."
+    "zh_CN": "允许传播节点沿现有跨海联系向同一目标人群占比至少25%的国家转发。",
+    "en": "Allow hubs to forward along existing sea contacts to countries where the same published group has at least 25 percent share."
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_TITLE": {
     "source": "中继接力",
@@ -316,8 +316,8 @@
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_EFFECT": {
     "source": "接收国形成真实采用后，作为新联络点继续转发。",
-    "zh_CN": "接收地也能加入接力。当地实际采用模因后，便可成为新的转发点。",
-    "en": "Receiving regions can join the relay. Actual local adoption enables a region to become a new forwarding node."
+    "zh_CN": "成功接收转发的国家在采用人数达到当地人口百万分之一时，可为当地占比至少25%的已投放人群建立中继节点。",
+    "en": "After a successful transfer, receiving countries can create relay hubs for published groups with at least 25 percent local share once adopters reach one per million residents."
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_TITLE": {
     "source": "跨圈引荐",
@@ -331,8 +331,8 @@
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_EFFECT": {
     "source": "通过已发布版本中的有效群体联系开展跨圈引荐。",
-    "zh_CN": "模因开始跨越人群圈层。联络点可沿有效的群体联系向其他圈层转发。",
-    "en": "The meme crosses audience circles. Hubs can forward through effective ties between groups."
+    "zh_CN": "已投放至少两个人群时，允许转发到任一已投放人群占比至少25%的联系国家。",
+    "en": "With at least two published groups, allow forwarding to connected countries where any published group has at least 25 percent share."
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_TITLE": {
     "source": "跨域接力网",
@@ -346,8 +346,8 @@
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_EFFECT": {
     "source": "让陆海中继与跨圈联络点共同运行多段并行接力。",
-    "zh_CN": "多个联络点共同传播。允许多条有效路线并行接力。",
-    "en": "Multiple hubs spread the meme together. Several effective routes can relay it in parallel."
+    "zh_CN": "社区转发由每小时只选最高权重的1条路线改为选择全部有效路线，并共同分配原有传播预算。",
+    "en": "Select all valid community routes each hour instead of only the highest-weight route, sharing the existing propagation budget."
   },
   "LOC_PROP_ROUTE_ACCESSIBILITY": {
     "source": "无障碍传播",
