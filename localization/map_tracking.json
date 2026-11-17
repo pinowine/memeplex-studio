@@ -726,8 +726,8 @@
   },
   "MM_ENDING_PROGRESS_SPLIT": {
     "source": "由你的模因分裂的独立改写",
-    "zh_CN": "由你的模因分裂的独立改写",
-    "en": "An independent rewrite split from your meme"
+    "zh_CN": "由直接分裂形成的新模因",
+    "en": "A new meme created by a direct split"
   },
   "MM_ENDING_PROGRESS_REVISION": {
     "source": "基准达标后发布改写",
