@@ -1,14 +1,15 @@
 extends RefCounted
 
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
+const Community = preload("res://scripts/gameplay/design/community_expression.gd")
 
 static func patch_ids(draft: Dictionary) -> Array:
 	var values: Array = draft.get("patch_ids", draft.get("module_patch_record", {}).get("modules", []))
-	return values.filter(func(id: Variant) -> bool: return not str(id).is_empty())
+	return Community.patch_ids(draft, values.filter(func(id: Variant) -> bool: return not str(id).is_empty()))
 
 static func compose(catalog: MemeDemoCatalog, draft: Dictionary) -> Dictionary:
 	if Composition.supports(str(draft.get("preset_id", ""))):
-		return Composition.compose(draft, patch_ids(draft))
+		return Community.compose(draft, patch_ids(draft))
 	var copy := preset_copy(str(draft.get("preset_id", "")))
 	return {"expression":render(catalog, draft), "meaning":str(copy.get("meaning", "")), "meaning_id":"", "language_versions":[], "media":"", "illustration":""}
 
@@ -34,7 +35,7 @@ static func base_slots(draft: Dictionary) -> Dictionary:
 ## Render the same expression for the workbench preview and publication.
 static func render(catalog: MemeDemoCatalog, draft: Dictionary) -> String:
 	if Composition.supports(str(draft.get("preset_id", ""))):
-		return str(Composition.compose(draft, patch_ids(draft)).get("expression", ""))
+		return str(Community.compose(draft, patch_ids(draft)).get("expression", ""))
 	var slots := base_slots(draft)
 	var record: Dictionary = draft.get("module_patch_record", {})
 	var suffixes: Array = record.get("suffixes", [])

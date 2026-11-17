@@ -4,6 +4,7 @@ const Metrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const SEMANTIC_PROFILE_FIELDS := ["language_id", "language_ids", "group_id", "group_ids", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment"]
 const PATCH_SCALAR_FIELDS := ["language_access", "recognizability", "context_dependency", "remix_cost"]
+const DRAFT_CONTENT_FIELDS := ["slots", "module_patch_record", "community_changes", "community_rephrase", "confluence_contents"]
 const CONTENT_FIELDS := ["id", "family_id", "parent_ids", "origin_ids", "creator", "owned", "controlled", "text", "meaning", "meaning_id", "language_versions", "kernel_id", "preset_id", "source_presets", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "patch_ids", "flow_draft", "flow_profile", "source_event", "mutation_definition_id", "mutation_patch_id", "confluence_source_id", "deviation_effect_deltas", "deviation_patch_effects"]
 var _simulation: RefCounted
 
@@ -34,8 +35,8 @@ static func semantic_snapshot(raw: Dictionary) -> Dictionary:
 			if source.has(key): semantic[key] = source[key].duplicate(true) if source[key] is Dictionary or source[key] is Array else source[key]
 		if source.has("expression"): semantic.expression = source.expression
 		if field == "flow_draft":
-			for key: String in ["slots", "module_patch_record"]:
-				if source.has(key): semantic[key] = source[key].duplicate(true)
+			for key: String in DRAFT_CONTENT_FIELDS:
+				if source.has(key): semantic[key] = source[key].duplicate(true) if source[key] is Dictionary or source[key] is Array else source[key]
 		result[field] = semantic
 	return result
 
@@ -53,8 +54,8 @@ static func rollback_content(anchor: Dictionary, candidate: Dictionary) -> Dicti
 		if semantic.has("expression"): profile.expression = semantic.expression
 		if field == "flow_profile" and anchor.has("text"): profile.text = str(anchor.text)
 		if field == "flow_draft":
-			for key: String in ["slots", "module_patch_record"]:
-				if semantic.has(key): profile[key] = semantic[key].duplicate(true)
+			for key: String in DRAFT_CONTENT_FIELDS:
+				if semantic.has(key): profile[key] = semantic[key].duplicate(true) if semantic[key] is Dictionary or semantic[key] is Array else semantic[key]
 				else: profile.erase(key)
 			var retained: Array = anchor.get("patch_ids", []).duplicate()
 			if ExpressionText.Composition.supports(str(profile.get("preset_id", ""))):
@@ -62,7 +63,7 @@ static func rollback_content(anchor: Dictionary, candidate: Dictionary) -> Dicti
 					if patch in retained: continue
 					var attempt := retained.duplicate()
 					attempt.append(patch)
-					var composed := ExpressionText.Composition.compose(profile, attempt)
+					var composed := ExpressionText.Community.compose(profile, attempt)
 					if not composed.is_empty() and str(composed.expression) == str(anchor.get("text", "")) and str(composed.meaning) == str(anchor.get("meaning", "")): retained.append(patch)
 			profile.patch_ids = retained
 			result.patch_ids = retained
@@ -103,7 +104,7 @@ static func retained_patches(anchor: Dictionary, candidate: Dictionary) -> Array
 	var visible := content(candidate)
 	var draft: Dictionary = visible.get("flow_draft", {}).duplicate(true)
 	var semantic: Dictionary = anchor.get("flow_draft", {})
-	for key: String in SEMANTIC_PROFILE_FIELDS + ["slots", "module_patch_record"]:
+	for key: String in SEMANTIC_PROFILE_FIELDS + DRAFT_CONTENT_FIELDS:
 		if semantic.has(key): draft[key] = semantic[key].duplicate(true) if semantic[key] is Dictionary or semantic[key] is Array else semantic[key]
 		else: draft.erase(key)
 	var retained: Array = anchor.get("patch_ids", []).duplicate()
@@ -112,7 +113,7 @@ static func retained_patches(anchor: Dictionary, candidate: Dictionary) -> Array
 			if patch in retained: continue
 			var attempt := retained.duplicate()
 			attempt.append(patch)
-			var composed := ExpressionText.Composition.compose(draft, attempt)
+			var composed := ExpressionText.Community.compose(draft, attempt)
 			if not composed.is_empty() and str(composed.expression) == str(anchor.get("text", "")) and str(composed.meaning) == str(anchor.get("meaning", "")): retained.append(patch)
 	return retained
 

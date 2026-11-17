@@ -259,6 +259,10 @@ func design_action(action: String, params: Dictionary = {}) -> PackedStringArray
 
 func context_draft() -> Dictionary:
 	var draft: Dictionary = design_state.snapshot().context_draft.duplicate(true)
+	if not current_variant_id.is_empty():
+		var active := Lifecycle.content(variant_by_id(current_variant_id))
+		if bool(active.get("owned", false)):
+			draft.community_changes = ExpressionText.Community.collect(draft.get("community_changes", []), variant_by_id(current_variant_id), variants)
 	for key in ["political_position", "pragmatic_position"]:
 		if draft.has(key): draft[key] = Vector2(draft[key][0], draft[key][1])
 	for key in ["replaceable_slots", "topic_ids"]:

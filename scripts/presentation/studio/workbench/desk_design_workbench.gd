@@ -1150,6 +1150,8 @@ func _variant_changes(record: Dictionary) -> String:
 func _variant_hover(record: Dictionary) -> Dictionary:
 	var external_rewrite := str(record.get("source_creator", record.get("creator", "player"))) != "player"
 	record = _full_variant(record)
+	if external_rewrite and record.has("mutation_parent_content"):
+		return {"kind":"source", "id":str(record.id), "title":DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E"), "hover_description":community_change_text(record)}
 	var text := str(record.get("text", ""))
 	var meaning := str(record.get("meaning", ""))
 	if not str(record.get("meaning_id", "")).is_empty():
@@ -1159,6 +1161,19 @@ func _variant_hover(record: Dictionary) -> Dictionary:
 	var note := ("" if external_rewrite else _variant_changes(record) + "\n\n") + DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024") + "\n" + text + ("\n" + meaning if not meaning.is_empty() else "")
 	var title := DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E" if external_rewrite else "LOC_YOUR_OWN_EXPRESSION_0A35E8E2")
 	return {"kind":"source", "id":str(record.id), "title":title, "description":description, "hover_description":description, "hover_note":note}
+
+func community_change_text(record: Dictionary) -> String:
+	var delta := ExpressionText.Community.change(record)
+	var lines := PackedStringArray()
+	for id: String in delta.patch_ids:
+		lines.append(DeskLocalization.format_text("LOC_NEURON_PATCH_ADDED", _entry_title("modules", id) + "：" + DeskLocalization.text(str(_rules.find("modules", id).description))))
+	for field: String in delta.axes:
+		lines.append(DeskLocalization.text("LOC_COMMUNITY_" + field.to_upper()))
+	for id: String in delta.topics: lines.append(DeskLocalization.format_text("LOC_COMMUNITY_TOPIC", DeskLocalization.text(str(_rules.context_resource("topic_" + id).title))))
+	if not str(delta.language_id).is_empty(): lines.append(DeskLocalization.format_text("LOC_COMMUNITY_LANGUAGE", DeskLocalization.text(str(_rules.context_resource("language_" + str(delta.language_id)).title))))
+	if bool(delta.rephrase): lines.append(DeskLocalization.text("LOC_COMMUNITY_REPHRASE"))
+	if not delta.confluence.is_empty(): lines.append(DeskLocalization.text("LOC_COMMUNITY_CONFLUENCE"))
+	return "\n".join(lines)
 
 
 func module_clip_parent(slot: int) -> Control:
@@ -1320,10 +1335,6 @@ func _summary_inspection() -> Dictionary:
 
 func _refresh_composition() -> void:
 	_composition = ExpressionText.compose(_catalog, _draft) if _catalog != null and not _draft.is_empty() else {}
-	if not _lineage_preview.is_empty():
-		_composition = {"expression":str(_lineage_preview.text), "meaning":str(_lineage_preview.meaning),
-			"expression_segments":[{"text":str(_lineage_preview.text), "sources":[]}],
-			"meaning_segments":[{"text":str(_lineage_preview.meaning), "sources":[]}], "context_segments":[]}
 	_hide_source_hover()
 	_final_expression.configure(str(_draft.get("preset_id", "")), _composition.get("expression_segments", []), _composition.get("context_segments", []), str(_composition.get("expression", "LOC_WB_NO_COMPOSITION")))
 	_meaning.set_segments(_composition.get("meaning_segments", []), str(_composition.get("meaning", "")))
@@ -1423,7 +1434,7 @@ func _candidate_patch_errors(id: String, slot: int = -1, removing: bool = false)
 	var candidate: Array = _design.get("module_slots", []).duplicate()
 	if slot >= 0 and slot < candidate.size(): candidate[slot] = "" if removing else id
 	elif not removing: candidate.append(id)
-	return _rules.patch_errors(str(_draft.get("preset_id", "")), candidate)
+	return _rules.patch_errors(str(_draft.get("preset_id", "")), ExpressionText.Community.patch_ids(_draft, candidate.filter(func(value: Variant): return not str(value).is_empty())))
 
 
 func _show_module_errors(errors: PackedStringArray) -> void:

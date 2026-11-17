@@ -6,7 +6,7 @@ static func authored_patch_ids(draft: Dictionary) -> Array:
 	var result: Array = []
 	for id: String in draft.get("module_patch_record", {}).get("modules", []):
 		if not id.is_empty(): result.append(id)
-	return result
+	return ExpressionText.Community.patch_ids(draft, result)
 
 static func patch_ids(draft: Dictionary) -> Array:
 	return draft.patch_ids.duplicate() if draft.has("patch_ids") else authored_patch_ids(draft)
@@ -25,11 +25,11 @@ static func candidate(catalog: MemeDemoCatalog, parent: Dictionary, event_defini
 		if not result.is_empty(): return result
 	return {}
 
-static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: String) -> Dictionary:
+static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: String, persist_transform := true) -> Dictionary:
 	var ids: Array = parent.patch_ids.duplicate()
 	ids.append(patch_id)
 	if not catalog.DESIGN_RULES.patch_errors(str(parent.preset_id), ids).is_empty(): return {}
-	var draft: Dictionary = parent.flow_draft.duplicate(true)
+	var draft: Dictionary = ExpressionText.Community.inherited_draft(parent) if persist_transform else parent.flow_draft.duplicate(true)
 	draft.slots = ExpressionText.base_slots(draft)
 	# A community inherits the expression without claiming the author's inventory records.
 	for mark: Dictionary in draft.get("skill_effects", []):

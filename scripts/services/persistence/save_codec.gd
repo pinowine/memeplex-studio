@@ -421,12 +421,12 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 				return PackedStringArray(["A mutation must preserve its parent's patches and add one patch"])
 			if parent.flow_draft.get("reuse_permission", "unknown") == "restricted":
 				return PackedStringArray(["A restricted source version cannot produce a community rewrite"])
-			var mutation := EventMutation.derive(catalog, parent, str(variant.get("mutation_patch_id", "")), definition) if definition != null else MutationRules.derive(catalog, parent, str(variant.patch_ids.back()))
+			var mutation := EventMutation.derive(catalog, parent, str(variant.get("mutation_patch_id", "")), definition, draft.has("community_rephrase")) if definition != null else MutationRules.derive(catalog, parent, str(variant.patch_ids.back()), draft.has("community_rephrase"))
 			if mutation.is_empty(): return PackedStringArray(["A saved rewrite requires a compatible event mutation"])
 			if definition != null and definition.mutation_kind == &"confluence":
 				var companion_id := str(variant.get("confluence_source_id", ""))
 				if not variants_by_id.has(companion_id) or companion_id == str(parent.id): return PackedStringArray(["Confluence requires its actual second circulating meme"])
-				mutation = EventMutation.merge_with(mutation, variant.get("confluence_companion_content", variants_by_id[companion_id]))
+				mutation = EventMutation.merge_with(mutation, variant.get("confluence_companion_content", variants_by_id[companion_id]), draft.has("confluence_contents"))
 			if mutation.is_empty() or competition._canonical(draft) != competition._canonical(mutation.flow_draft):
 				return PackedStringArray(["A mutation draft must match its inherited expression and new patch"])
 			composed = mutation.composition

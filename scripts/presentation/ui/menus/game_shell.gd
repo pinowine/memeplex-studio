@@ -149,6 +149,7 @@ func is_choosing_starter() -> bool:
 func observe(action: String, data: Dictionary = {}) -> void:
 	tutorial.observe_action(action,data)
 	starter_dialog.observe_action(action,data)
+	context_guidance.mentor.observe_action(action,data)
 
 func show_direct_starters(options: Array, selected_index: int) -> void:
 	starter_dialog.set_starter_options(options, selected_index)

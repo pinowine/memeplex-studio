@@ -15,12 +15,12 @@ static func candidate(catalog: MemeDemoCatalog, parent: Dictionary, definition: 
 			if not result.is_empty(): return result
 	return {}
 
-static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: String, definition: MemeDemoEvent) -> Dictionary:
+static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: String, definition: MemeDemoEvent, persist_transform := true) -> Dictionary:
 	if definition.mutation_kind == &"expression":
 		if not patch_id.is_empty(): return {}
-		return _rewrite_expression(catalog, parent, definition)
+		return _rewrite_expression(catalog, parent, definition, persist_transform)
 	if patch_id.is_empty(): return {}
-	var result := MutationRules.derive(catalog, parent, patch_id)
+	var result := MutationRules.derive(catalog, parent, patch_id, persist_transform)
 	if result.is_empty(): return {}
 	var draft: Dictionary = result.flow_draft
 	var bounds: Dictionary = Composition.definition(str(parent.preset_id)).meaning_bounds
@@ -43,8 +43,8 @@ static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: Strin
 	result.meaning_changed = true
 	return result
 
-static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, definition: MemeDemoEvent) -> Dictionary:
-	var draft: Dictionary = parent.flow_draft.duplicate(true)
+static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, definition: MemeDemoEvent, persist_transform: bool) -> Dictionary:
+	var draft: Dictionary = ExpressionText.Community.inherited_draft(parent) if persist_transform else parent.flow_draft.duplicate(true)
 	draft.slots = ExpressionText.base_slots(draft)
 	# A new phrasing keeps the inherited message and releases the author's inventory claims.
 	for mark: Dictionary in draft.get("skill_effects", []):
@@ -52,13 +52,14 @@ static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, de
 			draft[str(effect.field)] = clampf(float(draft[str(effect.field)]) - float(effect.delta), 0.0, 1.0)
 	for field: String in ["module_patch_record", "skill_effects", "context_layer_record"]: draft.erase(field)
 	draft.patch_ids = parent.patch_ids.duplicate()
+	if persist_transform and definition.mutation_expression_mode == &"rephrase": draft.community_rephrase = true
 	if definition.mutation_expression_mode == &"translation":
 		var current := Composition.LANGUAGES.find(str(draft.language_id))
 		draft.language_id = str(Composition.LANGUAGES[(current + 1) % Composition.LANGUAGES.size()])
 		draft.language_ids = [draft.language_id]
 	if not Composition.validate(draft, draft.patch_ids).is_empty(): return {}
 	var composed := ExpressionText.compose(catalog, draft)
-	if definition.mutation_expression_mode == &"rephrase":
+	if not persist_transform and definition.mutation_expression_mode == &"rephrase":
 		var rewritten := Composition.rephrase_expression(draft,draft.patch_ids)
 		composed.expression = str(rewritten.expression)
 		composed.expression_segments = rewritten.segments
@@ -70,9 +71,12 @@ static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, de
 static func _position(value: Variant) -> Vector2:
 	return value if value is Vector2 else Vector2(float(value[0]), float(value[1]))
 
-static func merge_with(result: Dictionary, companion: Dictionary) -> Dictionary:
+static func merge_with(result: Dictionary, companion: Dictionary, persist_transform := true) -> Dictionary:
 	var merged := result.duplicate(true)
 	var composed: Dictionary = merged.composition
+	if persist_transform:
+		if not merged.flow_draft.has("confluence_contents"): merged.flow_draft.confluence_contents = []
+		merged.flow_draft.confluence_contents.append({"text":str(companion.text),"meaning":str(companion.get("meaning", companion.text))})
 	var companion_meaning := str(companion.get("meaning", companion.text))
 	if companion_meaning.is_empty(): companion_meaning = str(companion.text)
 	var identity := "\n".join([str(composed.meaning_id), str(composed.meaning), companion_meaning, str(companion.text)])

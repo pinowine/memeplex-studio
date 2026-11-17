@@ -118,13 +118,15 @@ func register(variant: Dictionary, profile: Dictionary, country_id: String, hour
 		for field in ["adopted","exposed","attention"]: country[field][str(variant.id)] = 0
 
 func profile(draft: Dictionary) -> Dictionary:
+	var source_draft := draft
+	draft = ExpressionText.Community.effective_draft(draft)
 	var channel: Resource = null
 	var channel_id := str(draft.get("channel_id","local_board"))
 	for item in catalog.channels:
 		if str(item.id) == channel_id: channel = item
 	var text := ""
 	if ExpressionText.Composition.supports(str(draft.get("preset_id",""))):
-		text = ExpressionText.render(catalog,draft)
+		text = ExpressionText.render(catalog,source_draft)
 	elif draft.get("slots") is Dictionary and not draft.slots.is_empty():
 		for kernel in catalog.kernels:
 			if str(kernel.id) == str(draft.get("kernel_id","")):

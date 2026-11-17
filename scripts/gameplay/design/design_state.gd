@@ -1,6 +1,8 @@
 class_name MemeDemoDesignState
 extends RefCounted
 
+const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
+
 const DEFAULT_RULES = preload("res://data/rules/design_rules.tres")
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const DESIGN_VERSION := 10
@@ -295,8 +297,9 @@ func _current_patch_errors(draft: Dictionary) -> PackedStringArray:
 
 func _composition_errors(draft: Dictionary) -> PackedStringArray:
 	var preset_id := str(draft.get("preset_id",""))
-	var errors := rules.patch_errors(preset_id,_state.module_slots)
-	if Composition.supports(preset_id): errors.append_array(Composition.validate(draft,_state.module_slots))
+	var patches: Array = ExpressionText.Community.patch_ids(draft, _state.module_slots.filter(func(id: Variant): return not str(id).is_empty()))
+	var errors := rules.patch_errors(preset_id, patches)
+	if Composition.supports(preset_id): errors.append_array(Composition.validate(ExpressionText.Community.effective_draft(draft), patches))
 	return errors
 
 func _snapshot_layers(result: Dictionary) -> void:
@@ -796,7 +799,7 @@ func snapshot(variants: Array = []) -> Dictionary:
 		if bool(raw.get("retired", false)): continue
 		var variant := raw.duplicate(true)
 		variant.merge(raw.get("effective_content", {}), true)
-		lineage.append({"id":variant.id, "meme_id":str(raw.get("meme_id", raw.id)), "parent_ids":[],
+		lineage.append({"id":variant.id, "meme_id":str(raw.get("meme_id", raw.id)), "parent_ids":raw.parent_ids.duplicate(),
 			"origin_ids":variant.get("origin_ids", []).duplicate(), "source_presets":variant.get("source_presets", []).duplicate(true),
 			"kernel_id":variant.kernel_id, "module_id":str(rules.find("modules","module_" + str(variant.kernel_id)).get("id","")), "creator":variant.creator, "source_creator":_effective_source_creator(raw, variant, by_id),
 			"owned":variant.owned, "controlled":variant.controlled, "text":variant.text, "semantic_distance":variant.semantic_distance,

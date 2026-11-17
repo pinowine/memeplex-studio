@@ -626,6 +626,11 @@ func _render() -> void:
 		var profile: Dictionary = simulation.competition.live_profile(simulation.current_variant_id)
 		snapshot.propagation_delivery = simulation.competition.fitness(profile, selected).get("delivery", {})
 	hud.render(snapshot)
+	var authored: Dictionary = simulation.context_draft()
+	var editing: Dictionary = hud.get_draft()
+	if not authored.is_empty() and str(editing.get("preset_id", "")) == str(authored.preset_id) and editing.get("community_changes", []) != authored.get("community_changes", []):
+		editing.community_changes = authored.get("community_changes", []).duplicate(true)
+		hud.set_draft(editing)
 	_context_trial_skills = Array(snapshot.get("design_state", {}).get("unlocked_skills", []))
 	if _ready_to_run:
 		_sync_setup()
