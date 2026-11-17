@@ -583,11 +583,19 @@ func _add_hover_text(body: RichTextLabel, text: String) -> void:
 	body.add_text(paragraphs[0])
 	if paragraphs.size() == 1: return
 	body.add_text("\n\n")
-	body.push_font_size(Typography.point_size("reference"))
-	body.push_color(ReceiptStyle.SECONDARY_INK)
-	body.add_text(paragraphs[1])
-	body.pop()
-	body.pop()
+	var citation := paragraphs[1].rsplit("\n", true, 1)
+	for index in citation.size():
+		if index > 0: body.add_text("\n")
+		var role := "quote" if index == 0 else "reference"
+		body.push_paragraph(HORIZONTAL_ALIGNMENT_LEFT if role == "quote" else HORIZONTAL_ALIGNMENT_RIGHT)
+		body.push_font(Typography.font(role))
+		body.push_font_size(Typography.point_size(role))
+		body.push_color(Typography.ROLES[role].color)
+		body.add_text(citation[index])
+		body.pop()
+		body.pop()
+		body.pop()
+		body.pop()
 
 func _update_focus() -> void:
 	var map_navigation := not _steps.is_empty() and bool(_steps[_index].get("map_navigation", false))
