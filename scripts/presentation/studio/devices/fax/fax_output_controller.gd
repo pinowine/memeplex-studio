@@ -9,6 +9,7 @@ signal output_delivered(record: Dictionary, page: Control)
 
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
 const StationView := preload("res://scripts/presentation/studio/devices/fax/fax_station_view.gd")
+const VISIBLE_HISTORY_PAGES := 18
 var pending_events: Array[Dictionary] = []
 var active_event: Dictionary = {}
 var received_event_ids: Dictionary = {}
@@ -112,6 +113,7 @@ func _feed_finished() -> void:
 	sync_current_page()
 	page.finish_output(output_pages.size())
 	output_pages.append(page)
+	_show_history_group(output_pages.size() - 1)
 	feeding_page = null
 	event_state = "delivered"
 	pages_changed.emit()
@@ -141,6 +143,20 @@ func restore_page_order() -> void:
 	for index in output_pages.size():
 		output_pages[index].z_index = 0
 		_host.move_child(output_pages[index], index)
+	_show_history_group(output_pages.size() - 1)
+
+func _show_history_group(selected_index: int) -> void:
+	var first := maxi(0, selected_index) / VISIBLE_HISTORY_PAGES * VISIBLE_HISTORY_PAGES
+	var heights := Vector2(INF,0)
+	for index in range(first, mini(first + VISIBLE_HISTORY_PAGES,output_pages.size())):
+		heights.x = minf(heights.x,output_pages[index].size.y)
+		heights.y = maxf(heights.y,output_pages[index].size.y)
+	for index in output_pages.size():
+		var page := output_pages[index]
+		page.visible = index >= first and index < first + VISIBLE_HISTORY_PAGES
+		if page.visible:
+			page.set_history_heights(heights)
+			page.finish_output(index - first)
 
 func reset() -> void:
 	_kill_feed_tween()
@@ -189,7 +205,9 @@ func restore_history(events: Array) -> int:
 		if id not in read_event_ids: read_event_ids.append(id)
 		last_read = record.duplicate(true)
 		restored += 1
-	if restored > 0: pages_changed.emit()
+	if restored > 0:
+		_show_history_group(output_pages.size() - 1)
+		pages_changed.emit()
 	return restored
 
 
@@ -241,7 +259,9 @@ func page_for_event(instance_id: String) -> Control:
 func select_history_page(instance_id: String) -> void:
 	var selected := page_for_event(instance_id)
 	# Reorder the paper stack without raising it over loose desk cards.
-	if selected != null: _host.move_child(selected, _host.get_child_count() - 1)
+	if selected != null:
+		_show_history_group(output_pages.find(selected))
+		_host.move_child(selected, _host.get_child_count() - 1)
 
 func refresh_page_content() -> void:
 	for page: Control in all_pages(): page.configure(page.event, page.theme)

@@ -119,6 +119,7 @@ func sync(delta: float, clock_angles: Vector2, daylight: float) -> void:
 	_ink.set_shader_parameter("canvas_y", canvas.y)
 	_sync_live_papers(delta)
 	for binding: Dictionary in bindings:
+		if not binding.source.is_visible_in_tree(): continue
 		var transform: Transform2D = binding.source.get_global_transform_with_canvas()
 		var rect: Rect2 = binding.rect
 		binding.material.set_shader_parameter("origin_px", transform * rect.position)
@@ -251,6 +252,9 @@ func _add_paper_tab(source: Control) -> Dictionary:
 	return binding
 
 func _sync_paper_tab(binding: Dictionary) -> void:
+	if not binding.source.is_visible_in_tree():
+		if binding.has("tab"): binding.tab.mesh.hide()
+		return
 	var tab: Control
 	if str(binding.id) in ["map", "edit", "cultivate", "spread"]:
 		tab = _desktop.sheet_tab(str(binding.id))
@@ -345,6 +349,9 @@ func _sync_live_papers(delta: float) -> void:
 			binding.model.hide()
 			continue
 		binding.model.visible = source.is_visible_in_tree()
+		if not binding.model.visible:
+			_sync_paper_tab(binding)
+			continue
 		binding.rect = Rect2(Vector2.ZERO,source.size)
 		var transform := source.get_global_transform()
 		var center := transform*(source.size*.5)
@@ -398,7 +405,11 @@ func _material_card_height(source: Control, rank: int, dragging: bool) -> float:
 	return paper_top + .001 + maxi(rank,0)*.0001 + (.006 if dragging else 0.0)
 
 func _fax_floor_height(source: Control) -> float:
-	return _workpaper_top() + .001 + source.get_index() * .0007
+	var rank := 0
+	for sibling in source.get_parent().get_children():
+		if sibling == source: break
+		if sibling is Control and sibling.is_visible_in_tree(): rank += 1
+	return _workpaper_top() + .001 + rank * .00015
 
 func _workpaper_top() -> float:
 	var paper_top := .0006

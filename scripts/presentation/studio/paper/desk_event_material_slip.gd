@@ -91,6 +91,9 @@ func configure(value: Dictionary, drag_host: Control, ui_theme: Theme = null, sh
 		else:
 			_graphic.configure(RULES.context_resource(str(record.get("id",""))))
 	_paper.modulate = {"language":Color("e2e7dc"), "group":Color("e4d6b6"), "module":Color("dddbe5"), "topic":Color("eee1ba")}.get(str(record.get("kind", "")),Color.WHITE)
+	if str(record.get("kind", "")) in ["stance_token", "pragmatic_token"]:
+		_paper.hide()
+		get_node("HanddrawnCardMarks").hide()
 	if str(record.get("kind", "")) in ["language","group","module","topic"]:
 		if _face == null:
 			_face = CardFace.new()

@@ -38,6 +38,7 @@ var _full_size := Vector2.ZERO
 var _feed_progress := 1.0
 var _history_tab: Label
 var _tab_index := 0
+var _history_heights := Vector2.ZERO
 var _delivered := false
 var _attachment_start := 0.0
 
@@ -83,8 +84,13 @@ func set_attachment_start(value: float) -> void:
 
 func set_feed_geometry(full_size: Vector2, progress: float) -> void:
 	_full_size = full_size
+	_history_heights = Vector2(full_size.y,full_size.y)
 	_feed_progress = clampf(progress, 0.0, 1.0)
 	size = Vector2(full_size.x, full_size.y * _feed_progress)
+	_layout()
+
+func set_history_heights(heights: Vector2) -> void:
+	_history_heights = heights
 	_layout()
 
 func finish_output(index: int) -> void:
@@ -100,7 +106,7 @@ func finish_output(index: int) -> void:
 		_history_tab.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_history_tab.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		add_child(_history_tab)
-	_history_tab.text = "H%s" % str(event.get("hour", index + 1))
+	_history_tab.text = "D%d" % (int(event.get("hour", index + 1)) / 24 + 1)
 	_layout()
 
 func history_tab_rect() -> Rect2:
@@ -108,7 +114,12 @@ func history_tab_rect() -> Rect2:
 	var width := 32.0
 	if _history_tab != null:
 		width = maxf(width, ceilf(_history_tab.get_theme_font("font").get_string_size(_history_tab.text, HORIZONTAL_ALIGNMENT_LEFT, -1, _history_tab.get_theme_font_size("font_size")).x) + 8.0)
-	return Rect2(Vector2(size.x - 2, 12 + (_tab_index % 10) * 20), Vector2(width, 19))
+	var side := _tab_index % 3
+	var slot := _tab_index / 3
+	if side == 2:
+		var tab_width := maxf(width, 36.0)
+		return Rect2(Vector2(8 + slot * ((size.x - 16) / 6.0), size.y-_history_heights.y-18), Vector2(minf(tab_width, (size.x - 16) / 6.0 - 1), _history_heights.y-size.y+20))
+	return Rect2(Vector2(-width + 2 if side == 0 else size.x - 2, size.y-_history_heights.x+12 + slot * ((_history_heights.x - 32) / 6.0)), Vector2(width, 19))
 
 func _fit_excerpt(label: Label, bounds: Rect2, line_limit: int) -> void:
 	var line_height := label.get_theme_font("font").get_height(label.get_theme_font_size("font_size")) + label.get_theme_constant("line_spacing")
@@ -132,6 +143,7 @@ func _layout() -> void:
 		var tab := history_tab_rect()
 		_history_tab.position = tab.position
 		_history_tab.size = tab.size
+		_history_tab.vertical_alignment = VERTICAL_ALIGNMENT_TOP if _tab_index % 3 == 2 else VERTICAL_ALIGNMENT_CENTER
 	queue_redraw()
 
 func _draw() -> void:
