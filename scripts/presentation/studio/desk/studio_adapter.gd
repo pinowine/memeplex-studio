@@ -228,6 +228,11 @@ func hovered_equipment(point: Vector2) -> String:
 	var id := String(_desk._props._hit_prop(_desk.get_viewport().get_canvas_transform() * point))
 	return {"crt":"crt_terminal", "printer":"receipt_printer", "fax":"fax_machine", "clock":"desk_clock"}.get(id, "")
 
+func equipment_cursor_shape(id: String) -> int:
+	var target: String = {"crt_terminal":"crt", "receipt_printer":"printer", "fax_machine":"fax", "desk_clock":"clock"}[id]
+	var camera: Dictionary = _desk._camera.inspection()
+	return Input.CURSOR_HELP if camera.state == "focused" and camera.target == target else Input.CURSOR_CROSS
+
 func cancel_interactions() -> void:
 	_desk._page.hud.design_workbench().context_slice()._cancel_input()
 	_desk._monitor.cancel_drag()

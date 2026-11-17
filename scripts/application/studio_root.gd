@@ -446,7 +446,7 @@ func _update_hover() -> int:
 	hovered = desktop.hovered_equipment(input_router.desktop_point(point))
 	if hovered.is_empty(): hover_outline.clear()
 	else: hover_outline.show_meshes(hovered, _meshes_for_hover(hovered, _node(hovered)))
-	if not hovered.is_empty(): return Input.CURSOR_CROSS
+	if not hovered.is_empty(): return desktop.equipment_cursor_shape(hovered)
 	var input_position: Vector2 = desktop_position if material_input else input_router.screen_input(point)
 	var control_shape: int = desktop.control_cursor_shape(logical.gui_get_hovered_control(), input_position)
 	return control_shape if control_shape != Input.CURSOR_ARROW else desktop.pointer_cursor_shape(input_position)
