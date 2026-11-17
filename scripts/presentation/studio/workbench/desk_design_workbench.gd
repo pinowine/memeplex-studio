@@ -669,7 +669,7 @@ func lineage_material_faces() -> Array[Dictionary]:
 	var faces: Array[Dictionary] = []
 	for slot in _lineage_cards.size():
 		var face: Control = _lineage_cards[slot]
-		faces.append({"source":face, "key":"lineage/" + str(slot), "owner":null, "visible":face.is_visible_in_tree()})
+		faces.append({"source":face, "key":"lineage/" + str(slot), "owner":null, "visible":_tab == "edit" and face.is_visible_in_tree()})
 	return faces
 
 

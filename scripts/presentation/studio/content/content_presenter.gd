@@ -378,7 +378,7 @@ func _sync_live_papers(delta: float) -> void:
 				dragging = _desktop.card_dragging(str(binding.card_key))
 			# Attached faces are already drawn on the fax paper's surface.
 			var attached := is_instance_valid(owner) and outputs.has(owner.get_parent())
-			binding.model.visible = source.is_visible_in_tree() and not attached
+			binding.model.visible = source.is_visible_in_tree() and bool(binding.display_visible) and not attached
 			binding.model.position.y = _material_card_height(source,int(binding.card_rank),dragging)
 		binding.material.set_shader_parameter("sheet_depth_m",source.size.y*absf(scale_2d.y)/1000)
 		if binding.has("feed") and binding.model.visible:
@@ -419,7 +419,7 @@ func _workpaper_top() -> float:
 	return paper_top
 
 
-func _bind_material_face(source: Control, key: String, rank: int, owner: Control = null) -> void:
+func _bind_material_face(source: Control, key: String, rank: int, owner: Control, displayed: bool) -> void:
 	if not is_instance_valid(source): return
 	var identity := source.get_instance_id()
 	if not _emitted_papers.has(identity):
@@ -434,11 +434,12 @@ func _bind_material_face(source: Control, key: String, rank: int, owner: Control
 	for binding in paper_bindings:
 		if binding.get("material_card",false) and binding.source == source:
 			binding.card_rank = rank
+			binding.display_visible = displayed
 			break
 
 
 func _sync_material_cards() -> void:
 	var rank := 0
 	for face: Dictionary in _desktop.material_faces():
-		_bind_material_face(face.source, face.key, rank, face.owner)
+		_bind_material_face(face.source, face.key, rank, face.owner, bool(face.visible))
 		if face.visible: rank += 1

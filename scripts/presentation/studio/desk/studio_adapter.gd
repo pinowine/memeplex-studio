@@ -190,7 +190,8 @@ func material_faces() -> Array[Dictionary]:
 		faces.append(entry)
 	for key: String in cards._cards:
 		var card: Dictionary = cards._cards[key]
-		faces.append({"source":card.face, "key":key, "owner":null, "visible":card.node.is_visible_in_tree()})
+		var on_edit := int(card.clipped_slot) >= 0
+		faces.append({"source":card.face, "key":key, "owner":null, "visible":card.node.is_visible_in_tree() and (not on_edit or _desk._active_sheet == "edit")})
 	var editor: Control = _desk._page.hud.design_workbench()
 	faces.append_array(editor.lineage_material_faces())
 	var board: Control = editor.context_slice()
