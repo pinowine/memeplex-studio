@@ -277,6 +277,7 @@ func _sync_graphics() -> void:
 				graphic.size = CardFace.minimum_card_size(str(resource.kind))
 				graphic.scale = rect.size / graphic.size
 				graphic.set_selected(id == _layer and index == _selected_slot)
+				graphic.placement = CardFace.Placement.FIXED
 			else: graphic.size = rect.size
 			graphic.visible = not (_resource_dragging and id == _held_layer and index == _held_slot)
 	for key: String in _resource_graphics.keys():
@@ -628,6 +629,7 @@ func _update_resource_drag() -> void:
 	var slot := _slot_at(_held_layer, board_point)
 	var center := _last_point
 	if slot >= 0: center = get_global_transform_with_canvas() * _layout_layers[_held_layer].slot_rects[slot].get_center()
+	_drag_preview.placement = CardFace.Placement.TARGETED if slot >= 0 else CardFace.Placement.DRAGGING
 	_drag_target = _drag_preview_parent.get_global_transform_with_canvas().affine_inverse() * center - _drag_preview.get_transform().basis_xform(_drag_preview.size * .5)
 
 func _process(delta: float) -> void:

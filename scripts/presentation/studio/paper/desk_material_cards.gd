@@ -157,7 +157,8 @@ class StackCard extends Control:
 				else:
 					var point: Vector2 = overlay._map_focus_point(event.position)
 					var transform := overlay.get_global_transform_with_canvas()
-					var pose: Dictionary = overlay.context_drop_pose.call(str(record.kind), str(record.id), point)
+					var pose: Dictionary = overlay.preview_placement(str(record.kind), str(record.id), point)
+					_ghost.placement = CardFace.Placement.DRAGGING if pose.is_empty() else CardFace.Placement.TARGETED
 					if pose.is_empty():
 						_ghost_target = {}
 						_ghost.position = transform.affine_inverse() * point - _ghost.size * .5
@@ -227,7 +228,8 @@ var _drop_kind := ""
 var _drop_stack := ""
 var _selected_key := ""
 var _root_drop_position := Vector2.INF
-var context_drop_pose: Callable
+var drop_pose: Callable
+var _placement_ghost: DeskMaterialCardFace
 var _snap_key := ""
 var _snap_position := Vector2.ZERO
 var _snap_rotation := 0.0
@@ -382,7 +384,32 @@ func clear_drop_preview() -> void:
 	_snap_key = ""
 	_drop_kind = ""
 	_drop_stack = ""
+	if _placement_ghost != null: _placement_ghost.hide()
+	for card: Dictionary in _cards.values():
+		card.face.placement = CardFace.Placement.FIXED if int(card.clipped_slot) >= 0 else CardFace.Placement.LOOSE
 	_refresh_stack_surfaces()
+
+func preview_placement(kind: String, id: String, point: Vector2) -> Dictionary:
+	var pose: Dictionary = drop_pose.call(kind, id, point)
+	if kind != "module" or pose.is_empty():
+		if _placement_ghost != null: _placement_ghost.hide()
+		return pose
+	if _placement_ghost == null:
+		_placement_ghost = CardFace.new()
+		_placement_ghost.name = "ModulePlacementGhost"
+		_placement_ghost.shadow_enabled = false
+		_placement_ghost.modulate.a = .3
+		_placement_ghost.z_index = -1
+		add_child(_placement_ghost)
+	_placement_ghost.configure({"kind":kind, "id":id, "title":_title(kind, id)}, get_theme_default_font())
+	_placement_ghost.size = CardFace.minimum_card_size(kind)
+	_placement_ghost.pivot_offset = _placement_ghost.size * .5
+	var transform := get_global_transform_with_canvas()
+	_placement_ghost.position = transform.affine_inverse() * pose.center - _placement_ghost.size * .5
+	_placement_ghost.rotation = float(pose.rotation) - transform.get_rotation()
+	_placement_ghost.placement = CardFace.Placement.TARGETED
+	_placement_ghost.show()
+	return pose
 
 func configure_focus_input(to_desktop: Callable) -> void:
 	_focus_point_mapper = to_desktop
@@ -555,6 +582,7 @@ func _resize_card(card: Dictionary, target: Vector2) -> void:
 	if card.has("face"):
 		card.face.size = target
 		card.face.configure(_physical_face_record(card),get_theme_font("font","Label"))
+		card.face.placement = CardFace.Placement.FIXED if int(card.clipped_slot) >= 0 else CardFace.Placement.LOOSE
 		card.face.visible = not bool(card.inventory_docked)
 	card.count.position = Vector2(maxf(0,target.x-24),1)
 	card.count.size = Vector2(24,16)
@@ -755,6 +783,7 @@ func _unclamp(key: String) -> void:
 	var slot := int(card.clipped_slot)
 	var node: Control = card.node
 	card.clipped_slot=-1
+	card.face.placement = CardFace.Placement.DRAGGING
 	var rotation := node.get_global_transform().get_rotation()
 	var global_scale := node.get_global_transform().get_scale()
 	node.reparent(self,true)
@@ -948,13 +977,14 @@ func _card_moved(key: StringName, point: Vector2) -> void:
 		_cards[String(key)].inventory_docked = false
 		_cards[String(key)].face.show()
 		if was_docked: _layout_inventory()
+		_moved(key, point)
 		preview_drop(str(_cards[String(key)].kind), _props._input_diagnostic.last_point)
 		_preview_context_slot(String(key), _props._input_diagnostic.last_point)
-	_moved(key, point)
 
 func _preview_context_slot(key: String, point: Vector2) -> void:
 	var card: Dictionary = _cards[key]
-	var pose: Dictionary = context_drop_pose.call(str(card.kind), str(card.id), point)
+	var pose := preview_placement(str(card.kind), str(card.id), point)
+	card.face.placement = CardFace.Placement.DRAGGING if pose.is_empty() else CardFace.Placement.TARGETED
 	if pose.is_empty():
 		_snap_key = ""
 		return

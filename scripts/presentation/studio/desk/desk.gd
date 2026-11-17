@@ -465,7 +465,7 @@ func configure(page: Node2D) -> void:
 	editor.mount_hover_overlay(hover_notes, _hover_pointer_position)
 	var board: Control = editor.context_slice()
 	board.set_drag_preview_parent(_material_cards)
-	_material_cards.context_drop_pose = board.tabletop_drop_pose
+	_material_cards.drop_pose = _material_drop_pose
 	board.slot_pressed.connect(_context_slot_pressed)
 	editor.module_slots_pressed.connect(_module_slots_pressed)
 	_props.pointer_guard = _desktop_pointer_guard
@@ -926,6 +926,15 @@ func _sync_module_papers() -> void:
 		if not id.is_empty():
 			_material_cards.clamp_module(id,slot,editor.module_clip_parent(slot),Vector2(4,15))
 
+func _material_drop_pose(kind: String, id: String, point: Vector2) -> Dictionary:
+	var editor: Control = _page.hud.design_workbench()
+	if kind != "module": return editor.context_slice().tabletop_drop_pose(kind, id, point)
+	if not _module_drop_allowed(point) or not editor.can_place_module(id, point): return {}
+	var slot: int = editor.module_clip_at(point, true)
+	var clip: Control = editor.module_clip_parent(slot)
+	var center := Vector2(4, 15) + DeskMaterialCardFace.minimum_card_size("module") * .5
+	return {"center":clip.get_global_transform_with_canvas() * center, "rotation":clip.get_global_transform_with_canvas().get_rotation() + deg_to_rad(float(slot - 2) * 1.3)}
+
 
 func _drop_material(kind: String, id: String, point: Vector2) -> void:
 	if kind in ["group","language","topic","module"] and _material_cards._stack_at(point) == kind:
@@ -1171,6 +1180,7 @@ func _process(_delta: float) -> void:
 		var fax_drag := _fax.active_drag_material()
 		if not fax_drag.is_empty():
 			_material_cards.preview_drop(str(fax_drag.kind),get_viewport().get_mouse_position())
+			_material_cards.preview_placement(str(fax_drag.kind),str(fax_drag.id),get_viewport().get_mouse_position())
 			_fax_drop_preview = true
 		elif _fax_drop_preview:
 			_material_cards.clear_drop_preview()

@@ -374,6 +374,7 @@ func _build_edit() -> void:
 		var external := LineagePatchFace.new()
 		external.name = "LineagePatchCard"
 		external.configure({"kind":"module", "id":"", "title":""}, get_theme_font("font", "Label"))
+		external.placement = CardFace.Placement.FIXED
 		external.pivot_offset = CardFace.minimum_card_size("module") * .5
 		external.rotation = deg_to_rad(float(index - 2) * 1.3)
 		clip.add_child(external)

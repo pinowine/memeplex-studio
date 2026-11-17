@@ -15,6 +15,14 @@ const PALETTES := {
 
 const EXTERNAL_PALETTE := {"edge":Color("6c3030"), "body":Color("b45e53"), "panel":Color("ead5c1"), "ink":Color("542e2b"), "light":Color("f2b4a0")}
 
+enum Placement { LOOSE, DRAGGING, TARGETED, FIXED }
+
+var placement := Placement.LOOSE:
+	set(value):
+		if placement == value: return
+		placement = value
+		queue_redraw()
+
 var paper_view := false:
 	set(value):
 		paper_view = value
@@ -268,6 +276,23 @@ func _draw() -> void:
 		var intensity := .17 if _selected else .10
 		draw_colored_polygon(PackedVector2Array([glass.position, glass.position + Vector2(glass.size.x * .27, 0), glass.position + Vector2(glass.size.x * .70, glass.size.y), glass.position + Vector2(glass.size.x * .49, glass.size.y)]), Color(1.0, .98, .88, intensity))
 		_stroke(_shape(body.grow(-1.4)), Color(.97, .94, .79, .42 if _selected else .22), .9)
+	_draw_placement_frame(body, palette)
+
+
+func _draw_placement_frame(body: Rect2, palette: Dictionary) -> void:
+	match placement:
+		Placement.DRAGGING:
+			var outline := _shape(body.grow(3))
+			for index in outline.size():
+				draw_dashed_line(outline[index], outline[(index + 1) % outline.size()], palette.edge, 1.5, 5.0, true)
+		Placement.TARGETED:
+			var frame := body.grow(5)
+			for corner: Vector2 in [frame.position, Vector2(frame.end.x, frame.position.y), frame.end, Vector2(frame.position.x, frame.end.y)]:
+				var inward := (frame.get_center() - corner).sign()
+				draw_polyline(PackedVector2Array([corner + Vector2(0, inward.y * 12), corner, corner + Vector2(inward.x * 12, 0)]), palette.ink, 2.5, true)
+		Placement.FIXED:
+			_stroke(_shape(body.grow(1)), palette.edge, 1.8)
+			_stroke(_shape(body.grow(-2)), Color(palette.light, .85), 1.0)
 
 
 func _draw_face_structure(body: Rect2, palette: Dictionary) -> void:
