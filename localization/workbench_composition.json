@@ -71,13 +71,13 @@
   },
   "LOC_PROP_NODE_TEXT_DESCRIPTION": {
     "source": "以文字发布当前模因。",
-    "zh_CN": "以文字发布当前模因。",
-    "en": "Release the current meme as text."
+    "zh_CN": "把当前模因写成文字，发到支持文字的渠道，让读者直接阅读。",
+    "en": "Write the current meme as a post and share it through channels that support text."
   },
   "LOC_PROP_NODE_TEXT_EFFECT": {
     "source": "开放基础文字投放。",
-    "zh_CN": "开放基础文字投放。",
-    "en": "Open basic text distribution."
+    "zh_CN": "解锁文字发布。",
+    "en": "Unlock text publishing."
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_TITLE": {
     "source": "机器翻译",
@@ -86,13 +86,13 @@
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_DESCRIPTION": {
     "source": "将已有文字层转成受支持语言的译文。",
-    "zh_CN": "将已有文字层转成受支持语言的译文。",
-    "en": "Translate existing text layers into supported languages."
+    "zh_CN": "把帖子里的文字译成其他语言，让使用这些语言的读者也能看懂。",
+    "en": "Translate the words in a post so readers of other supported languages can understand them."
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_EFFECT": {
     "source": "以平台支持的语言版本生成文字译文。",
-    "zh_CN": "以平台支持的语言版本生成文字译文。",
-    "en": "Generate readable translations from supported platform language versions."
+    "zh_CN": "为现有文字提供平台支持的译文。",
+    "en": "Provide supported translations of existing text."
   },
   "LOC_PROP_NODE_IMAGE_TITLE": {
     "source": "图像传播",
@@ -101,13 +101,13 @@
   },
   "LOC_PROP_NODE_IMAGE_DESCRIPTION": {
     "source": "使用图像承载表达。",
-    "zh_CN": "使用图像承载表达。",
-    "en": "Carry the expression through images."
+    "zh_CN": "用画面表达内容，让读者通过表情、动作等视觉信息理解这个梗。图中文字可搭配翻译和嵌字传播。",
+    "en": "Use images to convey the meme through expressions, actions and other visual cues. Captions can be translated and placed back into the image."
   },
   "LOC_PROP_NODE_IMAGE_EFFECT": {
     "source": "独立视觉信息承担部分的语言理解障碍降低90%。",
-    "zh_CN": "图像中由独立视觉信息承载的部分，语言理解障碍降低90%。",
-    "en": "Reduce the language barrier for independently conveyed visual information by 90 percent."
+    "zh_CN": "画面本身传达的信息，语言障碍降低90%。",
+    "en": "Reduce the language barrier for information conveyed by the image itself by 90 percent."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_TITLE": {
     "source": "多语嵌字",
@@ -116,13 +116,13 @@
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_DESCRIPTION": {
     "source": "将对应译文排入原图文字区域。",
-    "zh_CN": "将对应译文排入原图文字区域。",
-    "en": "Place translations in the image text regions."
+    "zh_CN": "把图片中的原文换成对应译文，重新排进原来的文字区域，供不同语言的读者阅读。",
+    "en": "Replace the original captions with translations laid out in the same text regions, making image editions for different languages."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_EFFECT": {
     "source": "将对应译文排入图中文字区域，形成多语图文版本。",
-    "zh_CN": "将对应译文排入图中文字区域，形成多语图文版本。",
-    "en": "Place translated captions into image text regions to produce multilingual editions."
+    "zh_CN": "生成嵌入译文的多语图片。",
+    "en": "Create multilingual images with translated captions."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_TITLE": {
     "source": "语境附注",
@@ -131,13 +131,13 @@
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_DESCRIPTION": {
     "source": "为传播副本附上出处和用法。",
-    "zh_CN": "为传播副本附上出处和用法。",
-    "en": "Attach source and usage notes to delivered copies."
+    "zh_CN": "转发时附上出处和用法，交代这个梗从哪里来、通常用来表达什么，帮助没接触过它的人理解。",
+    "en": "Include the source and usual meaning when sharing the meme, helping people understand it even if they have never encountered it before."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT": {
     "source": "随传播附上出处与用法，有效语境依赖降至原值60%。",
-    "zh_CN": "随传播附上出处与用法，有效语境依赖降至原值60%。",
-    "en": "Attach source and usage notes; effective context dependency becomes 60 percent of its original value."
+    "zh_CN": "语境依赖降至原值的60%。",
+    "en": "Reduce effective context dependency to 60 percent of its original value."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_TITLE": {
     "source": "替代文本",
@@ -146,13 +146,13 @@
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_DESCRIPTION": {
     "source": "为图像提供可读的文字出口。",
-    "zh_CN": "为图像配上可读的文字说明。",
-    "en": "Provide a readable text version of an image."
+    "zh_CN": "给图片写一段文字，交代画面内容和想表达的意思，方便在只能发文字的渠道分享。",
+    "en": "Write a description of the image and its meaning so it can be shared through channels that only accept text."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT": {
     "source": "通过文字渠道送出经编写的图像信息说明。",
-    "zh_CN": "通过文字渠道传播编写好的图像说明。",
-    "en": "Deliver authored image descriptions through text channels."
+    "zh_CN": "让图像说明通过文字渠道传播。",
+    "en": "Share image descriptions through text channels."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE": {
     "source": "多格式分发",
@@ -161,13 +161,13 @@
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_DESCRIPTION": {
     "source": "按接收地区和渠道选择可用版本。",
-    "zh_CN": "按接收地区和渠道选择可用版本。",
-    "en": "Choose an available version for the receiving country and channel."
+    "zh_CN": "向不同受众分享时，从现成的文字、译文、图片和图像说明中，挑选当地读者看得懂、渠道也支持的一种。",
+    "en": "Choose from existing text, translations, images and image descriptions to match the local language and the channel being used."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_EFFECT": {
     "source": "按目标语言和渠道格式，从已有版本中选择适配版本。",
-    "zh_CN": "按目标语言和渠道格式，从已有版本中选择适配版本。",
-    "en": "Select a suitable existing edition for the receiving language and channel format."
+    "zh_CN": "按目标语言和渠道选择合适的已有版本。",
+    "en": "Select an existing edition suited to the receiving language and channel."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE": {
     "source": "公开模板",
@@ -176,13 +176,13 @@
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_DESCRIPTION": {
     "source": "让社区填写模板中的开放部分。",
-    "zh_CN": "让社区填写模板中的开放部分。",
-    "en": "Let communities fill the open parts of a template."
+    "zh_CN": "公开模因中允许替换的部分，供别人填入自己的内容，把同一套表达用在各自的生活里。",
+    "en": "Share the replaceable parts of the meme so others can fill them with their own experiences and reuse the expression."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_EFFECT": {
     "source": "社区填写开放槽位，形成参与传播的衍生版本。",
-    "zh_CN": "社区填写开放槽位，形成参与传播的衍生版本。",
-    "en": "Community members fill open slots to create circulating derivatives."
+    "zh_CN": "让社区填写模板，产生可传播的衍生版本。",
+    "en": "Let communities fill a template to create circulating derivatives."
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE": {
     "source": "源包发布",
@@ -191,13 +191,13 @@
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_DESCRIPTION": {
     "source": "向社区提供可编辑源包。",
-    "zh_CN": "向社区提供可编辑源包。",
-    "en": "Share an editable source package with communities."
+    "zh_CN": "把可编辑素材随模板一起公开。别人可以在原素材上修改和二创，省去从头制作的工夫。",
+    "en": "Publish editable assets alongside the template so others can adapt the original material without rebuilding it from scratch."
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT": {
     "source": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
-    "zh_CN": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
-    "en": "Provide editable source assets; remix cost in community reuse calculations becomes 40 percent."
+    "zh_CN": "社区复用时，重混成本降至原值的40%。",
+    "en": "Reduce remix cost in community reuse calculations to 40 percent of its original value."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_TITLE": {
     "source": "语义剥离",
@@ -206,13 +206,13 @@
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_DESCRIPTION": {
     "source": "保留形式时容纳更大的内容变化。",
-    "zh_CN": "保留形式时容纳更大的内容变化。",
-    "en": "Allow broader content changes while preserving the form."
+    "zh_CN": "允许别人沿用同一个句式或版式，换成不同话题。保留形式的二创可以容纳更大的内容差异，仍归入同一模因谱系。",
+    "en": "Let others keep the same sentence pattern or layout while changing the subject. Derivatives that preserve the form can differ more in content while remaining in the same meme lineage."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_EFFECT": {
     "source": "保持模板形式的衍生，其分裂阈值提高至至少0.75。",
-    "zh_CN": "保持模板形式的衍生，其分裂阈值提高至至少0.75。",
-    "en": "Raise the split threshold to at least 0.75 for form-preserving derivatives."
+    "zh_CN": "保留模板形式时，二创分裂阈值至少为0.75。",
+    "en": "Raise the split threshold to at least 0.75 for derivatives that preserve the template form."
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_TITLE": {
     "source": "衍生回链",
@@ -221,13 +221,13 @@
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_DESCRIPTION": {
     "source": "从社区版本建立返回原模板的入口。",
-    "zh_CN": "从社区版本建立返回原模板的入口。",
-    "en": "Link community versions back to their original template."
+    "zh_CN": "在社区二创中保留指向原模板的入口。读者看到别人改编的版本时，也有机会顺着链接找到源头。",
+    "en": "Keep a link to the source template in community remixes so readers who encounter an adaptation can follow it back to its source."
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT": {
     "source": "真实衍生曝光带回原模板的发现入口。",
-    "zh_CN": "衍生版本获得曝光时，带来发现原模板的机会。",
-    "en": "Turn real derivative exposure into discovery opportunities for the source template."
+    "zh_CN": "衍生版本的曝光带来发现原模板的机会。",
+    "en": "Turn derivative exposure into opportunities to discover the source template."
   },
   "LOC_PROP_NODE_VERSION_INDEX_TITLE": {
     "source": "版本索引",
@@ -236,13 +236,13 @@
   },
   "LOC_PROP_NODE_VERSION_INDEX_DESCRIPTION": {
     "source": "让受众找到适合当地的已有版本。",
-    "zh_CN": "让受众找到适合当地的已有版本。",
-    "en": "Help audiences find an existing local version."
+    "zh_CN": "把同一模因的不同版本整理成目录，让读者找到更适合当地语言和群体的表达。",
+    "en": "Organize versions of the same meme into a directory so readers can find an expression suited to their local language and community."
   },
   "LOC_PROP_NODE_VERSION_INDEX_EFFECT": {
     "source": "索引同源的已有版本，引荐更适配当地的表达。",
-    "zh_CN": "索引同源的已有版本，引荐更适配当地的表达。",
-    "en": "Index existing related versions and recommend expressions better suited to local audiences."
+    "zh_CN": "向当地读者引荐更合适的已有版本。",
+    "en": "Recommend an existing related version better suited to local readers."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE": {
     "source": "模板仓库",
@@ -251,13 +251,13 @@
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_DESCRIPTION": {
     "source": "让社区在原帖降温后继续检索和复用模板。",
-    "zh_CN": "让社区在原帖降温后继续检索和复用模板。",
-    "en": "Keep templates available for discovery and reuse after the original post cools."
+    "zh_CN": "把模板收进可检索的仓库。原帖不再热门后，社区仍能在需要相似表达时找到它、继续改编。",
+    "en": "Keep templates in a searchable library so communities can find and adapt them when they need a similar expression after the original post has cooled."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT": {
     "source": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
-    "zh_CN": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
-    "en": "Recommend the template again after 48 hours when the original cools and reuse demand appears."
+    "zh_CN": "发布满48小时、热度下降且有复用需求时，再次引荐模板。",
+    "en": "Recommend the template again after 48 hours when interest has cooled and reuse demand appears."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_TITLE": {
     "source": "社群联络点",
@@ -266,13 +266,13 @@
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_DESCRIPTION": {
     "source": "在形成真实采用的地区建立联络点。",
-    "zh_CN": "在已有真实采用的地区建立联络点。",
-    "en": "Establish a hub in a country with real adoption."
+    "zh_CN": "让当地已经在使用这个梗的人，借助所在社群的人际联系，成为向外分享的联络人。",
+    "en": "Turn local people who already use the meme into contacts who share it through their community ties."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_EFFECT": {
     "source": "真实采用与有效群体联系形成当地传播联络点。",
-    "zh_CN": "真实采用与有效群体联系形成当地传播联络点。",
-    "en": "Real adoption and relevant group ties establish a local propagation hub."
+    "zh_CN": "在已有采用者、且有群体联系的地区建立传播联络点。",
+    "en": "Establish propagation hubs where real adoption and relevant group ties exist."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_TITLE": {
     "source": "邻地联络",
@@ -281,12 +281,12 @@
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_DESCRIPTION": {
     "source": "沿陆地接触边发起定向转发。",
-    "zh_CN": "沿陆地接触路线定向转发。",
-    "en": "Send a directed invitation along a land contact."
+    "zh_CN": "请当地的联络人把内容发给邻近地区的熟人，让模因沿已有的陆地联系传过去。",
+    "en": "Have local contacts share the meme with people they know in neighboring regions, following existing land connections."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有陆地接触边转发。",
-    "zh_CN": "从活跃联络点沿已有陆地接触路线转发。",
+    "zh_CN": "从活跃联络点向已有陆地联系的地区转发。",
     "en": "Forward from active hubs along existing directed land contacts."
   },
   "LOC_PROP_NODE_SEA_FORWARD_TITLE": {
@@ -296,12 +296,12 @@
   },
   "LOC_PROP_NODE_SEA_FORWARD_DESCRIPTION": {
     "source": "沿跨海接触边发起定向转发。",
-    "zh_CN": "沿跨海接触路线定向转发。",
-    "en": "Send a directed invitation along a sea contact."
+    "zh_CN": "借助联络人与海另一边社群的联系，把内容分享过去，让跨海联系也能带动传播。",
+    "en": "Use contacts with communities across the sea to share the meme along those existing connections."
   },
   "LOC_PROP_NODE_SEA_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有跨海接触边转发。",
-    "zh_CN": "从活跃联络点沿已有跨海接触路线转发。",
+    "zh_CN": "从活跃联络点向已有跨海联系的地区转发。",
     "en": "Forward from active hubs along existing directed sea contacts."
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_TITLE": {
@@ -311,13 +311,13 @@
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_DESCRIPTION": {
     "source": "让产生真实采用的接收国继续转发。",
-    "zh_CN": "让产生真实采用的接收国继续转发。",
-    "en": "Let a receiving country with real adoption relay the meme onward."
+    "zh_CN": "收到内容的社群开始使用这个梗后，再把它分享给自己认识的其他地区，形成一站接一站的接力。",
+    "en": "Once a receiving community starts using the meme, its members can share it with contacts in other regions and continue the relay."
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_EFFECT": {
     "source": "接收国形成真实采用后，作为新联络点继续转发。",
-    "zh_CN": "接收国形成真实采用后，作为新联络点继续转发。",
-    "en": "Receiving countries with real adoption become new forwarding hubs."
+    "zh_CN": "接收地区出现实际采用后，成为新的转发起点。",
+    "en": "Let receiving regions become new forwarding hubs after real adoption."
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_TITLE": {
     "source": "跨圈引荐",
@@ -326,13 +326,13 @@
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_DESCRIPTION": {
     "source": "用已发布版本中的两个群体连接圈层。",
-    "zh_CN": "用已发布版本中的两个群体连接圈层。",
-    "en": "Connect groups using two groups in the published version."
+    "zh_CN": "由熟悉两个圈层的人介绍这个梗，让另一群体知道它在原来的圈子里如何使用。",
+    "en": "Have people familiar with both communities introduce the meme and explain how it is used in its original circle."
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_EFFECT": {
     "source": "通过已发布版本中的有效群体联系开展跨圈引荐。",
-    "zh_CN": "通过已发布版本中的有效群体联系开展跨圈引荐。",
-    "en": "Introduce the meme across communities through group ties in published versions."
+    "zh_CN": "沿已发布版本中的有效群体联系，向其他圈层引荐。",
+    "en": "Introduce the meme to other communities through relevant group ties in published versions."
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_TITLE": {
     "source": "跨域接力网",
@@ -341,13 +341,13 @@
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_DESCRIPTION": {
     "source": "按联络点状态运行多段传播路径。",
-    "zh_CN": "按联络点状态运行多段传播路径。",
-    "en": "Run multi-step paths according to hub conditions."
+    "zh_CN": "让各地联络人分别向有联系的社群分享，接收方用起来后再继续转发，多条传播路线可以同时推进。",
+    "en": "Have local contacts share through their community ties and let receiving communities pass it onward after adopting it, allowing several routes to progress at once."
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_EFFECT": {
     "source": "让陆海中继与跨圈联络点共同运行多段并行接力。",
-    "zh_CN": "让陆海中继与跨圈联络点共同运行多段并行接力。",
-    "en": "Run parallel multistage relays through land, sea and cross-community hubs."
+    "zh_CN": "让多条陆地、跨海和跨圈路线并行接力。",
+    "en": "Run parallel relays across land, sea and community connections."
   },
   "LOC_PROP_ROUTE_ACCESSIBILITY": {
     "source": "无障碍传播",

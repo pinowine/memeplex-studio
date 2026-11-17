@@ -2,6 +2,7 @@ class_name DeskDendriteTree
 extends Control
 
 signal node_selected(id: String)
+signal unlock_requested(id: String)
 
 const INK := Color("485046")
 const SketchShader = preload("res://shaders/studio/desk_sketch_base.gdshader")
@@ -17,6 +18,7 @@ const NODE_ROW_SPACING := 110.0
 const NODE_TOP_MARGIN := 36.0
 const NODE_BOTTOM_MARGIN := 84.0
 const NODE_HIT_RADIUS := 18.0
+const HOLD_DURATION := 1.5
 var _skills: Array = []
 var _unlocked: Array = []
 var _points: Dictionary = {}
@@ -30,6 +32,9 @@ var _rebuilds := 0
 var _feedback := BlobFeedback.new()
 var _interaction_enabled := true
 var _research_ready := true
+var _balance := 0
+var _held_id := ""
+var _hold_progress := 0.0
 var _vertical_layout := false
 var _label_width := 144.0
 var _edge_records: Array[Dictionary] = []
@@ -52,7 +57,7 @@ class UnionPainter extends Node2D:
 func set_interaction_enabled(value: bool) -> void:
 	_interaction_enabled = value
 	_feedback.set_enabled(value)
-	if not value: _feedback.set_pressed("")
+	if not value: _cancel_hold()
 	mouse_default_cursor_shape = cursor_shape_at(get_local_mouse_position())
 	queue_redraw()
 
@@ -65,12 +70,20 @@ func select_node(id: String) -> void:
 
 func _on_mouse_exited() -> void:
 	_feedback.set_hover("")
+	_cancel_hold()
 	mouse_default_cursor_shape = CURSOR_ARROW
 
 
 func cursor_shape_at(point: Vector2) -> int:
-	if _hit_id(point).is_empty(): return CURSOR_ARROW
-	return CURSOR_POINTING_HAND if _interaction_enabled else CURSOR_FORBIDDEN
+	var id := _hit_id(point)
+	if id.is_empty(): return CURSOR_ARROW
+	if not _interaction_enabled: return CURSOR_FORBIDDEN
+	for skill: Dictionary in _skills:
+		if str(skill.id) == id:
+			var status := _node_status(skill)
+			if status == "unlocked": return CURSOR_HELP
+			return CURSOR_POINTING_HAND if status == "available" else CURSOR_FORBIDDEN
+	return CURSOR_ARROW
 
 
 func _hit_id(at: Vector2) -> String:
@@ -82,6 +95,8 @@ func _hit_id(at: Vector2) -> String:
 
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_VISIBILITY_CHANGED and not is_visible_in_tree(): _cancel_hold()
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT: _cancel_hold()
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
 		_refresh_labels()
 		queue_redraw()
@@ -148,39 +163,50 @@ func node_rect(id: String) -> Rect2:
 	return _hit_rects.get(id, Rect2())
 
 
-func sync_state(unlocked: Array, selected: String = "text", research_ready: bool = true) -> void:
+func sync_state(unlocked: Array, selected: String = "text", research_ready: bool = true, balance: int = 0) -> void:
 	_research_ready = research_ready
-	for id: String in _growth:
-		if id not in unlocked and float(_growth[id]) != 0.0:
-			_growth[id] = 0.0
-			_growth_resets += 1
+	_balance = balance
 	_unlocked = unlocked.duplicate()
 	select_node(selected)
 	for skill: Dictionary in _skills:
 		var id := str(skill.get("id",""))
-		if not _growth.has(id): _growth[id] = 0.0
-		var blocked := _node_status(skill) == "locked"
+		var status := _node_status(skill)
+		if id == _held_id and status != "available": _cancel_hold()
+		_growth[id] = 1.0 if id in _unlocked else (_hold_progress if id == _held_id else 0.0)
+		var blocked := status not in ["available", "unlocked"]
 		_feedback.set_disabled(id, blocked)
 	queue_redraw()
 
 
 func _process(delta: float) -> void:
 	var changed := _feedback.tick(delta,_points.keys())
-	for skill: Dictionary in _skills:
-		var id := str(skill.get("id",""))
-		var reached := true
-		for parent: Variant in skill.get("requires", []):
-			if float(_growth.get(str(parent), 0.0)) < 1.0: reached = false
-		var alternatives: Array = skill.get("requires_any", [])
-		if not alternatives.is_empty():
-			var any_reached := false
-			for parent: Variant in alternatives:
-				if float(_growth.get(str(parent), 0.0)) >= 1.0: any_reached = true
-			reached = reached and any_reached
-		if reached and id in _unlocked and float(_growth.get(id,0.0)) < 1.0:
-			_growth[id] = move_toward(float(_growth[id]),1.0,maxf(delta,0)*.85)
-			changed = true
+	if not _held_id.is_empty():
+		_hold_progress = move_toward(_hold_progress, 1.0, maxf(delta, 0.0) / HOLD_DURATION)
+		_growth[_held_id] = _hold_progress
+		changed = true
+		if _hold_progress == 1.0:
+			var id := _held_id
+			_held_id = ""
+			_hold_progress = 0.0
+			_feedback.set_pressed("")
+			unlock_requested.emit(id)
+			if id not in _unlocked: _growth[id] = 0.0
 	if changed: queue_redraw()
+
+
+func _cancel_hold() -> void:
+	if not _held_id.is_empty() and _held_id not in _unlocked:
+		_growth[_held_id] = 0.0
+		_growth_resets += 1
+	_held_id = ""
+	_hold_progress = 0.0
+	_feedback.set_pressed("")
+	queue_redraw()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		if not _held_id.is_empty(): _cancel_hold()
 
 
 func _rebuild() -> void:
@@ -252,7 +278,8 @@ func _node_status(skill: Dictionary) -> String:
 	var id := str(skill.get("id", ""))
 	if id in _unlocked: return "unlocked"
 	if id != "text" and not _research_ready: return "locked"
-	return "available" if _requirements_met(skill, _unlocked) else "locked"
+	if not _requirements_met(skill, _unlocked): return "locked"
+	return "available" if _balance >= int(skill.get("cost", 0)) else "unaffordable"
 
 
 func _cache_twig(start: Vector2,direction: Vector2,length: float,depth: int,rng: RandomNumberGenerator,output: Array,at: float,path_index: int) -> void:
@@ -394,12 +421,14 @@ func _draw() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if not _interaction_enabled: return
 	if event is InputEventMouseMotion:
-		_feedback.set_hover(_hit_id(event.position))
+		var id := _hit_id(event.position)
+		_feedback.set_hover(id)
+		if not _held_id.is_empty() and id != _held_id: _cancel_hold()
 		mouse_default_cursor_shape = cursor_shape_at(event.position)
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if not event.pressed:
-			_feedback.set_pressed("")
+			_cancel_hold()
 			return
 		var id := _hit_id(event.position)
 		_feedback.set_hover(id)
@@ -407,6 +436,10 @@ func _gui_input(event: InputEvent) -> void:
 		if not id.is_empty():
 			select_node(id)
 			node_selected.emit(id)
+			for skill: Dictionary in _skills:
+				if str(skill.id) == id and _node_status(skill) == "available":
+					_held_id = id
+					_hold_progress = 0.0
 			accept_event()
 
 
@@ -426,4 +459,5 @@ func inspection() -> Dictionary:
 		"origin":Vector2(size.x * .5, -18) if _vertical_layout else Vector2(-18,size.y*.56),"shader":SketchShader.resource_path,"uses_private_rng":true,"branch_style":"continuous_tapered_swelling_tree",
 		"scaffold_paths":_paths.duplicate(true),"scaffold_continuous":true,"growth_resets":_growth_resets,
 		"growth_sequence":"incoming_branch_then_soma_and_arbors","morphology_version":10,"nucleus_count":_points.size(),"body_shape":"star_soma_fine_arbors","shared_geometry":"res://scripts/presentation/studio/design/desk_neuron_geometry.gd","body_union_mode":"native_mask_union","union_shader":UnionShader.resource_path,"union_updates":_union_updates,"union_pixel_scale":UNION_PIXEL_SCALE,
+		"held_id":_held_id,"hold_progress":_hold_progress,"hold_duration":HOLD_DURATION,"unlock_trigger":"hold_until_filled",
 		"feedback":_feedback.inspection(),"interaction_enabled":_interaction_enabled,"tooltip":tooltip_text}

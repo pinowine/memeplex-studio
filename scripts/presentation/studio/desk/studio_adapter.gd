@@ -34,6 +34,8 @@ func pointer_cursor_shape(point: Vector2) -> int:
 	if _hover_targets._contains(atlas.map_input, point) and atlas._pointer_inside_map:
 		if atlas._launch_selection_active or (atlas._meme_overlay != null and not atlas._meme_overlay.hit_at(point).is_empty()): return Input.CURSOR_POINTING_HAND
 		if atlas.world.country_at(atlas._world_position(point)) >= 0: return Input.CURSOR_HELP
+	if editor._tab == "spread" and not editor.hover_info(point).is_empty():
+		return editor._spread_tree.cursor_shape_at(editor._spread_tree.get_global_transform_with_canvas().affine_inverse() * point)
 	if not editor.hover_info(point).is_empty() or not _desk._monitor.hover_info(point).is_empty() or not _desk._fax.hover_details(point).is_empty(): return Input.CURSOR_HELP
 	var board: Control = editor.context_slice()
 	if _hover_targets._contains(board, point) and not board.hover_info(point).is_empty(): return Input.CURSOR_HELP

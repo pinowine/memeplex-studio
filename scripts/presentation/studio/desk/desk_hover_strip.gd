@@ -122,6 +122,7 @@ func _update_content(force_layout: bool = false) -> void:
 	if _has_hover:
 		heading = _first_text(["title", "name", "label", "id"])
 		presentation = _presentation_details()
+		if _hover.has("rows"): rows.assign(_hover.rows.duplicate(true))
 		if _hover.has("tags"): rows.append({"tags":_hover.tags.duplicate(true)})
 		var component_copy := ComponentCopy.for_kind(str(_hover.get("kind","")))
 		if not component_copy.is_empty():
