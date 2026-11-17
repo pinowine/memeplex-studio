@@ -476,72 +476,72 @@
   },
   "LOC_PROP_NODE_TEXT_REFERENCE": {
     "source": "“Words, words, words.”\n莎士比亚《哈姆雷特》第二幕第二场。",
-    "zh_CN": "“Words, words, words.”\n莎士比亚《哈姆雷特》第二幕第二场。",
+    "zh_CN": "“词，词，词。”\n莎士比亚《哈姆雷特》第二幕第二场。",
     "en": "“Words, words, words.”\nWilliam Shakespeare, Hamlet, Act II, scene 2."
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_REFERENCE": {
     "source": "“The limits of my language mean the limits of my world.”\n维特根斯坦《逻辑哲学论》5.6，1921。",
-    "zh_CN": "“The limits of my language mean the limits of my world.”\n维特根斯坦《逻辑哲学论》5.6，1921。",
+    "zh_CN": "“我的语言的界限意味着我的世界的界限。”\n维特根斯坦《逻辑哲学论》5.6，1921。",
     "en": "“The limits of my language mean the limits of my world.”\nLudwig Wittgenstein, Tractatus Logico-Philosophicus, 5.6, 1921."
   },
   "LOC_PROP_NODE_IMAGE_REFERENCE": {
     "source": "“Ceci n’est pas une pipe.”\n勒内·马格利特《图像的背叛》，1929。",
-    "zh_CN": "“Ceci n’est pas une pipe.”\n勒内·马格利特《图像的背叛》，1929。",
-    "en": "“Ceci n’est pas une pipe.”\nRené Magritte, The Treachery of Images, 1929."
+    "zh_CN": "“这不是一支烟斗。”\n勒内·马格利特《图像的背叛》，1929。",
+    "en": "“This is not a pipe.”\nRené Magritte, The Treachery of Images, 1929."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_REFERENCE": {
     "source": "“All human beings are born free and equal in dignity and rights.”\n《世界人权宣言》第一条，1948。",
-    "zh_CN": "“All human beings are born free and equal in dignity and rights.”\n《世界人权宣言》第一条，1948。",
+    "zh_CN": "“人人生而自由，在尊严和权利上一律平等。”\n《世界人权宣言》第一条，1948。",
     "en": "“All human beings are born free and equal in dignity and rights.”\nUniversal Declaration of Human Rights, Article 1, 1948."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_REFERENCE": {
     "source": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C《WCAG 2.2》成功准则1.1.1，2023。",
-    "zh_CN": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C《WCAG 2.2》成功准则1.1.1，2023。",
+    "zh_CN": "“所有呈现给用户的非文本内容，都有能实现同等目的的替代文本……”\nW3C《WCAG 2.2》成功准则1.1.1，2023。",
     "en": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C, WCAG 2.2, Success Criterion 1.1.1, 2023."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_REFERENCE": {
     "source": "“Where is the wisdom we have lost in knowledge?”\nT. S. 艾略特《岩石》合唱词，1934。",
-    "zh_CN": "“Where is the wisdom we have lost in knowledge?”\nT. S. 艾略特《岩石》合唱词，1934。",
+    "zh_CN": "“我们在知识中丢失的智慧在哪里？”\nT. S. 艾略特《岩石》合唱词，1934。",
     "en": "“Where is the wisdom we have lost in knowledge?”\nT. S. Eliot, Choruses from The Rock, 1934."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_REFERENCE": {
     "source": "“The medium is the message.”\n马歇尔·麦克卢汉《理解媒介》，1964。",
-    "zh_CN": "“The medium is the message.”\n马歇尔·麦克卢汉《理解媒介》，1964。",
+    "zh_CN": "“媒介即讯息。”\n马歇尔·麦克卢汉《理解媒介》，1964。",
     "en": "“The medium is the message.”\nMarshall McLuhan, Understanding Media, 1964."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_REFERENCE": {
     "source": "“The cake is a lie.”\nValve《传送门》，2007。",
-    "zh_CN": "“The cake is a lie.”\nValve《传送门》，2007。",
+    "zh_CN": "“蛋糕是个谎言。”\nValve《传送门》，2007。",
     "en": "“The cake is a lie.”\nValve, Portal, 2007."
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_REFERENCE": {
     "source": "“It’s dangerous to go alone! Take this.”\n任天堂《塞尔达传说》，1986。",
-    "zh_CN": "“It’s dangerous to go alone! Take this.”\n任天堂《塞尔达传说》，1986。",
+    "zh_CN": "“独自前往太危险了！拿上这个。”\n任天堂《塞尔达传说》，1986。",
     "en": "“It’s dangerous to go alone! Take this.”\nNintendo, The Legend of Zelda, 1986."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_REFERENCE": {
     "source": "“To be, or not to be: that is the question.”\n莎士比亚《哈姆雷特》第三幕第一场。",
-    "zh_CN": "“To be, or not to be: that is the question.”\n莎士比亚《哈姆雷特》第三幕第一场。",
+    "zh_CN": "“生存，还是毁灭，这是一个问题。”\n莎士比亚《哈姆雷特》第三幕第一场。",
     "en": "“To be, or not to be: that is the question.”\nWilliam Shakespeare, Hamlet, Act III, scene 1."
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_REFERENCE": {
     "source": "“You must construct additional pylons.”\n暴雪《星际争霸》，1998。",
-    "zh_CN": "“You must construct additional pylons.”\n暴雪《星际争霸》，1998。",
+    "zh_CN": "“你必须建造更多的水晶塔。”\n暴雪《星际争霸》，1998。",
     "en": "“You must construct additional pylons.”\nBlizzard Entertainment, StarCraft, 1998."
   },
   "LOC_PROP_NODE_VERSION_INDEX_REFERENCE": {
     "source": "“Would you tell me, please, which way I ought to go from here?”\n刘易斯·卡罗尔《爱丽丝梦游仙境》第六章，1865。",
-    "zh_CN": "“Would you tell me, please, which way I ought to go from here?”\n刘易斯·卡罗尔《爱丽丝梦游仙境》第六章，1865。",
+    "zh_CN": "“请告诉我，从这里我该往哪条路走？”\n刘易斯·卡罗尔《爱丽丝梦游仙境》第六章，1865。",
     "en": "“Would you tell me, please, which way I ought to go from here?”\nLewis Carroll, Alice’s Adventures in Wonderland, Chapter 6, 1865."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_REFERENCE": {
     "source": "“All those moments will be lost in time, like tears in rain.”\n电影《银翼杀手》，1982。",
-    "zh_CN": "“All those moments will be lost in time, like tears in rain.”\n电影《银翼杀手》，1982。",
+    "zh_CN": "“所有这些时刻都将消逝在时间里，如同雨中的泪水。”\n电影《银翼杀手》，1982。",
     "en": "“All those moments will be lost in time, like tears in rain.”\nBlade Runner, 1982."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_REFERENCE": {
     "source": "“You’ve got a friend in me.”\n兰迪·纽曼，电影《玩具总动员》主题曲，1995。",
-    "zh_CN": "“You’ve got a friend in me.”\n兰迪·纽曼，电影《玩具总动员》主题曲，1995。",
+    "zh_CN": "“你有我这个朋友。”\n兰迪·纽曼，电影《玩具总动员》主题曲，1995。",
     "en": "“You’ve got a friend in me.”\nRandy Newman, Toy Story theme song, 1995."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_REFERENCE": {
@@ -556,17 +556,17 @@
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_REFERENCE": {
     "source": "“Houston, Tranquility Base here. The Eagle has landed.”\n阿波罗11号登月通讯，1969年7月20日。",
-    "zh_CN": "“Houston, Tranquility Base here. The Eagle has landed.”\n阿波罗11号登月通讯，1969年7月20日。",
+    "zh_CN": "“休斯敦，这里是静海基地。鹰已着陆。”\n阿波罗11号登月通讯，1969年7月20日。",
     "en": "“Houston, Tranquility Base here. The Eagle has landed.”\nApollo 11 lunar landing broadcast, July 20, 1969."
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_REFERENCE": {
     "source": "“Workers of the world, unite!”\n马克思、恩格斯《共产党宣言》，1848。",
-    "zh_CN": "“Workers of the world, unite!”\n马克思、恩格斯《共产党宣言》，1848。",
+    "zh_CN": "“全世界无产者，联合起来！”\n马克思、恩格斯《共产党宣言》，1848。",
     "en": "“Workers of the world, unite!”\nKarl Marx and Friedrich Engels, The Communist Manifesto, 1848."
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_REFERENCE": {
     "source": "“We’re all in this together.”\n电影《歌舞青春》歌曲，2006。",
-    "zh_CN": "“We’re all in this together.”\n电影《歌舞青春》歌曲，2006。",
+    "zh_CN": "“我们同舟共济。”\n电影《歌舞青春》歌曲，2006。",
     "en": "“We’re all in this together.”\nHigh School Musical, song, 2006."
   },
   "LOC_COMMUNITY_POLITICAL_POSITION": {
