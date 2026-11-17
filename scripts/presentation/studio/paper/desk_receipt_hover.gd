@@ -119,7 +119,7 @@ func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 
 func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
 	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label"}.get(role, "body"))
-	if role == "annotation": text_role = role
+	if role in ["quote", "annotation"]: text_role = role
 	font_size = Typography.point_size(text_role)
 	font = Typography.font(text_role)
 	var paragraph := TextParagraph.new()
@@ -238,7 +238,12 @@ func _layout_content() -> void:
 	var note := str(_presentation.get("note",""))
 	if not note.is_empty():
 		y += GROUP_GAP
-		y += _add_text(note,Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"note")
+		var citation := note.rsplit("\n", true, 1)
+		if citation.size() == 2 and note.begins_with("“"):
+			y += _add_text(citation[0],Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.INK,"quote") + ROW_GAP
+			y += _add_text(citation[1],Vector2(PADDING.x,y),width,BODY_FONT,10,ReceiptStyle.SECONDARY_INK,"note",HORIZONTAL_ALIGNMENT_RIGHT)
+		else:
+			y += _add_text(note,Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"note")
 	var annotation := str(_presentation.get("annotation", ""))
 	if not annotation.is_empty():
 		y += GROUP_GAP

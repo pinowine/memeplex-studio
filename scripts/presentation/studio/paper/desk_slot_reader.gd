@@ -601,9 +601,11 @@ func _render_body() -> void:
 			for line_index in lines.size():
 				if line_index > 0: _body_label.add_text("\n")
 				var role := "quote" if line_index == 0 and str(lines[line_index]).begins_with("“") else "reference"
+				_body_label.push_paragraph(HORIZONTAL_ALIGNMENT_RIGHT if role == "reference" else HORIZONTAL_ALIGNMENT_LEFT)
 				_body_label.push_font_size(Typography.point_size(role))
 				_body_label.push_color(Typography.ROLES[role].color)
 				_write_content(str(lines[line_index]))
+				_body_label.pop()
 				_body_label.pop()
 				_body_label.pop()
 		else:
