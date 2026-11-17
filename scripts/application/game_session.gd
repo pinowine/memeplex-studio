@@ -629,7 +629,7 @@ func _render() -> void:
 	_context_trial_skills = Array(snapshot.get("design_state", {}).get("unlocked_skills", []))
 	if _ready_to_run:
 		_sync_setup()
-		spread.update_simulation(simulation)
+		spread.update_simulation(simulation, snapshot.world_competition)
 		atlas.update_meme_state(snapshot)
 		_refresh_meme_reader(snapshot)
 		if _shell != null: _shell.context_guidance.observe_world(snapshot.world_competition)

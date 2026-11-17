@@ -61,7 +61,7 @@ var _country_sampling: Dictionary = {}
 var _country_capacities: Dictionary = {}
 var _point_pools: Dictionary = {}
 var _buffer_pools: Dictionary = {}
-var _pool_hit_grid: Dictionary = {}
+var _indexed_counts: Dictionary = {}
 var _active_counts: Dictionary = {}
 var _presence_by_key: Dictionary = {}
 var _next_sample_order := 0
@@ -91,7 +91,9 @@ var _screen_points: Array[Dictionary] = []
 var _rows: Array[Dictionary] = []
 var _colors: Dictionary = {}
 var _metrics := {"owned":0.0, "external":0.0, "adopted":0.0}
-var _state_signature: String = ""
+var _state_signature: Array = []
+var _draw_signature: Array = []
+var _buffer_uploads := 0
 var _view_transform := Transform2D.IDENTITY
 var _map_transform := Transform2D.IDENTITY
 var _overlay_transform := Transform2D.IDENTITY
@@ -128,18 +130,18 @@ func configure(atlas: Node2D) -> void:
 	_world_id = 0
 	_refresh_world()
 	set_process(true)
-	_state_signature = ""
+	_state_signature = []
 	_points.clear()
 	_projected_geometry = -1
 	_project_points()
 
-func update_simulation(simulation: MemeDemoSimulation) -> void:
+func update_simulation(simulation: MemeDemoSimulation, world: Dictionary = {}) -> void:
 	if simulation == null:
 		return
 	if _simulation != simulation:
-		_state_signature = ""
+		_state_signature = []
 	_simulation = simulation
-	_update_competition(simulation)
+	_update_competition(simulation, world)
 
 func set_selected_variant(id: String) -> void:
 	if selected_variant_id == id: return
@@ -229,8 +231,12 @@ func _refresh_world() -> bool:
 	_country_sampling.clear()
 	_country_capacities.clear()
 	_point_pools.clear()
+	_points.clear()
+	_point_multimesh.instance_count = 0
+	_draw_signature.clear()
 	_buffer_pools.clear()
-	_pool_hit_grid.clear()
+	_indexed_counts.clear()
+	_hit_grid.clear()
 	_active_counts.clear()
 	_presence_by_key.clear()
 	_meme_draw_indices.clear()
@@ -327,7 +333,7 @@ func _budget_counts(requests: Array[Dictionary], budget: int, only_reduce: bool 
 
 func _process(_delta: float) -> void:
 	if _refresh_world():
-		_state_signature = ""
+		_state_signature = []
 		if _simulation != null:
 			_update_competition(_simulation)
 		else:
@@ -435,9 +441,6 @@ func _cached_segment(request: Dictionary, offset: int, count: int) -> Dictionary
 		point._sample_order = _next_sample_order
 		_next_sample_order += 1
 		pool.append(point)
-		var cell := _hit_cell(positions[index])
-		if not _pool_hit_grid.has(cell): _pool_hit_grid[cell] = []
-		_pool_hit_grid[cell].append(point)
 		var color: Color = point.color
 		buffer.append_array(PackedFloat32Array([1, 0, 0, positions[index].x, 0, 1, 0, positions[index].y,
 			color.r, color.g, color.b, color.a, float(_meme_draw_indices[str(point.meme_id)]),
@@ -451,18 +454,40 @@ func _cached_segment(request: Dictionary, offset: int, count: int) -> Dictionary
 
 func _upload_segments(segments: Array[Dictionary]) -> void:
 	var started := Time.get_ticks_usec()
+	_buffer_uploads += 1
 	var data := PackedFloat32Array()
 	for segment: Dictionary in segments:
 		var buffer: PackedFloat32Array = _buffer_pools[str(segment.key)]
 		data.append_array(buffer.slice(int(segment.offset) * 16, (int(segment.offset) + int(segment.count)) * 16))
 	_point_multimesh.instance_count = _points.size()
 	_point_multimesh.buffer = data
-	_hit_grid = _pool_hit_grid
+	_sync_hit_grid()
 	var world: AtlasWorldData = _atlas.get("world")
 	var bounds := world.bounds.grow(64.0)
 	_point_multimesh.custom_aabb = AABB(Vector3(bounds.position.x, bounds.position.y, -1), Vector3(bounds.size.x, bounds.size.y, 2))
 	_update_hover_uniforms()
 	_last_upload_usec = Time.get_ticks_usec() - started
+
+func _sync_hit_grid() -> void:
+	# Population changes usually add or remove only a few samples per country.
+	for key: String in _indexed_counts:
+		var count := int(_active_counts.get(key, 0))
+		if count == int(_indexed_counts[key]): continue
+		var pool: Array = _point_pools[key]
+		for index in range(count, int(_indexed_counts[key])):
+			var point: Dictionary = pool[index]
+			var cell := _hit_cell(point.world_position)
+			_hit_grid[cell].erase(point)
+			if _hit_grid[cell].is_empty(): _hit_grid.erase(cell)
+	for key: String in _active_counts:
+		if int(_active_counts[key]) == int(_indexed_counts.get(key, 0)): continue
+		var pool: Array = _point_pools[key]
+		for index in range(int(_indexed_counts.get(key, 0)), int(_active_counts[key])):
+			var point: Dictionary = pool[index]
+			var cell := _hit_cell(point.world_position)
+			if not _hit_grid.has(cell): _hit_grid[cell] = []
+			_hit_grid[cell].append(point)
+	_indexed_counts = _active_counts.duplicate()
 
 func _point_highlighted(point: Dictionary) -> bool:
 	return str(point.variant_id) in hovered_variant_ids and (hovered_country_id.is_empty() or str(point.country_id) == hovered_country_id)
@@ -510,13 +535,13 @@ func inspection() -> Dictionary:
 		"sample_points_generated":_sample_points_generated, "sample_rejections":_sample_rejections,
 		"hit_cell_size":HIT_CELL_SIZE, "hit_grid_space":"world", "render_batch_count":1, "hit_grid_cells":_hit_grid.size(), "last_hit_candidates":_last_hit_candidates,
 		"last_hit_usec":_last_hit_usec, "max_hit_usec":_max_hit_usec,
-		"last_projection_usec":_last_projection_usec, "max_projection_usec":_max_projection_usec,
+		"last_projection_usec":_last_projection_usec, "max_projection_usec":_max_projection_usec, "buffer_uploads":_buffer_uploads,
 		"last_geometry_usec":_last_geometry_usec, "last_upload_usec":_last_upload_usec, "last_debug_projection_usec":_last_debug_projection_usec, "last_draw_usec":_last_draw_usec, "max_draw_usec":_max_draw_usec}
 
 
-func _update_competition(simulation: MemeDemoSimulation) -> void:
+func _update_competition(simulation: MemeDemoSimulation, world: Dictionary = {}) -> void:
 	var started := Time.get_ticks_usec()
-	var world: Dictionary = simulation.competition.snapshot(simulation.variants)
+	if world.is_empty(): world = simulation.competition.snapshot(simulation.variants)
 	var signature_rows: Array = []
 	for row: Dictionary in world.variants: signature_rows.append([row.id, row.meme_id, row.get("meme_name", ""), row.origin_country, row.adopted, row.exposed, row.attention])
 	var country_signature: Array = []
@@ -524,7 +549,7 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 		var presence_rows: Array = []
 		for presence: Dictionary in country.variants: presence_rows.append([presence.id, presence.adopted, presence.exposed, presence.attention])
 		country_signature.append([country.id, country.population, presence_rows])
-	var signature := str([world.world_seed, signature_rows, country_signature])
+	var signature: Array = [world.world_seed, signature_rows, country_signature]
 	var world_changed := _refresh_world()
 	if signature == _state_signature and not world_changed:
 		_refresh_projection_if_changed()
@@ -543,10 +568,12 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 				break
 	_rows.clear()
 	_colors.clear()
-	_points.clear()
 	_metrics = {"owned":float(world.owned_adopted),"external":float(world.adopted)-float(world.owned_adopted),"adopted":float(world.adopted)}
 	var raw_by_id := {}
-	for raw: Dictionary in simulation.competition.active_variants(simulation.variants): raw_by_id[str(raw.id)] = raw
+	for raw: Dictionary in simulation.variants: raw_by_id[str(raw.id)] = raw
+	var draw_colors := {}
+	for variant: Dictionary in world.variants:
+		draw_colors[str(variant.meme_id)] = _meme_color(str(variant.meme_id),bool(variant.owned))
 	var requests: Array[Dictionary] = []
 	var requests_by_key := {}
 	for country: Dictionary in world.countries:
@@ -563,34 +590,36 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 			var request := {"key":key,"id":id,"meme_id":str(variant.meme_id),"country_id":cid,
 				"wanted":wanted,"spread":spread,"origin":origin,"adopted":int(presence.adopted),
 				"exposed":int(presence.exposed),"attention":int(presence.attention),
-				"color":_meme_color(str(variant.meme_id),bool(variant.owned)),"owned":bool(variant.owned)}
+				"color":draw_colors[str(variant.meme_id)],"owned":bool(variant.owned)}
 			requests_by_key[key] = request
 			if wanted > 0: requests.append(request)
 	_presence_by_key = requests_by_key
-	_active_counts.clear()
 	_variant_draw_indices.clear()
 	for variant: Dictionary in world.variants:
 		var meme := str(variant.meme_id)
 		if not _meme_draw_indices.has(meme): _meme_draw_indices[meme] = _meme_draw_indices.size()
 		_variant_draw_indices[str(variant.id)] = _meme_draw_indices[meme]
-	var segments: Array[Dictionary] = []
+	var plan: Array[Dictionary] = []
+	var draw_signature: Array = []
+	var origin_count := 0
 	# Living-country origin markers remain separate from spread density.
 	for variant: Dictionary in world.variants:
 		var cid := str(variant.origin_country)
 		var key := str(variant.meme_id) + "/" + cid
-		if not _country_indices.has(cid) or not requests_by_key.has(key) or _points.size() >= MAX_TOTAL_DOTS: continue
-		segments.append(_cached_segment(requests_by_key[key], 0, 1))
-	var allocations := _budget_counts(requests, MAX_TOTAL_DOTS - _points.size())
+		if not _country_indices.has(cid) or not requests_by_key.has(key) or origin_count >= MAX_TOTAL_DOTS: continue
+		plan.append({"request":requests_by_key[key], "offset":0, "count":1})
+		origin_count += 1
+	var allocations := _budget_counts(requests, MAX_TOTAL_DOTS - origin_count)
 	for index in requests.size():
 		var request: Dictionary = requests[index]
 		var count := allocations[index]
 		if count == 0: continue
 		var offset := 1 if bool(request.origin) else 0
-		segments.append(_cached_segment(request, offset, count))
+		plan.append({"request":request, "offset":offset, "count":count})
 	for variant: Dictionary in world.variants:
 		var id := str(variant.id)
 		var meme := str(variant.meme_id)
-		var color := _meme_color(meme,bool(variant.owned))
+		var color: Color = draw_colors[meme]
 		_colors[meme] = color.to_html(false)
 		var countries := PackedStringArray()
 		for country: Dictionary in world.countries:
@@ -600,9 +629,21 @@ func _update_competition(simulation: MemeDemoSimulation) -> void:
 		row.title = Identity.name(simulation.catalog, raw_by_id[id])
 		row.merge({"color":color,"country_ids":countries,"kind":"spread","scope":"country_composite_sample","tooltip":""})
 		_rows.append(row)
-	_geometry_rebuilds += 1
-	_upload_segments(segments)
-	_project_points()
+	for entry: Dictionary in plan:
+		var request: Dictionary = entry.request
+		draw_signature.append([request.key, request.id, request.color, request.origin, entry.offset, entry.count])
+	if draw_signature != _draw_signature:
+		_draw_signature = draw_signature
+		_active_counts.clear()
+		_points.clear()
+		var segments: Array[Dictionary] = []
+		for entry: Dictionary in plan: segments.append(_cached_segment(entry.request, entry.offset, entry.count))
+		_geometry_rebuilds += 1
+		_upload_segments(segments)
+		_project_points()
+	else:
+		_update_hover_uniforms()
+	_projected_geometry = -1
 	_last_geometry_usec = Time.get_ticks_usec() - started
 
 func _spread_point(request: Dictionary, position: Vector2, origin: bool) -> Dictionary:
