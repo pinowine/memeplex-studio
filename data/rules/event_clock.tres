@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1")
-daily_expectation = 1.7
+daily_expectation = 0.4

@@ -696,16 +696,14 @@ func _event_condition_values() -> Dictionary:
 		"adopted":float(totals.adopted) / maxf(1.0, world_population) * sample_population,
 		"variants":variants.size(), "families":families.size(), "fatigue":totals.fatigue}
 
-## 每次执行事件后重新计算候选条件；空候选池保留未使用的到达次数。
+# Deferred arrivals keep their place without printing a burst when conditions become eligible.
 func _schedule_events() -> void:
 	var arrivals := EventScheduler.arrival_count(catalog.event_clock, seed_value, hour, _event_clock_arrivals)
-	while events.size() < arrivals:
-		var definition := EventScheduler.choose_event(_eligible_events(), hour, catalog.gameplay_rules.event_time_scale,
-			event_counts, last_event_hours, _event_condition_values(), _rng)
-		if definition == null: return
-		var previous_count := events.size()
-		_execute_event(definition)
-		if events.size() == previous_count: return
+	if events.size() >= arrivals: return
+	if not events.is_empty() and hour - int(events[-1].hour) < catalog.event_clock.minimum_interval_hours(): return
+	var definition := EventScheduler.choose_event(_eligible_events(), hour, catalog.gameplay_rules.event_time_scale,
+		event_counts, last_event_hours, _event_condition_values(), _rng)
+	if definition != null: _execute_event(definition)
 
 ## 统一创建事件身份、应用效果并登记来源，界面只接收记录副本。
 func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -> void:
