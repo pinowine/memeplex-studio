@@ -91,8 +91,8 @@
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_EFFECT": {
     "source": "以平台支持的语言版本生成文字译文。",
-    "zh_CN": "文字传播按目标国家对现有译文语言的最高掌握率计算语言匹配。",
-    "en": "Text delivery uses the highest local proficiency among available translation languages."
+    "zh_CN": "文字传播按目标国家对原文及现有译文语言的最高掌握率计算语言匹配。",
+    "en": "Text delivery uses the highest local proficiency among the original and available translation languages."
   },
   "LOC_PROP_NODE_IMAGE_TITLE": {
     "source": "图像传播",
@@ -121,8 +121,8 @@
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_EFFECT": {
     "source": "将对应译文排入图中文字区域，形成多语图文版本。",
-    "zh_CN": "图像传播按目标国家对图中文字现有译文语言的最高掌握率计算图中文字的语言匹配。",
-    "en": "Localized image delivery uses the highest local proficiency among available embedded translation languages for its lettering."
+    "zh_CN": "图中文字按目标国家对原文及现有译文语言的最高掌握率计算语言匹配。",
+    "en": "Image lettering uses the highest local proficiency among the original and available translation languages."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_TITLE": {
     "source": "语境附注",

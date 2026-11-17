@@ -46,6 +46,9 @@ func available_formats(profile: Dictionary) -> Array[Dictionary]:
 	var original_languages: Array = profile.get("language_ids", [str(profile.language_id)]).duplicate()
 	result.append({"format":"text", "languages":original_languages, "quality":1.0})
 	var translated: Array = meta.translations.keys() if "machine_translation" in skills else []
+	if not translated.is_empty():
+		for language: String in original_languages:
+			if language not in translated: translated.append(language)
 	if not translated.is_empty(): result.append({"format":"translated_text", "languages":translated, "quality":1.0})
 	if "image" in skills and not str(meta.visual_svg).is_empty():
 		result.append({"format":"image", "languages":original_languages, "quality":1.0})
@@ -80,7 +83,7 @@ func _format_language(profile: Dictionary, country: Dictionary, format: Dictiona
 	var original: Array = profile.get("language_ids",[str(profile.language_id)])
 	var raw := _language_match(country.languages,original)
 	var readable := raw
-	if "machine_translation" in _skills(profile) and not meta.translations.is_empty(): readable = _language_match(country.languages,meta.translations.keys())
+	if "machine_translation" in _skills(profile) and not meta.translations.is_empty(): readable = maxf(raw, _language_match(country.languages,meta.translations.keys()))
 	var embedded := language if str(format.format) == "localized_image" else raw
 	# Only independently conveyed visual information receives the visual-language exemption.
 	var visual := 1.0-(1.0-raw)*0.1
