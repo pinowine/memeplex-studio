@@ -81,6 +81,8 @@ class TagChip extends PanelContainer:
 		_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_label.add_theme_font_override("font", Typography.font("label"))
 		_label.add_theme_font_size_override("font_size", Typography.point_size("label"))
 		line.add_child(_label)
@@ -114,7 +116,7 @@ class TagChip extends PanelContainer:
 		paper.set_border_width_all(1)
 		paper.set_corner_radius_all(3)
 		paper.content_margin_left = 4 if compact else 6
-		paper.content_margin_right = 6 if compact else 8
+		paper.content_margin_right = 4 if compact else 6
 		paper.content_margin_top = 2 if compact else 4
 		paper.content_margin_bottom = 2 if compact else 4
 		add_theme_stylebox_override("panel", paper)

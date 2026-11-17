@@ -57,6 +57,8 @@ class MemeTag extends PanelContainer:
 		line.add_child(dot)
 		title = Label.new()
 		title.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL

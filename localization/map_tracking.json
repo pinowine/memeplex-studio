@@ -733,5 +733,20 @@
     "source": "习得",
     "zh_CN": "习得",
     "en": "Learned"
+  },
+  "MM_PRIMARY_SHORT": {
+    "source": "主",
+    "zh_CN": "主",
+    "en": "Primary"
+  },
+  "MM_KIND_OWN_HELP": {
+    "source": "这是你创作并仍由你掌握的模因。传播中接近原意的改写也会留在你的模因里。",
+    "zh_CN": "这是你创作并仍由你掌握的模因。传播中接近原意的改写也会留在你的模因里。",
+    "en": "A meme you created and still control. Rewrites that stay close to its meaning remain part of your meme."
+  },
+  "MM_KIND_INDEPENDENT_HELP": {
+    "source": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
+    "zh_CN": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
+    "en": "A meme circulating independently of your control. It may emerge elsewhere or split from an existing meme."
   }
 }

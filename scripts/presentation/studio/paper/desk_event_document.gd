@@ -205,6 +205,7 @@ func _compact_field(field: Dictionary, node_name: String, font_size: int, ink: C
 	var label := _body(font_size, FIELD_COLORS[str(field.field_kind)] if ink.a == 0.0 else ink)
 	label.name = node_name
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.add_theme_constant_override("line_separation", 0)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -363,7 +364,12 @@ func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 			_hide_hover()
 			return
 		_hover.set_width(float(field.get("tooltip_width", ReceiptHover.DEFAULT_WIDTH)))
-		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
+		if field.has("tooltip_info"):
+			var info: Dictionary = field.tooltip_info
+			_hover.set_width(float(info.hover_width))
+			_hover.set_content(str(info.title), info.rows, str(info.description), info.presentation)
+		else:
+			_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
 		_hover.show()
 		_hover.fit_at(get_viewport().get_mouse_position(), get_viewport().get_visible_rect()))
 	label.meta_clicked.connect(func(meta: Variant):
@@ -482,26 +488,11 @@ func _rebuild_meme_header(details: Dictionary) -> void:
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
 	heading.add_child(title)
-	_meme_close = Button.new()
-	_meme_close.name = "CloseMemeDetails"
-	_meme_close.text = "×"
-	_meme_close.tooltip_text = DeskLocalization.text("PRINT_CLOSE")
-	_meme_close.custom_minimum_size = Vector2(28, 28)
-	_meme_close.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	_meme_close.add_theme_font_override("font", ReceiptHover.BODY_FONT)
-	_meme_close.add_theme_font_size_override("font_size", 20)
-	_meme_close.add_theme_color_override("font_color", Style.INK)
-	_meme_close.add_theme_color_override("font_hover_color", Style.SECTION_TEAL)
-	_meme_close.add_theme_color_override("font_pressed_color", Style.SECTION_TEAL)
-	_meme_close.add_theme_color_override("font_focus_color", Style.SECTION_TEAL)
-	_meme_close.pressed.connect(func(): close_requested.emit())
-	heading.add_child(_meme_close)
-	PaperStyle.apply_button(_meme_close, true)
 	var fields: Array[Dictionary] = []
 	if not str(details.get("source_kind", "")).is_empty():
 		fields.append({"text":str(details.source_kind), "field_kind":"meme",
-			"tooltip_title":str(details.title), "tooltip_body":str(details.get("name_help", ""))})
-	_add_metadata({"event_fields":fields, "country_title":str(details.get("origin_title", ""))})
+			"tooltip_title":str(details.source_kind), "tooltip_body":str(details.kind_help)})
+	_add_metadata({"event_fields":fields, "country_title":str(details.get("origin_title", "")), "country_field":{"text":str(details.origin_title), "field_kind":"group", "tooltip_title":str(details.origin_hover.title), "tooltip_body":str(details.origin_hover.description), "tooltip_info":details.origin_hover}})
 	# The detail section supplies the first rule, avoiding two adjacent separators.
 	var duplicate_rule: HSeparator = _header.get_child(_header.get_child_count() - 1)
 	_header.remove_child(duplicate_rule)
@@ -529,7 +520,7 @@ func inspection() -> Dictionary:
 	return {"blocks":_blocks.duplicate(true), "headline":_headline, "paper_footer":_footer.inspection(), "scrollable":true,
 		"meme_mode":_meme_mode, "meme_details":_meme_view.inspection() if _meme_mode else {},
 		"meme_sections":_meme_details.get("sections", []).duplicate(true), "paper_style":"event",
-		"close_button_visible":_meme_mode and _meme_close.is_visible_in_tree(),
+		"close_button_visible":false,
 		"content_height":_column.size.y, "viewport_height":_scroll.size.y, "columns":2,
 		"header_rect":_header.get_global_rect(), "scroll_rect":_scroll.get_global_rect(),
 		"scrollbar_rect":bar.get_global_rect(), "scrollbar_gap":bar.global_position.x - _column.get_global_rect().end.x,

@@ -9,6 +9,8 @@ const CONTEXT_DEFINITIONS = preload("res://data/context/context_resources.tres")
 const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 const MemeLedger = preload("res://scripts/presentation/map/meme_map_ledger.gd")
 const MemeDetails = preload("res://scripts/presentation/map/meme_map_details.gd")
+const CountryHover = preload("res://scripts/presentation/map/country_hover_content.gd")
+var foreground_occluded := false
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
 var initialization_message := ""
@@ -190,20 +192,10 @@ func close_drawer() -> void:
 	terrain.set_highlight(hovered_country, -1)
 	_update_launch_marker()
 
-func _profile_tags(weights: Dictionary, kind: String, limit: int = 0, primary: Array = []) -> Array[Dictionary]:
-	var ids := weights.keys()
-	ids.sort_custom(func(a: String, b: String): return float(weights[a]) > float(weights[b]))
-	var tags: Array[Dictionary] = []
-	for id: String in ids:
-		for entry: Dictionary in CONTEXT_DEFINITIONS.entries:
-			if str(entry.kind) == kind and str(entry.get("value", "")) == id:
-				tags.append({"text":"%s %d%%" % [DeskLocalization.text(str(entry.title)), roundi(float(weights[id]) * 100.0)], "kind":kind, "help":""})
-				if kind == "language": tags.back().text += " · " + DeskLocalization.text("MM_PRIMARY_LANGUAGE" if id in primary else "MM_SECONDARY_LANGUAGE")
-				break
-		if limit > 0 and tags.size() == limit: break
-	return tags
-
 func _update_hover() -> void:
+	if foreground_occluded:
+		hover_note.hide()
+		return
 	if not _ledger_hovered_variant.is_empty() and _meme_snapshot.get("world_competition", {}).get("variants_by_id", {}).has(_ledger_hovered_variant):
 		_hover_profile_signature.clear()
 		hover_note.show()
@@ -225,16 +217,9 @@ func _update_hover() -> void:
 	if signature == _hover_profile_signature: return
 	_hover_profile_signature = signature
 	var country := settings.countries[hovered_country]
-	var profile := COUNTRY_RULES.country(str(country.id))
-	var rows := [
-		{"label":DeskLocalization.text("MM_LANGUAGE"), "tags":_profile_tags(profile.languages, "language", 0, profile.primary_languages)},
-		{"label":DeskLocalization.text("MM_GROUP"), "tags":_profile_tags(profile.groups, "group", 3)},
-		{"label":DeskLocalization.text("MM_TOPICS"), "tags":_profile_tags(profile.topics, "topic", 3)}]
-	hover_note.set_width(600)
-	hover_note.set_content(tr(country.official_name_key), rows,
-		tr(country.description_key),
-		{"kind":"language", "columns":true, "badge":tr("MAP_POPULATION") % (_country_population(str(country.id))/1000000.0),
-		"note":tr(str(country.description_key) + "_NOTE")})
+	var content := CountryHover.build(str(country.id), _country_population(str(country.id)))
+	hover_note.set_width(float(content.hover_width))
+	hover_note.set_content(str(content.title), content.rows, str(content.description), content.presentation)
 
 func _country_population(id: String) -> int:
 	if _meme_snapshot.is_empty(): return int(COUNTRY_RULES.country(id).population)

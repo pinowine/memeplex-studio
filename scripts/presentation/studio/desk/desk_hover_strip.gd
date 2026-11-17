@@ -112,7 +112,9 @@ func _first_text(keys: Array[String]) -> String:
 func _presentation_details() -> Dictionary:
 	var kind := str(_hover.get("kind","source"))
 	kind = {"monitor_mode":"monitor","context_token":str(_hover.get("layer","source")),"meme_title":"source"}.get(kind,kind)
-	return {"kind":kind}
+	var presentation: Dictionary = _hover.get("presentation", {}).duplicate(true)
+	if not presentation.has("kind"): presentation.kind = kind
+	return presentation
 
 func _update_content(force_layout: bool = false) -> void:
 	var heading := _normalized(_default_text)
@@ -223,7 +225,7 @@ func _layout() -> void:
 			_receipt.name = "HoverReceipt"
 			_receipt.set_pointer_source(pointer_source)
 			add_child(_receipt)
-		_receipt.set_width(size.x)
+		_receipt.set_width(float(_hover.get("hover_width", size.x)))
 		_receipt.set_content(_heading,_receipt_rows,_detail,_receipt_presentation)
 		_receipt.set_pointer_following(true)
 		queue_redraw()

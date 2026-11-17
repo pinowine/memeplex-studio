@@ -8,6 +8,7 @@ const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_styl
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const Handwriting = preload("res://scripts/presentation/studio/desk/desk_handwriting.gd")
 const Fields = preload("res://scripts/presentation/map/meme_map_fields.gd")
+const TrendChart = preload("res://scripts/presentation/ui/components/spread_trend_chart.gd")
 
 class SectionIcon extends Control:
 	var kind := "source"
@@ -30,6 +31,7 @@ var _country_tags: Dictionary = {}
 var _country_flows: Array[HFlowContainer] = []
 var _compact_layout := false
 var _interactive_countries := true
+var _trend_charts: Array[Control] = []
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -52,6 +54,7 @@ func set_details(details: Dictionary, interactive_countries: bool = true) -> voi
 	if key != _layout_key:
 		_layout_key = key
 		_rebuild(interactive_countries)
+	for chart: Control in _trend_charts: chart.set_samples(details.get("history", []))
 	for header: Dictionary in _headers:
 		var section: Dictionary = details.sections[int(header.section)]
 		_assign_help(header.control, str(section.title), str(section.help), str(section.kind), interactive_countries, section.get("hover_info", {}))
@@ -98,12 +101,13 @@ func _rebuild(interactive_countries: bool) -> void:
 	_help_controls.clear()
 	_country_tags.clear()
 	_country_flows.clear()
+	_trend_charts.clear()
 	for section_index in _details.sections.size():
 		var section: Dictionary = _details.sections[section_index]
 		var section_body := VBoxContainer.new()
 		section_body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		section_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		section_body.add_theme_constant_override("separation", 8)
+		section_body.add_theme_constant_override("separation", 4 if str(section.kind) == "language" else 8)
 		add_child(section_body)
 		section_body.add_child(_rule())
 		var header := HBoxContainer.new()
@@ -127,7 +131,7 @@ func _rebuild(interactive_countries: bool) -> void:
 			grid.name = "MemeContextColumns"
 			grid.columns = 2
 			grid.add_theme_constant_override("h_separation", 12)
-			grid.add_theme_constant_override("v_separation", 8)
+			grid.add_theme_constant_override("v_separation", 4)
 			content = grid
 		elif str(section.kind) == "group" and not section.rows.is_empty():
 			var flow := HFlowContainer.new()
@@ -142,6 +146,13 @@ func _rebuild(interactive_countries: bool) -> void:
 		content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		content.add_theme_constant_override("separation", 8)
 		section_body.add_child(content)
+		if str(section.kind) == "metric":
+			var chart := TrendChart.new()
+			chart.name = "MemeSpreadAndDeviation"
+			chart.show_labels = false
+			chart.custom_minimum_size.y = 112
+			content.add_child(chart)
+			_trend_charts.append(chart)
 		if str(section.kind) == "group" and section.rows.is_empty():
 			var empty := _label(DeskLocalization.text("MM_NO_SPREAD"), 14, Style.SECONDARY_INK)
 			_assign_help(empty, str(section.title), str(section.help), str(section.kind), interactive_countries)
@@ -165,10 +176,12 @@ func _rebuild(interactive_countries: bool) -> void:
 			var fields: BoxContainer = VBoxContainer.new() if prose else HBoxContainer.new()
 			fields.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			fields.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			fields.add_theme_constant_override("separation", 8 if prose else 12)
+			fields.add_theme_constant_override("separation", 2 if context else (8 if prose else 12))
 			content.add_child(fields)
 			var label: Control
 			label = _label(str(row.label), 12, Style.SECONDARY_INK)
+			if str(row.get("help_key", "")) in ["MM_HELP_SPREAD", "MM_HELP_DEVIATION"]:
+				label.add_theme_color_override("font_color", Typography.ACCENT if str(row.help_key) == "MM_HELP_SPREAD" else Color("ad4438"))
 			if not prose and country_id.is_empty(): label.custom_minimum_size.x = 88
 			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			label.size_flags_stretch_ratio = 0.75

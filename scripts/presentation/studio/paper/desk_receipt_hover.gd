@@ -37,6 +37,7 @@ var _footer_rule := 0.0
 var _section_rules: Array[Dictionary] = []
 var _row_glyphs: Array[Dictionary] = []
 var _tag_panels: Array[Dictionary] = []
+var _grouped_bars: Array[Dictionary] = []
 var _icon_rect := Rect2()
 var _badge_rect := Rect2()
 var _footer_number: TextParagraph
@@ -147,7 +148,7 @@ func _add_tags(tags: Array, y: float, width: float, left: float = PADDING.x, ver
 			y += row_height + 4
 			row_height = 0
 		var colors := ContextTag.palette(kind)
-		var text_height := _add_text(text, Vector2(x + 22, y + 2), chip_width - 28, BODY_FONT, 12, colors.ink, "context_tag")
+		var text_height := _add_text(text, Vector2(x + 22, y + 2), chip_width - 28, BODY_FONT, 12, colors.ink, "context_tag", HORIZONTAL_ALIGNMENT_CENTER)
 		var chip_height := maxf(14, text_height) + 4
 		var rect := Rect2(x, y, chip_width, chip_height)
 		_tag_panels.append({"text":text, "kind":kind, "rect":rect, "paper":ContextTag.paper(kind)})
@@ -163,6 +164,7 @@ func _layout_content() -> void:
 	_section_rules.clear()
 	_row_glyphs.clear()
 	_tag_panels.clear()
+	_grouped_bars.clear()
 	_badge_rect = Rect2()
 	var width := _layout_width-PADDING.x*2.0
 	var y := PADDING.y
@@ -180,7 +182,7 @@ func _layout_content() -> void:
 		if not badge.is_empty():
 			y += 6
 			var badge_width := minf(width-40,BODY_FONT.get_string_size(badge,HORIZONTAL_ALIGNMENT_LEFT,-1,Typography.point_size("annotation")).x+12)
-			var badge_height := _add_text(badge,Vector2(title_x+6,y+3),badge_width-12,BODY_FONT,11,ReceiptStyle.INK,"badge")+6
+			var badge_height := _add_text(badge,Vector2(title_x+6,y+3),badge_width-12,BODY_FONT,11,ReceiptStyle.INK,"badge",HORIZONTAL_ALIGNMENT_CENTER)+6
 			_badge_rect = Rect2(title_x,y,badge_width,badge_height)
 			y += badge_height
 		y = maxf(y,_icon_rect.end.y)+GROUP_GAP
@@ -196,7 +198,10 @@ func _layout_content() -> void:
 	label_width = minf(label_width,width*.5)
 	var column_layout := bool(_presentation.get("columns", false))
 	var column_bottom := y
+	var grouped_bars := bool(_presentation.get("grouped_bars", false))
+	if grouped_bars: y = _layout_grouped_bars(y, width)
 	for index in _rows.size():
+		if grouped_bars: break
 		var row: Dictionary = _rows[index]
 		if column_layout:
 			var column_width := (width - ROW_GAP * 2) / 3.0
@@ -246,7 +251,29 @@ func _layout_content() -> void:
 	size = custom_minimum_size
 	queue_redraw()
 
+func _layout_grouped_bars(top: float, width: float) -> float:
+	var column_width := (width - ROW_GAP * 2) / 3.0
+	var bottom := top
+	for index in _rows.size():
+		var row: Dictionary = _rows[index]
+		var x := PADDING.x + index * (column_width + ROW_GAP)
+		var y := top + _add_text(str(row.label), Vector2(x, top), column_width, BOLD_FONT, 12, ReceiptStyle.SECONDARY_INK, "category") + ROW_GAP
+		for tag: Dictionary in row.tags:
+			var ink := _section_color(str(tag.kind))
+			var text := "%s %d%%" % [str(tag.name), roundi(float(tag.share) * 100)]
+			if bool(tag.primary): text += " · " + DeskLocalization.text("MM_PRIMARY_SHORT")
+			y += _add_text(text, Vector2(x, y), column_width, BODY_FONT, 12, ink, "badge") + 2
+			_grouped_bars.append({"rect":Rect2(x,y,column_width,4), "share":float(tag.share), "color":ink})
+			y += 12
+		bottom = maxf(bottom, y)
+	return bottom
+
 func _draw() -> void:
+	for bar: Dictionary in _grouped_bars:
+		var rect: Rect2 = bar.rect
+		draw_rect(rect, Color(bar.color, .12))
+		rect.size.x *= float(bar.share)
+		draw_rect(rect, bar.color)
 	for tag: Dictionary in _tag_panels:
 		draw_style_box(tag.paper, tag.rect)
 	for y: float in _separators:

@@ -1,5 +1,6 @@
 extends RefCounted
 
+const CountryHover = preload("res://scripts/presentation/map/country_hover_content.gd")
 const Identity = preload("res://scripts/presentation/memes/meme_identity.gd")
 const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
@@ -28,6 +29,8 @@ static func build(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_id: St
 	return {"id":variant_id, "title":str(identity.name), "name":str(identity.name),
 		"expression":str(identity.expression), "meaning":str(identity.meaning),
 		"meme_id":str(raw.meme_id), "source_kind":str(identity.kind),
+		"kind_help":DeskLocalization.text("MM_KIND_OWN_HELP" if bool(raw.get("controlled", false)) and str(raw.get("creator", "")) == "player" else "MM_KIND_INDEPENDENT_HELP"),
+		"origin_hover":CountryHover.build(origin), "history":snapshot.get("meme_trends", {}).get(str(raw.meme_id), []),
 		"origin_country":origin, "origin_title":str(country_titles[origin]),
 		"adopted":int(variant.adopted), "exposed":int(variant.exposed), "attention":int(variant.attention), "share":float(variant.share),
 		"name_help_key":"MM_HELP_NAME", "name_help":DeskLocalization.text("MM_HELP_NAME"),
@@ -64,6 +67,7 @@ static func _country_rows(world: Dictionary, variant_id: String, titles: Diction
 				var row := _row("", "", "MM_HELP_COUNTRY_SPREAD")
 				row.country_id = str(country.id)
 				row.label = str(titles[str(country.id)])
+				row.hover_info = CountryHover.build(str(country.id), int(country.population))
 				rows.append(row)
 			break
 	return rows
@@ -132,8 +136,8 @@ static func _transmission_rows(snapshot: Dictionary, variant_id: String) -> Arra
 	var growth := float(metrics.growth) * 100.0
 	return [
 		_row("MM_SPREAD", _share(float(metrics.spread)), "MM_HELP_SPREAD"),
-		_row("MM_GROWTH", ("+" if growth > 0.0 else "") + "%.1f%%" % growth, "MM_HELP_GROWTH"),
-		_row("MM_DEVIATION", _percentage(float(metrics.deviation)), "MM_HELP_DEVIATION")]
+		_row("MM_DEVIATION", _percentage(float(metrics.deviation)), "MM_HELP_DEVIATION"),
+		_row("MM_GROWTH", ("+" if growth > 0.0 else "") + "%.1f%%" % growth, "MM_HELP_GROWTH")]
 
 static func _section(title_key: String, kind: String, help_key: String, rows: Array[Dictionary]) -> Dictionary:
 	return {"title":DeskLocalization.text(title_key), "kind":kind, "help_key":help_key, "help":DeskLocalization.text(help_key), "rows":rows}

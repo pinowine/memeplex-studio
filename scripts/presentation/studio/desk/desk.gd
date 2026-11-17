@@ -172,6 +172,7 @@ func _update_material_storage(_enabled: bool) -> void:
 
 func _update_hover_strip() -> void:
 	if _hover_strip == null: return
+	_page.atlas.foreground_occluded = _slot_reader.is_visible_in_tree() and _slot_reader.handles_viewport_point(_hover_pointer_position())
 	var editor: Control = _page.hud.design_workbench()
 	if _page.hud.modal_visible() or (_page._shell != null and _page._shell.blocks_input()) or editor._source_hover.visible:
 		_hover_strip.clear_hover()
