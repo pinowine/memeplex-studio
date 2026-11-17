@@ -25,6 +25,7 @@ const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_f
 const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
+const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const HEADING_FONT = preload("res://assets/image/fonts/body_semibold_font.tres")
 const BODY_FONT = preload("res://assets/image/fonts/development_font.tres")
 const INK := Color("384238")
@@ -115,6 +116,7 @@ var _footer: Control
 var _draft_status: Label
 var _cost: Label
 var _publish: Button
+var _publication_hint := ""
 var _skill_presentation: Dictionary = {}
 var _textures: Dictionary = {}
 var _sync_count := 0
@@ -222,6 +224,9 @@ func bind_publish(button: Button, cost: Label) -> void:
 	_cost=cost
 	button.reparent(_footer)
 	PaperStyle.apply_button(button)
+	ReceiptUI.primary(button)
+	button.add_theme_stylebox_override("hover_pressed", button.get_theme_stylebox("pressed"))
+	button.add_theme_color_override("font_hover_pressed_color", button.get_theme_color("font_pressed_color"))
 	button.clip_text = false
 	if not button.minimum_size_changed.is_connected(_queue_text_layout): button.minimum_size_changed.connect(_queue_text_layout)
 	cost.hide()
@@ -308,9 +313,16 @@ func refresh_publication() -> void:
 	_publish.visible = _footer.visible
 	_draft_status.text = DeskLocalization.text("LOC_WB_DRAFT_AWAITING_PUBLICATION")
 	var cost := int(_state.get("point_cost", 0))
+	var balance := int(_state.get("meme_points", 0))
+	var phase := str(_state.get("phase", "draft"))
 	if int(_state.get("publish_count", 0)) > 0:
 		_publish.text = DeskLocalization.format_text("LOC_WB_PUBLISH_CHANGES_COST", cost)
-		_publish.disabled = not can_revise or str(_state.get("phase", "draft")) not in ["draft", "running"] or int(_state.get("meme_points", 0)) < cost
+		_publish.disabled = not can_revise or phase not in ["draft", "running"] or balance < cost
+		_publication_hint = DeskLocalization.format_text("LOC_MEME_D_47732400", balance)
+		if phase == "event":
+			_publication_hint = DeskLocalization.text("LOC_COLLECT_OR_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_A156F2DD") + "\n" + _publication_hint
+		elif balance < cost:
+			_publication_hint = DeskLocalization.format_text("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, balance])
 	if before != [_footer.get_parent(), _footer.visible, _publish.text, _draft_status.text]: _queue_text_layout()
 
 
@@ -1051,6 +1063,8 @@ func _spread_layout_inspection() -> Dictionary:
 
 func hover_info(viewport_point: Vector2) -> Dictionary:
 	if not _hover_enabled: return {}
+	var publication := publication_hover_info(viewport_point)
+	if not publication.is_empty(): return publication
 	if _tab == "spread": return _spread_hover(viewport_point)
 	if _tab != "edit" or not _pages.edit.is_visible_in_tree(): return {}
 	var clip_slot := module_clip_at(viewport_point)
@@ -1079,6 +1093,14 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 			if str(tag.id).is_empty(): return {}
 			return {"kind":tag.kind, "id":tag.id, "title":tag.text, "description":tag.help, "hover_description":tag.help, "hover_note":tag.note}
 	return {}
+
+
+func publication_hover_info(viewport_point: Vector2) -> Dictionary:
+	if not _hover_enabled or _publish == null or not _publish.is_visible_in_tree(): return {}
+	var local := _publish.get_global_transform_with_canvas().affine_inverse() * viewport_point
+	if not Rect2(Vector2.ZERO, _publish.size).has_point(local): return {}
+	return {"kind":"publication", "title":_publish.text, "hover_description":_publication_hint,
+		"cursor_shape":Input.CURSOR_FORBIDDEN if _publish.disabled else Input.CURSOR_POINTING_HAND}
 
 
 func _spread_hover(viewport_point: Vector2) -> Dictionary:

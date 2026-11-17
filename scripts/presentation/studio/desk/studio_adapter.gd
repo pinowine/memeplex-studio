@@ -21,6 +21,8 @@ func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int
 
 func pointer_cursor_shape(point: Vector2) -> int:
 	var editor: Control = _desk._page.hud.design_workbench()
+	var publication: Dictionary = editor.publication_hover_info(point)
+	if not publication.is_empty(): return int(publication.cursor_shape)
 	var clip: int = editor.module_clip_at(point)
 	if editor._tab == "edit" and editor.is_visible_in_tree() and clip >= 0:
 		if not editor._interaction_enabled: return Input.CURSOR_FORBIDDEN

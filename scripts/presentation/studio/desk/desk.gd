@@ -1201,7 +1201,7 @@ func _process(_delta: float) -> void:
 	if editor.has_method("set_interaction_enabled"):
 		editor.set_interaction_enabled(design_enabled)
 	editor.set_module_drop_enabled(_module_drop_allowed(get_viewport().get_mouse_position()))
-	var hover_enabled: bool = enabled and not slot_details_active() and _active_sheet in ["edit", "spread"] and (_camera.inspection().state == "overview" or (_revealed_focus == "sheet/" + _active_sheet and _camera.inspection().state == "focused"))
+	var hover_enabled: bool = enabled and not slot_details_active() and _active_sheet in ["edit", "cultivate", "spread"] and (_camera.inspection().state == "overview" or (_revealed_focus == "sheet/" + _active_sheet and _camera.inspection().state == "focused"))
 	editor.set_hover_enabled(hover_enabled)
 	_update_hover_strip()
 	_country_layer.visible = _active_sheet == "map" and enabled
