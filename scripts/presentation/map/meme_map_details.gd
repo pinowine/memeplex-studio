@@ -4,6 +4,7 @@ const CountryHover = preload("res://scripts/presentation/map/country_hover_conte
 const Identity = preload("res://scripts/presentation/memes/meme_identity.gd")
 const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const ENDING_ORDER := ["viral_icon", "local_classic", "successful_adaptation", "balanced_duel", "best_substitute", "forgotten"]
 
 static func short_name(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_id: String) -> String:
 	return Identity.name(catalog, _raw_variant(snapshot, variant_id))
@@ -22,9 +23,11 @@ static func build(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_id: St
 		content_rows.append(_row("MM_MEANING", str(identity.meaning), "MM_HELP_MEANING"))
 	var sections: Array[Dictionary] = [
 		_section("MM_CONTENT", "meme", "MM_HELP_CONTENT", content_rows),
-		_section("MM_COUNTRIES", "group", "MM_HELP_COUNTRIES", _country_rows(world, variant_id, country_titles)),
-		_section("MM_CONTEXT", "language", "MM_HELP_CONTEXT", _context_rows(profile, catalog)),
 		_section("MM_TRANSMISSION", "metric", "MM_HELP_TRANSMISSION", _transmission_rows(snapshot, variant_id))]
+	var goals := _ending_rows(world, raw, country_titles, catalog.gameplay_rules)
+	if not goals.is_empty(): sections.append(_section("MM_ENDING_PROGRESS", "ending", "MM_ENDING_PROGRESS_HELP", goals))
+	sections.append(_section("MM_COUNTRIES", "group", "MM_HELP_COUNTRIES", _country_rows(world, variant_id, country_titles)))
+	sections.append(_section("MM_CONTEXT", "language", "MM_HELP_CONTEXT", _context_rows(profile, catalog)))
 	var origin := str(variant.origin_country)
 	return {"id":variant_id, "title":str(identity.name), "name":str(identity.name),
 		"expression":str(identity.expression), "meaning":str(identity.meaning),
@@ -138,6 +141,48 @@ static func _transmission_rows(snapshot: Dictionary, variant_id: String) -> Arra
 		_row("MM_SPREAD", _share(float(metrics.spread)), "MM_HELP_SPREAD"),
 		_row("MM_DEVIATION", _percentage(float(metrics.deviation)), "MM_HELP_DEVIATION"),
 		_row("MM_GROWTH", ("+" if growth > 0.0 else "") + "%.1f%%" % growth, "MM_HELP_GROWTH")]
+
+static func _ending_rows(world: Dictionary, raw: Dictionary, country_titles: Dictionary, rules: MemeGameplayRules) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	if bool(world.endgame.war_started): return rows
+	if not bool(raw.get("controlled", false)) or str(raw.get("creator", "")) != "player": return rows
+	var meme_id := str(raw.get("meme_id", raw.id))
+	for progress: Dictionary in world.ending_progress:
+		if str(progress.meme_id) != meme_id: continue
+		var id := str(progress.id)
+		var values := PackedStringArray()
+		var help := ""
+		match id:
+			"viral_icon", "best_substitute":
+				if id == "best_substitute":
+					values.append(DeskLocalization.text("MM_ENDING_PROGRESS_SPLIT"))
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_SPREAD", [_share(float(progress.spread)), _share(float(progress.spread_min))]))
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_LEAD", [_points(float(progress.lead)), _points(float(progress.lead_min))]))
+			"local_classic":
+				values.append(str(country_titles[str(progress.country_id)]) + " " + DeskLocalization.format_text("MM_ENDING_PROGRESS_ADOPTION", [_percentage(float(progress.adoption)), _percentage(float(progress.adoption_min))]))
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_DEVIATION", [_percentage(float(progress.deviation)), _percentage(float(progress.deviation_max))]))
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_RANGE", [_points(float(progress.range)), _points(float(progress.range_max))]))
+			"balanced_duel":
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_BOTH", [_share(float(progress.spread)), _share(float(progress.other_spread)), _share(float(progress.spread_min))]))
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_GAP", [_points(float(progress.gap)), _points(float(progress.gap_max))]))
+			"successful_adaptation":
+				var baseline := float(progress.baseline) if bool(progress.adaptation_eligible) else float(progress.stable_peak)
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_BASELINE", [_percentage(baseline), _percentage(float(progress.baseline_min))]))
+				if not bool(progress.adaptation_eligible): values.append(DeskLocalization.text("MM_ENDING_PROGRESS_REVISION"))
+				values.append(str(country_titles[str(progress.country_id)]) + " " + DeskLocalization.format_text("MM_ENDING_PROGRESS_ADOPTION", [_percentage(float(progress.adoption)), _percentage(float(progress.adoption_min))]))
+				var gain := _points(float(progress.gain)) if bool(progress.adaptation_eligible) else DeskLocalization.text("MM_ENDING_PROGRESS_UNREVISED")
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_GAIN", [gain, _points(float(progress.gain_min))]))
+				help = DeskLocalization.format_text("MM_ENDING_PROGRESS_ADAPTATION_HELP", [rules.adaptation_stable_window_hours])
+			"forgotten":
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_CARRIERS", [str(int(progress.adopted)), str(int(progress.exposed))]))
+				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_SEED", [int(progress.seed_hours), int(progress.seed_required_hours)]))
+		values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_HOURS", [int(progress.hours), int(progress.required_hours)]))
+		rows.append({"goal_id":id, "label":DeskLocalization.text("MM_ENDING_" + id.to_upper() + "_TITLE"), "value":" · ".join(values), "help_key":"", "help":help})
+	rows.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return ENDING_ORDER.find(str(a.goal_id)) < ENDING_ORDER.find(str(b.goal_id)))
+	return rows
+
+static func _points(value: float) -> String:
+	return "%.1f" % (value * 100.0)
 
 static func _section(title_key: String, kind: String, help_key: String, rows: Array[Dictionary]) -> Dictionary:
 	return {"title":DeskLocalization.text(title_key), "kind":kind, "help_key":help_key, "help":DeskLocalization.text(help_key), "rows":rows}
