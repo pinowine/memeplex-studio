@@ -205,6 +205,9 @@ func _target(id: String) -> Variant:
 	if id in ["editor/name", "editor/context", "editor/details", "editor/expression"]:
 		var area: Rect2 = target if target is Rect2 else (_tutorial_project_rect(target) if target is Control else Rect2())
 		return area.intersection(_tutorial_project_rect(page.hud.design_workbench()._detail_scroll))
+	if id in ["spread/details", "spread/skill"] and page.hud.design_workbench()._spread_tree.is_visible_in_tree():
+		var area: Rect2 = target if target is Rect2 else (_tutorial_project_rect(target) if target is Control else Rect2())
+		return area.intersection(_tutorial_project_rect(page.hud.design_workbench()._spread_tree_scroll))
 	return target
 
 func _logical_target(id: String) -> Variant:
@@ -239,11 +242,8 @@ func _logical_target(id: String) -> Variant:
 		"editor/preview": return editor.preview_control()
 		"context/axes": return _context_regions_target(editor.context_slice(), ["stance", "pragmatic"])
 		"context/layers": return _context_regions_target(editor.context_slice(), ["language", "group", "topics"])
-		"spread/tree": return editor._spread_tree
-		"spread/details": return _targets_bounds(["spread/heading", "spread/body", "spread/purchase"])
-		"spread/heading": return editor._skill_heading
-		"spread/body": return editor._skill_scroll
-		"spread/purchase": return editor._skill_purchase
+		"spread/tree": return editor._spread_tree_scroll
+		"spread/details": return _area_target(editor._spread_tree, editor._spread_tree.node_rect("text"))
 		"map/details": return page.atlas.hover_note
 		"map/monitor": return page.atlas._meme_ledger._panel
 		"editor/clips":
@@ -486,8 +486,8 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 		areas.append(_tutorial_project_rect(editor._detail_scroll))
 	elif bool(step.get("scroll", false)) and id == "desktop/printer":
 		areas.append(_tutorial_project_rect(page.desk._printer))
-	elif bool(step.get("scroll", false)) and id == "spread/details":
-		areas.append(_tutorial_project_rect(editor._skill_scroll))
+	elif bool(step.get("scroll", false)) and id in ["spread/tree", "spread/details"]:
+		areas.append(_tutorial_project_rect(editor._spread_tree_scroll))
 	elif bool(step.get("map_navigation", false)) and page.atlas.map_input.is_visible_in_tree():
 		areas.append(_tutorial_project_rect(page.atlas.map_input))
 		if bool(step.get("allow_launch", false)) and page.atlas.launch_marker.is_visible_in_tree():
@@ -496,12 +496,6 @@ func _tutorial_input_targets(step: Dictionary) -> Array[Rect2]:
 	elif id == "speed":
 		for button: Button in page.desk._speed_strip._buttons:
 			if not button.disabled: areas.append(_tutorial_project_rect(button))
-	elif id == "spread/skill" and editor._spread_tree.is_visible_in_tree():
-		var tree: Control = editor._spread_tree
-		if "text" not in editor._design.get("unlocked_skills", []) and tree._points.has("text"):
-			areas.append(_tutorial_project_rect(_area_target(tree, tree.node_rect("text"))))
-		if editor._selected_skill == "text" and editor._buy.is_visible_in_tree() and not editor._buy.disabled:
-			areas.append(_tutorial_project_rect(editor._buy))
 	else:
 		var target: Variant = _target(id)
 		if target is Rect2: areas.append(target)
@@ -522,8 +516,6 @@ func _skill_target(editor: Control) -> Control:
 	var tree: Control = editor._spread_tree
 	if not tree.is_visible_in_tree(): return page.desk._stack.tab_control("spread")
 	if "text" in editor._design.get("unlocked_skills", []): return null
-	var buy: Button = editor._buy
-	if editor._selected_skill == "text" and buy.is_visible_in_tree() and not buy.disabled: return buy
 	return _area_target(tree, tree.node_rect("text"))
 
 func _country_target() -> Control:

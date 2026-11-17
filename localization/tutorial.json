@@ -372,7 +372,7 @@
   "LOC_OPENING_SPREAD_TREE_TEXT": {
     "source": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
     "zh_CN": "从文本传播出发，研究无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
-    "en": "The ability tree on the left starts with text delivery, then branches into accessibility, open source and community relay. Lines show dependencies."
+    "en": "The ability tree starts with text delivery, then branches into accessibility, open source and community relay. Lines show dependencies."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
     "source": "能力详情",
@@ -381,8 +381,8 @@
   },
   "LOC_OPENING_SPREAD_DETAILS_TEXT": {
     "source": "右侧查看能力名称和传播效果，下方确认费用与余额并完成研究。",
-    "zh_CN": "右侧查看传播能力和效果，在下方核对费用与余额，完成研究。",
-    "en": "Read the ability name and propagation effects on the right. Review the cost and balance below, then complete research."
+    "zh_CN": "将鼠标移到能力节点或名称上，查看传播效果和研究费用。滚动页面可以查看后续能力。",
+    "en": "Hover over an ability node or its name to see its effects and research cost. Scroll to see later abilities."
   },
   "LOC_OPENING_SKILL_TITLE": {
     "source": "研究文本传播",
@@ -391,8 +391,8 @@
   },
   "LOC_OPENING_SKILL_TEXT": {
     "source": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
-    "zh_CN": "用初始的10 MEME研究文本传播，跳过教程时照常扣除。首次真实采用奖励20 MEME，并开放三条路线的研究。",
-    "en": "Spend the starting 10 MEME to research text delivery; skipping the tutorial settles the same cost. First genuine adoption rewards 20 MEME and opens research on all three routes."
+    "zh_CN": "按住“文本传播”节点或名称1.5秒，花费初始的10 MEME完成研究。跳过教程时照常扣除。首次真实采用奖励20 MEME，并开放三条路线的研究。",
+    "en": "Hold the text delivery node or its name for 1.5 seconds to spend the starting 10 MEME on research. Skipping the tutorial settles the same cost. First genuine adoption rewards 20 MEME and opens research on all three routes."
   },
   "LOC_OPENING_MAP_INTRO_TITLE": {
     "source": "地图页",
