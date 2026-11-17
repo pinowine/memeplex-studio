@@ -7478,5 +7478,25 @@
     "source": "快捷聚焦时间控制器",
     "zh_CN": "时间控制器",
     "en": "Time controls"
+  },
+  "LOC_VIDEO_SETTINGS": {
+    "source": "画面设置",
+    "zh_CN": "画面设置",
+    "en": "Display settings"
+  },
+  "LOC_VIDEO_RESOLUTION": {
+    "source": "窗口分辨率",
+    "zh_CN": "窗口分辨率",
+    "en": "Window resolution"
+  },
+  "LOC_VIDEO_FULLSCREEN": {
+    "source": "全屏",
+    "zh_CN": "全屏",
+    "en": "Fullscreen"
+  },
+  "LOC_VIDEO_VSYNC": {
+    "source": "垂直同步",
+    "zh_CN": "垂直同步",
+    "en": "Vertical sync"
   }
 }

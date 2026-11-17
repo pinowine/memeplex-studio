@@ -240,6 +240,11 @@ custom_minimum_size = Vector2(0, 44)
 button_pressed = true
 text = "LOC_GUIDE_67_ENABLED"
 
+[node name="Video" type="Button" parent="SettingsPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "LOC_VIDEO_SETTINGS"
+
 [node name="KeyBindings" type="Button" parent="SettingsPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
@@ -286,6 +291,54 @@ custom_minimum_size = Vector2(0, 48)
 text = "LOC_KEY_RESET"
 
 [node name="Back" type="Button" parent="KeysPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "LOC_BACK_572CF45B"
+
+[node name="VideoPanel" type="Panel" parent="."]
+visible = false
+mouse_filter = 0
+script = ExtResource("2")
+paper_margin = 32.0
+
+[node name="Content" type="VBoxContainer" parent="VideoPanel"]
+layout_mode = 0
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="VideoPanel/Content"]
+layout_mode = 2
+text = "LOC_VIDEO_SETTINGS"
+theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("3")
+
+[node name="TitleRule" type="HSeparator" parent="VideoPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 12)
+
+[node name="ResolutionRow" type="HBoxContainer" parent="VideoPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VideoPanel/Content/ResolutionRow"]
+layout_mode = 2
+text = "LOC_VIDEO_RESOLUTION"
+
+[node name="Resolution" type="OptionButton" parent="VideoPanel/Content/ResolutionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Fullscreen" type="CheckButton" parent="VideoPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "LOC_VIDEO_FULLSCREEN"
+
+[node name="VSync" type="CheckButton" parent="VideoPanel/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "LOC_VIDEO_VSYNC"
+
+[node name="Back" type="Button" parent="VideoPanel/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
 text = "LOC_BACK_572CF45B"

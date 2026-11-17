@@ -11,6 +11,7 @@ signal settings_closed
 const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 const TEMPLATE = preload("res://scenes/ui/menus/main_menu.tscn")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
+const DisplaySettings = preload("res://scripts/presentation/ui/menus/display_settings.gd")
 const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd")
 const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_MAIN_NEW_GAME", "LOC_MAIN_LOAD_GAME", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
@@ -26,6 +27,7 @@ var _last_error := OK
 var _settings_in_game := false
 var _binding_capture := ""
 var _binding_buttons: Dictionary = {}
+var _resolutions: Array[Vector2i] = []
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -46,6 +48,11 @@ func _ready() -> void:
 	_ui.get_node("SettingsPanel/Content/KeyBindings").pressed.connect(open_key_bindings)
 	_ui.get_node("KeysPanel/Content/Back").pressed.connect(close_key_bindings)
 	_ui.get_node("KeysPanel/Content/Reset").pressed.connect(reset_key_bindings)
+	_ui.get_node("SettingsPanel/Content/Video").pressed.connect(open_video_settings)
+	_ui.get_node("VideoPanel/Content/Back").pressed.connect(close_video_settings)
+	_ui.get_node("VideoPanel/Content/ResolutionRow/Resolution").item_selected.connect(func(index: int): set_display_setting("resolution", _resolutions[index]))
+	_ui.get_node("VideoPanel/Content/Fullscreen").toggled.connect(func(value: bool): set_display_setting("fullscreen", value))
+	_ui.get_node("VideoPanel/Content/VSync").toggled.connect(func(value: bool): set_display_setting("vsync", value))
 	_install_key_bindings()
 	for entry: Array in [["Music", "music"], ["Effects", "effects"]]:
 		var slider: HSlider = _ui.get_node("SettingsPanel/Content/" + entry[0] + "Row/" + entry[0])
@@ -53,7 +60,8 @@ func _ready() -> void:
 	_style_desktop_menu()
 	ReceiptUI.primary(_ui.get_node("SettingsPanel/Content/Back"))
 	ReceiptUI.primary(_ui.get_node("KeysPanel/Content/Back"))
-	for name: String in ["MenuPanel", "SettingsPanel", "KeysPanel"]:
+	ReceiptUI.primary(_ui.get_node("VideoPanel/Content/Back"))
+	for name: String in ["MenuPanel", "SettingsPanel", "KeysPanel", "VideoPanel"]:
 		_ui.get_node(name + "/Content").minimum_size_changed.connect(_layout)
 	resized.connect(_layout)
 	load_settings()
@@ -127,6 +135,7 @@ func _style_desktop_menu() -> void:
 
 func open_settings() -> void:
 	_ui.get_node("MenuPanel").hide()
+	_ui.get_node("VideoPanel").hide()
 	_ui.get_node("KeysPanel").hide()
 	_ui.get_node("SettingsPanel").show()
 	_ui.get_node("SettingsPanel/Content/LanguageRow/Language").grab_focus()
@@ -141,6 +150,7 @@ func show_settings() -> void:
 func close_settings() -> void:
 	if not is_instance_valid(_ui): return
 	_cancel_binding_capture()
+	_ui.get_node("VideoPanel").hide()
 	_ui.get_node("KeysPanel").hide()
 	_ui.get_node("SettingsPanel").hide()
 	if _settings_in_game:
@@ -155,6 +165,8 @@ func close_settings() -> void:
 func back() -> bool:
 	if not _binding_capture.is_empty():
 		_cancel_binding_capture()
+	elif _ui.get_node("VideoPanel").visible:
+		close_video_settings()
 	elif _ui.get_node("KeysPanel").visible:
 		close_key_bindings()
 	elif _ui.get_node("SettingsPanel").visible:
@@ -175,6 +187,34 @@ func close_key_bindings() -> void:
 	_ui.get_node("SettingsPanel").show()
 	_ui.get_node("SettingsPanel/Content/KeyBindings").grab_focus()
 	_layout()
+
+func open_video_settings() -> void:
+	_ui.get_node("SettingsPanel").hide()
+	_ui.get_node("VideoPanel").show()
+	_ui.get_node("VideoPanel/Content/Fullscreen").grab_focus()
+	_layout()
+
+func close_video_settings() -> void:
+	_ui.get_node("VideoPanel").hide()
+	_ui.get_node("SettingsPanel").show()
+	_ui.get_node("SettingsPanel/Content/Video").grab_focus()
+	_layout()
+
+func set_display_setting(key: String, value: Variant) -> Error:
+	_settings.display[key] = value
+	DisplaySettings.apply(get_window(), _settings.display)
+	return save_settings()
+
+func _refresh_display_labels() -> void:
+	var options: OptionButton = _ui.get_node("VideoPanel/Content/ResolutionRow/Resolution")
+	var selected: Vector2i = DisplayServer.screen_get_size(get_window().current_screen) if _settings.display.fullscreen else _settings.display.resolution
+	_resolutions = DisplaySettings.resolutions(get_window(), selected)
+	options.clear()
+	for dimensions: Vector2i in _resolutions: options.add_item("%d × %d" % [dimensions.x, dimensions.y])
+	options.select(_resolutions.find(selected))
+	options.disabled = bool(_settings.display.fullscreen)
+	_ui.get_node("VideoPanel/Content/Fullscreen").set_pressed_no_signal(_settings.display.fullscreen)
+	_ui.get_node("VideoPanel/Content/VSync").set_pressed_no_signal(_settings.display.vsync)
 
 func _install_key_bindings() -> void:
 	var rows: VBoxContainer = _ui.get_node("KeysPanel/Content/BindingScroll/Rows")
@@ -272,6 +312,9 @@ func load_settings() -> Error:
 		_last_error = error
 		_refresh_labels()
 		return error
+	_settings.display = DisplaySettings.current(get_window())
+	for key: String in _settings.display: _settings.display[key] = config.get_value("display", key, _settings.display[key])
+	DisplaySettings.apply(get_window(), _settings.display)
 	var guide: Variant = config.get_value("interface", "guide_enabled", true)
 	_settings.guide_enabled = guide if guide is bool else true
 	_settings.typewriter_enabled = bool(config.get_value("interface", "typewriter_enabled", true))
@@ -292,6 +335,7 @@ func load_settings() -> Error:
 
 func save_settings() -> Error:
 	var config := ConfigFile.new()
+	for key: String in _settings.display: config.set_value("display", key, _settings.display[key])
 	config.set_value("interface", "language", _settings.language)
 	config.set_value("interface", "guide_enabled", _settings.guide_enabled)
 	config.set_value("interface", "typewriter_enabled", _settings.typewriter_enabled)
@@ -345,6 +389,7 @@ func _refresh_labels() -> void:
 		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Row/" + pair[0]).set_value_no_signal(_settings[pair[1]])
 		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Row/" + pair[0] + "Value").text = "%d%%" % roundi(float(_settings[pair[1]]) * 100)
 	_refresh_binding_labels()
+	_refresh_display_labels()
 	set_load_available(_load_available)
 	_layout()
 	_layout.call_deferred()
@@ -362,7 +407,7 @@ func _layout() -> void:
 	content.size = content.get_combined_minimum_size()
 	menu.size = content.size
 	menu.position = Vector2(size.x * .30, minf(size.y * .30, size.y - content.size.y * scale_factor - 32.0 * scale_factor))
-	for name: String in ["SettingsPanel", "KeysPanel"]:
+	for name: String in ["SettingsPanel", "KeysPanel", "VideoPanel"]:
 		var panel: Control = _ui.get_node(name)
 		ReceiptUI.layout_menu(panel, panel.get_node("Content"), size)
 
@@ -371,5 +416,5 @@ func inspection() -> Dictionary:
 	for name: String in PackedStringArray([_music_bus]) + _effect_buses:
 		var index := AudioServer.get_bus_index(name)
 		buses[name] = {"linear": AudioServer.get_bus_volume_linear(index), "muted": AudioServer.is_bus_mute(index)} if index >= 0 else {}
-	var screen := "keys" if is_instance_valid(_ui) and _ui.get_node("KeysPanel").visible else ("settings" if is_instance_valid(_ui) and _ui.get_node("SettingsPanel").visible else "menu")
+	var screen := "video" if is_instance_valid(_ui) and _ui.get_node("VideoPanel").visible else "keys" if is_instance_valid(_ui) and _ui.get_node("KeysPanel").visible else ("settings" if is_instance_valid(_ui) and _ui.get_node("SettingsPanel").visible else "menu")
 	return {"visible": is_visible_in_tree(), "screen": screen, "settings": _settings.duplicate(true), "settings_path": settings_path, "load_available": _load_available, "audio_buses": buses, "last_error": _last_error, "translation_locale": TranslationServer.get_locale(), "binding_capture":_binding_capture, "scope": "Own interface labels and existing project translations"}
