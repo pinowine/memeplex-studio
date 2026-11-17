@@ -618,5 +618,35 @@
     "source": "你看，外面的人做了这些改动：\n%s\n它已经偏离得足够远，分成另一条模因了。你的原稿保留着，这张卡记录的是它怎么变出去的。",
     "zh_CN": "你看，外面的人做了这些改动：\n%s\n它已经偏离得足够远，分成另一条模因了。你的原稿保留着，这张卡记录的是它怎么变出去的。",
     "en": "Here is what people changed:\n%s\nIt moved far enough to become a separate meme. Your original remains; this card records how the new one branched off."
+  },
+  "LOC_EXTERNAL_REPHRASE_PATCH": {
+    "source": "转述补丁",
+    "zh_CN": "转述补丁",
+    "en": "Rephrasing patch"
+  },
+  "LOC_EXTERNAL_TRANSLATION_PATCH": {
+    "source": "翻译补丁",
+    "zh_CN": "翻译补丁",
+    "en": "Translation patch"
+  },
+  "LOC_EXTERNAL_CONFLUENCE_PATCH": {
+    "source": "合流补丁",
+    "zh_CN": "合流补丁",
+    "en": "Confluence patch"
+  },
+  "LOC_EXTERNAL_TOPIC_PATCH": {
+    "source": "话题补丁",
+    "zh_CN": "话题补丁",
+    "en": "Topic patch"
+  },
+  "LOC_EXTERNAL_CONTEXT_PATCH": {
+    "source": "语境补丁",
+    "zh_CN": "语境补丁",
+    "en": "Context patch"
+  },
+  "LOC_EXTERNAL_PATCH_ORIGIN": {
+    "source": "本补丁来自外部改写",
+    "zh_CN": "本补丁来自外部改写",
+    "en": "This patch comes from an external rewrite."
   }
 }

@@ -662,7 +662,8 @@ func _sync_lineage_clips() -> void:
 		if not lineage.has(slot): continue
 		var record: Dictionary = lineage[slot]
 		var external := str(record.get("source_creator", record.get("creator", "player"))) != "player"
-		face.configure({"kind":"module", "id":str(record.id), "title":"LOC_EDIT_EXTERNAL_EXPRESSION" if external else "LOC_YOUR_OWN_EXPRESSION_0A35E8E2", "source_label":str(record.id), "palette":"external" if external else "module", "show_count":false}, get_theme_font("font", "Label"))
+		var title := str(_variant_hover(record).title) if external else "LOC_YOUR_OWN_EXPRESSION_0A35E8E2"
+		face.configure({"kind":"module", "id":str(record.id), "title":title, "source_label":str(record.id), "palette":"external" if external else "module", "show_count":false}, get_theme_font("font", "Label"))
 
 
 func lineage_material_faces() -> Array[Dictionary]:
@@ -1151,7 +1152,7 @@ func _variant_hover(record: Dictionary) -> Dictionary:
 	var external_rewrite := str(record.get("source_creator", record.get("creator", "player"))) != "player"
 	record = _full_variant(record)
 	if external_rewrite and record.has("mutation_parent_content"):
-		return {"kind":"source", "id":str(record.id), "title":DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E"), "hover_description":community_change_text(record)}
+		return _external_patch_hover(record)
 	var text := str(record.get("text", ""))
 	var meaning := str(record.get("meaning", ""))
 	if not str(record.get("meaning_id", "")).is_empty():
@@ -1161,6 +1162,21 @@ func _variant_hover(record: Dictionary) -> Dictionary:
 	var note := ("" if external_rewrite else _variant_changes(record) + "\n\n") + DeskLocalization.text("LOC_CIRCULATING_EXPRESSION_48990024") + "\n" + text + ("\n" + meaning if not meaning.is_empty() else "")
 	var title := DeskLocalization.text("LOC_SOMEONE_ELSE_S_REWRITE_90C4EF5E" if external_rewrite else "LOC_YOUR_OWN_EXPRESSION_0A35E8E2")
 	return {"kind":"source", "id":str(record.id), "title":title, "description":description, "hover_description":description, "hover_note":note}
+
+func _external_patch_hover(record: Dictionary) -> Dictionary:
+	var delta := ExpressionText.Community.change(record)
+	var details: Dictionary
+	if not delta.patch_ids.is_empty():
+		details = _module_hover(str(delta.patch_ids[0]), -1)
+	else:
+		var title := "LOC_EXTERNAL_REPHRASE_PATCH"
+		if not str(delta.language_id).is_empty(): title = "LOC_EXTERNAL_TRANSLATION_PATCH"
+		elif not delta.confluence.is_empty(): title = "LOC_EXTERNAL_CONFLUENCE_PATCH"
+		elif not delta.topics.is_empty(): title = "LOC_EXTERNAL_TOPIC_PATCH"
+		elif not delta.axes.is_empty(): title = "LOC_EXTERNAL_CONTEXT_PATCH"
+		details = {"kind":"module", "id":str(record.id), "title":title, "hover_description":community_change_text(record)}
+	details.presentation = {"annotation":DeskLocalization.text("LOC_EXTERNAL_PATCH_ORIGIN")}
+	return details
 
 func community_change_text(record: Dictionary) -> String:
 	var delta := ExpressionText.Community.change(record)

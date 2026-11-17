@@ -119,6 +119,7 @@ func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 
 func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
 	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label"}.get(role, "body"))
+	if role == "annotation": text_role = role
 	font_size = Typography.point_size(text_role)
 	font = Typography.font(text_role)
 	var paragraph := TextParagraph.new()
@@ -238,6 +239,10 @@ func _layout_content() -> void:
 	if not note.is_empty():
 		y += GROUP_GAP
 		y += _add_text(note,Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"note")
+	var annotation := str(_presentation.get("annotation", ""))
+	if not annotation.is_empty():
+		y += GROUP_GAP
+		y += _add_text(annotation,Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"annotation")
 	var height := y+GROUP_GAP+FOOTER_HEIGHT+BOTTOM_PADDING
 	_barcode_rect = Rect2(Vector2(PADDING.x,height-BOTTOM_PADDING-FOOTER_HEIGHT),Vector2(minf(88,width*.48),BARCODE_HEIGHT))
 	_footer_rule = _barcode_rect.position.y-GROUP_GAP*.5
