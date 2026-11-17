@@ -1,6 +1,11 @@
 extends RefCounted
 
 const COPY := {
+	"context/language":{"description":"LOC_RECEIPT_STACK_LANGUAGE","note":"LOC_RECEIPT_STACK_NOTE_LANGUAGE"},
+	"context/group":{"description":"LOC_RECEIPT_STACK_GROUP","note":"LOC_RECEIPT_STACK_NOTE_GROUP"},
+	"context/topics":{"description":"LOC_RECEIPT_STACK_TOPIC","note":"LOC_RECEIPT_STACK_NOTE_TOPIC"},
+	"context/stance":{"description":"LOC_RECEIPT_CONTEXT_STANCE_PURPOSE","note":"LOC_RECEIPT_CONTEXT_STANCE_NOTE"},
+	"context/pragmatic":{"description":"LOC_RECEIPT_CONTEXT_PRAGMATIC_PURPOSE","note":"LOC_RECEIPT_CONTEXT_PRAGMATIC_NOTE"},
 	"fax":{"description":"LOC_RECEIPT_FAX_PURPOSE","note":"LOC_RECEIPT_FAX_NOTE"},
 	"printer":{"description":"LOC_RECEIPT_PRINTER_PURPOSE","note":"LOC_RECEIPT_PRINTER_NOTE"},
 	"monitor":{"description":"LOC_RECEIPT_MONITOR_PURPOSE","note":"LOC_RECEIPT_MONITOR_NOTE"},

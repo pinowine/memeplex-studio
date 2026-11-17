@@ -13,6 +13,7 @@ static var TITLES := {"language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"
 const DEPTHS := ContextController.DEPTHS
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const CardFace := preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
+const ComponentCopy := preload("res://scripts/presentation/studio/desk/desk_component_hover_copy.gd")
 const PaperIcon := preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const HEADING_FONT := preload("res://assets/image/fonts/body_semibold_font.tres")
 const INK := Color("384238")
@@ -190,6 +191,7 @@ func _build_layout() -> void:
 		var data := {"rect":rect,"slot_centres":[],"slot_rects":[],"slot_pickup_rects":[]}
 		data.icon_rect = Rect2(rect.position + Vector2(0, 4), Vector2(24, 24))
 		data.title_rect = Rect2(rect.position + Vector2(32, 0), Vector2(rect.size.x - 32, 32))
+		data.heading_hit_rect = Rect2(rect.position, Vector2(32 + minf(data.title_rect.size.x, HEADING_FONT.get_string_size(DeskLocalization.text(TITLES[id]), HORIZONTAL_ALIGNMENT_LEFT, -1, HEADING_SIZE).x), 32))
 		data.heading_rule = Rect2(rect.position + Vector2(0, 40), Vector2(rect.size.x, 1))
 		_layout_layers[id] = data
 		data.region_polygon = _region_points(id)
@@ -571,10 +573,12 @@ func cursor_shape_at(point: Vector2) -> int:
 	if not _enabled: return Control.CURSOR_FORBIDDEN
 	if id in ["stance", "pragmatic"]:
 		var anchor := _axis_origin(id) if id == "stance" and not bool(_layers().get(id, {}).get("known", false)) else _axis_point(id)
-		return Control.CURSOR_POINTING_HAND if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS else Control.CURSOR_HELP
-	var slot := _slot_at(id, point)
-	var slots: Array = _layers().get(id, {}).get("slots", [])
-	return Control.CURSOR_POINTING_HAND if slot >= 0 and slot < slots.size() and not slots[slot].is_empty() else Control.CURSOR_HELP
+		if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS: return Control.CURSOR_POINTING_HAND
+	else:
+		var slot := _slot_at(id, point)
+		var slots: Array = _layers().get(id, {}).get("slots", [])
+		if slot >= 0 and slot < slots.size() and not slots[slot].is_empty(): return Control.CURSOR_POINTING_HAND
+	return Control.CURSOR_ARROW if hover_info(get_global_transform_with_canvas() * point).is_empty() else Control.CURSOR_HELP
 
 func _update_pointer(point: Vector2) -> void:
 	var id := _layer_at(point)
@@ -729,6 +733,9 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	var point := get_global_transform_with_canvas().affine_inverse()*viewport_point
 	var layer := _layer_at(point)
 	if layer.is_empty(): return {}
+	if (_layout_layers[layer].heading_hit_rect as Rect2).has_point(point):
+		var copy := ComponentCopy.for_kind("context/" + layer)
+		return {"kind":"topic" if layer == "topics" else layer, "title":TITLES[layer], "hover_description":copy.description, "hover_note":copy.note}
 	var index := _slot_at(layer,point)
 	var data: Dictionary = _layers().get(layer,{})
 	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":"","attached":_attached(layer)}
@@ -743,16 +750,13 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 				if (line.rect as Rect2).grow(2).has_point(point):
 					var resource := _resource(directions[key])
 					return {"kind":layer, "id":directions[key], "title":labels[key], "description":resource.get("description", ""), "resource":resource}
-		var tags: Array[Dictionary] = []
-		for label: String in _axis_labels(layer).values(): tags.append({"text":label, "kind":layer, "help":""})
-		result.tags = tags
-		result.current = data.get("current",[0,0])
+		return {}
 	elif index >= 0:
 		var slots: Array = data.get("slots",[])
 		var resource := _resource(str(slots[index].get("resource_id",slots[index].get("id","")))) if index < slots.size() else {}
-		if resource.is_empty(): result.text = ""
-		else:
-			result.title = resource.get("title",TITLES[layer])
-			result.text = resource.get("description","")
-			result.resource = resource.duplicate(true)
-	return result
+		if resource.is_empty(): return {}
+		result.title = resource.get("title",TITLES[layer])
+		result.text = resource.get("description","")
+		result.resource = resource.duplicate(true)
+		return result
+	return {}
