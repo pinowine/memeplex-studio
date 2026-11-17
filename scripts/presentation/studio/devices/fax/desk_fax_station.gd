@@ -250,11 +250,18 @@ func _output_at(viewport_point: Vector2) -> Control:
 		if page.visible and Geometry2D.is_point_in_polygon(viewport_point, StationView.global_polygon(page, Rect2(Vector2.ZERO, page.size))): return page
 	return null
 
+func material_record_at(viewport_point: Vector2) -> Dictionary:
+	var paper := _output_at(viewport_point) if _output.continuous_output else null
+	for slip: Control in _reward_slips.values():
+		if _output.continuous_output and slip.get_parent() != paper: continue
+		if slip.can_collect() and Rect2(Vector2.ZERO, slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse() * viewport_point):
+			return slip.record.duplicate(true)
+	return {}
+
 func hover_details(viewport_point: Vector2) -> String:
 	if not viewport_point.is_finite(): return ""
-	for slip: Control in _reward_slips.values():
-		if slip.can_collect() and Rect2(Vector2.ZERO,slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse()*viewport_point):
-			return DeskLocalization.format_text("LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D", KeyBindings.display_name("collect"))
+	if not material_record_at(viewport_point).is_empty():
+		return DeskLocalization.format_text("LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D", KeyBindings.display_name("collect"))
 	for control: Button in ([] if _handset_only else _view.keys + [_view.dial_button,_view.pickup_button,_view.hangup_button]):
 		if control.is_visible_in_tree() and Rect2(Vector2.ZERO,control.size).has_point(control.get_global_transform_with_canvas().affine_inverse()*viewport_point):
 			return _key_action_label(control)

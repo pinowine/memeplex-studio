@@ -186,16 +186,23 @@ func _update_hover_strip() -> void:
 			if foreground_info.is_empty(): _hover_strip.clear_hover()
 			else: _hover_strip.show_hover(foreground_info)
 			return
-	if _page.atlas.hover_note.is_visible_in_tree():
+	var point := get_viewport().get_mouse_position()
+	var material: Dictionary = _fax.material_record_at(point)
+	if _page.atlas.hover_note.is_visible_in_tree() and material.is_empty():
 		_hover_strip.clear_hover()
 		return
-	var point := get_viewport().get_mouse_position()
-	var info: Dictionary = _page.atlas.meme_field_hover_info(point)
+	if not material.is_empty(): _page.atlas.hover_note.hide()
+	var info: Dictionary = _material_cards.details_for_item(str(material.kind), str(material.id)) if not material.is_empty() else {}
+	if not material.is_empty():
+		info.count = int(material.count)
+		info.status = DeskLocalization.source("LOC_NOT_YET_COLLECTED_46C47B8A")
+	if info.is_empty(): info = _page.atlas.meme_field_hover_info(point)
 	if info.is_empty() and _material_cards != null: info = _material_cards.hover_info(point)
 	if info.is_empty(): info = editor.hover_info(point)
 	if info.is_empty(): info = _monitor.hover_info(point)
-	var fax_hint: String = _fax.hover_details(point)
-	if info.is_empty() and not fax_hint.is_empty(): info = {"kind":"fax","title":DeskLocalization.source("LOC_FAX_INTELLIGENCE_214AFC92"),"hint":fax_hint}
+	if info.is_empty():
+		var fax_hint: String = _fax.hover_details(point)
+		if not fax_hint.is_empty(): info = {"kind":"fax","title":DeskLocalization.source("LOC_FAX_INTELLIGENCE_214AFC92"),"hint":fax_hint}
 	var board: Control = _page.hud.design_workbench().context_slice()
 	if info.is_empty() and board.is_visible_in_tree(): info = board.hover_info(point)
 	if info.is_empty():

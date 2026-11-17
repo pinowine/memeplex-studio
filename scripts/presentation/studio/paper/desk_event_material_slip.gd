@@ -115,7 +115,10 @@ func configure(value: Dictionary, drag_host: Control, ui_theme: Theme = null, sh
 		_label.hide()
 		var marks := get_node_or_null("HanddrawnCardMarks")
 		if marks != null: marks.hide()
-	_label.text = "%s\n×%d%s" % [DeskLocalization.text(str(record.get("title", record.get("id", DeskLocalization.source("LOC_SUPPLIES_08E441A9"))))), int(record.get("count", 1)), DeskLocalization.text("LOC_NOT_YET_COLLECTED_46C47B8A") if record.get("pending", false) else ""]
+	if str(record.get("kind", "")) in ["stance_token", "pragmatic_token"]:
+		_label.text = "×%d" % int(record.get("count", 1))
+	else:
+		_label.text = "%s\n×%d%s" % [DeskLocalization.text(str(record.get("title", record.get("id", DeskLocalization.source("LOC_SUPPLIES_08E441A9"))))), int(record.get("count", 1)), DeskLocalization.text("LOC_NOT_YET_COLLECTED_46C47B8A") if record.get("pending", false) else ""]
 	_layout()
 
 func _layout() -> void:
@@ -123,6 +126,14 @@ func _layout() -> void:
 	_paper.size = size
 	if _face != null:
 		_face.size = size
+	if str(record.get("kind", "")) in ["stance_token", "pragmatic_token"]:
+		var edge := minf(size.y - 12, size.x * .62)
+		_graphic.position = Vector2(6, (size.y - edge) * .5)
+		_graphic.size = Vector2.ONE * edge
+		_label.add_theme_font_size_override("font_size", 11)
+		_label.position = Vector2(edge + 10, 0)
+		_label.size = Vector2(maxf(0, size.x - edge - 14), size.y)
+		return
 	# Feed geometry must not cache a wrapped title taller than its paper.
 	_label.add_theme_font_size_override("font_size", 11 if size.x >= 76 else 9)
 	_label.position = Vector2(5, 4)

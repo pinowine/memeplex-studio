@@ -12,9 +12,7 @@ static func draw(canvas: CanvasItem, id: String, center: Vector2, radius: float,
 			_stroke(canvas,[Vector2(-.4,.1),Vector2(-.4,-.4),Vector2(-.15,-.75),Vector2(.3,-.75),Vector2(.6,-.4)],center,radius,color,width)
 			canvas.draw_circle(center+Vector2(0,.5)*radius,radius*.09,color)
 		"authority":
-			_stroke(canvas,[Vector2(-.65,-.8),Vector2(.15,-.8),Vector2(.15,-.3),Vector2(-.65,-.3),Vector2(-.65,-.8)],center,radius,color,width)
-			_stroke(canvas,[Vector2(-.25,-.3),Vector2(.55,.55)],center,radius,color,width*1.4)
-			_stroke(canvas,[Vector2(-.8,.9),Vector2(.8,.9)],center,radius,color,width*1.8)
+			_stroke(canvas,[Vector2(-.7,.8),Vector2(.7,.8),Vector2(.55,.4),Vector2(.15,.4),Vector2(.15,-.25),Vector2(.4,-.25),Vector2(.4,-.75),Vector2(-.4,-.75),Vector2(-.4,-.25),Vector2(-.15,-.25),Vector2(-.15,.4),Vector2(-.55,.4),Vector2(-.7,.8)],center,radius,color,width*1.2)
 		"equality":
 			for y in [-.25,.3]: _stroke(canvas,[Vector2(-.8,y),Vector2(.8,y)],center,radius,color,width*1.5)
 			for x in [-.55,.55]: canvas.draw_circle(center+Vector2(x,-.75)*radius,radius*.13,color)
