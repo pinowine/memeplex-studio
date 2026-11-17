@@ -1326,6 +1326,13 @@ func _refresh_composition() -> void:
 	_meaning.visible = _meaning_title.visible
 	_meaning_title.get_parent().visible = _meaning_title.visible
 	_queue_text_layout()
+	_sort_expression_details()
+
+
+func _sort_expression_details() -> void:
+	# New text needs its container width before the scroll content can shrink.
+	await get_tree().process_frame
+	_detail_scroll.queue_sort()
 
 
 func _context_values(kind: String) -> PackedStringArray:
