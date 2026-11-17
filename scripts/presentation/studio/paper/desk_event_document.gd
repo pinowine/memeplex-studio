@@ -136,7 +136,12 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 		_header.add_child(headline)
 		var title := _label(full_title, 22, Style.INK)
 		title.name = "Headline"
-		title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
+		var headline_font := FontVariation.new()
+		headline_font.base_font = ReceiptHover.BOLD_FONT
+		headline_font.spacing_top = -10
+		headline_font.spacing_bottom = -10
+		title.add_theme_font_override("font", headline_font)
+		title.add_theme_constant_override("line_spacing", 0)
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		headline.add_child(title)
@@ -360,6 +365,7 @@ func _write_field(label: RichTextLabel, field: Dictionary, index: int, ink: Colo
 func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 	label.meta_hover_started.connect(func(meta: Variant):
 		var field: Dictionary = segments[int(meta)]
+		label.set_meta("annotation_cursor", Input.CURSOR_POINTING_HAND if not str(field.get("variant_id", "")).is_empty() else Input.CURSOR_HELP)
 		if str(field.get("tooltip_body", "")).is_empty():
 			_hide_hover()
 			return
@@ -377,8 +383,12 @@ func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 		if not id.is_empty():
 			_hide_hover()
 			meme_selected.emit(id))
-	label.meta_hover_ended.connect(func(_meta: Variant): _hide_hover())
-	label.mouse_exited.connect(_hide_hover)
+	label.meta_hover_ended.connect(func(_meta: Variant):
+		label.remove_meta("annotation_cursor")
+		_hide_hover())
+	label.mouse_exited.connect(func():
+		label.remove_meta("annotation_cursor")
+		_hide_hover())
 
 func _add_comment(block: Dictionary) -> void:
 	_add_rule()

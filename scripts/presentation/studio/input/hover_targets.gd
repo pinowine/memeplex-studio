@@ -23,6 +23,7 @@ func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int
 			return Input.CURSOR_POINTING_HAND if control.editable else Input.CURSOR_FORBIDDEN
 		if control is ScrollBar:
 			return Input.CURSOR_POINTING_HAND if control.max_value - control.min_value > control.page else Input.CURSOR_FORBIDDEN
+		if control.has_meta("annotation_cursor"): return int(control.get_meta("annotation_cursor"))
 		if control is DeskMaterialCards.StackCard: return _material_shape(control.record)
 		if control is DeskEventMaterialSlip:
 			return _material_shape(control.record) if control._enabled else Input.CURSOR_FORBIDDEN
