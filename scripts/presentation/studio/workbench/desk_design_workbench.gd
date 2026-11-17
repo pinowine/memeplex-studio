@@ -1182,9 +1182,13 @@ func community_change_text(record: Dictionary) -> String:
 	var delta := ExpressionText.Community.change(record)
 	var lines := PackedStringArray()
 	for id: String in delta.patch_ids:
-		lines.append(DeskLocalization.format_text("LOC_NEURON_PATCH_ADDED", _entry_title("modules", id) + "：" + DeskLocalization.text(str(_rules.find("modules", id).description))))
-	for field: String in delta.axes:
-		lines.append(DeskLocalization.text("LOC_COMMUNITY_" + field.to_upper()))
+		var key := "LOC_COMMUNITY_PATCH_EXPRESSION"
+		if delta.axes.has("political_position") and delta.axes.has("pragmatic_position"): key = "LOC_COMMUNITY_PATCH_STANCE_AND_TONE"
+		elif delta.axes.has("political_position"): key = "LOC_COMMUNITY_PATCH_STANCE"
+		elif delta.axes.has("pragmatic_position"): key = "LOC_COMMUNITY_PATCH_TONE"
+		lines.append(DeskLocalization.format_text(key, _entry_title("modules", id)))
+	if delta.patch_ids.is_empty():
+		for field: String in delta.axes: lines.append(DeskLocalization.text("LOC_COMMUNITY_" + field.to_upper()))
 	for id: String in delta.topics: lines.append(DeskLocalization.format_text("LOC_COMMUNITY_TOPIC", DeskLocalization.text(str(_rules.context_resource("topic_" + id).title))))
 	if not str(delta.language_id).is_empty(): lines.append(DeskLocalization.format_text("LOC_COMMUNITY_LANGUAGE", DeskLocalization.text(str(_rules.context_resource("language_" + str(delta.language_id)).title))))
 	if bool(delta.rephrase): lines.append(DeskLocalization.text("LOC_COMMUNITY_REPHRASE"))
