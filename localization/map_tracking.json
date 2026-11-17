@@ -723,5 +723,15 @@
     "source": "采用 %s / %s",
     "zh_CN": "采用 %s / %s",
     "en": "Adoption %s / %s"
+  },
+  "MM_PRIMARY_LANGUAGE": {
+    "source": "主语言",
+    "zh_CN": "主语言",
+    "en": "Primary"
+  },
+  "MM_SECONDARY_LANGUAGE": {
+    "source": "习得",
+    "zh_CN": "习得",
+    "en": "Learned"
   }
 }

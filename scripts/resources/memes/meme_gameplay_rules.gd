@@ -101,6 +101,10 @@ func validate() -> PackedStringArray:
 			errors.append("Invalid country gameplay profile")
 			continue
 		seen[row.id] = true
+		var primary: Array = row.get("primary_languages", [])
+		if primary.is_empty() or primary.size() > 2: errors.append("Countries require one or two primary languages")
+		for language: String in primary:
+			if not row.get("languages", {}).has(language): errors.append("Primary languages must declare a population share")
 		for field in ["languages","groups","topics"]:
 			if not row.get(field) is Dictionary: errors.append("Invalid country correlation: " + field)
 			else:

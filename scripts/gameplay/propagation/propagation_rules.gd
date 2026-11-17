@@ -58,7 +58,7 @@ func available_formats(profile: Dictionary) -> Array[Dictionary]:
 
 func _language_match(distribution: Dictionary, languages: Array) -> float:
 	var result := 0.0
-	for language: Variant in languages: result = maxf(result, float(distribution.get(str(language),0.15)))
+	for language: Variant in languages: result = maxf(result, float(distribution.get(str(language),0.0)))
 	return result
 
 func _supports(channel: String, format_name: String) -> bool:

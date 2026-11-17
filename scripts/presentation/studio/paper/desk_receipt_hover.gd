@@ -135,15 +135,15 @@ func _add_separator(y: float) -> float:
 	_separators.append(y+GROUP_GAP*.5)
 	return y+GROUP_GAP
 
-func _add_tags(tags: Array, y: float, width: float) -> float:
-	var x := PADDING.x
+func _add_tags(tags: Array, y: float, width: float, left: float = PADDING.x, vertical: bool = false) -> float:
+	var x := left
 	var row_height := 0.0
 	for tag: Dictionary in tags:
 		var text := str(tag.text)
 		var kind := str(tag.kind)
 		var chip_width := minf(minf(256.0, width), ceilf(BODY_FONT.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, Typography.point_size("label")).x + 30.0))
-		if x > PADDING.x and x + chip_width > PADDING.x + width:
-			x = PADDING.x
+		if x > left and (vertical or x + chip_width > left + width):
+			x = left
 			y += row_height + 4
 			row_height = 0
 		var colors := ContextTag.palette(kind)
@@ -194,9 +194,19 @@ func _layout_content() -> void:
 		if row.has("tags"): continue
 		label_width = maxf(label_width,BOLD_FONT.get_string_size(str(row.get("category","")),HORIZONTAL_ALIGNMENT_LEFT,-1,Typography.point_size("table_header")).x+24)
 	label_width = minf(label_width,width*.5)
+	var column_layout := bool(_presentation.get("columns", false))
+	var column_bottom := y
 	for index in _rows.size():
 		var row: Dictionary = _rows[index]
+		if column_layout:
+			var column_width := (width - ROW_GAP * 2) / 3.0
+			var left := PADDING.x + index * (column_width + ROW_GAP)
+			var top := y + _add_text(str(row.label), Vector2(left,y), column_width, BOLD_FONT, 12, ReceiptStyle.SECONDARY_INK, "category") + ROW_GAP
+			column_bottom = maxf(column_bottom, _add_tags(row.tags, top, column_width, left, true))
+			continue
 		if row.has("tags"):
+			var heading := str(row.get("label", ""))
+			if not heading.is_empty(): y += _add_text(heading, Vector2(PADDING.x,y), width, BOLD_FONT, 12, ReceiptStyle.SECONDARY_INK, "category") + ROW_GAP
 			y = _add_tags(row.tags, y, width)
 			if index < _rows.size()-1: y += ROW_GAP
 			continue
@@ -215,6 +225,7 @@ func _layout_content() -> void:
 		if index < _rows.size()-1:
 			_section_rules.append({"y":y+GROUP_GAP*.5,"color":ReceiptStyle.EDGE})
 			y += GROUP_GAP
+	if column_layout: y = column_bottom
 	if not _body.is_empty():
 		if not _rows.is_empty(): y = _add_separator(y)
 		y += _add_text(_body,Vector2(PADDING.x,y),width,BODY_FONT,14,ReceiptStyle.INK,"body")

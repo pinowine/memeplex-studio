@@ -190,19 +190,27 @@ func close_drawer() -> void:
 	terrain.set_highlight(hovered_country, -1)
 	_update_launch_marker()
 
-func _profile_tags(weights: Dictionary, kind: String, limit: int = 0) -> Array[Dictionary]:
+func _profile_tags(weights: Dictionary, kind: String, limit: int = 0, primary: Array = []) -> Array[Dictionary]:
 	var ids := weights.keys()
 	ids.sort_custom(func(a: String, b: String): return float(weights[a]) > float(weights[b]))
 	var tags: Array[Dictionary] = []
 	for id: String in ids:
 		for entry: Dictionary in CONTEXT_DEFINITIONS.entries:
 			if str(entry.kind) == kind and str(entry.get("value", "")) == id:
-				tags.append({"text":DeskLocalization.text(str(entry.title)), "kind":kind, "help":""})
+				tags.append({"text":"%s %d%%" % [DeskLocalization.text(str(entry.title)), roundi(float(weights[id]) * 100.0)], "kind":kind, "help":""})
+				if kind == "language": tags.back().text += " · " + DeskLocalization.text("MM_PRIMARY_LANGUAGE" if id in primary else "MM_SECONDARY_LANGUAGE")
 				break
 		if limit > 0 and tags.size() == limit: break
 	return tags
 
 func _update_hover() -> void:
+	if not _ledger_hovered_variant.is_empty() and _meme_snapshot.get("world_competition", {}).get("variants_by_id", {}).has(_ledger_hovered_variant):
+		_hover_profile_signature.clear()
+		hover_note.show()
+		hover_note.set_pointer_following(true)
+		hover_note.set_meme_details(MemeDetails.build_hover(_meme_snapshot, _meme_catalog, _ledger_hovered_variant))
+		_meme_overlay.set_hovered_variants(PackedStringArray([_ledger_hovered_variant]), _ledger_hovered_country)
+		return
 	var available := _pointer_inside_map and map_input.is_visible_in_tree() and not panning
 	if _meme_ledger != null and _meme_ledger.handles_point(_pointer): available = false
 	hover_note.visible = available and hovered_country >= 0
@@ -218,14 +226,14 @@ func _update_hover() -> void:
 	_hover_profile_signature = signature
 	var country := settings.countries[hovered_country]
 	var profile := COUNTRY_RULES.country(str(country.id))
-	var tags := _profile_tags(profile.groups, "group", 3)
-	tags.append_array(_profile_tags(profile.languages, "language", 3))
-	tags.append_array(_profile_tags(profile.topics, "topic", 4))
-	var rows := [{"tags":tags}]
-	hover_note.set_width(360)
+	var rows := [
+		{"label":DeskLocalization.text("MM_LANGUAGE"), "tags":_profile_tags(profile.languages, "language", 0, profile.primary_languages)},
+		{"label":DeskLocalization.text("MM_GROUP"), "tags":_profile_tags(profile.groups, "group", 3)},
+		{"label":DeskLocalization.text("MM_TOPICS"), "tags":_profile_tags(profile.topics, "topic", 3)}]
+	hover_note.set_width(600)
 	hover_note.set_content(tr(country.official_name_key), rows,
 		tr(country.description_key),
-		{"kind":"language", "badge":tr("MAP_POPULATION") % (_country_population(str(country.id))/1000000.0),
+		{"kind":"language", "columns":true, "badge":tr("MAP_POPULATION") % (_country_population(str(country.id))/1000000.0),
 		"note":tr(str(country.description_key) + "_NOTE")})
 
 func _country_population(id: String) -> int:

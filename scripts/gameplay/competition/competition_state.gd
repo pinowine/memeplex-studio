@@ -204,7 +204,7 @@ func fitness(profile_data: Dictionary, country_id: String) -> Dictionary:
 	components.language = float(delivery.language) if attached(profile_data,"language") else 0.5
 	components.group = _context_match(country.groups,profile_data,"group") if attached(profile_data,"group") else 0.5
 	var topic_score := 0.0
-	for topic in profile_data.topic_ids: topic_score += float(country.topics.get(str(topic),0.08))
+	for topic in profile_data.topic_ids: topic_score += float(country.topics.get(str(topic),0.0))
 	components.topics = topic_score / maxf(1.0,profile_data.topic_ids.size()) if attached(profile_data,"topics") else 0.5
 	components.stance = _axis_match(profile_data.political_position,country.stance) if profile_data.political_known and attached(profile_data,"stance") else 0.5
 	components.pragmatic = _axis_match(profile_data.pragmatic_position,country.pragmatic) if attached(profile_data,"pragmatic") else 0.5
@@ -220,7 +220,7 @@ func _context_match(distribution: Dictionary, profile_data: Dictionary, layer: S
 	var result := 0.0
 	if ids is Array:
 		# Overlapping audiences are matched once; installed slots never add population.
-		for id: Variant in ids: result = maxf(result,float(distribution.get(str(id),0.15)))
+		for id: Variant in ids: result = maxf(result,float(distribution.get(str(id),0.0)))
 	return result
 
 func attached(profile_data: Dictionary,layer: String) -> bool:
