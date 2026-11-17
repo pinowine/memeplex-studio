@@ -81,8 +81,8 @@
   },
   "LOC_OPENING_RETURN_DESK_TEXT": {
     "source": "选好了？按 Esc 可以回到桌面。",
-    "zh_CN": "有趣的选择。按 Esc 可以回到桌面。",
-    "en": "All chosen? Press Esc to return to your desk."
+    "zh_CN": "有趣的选择。",
+    "en": "Interesting choice."
   },
   "LOC_OPENING_WORKSTATION_TITLE": {
     "source": "你的工位",
@@ -181,8 +181,8 @@
   },
   "LOC_OPENING_LANGUAGE_RETURN_TEXT": {
     "source": "Esc 回到桌面，还有很多东西要学。",
-    "zh_CN": "Esc 回到桌面，还有很多东西要学。",
-    "en": "Press Esc to return to the desk. There’s still plenty to learn."
+    "zh_CN": "还有很多东西要学。",
+    "en": "There’s still plenty to learn."
   },
   "LOC_OPENING_MONITOR_OPEN_TITLE": {
     "source": "显示器",
