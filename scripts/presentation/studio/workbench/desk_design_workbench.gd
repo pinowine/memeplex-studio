@@ -1057,7 +1057,7 @@ func _spread_hover(viewport_point: Vector2) -> Dictionary:
 	var id: String = _spread_tree._hit_id(local)
 	if id.is_empty(): return {}
 	var info := _skill_info(id)
-	return {"kind":"spread", "id":id, "title":info.title, "hover_description":info.effect, "hover_note":info.description,
+	return {"kind":"spread", "id":id, "title":info.title, "hover_description":info.effect, "hover_note":DeskLocalization.text("LOC_PROP_NODE_" + id.to_upper() + "_REFERENCE"),
 		"rows":[{"kind":"cost", "category":DeskLocalization.text("LOC_WB_COST"), "value":"%d MEME" % info.cost}]}
 
 
@@ -1278,7 +1278,8 @@ func _refresh_overview() -> void:
 	rows.append(_summary_value("stance", "LOC_WB_IDEOLOGY", _axis_values("stance", "political_position")))
 	rows.append(_summary_value("pragmatic", "LOC_PRAGMATICS_7063D1D8", _axis_values("pragmatic", "pragmatic_position")))
 	var skills := PackedStringArray()
-	for id: String in _design.get("unlocked_skills", []): skills.append(_entry_title("skills", id))
+	var unlocked: Array = _design.get("unlocked_skills", [])
+	if not unlocked.is_empty(): skills.append(_entry_title("skills", str(unlocked[-1])))
 	rows.append(_summary_value("spread", "LOC_SPREAD_1A2DA4D4", skills))
 	_summary_text = "\n".join(rows)
 	_refresh_composition()

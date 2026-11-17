@@ -76,8 +76,8 @@
   },
   "LOC_PROP_NODE_TEXT_EFFECT": {
     "source": "开放基础文字投放。",
-    "zh_CN": "解锁文字发布。",
-    "en": "Unlock text publishing."
+    "zh_CN": "模因开始通过文字传播。解锁在文字渠道发布。",
+    "en": "The meme travels as text. Unlock publishing through text channels."
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_TITLE": {
     "source": "机器翻译",
@@ -91,8 +91,8 @@
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_EFFECT": {
     "source": "以平台支持的语言版本生成文字译文。",
-    "zh_CN": "为现有文字提供平台支持的译文。",
-    "en": "Provide supported translations of existing text."
+    "zh_CN": "模因获得其他语言的译文。文字传播时可使用平台支持的已有译文。",
+    "en": "The meme gains translations. Text delivery can use existing versions supported by the platform."
   },
   "LOC_PROP_NODE_IMAGE_TITLE": {
     "source": "图像传播",
@@ -106,8 +106,8 @@
   },
   "LOC_PROP_NODE_IMAGE_EFFECT": {
     "source": "独立视觉信息承担部分的语言理解障碍降低90%。",
-    "zh_CN": "画面本身传达的信息，语言障碍降低90%。",
-    "en": "Reduce the language barrier for information conveyed by the image itself by 90 percent."
+    "zh_CN": "模因开始通过图像传播。画面能独立传达的部分，语言障碍降低90%。",
+    "en": "The meme travels through images. Language barriers fall by 90 percent for the part conveyed by the image alone."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_TITLE": {
     "source": "多语嵌字",
@@ -121,8 +121,8 @@
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_EFFECT": {
     "source": "将对应译文排入图中文字区域，形成多语图文版本。",
-    "zh_CN": "生成嵌入译文的多语图片。",
-    "en": "Create multilingual images with translated captions."
+    "zh_CN": "译文可以放回图片中。图像渠道会使用已嵌入当地语言文字的版本。",
+    "en": "Translations fit back into the image. Image channels can use versions with local-language lettering."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_TITLE": {
     "source": "语境附注",
@@ -136,8 +136,8 @@
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT": {
     "source": "随传播附上出处与用法，有效语境依赖降至原值60%。",
-    "zh_CN": "语境依赖降至原值的60%。",
-    "en": "Reduce effective context dependency to 60 percent of its original value."
+    "zh_CN": "模因附上背景说明。理解它所需的语境减少40%。",
+    "en": "The meme includes background notes. Its context dependency falls by 40%."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_TITLE": {
     "source": "替代文本",
@@ -151,8 +151,8 @@
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT": {
     "source": "通过文字渠道送出经编写的图像信息说明。",
-    "zh_CN": "让图像说明通过文字渠道传播。",
-    "en": "Share image descriptions through text channels."
+    "zh_CN": "图片有了文字说明。无法显示图片时，可通过文字渠道传达图像内容，质量系数为0.85。",
+    "en": "The image gains a text description. Text channels can carry its content at a quality factor of 0.85."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE": {
     "source": "多格式分发",
@@ -166,8 +166,8 @@
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_EFFECT": {
     "source": "按目标语言和渠道格式，从已有版本中选择适配版本。",
-    "zh_CN": "按目标语言和渠道选择合适的已有版本。",
-    "en": "Select an existing edition suited to the receiving language and channel."
+    "zh_CN": "模因按读者和渠道选择版本。投递时使用适合目标语言与媒介的已有版本。",
+    "en": "The meme picks a version for its readers and channel. Delivery uses an existing version suited to the target language and medium."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE": {
     "source": "公开模板",
@@ -181,8 +181,8 @@
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_EFFECT": {
     "source": "社区填写开放槽位，形成参与传播的衍生版本。",
-    "zh_CN": "让社区填写模板，产生可传播的衍生版本。",
-    "en": "Let communities fill a template to create circulating derivatives."
+    "zh_CN": "模因开放可替换的模板槽位。每48小时检查社区复用需求，符合条件时产生衍生版本。",
+    "en": "The meme opens its replaceable template slots. Community reuse is checked every 48 hours and can produce derivatives."
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE": {
     "source": "源包发布",
@@ -196,8 +196,8 @@
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT": {
     "source": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
-    "zh_CN": "社区复用时，重混成本降至原值的40%。",
-    "en": "Reduce remix cost in community reuse calculations to 40 percent of its original value."
+    "zh_CN": "模因提供可复用的源素材。社区二创的制作成本降低60%。",
+    "en": "The meme provides reusable source material. Community remix costs fall by 60%."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_TITLE": {
     "source": "语义剥离",
@@ -211,8 +211,8 @@
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_EFFECT": {
     "source": "保持模板形式的衍生，其分裂阈值提高至至少0.75。",
-    "zh_CN": "保留模板形式时，二创分裂阈值至少为0.75。",
-    "en": "Raise the split threshold to at least 0.75 for derivatives that preserve the template form."
+    "zh_CN": "模因允许保留形式、另赋含义。二创分化阈值提高到至少0.75，最高0.9。",
+    "en": "Remixes can keep the form while changing its meaning. Their split threshold rises to at least 0.75, up to 0.9."
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_TITLE": {
     "source": "衍生回链",
@@ -226,8 +226,8 @@
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT": {
     "source": "真实衍生曝光带回原模板的发现入口。",
-    "zh_CN": "衍生版本的曝光带来发现原模板的机会。",
-    "en": "Turn derivative exposure into opportunities to discover the source template."
+    "zh_CN": "衍生版本附上原模板的入口。衍生获得曝光时，会为原模板带来引荐。",
+    "en": "Derivatives link back to the original template. Their exposure can refer readers to the source."
   },
   "LOC_PROP_NODE_VERSION_INDEX_TITLE": {
     "source": "版本索引",
@@ -241,8 +241,8 @@
   },
   "LOC_PROP_NODE_VERSION_INDEX_EFFECT": {
     "source": "索引同源的已有版本，引荐更适配当地的表达。",
-    "zh_CN": "向当地读者引荐更合适的已有版本。",
-    "en": "Recommend an existing related version better suited to local readers."
+    "zh_CN": "不同版本有了共同索引。向当地读者引荐更适合其语言与渠道的已有版本。",
+    "en": "Versions share an index. Local readers receive referrals to existing versions suited to their language and channel."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE": {
     "source": "模板仓库",
@@ -256,8 +256,8 @@
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT": {
     "source": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
-    "zh_CN": "发布满48小时、热度下降且有复用需求时，再次引荐模板。",
-    "en": "Recommend the template again after 48 hours when interest has cooled and reuse demand appears."
+    "zh_CN": "旧模板可以被重新发现。发布满48小时、热度下降且仍有复用需求时，会再次获得引荐。",
+    "en": "Old templates can be rediscovered. After 48 hours, a template with falling attention and remaining reuse demand can receive new referrals."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_TITLE": {
     "source": "社群联络点",
@@ -271,8 +271,8 @@
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_EFFECT": {
     "source": "真实采用与有效群体联系形成当地传播联络点。",
-    "zh_CN": "在已有采用者、且有群体联系的地区建立传播联络点。",
-    "en": "Establish propagation hubs where real adoption and relevant group ties exist."
+    "zh_CN": "采用者开始组织本地联络点。有实际采用者和有效群体联系的地区可以建立节点。",
+    "en": "Adopters form local hubs. Regions with actual adopters and effective group ties can establish a node."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_TITLE": {
     "source": "邻地联络",
@@ -286,8 +286,8 @@
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有陆地接触边转发。",
-    "zh_CN": "从活跃联络点向已有陆地联系的地区转发。",
-    "en": "Forward from active hubs along existing directed land contacts."
+    "zh_CN": "本地联络点向邻国转发。活跃节点沿现有陆地联系传播模因。",
+    "en": "Local hubs forward to neighboring countries. Active nodes spread the meme along existing land connections."
   },
   "LOC_PROP_NODE_SEA_FORWARD_TITLE": {
     "source": "跨海联络",
@@ -301,8 +301,8 @@
   },
   "LOC_PROP_NODE_SEA_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有跨海接触边转发。",
-    "zh_CN": "从活跃联络点向已有跨海联系的地区转发。",
-    "en": "Forward from active hubs along existing directed sea contacts."
+    "zh_CN": "联络点可以跨海转发。活跃节点沿现有跨海联系传播模因。",
+    "en": "Hubs can forward across the sea. Active nodes spread the meme along existing maritime connections."
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_TITLE": {
     "source": "中继接力",
@@ -316,8 +316,8 @@
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_EFFECT": {
     "source": "接收国形成真实采用后，作为新联络点继续转发。",
-    "zh_CN": "接收地区出现实际采用后，成为新的转发起点。",
-    "en": "Let receiving regions become new forwarding hubs after real adoption."
+    "zh_CN": "接收地也能加入接力。当地实际采用模因后，便可成为新的转发点。",
+    "en": "Receiving regions can join the relay. Actual local adoption enables a region to become a new forwarding node."
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_TITLE": {
     "source": "跨圈引荐",
@@ -331,8 +331,8 @@
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_EFFECT": {
     "source": "通过已发布版本中的有效群体联系开展跨圈引荐。",
-    "zh_CN": "沿已发布版本中的有效群体联系，向其他圈层引荐。",
-    "en": "Introduce the meme to other communities through relevant group ties in published versions."
+    "zh_CN": "模因开始跨越人群圈层。联络点可沿有效的群体联系向其他圈层转发。",
+    "en": "The meme crosses audience circles. Hubs can forward through effective ties between groups."
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_TITLE": {
     "source": "跨域接力网",
@@ -346,8 +346,8 @@
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_EFFECT": {
     "source": "让陆海中继与跨圈联络点共同运行多段并行接力。",
-    "zh_CN": "让多条陆地、跨海和跨圈路线并行接力。",
-    "en": "Run parallel relays across land, sea and community connections."
+    "zh_CN": "多个联络点共同传播。允许多条有效路线并行接力。",
+    "en": "Multiple hubs spread the meme together. Several effective routes can relay it in parallel."
   },
   "LOC_PROP_ROUTE_ACCESSIBILITY": {
     "source": "无障碍传播",
@@ -473,6 +473,101 @@
     "source": "覆盖语言：%s",
     "zh_CN": "覆盖语言：%s",
     "en": "Languages: %s"
+  },
+  "LOC_PROP_NODE_TEXT_REFERENCE": {
+    "source": "“Words, words, words.”\n莎士比亚《哈姆雷特》第二幕第二场。",
+    "zh_CN": "“Words, words, words.”\n莎士比亚《哈姆雷特》第二幕第二场。",
+    "en": "“Words, words, words.”\nWilliam Shakespeare, Hamlet, Act II, scene 2."
+  },
+  "LOC_PROP_NODE_MACHINE_TRANSLATION_REFERENCE": {
+    "source": "“The limits of my language mean the limits of my world.”\n维特根斯坦《逻辑哲学论》5.6，1921。",
+    "zh_CN": "“The limits of my language mean the limits of my world.”\n维特根斯坦《逻辑哲学论》5.6，1921。",
+    "en": "“The limits of my language mean the limits of my world.”\nLudwig Wittgenstein, Tractatus Logico-Philosophicus, 5.6, 1921."
+  },
+  "LOC_PROP_NODE_IMAGE_REFERENCE": {
+    "source": "“Ceci n’est pas une pipe.”\n勒内·马格利特《图像的背叛》，1929。",
+    "zh_CN": "“Ceci n’est pas une pipe.”\n勒内·马格利特《图像的背叛》，1929。",
+    "en": "“Ceci n’est pas une pipe.”\nRené Magritte, The Treachery of Images, 1929."
+  },
+  "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_REFERENCE": {
+    "source": "“All human beings are born free and equal in dignity and rights.”\n《世界人权宣言》第一条，1948。",
+    "zh_CN": "“All human beings are born free and equal in dignity and rights.”\n《世界人权宣言》第一条，1948。",
+    "en": "“All human beings are born free and equal in dignity and rights.”\nUniversal Declaration of Human Rights, Article 1, 1948."
+  },
+  "LOC_PROP_NODE_ALTERNATIVE_TEXT_REFERENCE": {
+    "source": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C《WCAG 2.2》成功准则1.1.1，2023。",
+    "zh_CN": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C《WCAG 2.2》成功准则1.1.1，2023。",
+    "en": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C, WCAG 2.2, Success Criterion 1.1.1, 2023."
+  },
+  "LOC_PROP_NODE_CONTEXT_NOTE_REFERENCE": {
+    "source": "“Where is the wisdom we have lost in knowledge?”\nT. S. 艾略特《岩石》合唱词，1934。",
+    "zh_CN": "“Where is the wisdom we have lost in knowledge?”\nT. S. 艾略特《岩石》合唱词，1934。",
+    "en": "“Where is the wisdom we have lost in knowledge?”\nT. S. Eliot, Choruses from The Rock, 1934."
+  },
+  "LOC_PROP_NODE_FORMAT_DISTRIBUTION_REFERENCE": {
+    "source": "“The medium is the message.”\n马歇尔·麦克卢汉《理解媒介》，1964。",
+    "zh_CN": "“The medium is the message.”\n马歇尔·麦克卢汉《理解媒介》，1964。",
+    "en": "“The medium is the message.”\nMarshall McLuhan, Understanding Media, 1964."
+  },
+  "LOC_PROP_NODE_PUBLIC_TEMPLATE_REFERENCE": {
+    "source": "“The cake is a lie.”\nValve《传送门》，2007。",
+    "zh_CN": "“The cake is a lie.”\nValve《传送门》，2007。",
+    "en": "“The cake is a lie.”\nValve, Portal, 2007."
+  },
+  "LOC_PROP_NODE_SOURCE_PACKAGE_REFERENCE": {
+    "source": "“It’s dangerous to go alone! Take this.”\n任天堂《塞尔达传说》，1986。",
+    "zh_CN": "“It’s dangerous to go alone! Take this.”\n任天堂《塞尔达传说》，1986。",
+    "en": "“It’s dangerous to go alone! Take this.”\nNintendo, The Legend of Zelda, 1986."
+  },
+  "LOC_PROP_NODE_SEMANTIC_DETACHMENT_REFERENCE": {
+    "source": "“To be, or not to be: that is the question.”\n莎士比亚《哈姆雷特》第三幕第一场。",
+    "zh_CN": "“To be, or not to be: that is the question.”\n莎士比亚《哈姆雷特》第三幕第一场。",
+    "en": "“To be, or not to be: that is the question.”\nWilliam Shakespeare, Hamlet, Act III, scene 1."
+  },
+  "LOC_PROP_NODE_DERIVATIVE_BACKLINK_REFERENCE": {
+    "source": "“You must construct additional pylons.”\n暴雪《星际争霸》，1998。",
+    "zh_CN": "“You must construct additional pylons.”\n暴雪《星际争霸》，1998。",
+    "en": "“You must construct additional pylons.”\nBlizzard Entertainment, StarCraft, 1998."
+  },
+  "LOC_PROP_NODE_VERSION_INDEX_REFERENCE": {
+    "source": "“Would you tell me, please, which way I ought to go from here?”\n刘易斯·卡罗尔《爱丽丝梦游仙境》第六章，1865。",
+    "zh_CN": "“Would you tell me, please, which way I ought to go from here?”\n刘易斯·卡罗尔《爱丽丝梦游仙境》第六章，1865。",
+    "en": "“Would you tell me, please, which way I ought to go from here?”\nLewis Carroll, Alice’s Adventures in Wonderland, Chapter 6, 1865."
+  },
+  "LOC_PROP_NODE_TEMPLATE_ARCHIVE_REFERENCE": {
+    "source": "“All those moments will be lost in time, like tears in rain.”\n电影《银翼杀手》，1982。",
+    "zh_CN": "“All those moments will be lost in time, like tears in rain.”\n电影《银翼杀手》，1982。",
+    "en": "“All those moments will be lost in time, like tears in rain.”\nBlade Runner, 1982."
+  },
+  "LOC_PROP_NODE_COMMUNITY_HUB_REFERENCE": {
+    "source": "“You’ve got a friend in me.”\n兰迪·纽曼，电影《玩具总动员》主题曲，1995。",
+    "zh_CN": "“You’ve got a friend in me.”\n兰迪·纽曼，电影《玩具总动员》主题曲，1995。",
+    "en": "“You’ve got a friend in me.”\nRandy Newman, Toy Story theme song, 1995."
+  },
+  "LOC_PROP_NODE_NEIGHBOR_FORWARD_REFERENCE": {
+    "source": "“远亲不如近邻。”\n中国谚语。",
+    "zh_CN": "“远亲不如近邻。”\n中国谚语。",
+    "en": "“A close neighbor is better than a distant relative.”\nChinese proverb."
+  },
+  "LOC_PROP_NODE_SEA_FORWARD_REFERENCE": {
+    "source": "“海内存知己，天涯若比邻。”\n王勃《送杜少府之任蜀州》。",
+    "zh_CN": "“海内存知己，天涯若比邻。”\n王勃《送杜少府之任蜀州》。",
+    "en": "“A friend within the seas makes distant lands feel near.”\nWang Bo, Farewell to Vice-Prefect Du on His Appointment to Shu; translated excerpt."
+  },
+  "LOC_PROP_NODE_COMMUNITY_RELAY_REFERENCE": {
+    "source": "“Houston, Tranquility Base here. The Eagle has landed.”\n阿波罗11号登月通讯，1969年7月20日。",
+    "zh_CN": "“Houston, Tranquility Base here. The Eagle has landed.”\n阿波罗11号登月通讯，1969年7月20日。",
+    "en": "“Houston, Tranquility Base here. The Eagle has landed.”\nApollo 11 lunar landing broadcast, July 20, 1969."
+  },
+  "LOC_PROP_NODE_GROUP_BRIDGE_REFERENCE": {
+    "source": "“Workers of the world, unite!”\n马克思、恩格斯《共产党宣言》，1848。",
+    "zh_CN": "“Workers of the world, unite!”\n马克思、恩格斯《共产党宣言》，1848。",
+    "en": "“Workers of the world, unite!”\nKarl Marx and Friedrich Engels, The Communist Manifesto, 1848."
+  },
+  "LOC_PROP_NODE_DISTRIBUTED_NETWORK_REFERENCE": {
+    "source": "“We’re all in this together.”\n电影《歌舞青春》歌曲，2006。",
+    "zh_CN": "“We’re all in this together.”\n电影《歌舞青春》歌曲，2006。",
+    "en": "“We’re all in this together.”\nHigh School Musical, song, 2006."
   },
   "LOC_COMMUNITY_POLITICAL_POSITION": {
     "source": "改变了表达的立场倾向。",
