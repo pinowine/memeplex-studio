@@ -90,6 +90,11 @@ func slot_details_active() -> bool:
 func _can_focus_slot(sheet: String) -> bool:
 	return not slot_details_active() and _camera.inspection().state == "focused" and _revealed_focus == "sheet/" + sheet and not _page._interface_paused() and _page.startup_ready()
 
+func _sheet_view_active(sheet: String) -> bool:
+	var camera: Dictionary = _camera.inspection()
+	var sheet_focused := _revealed_focus == "sheet/" + sheet or (slot_details_active() and not _slot_restoring and str(_slot_return_state.active_sheet) == sheet)
+	return _active_sheet == sheet and (camera.state == "overview" or (camera.state == "focused" and sheet_focused))
+
 func _context_slot_pressed(layer: String, _index: int, viewport_rect: Rect2) -> void:
 	if not _can_focus_slot("cultivate"): return
 	if layer in ["stance", "pragmatic"]:
@@ -148,10 +153,10 @@ func _slot_pointer_guard(event: InputEvent) -> bool:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if _material_cards.handles_viewport_point(event.position): return false
 		var board: Control = _page.hud.design_workbench().context_slice()
-		if _revealed_focus == "sheet/cultivate" and board.is_visible_in_tree():
+		if _sheet_view_active("cultivate") and board.is_visible_in_tree():
 			var point: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * event.position
 			if Rect2(Vector2.ZERO,board.size).has_point(point): return false
-		if _revealed_focus == "sheet/edit" and _page.hud.design_workbench().module_clip_at(event.position) >= 0:
+		if _sheet_view_active("edit") and _page.hud.design_workbench().module_clip_at(event.position) >= 0:
 			return false
 		if not _slot_reader.handles_viewport_point(_foreground_point(event.position)):
 			return true
@@ -588,7 +593,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func can_drop_token(token_id: String, point: Vector2) -> bool:
 	if not TOKEN_AXIS_MOVES.has(token_id): return false
-	if _active_sheet != "cultivate" or _revealed_focus != "sheet/cultivate" or _page._interface_paused() or _page.hud.modal_visible() or _camera.inspection().state != "focused": return false
+	if not _sheet_view_active("cultivate") or _page._interface_paused() or _page.hud.modal_visible(): return false
 	var board: Control = _page.hud.design_workbench().context_slice()
 	if not board._enabled: return false
 	var layer := "stance" if token_id in ["freedom","authority","equality","hierarchy"] else "pragmatic"
@@ -932,7 +937,7 @@ func _drop_material(kind: String, id: String, point: Vector2) -> void:
 		workbench.set_module_drop_enabled(true)
 		if workbench.accept_tabletop_item(kind, id, point): _sync_module_papers()
 		return
-	if _active_sheet == "map" or not _page.startup_ready() or _revealed_focus != "sheet/"+_active_sheet or _camera.inspection().state != "focused": return
+	if _active_sheet == "map" or not _page.startup_ready() or not _sheet_view_active(_active_sheet): return
 	var editor: Control = _page.hud.design_workbench()
 	if editor.accept_tabletop_item(kind, id, point):
 		if kind == "module": _sync_module_papers()
@@ -1153,9 +1158,9 @@ func _process(_delta: float) -> void:
 	_sync_reader_blocks()
 	var enabled := not blocked and not fax_focused
 	_monitor.set_interaction_enabled(enabled)
-	_monitor.set_token_interaction_enabled(enabled and _revealed_focus == "sheet/cultivate" and _camera.inspection().state == "focused")
+	_monitor.set_token_interaction_enabled(enabled and _sheet_view_active("cultivate"))
 	_update_material_storage(enabled)
-	for box: Control in _token_boxes.values(): box.set_interaction_enabled(enabled and _revealed_focus == "sheet/cultivate" and _camera.inspection().state == "focused")
+	for box: Control in _token_boxes.values(): box.set_interaction_enabled(enabled and _sheet_view_active("cultivate"))
 	if _props.enabled != enabled: _props.set_enabled(enabled)
 	# Loose paper keeps its desk pose and drag behavior while inspecting the fax.
 	if _material_cards != null:
@@ -1170,7 +1175,7 @@ func _process(_delta: float) -> void:
 	var editor: Control = _page.hud.design_workbench()
 	var dragged: Dictionary = _material_cards.focused_dragged_material()
 	editor.context_slice().set_token_drag(_monitor._drag_id if _monitor._dragging else str(dragged.get("id", "")))
-	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _revealed_focus == "sheet/"+_active_sheet and _camera.inspection().state == "focused"
+	var design_enabled: bool = enabled and _page.startup_ready() and _active_sheet != "map" and _sheet_view_active(_active_sheet)
 	if editor.has_method("set_interaction_enabled"):
 		editor.set_interaction_enabled(design_enabled)
 	editor.set_module_drop_enabled(_module_drop_allowed(get_viewport().get_mouse_position()))
