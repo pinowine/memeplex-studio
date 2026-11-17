@@ -31,7 +31,7 @@ func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int
 		if control is DeskContextBoard:
 			if not control._layer_at(local).is_empty():
 				if not control._enabled: return Input.CURSOR_FORBIDDEN
-				return Input.CURSOR_CROSS if _desk._can_focus_slot("cultivate") else Input.CURSOR_POINTING_HAND
+				return Input.CURSOR_CROSS if _desk._can_focus_slot("cultivate") else control.cursor_shape_at(local)
 			return Input.CURSOR_ARROW
 		if control is DeskNeuralSketch: return _shape(control.cursor_shape_at(local))
 		if control is DeskDendriteTree:
@@ -102,6 +102,13 @@ func control_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionar
 		if control.mouse_filter == Control.MOUSE_FILTER_IGNORE:
 			control = control.get_parent_control()
 			continue
+		if control is DeskMaterialCards.TokenProjection:
+			var local := control.get_global_transform_with_canvas().affine_inverse() * point
+			for index in 4:
+				var cell: Rect2 = control.cell_rect(index)
+				if cell.has_point(local):
+					return _rect("expanded/" + control.IDS[control._mode][index], control, cell, control.cursor_shape_at(local))
+			return {}
 		if control is DeskMaterialCards.StackCard:
 			var scroll := control.get_parent().get_parent() as ScrollContainer
 			if scroll.is_queued_for_deletion(): return {}
@@ -135,8 +142,7 @@ func _inventory_target(point: Vector2) -> Dictionary:
 		var id: String = inventory.IDS[inventory._mode][index]
 		var rect: Rect2 = inventory.cell_rect(index)
 		if rect.has_point(local):
-			var enabled: bool = monitor._token_enabled and inventory._enabled and int(inventory._balances.get(id, 0)) > 0
-			return _rect("inventory/" + id, inventory, rect, Input.CURSOR_POINTING_HAND if enabled else Input.CURSOR_FORBIDDEN)
+			return _rect("inventory/" + id, inventory, rect, Input.CURSOR_HELP)
 	return {}
 
 func _fax_target(point: Vector2) -> Dictionary:

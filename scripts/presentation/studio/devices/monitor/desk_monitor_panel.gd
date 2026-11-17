@@ -104,7 +104,6 @@ func _ready() -> void:
 	add_child(_meme)
 	_inventory = InventoryScreen.new()
 	_inventory.name = "FourDirectionInventory"
-	_inventory.token_pressed.connect(_begin_token)
 	add_child(_inventory)
 	_button_art = TextureRect.new()
 	_button_art.name = "WeldedModeButtons"
@@ -334,7 +333,7 @@ func hover_info(viewport_point: Vector2 = Vector2.INF) -> Dictionary:
 			if _inventory.cell_rect(index).has_point(local):
 				var id: String = TOKEN_IDS[_mode][index]
 				var definition: Dictionary = _rules.context_resource(id) if _rules != null else {}
-				return {"kind":"context_token", "id":id, "layer":_mode, "title":DeskLocalization.text(str(definition.get("title", id))), "count":int(_balances.get(id, 0)), "description":DeskLocalization.format_text("LOC_AVAILABLE_D_DRAG_ONTO_THE_MATCHING_AXIS_083E1CBD", int(_balances.get(id, 0)))}
+				return {"kind":"context_token", "id":id, "layer":_mode, "title":DeskLocalization.text(str(definition.get("title", id))), "count":int(_balances.get(id, 0)), "description":str(definition.get("description", ""))}
 	return {}
 
 func inspection() -> Dictionary:

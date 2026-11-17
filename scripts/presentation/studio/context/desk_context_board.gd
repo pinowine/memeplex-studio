@@ -174,6 +174,8 @@ func _region_points(id: String) -> PackedVector2Array:
 func _build_layout() -> void:
 	_layout_layers.clear()
 	# The left column starts below the CRT; card rows keep their physical proportions.
+	var axis_side := size.x * .255
+	var lower_top := maxf(size.y * .555, size.y * .075 + 48 + axis_side + CARD_GAP + size.y * .03)
 	var areas := {
 		"language":Rect2(.055,.19,.30,.30), "group":Rect2(.055,.555,.30,.37),
 		"stance":Rect2(.405,.075,.255,.39), "pragmatic":Rect2(.69,.075,.255,.39),
@@ -181,6 +183,10 @@ func _build_layout() -> void:
 	for id: String in LAYERS:
 		var area: Rect2 = areas[id]
 		var rect := Rect2(area.position*size,area.size*size)
+		if id in ["stance", "pragmatic"]: rect.size.y = 48 + axis_side + 8
+		elif id in ["group", "topics"]:
+			rect.position.y = lower_top
+			rect.size.y = size.y * .925 - lower_top
 		var data := {"rect":rect,"slot_centres":[],"slot_rects":[],"slot_pickup_rects":[]}
 		data.icon_rect = Rect2(rect.position + Vector2(0, 4), Vector2(24, 24))
 		data.title_rect = Rect2(rect.position + Vector2(32, 0), Vector2(rect.size.x - 32, 32))
@@ -191,7 +197,7 @@ func _build_layout() -> void:
 			_heading_icons[id].position = data.icon_rect.position
 			_heading_icons[id].size = data.icon_rect.size
 		if id in ["stance","pragmatic"]:
-			var plot_area := Rect2(rect.position + Vector2(8, 48), Vector2(maxf(42, rect.size.x - 16), maxf(32, rect.size.y - 56)))
+			var plot_area := Rect2(rect.position + Vector2(0, 48), Vector2(rect.size.x, rect.size.y - 56))
 			var side := minf(plot_area.size.x, plot_area.size.y)
 			var plot := Rect2(plot_area.get_center() - Vector2.ONE * side * .5, Vector2.ONE * side)
 			data.plot_rect = plot
@@ -302,8 +308,8 @@ func _draw() -> void:
 
 func _column_rules() -> Array[Rect2]:
 	return [Rect2(Vector2(size.x * .38, size.y * .19), Vector2(0, size.y * .735)),
-		Rect2(Vector2(size.x * .675, size.y * .075), Vector2(0, size.y * .39)),
-		Rect2(Vector2(size.x * .055, size.y * .525), Vector2(size.x * .89, 0))]
+		Rect2(Vector2(size.x * .675, size.y * .075), Vector2(0, _layout_layers.stance.rect.size.y)),
+		Rect2(Vector2(size.x * .055, _layout_layers.topics.rect.position.y - size.y * .03), Vector2(size.x * .89, 0))]
 
 func _slot_shape(id: String) -> String:
 	return CardFace.SHAPES.get("topic" if id == "topics" else id, "xy_plane")
@@ -559,6 +565,17 @@ func _on_mouse_exited() -> void:
 	mouse_default_cursor_shape = Control.CURSOR_ARROW
 	queue_redraw()
 
+func cursor_shape_at(point: Vector2) -> int:
+	var id := _layer_at(point)
+	if id.is_empty(): return Control.CURSOR_ARROW
+	if not _enabled: return Control.CURSOR_FORBIDDEN
+	if id in ["stance", "pragmatic"]:
+		var anchor := _axis_origin(id) if id == "stance" and not bool(_layers().get(id, {}).get("known", false)) else _axis_point(id)
+		return Control.CURSOR_POINTING_HAND if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS else Control.CURSOR_HELP
+	var slot := _slot_at(id, point)
+	var slots: Array = _layers().get(id, {}).get("slots", [])
+	return Control.CURSOR_POINTING_HAND if slot >= 0 and slot < slots.size() and not slots[slot].is_empty() else Control.CURSOR_HELP
+
 func _update_pointer(point: Vector2) -> void:
 	var id := _layer_at(point)
 	var target := id
@@ -718,6 +735,14 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 	if layer in ["stance","pragmatic"]:
 		result.kind = layer
 		result.text = ""
+		var directions := {"x_negative":"freedom", "x_positive":"authority", "y_negative":"equality", "y_positive":"hierarchy"} if layer == "stance" else {"x_negative":"sincere", "x_positive":"ironic", "y_negative":"support", "y_positive":"opposition"}
+		var labels := _axis_labels(layer)
+		var layouts := _axis_label_layouts(layer)
+		for key: String in layouts:
+			for line: Dictionary in layouts[key].lines:
+				if (line.rect as Rect2).grow(2).has_point(point):
+					var resource := _resource(directions[key])
+					return {"kind":layer, "id":directions[key], "title":labels[key], "description":resource.get("description", ""), "resource":resource}
 		var tags: Array[Dictionary] = []
 		for label: String in _axis_labels(layer).values(): tags.append({"text":label, "kind":layer, "help":""})
 		result.tags = tags

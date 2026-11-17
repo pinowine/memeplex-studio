@@ -102,40 +102,9 @@ class StackSurface extends Control:
 		return _print_mask
 
 class TokenProjection extends DeskCRTInventoryScreen:
-	signal dropped(id: String, point: Vector2)
-	var drag_id := ""
-	var _pressed := false
-	var _dragging := false
-	var _origin := Vector2.ZERO
-
 	func _ready() -> void:
 		super._ready()
 		paper_view = true
-		token_pressed.connect(func(id: String, point: Vector2):
-			drag_id = id
-			_pressed = true
-			_origin = point)
-		get_window().focus_exited.connect(cancel_drag)
-
-	func _input(event: InputEvent) -> void:
-		if not _pressed: return
-		if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-			cancel_drag()
-		elif event is InputEventMouseMotion:
-			if event.button_mask & MOUSE_BUTTON_MASK_LEFT == 0:
-				cancel_drag()
-				return
-			_dragging = _dragging or event.position.distance_to(_origin) >= 6.0
-		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-			var released := drag_id if _dragging else ""
-			cancel_drag()
-			if not released.is_empty(): dropped.emit(released, event.position)
-		get_viewport().set_input_as_handled()
-
-	func cancel_drag() -> void:
-		_pressed = false
-		_dragging = false
-		drag_id = ""
 
 class StackCard extends Control:
 	signal chosen
@@ -428,14 +397,12 @@ func clear_stack_focus() -> void:
 func focus_dragging() -> bool:
 	if _focus_grid == null: return false
 	for row: Node in _focus_grid.get_children():
-		if (row is StackCard or row is TokenProjection) and row._pressed: return true
+		if row is StackCard and row._pressed: return true
 	return false
 
 func focused_dragged_material() -> Dictionary:
 	if _focus_grid == null: return {}
 	for row: Node in _focus_grid.get_children():
-		if row is TokenProjection and row._dragging:
-			return {"id":row.drag_id, "kind":_focus_kind}
 		if row is StackCard and row._pressed: return row.record
 	return {}
 
@@ -470,7 +437,6 @@ func _refresh_focus_list() -> void:
 		projection.name = "ProjectedDirectionInventory"
 		projection.custom_minimum_size = Vector2(maxf(180, _focus_rect.size.x - 14), maxf(130, _focus_rect.size.y - 8))
 		projection.sync_inventory("stance" if _focus_kind == "stance_token" else "pragmatic", _design.get("context_token_balances", {}), _enabled)
-		projection.dropped.connect(func(id: String, point: Vector2): _drop_expanded(point, _focus_kind, id))
 		_focus_grid.add_child(projection)
 		return
 	var dimensions := CardFace.minimum_card_size(_focus_kind)
@@ -1030,8 +996,13 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 		var scroll_point := _focus_scroll.get_global_transform_with_canvas().affine_inverse() * point
 		if Rect2(Vector2.ZERO, _focus_scroll.size).has_point(scroll_point):
 			for row: Node in _focus_grid.get_children():
-				if not row is StackCard: continue
 				var local: Vector2 = row.get_global_transform_with_canvas().affine_inverse() * point
+				if row is TokenProjection:
+					for index in 4:
+						if row.cell_rect(index).has_point(local):
+							return details_for_item(_focus_kind, row.IDS[row._mode][index])
+					continue
+				if not row is StackCard: continue
 				if Rect2(Vector2.ZERO, row.size).has_point(local):
 					return details_for_item(str(row.record.kind), str(row.record.id))
 			return {}
@@ -1091,7 +1062,7 @@ func details_for_item(kind: String,id: String) -> Dictionary:
 	details.source_records = face_record.get("source_records",[]).duplicate(true)
 	if str(card.id) == "module_boundary": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_LANGUAGE_SLOT_WHEN_INSTALLED_39520ED9")
 	elif str(card.id) == "module_relation": details.unlock_hint = DeskLocalization.source("LOC_ADDS_ONE_AUDIENCE_SLOT_WHEN_INSTALLED_D65F6334")
-	if kind in ["stance_token", "pragmatic_token"]: details.gesture = DeskLocalization.source("LOC_DRAG_TO_THE_MATCHING_AXIS_TO_USE_0068EEBC")
+	if kind in ["stance_token", "pragmatic_token"]: details.erase("gesture")
 	for field: String in ["hover_description", "hover_note", "commentary"]:
 		if definition.has(field): details[field] = definition[field]
 	CardCopy.apply_to(details)

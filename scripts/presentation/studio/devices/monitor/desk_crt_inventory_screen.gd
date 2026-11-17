@@ -1,8 +1,6 @@
 class_name DeskCRTInventoryScreen
 extends Control
 
-signal token_pressed(token_id: String, viewport_point: Vector2)
-
 const IDS := {"stance":["freedom", "authority", "equality", "hierarchy"], "pragmatic":["sincere", "ironic", "support", "opposition"]}
 const SEGMENTS := [[0,1,2,4,5,6], [2,5], [0,2,3,4,6], [0,2,3,5,6], [1,2,3,5], [0,1,3,5,6], [0,1,3,4,5,6], [0,2,5], [0,1,2,3,4,5,6], [0,1,2,3,5,6]]
 const INK := Color("9dc996")
@@ -23,7 +21,7 @@ func sync_inventory(mode_id: String, balances: Dictionary, enabled: bool) -> voi
 	_mode = mode_id if mode_id in IDS else "stance"
 	_balances = balances.duplicate(true)
 	_enabled = enabled
-	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if enabled else Control.CURSOR_ARROW
+	mouse_default_cursor_shape = Control.CURSOR_HELP
 	queue_redraw()
 
 func cell_rect(index: int) -> Rect2:
@@ -36,7 +34,7 @@ func cell_rect(index: int) -> Rect2:
 func cursor_shape_at(point: Vector2) -> int:
 	for index in 4:
 		if cell_rect(index).has_point(point):
-			return CURSOR_POINTING_HAND if _enabled and int(_balances.get(IDS[_mode][index], 0)) > 0 else CURSOR_FORBIDDEN
+			return CURSOR_HELP
 	return CURSOR_ARROW
 
 func _gui_input(event: InputEvent) -> void:
@@ -45,13 +43,6 @@ func _gui_input(event: InputEvent) -> void:
 		for index in 4:
 			if cell_rect(index).has_point(event.position): _hover = index
 		queue_redraw()
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _enabled:
-		for index in 4:
-			var id: String = IDS[_mode][index]
-			if cell_rect(index).has_point(event.position) and int(_balances.get(id, 0)) > 0:
-				token_pressed.emit(id, get_global_transform_with_canvas() * event.position)
-				accept_event()
-				return
 
 func _draw() -> void:
 	if not paper_view: draw_rect(Rect2(Vector2.ZERO, size), Color("06140b"))

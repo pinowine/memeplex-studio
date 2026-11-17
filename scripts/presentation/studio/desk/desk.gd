@@ -88,7 +88,7 @@ func slot_details_active() -> bool:
 	return not _slot_return_state.is_empty()
 
 func _can_focus_slot(sheet: String) -> bool:
-	return _camera.inspection().state == "focused" and _revealed_focus == "sheet/" + sheet and not _page._interface_paused() and _page.startup_ready()
+	return not slot_details_active() and _camera.inspection().state == "focused" and _revealed_focus == "sheet/" + sheet and not _page._interface_paused() and _page.startup_ready()
 
 func _context_slot_pressed(layer: String, _index: int, viewport_rect: Rect2) -> void:
 	if not _can_focus_slot("cultivate"): return
