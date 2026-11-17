@@ -19,10 +19,9 @@ static func build(id: String, population: int = -1) -> Dictionary:
 				if str(entry.kind) != category[0] or str(entry.get("value", "")) != value: continue
 				var title := DeskLocalization.text(str(entry.title))
 				var primary: bool = category[0] == "language" and value in profile.primary_languages
-				var label := title + (" · " + DeskLocalization.text("MM_PRIMARY_LANGUAGE" if primary else "MM_SECONDARY_LANGUAGE") if category[0] == "language" else "")
-				tags.append({"text":label, "name":title, "share":float(weights[value]), "primary":primary, "kind":str(category[0])})
+				tags.append({"text":title, "name":title, "share":float(weights[value]), "primary":primary, "kind":str(category[0])})
 				break
-			if category[0] != "language" and tags.size() == 3: break
+			if tags.size() == 3: break
 		rows.append({"label":DeskLocalization.text(str(category[2])), "tags":tags})
 	return {"id":id, "kind":"country", "title":DeskLocalization.text(str(country.official_name_key)),
 		"description":DeskLocalization.text(str(country.description_key)), "rows":rows, "hover_width":420.0,

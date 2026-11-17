@@ -118,10 +118,10 @@ func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 	return Rect2(position,extent)
 
 func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
-	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label"}.get(role, "body"))
+	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label", "bar_label":"label", "bar_primary":"label"}.get(role, "body"))
 	if role in ["quote", "annotation"]: text_role = role
 	font_size = Typography.point_size(text_role)
-	font = Typography.font(text_role)
+	font = Typography.SEMIBOLD_FONT if role == "bar_primary" else Typography.font(text_role)
 	var paragraph := TextParagraph.new()
 	paragraph.line_spacing = float(Typography.ROLES[text_role].line_gap)
 	paragraph.width = width
@@ -240,8 +240,8 @@ func _layout_content() -> void:
 		y += GROUP_GAP
 		var citation := note.rsplit("\n", true, 1)
 		if citation.size() == 2 and note.begins_with("“"):
-			y += _add_text(citation[0],Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.INK,"quote") + ROW_GAP
-			y += _add_text(citation[1],Vector2(PADDING.x,y),width,BODY_FONT,10,ReceiptStyle.SECONDARY_INK,"note",HORIZONTAL_ALIGNMENT_RIGHT)
+			y += _add_text(citation[0],Vector2(PADDING.x,y),width,BODY_FONT,12,Typography.ROLES.quote.color,"quote") + ROW_GAP
+			y += _add_text(citation[1],Vector2(PADDING.x,y),width,BODY_FONT,10,Typography.ROLES.reference.color,"note",HORIZONTAL_ALIGNMENT_RIGHT)
 		else:
 			y += _add_text(note,Vector2(PADDING.x,y),width,BODY_FONT,12,ReceiptStyle.SECONDARY_INK,"note")
 	var annotation := str(_presentation.get("annotation", ""))
@@ -270,20 +270,25 @@ func _layout_grouped_bars(top: float, width: float) -> float:
 		var y := top + _add_text(str(row.label), Vector2(x, top), column_width, BOLD_FONT, 12, ReceiptStyle.SECONDARY_INK, "category") + ROW_GAP
 		for tag: Dictionary in row.tags:
 			var ink := _section_color(str(tag.kind))
+			var primary := bool(tag.primary)
 			var text := "%s %d%%" % [str(tag.name), roundi(float(tag.share) * 100)]
-			if bool(tag.primary): text += " · " + DeskLocalization.text("MM_PRIMARY_SHORT")
-			y += _add_text(text, Vector2(x, y), column_width, BODY_FONT, 12, ink, "badge") + 2
-			_grouped_bars.append({"rect":Rect2(x,y,column_width,4), "share":float(tag.share), "color":ink})
-			y += 12
-		bottom = maxf(bottom, y)
+			var text_height := _add_text(text, Vector2(x + 6, y + 4), column_width - 12, BODY_FONT, 12, ReceiptStyle.INK, "bar_primary" if primary else "bar_label", HORIZONTAL_ALIGNMENT_CENTER)
+			var bar_height := maxf(28, text_height + 8)
+			var text_block: Dictionary = _text_blocks.back()
+			text_block.position.y = y + (bar_height - text_height) * .5
+			text_block.rect.position = text_block.position
+			_grouped_bars.append({"rect":Rect2(x,y,column_width,bar_height), "share":float(tag.share), "color":ink, "primary":primary})
+			y += bar_height + 4
+		bottom = maxf(bottom, y - 4)
 	return bottom
 
 func _draw() -> void:
 	for bar: Dictionary in _grouped_bars:
 		var rect: Rect2 = bar.rect
-		draw_rect(rect, Color(bar.color, .12))
+		draw_rect(rect, Color(bar.color, .06))
+		if bool(bar.primary): draw_rect(rect, Color(bar.color, .55), false, 1)
 		rect.size.x *= float(bar.share)
-		draw_rect(rect, bar.color)
+		draw_rect(rect, Color(bar.color, .12 + .20 * float(bar.share)))
 	for tag: Dictionary in _tag_panels:
 		draw_style_box(tag.paper, tag.rect)
 	for y: float in _separators:
