@@ -448,6 +448,7 @@ func configure(page: Node2D) -> void:
 	controls.add_child(_slot_reader)
 	_slot_reader.configure(Handwriting.FONT, _textures.paper_texture)
 	_slot_reader.meme_selected.connect(page.focus_meme_on_map)
+	_slot_reader.receipt_scrolled.connect(func(anchor: Dictionary): _printer.set_receipt_anchor(anchor))
 	_slot_reader.stack_layout_changed.connect(_layout_focused_stack)
 	_slot_reader.option_selected.connect(_reader_choice_selected)
 	_slot_reader.choice_hovered.connect(_reader_choice_hovered)
@@ -1321,6 +1322,9 @@ func _show_component_details() -> void:
 			return
 	# Avoid restarting the slide or resetting scroll when nothing changed.
 	var reader_state: Dictionary = _slot_reader.inspection()
+	if str(details.get("document_kind", "")) == "log_receipt" and str(reader_state.details.get("document_kind", "")) == "log_receipt" and reader_state.phase in ["entering", "shown"]:
+		if reader_state.details != details: _slot_reader.update_receipt_details(details)
+		return
 	if reader_state.details != details or not _slot_reader.is_visible_in_tree() or reader_state.phase in ["hidden","exiting"]:
 		_slot_reader.show_details(details,_slot_reader.get_viewport().get_visible_rect())
 

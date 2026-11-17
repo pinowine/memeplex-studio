@@ -96,6 +96,7 @@ func advance(delta: float) -> void:
 	if not is_finite(delta) or delta <= 0.0:
 		return
 	_ensure_layout()
+	var completed := _printed.size() - int(_active >= 0)
 	var remaining := delta
 	var characters := _positive(chars_per_second, 240.0)
 	var feed := _positive(feed_speed, 600.0)
@@ -137,6 +138,7 @@ func advance(delta: float) -> void:
 	_clamp_scroll()
 	_update_processing()
 	queue_redraw()
+	if completed != _printed.size() - int(_active >= 0): details_changed.emit()
 
 
 func scroll_rows(count: float) -> void:
@@ -146,6 +148,37 @@ func scroll_rows(count: float) -> void:
 	_scroll_offset += count * _line_height()
 	_clamp_scroll()
 	queue_redraw()
+	details_changed.emit()
+
+func receipt_anchor() -> Dictionary:
+	_ensure_layout()
+	return _scroll_anchor()
+
+func _scroll_anchor() -> Dictionary:
+	var top := _padding() + _receipt_header_height()
+	for position in range(_printed.size() - 1, -1, -1):
+		var index := _printed[position]
+		var height := _feed_height if index == _active else float(_rows[index].height)
+		if _scroll_offset < top + height or position == 0:
+			return {"id":str(_entries[index].id), "fraction":clampf((_scroll_offset - top) / maxf(1.0, height), 0.0, 1.0)}
+		top += height
+	return {}
+
+func set_receipt_anchor(anchor: Dictionary) -> void:
+	_ensure_layout()
+	_apply_anchor(anchor)
+
+func _apply_anchor(anchor: Dictionary) -> void:
+	var top := _padding() + _receipt_header_height()
+	for position in range(_printed.size() - 1, -1, -1):
+		var index := _printed[position]
+		var height := _feed_height if index == _active else float(_rows[index].height)
+		if str(_entries[index].id) == str(anchor.id):
+			_scroll_offset = top + height * float(anchor.fraction)
+			_clamp_scroll()
+			queue_redraw()
+			return
+		top += height
 
 
 func inspection() -> Dictionary:
@@ -256,11 +289,12 @@ func _receipt_header_height() -> float:
 
 func receipt_details() -> Dictionary:
 	var sections: Array[Dictionary] = []
-	for index in range(_entries.size() - 1, -1, -1):
-		sections.append({"body":_entry_details(_entries[index])})
-		if index > 0: sections.append({"body":"────────────────"})
+	for position in range(_printed.size() - 1, -1, -1):
+		var index := _printed[position]
+		if int(_rows[index].printed_chars) == 0: continue
+		sections.append({"id":str(_entries[index].id), "body":_entry_details(_entries[index]) if bool(_rows[index].complete) else _display_prefix(index)})
 	return {"title":DeskLocalization.source("LOC_EVENT_LOG_F77E28E6"), "sections":sections,
-		"document_kind":"log_receipt", "receipt_width":size.x, "receipt_code":str(_entries.size()).pad_zeros(8),
+		"document_kind":"log_receipt", "receipt_anchor":receipt_anchor(), "receipt_width":size.x, "receipt_code":str(_entries.size()).pad_zeros(8),
 		"body":DeskLocalization.source("LOC_LOG_RECEIPT_EMPTY") if sections.is_empty() else ""}
 
 
@@ -300,6 +334,7 @@ func _ensure_layout() -> void:
 	var signature := str(size.x) + "/" + str(_font_size()) + "/" + str(_line_height()) + "/" + str(_padding()) + "/" + str(_font().get_instance_id()) + "/" + TranslationServer.get_locale()
 	if signature == _layout_signature:
 		return
+	var anchor := _scroll_anchor()
 	_layout_signature = signature
 	var fraction := _feed_height / float(_rows[_active].height) if _active >= 0 and float(_rows[_active].height) > 0.0 else 0.0
 	var old_length := str(_rows[_active].get("display_text", "")).length() if _active >= 0 else 0
@@ -315,6 +350,7 @@ func _ensure_layout() -> void:
 		_feed_height = fraction * float(_rows[_active].height)
 		_char_cursor = print_fraction * str(_rows[_active].display_text).length()
 		_rows[_active].printed_chars = int(floor(_char_cursor))
+	if not anchor.is_empty(): _apply_anchor(anchor)
 	_clamp_scroll()
 
 

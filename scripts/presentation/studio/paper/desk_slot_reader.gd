@@ -7,6 +7,7 @@ signal contact_selected(index: int)
 signal stack_layout_changed
 signal meme_selected(id: String)
 signal country_hovered(id: String)
+signal receipt_scrolled(anchor: Dictionary)
 
 const SLIDE_DURATION := .24
 const SOURCE_PIXELS_PER_UNIT := 3.0
@@ -19,6 +20,7 @@ const EventDocument = preload("res://scripts/presentation/studio/paper/desk_even
 const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Decoration = preload("res://scripts/presentation/studio/paper/desk_paper_decoration.gd")
 const ReceiptPanel = preload("res://scripts/presentation/studio/paper/desk_receipt_panel.gd")
+const ReceiptLog = preload("res://scripts/presentation/studio/paper/receipt_log_view.gd")
 
 class PencilRule extends Control:
 	var receipt := false
@@ -47,6 +49,7 @@ var _title_icon: Control
 var _footer: Control
 var _title_label: Label
 var _body_label: RichTextLabel
+var _receipt_log: ScrollContainer
 var _event_document: Control
 var _rule: Control
 var _stack_host: Control
@@ -237,6 +240,10 @@ func _build() -> void:
 	_body_label.add_theme_constant_override("line_separation", 6)
 	_body_label.add_theme_constant_override("paragraph_separation", 10)
 	_paper_holder.add_child(_body_label)
+	_receipt_log = ReceiptLog.new()
+	_receipt_log.name = "SharedReceiptLog"
+	_receipt_log.anchor_changed.connect(func(anchor: Dictionary): receipt_scrolled.emit(anchor))
+	_paper_holder.add_child(_receipt_log)
 	_event_document = EventDocument.new()
 	_event_document.meme_selected.connect(func(id: String): meme_selected.emit(id))
 	_event_document.country_hovered.connect(func(id: String):
@@ -281,8 +288,9 @@ func _layout_paper() -> void:
 	var event_document := str(_details.get("document_kind", "")) in ["event", "meme"]
 	var has_stack := not str(_details.get("stack_kind", "")).is_empty()
 	var dimensions := Vector2(minf(500.0, view.size.x * .43), minf(740.0, view.size.y * .9)).round() if starter or event_document or has_stack else Vector2(minf(430.0, view.size.x * .36), minf(640.0, view.size.y * .82)).round()
-	if log_receipt: dimensions.x = minf(float(_details.receipt_width), view.size.x - margin * 2.0)
+	if log_receipt: dimensions = Vector2(minf(maxf(260.0, float(_details.receipt_width)), view.size.x * .4), view.size.y + 100.0)
 	_target_rect = Rect2(Vector2(view.end.x - margin - dimensions.x, view.position.y + top).round(), dimensions)
+	if log_receipt: _target_rect.position = Vector2(view.end.x - margin - dimensions.x - view.size.x * .12, view.position.y - 50.0).round()
 	_offscreen_rect = Rect2(Vector2(view.end.x + margin, _target_rect.position.y).round(), dimensions)
 	# This is a screen-layer paper: whole-pixel poses keep fibers and ink sharp.
 	_paper_holder.position = _offscreen_rect.position.lerp(_target_rect.position, _slide_progress).round()
@@ -347,6 +355,16 @@ func _layout_paper() -> void:
 	_body_label.position = Vector2(padding,body_y)
 	_body_label.size = Vector2(width,maxf(48,dimensions.y-body_y-choice_height-64))
 	_body_label.visible = not event_document and not (has_stack and _body.is_empty())
+	_receipt_log.visible = log_receipt
+	if log_receipt:
+		_title_label.position.x = padding
+		_title_label.size.x = width
+		_title_label.position.y = 64.0
+		_title_icon.hide()
+		_rule.position.y = 64.0 + header_height + 6.0
+		_body_label.hide()
+		_receipt_log.position = Vector2(padding, 64.0 + header_height + 18.0)
+		_receipt_log.size = Vector2(width, view.size.y - header_height - 46.0)
 	_surface.visible = not event_document and not has_stack and not log_receipt
 	_event_document.visible = event_document
 	_event_document.position = Vector2(4, 4)
@@ -552,6 +570,12 @@ func _refresh_translation(reset_scroll: bool) -> void:
 		_event_document.set_deferred("scroll_vertical", document_scroll)
 
 func _render_body() -> void:
+	if str(_details.get("document_kind", "")) == "log_receipt":
+		var receipt_key := str([_details.sections, _details.receipt_anchor, TranslationServer.get_locale()])
+		if _rendered_body_key != receipt_key:
+			_rendered_body_key = receipt_key
+			_receipt_log.configure(_details.sections, _details.receipt_anchor)
+		return
 	var key := str(_details.get("document_kind", "")) + "\n" + (_title if _full_title_in_body else "") + "\n" + _body
 	if _rendered_body_key == key: return
 	_rendered_body_key = key
@@ -644,6 +668,10 @@ func update_meme_details(details: Dictionary) -> bool:
 		_details = document
 		_refresh_translation(false)
 	return true
+
+func update_receipt_details(details: Dictionary) -> void:
+	_details = details.duplicate(true)
+	_refresh_translation(false)
 
 func hover_info(point: Vector2) -> Dictionary:
 	if not _meme_mode() or _phase not in ["entering", "shown"] or not handles_viewport_point(point): return {}
