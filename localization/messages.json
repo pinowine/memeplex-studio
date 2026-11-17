@@ -356,8 +356,8 @@
   },
   "LOC_SPECIFY_POLITICAL_STANCE_UNCHECKED_MEANS_UNKNOWN_OR_D2111FDA": {
     "source": "登记政治立场（不勾选表示未知／非政治）",
-    "zh_CN": "登记政治立场（不勾选表示未知／非政治）",
-    "en": "Specify political stance (unchecked means unknown or non-political)"
+    "zh_CN": "登记立场（不勾选表示未明确）",
+    "en": "Specify stance (unchecked means unspecified)"
   },
   "LOC_LEFT_RIGHT_CF61CC8E": {
     "source": "左翼 -1 / 右翼 +1",
@@ -1161,7 +1161,7 @@
   },
   "LOC_ALL_SYNTHETIC_AUDIENCES_ADD04D9F": {
     "source": "全部合成人群",
-    "zh_CN": "全部合成人群",
+    "zh_CN": "全部合成群体",
     "en": "All synthetic audiences"
   },
   "LOC_S_ATTRACTION_MULTIPLIER_F_FOR_F_GAME_C6C49FBD": {
@@ -1741,8 +1741,8 @@
   },
   "LOC_DRAG_THE_MARKER_ALONG_ONE_AXIS_AT_291BFA50": {
     "source": "从标记拖动，单次只沿一个轴，每格 0.1；离开起点用筹码，返回起点归还。",
-    "zh_CN": "拖动标记可同时调整两个方向，每格 0.1。离开起点花对应方向筹码，返回时归还。",
-    "en": "Drag the marker freely along both axes in 0.1 steps. Moving away from the origin uses direction tokens; moving back returns them."
+    "zh_CN": "拖动标记调整立场或语用，每格 0.1。离开起点消耗对应方向的点数，返回时归还。",
+    "en": "Drag the marker to adjust stance or pragmatics in steps of 0.1. Moving away from the origin spends points for that direction; moving back returns them."
   },
   "LOC_UNSPECIFIED_STANCE_DOES_NOT_MEAN_NEUTRAL_DRAG_57E53949": {
     "source": "从空心起点拖动以登记立场。",
@@ -2336,7 +2336,7 @@
   },
   "LOC_ADDS_ONE_AUDIENCE_SLOT_WHEN_INSTALLED_D65F6334": {
     "source": "安装后增加一个人群槽",
-    "zh_CN": "安装后增加一个人群槽",
+    "zh_CN": "安装后增加一个群体槽",
     "en": "Adds one audience slot when installed"
   },
   "LOC_MEME_AWAITING_PRINT_02E38C0D": {
@@ -2396,8 +2396,8 @@
   },
   "LOC_STANCE_TOKENS_01585B02": {
     "source": "政治点数",
-    "zh_CN": "政治点数",
-    "en": "Stance tokens"
+    "zh_CN": "立场点数",
+    "en": "Stance points"
   },
   "LOC_VIEW_BALANCE_AND_SNAPSHOT_CHANGES_47665A67": {
     "source": "查看余额与快照变化",
@@ -2406,18 +2406,18 @@
   },
   "LOC_VIEW_AVAILABLE_TOKENS_IN_FOUR_STANCE_DIRECTIONS_B1B44E1F": {
     "source": "查看四个政治方向的可用点数",
-    "zh_CN": "查看四个政治方向的可用点数",
-    "en": "View available tokens in four stance directions"
+    "zh_CN": "查看四个立场方向的可用点数",
+    "en": "View available points in four stance directions"
   },
   "LOC_VIEW_AVAILABLE_TOKENS_IN_FOUR_PRAGMATIC_DIRECTIONS_69AF6777": {
     "source": "查看四个语用方向的可用点数",
     "zh_CN": "查看四个语用方向的可用点数",
-    "en": "View available tokens in four pragmatic directions"
+    "en": "View available points in four pragmatic directions"
   },
   "LOC_PRAGMATIC_TOKENS_E79A8B72": {
     "source": "语用点数",
     "zh_CN": "语用点数",
-    "en": "Pragmatic tokens"
+    "en": "Pragmatics points"
   },
   "LOC_AVAILABLE_D_DRAG_ONTO_THE_MATCHING_AXIS_083E1CBD": {
     "source": "可用 %d；拖到对应坐标轴使用",
@@ -2786,8 +2786,8 @@
   },
   "LOC_NOT_ENOUGH_TOKENS_FOR_THE_MATCHING_DIRECTION_A220DB22": {
     "source": "没有足够的对应端筹码。",
-    "zh_CN": "没有足够的对应端筹码。",
-    "en": "Not enough tokens for the matching direction."
+    "zh_CN": "对应方向的点数不足。",
+    "en": "Not enough points for this direction."
   },
   "LOC_DRAFT_CONTEXT_CONFLICTS_WITH_BRAIN_SLICE_CONFIGURATION_CBA3F275": {
     "source": "草稿语境与脑切片配置不一致。",
@@ -2831,12 +2831,12 @@
   },
   "LOC_THIS_MODULE_IS_NOT_IN_STORAGE_7C77E7E3": {
     "source": "仓库中没有该模块。",
-    "zh_CN": "仓库中没有该模块。",
+    "zh_CN": "仓库中没有该补丁。",
     "en": "This module is not in storage."
   },
   "LOC_NOT_ENOUGH_MODULES_HAVE_BEEN_TAKEN_OUT_F84E3A66": {
     "source": "已搬出的模块数量不足，不能复制纸片。",
-    "zh_CN": "已搬出的模块数量不足，不能复制纸片。",
+    "zh_CN": "已搬出的补丁数量不足，不能复制纸片。",
     "en": "Not enough modules have been taken out; paper slips cannot be duplicated."
   },
   "LOC_AN_EXPRESSION_PATCH_REQUIRES_YOUR_OWN_DRAFT_984A1272": {
@@ -2876,7 +2876,7 @@
   },
   "LOC_A_CONNECTION_REQUIRES_TWO_DISTINCT_PLACED_MODULE_E271A8B2": {
     "source": "连接需要两个已放置的不同模块槽。",
-    "zh_CN": "连接需要两个已放置的不同模块槽。",
+    "zh_CN": "连接需要两个已放置的不同补丁槽。",
     "en": "A connection requires two distinct, placed module slots."
   },
   "LOC_THIS_CONNECTION_ALREADY_EXISTS_1BFCDA18": {
@@ -2916,7 +2916,7 @@
   },
   "LOC_ONLY_PLAYER_PUBLISHED_VERSIONS_MAY_REGISTER_MODULES_C45E35C2": {
     "source": "只有玩家已发布版本可登记模块。",
-    "zh_CN": "只有玩家已发布版本可登记模块。",
+    "zh_CN": "只有玩家已发布版本可登记补丁。",
     "en": "Only player-published versions may register modules."
   },
   "LOC_WRONG_DRAFT_SYNC_TYPE_EAFCB504": {
@@ -2986,7 +2986,7 @@
   },
   "LOC_DESIGN_SAVE_GRANTS_A_PUBLICATION_MODULE_REWARD_C11AB2C0": {
     "source": "设计存档重复发布模块奖励。",
-    "zh_CN": "设计存档重复发布模块奖励。",
+    "zh_CN": "设计存档重复发布补丁奖励。",
     "en": "Design save grants a publication-module reward more than once."
   },
   "LOC_STARTING_SELECTION_MUST_PRECEDE_FIRST_PUBLICATION_01D580DD": {
@@ -2996,7 +2996,7 @@
   },
   "LOC_DESIGN_SAVE_LACKS_A_PLAYER_VERSION_MODULE_62FFDE84": {
     "source": "设计存档缺少玩家版本模块来源。",
-    "zh_CN": "设计存档缺少玩家版本模块来源。",
+    "zh_CN": "设计存档缺少玩家版本补丁来源。",
     "en": "Design save lacks a player-version module source."
   },
   "LOC_VERSION_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_DOES_C71016AF": {
@@ -3231,13 +3231,13 @@
   },
   "LOC_STANCE_TOKEN_D1A72C88": {
     "source": "立场筹码",
-    "zh_CN": "立场筹码",
-    "en": "Stance token"
+    "zh_CN": "立场点数",
+    "en": "Stance points"
   },
   "LOC_PRAGMATICS_TOKEN_FEEBD9AF": {
     "source": "语用筹码",
-    "zh_CN": "语用筹码",
-    "en": "Pragmatics token"
+    "zh_CN": "语用点数",
+    "en": "Pragmatics points"
   },
   "LOC_YOUR_MEME_IS_READY_CLICK_A_COUNTRY_086F32BB": {
     "source": "模因已确认。点击一个国家，再点击上方的勾选气泡开始投放。",
@@ -6956,7 +6956,7 @@
   },
   "LOC_EDIT_AUDIENCE": {
     "source": "人群",
-    "zh_CN": "人群",
+    "zh_CN": "群体",
     "en": "Audience"
   },
   "LOC_EDIT_TOPICS": {

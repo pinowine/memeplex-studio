@@ -42,8 +42,8 @@
   },
   "LOC_RECEIPT_MONITOR_PURPOSE": {
     "source": "追踪模因点数的收支，以及可用的意识形态和语用资源。",
-    "zh_CN": "追踪模因点数的收支，以及可用的意识形态和语用资源。",
-    "en": "Tracks meme points earned and spent, along with available ideology and pragmatics resources."
+    "zh_CN": "追踪模因点数的收支，以及可用的立场点数和语用点数。",
+    "en": "Tracks meme points earned and spent, along with available stance and pragmatics points."
   },
   "LOC_RECEIPT_MONITOR_NOTE": {
     "source": "屏幕泛着绿光，数字在里面轻轻跳了一下。那一点变化，够你盯上很久。",
@@ -227,8 +227,8 @@
   },
   "LOC_NEURON_PATCH_UNCHANGED": {
     "source": "补丁模块未改变。",
-    "zh_CN": "补丁模块未改变。",
-    "en": "Patch modules are unchanged."
+    "zh_CN": "补丁未改变。",
+    "en": "Patches are unchanged."
   },
   "LOC_NEURON_PARTS_CHANGED": {
     "source": "改变的表达组分：%s",
@@ -237,7 +237,7 @@
   },
   "LOC_NEURON_PARENT_UNAVAILABLE": {
     "source": "缺少父版本记录，无法比较模块变化。",
-    "zh_CN": "缺少父版本记录，无法比较模块变化。",
+    "zh_CN": "缺少父版本记录，无法比较补丁变化。",
     "en": "The parent record is unavailable, so module changes cannot be compared."
   },
   "LOC_LOG_RECEIPT_HEADING": {

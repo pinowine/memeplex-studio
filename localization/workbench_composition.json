@@ -6,8 +6,8 @@
   },
   "LOC_WB_IDEOLOGY": {
     "source": "意识形态",
-    "zh_CN": "意识形态",
-    "en": "Ideology"
+    "zh_CN": "立场",
+    "en": "Stance"
   },
   "LOC_WB_UNATTACHED": {
     "source": "未接入",

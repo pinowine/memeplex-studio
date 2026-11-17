@@ -216,13 +216,13 @@
   },
   "LOC_OPENING_IDEOLOGY_POINTS_TITLE": {
     "source": "意识形态点数",
-    "zh_CN": "意识形态点数",
-    "en": "Ideology points"
+    "zh_CN": "立场点数",
+    "en": "Stance points"
   },
   "LOC_OPENING_IDEOLOGY_POINTS_TEXT": {
     "source": "这是你目前可用的意识形态点数，它们可以用于扭转你的模因的政治色彩。把鼠标移到四个数值上看看，看完点“继续”。",
-    "zh_CN": "这是你目前可用的意识形态点数，它们可以用于扭转你的模因的政治色彩。把鼠标移到四个数值上看看，看完点“继续”。",
-    "en": "These are your available ideology points. Use them to shift your meme’s political colouring. Hover over the four values, then click Continue."
+    "zh_CN": "这些立场点数可以调整模因的立场。把鼠标移到四个方向的数值上查看说明，看完点“继续”。",
+    "en": "Use these stance points to shift your meme's stance. Hover over the four direction values, then click Continue."
   },
   "LOC_OPENING_MONITOR_PRAGMATICS_TITLE": {
     "source": "再切一页",
@@ -236,12 +236,12 @@
   },
   "LOC_OPENING_PRAGMATICS_POINTS_TITLE": {
     "source": "语用学点数",
-    "zh_CN": "语用学点数",
+    "zh_CN": "语用点数",
     "en": "Pragmatics points"
   },
   "LOC_OPENING_PRAGMATICS_POINTS_TEXT": {
     "source": "语言学，一门神奇的学科。这些点数代表了你的模因的可用语用学点数……自己看看吧。看完点“继续”，我们回到桌面。",
-    "zh_CN": "语用学。这些点数代表了你的模因的可用语用学点数……自己看看吧。看完点“继续”，我们回到桌面。",
+    "zh_CN": "语用。这些点数代表了你的模因的可用语用点数……自己看看吧。看完点“继续”，我们回到桌面。",
     "en": "Linguistics. A marvellous discipline. These figures are your meme’s available pragmatics points… Take a look for yourself. Click Continue when you’re ready to return to the desk."
   },
   "LOC_OPENING_SPEED_TITLE": {
@@ -331,8 +331,8 @@
   },
   "LOC_OPENING_CONTEXT_AXES_TEXT": {
     "source": "坐标决定这份表达站在哪里。调整会用到相应点数，别把“立场鲜明”理解成“把预算花光”。",
-    "zh_CN": "拖动实心点调整立场或语用。移动时你获得的对应代币会被移除──就是你在显示器上可以查看的那些。当然，退回也会把代币返还给你。",
-    "en": "Drag the solid dot along either axis or diagonally. Each step is 0.1. Moving away from the hollow origin uses direction tokens; moving back returns them."
+    "zh_CN": "拖动实心点调整立场或语用，每格 0.1。离开空心起点消耗对应方向的点数，返回时归还。",
+    "en": "Drag the solid dot to adjust stance or pragmatics in steps of 0.1. Moving away from the hollow origin spends points for that direction; moving back returns them."
   },
   "LOC_OPENING_CONTEXT_REMOVE_TITLE": {
     "source": "取出话题卡",
@@ -451,12 +451,12 @@
   },
   "LOC_OPENING_HOVER_IDEOLOGY": {
     "source": "这是你目前可用的意识形态点数，它们可以用于扭转你的模因的政治色彩。点数有限，立场倒是可以很坚定。",
-    "zh_CN": "这是你手头能用的意识形态点数，用来调整模因的政治倾向。点数有限，往哪边偏可得想清楚。",
-    "en": "These are your available ideology points, used to shift your meme's political leaning. You only have so many, so choose the direction carefully."
+    "zh_CN": "这些是可用的立场点数。向某个方向调整立场时，会消耗该方向的点数。",
+    "en": "These are your available stance points. Shifting the stance in a direction spends points for that direction."
   },
   "LOC_OPENING_HOVER_PRAGMATICS": {
     "source": "这些是可用的语用学点数。话怎么说，和说了什么一样重要……有时候更重要。",
-    "zh_CN": "这些是可用的语用学点数，用来调整模因说话的姿态。话怎么说，和说了什么一样重要，有时甚至更重要。",
+    "zh_CN": "这些是可用的语用点数，用来调整模因说话的姿态。话怎么说，和说了什么一样重要，有时甚至更重要。",
     "en": "These are your available pragmatics points. They shape how your meme comes across; how you say something matters as much as what you say, sometimes more."
   },
   "LOC_GUIDE_STARTER_PAPER": {
@@ -521,7 +521,7 @@
   },
   "LOC_OPENING_EDITOR_CONTEXT_TEXT": {
     "source": "语言、群体和话题集中显示在这里。想调整这些模块，接下来到培养页装卸卡片。",
-    "zh_CN": "语言、群体和话题集中显示在这里。想调整这些模块，接下来到培养页装卸卡片。",
+    "zh_CN": "语言、群体和话题集中显示在这里。想调整这些补丁，接下来到培养页装卸卡片。",
     "en": "Language, group and topic modules are summarized here. To change them, install or remove cards on the Cultivate sheet next."
   },
   "LOC_OPENING_MAP_MONITOR_TITLE": {

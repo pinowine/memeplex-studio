@@ -26,13 +26,13 @@
   },
   "LOC_STARTER_FIELD_GROUP": {
     "source": "默认人群",
-    "zh_CN": "默认人群",
+    "zh_CN": "默认群体",
     "en": "Default audience"
   },
   "LOC_STARTER_FIELD_STANCE": {
     "source": "意识形态",
-    "zh_CN": "意识形态",
-    "en": "Ideology"
+    "zh_CN": "立场",
+    "en": "Stance"
   },
   "LOC_STARTER_FIELD_PRAGMATICS": {
     "source": "语用",
