@@ -3,6 +3,7 @@ extends Control
 const FiberTexture := preload("res://assets/image/textures/studio/desk/paper_texture.png")
 const PRINT_HEADING_FONT := preload("res://assets/image/fonts/print_heading_font.tres")
 const SOURCE_PIXELS_PER_UNIT := 3.0
+const TAB_COLORS := {"world":Color("4f756c"), "transmission":Color("716b92"), "environment_meme":Color("9d754c")}
 
 class FiberSurface extends Control:
 	func _init() -> void:
@@ -101,7 +102,7 @@ func finish_output(index: int) -> void:
 		_history_tab = Label.new()
 		_history_tab.name = "EventHistoryTab"
 		_history_tab.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_history_tab.add_theme_color_override("font_color", Color("41463a"))
+		_history_tab.add_theme_color_override("font_color", Color("f4efdd"))
 		_history_tab.add_theme_font_size_override("font_size", 10)
 		_history_tab.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_history_tab.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -114,12 +115,12 @@ func history_tab_rect() -> Rect2:
 	var width := 32.0
 	if _history_tab != null:
 		width = maxf(width, ceilf(_history_tab.get_theme_font("font").get_string_size(_history_tab.text, HORIZONTAL_ALIGNMENT_LEFT, -1, _history_tab.get_theme_font_size("font_size")).x) + 8.0)
-	var side := _tab_index % 3
-	var slot := _tab_index / 3
-	if side == 2:
+	var side := _tab_index / 6
+	var slot := _tab_index % 6
+	if side == 1:
 		var tab_width := maxf(width, 36.0)
 		return Rect2(Vector2(8 + slot * ((size.x - 16) / 6.0), size.y-_history_heights.y-18), Vector2(minf(tab_width, (size.x - 16) / 6.0 - 1), _history_heights.y-size.y+20))
-	return Rect2(Vector2(-width + 2 if side == 0 else size.x - 2, size.y-_history_heights.x+12 + slot * ((_history_heights.x - 32) / 6.0)), Vector2(width, 19))
+	return Rect2(Vector2(size.x - 2 if side == 0 else -width + 2, size.y-_history_heights.x+12 + slot * 20.0), Vector2(width, 19))
 
 func _fit_excerpt(label: Label, bounds: Rect2, line_limit: int) -> void:
 	var line_height := label.get_theme_font("font").get_height(label.get_theme_font_size("font_size")) + label.get_theme_constant("line_spacing")
@@ -143,7 +144,7 @@ func _layout() -> void:
 		var tab := history_tab_rect()
 		_history_tab.position = tab.position
 		_history_tab.size = tab.size
-		_history_tab.vertical_alignment = VERTICAL_ALIGNMENT_TOP if _tab_index % 3 == 2 else VERTICAL_ALIGNMENT_CENTER
+		if _tab_index / 6 == 1: _history_tab.size.y = 18.0
 	queue_redraw()
 
 func _draw() -> void:
@@ -152,8 +153,7 @@ func _draw() -> void:
 	if _delivered:
 		var tab := history_tab_rect()
 		draw_rect(Rect2(tab.position + Vector2(1, 2), tab.size), Color(0, 0, 0, .17))
-		draw_rect(tab, Color("cfc39e"))
-		draw_line(tab.position + Vector2(3, 1), tab.position + Vector2(3, tab.size.y - 1), Color("9e987e"), .7, true)
+		draw_rect(tab, TAB_COLORS.get(str(event.get("origin", "world")), TAB_COLORS.world))
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and _title != null:
