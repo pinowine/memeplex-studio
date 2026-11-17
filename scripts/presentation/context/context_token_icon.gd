@@ -8,10 +8,9 @@ static func _stroke(canvas: CanvasItem, points: Array, center: Vector2, radius: 
 static func draw(canvas: CanvasItem, id: String, center: Vector2, radius: float, color: Color, width: float) -> void:
 	match id:
 		"freedom":
-			canvas.draw_rect(Rect2(center+Vector2(-.65,-.05)*radius,Vector2(1.3,.95)*radius),color,false,width)
-			canvas.draw_arc(center+Vector2(.2,-.1)*radius,radius*.55,PI,TAU,24,color,width,true)
-			canvas.draw_line(center+Vector2(-.35,-.1)*radius,center+Vector2(-.35,-.45)*radius,color,width,true)
-			canvas.draw_circle(center+Vector2(0,.3)*radius,width,color)
+			canvas.draw_rect(Rect2(center+Vector2(-.7,.1)*radius,Vector2(1.4,.8)*radius),color,false,width)
+			_stroke(canvas,[Vector2(-.4,.1),Vector2(-.4,-.4),Vector2(-.15,-.75),Vector2(.3,-.75),Vector2(.6,-.4)],center,radius,color,width)
+			canvas.draw_circle(center+Vector2(0,.5)*radius,radius*.09,color)
 		"authority":
 			_stroke(canvas,[Vector2(-.65,-.8),Vector2(.15,-.8),Vector2(.15,-.3),Vector2(-.65,-.3),Vector2(-.65,-.8)],center,radius,color,width)
 			_stroke(canvas,[Vector2(-.25,-.3),Vector2(.55,.55)],center,radius,color,width*1.4)

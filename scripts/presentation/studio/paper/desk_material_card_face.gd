@@ -4,6 +4,7 @@ extends Control
 const MINIMUM := Vector2(108, 72)
 const MODULE_MINIMUM := Vector2(112, 94)
 const TOPIC_MINIMUM := Vector2(144, 74)
+const COUNT_FONT := preload("res://assets/image/fonts/body_medium_font.tres")
 const TITLES := {"language":"LOC_LANGUAGE_9F6FEE1A", "group":"LOC_AUDIENCE_D14FC4B5", "module":"LOC_PATCH_70F56533", "topic":"LOC_TOPICS_A2C81C5A"}
 const SHAPES := {"language":"double_layer_laminated_round", "group":"clipped_identity_card", "module":"notched_expansion_board", "topic":"notched_horizontal_ticket"}
 const PALETTES := {
@@ -363,6 +364,21 @@ func _draw_icon(rect: Rect2, ink: Color) -> void:
 
 
 func _draw_text(entry: Dictionary, color: Color, centred := false) -> void:
+	if centred:
+		var text := "".join(entry.lines)
+		var ts := TextServerManager.get_primary_interface()
+		var rid := COUNT_FONT.get_rids()[0]
+		var bounds := Rect2()
+		var advance := 0.0
+		for index in text.length():
+			var glyph := ts.font_get_glyph_index(rid, entry.font_size, text.unicode_at(index), 0)
+			var offset := ts.font_get_glyph_offset(rid, Vector2i(entry.font_size, 0), glyph)
+			var glyph_rect := Rect2(offset + Vector2(advance, 0), ts.font_get_glyph_size(rid, Vector2i(entry.font_size, 0), glyph))
+			bounds = glyph_rect if index == 0 else bounds.merge(glyph_rect)
+			advance += ts.font_get_glyph_advance(rid, entry.font_size, glyph).x
+		# Center the printed glyphs; multilingual line metrics exceed the small badge.
+		draw_string(COUNT_FONT, (entry.rect as Rect2).get_center() - bounds.get_center(), text, HORIZONTAL_ALIGNMENT_LEFT, -1, entry.font_size, color)
+		return
 	var face := _font if _font != null else ThemeDB.fallback_font
 	var rect: Rect2 = entry.rect
 	var height: float = entry.line_height
