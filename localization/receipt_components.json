@@ -42,8 +42,8 @@
   },
   "LOC_RECEIPT_MONITOR_PURPOSE": {
     "source": "追踪模因点数的收支，以及可用的意识形态和语用资源。",
-    "zh_CN": "追踪模因点数的收支，以及可用的立场点数和语用点数。",
-    "en": "Tracks meme points earned and spent, along with available stance and pragmatics points."
+    "zh_CN": "查看可用的Meme点数、立场点数和语用点数。本局首次有人采用你的模因可得20 Meme；以后采用人数增长或传入更多国家还能获得点数。",
+    "en": "Shows your available Meme, stance and pragmatics points. The first person to adopt your meme in this run earns you 20 Meme. Growth in adopters or spread to more countries can earn further points."
   },
   "LOC_RECEIPT_MONITOR_NOTE": {
     "source": "屏幕泛着绿光，数字在里面轻轻跳了一下。那一点变化，够你盯上很久。",

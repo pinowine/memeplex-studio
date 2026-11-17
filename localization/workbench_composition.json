@@ -626,8 +626,8 @@
   },
   "LOC_GUIDANCE_MUTATION_EFFECT": {
     "source": "你看，外面的人做了这些改动：\n%s\n它们已经用在下方的表达和含义里了，也会和你之后的修改一起生效。接不接受它，就看你咯。",
-    "zh_CN": "你看，外面的人做了这些改动：\n%s\n它们已经用在下方的表达和含义里了，也会和你之后的修改一起生效。接不接受它，就看你咯。",
-    "en": "Here is what people changed:\n%s\nYou can see it in the expression and meaning below. It will also combine with your later edits. What you do next is up to you."
+    "zh_CN": "你看，外面的人做了这些改动：\n%s\n它们已经用在下方的表达和含义里了，也会和你之后的修改一起生效。",
+    "en": "Here is what people changed:\n%s\nYou can see it in the expression and meaning below. It will also combine with your later edits."
   },
   "LOC_GUIDANCE_MUTATION_SPLIT": {
     "source": "你看，外面的人做了这些改动：\n%s\n它已经偏离得足够远，分成另一条模因了。你的原稿保留着，这张卡记录的是它怎么变出去的。",
