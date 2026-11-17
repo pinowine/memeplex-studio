@@ -1,6 +1,7 @@
 extends RefCounted
 
 const CONTENT_PATH := "res://data/propagation/content_profiles.json"
+const ALTERNATIVE_TEXT_QUALITY := 0.85
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
 static var _content: Dictionary = {}
@@ -50,11 +51,18 @@ func available_formats(profile: Dictionary) -> Array[Dictionary]:
 		result.append({"format":"image", "languages":original_languages, "quality":1.0})
 		if "multilingual_typesetting" in skills and not translated.is_empty() and not meta.caption_regions.is_empty(): result.append({"format":"localized_image", "languages":translated, "quality":1.0})
 		if "alternative_text" in skills and not meta.alternative_text.is_empty():
-			var alt_languages: Array = []
-			for language: String in meta.alternative_text:
-				if language in original_languages or language in translated: alt_languages.append(language)
-			if not alt_languages.is_empty(): result.append({"format":"alternative_text", "languages":alt_languages, "quality":0.85})
+			var alt_languages := _alternative_languages(profile)
+			if not alt_languages.is_empty(): result.append({"format":"alternative_text", "languages":alt_languages, "quality":ALTERNATIVE_TEXT_QUALITY})
 	return result
+
+func _alternative_languages(profile: Dictionary) -> Array[String]:
+	var languages: Array[String] = []
+	var meta: Dictionary = profile.propagation_meta
+	var original: Array = profile.get("language_ids", [str(profile.language_id)])
+	for language: String in meta.alternative_text:
+		if language in original or ("machine_translation" in _skills(profile) and meta.translations.has(language)):
+			languages.append(language)
+	return languages
 
 func _language_match(distribution: Dictionary, languages: Array) -> float:
 	var result := 0.0
@@ -76,7 +84,11 @@ func _format_language(profile: Dictionary, country: Dictionary, format: Dictiona
 	var embedded := language if str(format.format) == "localized_image" else raw
 	# Only independently conveyed visual information receives the visual-language exemption.
 	var visual := 1.0-(1.0-raw)*0.1
-	return float(meta.plain_text_fraction)*readable + float(meta.embedded_text_fraction)*embedded + float(meta.visual_information_fraction)*visual
+	var image_readability := float(meta.plain_text_fraction)*readable + float(meta.embedded_text_fraction)*embedded + float(meta.visual_information_fraction)*visual
+	if "alternative_text" in _skills(profile):
+		var description_readability := _language_match(country.languages, _alternative_languages(profile)) * ALTERNATIVE_TEXT_QUALITY
+		image_readability = maxf(image_readability, description_readability)
+	return image_readability
 
 func delivery(profile: Dictionary, country: Dictionary) -> Dictionary:
 	var options := available_formats(profile)

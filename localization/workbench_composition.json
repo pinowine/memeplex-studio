@@ -146,13 +146,13 @@
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_DESCRIPTION": {
     "source": "为图像提供可读的文字出口。",
-    "zh_CN": "给图片写一段文字，交代画面内容和想表达的意思，方便在只能发文字的渠道分享。",
-    "en": "Write a description of the image and its meaning so it can be shared through channels that only accept text."
+    "zh_CN": "给图片附一段文字，说明画面内容和含义，帮助读者理解。",
+    "en": "Attach a description of the image and its meaning to help readers understand it."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT": {
     "source": "通过文字渠道送出经编写的图像信息说明。",
-    "zh_CN": "无法使用图像渠道时，以0.85的质量系数通过文字渠道传播已有的图像说明。",
-    "en": "When images cannot be delivered, send an available image description through a text channel at a quality factor of 0.85."
+    "zh_CN": "图像传播的语言匹配取图片可读率与对应语言图像说明可读率乘以0.85后的较高值。",
+    "en": "For image delivery, use the higher of the image's readability and a matching image description's readability multiplied by 0.85."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE": {
     "source": "多格式分发",
