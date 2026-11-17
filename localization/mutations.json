@@ -1,4 +1,9 @@
 {
+  "LOC_MUTATION_REPHRASE_B": {
+    "source": "行吧，老前辈",
+    "zh_CN": "行吧，老前辈",
+    "en": "Sure, old-timer"
+  },
   "LOC_MUTATION_PATCHES_FULL": {
     "source": "这个版本已用满四个补丁槽，无法再追加二创。",
     "zh_CN": "这个版本已用满四个补丁槽，无法再追加二创。",

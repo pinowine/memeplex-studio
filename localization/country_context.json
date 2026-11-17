@@ -406,107 +406,107 @@
   },
   "LOC_WORLD_GROUP_AGRICULTURAL_WORKERS_NOTE": {
     "source": "收购站门口的价目表被雨浸湿了，新的数字直接写在旧价上。",
-    "zh_CN": "收购站门口的价目表被雨浸湿了，新的数字直接写在旧价上。",
-    "en": "Rain has soaked the price list outside the buying station. The new figures are written over the old ones."
+    "zh_CN": "“锄禾日当午，汗滴禾下土。”\n李绅《悯农二首·其二》",
+    "en": "“Hoeing grain at noon, sweat falls onto the soil.”\nLi Shen, Compassion for the Peasants, II"
   },
   "LOC_WORLD_GROUP_INDUSTRIAL_WORKERS_NOTE": {
     "source": "交班簿上夹着一张纸：第三台机器今天还是那个响声。",
-    "zh_CN": "交班簿上夹着一张纸：第三台机器今天还是那个响声。",
-    "en": "A note sits in the shift book: the third machine is still making that noise."
+    "zh_CN": "“记住，时间就是金钱。”\n本杰明·富兰克林《给年轻商人的忠告》（1748）",
+    "en": "“Remember that time is money.”\nBenjamin Franklin, Advice to a Young Tradesman (1748)"
   },
   "LOC_WORLD_GROUP_SERVICE_WORKERS_NOTE": {
     "source": "关店前还剩一张没擦的桌子，末班车快到了。",
-    "zh_CN": "关店前还剩一张没擦的桌子，末班车快到了。",
-    "en": "One table still needs wiping before closing. The last bus is due."
+    "zh_CN": "“按你的方式来。”\n汉堡王广告语 Have It Your Way（1974）",
+    "en": "“Have it your way.”\nBurger King advertising slogan (1974)"
   },
   "LOC_WORLD_GROUP_HEALTH_WORKERS_NOTE": {
     "source": "值班表边缘写满换班的名字，有一个名字被圈了两次。",
-    "zh_CN": "值班表边缘写满换班的名字，有一个名字被圈了两次。",
-    "en": "Shift swaps fill the edge of the rota. One name has been circled twice."
+    "zh_CN": "“不应伤害病人。”\n弗洛伦斯·南丁格尔《医院笔记》（1863），摘译",
+    "en": "“it should do the sick no harm.”\nFlorence Nightingale, Notes on Hospitals (1863), excerpt"
   },
   "LOC_WORLD_GROUP_EDUCATORS_NOTE": {
     "source": "讲义最后一页留着半道题，旁边写着：明天接着讲。",
-    "zh_CN": "讲义最后一页留着半道题，旁边写着：明天接着讲。",
-    "en": "Half a problem remains on the last page of the notes. Beside it: continue tomorrow."
+    "zh_CN": "“三人行，必有我师焉。”\n《论语·述而》",
+    "en": "“When three walk together, I can surely find a teacher among them.”\nThe Analects, Shu Er"
   },
   "LOC_WORLD_GROUP_SMALL_BUSINESS_NOTE": {
     "source": "账本里有一页只记着赊账的姓氏，熟客来了才添全名。",
-    "zh_CN": "账本里有一页只记着赊账的姓氏，熟客来了才添全名。",
-    "en": "One ledger page lists only the surnames of customers buying on credit. Full names are added when they return."
+    "zh_CN": "“货恶其弃于地也，不必藏于己。”\n《礼记·礼运》",
+    "en": "“People dislike goods going to waste; they need not keep them for themselves.”\nBook of Rites, Li Yun"
   },
   "LOC_WORLD_GROUP_TECH_WORKERS_NOTE": {
     "source": "问题单终于关闭，评论区又多了一句：我这里也复现了。",
-    "zh_CN": "问题单终于关闭，评论区又多了一句：我这里也复现了。",
-    "en": "The issue is finally closed. Another comment arrives: I can reproduce it here too."
+    "zh_CN": "“空谈很廉价，给我看代码。”\n林纳斯·托瓦兹，Linux 内核邮件列表（2000）",
+    "en": "“Talk is cheap. Show me the code.”\nLinus Torvalds, Linux kernel mailing list (2000)"
   },
   "LOC_WORLD_GROUP_RETIREES_NOTE": {
     "source": "合唱队把排练改到了周四，通知贴在一张旧节目单的背面。",
-    "zh_CN": "合唱队把排练改到了周四，通知贴在一张旧节目单的背面。",
-    "en": "Choir practice has moved to Thursday. The notice is on the back of an old programme."
+    "zh_CN": "“老吾老，以及人之老。”\n《孟子·梁惠王上》",
+    "en": "“Care for your own elders, and extend that care to the elders of others.”\nMencius, Liang Hui Wang I"
   },
   "LOC_WORLD_GROUP_DIASPORAS_NOTE": {
     "source": "一个人说早安，另一个人刚准备关灯。",
-    "zh_CN": "一个人说早安，另一个人刚准备关灯。",
-    "en": "One person says good morning as another gets ready to turn out the light."
+    "zh_CN": "“举头望明月，低头思故乡。”\n李白《静夜思》",
+    "en": "“I raise my head to the bright moon, then lower it, thinking of home.”\nLi Bai, Quiet Night Thoughts"
   },
   "LOC_WORLD_TOPIC_HOUSING_NOTE": {
     "source": "看房时拍的照片里，窗户外面刚好经过一列火车。",
-    "zh_CN": "看房时拍的照片里，窗户外面刚好经过一列火车。",
-    "en": "A train passes outside the window in the flat-viewing photo."
+    "zh_CN": "“安得广厦千万间，大庇天下寒士俱欢颜！”\n杜甫《茅屋为秋风所破歌》",
+    "en": "“If only there were countless spacious homes to shelter all the poor in joy!”\nDu Fu, My Thatched Roof Is Ruined by the Autumn Wind"
   },
   "LOC_WORLD_TOPIC_HEALTHCARE_NOTE": {
     "source": "候诊单上的号码又往前跳了一格。",
-    "zh_CN": "候诊单上的号码又往前跳了一格。",
-    "en": "The number on the waiting-room display moves forward again."
+    "zh_CN": "“病有所医”\n中共十七大报告（2007）",
+    "en": "“Medical care for the sick.”\nReport to the 17th National Congress of the CPC (2007)"
   },
   "LOC_WORLD_TOPIC_CLIMATE_NOTE": {
     "source": "往年的水位线留在桥墩上，今年的线又高了一点。",
-    "zh_CN": "往年的水位线留在桥墩上，今年的线又高了一点。",
-    "en": "Last year's waterline is still on the bridge pier. This year's is a little higher."
+    "zh_CN": "“你们怎么敢！”\n格蕾塔·通贝里，联合国气候行动峰会演讲（2019）",
+    "en": "“How dare you!”\nGreta Thunberg, UN Climate Action Summit speech (2019)"
   },
   "LOC_WORLD_TOPIC_ENERGY_NOTE": {
     "source": "停电通知压在冰箱贴下面。",
-    "zh_CN": "停电通知压在冰箱贴下面。",
-    "en": "The power-cut notice is held under a fridge magnet."
+    "zh_CN": "“把力量交给人民！”\n约翰·列侬《Power to the People》（1971）",
+    "en": "“Power to the people!”\nJohn Lennon, Power to the People (1971)"
   },
   "LOC_WORLD_TOPIC_FOOD_NOTE": {
     "source": "食谱上的用量改了三回，只有盐那一栏写着少许。",
-    "zh_CN": "食谱上的用量改了三回，只有盐那一栏写着少许。",
-    "en": "The quantities in the recipe have changed three times. Salt still just says a little."
+    "zh_CN": "“民人以食为天。”\n班固《汉书·郦陆朱刘叔孙传》",
+    "en": "“The people regard food as their heaven.”\nBan Gu, Book of Han, biographies of Li, Lu, Zhu, Liu and Shusun"
   },
   "LOC_WORLD_TOPIC_TRANSPORT_NOTE": {
     "source": "站牌上贴着临时改道的箭头。",
-    "zh_CN": "站牌上贴着临时改道的箭头。",
-    "en": "A temporary diversion arrow is taped to the bus stop."
+    "zh_CN": "“路？我们要去的地方不需要路。”\n电影《回到未来》（1985）",
+    "en": "“Roads? Where we’re going, we don’t need roads.”\nBack to the Future (1985)"
   },
   "LOC_WORLD_TOPIC_MIGRATION_NOTE": {
     "source": "行李里最先拿出来的是插头转换器。",
-    "zh_CN": "行李里最先拿出来的是插头转换器。",
-    "en": "The plug adaptor is the first thing out of the luggage."
+    "zh_CN": "“没有人是一座孤岛。”\n约翰·多恩《沉思录》第17篇（1624）",
+    "en": "“No man is an island.”\nJohn Donne, Meditation XVII (1624)"
   },
   "LOC_WORLD_TOPIC_TOURISM_NOTE": {
     "source": "明信片寄出时，寄信的人已经到家了。",
-    "zh_CN": "明信片寄出时，寄信的人已经到家了。",
-    "en": "By the time the postcard is posted, its writer is already home."
+    "zh_CN": "“世界那么大，我想去看看。”\n顾少强辞职信，2015年新闻报道",
+    "en": "“The world is so big. I want to go and see it.”\nGu Shaoqiang’s resignation letter, reported in the news in 2015"
   },
   "LOC_WORLD_TOPIC_TRADE_NOTE": {
     "source": "箱子上的目的地盖了新章，旧地址还能辨认出来。",
-    "zh_CN": "箱子上的目的地盖了新章，旧地址还能辨认出来。",
-    "en": "A new destination is stamped on the crate. The old address is still legible."
+    "zh_CN": "“让世界准时送达。”\n联邦快递广告语 The World on Time",
+    "en": "“The World on Time.”\nFedEx advertising slogan"
   },
   "LOC_WORLD_TOPIC_SCIENCE_NOTE": {
     "source": "实验记录的空白处写着：换一组样本再试。",
-    "zh_CN": "实验记录的空白处写着：换一组样本再试。",
-    "en": "In a blank space in the lab book: try another sample."
+    "zh_CN": "“求知若饥，虚心若愚。”\n史蒂夫·乔布斯，斯坦福大学毕业演讲（2005），引《全球概览》封底",
+    "en": "“Stay hungry. Stay foolish.”\nSteve Jobs, Stanford commencement speech (2005), quoting The Whole Earth Catalog"
   },
   "LOC_WORLD_TOPIC_CARE_NOTE": {
     "source": "药盒旁边放着一张轮班表。",
-    "zh_CN": "药盒旁边放着一张轮班表。",
-    "en": "A rota lies beside the pill organiser."
+    "zh_CN": "“谁言寸草心，报得三春晖。”\n孟郊《游子吟》",
+    "en": "“How can a blade of grass repay the warmth of spring?”\nMeng Jiao, Song of the Travelling Son"
   },
   "LOC_WORLD_TOPIC_PUBLIC_SAFETY_NOTE": {
     "source": "楼道里的手电筒刚换上新电池。",
-    "zh_CN": "楼道里的手电筒刚换上新电池。",
-    "en": "The torch in the stairwell has fresh batteries."
+    "zh_CN": "“独自前往太危险了！拿上这个。”\n游戏《塞尔达传说》（1986）",
+    "en": "“It’s dangerous to go alone! Take this.”\nThe Legend of Zelda (1986)"
   }
 }

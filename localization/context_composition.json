@@ -196,8 +196,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_LABEL": {
     "source": "每天挤车上班的人",
-    "zh_CN": "每天挤车上班的人",
-    "en": "people who squeeze onto the train each morning"
+    "zh_CN": "通勤的人",
+    "en": "commuters"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_COMMUTERS_ACTIVITY": {
     "source": "核对通勤路线",
@@ -236,8 +236,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_LABEL": {
     "source": "在课堂和社团之间奔走的人",
-    "zh_CN": "在课堂和社团之间奔走的人",
-    "en": "people rushing between classes and clubs"
+    "zh_CN": "学生",
+    "en": "students"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_STUDENTS_ACTIVITY": {
     "source": "整理课堂笔记",
@@ -276,8 +276,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_LABEL": {
     "source": "演出散场后还在聊作品的人",
-    "zh_CN": "演出散场后还在聊作品的人",
-    "en": "people still talking about the show after it ends"
+    "zh_CN": "文艺爱好者",
+    "en": "arts and culture fans"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_CULTURE_FANS_ACTIVITY": {
     "source": "交换作品和演出消息",
@@ -316,8 +316,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_LABEL": {
     "source": "种植和养殖的同行",
-    "zh_CN": "种植和养殖的同行",
-    "en": "fellow crop and livestock workers"
+    "zh_CN": "务农的人",
+    "en": "farmers"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_AGRICULTURAL_WORKERS_ACTIVITY": {
     "source": "核对收成和灌溉记录",
@@ -356,8 +356,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_LABEL": {
     "source": "在车间和工地轮班的同行",
-    "zh_CN": "在车间和工地轮班的同行",
-    "en": "fellow shift workers in workshops and on building sites"
+    "zh_CN": "产业工人",
+    "en": "industrial workers"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_INDUSTRIAL_WORKERS_ACTIVITY": {
     "source": "交接班和核对设备记录",
@@ -396,8 +396,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_LABEL": {
     "source": "在柜台、餐桌和配送路上忙的人",
-    "zh_CN": "在柜台、餐桌和配送路上忙的人",
-    "en": "people working counters, tables and delivery rounds"
+    "zh_CN": "服务业从业者",
+    "en": "service workers"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_SERVICE_WORKERS_ACTIVITY": {
     "source": "核对订单和交班零钱",
@@ -436,8 +436,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_LABEL": {
     "source": "在诊室和病区值班的同行",
-    "zh_CN": "在诊室和病区值班的同行",
-    "en": "fellow staff on duty in clinics and wards"
+    "zh_CN": "医护人员",
+    "en": "health workers"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_HEALTH_WORKERS_ACTIVITY": {
     "source": "核对交班和随访记录",
@@ -476,8 +476,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_LABEL": {
     "source": "在备课和批改之间挤时间的人",
-    "zh_CN": "在备课和批改之间挤时间的人",
-    "en": "people fitting their day around lesson planning and marking"
+    "zh_CN": "教师",
+    "en": "teachers"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_EDUCATORS_ACTIVITY": {
     "source": "准备教案和批改作业",
@@ -516,8 +516,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_LABEL": {
     "source": "自己守店和跑生意的人",
-    "zh_CN": "自己守店和跑生意的人",
-    "en": "people running their own shops and small businesses"
+    "zh_CN": "小店经营者",
+    "en": "small business owners"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_SMALL_BUSINESS_ACTIVITY": {
     "source": "核对进货和当天流水",
@@ -556,8 +556,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_LABEL": {
     "source": "在开发、运维和数据工作里忙的人",
-    "zh_CN": "在开发、运维和数据工作里忙的人",
-    "en": "people working in development, operations and data"
+    "zh_CN": "技术人员",
+    "en": "tech workers"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_TECH_WORKERS_ACTIVITY": {
     "source": "核对版本和线上监控",
@@ -596,8 +596,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_LABEL": {
     "source": "退休后在社区照应彼此的人",
-    "zh_CN": "退休后在社区照应彼此的人",
-    "en": "people looking out for one another in retirement"
+    "zh_CN": "退休的人",
+    "en": "retirees"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_RETIREES_ACTIVITY": {
     "source": "核对社区活动和复诊日期",
@@ -636,8 +636,8 @@
   },
   "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_LABEL": {
     "source": "在异乡维系家乡联系的人",
-    "zh_CN": "在异乡维系家乡联系的人",
-    "en": "people keeping ties to home while living elsewhere"
+    "zh_CN": "旅居海外的人",
+    "en": "people living abroad"
   },
   "LOC_CONTEXT_COMPOSE_GROUP_DIASPORAS_ACTIVITY": {
     "source": "核对两地消息和汇款记录",
@@ -696,8 +696,8 @@
   },
   "LOC_CONTEXT_COMPOSE_V_SUBJECT": {
     "source": "自己跟%s聊%s时得到的好评",
-    "zh_CN": "自己跟%s聊%s时得到的好评",
-    "en": "the praise I got from %s while discussing %s"
+    "zh_CN": "向%s谈起%s时得到的好评",
+    "en": "the praise received from %s while discussing %s"
   },
   "LOC_CONTEXT_COMPOSE_N_SPEAKER": {
     "source": "%s中的我：",
@@ -706,8 +706,8 @@
   },
   "LOC_CONTEXT_COMPOSE_N_ACTION": {
     "source": "逐条讲%s，连%s的间隙也不停",
-    "zh_CN": "逐条讲%s，连%s的间隙也不停",
-    "en": "explaining %s in detail while %s"
+    "zh_CN": "聊起%s就停不下来，连%s时都要接着讲",
+    "en": "discussing %s in detail while %s"
   },
   "LOC_CONTEXT_COMPOSE_N_REASON": {
     "source": "在%s时，正好有人问起%s",
@@ -721,8 +721,8 @@
   },
   "LOC_CONTEXT_COMPOSE_N_SUBJECT": {
     "source": "解释%s，连%s的间隙也不停",
-    "zh_CN": "解释%s，连%s的间隙也不停",
-    "en": "explaining %s at length while %s"
+    "zh_CN": "聊%s，连%s时也要接着讲",
+    "en": "discussing %s even while %s"
   },
   "LOC_CONTEXT_COMPOSE_B_CONTEXT": {
     "source": "%s中有人说：关于%s，我们从前根本没这么多事。",
@@ -731,18 +731,18 @@
   },
   "LOC_CONTEXT_COMPOSE_B_QUESTION": {
     "source": "现在谈%s还得把%s放在一边吗",
-    "zh_CN": "现在谈%s还得把%s放在一边吗",
-    "en": "when we talk about %s, do we have to ignore %s"
+    "zh_CN": "谈%s时，为什么不能顾及%s",
+    "en": "why can’t a discussion of %s take %s into account"
   },
   "LOC_CONTEXT_COMPOSE_B_COMPARISON": {
     "source": "以前只说%s，现在连%s都绕不开",
-    "zh_CN": "以前只说%s，现在连%s都绕不开",
-    "en": "you used to talk only about %s; now we cannot avoid %s"
+    "zh_CN": "以前谈%s时遇不到的，如今成了%s的问题",
+    "en": "the conditions around %s have changed; now we face %s"
   },
   "LOC_CONTEXT_COMPOSE_B_REASON": {
     "source": "%s这笔账不会因为怀旧就消失",
-    "zh_CN": "%s这笔账不会因为怀旧就消失",
-    "en": "nostalgia does not make %s disappear"
+    "zh_CN": "我还得面对%s",
+    "en": "I still have to deal with %s"
   },
   "LOC_CONTEXT_COMPOSE_B_DEPARTURE": {
     "source": "%s",
@@ -751,7 +751,7 @@
   },
   "LOC_CONTEXT_COMPOSE_B_SUBJECT_NOUN": {
     "source": "%s里拿%s的老经验压人的话",
-    "zh_CN": "%s里拿%s的老经验压人的话",
+    "zh_CN": "%s谈%s时拿老经验压人的话",
     "en": "a lecture among %s using old experience of %s to talk down to others"
   },
   "LOC_CONTEXT_COMPOSE_DETACHED_TOPICS": {

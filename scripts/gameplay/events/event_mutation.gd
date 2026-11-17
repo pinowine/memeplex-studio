@@ -59,9 +59,11 @@ static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, de
 	if not Composition.validate(draft, draft.patch_ids).is_empty(): return {}
 	var composed := ExpressionText.compose(catalog, draft)
 	if definition.mutation_expression_mode == &"rephrase":
-		composed.expression = str(composed.meaning)
-		composed.expression_segments = composed.meaning_segments.duplicate(true)
-		for version: Dictionary in composed.language_versions: version.expression = str(composed.meaning)
+		var rewritten := Composition.rephrase_expression(draft,draft.patch_ids)
+		composed.expression = str(rewritten.expression)
+		composed.expression_segments = rewritten.segments
+		for version: Dictionary in composed.language_versions:
+			version.expression = str(Composition.rephrase_expression(draft,draft.patch_ids,str(version.language_id)).expression)
 	if str(composed.expression) == str(parent.text) or str(composed.meaning_id) != str(parent.meaning_id): return {}
 	return {"patch_id":"", "patch_ids":draft.patch_ids.duplicate(), "flow_draft":draft, "composition":composed, "meaning_changed":false}
 

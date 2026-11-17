@@ -132,6 +132,22 @@ static func _expression_segments(draft: Dictionary, modules: Array[String], lang
 		segment.text = native_text
 	return result
 
+static func rephrase_expression(draft: Dictionary, module_ids: Array, language_id: String = "") -> Dictionary:
+	if language_id.is_empty(): language_id = str(draft.language_id)
+	var seed := _seed(str(draft.preset_id))
+	var lead := _language_text(seed,language_id)
+	var native_lead := DeskLocalization.chinese_text(lead) if seed == "V" else DeskLocalization.english_text(lead)
+	var segments: Array[Dictionary] = []
+	for segment: Dictionary in _expression_segments(draft,_modules(module_ids),language_id):
+		if seed in ["V","N"] and str(segment.text) == native_lead: continue
+		var rewritten := segment.duplicate(true)
+		if seed == "B":
+			var reply := DeskLocalization.english_text(DeskLocalization.source("LOC_MUTATION_REPHRASE_B"))
+			rewritten.text = str(segment.text).replacen(native_lead,reply)
+			DeskLocalization.register_display(str(rewritten.text),str(rewritten.text),str(rewritten.text))
+		segments.append(rewritten)
+	return {"expression":_join(segments),"segments":segments}
+
 static func _context_segments(draft: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	if str(draft.preset_id) != "ok_boomer_2020": return result
@@ -162,7 +178,9 @@ static func _meaning(draft: Dictionary, modules: Array[String]) -> Dictionary:
 		if not _meaning_attached(draft,field): continue
 		var point := _position(draft.get(field,Vector2.ZERO))
 		identity.append("%s:%.2f,%.2f" % [field,point.x,point.y])
-	return {"segments":[tone_segment,core,ending],"id":"/".join(identity)}
+	var segments: Array[Dictionary] = [core, tone_segment]
+	if DeskLocalization.chinese_text(str(ending.text)) != "。": segments.append(ending)
+	return {"segments":segments,"id":"/".join(identity)}
 
 static func _reading(draft: Dictionary, field: String) -> Dictionary:
 	var pragmatic := field == "pragmatic_position"
