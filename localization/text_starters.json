@@ -2,7 +2,7 @@
   "LOC_TEXT_STARTER_VERSAILLES_TITLE": {
     "source": "凡尔赛式自述",
     "zh_CN": "凡尔赛式自述",
-    "en": "凡尔赛式自述"
+    "en": "Versailles humblebrag"
   },
   "LOC_TEXT_STARTER_VERSAILLES_A": {
     "source": "我这次期末考都没念书。",
@@ -86,7 +86,7 @@
   },
   "LOC_TEXT_STARTER_BOOMER_HINT": {
     "source": "用一句短回复打断代际说教。学校里的对话是游戏编写的情境。",
-    "zh_CN": "用一句短回复打断代际说教。\n\n“我就喜欢”\n麦当劳「i’m lovin’ it 我就喜欢」广告",
-    "en": "Cuts off a generational lecture with a short reply.\n\n“i’m lovin’ it”\nMcDonald’s: i’m lovin’ it campaign"
+    "zh_CN": "用一句短回复打断代际说教。\n\n“好了，老一辈。”\n克洛伊·斯沃布里克，新西兰议会发言（2019年11月5日）",
+    "en": "Cuts off a generational lecture with a short reply.\n\n“OK boomer.”\nChlöe Swarbrick, New Zealand Parliament (5 November 2019)"
   }
 }
