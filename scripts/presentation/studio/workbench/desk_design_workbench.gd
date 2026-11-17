@@ -1112,7 +1112,26 @@ func _spread_hover(viewport_point: Vector2) -> Dictionary:
 	if id.is_empty(): return {}
 	var info := _skill_info(id)
 	return {"kind":"spread", "id":id, "title":info.title, "hover_description":info.effect, "hover_note":DeskLocalization.text("LOC_PROP_NODE_" + id.to_upper() + "_REFERENCE"),
-		"rows":[{"kind":"cost", "category":DeskLocalization.text("LOC_WB_COST"), "value":"%d MEME" % info.cost}]}
+		"rows":_skill_hover_rows(info)}
+
+
+func _skill_hover_rows(info: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = [{"kind":"cost", "category":DeskLocalization.text("LOC_WB_COST"), "value":"%d MEME" % info.cost}]
+	var status := ""
+	match str(info.status):
+		"available": status = DeskLocalization.format_text("LOC_PROP_HOLD_TO_RESEARCH", DendriteTree.HOLD_DURATION)
+		"unlocked": status = DeskLocalization.text("LOC_PROP_RESEARCHED")
+		"unaffordable": status = DeskLocalization.format_text("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [info.cost, info.balance])
+		"research_pending": status = DeskLocalization.text("LOC_PROP_PUBLISH_BEFORE_RESEARCH")
+		"locked":
+			var dependencies := PackedStringArray()
+			for id: String in info.dependencies: dependencies.append(DeskLocalization.text(str(_rules.find("skills", id).title)))
+			var alternatives := PackedStringArray()
+			for id: String in info.requires_any: alternatives.append(DeskLocalization.text(str(_rules.find("skills", id).title)))
+			if not alternatives.is_empty(): dependencies.append(DeskLocalization.format_text("LOC_PROP_ANY_PREREQUISITE", " / ".join(alternatives)))
+			status = DeskLocalization.text("LOC_PROP_PREREQUISITES") + ": " + ", ".join(dependencies)
+	rows.append({"value":status})
+	return rows
 
 
 func _part_title_for(id: String, kernel_id: String) -> String:

@@ -374,6 +374,21 @@
     "zh_CN": "首次采用后开放研究",
     "en": "Research opens after first adoption"
   },
+  "LOC_PROP_HOLD_TO_RESEARCH": {
+    "source": "按住 %.1f 秒研究",
+    "zh_CN": "按住 %.1f 秒研究",
+    "en": "Hold for %.1f seconds to research"
+  },
+  "LOC_PROP_RESEARCHED": {
+    "source": "已研究",
+    "zh_CN": "已研究",
+    "en": "Researched"
+  },
+  "LOC_PROP_PUBLISH_BEFORE_RESEARCH": {
+    "source": "先投放模因，首次采用后可研究。",
+    "zh_CN": "先投放模因，首次采用后可研究。",
+    "en": "Publish your meme. Research opens after its first adoption."
+  },
   "LOC_PROP_FIRST_ADOPTION": {
     "source": "首次采用",
     "zh_CN": "首次采用",
