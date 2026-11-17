@@ -1063,6 +1063,7 @@ func snapshot() -> Dictionary:
 	var state := totals_state()
 	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "variants":competition.active_variants(variants).size(), "events":events.duplicate(true), "lineage":competition.active_variants(variants), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
 	state.propagation_research_ready = propagation_research_ready()
+	state.publish_count = publish_count
 	state.propagation = competition.propagation_inspection()
 	state.meme_candidate_pool = candidate_meme_pool()
 	state.current_variant_id = current_variant_id

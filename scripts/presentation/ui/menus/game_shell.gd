@@ -261,7 +261,7 @@ func _logical_target(id: String) -> Variant:
 				if clip != null: return clip
 			return null
 		"editor/publish":
-			var publish: Control = page.hud.get_node("%Publish")
+			var publish: Control = editor._publish
 			return publish if publish.is_visible_in_tree() else page.desk._stack.tab_control("edit")
 		"context/slot": return _context_target(editor)
 		"context/current_topic": return _context_current_topic(editor.context_slice())

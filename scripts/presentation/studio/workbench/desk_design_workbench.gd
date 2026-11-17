@@ -112,6 +112,7 @@ var _detail_stack: VBoxContainer
 var _source: RichTextLabel
 var _errors: Label
 var _footer: Control
+var _draft_status: Label
 var _cost: Label
 var _publish: Button
 var _skill_presentation: Dictionary = {}
@@ -162,6 +163,7 @@ func _refresh_locale() -> void:
 	_refresh_neuron()
 	_refresh_part()
 	_refresh_overview()
+	refresh_publication()
 	if _neuron != null: _neuron.queue_redraw()
 	if _spread_tree != null: _spread_tree.queue_redraw()
 	_queue_text_layout()
@@ -223,7 +225,7 @@ func bind_publish(button: Button, cost: Label) -> void:
 	button.clip_text = false
 	if not button.minimum_size_changed.is_connected(_queue_text_layout): button.minimum_size_changed.connect(_queue_text_layout)
 	cost.hide()
-	button.visible = int(_state.get("publish_count", 0)) > 0
+	refresh_publication()
 	_layout()
 
 
@@ -247,6 +249,7 @@ func set_draft(draft: Dictionary) -> void:
 	_refresh_part()
 	_refresh_starters()
 	_refresh_overview()
+	refresh_publication()
 
 
 func get_draft() -> Dictionary:
@@ -255,10 +258,11 @@ func get_draft() -> Dictionary:
 
 func sync_state(snapshot: Dictionary) -> void:
 	var design: Dictionary=snapshot.get("design_state",{})
-	var relevant := {"propagation_delivery":snapshot.get("propagation_delivery", {}),"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0),"current_variant_id":snapshot.get("current_variant_id",""),"propagation_research_ready":snapshot.get("propagation_research_ready",false)}
+	var relevant := {"propagation_delivery":snapshot.get("propagation_delivery", {}),"design_state":design,"meme_points":snapshot.get("meme_points",0),"point_cost":snapshot.get("point_cost",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0),"current_variant_id":snapshot.get("current_variant_id",""),"propagation_research_ready":snapshot.get("propagation_research_ready",false)}
+	relevant.war_started = bool(snapshot.get("world_competition", {}).get("endgame", {}).get("war_started", false))
 	if _state == relevant: return
 	_state=relevant.duplicate(true)
-	if _publish != null: _publish.visible = _tab == "edit" and int(_state.get("publish_count", 0)) > 0
+	refresh_publication()
 	var previous_modules: Array = _design.get("module_slots", [])
 	_design=design.duplicate(true)
 	var slots: Array=_design.get("module_slots",[])
@@ -289,9 +293,25 @@ func set_active_sheet(id: String) -> void:
 	set_interaction_enabled(_interaction_enabled)
 	for key in _pages:
 		if not _sheet_hosts.has(key): _pages[key].visible=key==id
-	if _publish!=null: _publish.visible=id=="edit" and int(_state.get("publish_count", 0)) > 0
+	refresh_publication()
 	if _cost!=null: _cost.hide()
 	_layout()
+
+
+func refresh_publication() -> void:
+	if _publish == null: return
+	var before := [_footer.get_parent(), _footer.visible, _publish.text, _draft_status.text]
+	var editable := _tab in ["edit", "cultivate"]
+	var can_revise := not bool(_state.get("war_started", false)) and str(_state.get("phase", "draft")) != "complete"
+	if editable and _footer.get_parent() != _pages[_tab]: _footer.reparent(_pages[_tab])
+	_footer.visible = editable and can_revise and int(_state.get("publish_count", 0)) > 0
+	_publish.visible = _footer.visible
+	_draft_status.text = DeskLocalization.text("LOC_WB_DRAFT_AWAITING_PUBLICATION")
+	var cost := int(_state.get("point_cost", 0))
+	if int(_state.get("publish_count", 0)) > 0:
+		_publish.text = DeskLocalization.format_text("LOC_WB_PUBLISH_CHANGES_COST", cost)
+		_publish.disabled = not can_revise or str(_state.get("phase", "draft")) not in ["draft", "running"] or int(_state.get("meme_points", 0)) < cost
+	if before != [_footer.get_parent(), _footer.visible, _publish.text, _draft_status.text]: _queue_text_layout()
 
 
 func sheet_pages() -> Dictionary:
@@ -339,6 +359,8 @@ func _build() -> void:
 	_footer.name="PublishFooter"
 	_footer.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	_pages.edit.add_child(_footer)
+	_draft_status = _label(_footer, "", "DraftPublicationStatus", 12)
+	_draft_status.add_theme_color_override("font_color", SECONDARY_INK)
 	_errors=_label(self,"","DesignErrors")
 	_errors.add_theme_color_override("font_color",Color("a44635"))
 	_errors.hide()
@@ -861,6 +883,7 @@ func _layout_sheet(id: String,area: Vector2) -> void:
 
 func _layout_edit_sheet(w: float, h: float) -> void:
 	var inset := float(SPACE_BETWEEN)
+	var footer_space := _layout_publication_footer("edit", w, h)
 	var right := w * .52
 	var span := w - right - SPACE_WITHIN
 	var has_cards := false
@@ -872,24 +895,32 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 	var clip_step := CardFace.minimum_card_size("module").x + SPACE_WITHIN * 2
 	var clip_start := w - inset - 96.0 - clip_step * (_physical_clips.size() - 1)
 	_overview_data.columns = 2 if span >= 280 else 1
-	_place(_neuron, Rect2(GROUP_SPACING, 144, right - GROUP_SPACING * 2, maxf(100, h - 168)))
+	_place(_neuron, Rect2(GROUP_SPACING, 144, right - GROUP_SPACING * 2, maxf(100, h - 168 - footer_space)))
 	_neuron.show()
 	for index in _physical_clips.size():
 		var x := clip_start + float(index) * clip_step
 		_place(_physical_clips[index], Rect2(x, 6, 96, clip_height))
 		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5][index])
 		_place(_lineage_cards[index], Rect2(Vector2(4, 15), CardFace.minimum_card_size("module")))
-	var footer_height := 48.0 if _publish != null and _publish.visible else 0.0
-	_place(_detail_scroll, Rect2(right, content_y, span, maxf(78, h - content_y - inset - footer_height)))
-	_place(_footer, Rect2(right, h - footer_height, span, footer_height))
-	if _publish != null:
-		var key_width := maxf(238, _publish.get_combined_minimum_size().x)
-		_place(_publish, Rect2(span - key_width, 4, key_width, maxf(32, _publish.get_combined_minimum_size().y)))
+	_place(_detail_scroll, Rect2(right, content_y, span, maxf(78, h - content_y - inset - footer_space)))
+
+
+func _layout_publication_footer(id: String, w: float, h: float) -> float:
+	if _publish == null or not _footer.visible or _footer.get_parent() != _pages[id]: return 0.0
+	var button_size := _publish.get_combined_minimum_size().max(Vector2(238, 32))
+	var height := maxf(48, button_size.y + SPACE_WITHIN * 2)
+	var width := w - SPACE_BETWEEN * 2
+	_place(_footer, Rect2(SPACE_BETWEEN, h - height - GROUP_SPACING, width, height))
+	_place(_publish, Rect2(width - button_size.x, SPACE_WITHIN, button_size.x, button_size.y))
+	_place(_draft_status, Rect2(0, 0, maxf(0, width - button_size.x - GROUP_SPACING), height))
+	_draft_status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	return height + SPACE_BETWEEN
 
 
 func _layout_culture_sheet(w: float,h: float) -> void:
 	_context_title.hide()
-	_place(_context_slice,Rect2(0,0,w,maxf(240,h)))
+	var footer_space := _layout_publication_footer("cultivate", w, h)
+	_place(_context_slice,Rect2(0,0,w,maxf(240,h - footer_space)))
 	_place(_context_details,Rect2())
 	_place(_context_trial,Rect2())
 	_context_details.hide()

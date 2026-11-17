@@ -664,6 +664,16 @@
     "zh_CN": "它是一个%s，你的模因因此发生了语气的少许改变。",
     "en": "It is a %s; it has slightly changed your meme’s tone."
   },
+  "LOC_WB_DRAFT_AWAITING_PUBLICATION": {
+    "source": "草稿 · 发布后生效",
+    "zh_CN": "草稿 · 发布后生效",
+    "en": "Draft · Publish to apply"
+  },
+  "LOC_WB_PUBLISH_CHANGES_COST": {
+    "source": "发布修改 · %d MEME",
+    "zh_CN": "发布修改 · %d MEME",
+    "en": "Publish changes · %d MEME"
+  },
   "LOC_COMMUNITY_PATCH_EXPRESSION": {
     "source": "它是一个%s，下方的表达已按这个补丁改写。",
     "zh_CN": "它是一个%s，下方的表达已按这个补丁改写。",

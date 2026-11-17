@@ -23,6 +23,7 @@ const ReceiptUI := preload("res://scripts/presentation/studio/paper/desk_receipt
 const DesignWorkbench = preload("res://scripts/presentation/studio/workbench/desk_design_workbench.gd")
 
 @onready var _workbench: PanelContainer = %Workbench
+@onready var _publish: Button = %Publish
 @onready var _kernel: OptionButton = %Kernel
 @onready var _preset: OptionButton = %Preset
 @onready var _language: OptionButton = %Language
@@ -71,7 +72,7 @@ func _ready() -> void:
 	%Quit.pressed.connect(func() -> void: quit_requested.emit())
 	%DeveloperClose.pressed.connect(func() -> void: menu_close_requested.emit())
 	%Fullscreen.pressed.connect(_toggle_fullscreen)
-	%Publish.pressed.connect(func() -> void: draft_publish_requested.emit(get_draft()))
+	_publish.pressed.connect(func() -> void: draft_publish_requested.emit(get_draft()))
 	%Pause.pressed.connect(func() -> void: speed_requested.emit(0))
 	%Speed1.pressed.connect(func() -> void: speed_requested.emit(1))
 	%Speed2.pressed.connect(func() -> void: speed_requested.emit(2))
@@ -125,7 +126,7 @@ func configure(catalog: MemeDemoCatalog) -> void:
 	_fill_options(_language, languages)
 	_on_kernel_selected(maxi(0, _kernel.selected))
 	_on_group_selected(_group.selected)
-	%Publish.disabled = _kernels.is_empty() or groups.is_empty() or _channel.item_count == 0
+	_publish.disabled = _kernels.is_empty() or groups.is_empty() or _channel.item_count == 0
 	_design_workbench.configure(catalog)
 	_design_workbench.set_draft(get_draft())
 	set_setup_stage("meme")
@@ -140,7 +141,7 @@ func _install_design_workbench() -> void:
 	_design_workbench = DesignWorkbench.new()
 	_design_workbench.name = "DesignWorkbench"
 	_workbench.add_child(_design_workbench)
-	_design_workbench.bind_publish(%Publish, %PointCost)
+	_design_workbench.bind_publish(_publish, %PointCost)
 	_design_workbench.draft_changed.connect(_apply_design_draft)
 	_design_workbench.design_action_requested.connect(func(action: String, params: Dictionary) -> void: design_action_requested.emit(action, params))
 	_design_workbench.skill_purchase_requested.connect(func(id: String) -> void: skill_purchase_requested.emit(id))
@@ -257,16 +258,18 @@ func show_sheet(id: String) -> void:
 
 func set_setup_stage(stage: String) -> void:
 	_setup_stage = stage
-	%Publish.disabled = stage == "starter_call" or _kernels.is_empty() or _group.item_count == 0 or _channel.item_count == 0
+	_publish.disabled = stage == "starter_call" or _kernels.is_empty() or _group.item_count == 0 or _channel.item_count == 0
 	var initial := stage in ["meme", "country"]
-	%Publish.text = DeskLocalization.source("LOC_CONFIRM_MEME_AND_SELECT_DEPLOYMENT_COUNTRY_FECB7AC1") if initial else DeskLocalization.source("LOC_CONFIRM_EXPRESSION_AND_PUBLISH_A07B12C0")
+	if initial: _publish.text = DeskLocalization.source("LOC_CONFIRM_MEME_AND_SELECT_DEPLOYMENT_COUNTRY_FECB7AC1")
 	%SelectCountry.text = DeskLocalization.source("LOC_OPENING_DIRECT_MAP_BUTTON") if initial else DeskLocalization.source("LOC_CHOOSE_COUNTRY_CLOSE_WORKBENCH_864F802C")
 	%Create.text = DeskLocalization.source("LOC_RETURN_TO_EDIT_MEME_9394F754") if stage == "country" else (DeskLocalization.source("LOC_PRINT_CREATE_7249B1FC") if _desk_plate.has_area() else DeskLocalization.source("LOC_CREATE_MEME_F3931F0A"))
 	%WorkbenchHint.text = DeskLocalization.source("LOC_OPENING_DIRECT_MAP_HINT") if initial else DeskLocalization.source("LOC_WRITE_A_NEW_VERSION_AND_LET_THIS_C19BFF00")
 	%MapHint.text = DeskLocalization.source("LOC_YOUR_MEME_IS_READY_CLICK_A_COUNTRY_086F32BB") if stage == "country" else DeskLocalization.source("LOC_CLICK_THE_MAP_TO_INSPECT_COUNTRIES_OPEN_9876DE16")
 	if stage == "starter_call":
-		%Publish.disabled = true
+		_publish.disabled = true
 		%WorkbenchHint.text = DeskLocalization.source("LOC_ANSWER_FIRST_CHOOSE_A_STARTING_EXPRESSION_THEN_9208D56C")
+	elif not initial:
+		_design_workbench.refresh_publication()
 
 
 func render(state: Dictionary) -> void:

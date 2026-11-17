@@ -431,8 +431,8 @@
   },
   "LOC_OPENING_CONFIRM_TEXT": {
     "source": "确定投放国家后，点破它上方的投放气泡。还想比较的话，继续悬停查看；要换目标，就单击另一个国家。",
-    "zh_CN": "确定投放国家后，点破它上方的投放气泡。点完我就先挂了哦~",
-    "en": "When you’re ready, pop the launch bubble above the selected country. You can keep hovering to compare profiles or click another country to change your target."
+    "zh_CN": "确定投放国家后，点破它上方的投放气泡。以后换补丁、语言或其他配置，要点“发布修改”才会在地图上生效。点完我就先挂了哦~",
+    "en": "When you’re ready, pop the launch bubble above the selected country. You can keep hovering to compare profiles or click another country to change your target. Later changes to patches, languages or other settings take effect on the map when you click “Publish changes”."
   },
   "LOC_OPENING_HOVER_FINE": {
     "source": "火都烧起来了，还能说一句“问题不大”。很好，情绪稳定也是一种生产力。",
