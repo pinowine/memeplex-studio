@@ -1,7 +1,7 @@
 class_name MemeDemoEffect
 extends Resource
 
-const EFFECT_IDS := [&"attention", &"adoption", &"trust", &"fatigue", &"remix", &"semantic_shift", &"channel_reach", &"revival"]
+const EFFECT_IDS := [&"attention", &"adoption", &"trust", &"fatigue", &"remix", &"semantic_shift", &"channel_reach", &"revival", &"deviation"]
 
 @export var effect_id: StringName = &"attention"
 @export var amount: float = 0.0
@@ -17,7 +17,7 @@ func validate() -> PackedStringArray:
 	elif effect_id in [&"adoption", &"remix", &"semantic_shift", &"revival"]:
 		if amount < 0.0 or amount > 1.0:
 			errors.append("amount: %s must be in [0, 1]" % effect_id)
-	elif effect_id in [&"trust", &"fatigue"]:
+	elif effect_id in [&"trust", &"fatigue", &"deviation"]:
 		if amount < -1.0 or amount > 1.0:
 			errors.append("amount: %s delta must be in [-1, 1]" % effect_id)
 	elif effect_id in [&"attention", &"channel_reach"] and amount < -1.0:
@@ -36,6 +36,7 @@ func describe() -> String:
 	var duration := DeskLocalization.source("LOC_INSTANT_2DA85532") if duration_hours == 0.0 else DeskLocalization.source_format("LOC_F_HOURS_1DFE9CBC", duration_hours)
 	var action := DeskLocalization.source_format("LOC_UNKNOWN_EFFECT_S_279E93F2", effect_id)
 	match effect_id:
+		&"deviation": action = DeskLocalization.source_format("LOC_DEVIATION_DELTA", amount * 100.0)
 		&"attention":
 			action = DeskLocalization.source_format("LOC_ATTENTION_F_DC27F3AC", (1.0 + amount))
 		&"channel_reach":

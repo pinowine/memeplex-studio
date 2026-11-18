@@ -4,6 +4,7 @@ const CONTENT_PATH := "res://data/propagation/content_profiles.json"
 const ALTERNATIVE_TEXT_QUALITY := 0.85
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
+const Deviation = preload("res://scripts/gameplay/competition/meme_deviation.gd")
 static var _content: Dictionary = {}
 static var _signature := ""
 
@@ -131,14 +132,15 @@ func community_reuse(profile: Dictionary, draft: Dictionary, required_slots: int
 
 func split_threshold(base: float, parent: Dictionary, mutation: Dictionary) -> float:
 	var profile: Dictionary = parent.get("flow_profile", {})
+	var adjusted := Deviation.threshold(base, _skills(profile))
 	var meta: Dictionary = profile.get("propagation_meta", {})
-	if "semantic_detachment" not in _skills(profile) or not can_template(profile): return base
+	if "semantic_detachment" not in _skills(profile) or not can_template(profile): return adjusted
 	var draft: Dictionary = mutation.get("flow_draft", {})
-	if str(draft.get("preset_id","")) != str(parent.get("preset_id","")) or str(draft.get("kernel_id","")) != str(parent.get("kernel_id","")): return base
-	if not bool(mutation.get("form_preserved",true)): return base
+	if str(draft.get("preset_id","")) != str(parent.get("preset_id","")) or str(draft.get("kernel_id","")) != str(parent.get("kernel_id","")): return adjusted
+	if not bool(mutation.get("form_preserved",true)): return adjusted
 	for slot: String in meta.fillable_slots:
-		if str(draft.get("slots",{}).get(slot,"")).is_empty(): return base
-	return minf(0.9,maxf(base,0.75))
+		if str(draft.get("slots",{}).get(slot,"")).is_empty(): return adjusted
+	return Deviation.threshold(maxf(base, 0.75), _skills(profile))
 
 func validate_profile(profile: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()

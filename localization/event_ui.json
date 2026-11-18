@@ -67,5 +67,6 @@
   "LOC_EVENT_RESPONSE_IRONY": {"source":"讽刺倾向","zh_CN":"讽刺倾向","en":"Preference for irony"},
   "LOC_EVENT_RESPONSE_IRONY_HELP": {"source":"当地人借助反话、隐喻和解构表达态度的倾向。少数意见与威权环境之间的张力会提高这个值。","zh_CN":"当地人借助反话、隐喻和解构表达态度的倾向。少数意见与威权环境之间的张力会提高这个值。","en":"The preference for irony, metaphor, and reinterpretation when expressing a reaction. Minority views under an authoritarian environment increase this preference."},
   "LOC_EVENT_UNDERSTOOD": {"source":"知道了","zh_CN":"知道了","en":"Got it"},
+  "LOC_DEVIATION_DELTA": {"source":"偏移度 %+.1f%%","zh_CN":"偏移度 %+.1f%%","en":"Deviation %+.1f%%"},
   "LOC_EVENT_MATERIALS": {"source":"材料：","zh_CN":"材料：","en":"Materials: "}
 }

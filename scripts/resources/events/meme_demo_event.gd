@@ -166,6 +166,7 @@ func impact_summary(remix_allowed: bool = true) -> String:
 		var arrow := "—" if is_zero_approx(effect.amount) else ("↑" if effect.amount > 0.0 else "↓")
 		if absf(effect.amount) >= 0.3: arrow += arrow
 		match str(effect.effect_id):
+			"deviation": parts.append(DeskLocalization.source_format("LOC_DEVIATION_DELTA", effect.amount * 100.0))
 			"attention", "channel_reach":
 				for topic in topic_ids:
 					var text := DeskLocalization.source_format("%s%s",[str(labels.get(topic,topic)),arrow],[0])

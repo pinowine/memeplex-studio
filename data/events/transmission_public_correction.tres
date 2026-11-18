@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
 [ext_resource type="Script" path="res://scripts/resources/events/meme_demo_effect.gd" id="2_effect"]
@@ -9,6 +9,11 @@ effect_id = &"trust"
 amount = -0.2
 duration_hours = 0.0
 group_ids = PackedStringArray()
+
+[sub_resource type="Resource" id="Effect_deviation"]
+script = ExtResource("2_effect")
+effect_id = &"deviation"
+amount = -0.04
 
 [resource]
 script = ExtResource("1_event")
@@ -21,7 +26,7 @@ mentor_comment = "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_COMMENT"
 topic_ids = PackedStringArray("trust", "archive")
 response_profile = {"attention": -0.18, "spread": -0.3, "production": 0.0, "sentiment": -0.35, "authority_affinity": 0.0, "freedom_affinity": 0.05, "equality_affinity": 0.05, "hierarchy_affinity": 0.0, "controversy": 0.65, "positive_frames": ["LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_POSITIVE"], "negative_frames": ["LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_NEGATIVE"], "group_reactions": {}}
 external_preset_id = &""
-effects = Array[ExtResource("2_effect")]([SubResource("Effect_0")])
+effects = Array[ExtResource("2_effect")]([SubResource("Effect_deviation"), SubResource("Effect_0")])
 mutation_kind = &""
 mutation_topic_ids = PackedStringArray()
 mutation_stance_delta = Vector2(0.0, 0.0)

@@ -422,7 +422,7 @@ func starter_options() -> Array[Dictionary]:
 
 ## 用户动作失败时恢复整个设计状态；成功动作才进入重放账本。
 func perform(action: String, params: Dictionary = {}) -> PackedStringArray:
-	if action in ["claim", "publish", "unlock", "sync_draft", "request_material"]: return PackedStringArray([DeskLocalization.source("LOC_ONLY_THE_SIMULATION_LEDGER_MAY_SUBMIT_THIS_D4C608B2")])
+	if action in ["claim", "publish", "unlock", "sync_draft", "request_material", "restore_meme"]: return PackedStringArray([DeskLocalization.source("LOC_ONLY_THE_SIMULATION_LEDGER_MAY_SUBMIT_THIS_D4C608B2")])
 	var pristine := _state.duplicate(true)
 	var errors := _perform(action, params)
 	if not errors.is_empty(): _state = pristine
@@ -443,6 +443,20 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			_state.operations.append({"action":action,"params":params.duplicate(true)})
 		return errors
 	match action:
+		"restore_meme":
+			var base: Dictionary = params.base
+			var modules: Array = base.get("module_patch_record", {}).get("modules", [])
+			for index in _state.module_slots.size():
+				_state.module_slots[index] = str(modules[index]) if index < modules.size() else ""
+				_state.module_contents[index] = str(rules.find("modules", str(_state.module_slots[index])).get("content", ""))
+			_state.connections = _state.connections.filter(func(edge: Dictionary): return not str(_state.module_slots[int(edge.from)]).is_empty() and not str(_state.module_slots[int(edge.to)]).is_empty())
+			for layer: String in ["language", "group", "topics"]:
+				_state.context_layers[layer].slots.fill({})
+			for layer: String in ["stance", "pragmatic"]: _state.context_layers[layer].offsets = [0, 0]
+			for layer: String in _state.context_layers: _state.context_layers[layer].attached = bool(base.get("context_layer_attachment", {}).get(layer, true))
+			errors = _initialize_layers(base)
+			if not errors.is_empty(): return errors
+			_state.context_draft = base.duplicate(true)
 		"choose_starter":
 			var preset_id := str(params.get("preset_id", ""))
 			if preset_id not in rules.starter_presets or catalog == null or catalog.find_preset(preset_id) == null:
@@ -633,6 +647,9 @@ func record_publish(variant: Dictionary) -> PackedStringArray:
 
 func claim_event(event: Dictionary) -> PackedStringArray:
 	return _perform("claim", {"instance_id":str(event.get("instance_id", ""))}, event)
+
+func restore_meme(draft: Dictionary) -> PackedStringArray:
+	return _perform("restore_meme", {"base":draft})
 
 func skill_errors(id: String) -> PackedStringArray:
 	var entry: Dictionary = rules.find("skills", id)

@@ -1,8 +1,8 @@
 extends Node
 
 const Tutorial = preload("res://scripts/presentation/ui/tutorial/tutorial.gd")
-const LESSONS := {"competition":"LOC_GUIDANCE_FIRST_COMPETITOR", "mutation":"LOC_GUIDANCE_FIRST_MUTATION"}
-const EMOTIONS := {"competition":"concerned", "mutation":"curious"}
+const LESSONS := {"deviation":"LOC_GUIDANCE_DEVIATION", "competition":"LOC_GUIDANCE_FIRST_COMPETITOR", "mutation":"LOC_GUIDANCE_FIRST_MUTATION"}
+const EMOTIONS := {"deviation":"concerned", "competition":"concerned", "mutation":"curious"}
 var page: Node
 var shell: Node
 var mentor: Control
@@ -45,6 +45,9 @@ func observe_world(world: Dictionary) -> void:
 		_mutation_queue.clear()
 	for variant: Dictionary in world.get("variants", []):
 		var raw: Dictionary = page.simulation.variant_by_id(str(variant.id))
+		var current: Dictionary = page.simulation.Lifecycle.content(raw)
+		if bool(current.get("controlled", false)) and page.simulation.Deviation.total(raw.deviation_anchor, current) > .1:
+			_record("deviation", str(raw.id))
 		if str(raw.creator) != "player" and raw.get("origin_ids", []).is_empty() and not page.simulation.guidance_progress().has("competition"):
 			_record("competition", str(raw.id))
 		if str(raw.creator) != "player" and not raw.get("parent_ids", []).is_empty() and not raw.get("origin_ids", []).is_empty() and not _seen_mutations.has(str(variant.id)):
@@ -63,7 +66,7 @@ func _process(_delta: float) -> void:
 		return
 	if blocked: return
 	progress = page.simulation.guidance_progress()
-	for id: String in ["mutation", "competition"]:
+	for id: String in ["deviation", "mutation", "competition"]:
 		if id == "mutation":
 			if _mutation_queue.is_empty(): continue
 		elif not progress.has(id) or bool(progress[id].shown): continue
@@ -84,6 +87,9 @@ func _process(_delta: float) -> void:
 			var key := "LOC_GUIDANCE_MUTATION_SPLIT" if not bool(raw.get("effective_content", raw).get("owned", raw.owned)) else "LOC_GUIDANCE_MUTATION_EFFECT"
 			steps[-1].text = DeskLocalization.format_text(key, change_text)
 			_mutation_queue.pop_front()
+		if id == "deviation":
+			page.desk._monitor.set_mode("meme")
+			steps[-1].target = "monitor/curve"
 		mentor.configure(steps, _target, _reserved_areas)
 		mentor.set_interaction_blocked(false)
 		mentor.set_process_input(true)

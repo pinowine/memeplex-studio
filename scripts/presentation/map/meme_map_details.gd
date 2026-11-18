@@ -4,6 +4,7 @@ const CountryHover = preload("res://scripts/presentation/map/country_hover_conte
 const Identity = preload("res://scripts/presentation/memes/meme_identity.gd")
 const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const Deviation = preload("res://scripts/gameplay/competition/meme_deviation.gd")
 
 static func short_name(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_id: String) -> String:
 	return Identity.name(catalog, _raw_variant(snapshot, variant_id))
@@ -129,7 +130,7 @@ static func monitor_metrics(snapshot: Dictionary, variant_id: String) -> Diction
 	var spread := float(variant.get("monitor_spread", MonitorMetrics.spread(variant, population, int(world.get("attention", {}).get("budget", 0)))))
 	var raw := _raw_variant(snapshot, variant_id)
 	var initial := MonitorMetrics.initial_variant(snapshot.lineage, raw)
-	return {"spread":spread, "growth":float(variant.get("monitor_growth", 0.0)), "deviation":MonitorMetrics.deviation(initial, raw)}
+	return {"spread":spread, "growth":float(variant.get("monitor_growth", 0.0)), "deviation":Deviation.total(initial, raw), "deviation_threshold":load("res://scripts/gameplay/propagation/propagation_rules.gd").new().split_threshold(.5, raw, {"flow_draft":raw.get("flow_draft", {})})}
 
 static func _transmission_rows(snapshot: Dictionary, variant_id: String) -> Array[Dictionary]:
 	var metrics := monitor_metrics(snapshot, variant_id)

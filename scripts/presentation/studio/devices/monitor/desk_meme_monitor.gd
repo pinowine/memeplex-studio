@@ -162,6 +162,7 @@ func _sync_language(state: Dictionary) -> void:
 			break
 	var spread := 0.0
 	var deviation := 0.0
+	var threshold := 0.5
 	for raw: Dictionary in state.get("lineage", []):
 		var profile: Dictionary = raw.get("flow_profile", {})
 		if language.is_empty() or language not in profile.get("language_ids", [profile.get("language_id", "")]): continue
@@ -169,7 +170,8 @@ func _sync_language(state: Dictionary) -> void:
 		var metrics := Details.monitor_metrics(state, str(raw.id))
 		spread += float(metrics.spread)
 		deviation += float(metrics.deviation) * float(metrics.spread)
-	var sample := {"hour":int(state.get("hour", 0)), "spread":minf(1.0, spread), "deviation":deviation / spread if spread > 0.0 else 0.0}
+		if str(raw.id) == str(state.get("current_variant_id", "")): threshold = float(metrics.deviation_threshold)
+	var sample := {"hour":int(state.get("hour", 0)), "spread":minf(1.0, spread), "deviation":deviation / spread if spread > 0.0 else 0.0, "deviation_threshold":threshold}
 	if not _spread_history.is_empty() and int(_spread_history[-1].hour) > int(sample.hour): _spread_history.clear()
 	if not _spread_history.is_empty() and int(_spread_history[-1].hour) == int(sample.hour): _spread_history.pop_back()
 	_spread_history.append(sample)

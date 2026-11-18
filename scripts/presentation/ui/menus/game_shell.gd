@@ -239,6 +239,7 @@ func _logical_target(id: String) -> Variant:
 			return grid.get_child(0) if grid != null and grid.get_child_count() > 0 else null
 		"reader/details": return page.desk._slot_reader._body_label
 		"monitor/points": return _area_target(page.desk._monitor, page.desk._monitor._screen_rect)
+		"monitor/curve": return page.desk._monitor._meme._trend
 		"monitor/ideology", "monitor/pragmatics": return page.desk._monitor._inventory
 		"sheet/tabs": return _targets_bounds(["sheet/map", "sheet/edit", "sheet/cultivate", "sheet/spread"])
 		"editor/name": return editor._overview_name

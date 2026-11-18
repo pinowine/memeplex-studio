@@ -7,6 +7,7 @@ var show_labels := true
 var font_size := 12
 var spread_ink := Typography.ACCENT
 var deviation_ink := Color("ad4438")
+var deviation_threshold := 0.5
 
 func _init() -> void:
 	custom_minimum_size = Vector2(0, 88)
@@ -16,12 +17,13 @@ func _init() -> void:
 func set_samples(values: Array) -> void:
 	if samples == values: return
 	samples = values.duplicate(true)
+	if not samples.is_empty(): deviation_threshold = float(samples[-1].get("deviation_threshold", .5))
 	queue_redraw()
 
 func _draw() -> void:
 	var font := Typography.font("annotation")
 	var row_height := float(font_size + 6)
-	var top := row_height if show_labels else 4.0
+	var top := row_height if show_labels else (font_size + 4.0 if show_deviation else 4.0)
 	var plot := Rect2(0, top, size.x, maxf(1, size.y - top - row_height))
 	var latest: Dictionary = samples[-1] if not samples.is_empty() else {"spread":0.0,"deviation":0.0}
 	var spread_label := "%s %.2f%%" % [DeskLocalization.text("MM_SPREAD"),float(latest.spread)*100.0]
@@ -32,6 +34,10 @@ func _draw() -> void:
 	for fraction in [0.0, .5, 1.0]:
 		var y: float = plot.position.y + plot.size.y * fraction
 		draw_line(Vector2(0,y), Vector2(size.x,y), Color(Typography.MUTED,.2))
+	if show_deviation:
+		var y := plot.position.y + (1.0 - deviation_threshold / value_range().y) * plot.size.y
+		draw_dashed_line(Vector2(0, y), Vector2(size.x, y), Color(deviation_ink, .65), 1.0, 5.0)
+		draw_string(font, Vector2(2, y - 3), DeskLocalization.format_text("MM_DEVIATION_THRESHOLD", deviation_threshold * 100.0), HORIZONTAL_ALIGNMENT_LEFT, size.x, font_size - 1, deviation_ink)
 	if samples.is_empty(): return
 	var first := float(samples[0].hour)
 	for field: String in (["spread", "deviation"] if show_deviation else ["spread"]):
@@ -43,7 +49,7 @@ func _draw() -> void:
 	draw_string(font, Vector2(size.x * .5,size.y-2), "H%d" % int(samples[-1].hour), HORIZONTAL_ALIGNMENT_RIGHT, size.x * .5, font_size, Typography.MUTED)
 
 func value_range() -> Vector2:
-	var maximum := .01
+	var maximum := deviation_threshold * 1.2 if show_deviation else .01
 	for sample: Dictionary in samples:
 		maximum = maxf(maximum, float(sample.spread))
 		if show_deviation: maximum = maxf(maximum, float(sample.deviation))
@@ -53,7 +59,7 @@ func curve_points(field: String) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	if samples.is_empty(): return points
 	var row_height := float(font_size + 6)
-	var top := row_height if show_labels else 4.0
+	var top := row_height if show_labels else (font_size + 4.0 if show_deviation else 4.0)
 	var plot := Rect2(0, top, size.x, maxf(1, size.y - top - row_height))
 	var first := float(samples[0].hour)
 	var duration := maxf(1, float(samples[-1].hour) - first)

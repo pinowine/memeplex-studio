@@ -8,6 +8,7 @@ signal completed(result: Dictionary)
 const WorldWar = preload("res://scripts/gameplay/events/world_war.gd")
 const CompetitionState = preload("res://scripts/gameplay/competition/competition_state.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const Deviation = preload("res://scripts/gameplay/competition/meme_deviation.gd")
 const Lifecycle = preload("res://scripts/gameplay/competition/meme_lifecycle.gd")
 const PropagationRewards = preload("res://scripts/gameplay/economy/propagation_rewards.gd")
 const DesignState = preload("res://scripts/gameplay/design/design_state.gd")
@@ -160,6 +161,10 @@ func guidance_progress() -> Dictionary:
 	return guide_progress.duplicate(true)
 
 static func guidance_source_valid(id: String, source_id: String, event_rows: Array, variant_rows: Array) -> bool:
+	if id == "deviation":
+		for variant: Dictionary in variant_rows:
+			if str(variant.id) == source_id: return bool(Lifecycle.content(variant).get("controlled", false))
+		return false
 	if id == "fax":
 		for event: Dictionary in event_rows:
 			if str(event.get("instance_id","")) == source_id: return true
@@ -169,6 +174,7 @@ static func guidance_source_valid(id: String, source_id: String, event_rows: Arr
 		if str(variant.get("id","")) != source_id: continue
 		if str(variant.get("creator","")) == "player" or bool(variant.get("controlled",false)): return false
 		if id == "competition": return variant.get("origin_ids",[]).is_empty()
+		if bool(variant.get("deviation_split", false)): return true
 		return not variant.get("origin_ids",[]).is_empty() and not variant.get("parent_ids",[]).is_empty() and not str(variant.get("source_event","")).is_empty()
 	return false
 
@@ -290,6 +296,40 @@ func _sync_live_author_content() -> void:
 	draft_distance = float(source.effective_content.semantic_distance)
 	if phase == "draft": phase = "running"
 	competition.record_author_edit(variants, current_variant_id, country_id, hour)
+	_check_deviation(source)
+
+func deviation_threshold(raw: Dictionary) -> float:
+	var live := Lifecycle.content(raw)
+	live.flow_profile = competition.live_profile(str(raw.id))
+	return competition.propagation_rules.split_threshold(MonitorMetrics.SPLIT_THRESHOLD, live, {"flow_draft":live.get("flow_draft", {})})
+
+func _advance_deviation() -> void:
+	for raw: Dictionary in variants.duplicate():
+		if bool(raw.get("retired", false)) or not bool(Lifecycle.content(raw).get("controlled", false)): continue
+		var skills: Array = competition.live_profile(str(raw.id)).get("skill_ids", [])
+		raw.deviation_pressure = float(raw.get("deviation_pressure", 0.0)) + Deviation.hourly_growth(skills)
+		_check_deviation(raw)
+
+func _check_deviation(raw: Dictionary) -> void:
+	var live := Lifecycle.content(raw)
+	if Deviation.total(raw.deviation_anchor, live) <= deviation_threshold(raw) or not can_add_meme(): return
+	var child := Lifecycle.revision_snapshot(raw)
+	child.id = _new_id("variant")
+	child.parent_ids = [str(raw.id)]
+	child.creator = "community"
+	child.owned = false
+	child.controlled = false
+	child.semantic_distance = 0.0
+	child.deviation_split = true
+	child.erase("live_author_edit")
+	child.erase("source_event")
+	child.mutation_parent_content = Lifecycle.revision_snapshot(raw)
+	variants.append(child)
+	_register_external_world(child)
+	if str(raw.id) == current_variant_id:
+		design_state.restore_meme(Lifecycle.content(raw).flow_draft)
+		latest_draft = context_draft()
+	queue_guidance("mutation", str(child.id))
 
 func context_draft() -> Dictionary:
 	var draft: Dictionary = design_state.snapshot().context_draft.duplicate(true)
@@ -401,6 +441,9 @@ func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringAr
 	economy.transactions.back().propagation_skill_id = id
 	design_state = candidate
 	competition.set_live_skills(Array(design_state.snapshot().unlocked_skills), variants)
+	if not current_variant_id.is_empty():
+		var raw := variant_by_id(current_variant_id)
+		raw.deviation_pressure = float(raw.get("deviation_pressure", 0.0)) - float(Deviation.RESEARCH_RELIEF.get(id, 0.0))
 	_sync_live_author_content()
 	changed.emit()
 	return errors
@@ -567,6 +610,7 @@ func step_hour() -> bool:
 		return false
 	hour += 1
 	_expire_modifiers()
+	_advance_deviation()
 	if bool(endgame.war_started):
 		_advance_world_war()
 	else:
@@ -753,6 +797,9 @@ func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -
 		modifier.variant_ids = [str(target.id)]
 		modifier.topics = []
 		match str(effect.effect_id):
+			"deviation":
+				var affected := variant_by_id(_active_variant_id(str(target.id)))
+				affected.deviation_pressure = maxf(-0.2, float(affected.get("deviation_pressure", 0.0)) + effect.amount)
 			"remix":
 				if effect.amount > 0.0: observed.append(_spawn_remix(event_id, str(effect.group_ids[0]) if not effect.group_ids.is_empty() else str(target.flow_profile.group_id), id, str(target.id), cid))
 			"adoption": competition.adoption_pulse(_active_variant_id(str(target.id)), effect.amount, cid)
@@ -779,12 +826,15 @@ func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -
 	record.merge({"country_id":cid, "country_title":title, "category":str(definition.category), "response":response, "response_duration_hours":duration, "applied_effects":applied, "target_variant_id":str(target.get("id", "")), "target_variant_text":str(target.get("text", ""))})
 	var response_text := EventResponse.summary(response)
 	if not response_text.is_empty(): record.impact_text = response_text
+	for effect: MemeDemoEffect in definition.effects:
+		if effect.effect_id == &"deviation": record.impact_text = DeskLocalization.source_join(" · ", [record.impact_text, DeskLocalization.source_format("LOC_DEVIATION_DELTA", effect.amount * 100.0)])
 	record.narrative = DeskLocalization.source_format(definition.narrative, title, [0]) if "%s" in definition.narrative else definition.narrative
 	if record.impact_text.is_empty(): record.impact_text = definition.title
 	record.competition_variant_ids = []
 	for index in range(first_variant,variants.size()): record.competition_variant_ids.append(str(variants[index].id))
 	events.append(record)
 	pending_events.append(record)
+	if not target.is_empty(): _check_deviation(variant_by_id(_active_variant_id(str(target.id))))
 
 func _event_modifier(event_id: String, definition: MemeDemoEvent, cid: String, duration: float) -> Dictionary:
 	return {"source":event_id, "country_id":cid, "variant_ids":[], "effect_id":"response", "amount":0.0, "groups":[], "starts":hour, "expires":hour + duration, "topics":Array(definition.topic_ids), "decay":str(definition.attention_decay), "decay_parameter":maxf(1.0, _event_hours(definition.decay_parameter_hours))}
@@ -1118,7 +1168,7 @@ func _update_meme_trends(world: Dictionary, active_variants: Array) -> void:
 	for row: Dictionary in world.variants:
 		var raw: Dictionary = raw_by_id[str(row.id)]
 		var initial := MonitorMetrics.initial_variant(variants, raw)
-		var sample := {"hour":hour, "spread":float(row.monitor_spread), "deviation":MonitorMetrics.deviation(initial,raw)}
+		var sample := {"hour":hour, "spread":float(row.monitor_spread), "deviation":Deviation.total(initial,raw), "deviation_threshold":deviation_threshold(raw)}
 		var key := str(row.meme_id)
 		if not _meme_trends.has(key): _meme_trends[key] = []
 		var history: Array = _meme_trends[key]

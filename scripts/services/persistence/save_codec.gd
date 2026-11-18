@@ -433,7 +433,11 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 		errors.append_array(simulation.validate_draft(decoded))
 		if not errors.is_empty(): return errors
 		var composed: Dictionary
-		if str(variant.creator) == "player":
+		if bool(variant.get("deviation_split", false)):
+			if variant.parent_ids.size() != 1 or competition._canonical(draft) != competition._canonical(variant.get("mutation_parent_content", {}).get("flow_draft", {})):
+				return PackedStringArray(["A drift split must retain its recorded source expression"])
+			composed = ExpressionText.compose(catalog, draft)
+		elif str(variant.creator) == "player":
 			if variant.patch_ids != MutationRules.authored_patch_ids(draft) or (draft.has("patch_ids") and draft.patch_ids != variant.patch_ids):
 				return PackedStringArray(["Player expression patches must match the author record"])
 			composed = ExpressionText.compose(catalog, draft)
@@ -507,7 +511,7 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 				errors.append("A new derived meme requires an observed deviation strictly above its recorded propagation threshold")
 			else:
 				var source: Dictionary = variants_by_id[str(variant.split_from_id)]
-				var expected_trigger := MonitorMetrics.deviation(source.get("deviation_anchor", source), variant, metric_version)
+				var expected_trigger := clampf(MonitorMetrics.deviation(source.get("deviation_anchor", source), variant, metric_version) + float(variant.get("mutation_policy", {}).get("deviation_adjustment", 0.0)), 0.0, 1.0)
 				if not is_equal_approx(trigger, expected_trigger): errors.append("Saved split trigger differs from the actual source expression")
 				if str(variant.meme_name) == str(source.get("meme_name", "")) or not str(variant.meme_name).begins_with("MEME_SPLIT_NAME_"):
 					errors.append("A split meme requires an independent name")
@@ -519,7 +523,7 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 		elif id != meme_id:
 			if trigger > threshold or variant.parent_ids.is_empty() or str(variants_by_id[str(variant.parent_ids[0])].get("meme_id", "")) != meme_id:
 				errors.append("A non-split revision must retain its source meme identity")
-			if not is_equal_approx(trigger, MonitorMetrics.deviation(anchor, variant, metric_version)):
+			if not is_equal_approx(trigger, clampf(MonitorMetrics.deviation(anchor, variant, metric_version) + float(variant.get("mutation_policy", {}).get("deviation_adjustment", 0.0)), 0.0, 1.0)):
 				errors.append("Saved revision deviation differs from its expression")
 		var observed_deltas: Dictionary = variant.get("split_effect_deltas", {}) if variant.has("split_from_id") else variant.get("deviation_effect_deltas", {})
 		var expected_deltas := {} if variant.has("rollback_from_id") else _recorded_effect_deltas(variant, variants_by_id)
@@ -954,9 +958,9 @@ func _validate_event_history(data: Dictionary, errors: PackedStringArray) -> voi
 func _validate_guidance_progress(data: Dictionary) -> PackedStringArray:
 	var progress: Variant = data.guide_progress
 	var invalid := PackedStringArray([DeskLocalization.source("LOC_INVALID_GUIDANCE_PROGRESS")])
-	if not progress is Dictionary or progress.size() > 3: return invalid
+	if not progress is Dictionary or progress.size() > 4: return invalid
 	for id: Variant in progress:
-		if id not in ["fax","competition","mutation"]: return invalid
+		if id not in ["fax","competition","mutation","deviation"]: return invalid
 		var entry: Variant = progress[id]
 		if not entry is Dictionary or entry.size() != 2 or not entry.get("source_id") is String or not entry.get("shown") is bool: return invalid
 		if not simulation.guidance_source_valid(id,entry.source_id,data.events,data.variants): return invalid

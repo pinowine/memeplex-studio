@@ -331,8 +331,8 @@
   },
   "MM_HELP_DEVIATION": {
     "source": "相对初始表达的综合差异。严格超过50%时分裂，恰好50%不分裂。分裂后原模因回退相关效果并归零，新模因独立命名；地图传播量按回退造成的传播能力损失分配，总量不增加。",
-    "zh_CN": "相对初始表达的综合差异。超过50%时分裂，原模因回退相关效果并将偏移归零，新模因独立命名。地图传播量按回退造成的传播能力损失分配，以分裂前总量为上限。",
-    "en": "Difference from this meme's anchor expression. Splitting occurs strictly above 50%; at exactly 50%, no split occurs. The original rolls back relevant effects and resets to zero; the new meme receives an independent name. Existing spread is divided by the capability lost during rollback, without increasing the total."
+    "zh_CN": "编辑、传播事件和时间带来的累计偏移。虚线标出当前分化阈值，基础为50%。传播研究可以减少偏移、减慢自然增长或提高阈值，同时占用Meme点数，部分研究也会降低传播效率。超过阈值后，新模因独立发展，原模因回退相关修改。",
+    "en": "Deviation accumulates through edits, events and time. The dashed line marks the current split threshold, initially 50 percent. Transmission research can reduce drift, slow its growth or raise the threshold. It costs Meme points, and some research also slows spread. Above the threshold, a new independent meme emerges and the original rolls back the relevant edits."
   },
   "MM_ENDING_TITLE": {
     "source": "结局",
@@ -678,5 +678,10 @@
     "source": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
     "zh_CN": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
     "en": "A meme circulating independently of your control. It may emerge elsewhere or split from an existing meme."
+  },
+  "MM_DEVIATION_THRESHOLD": {
+    "source": "分化阈值 %.0f%%",
+    "zh_CN": "分化阈值 %.0f%%",
+    "en": "Split threshold %.0f%%"
   }
 }

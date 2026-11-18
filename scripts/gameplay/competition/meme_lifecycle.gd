@@ -1,10 +1,11 @@
 extends RefCounted
 
 const Metrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const Deviation = preload("res://scripts/gameplay/competition/meme_deviation.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const SEMANTIC_PROFILE_FIELDS := ["language_id", "language_ids", "group_id", "group_ids", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment"]
 const PATCH_SCALAR_FIELDS := ["language_access", "recognizability", "context_dependency", "remix_cost"]
-const DRAFT_CONTENT_FIELDS := ["slots", "module_patch_record", "community_changes", "community_rephrase", "confluence_contents"]
+const DRAFT_CONTENT_FIELDS := ["slots", "module_patch_record", "context_layer_record", "community_changes", "community_rephrase", "confluence_contents"]
 const CONTENT_FIELDS := ["id", "family_id", "parent_ids", "origin_ids", "creator", "owned", "controlled", "text", "meaning", "meaning_id", "language_versions", "kernel_id", "preset_id", "source_presets", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "patch_ids", "flow_draft", "flow_profile", "source_event", "mutation_definition_id", "mutation_patch_id", "translation_version", "confluence_source_id", "deviation_effect_deltas", "deviation_patch_effects", "live_author_edit"]
 var _simulation: RefCounted
 
@@ -186,12 +187,14 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	var reference: Dictionary = parent.deviation_anchor
 	raw.deviation_patch_effects = patch_effects(reference, raw, parent)
 	raw.deviation_effect_deltas = effect_deltas(reference, raw, parent)
-	var distance := Metrics.deviation(reference, content(raw))
+	raw.deviation_pressure = float(parent.get("deviation_pressure", 0.0))
+	var distance := Deviation.total(reference, content(raw))
 	raw.split_distance = distance
 	var policy_parent := revision_snapshot(parent)
 	policy_parent.flow_profile = _simulation.competition.live_profile(str(parent.id))
 	var threshold: float = _simulation.competition.propagation_rules.split_threshold(Metrics.SPLIT_THRESHOLD, policy_parent, {"flow_draft":content(raw).get("flow_draft", {})})
 	raw.mutation_policy = {"schema":1, "metric_version":Metrics.DEVIATION_VERSION, "profile_version":_simulation.competition.INHERITED_PROFILE_VERSION, "source_id":str(parent.id), "skill_ids":policy_parent.flow_profile.get("skill_ids", []).duplicate(), "threshold":threshold, "hour":int(_simulation.hour), "ledger_size":_simulation.economy.transactions.size()}
+	raw.mutation_policy.deviation_adjustment = distance - Metrics.deviation(reference, content(raw))
 	if distance > threshold and not _simulation.can_add_meme(str(raw.id)):
 		return {"error":DeskLocalization.source("LOC_MEME_POOL_FULL")}
 	if distance <= threshold:
@@ -222,6 +225,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	parent.rollback_from_id = str(raw.id)
 	parent.deviation_effect_deltas = {}
 	parent.deviation_patch_effects = {}
+	parent.deviation_pressure = 0.0
 	parent.erase("split_effect_deltas")
 	parent.erase("split_patch_effects")
 	raw.split_from_id = str(parent.id)
@@ -231,6 +235,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	raw.deviation_effect_deltas = {}
 	raw.deviation_patch_effects = {}
 	raw.semantic_distance = 0.0
+	raw.deviation_pressure = 0.0
 	if str(raw.creator) != "player": raw.owned = false
 	var name_index := 0
 	for item: Dictionary in _simulation.variants:

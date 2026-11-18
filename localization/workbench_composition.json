@@ -136,8 +136,8 @@
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT": {
     "source": "随传播附上出处与用法，有效语境依赖降至原值60%。",
-    "zh_CN": "附有背景说明的模因在传播计算中的语境依赖乘以0.6。",
-    "en": "Multiply context dependency by 0.6 when the meme has an accompanying context note."
+    "zh_CN": "附有背景说明的模因在传播计算中的语境依赖乘以0.6。\n偏移度降低3个百分点，自然增长减慢35%，分化阈值提高4个百分点，传播效率降低4%。",
+    "en": "Multiply context dependency by 0.6 when the meme has an accompanying context note.\nDeviation falls by 3 percentage points. Natural drift slows by 35 percent, the split threshold rises by 4 points, and spread efficiency falls by 4 percent."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_TITLE": {
     "source": "替代文本",
@@ -196,8 +196,8 @@
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT": {
     "source": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
-    "zh_CN": "提供可编辑源素材的模板在社区复用计算中的重混成本乘以0.4。",
-    "en": "Multiply remix cost by 0.4 in community reuse calculations for templates with editable source material."
+    "zh_CN": "提供可编辑源素材的模板在社区复用计算中的重混成本乘以0.4。\n偏移度降低2个百分点，自然增长减慢25%，分化阈值提高3个百分点，传播效率降低3%。",
+    "en": "Multiply remix cost by 0.4 in community reuse calculations for templates with editable source material.\nDeviation falls by 2 percentage points. Natural drift slows by 25 percent, the split threshold rises by 3 points, and spread efficiency falls by 3 percent."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_TITLE": {
     "source": "语义剥离",
@@ -241,8 +241,8 @@
   },
   "LOC_PROP_NODE_VERSION_INDEX_EFFECT": {
     "source": "索引同源的已有版本，引荐更适配当地的表达。",
-    "zh_CN": "当地采用人数达到人口百万分之一且至少有两个同源版本时，向当地适配分数最高且优于当前版本的版本增加引荐，权重等于两者分数差。",
-    "en": "Once local adopters reach one per million residents and at least two related versions exist, refer to the locally best-fitting version if its fitness exceeds the current version’s, using their score difference as weight."
+    "zh_CN": "当地采用人数达到人口百万分之一且至少有两个同源版本时，向当地适配分数最高且优于当前版本的版本增加引荐，权重等于两者分数差。\n偏移度降低4个百分点。",
+    "en": "Once local adopters reach one per million residents and at least two related versions exist, refer to the locally best-fitting version if its fitness exceeds the current version’s, using their score difference as weight.\nDeviation falls by 4 percentage points."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE": {
     "source": "模板仓库",
@@ -256,8 +256,8 @@
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT": {
     "source": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
-    "zh_CN": "模板发布满48小时、同源版本至少2个、当地采用人数达到人口百万分之一且注意力低于采用人数×2.5%向下取整时，按当地传播倍率超出1的部分增加该模板的引荐权重，同源二创在当地新增曝光会使权重至少为0.25。",
-    "en": "For a template at least 48 hours old with another related version, local adopters at least one per million residents and local attention below floor(adopters × 0.025), add local referral weight equal to max(0, local propagation multiplier − 1), raised to at least 0.25 when a related external version gains exposure locally."
+    "zh_CN": "模板发布满48小时、同源版本至少2个、当地采用人数达到人口百万分之一且注意力低于采用人数×2.5%向下取整时，按当地传播倍率超出1的部分增加该模板的引荐权重，同源二创在当地新增曝光会使权重至少为0.25。\n偏移度降低4个百分点，自然增长减半，分化阈值提高5个百分点，传播效率降低8%。",
+    "en": "For a template at least 48 hours old with another related version, local adopters at least one per million residents and local attention below floor(adopters × 0.025), add local referral weight equal to max(0, local propagation multiplier − 1), raised to at least 0.25 when a related external version gains exposure locally.\nDeviation falls by 4 percentage points. Natural drift is halved, the split threshold rises by 5 points, and spread efficiency falls by 8 percent."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_TITLE": {
     "source": "社群联络点",

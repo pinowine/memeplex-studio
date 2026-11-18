@@ -7473,5 +7473,10 @@
     "source": "垂直同步",
     "zh_CN": "垂直同步",
     "en": "Vertical sync"
+  },
+  "LOC_GUIDANCE_DEVIATION": {
+    "source": "你的模因会随着时间、事件和你的编辑逐渐偏离原意，当偏移度超过50%时，它会变成一种新的模因──不再受到你的管控。如果你想要避免这一点，可以尝试避免修改过多的原模因，或者点一些“传播”节点以增强你模因的包容度。",
+    "zh_CN": "你的模因会随着时间、事件和你的编辑逐渐偏离原意，当偏移度超过50%时，它会变成一种新的模因──不再受到你的管控。如果你想要避免这一点，可以尝试避免修改过多的原模因，或者点一些“传播”节点以增强你模因的包容度。",
+    "en": "Your meme gradually drifts from its original meaning through time, events and your edits. Above 50 percent deviation it becomes a new meme beyond your control. To avoid this, keep more of the original meme or research Transmission nodes to increase its tolerance."
   }
 }
