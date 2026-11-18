@@ -381,17 +381,28 @@ func _sync_tab_attachment() -> void:
 		tab.position = anchor
 		tab.rotation = 0.0
 		tab.size = TAB_SIZE
-		_sync_tab_title(tab)
+		_sync_tab_title(tab, id)
 		tab.set_meta("paper_edge", sheet.get_global_transform_with_canvas() * Vector2(edge, y + TAB_SIZE.y * 0.5))
 
-func _sync_tab_title(tab: Control) -> void:
+func _sync_tab_title(tab: Control, id: String) -> void:
 	var title := tab.get_node("Title") as Label
 	var font := title.get_theme_font("font")
-	var signature: Array = [title.text, font, TranslationServer.get_locale()]
+	var writing_area := Rect2(Vector2(4,8),Vector2(TAB_SIZE.x-TAB_EDGE_OVERLAP-8,44))
+	# Higher sheets can cover more of an inactive tab than its own paper edge.
+	for other_id: String in _sheets:
+		if (_layers[other_id] as CanvasLayer).layer <= (_layers[id] as CanvasLayer).layer: continue
+		var cover := _sheets[other_id] as Control
+		var to_cover := cover.get_global_transform_with_canvas().affine_inverse() * tab.get_global_transform_with_canvas()
+		var to_tab := tab.get_global_transform_with_canvas().affine_inverse() * cover.get_global_transform_with_canvas()
+		for y: float in [8.0, 30.0, 52.0]:
+			var cover_point: Vector2 = to_cover * Vector2(0, y)
+			var edge: Vector2 = to_tab * Vector2(_tab_edge_x(cover_point.y, other_id), cover_point.y)
+			writing_area.size.x = minf(writing_area.size.x, edge.x-writing_area.position.x-4.0)
+	var displayed := title.tr(title.text)
+	var signature: Array = [displayed, font, writing_area]
 	if _tab_title_signatures.get(tab, []) == signature: return
 	_tab_title_signatures[tab] = signature
-	var writing_area := Rect2(Vector2(4,8),Vector2(TAB_SIZE.x-TAB_EDGE_OVERLAP-8,44))
-	var layout := TextFlow.fit_text(font,title.text,writing_area,22,14,2)
+	var layout := TextFlow.fit_text(font,displayed,writing_area,22,14,2)
 	var font_size := int(layout.font_size)
 	if title.get_theme_font_size("font_size") != font_size: title.add_theme_font_size_override("font_size",font_size)
 	title.position = writing_area.position
