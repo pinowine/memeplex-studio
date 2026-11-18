@@ -36,6 +36,7 @@ var _cursor := GameCursors.new()
 var ready_3d := false
 var half_tone: ColorRect
 var modal_image: TextureRect
+var _modal_margins: Array[ColorRect] = []
 var studio_wide := false
 var startup_error := ""
 var handset_cord: MeshInstance3D
@@ -312,13 +313,38 @@ func _setup_postprocess() -> void:
 	modal_image = TextureRect.new()
 	modal_image.name = "ScreenSpaceModalContent"
 	modal_image.texture = modal_viewport.get_texture()
+	# SubViewport textures already contain premultiplied color.
+	var modal_material := CanvasItemMaterial.new()
+	modal_material.blend_mode = CanvasItemMaterial.BLEND_MODE_PREMULT_ALPHA
+	modal_image.material = modal_material
 	modal_image.mouse_filter = Control.MOUSE_FILTER_STOP
 	modal_image.gui_input.connect(_route_input)
 	modal_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	modal_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	modal_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	modal_layer.add_child(modal_image)
+	for index in 4:
+		var margin := ColorRect.new()
+		margin.name = "ModalMargin%d" % index
+		margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		modal_image.add_child(margin)
+		_modal_margins.append(margin)
 	modal_image.hide()
+
+func _sync_modal_margins() -> void:
+	var view := get_viewport().get_visible_rect().size
+	var content_rect: Rect2 = input_router.modal_rect()
+	var regions := [
+		Rect2(0, 0, view.x, content_rect.position.y),
+		Rect2(0, content_rect.end.y, view.x, view.y - content_rect.end.y),
+		Rect2(0, content_rect.position.y, content_rect.position.x, content_rect.size.y),
+		Rect2(content_rect.end.x, content_rect.position.y, view.x - content_rect.end.x, content_rect.size.y)]
+	var shade: ColorRect = page.hud.get_node("%ModalShade")
+	for index in _modal_margins.size():
+		_modal_margins[index].position = regions[index].position
+		_modal_margins[index].size = regions[index].size
+		_modal_margins[index].color = shade.color
+		_modal_margins[index].visible = shade.visible
 
 func _process(_delta: float) -> void:
 	if not ready_3d: return
@@ -342,6 +368,7 @@ func _process(_delta: float) -> void:
 		_cancel_input()
 		get_viewport().gui_release_focus()
 	modal_image.visible = showing_modal
+	if showing_modal: _sync_modal_margins()
 	cursor_shape = _update_hover()
 	if get_window().has_focus() and not showing_modal and not page.presentation_blocks_input() and desktop.pointer_dragging():
 		cursor_shape = desktop.drag_cursor_shape(logical.get_canvas_transform() * input_router.desktop_point(get_viewport().get_mouse_position()))
