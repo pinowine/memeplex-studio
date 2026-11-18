@@ -196,7 +196,7 @@
   },
   "LOC_WORLD_GROUP_TECH_WORKERS_DESCRIPTION": {
     "source": "与设备、软件和技术系统打交道的人。工具更新得很快，故障、经验和招工消息在同行之间流转。",
-    "zh_CN": "与设备、软件和技术系统打交道的人。工具更新得很快，故障、经验和招工消息在同行之间流转。",
+    "zh_CN": "成天围着机器、代码和后台系统转的人。工具换代快，半夜的故障单、踩坑心得和招工风声总在同行群里打转。",
     "en": "People working with equipment, software and technical systems. Tools change quickly; faults, practical advice and job leads circulate among peers."
   },
   "LOC_WORLD_GROUP_RETIREES": {
@@ -206,7 +206,7 @@
   },
   "LOC_WORLD_GROUP_RETIREES_DESCRIPTION": {
     "source": "从固定工作中退下来，重新安排日常生活的人。有人照顾家人，有人参加社区活动，旧同事和邻居仍是重要的消息来源。",
-    "zh_CN": "从固定工作中退下来，重新安排日常生活的人。有人照顾家人，有人参加社区活动，旧同事和邻居仍是重要的消息来源。",
+    "zh_CN": "退下工作岗位后重新打理日子的人。带孙辈、赶早市或是去社区排练，老同事和街坊群依旧是他们最灵通的消息网。",
     "en": "People rebuilding their routines after leaving regular work. Family care, community activities, former colleagues and neighbours keep their days connected."
   },
   "LOC_WORLD_GROUP_DIASPORAS": {
@@ -216,7 +216,7 @@
   },
   "LOC_WORLD_GROUP_DIASPORAS_DESCRIPTION": {
     "source": "在别处生活，同时与故乡保持往来的人。聊天群里的消息跨着时区，语言和习惯也在新生活里慢慢变化。",
-    "zh_CN": "在别处生活，同时与故乡保持往来的人。聊天群里的消息跨着时区，语言和习惯也在新生活里慢慢变化。",
+    "zh_CN": "人在异乡落脚、心里还牵着老家的群体。亲友群里的消息总隔着时差，说话夹杂着两边的词，过日子的习惯也在慢慢磨合。",
     "en": "People living elsewhere while keeping ties with home. Their group messages cross time zones, and their language and habits change with their new lives."
   },
   "LOC_WORLD_TOPIC_HOUSING": {
@@ -226,7 +226,7 @@
   },
   "LOC_WORLD_TOPIC_HOUSING_DESCRIPTION": {
     "source": "从租金、搬家到买房，围绕住处作出的选择。房间的大小、离工作的远近和每月的账单都在里面。",
-    "zh_CN": "从租房、搬家到买房，房间大小、离工作的远近和每月账单，都影响着住处的选择。",
+    "zh_CN": "租房、搬家还是咬牙买房，屋子多大、通勤多远、月底交多少房钱，全绕不开这一桩。",
     "en": "Choices about finding somewhere to live: rent, moving, buying, space, the journey to work and the monthly bill."
   },
   "LOC_WORLD_TOPIC_HEALTHCARE": {
@@ -236,7 +236,7 @@
   },
   "LOC_WORLD_TOPIC_HEALTHCARE_DESCRIPTION": {
     "source": "身体出了什么问题，去哪里求助，治疗要花多少钱。挂号、用药和照顾病人的经验很容易引出长谈。",
-    "zh_CN": "身体出了什么问题，去哪里求助，治疗要花多少钱。挂号、用药和照顾病人的经验很容易引出长谈。",
+    "zh_CN": "身子哪儿不舒服、去哪家医院挂得上号、看一回病得掏多少钱。只要聊起吃药和陪护，陌生人也能接上半天话。",
     "en": "What is wrong, where to seek help and how to pay for treatment. Appointments, medicines and caring for someone can start long conversations."
   },
   "LOC_WORLD_TOPIC_CLIMATE": {
@@ -246,7 +246,7 @@
   },
   "LOC_WORLD_TOPIC_CLIMATE_DESCRIPTION": {
     "source": "人们如何应对天气与环境的长期变化，也谈眼前的酷暑、雨季和身边的河流。",
-    "zh_CN": "人们如何应对天气与环境的长期变化，也谈眼前的酷暑、雨季和身边的河流。",
+    "zh_CN": "既聊一年比一年反常的气候变化，也抱怨眼下熬人的酷暑、不按时来的雨季和家门口涨落的水位。",
     "en": "How people live with long-term changes in weather and the environment, alongside this summer's heat, the rains and the river nearby."
   },
   "LOC_WORLD_TOPIC_ENERGY": {
@@ -416,7 +416,7 @@
   },
   "LOC_WORLD_GROUP_SERVICE_WORKERS_NOTE": {
     "source": "关店前还剩一张没擦的桌子，末班车快到了。",
-    "zh_CN": "“按你的方式来。”\n汉堡王广告语 Have It Your Way（1974）",
+    "zh_CN": "“顾客永远是对的。”\n哈里·戈登·塞尔弗里奇，百货业格言（1909）",
     "en": "“Have it your way.”\nBurger King advertising slogan (1974)"
   },
   "LOC_WORLD_GROUP_HEALTH_WORKERS_NOTE": {
@@ -456,7 +456,7 @@
   },
   "LOC_WORLD_TOPIC_HEALTHCARE_NOTE": {
     "source": "候诊单上的号码又往前跳了一格。",
-    "zh_CN": "“病有所医”\n中共十七大报告（2007）",
+    "zh_CN": "“有时，去治愈；常常，去帮助；总是，去安慰。”\n爱德华·特鲁多墓志铭",
     "en": "“Medical care for the sick.”\nReport to the 17th National Congress of the CPC (2007)"
   },
   "LOC_WORLD_TOPIC_CLIMATE_NOTE": {
