@@ -13,6 +13,8 @@ const EventResponse = preload("res://scripts/gameplay/events/event_response.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const WorldWar = preload("res://scripts/gameplay/events/world_war.gd")
 const SAVE_VERSION := 3
+const LEGACY_PACE_CONTENT := "1eb370766ef2cd523c50a6e4de1f5fbbe7d02e01a3f3eb39dc576223dd2082d5"
+const LEGACY_PACE_POLICY := "57221cb7cc0276c879fb79dd37867303c5cf75aed38284ba111aefda425a73fe"
 
 var simulation: RefCounted
 var catalog: MemeDemoCatalog
@@ -53,11 +55,26 @@ func validate_payload(data: Dictionary) -> PackedStringArray:
 func _decode(data: Dictionary, errors: PackedStringArray) -> Dictionary:
 	var decoded := _decode_precision(data, errors)
 	if not errors.is_empty(): return {}
+	_upgrade_pace_signatures(decoded)
 	# Guidance progress is optional in version-3 saves.
 	if not decoded.has("guide_progress"): decoded.guide_progress = {}
 	errors.append_array(_validate_current(decoded))
 	if not errors.is_empty(): return {}
 	return decoded
+
+func _upgrade_pace_signatures(data: Dictionary) -> void:
+	if data.get("content_version") != 14 or data.get("content_signature") != LEGACY_PACE_CONTENT or not data.get("competition_state") is Dictionary: return
+	if data.competition_state.get("policy_signature") != LEGACY_PACE_POLICY: return
+	# Rebuild the old signatures so unrelated content changes still invalidate the save.
+	var legacy_catalog: Dictionary = _resource_data(catalog)
+	for field: String in ["adoption_response", "exposure_response"]: legacy_catalog.gameplay_rules[field] = 0.0015
+	legacy_catalog.gameplay_rules.attention_activation = 4.0
+	var legacy_content := JSON.stringify({"catalog":legacy_catalog,"rewards":PropagationRewards.signature(),"propagation_content":FileAccess.get_file_as_string("res://data/propagation/content_profiles.json").sha256_text()}, "", true, true).sha256_text()
+	var legacy_policy: Dictionary = legacy_catalog.gameplay_rules.duplicate(true)
+	legacy_policy.erase("map_settings")
+	if legacy_content != LEGACY_PACE_CONTENT or JSON.stringify(legacy_policy, "", true, true).sha256_text() != LEGACY_PACE_POLICY: return
+	data.content_signature = content_signature()
+	data.competition_state.policy_signature = catalog.gameplay_rules.signature()
 
 ## 空草稿合法；出现草稿时，首发前后都遵守相同字段和有限值约束。
 func _draft_from_json(draft: Dictionary, errors: PackedStringArray) -> Dictionary:
