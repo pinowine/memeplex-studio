@@ -166,8 +166,8 @@
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_EFFECT": {
     "source": "按目标语言和渠道格式，从已有版本中选择适配版本。",
-    "zh_CN": "从渠道支持的已有版本中选择“目标国家语言掌握率×版本质量”最高的版本投递。",
-    "en": "Deliver the available channel-compatible version with the highest local language proficiency multiplied by version quality."
+    "zh_CN": "从渠道支持的已有版本中选择“目标国家可读率×版本质量”最高的版本投递。",
+    "en": "Deliver the available channel-compatible version with the highest local readability multiplied by version quality."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE": {
     "source": "公开模板",
@@ -241,8 +241,8 @@
   },
   "LOC_PROP_NODE_VERSION_INDEX_EFFECT": {
     "source": "索引同源的已有版本，引荐更适配当地的表达。",
-    "zh_CN": "已有至少两个同源版本时，向当地适配分数最高且优于当前版本的版本增加引荐，权重为两者分数差。",
-    "en": "With at least two related versions, refer to the locally best-fitting version when its fitness score exceeds the current one, using the score difference as weight."
+    "zh_CN": "当地采用人数达到人口百万分之一且至少有两个同源版本时，向当地适配分数最高且优于当前版本的版本增加引荐，权重等于两者分数差。",
+    "en": "Once local adopters reach one per million residents and at least two related versions exist, refer to the locally best-fitting version if its fitness exceeds the current version’s, using their score difference as weight."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE": {
     "source": "模板仓库",
@@ -256,8 +256,8 @@
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT": {
     "source": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
-    "zh_CN": "已有二创的模板发布满48小时、当地注意力低于采用人数的活跃比例且出现复用需求时，增加原模板的当地引荐。",
-    "en": "Add local referrals to a template with derivatives after 48 hours when local attention falls below its active adoption share and reuse demand exists."
+    "zh_CN": "模板发布满48小时、同源版本至少2个、当地采用人数达到人口百万分之一且注意力低于采用人数×2.5%向下取整时，按当地传播倍率超出1的部分增加该模板的引荐权重，同源二创在当地新增曝光会使权重至少为0.25。",
+    "en": "For a template at least 48 hours old with another related version, local adopters at least one per million residents and local attention below floor(adopters × 0.025), add local referral weight equal to max(0, local propagation multiplier − 1), raised to at least 0.25 when a related external version gains exposure locally."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_TITLE": {
     "source": "社群联络点",
