@@ -442,6 +442,7 @@ func _refresh() -> void:
 	if not is_instance_valid(_ui) or _steps.is_empty(): return
 	_display_index = clampi(_display_index, 0, _steps.size() - 1)
 	var step := _steps[_display_index]
+	var fixed_card := bool(step.get("fixed_card", false))
 	var choosing := bool(step.get("starter_choices", false))
 	var choices: Control = _ui.get_node("Card/StarterChoices")
 	choices.visible = choosing
@@ -524,9 +525,9 @@ func _refresh() -> void:
 	var minimum_width := minf(344.0, size.x - CARD_MARGIN * 2.0)
 	# The live phone paper reserves the right side, including while it slides in.
 	for rectangle: Rect2 in _avoid_rects:
-		if not bool(step.get("centered", false)) and rectangle.get_center().x > size.x * .5:
+		if not fixed_card and not bool(step.get("centered", false)) and rectangle.get_center().x > size.x * .5:
 			width = minf(width, maxf(minimum_width, rectangle.position.x - CARD_MARGIN * 2.0 - TARGET_GAP))
-	if not bool(step.get("centered", false)) and _target.has_area():
+	if not fixed_card and not bool(step.get("centered", false)) and _target.has_area():
 		var side_width := maxf(_target.position.x, size.x - _target.end.x) - CARD_MARGIN - TARGET_GAP
 		if side_width >= minimum_width: width = minf(width, side_width)
 	var portrait: Control = card.get_node("Portrait67")
@@ -572,7 +573,7 @@ func _refresh() -> void:
 	else:
 		body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		_actions.alignment = BoxContainer.ALIGNMENT_BEGIN
-	if _card_placed and bool(step.get("map_navigation", false)):
+	if _card_placed and (fixed_card or bool(step.get("map_navigation", false))):
 		_card_destination = _card_destination.clamp(Vector2.ONE * CARD_MARGIN, (size - card.size - Vector2.ONE * CARD_MARGIN).max(Vector2.ONE * CARD_MARGIN))
 	else:
 		_card_destination = _place_card(card.size)
