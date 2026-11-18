@@ -283,7 +283,7 @@ func configure(page: Node2D) -> void:
 	_paper.set_texture_margin_all(22)
 	_paper.set_content_margin_all(22)
 	for panel: PanelContainer in _panels(page.hud):
-		if panel is DeskReceiptHover: continue
+		if panel is DeskReceiptHover or panel == page.hud.get_node("%EventCard"): continue
 		panel.add_theme_stylebox_override("panel", _paper)
 		# The retired form owns state only; its pages are mounted on the real paper stack.
 		if panel != page.hud.get_node("%Workbench"):
@@ -1240,21 +1240,7 @@ func _component_details() -> Dictionary:
 		var details: Dictionary = _fax.component_details(mode)
 		if bool(details.get("starter_pending", false)): return details
 		if str(details.get("document_kind", "")) == "event":
-			if not details.event_record.is_empty():
-				var seconds: float = _page.atlas.clock.local_seconds() + (float(details.hour) - _page.simulation.elapsed_hours()) * 3600.0
-				var date := Time.get_datetime_dict_from_unix_time(floori(seconds))
-				var timestamp := "%04d-%02d-%02d" % [date.year, date.month, date.day]
-				details.sections[0].timestamp = timestamp
-				details.sections[0].country_field = _event_country_field(details.event_record)
-				details.sections[0].body = DeskLocalization.source_join("\n", [details.sections[0].event_type, details.sections[0].country_title, timestamp])
-			var segments := EventImpactText.build(details.event_record, _page.catalog, _page.simulation.variants)
-			if not segments.is_empty():
-				var content := PackedStringArray()
-				for segment: Dictionary in segments: content.append(str(segment.text))
-				var section := {"body":"".join(content), "segments":segments, "kind":"impact", "role":"impact"}
-				if str(details.sections.back().get("role", "")) == "commentary": details.sections.insert(details.sections.size() - 1, section)
-				else: details.sections.append(section)
-			return details
+			return event_details(details.event_record)
 		var paragraphs := PackedStringArray()
 		for key: String in ["description","npc_text","status","number","log","impact","effect","mentor","gesture"]:
 			var text := str(details.get(key,""))
@@ -1264,6 +1250,24 @@ func _component_details() -> Dictionary:
 		if mode != "phonebook": details.erase("contacts")
 		return details
 	return {}
+
+func event_details(record: Dictionary) -> Dictionary:
+	var details: Dictionary = _fax.history_details(record)
+	if not record.is_empty():
+		var seconds: float = _page.atlas.clock.local_seconds() + (float(details.hour) - _page.simulation.elapsed_hours()) * 3600.0
+		var date := Time.get_datetime_dict_from_unix_time(floori(seconds))
+		var timestamp := "%04d-%02d-%02d" % [date.year, date.month, date.day]
+		details.sections[0].timestamp = timestamp
+		details.sections[0].country_field = _event_country_field(record)
+		details.sections[0].body = DeskLocalization.source_join("\n", [details.sections[0].event_type, details.sections[0].country_title, timestamp])
+	var segments := EventImpactText.build(record, _page.catalog, _page.simulation.variants)
+	if not segments.is_empty():
+		var content := PackedStringArray()
+		for segment: Dictionary in segments: content.append(str(segment.text))
+		var section := {"body":"".join(content), "segments":segments, "kind":"impact", "role":"impact"}
+		if str(details.sections.back().get("role", "")) == "commentary": details.sections.insert(details.sections.size() - 1, section)
+		else: details.sections.append(section)
+	return details
 
 func _event_country_field(record: Dictionary) -> Dictionary:
 	var country_id := str(record.get("country_id", ""))

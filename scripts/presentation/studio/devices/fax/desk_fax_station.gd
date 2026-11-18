@@ -181,8 +181,8 @@ func component_details(mode: String = "phone") -> Dictionary:
 		"reply_enabled":_can_phone() and _call_session.state == "connected", "call_state":_call_session.state, "npc_text":_npc_source_text()}
 
 
-func history_details() -> Dictionary:
-	var record: Dictionary = _archived_event if not _archived_event.is_empty() else _output.last_read
+func history_details(record: Dictionary = {}) -> Dictionary:
+	if record.is_empty(): record = _archived_event if not _archived_event.is_empty() else _output.last_read
 	var origin := str(record.get("origin", ""))
 	var origin_label := str({"world":"LOC_EVENT_ORIGIN_WORLD", "transmission":"LOC_EVENT_ORIGIN_TRANSMISSION", "environment_meme":"LOC_EVENT_ORIGIN_ENVIRONMENT"}.get(origin, "LOC_UNATTRIBUTED_9D4F610E"))
 	var sections: Array[Dictionary] = []

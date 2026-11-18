@@ -107,6 +107,26 @@ func _init() -> void:
 	visibility_changed.connect(_hide_hover)
 	_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float): _hide_hover())
 
+func add_action_button(button: Button) -> void:
+	var layout := _footer.get_parent()
+	button.reparent(layout, false)
+	layout.move_child(button, _footer.get_index())
+
+func set_details(details: Dictionary) -> void:
+	var blocks: Array[Dictionary] = []
+	for section: Dictionary in details.sections:
+		var block := section.duplicate(true)
+		block.content = DeskLocalization.text(str(section.get("body", "")))
+		for key: String in ["country_title", "timestamp"]:
+			block[key] = DeskLocalization.text(str(section.get(key, "")))
+		for fields: Array in [block.get("segments", []), block.get("event_fields", []), [block.get("country_field", {})]]:
+			for field: Dictionary in fields:
+				for key: String in ["text", "tooltip_title", "tooltip_body", "tooltip_note"]:
+					if field.has(key): field[key] = DeskLocalization.text(str(field[key]))
+		blocks.append(block)
+	set_blocks(blocks, DeskLocalization.text(str(details.title)))
+	_scroll.scroll_vertical = 0
+
 func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 	if _meme_mode: country_hovered.emit("")
 	_meme_mode = false

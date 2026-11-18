@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/presentation/ui/game_hud.gd" id="1"]
 [ext_resource type="Theme" path="res://data/presentation/ui/demo_theme.tres" id="2"]
 [ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_receipt_panel.gd" id="3"]
 [ext_resource type="FontVariation" path="res://assets/image/fonts/body_bold_font.tres" id="4"]
+[ext_resource type="Script" path="res://scripts/presentation/studio/paper/desk_event_document.gd" id="5"]
 
 [node name="DemoHUD" type="Control"]
 layout_mode = 3
@@ -672,6 +673,7 @@ color = Color(0.14, 0.14, 0.14, 0.64)
 
 [node name="EventCard" type="PanelContainer" parent="."]
 unique_name_in_owner = true
+script = ExtResource("5")
 layout_mode = 1
 anchor_left = 0.5
 anchor_top = 0.5
@@ -686,74 +688,12 @@ grow_vertical = 2
 z_index = 15
 visible = false
 
-[node name="Column" type="VBoxContainer" parent="EventCard"]
-layout_mode = 2
-
-[node name="EventTitle" type="Label" parent="EventCard/Column"]
+[node name="EventContinue" type="Button" parent="EventCard"]
 unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 2
-text = "LOC_TRANSMISSION_EVENT_286300D4"
-theme_type_variation = "DemoHeading"
-
-[node name="EventOrigin" type="Label" parent="EventCard/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-text = ""
-theme_type_variation = "DemoCaption"
-
-[node name="NarrativeHeading" type="Label" parent="EventCard/Column"]
-layout_mode = 2
-mouse_filter = 2
-text = "LOC_MESSAGE_4DA199FA"
-theme_type_variation = "DemoCaption"
-
-[node name="Narrative" type="RichTextLabel" parent="EventCard/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-bbcode_enabled = false
-text = ""
-scroll_active = true
-custom_minimum_size = Vector2(0, 80)
-
-[node name="ImpactSummary" type="Label" parent="EventCard/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
-text = ""
-tooltip_text = "LOC_ARROWS_SHOW_CONFIGURED_EFFECT_DIRECTIONS_NOT_NEW_93062346"
-
-[node name="MentorComment" type="Label" parent="EventCard/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-autowrap_mode = 3
-text = ""
-theme_type_variation = "DemoCaption"
-
-[node name="EffectDetails" type="Button" parent="EventCard/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-toggle_mode = true
-text = "LOC_EXPAND_COLLAPSE_EXECUTION_DETAILS_57B235E9"
-
-[node name="ActualEffect" type="RichTextLabel" parent="EventCard/Column"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-bbcode_enabled = false
-text = ""
-scroll_active = true
-custom_minimum_size = Vector2(0, 75)
-
-[node name="EventContinue" type="Button" parent="EventCard/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "LOC_READ_CONTINUE_OBSERVING_8DF4776D"
+size_flags_horizontal = 8
+custom_minimum_size = Vector2(128, 44)
+text = "LOC_EVENT_UNDERSTOOD"
 
 [node name="ResultCard" type="PanelContainer" parent="."]
 unique_name_in_owner = true
