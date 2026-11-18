@@ -197,6 +197,8 @@ func material_faces() -> Array[Dictionary]:
 	var board: Control = editor.context_slice()
 	if is_instance_valid(board._drag_preview):
 		faces.append({"source":board._drag_preview, "key":"context/drag", "owner":null, "visible":board._drag_preview.is_visible_in_tree()})
+	var monitor: Control = _desk._monitor
+	faces.append({"source":monitor._preview, "key":"context/token_drag", "owner":null, "visible":monitor._dragging})
 	return faces
 
 func material_handles_viewport_point(point: Vector2) -> bool:

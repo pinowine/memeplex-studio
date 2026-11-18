@@ -102,9 +102,55 @@ class StackSurface extends Control:
 		return _print_mask
 
 class TokenProjection extends DeskCRTInventoryScreen:
+	signal dropped(id: String, point: Vector2)
+	var overlay: Control
+	var rules: MemeDesignRules
+	var record: Dictionary = {}
+	var _pressed := false
+	var _origin := Vector2.ZERO
+	var _ghost: Control
+
 	func _ready() -> void:
 		super._ready()
 		paper_view = true
+		token_pressed.connect(func(id: String, point: Vector2):
+			cancel_drag()
+			record = rules.context_resource(id)
+			_origin = point
+			_pressed = true)
+		get_window().focus_exited.connect(cancel_drag)
+
+	func _input(event: InputEvent) -> void:
+		if not _pressed: return
+		if event is InputEventMouseMotion:
+			if event.button_mask & MOUSE_BUTTON_MASK_LEFT == 0:
+				cancel_drag()
+				return
+			if _ghost == null and event.position.distance_to(_origin) >= 6:
+				_ghost = ResourceGraphic.new()
+				overlay.add_child(_ghost)
+				_ghost.configure(record)
+				_ghost.size = Vector2(84, 84)
+				_ghost.z_index = 100
+			if _ghost != null:
+				_ghost.position = overlay.get_global_transform_with_canvas().affine_inverse() * event.position - _ghost.size * .5
+			get_viewport().set_input_as_handled()
+		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			var id := str(record.id) if _ghost != null else ""
+			get_viewport().set_input_as_handled()
+			cancel_drag()
+			if not id.is_empty(): dropped.emit(id, event.position)
+		elif event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+			cancel_drag()
+			get_viewport().set_input_as_handled()
+
+	func cancel_drag() -> void:
+		_pressed = false
+		if _ghost != null: _ghost.queue_free()
+		_ghost = null
+
+	func _exit_tree() -> void:
+		cancel_drag()
 
 class StackCard extends Control:
 	signal chosen
@@ -450,13 +496,13 @@ func clear_stack_focus() -> void:
 func focus_dragging() -> bool:
 	if _focus_grid == null: return false
 	for row: Node in _focus_grid.get_children():
-		if row is StackCard and row._pressed: return true
+		if (row is StackCard or row is TokenProjection) and row._pressed: return true
 	return false
 
 func focused_dragged_material() -> Dictionary:
 	if _focus_grid == null: return {}
 	for row: Node in _focus_grid.get_children():
-		if row is StackCard and row._pressed: return row.record
+		if (row is StackCard or row is TokenProjection) and row._pressed: return row.record
 	return {}
 
 func _focus_records() -> Array[Dictionary]:
@@ -488,6 +534,9 @@ func _refresh_focus_list() -> void:
 		_focus_grid.columns = 1
 		var projection := TokenProjection.new()
 		projection.name = "ProjectedDirectionInventory"
+		projection.overlay = _focus_host
+		projection.rules = _rules
+		projection.dropped.connect(func(id: String, point: Vector2): _drop_expanded(point, str(_rules.context_resource(id).kind), id))
 		projection.custom_minimum_size = Vector2(maxf(180, _focus_rect.size.x - 14), maxf(130, _focus_rect.size.y - 8))
 		projection.sync_inventory("stance" if _focus_kind == "stance_token" else "pragmatic", _design.get("context_token_balances", {}), _enabled)
 		_focus_grid.add_child(projection)

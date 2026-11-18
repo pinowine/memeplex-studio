@@ -110,6 +110,7 @@ func _ready() -> void:
 	_inventory = InventoryScreen.new()
 	_inventory.name = "FourDirectionInventory"
 	add_child(_inventory)
+	_inventory.token_pressed.connect(_begin_token)
 	_button_art = TextureRect.new()
 	_button_art.name = "WeldedModeButtons"
 	_button_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

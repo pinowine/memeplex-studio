@@ -1,6 +1,8 @@
 class_name DeskCRTInventoryScreen
 extends Control
 
+signal token_pressed(token_id: String, viewport_point: Vector2)
+
 const TokenIcon = preload("res://scripts/presentation/context/context_token_icon.gd")
 
 const IDS := {"stance":["freedom", "authority", "equality", "hierarchy"], "pragmatic":["sincere", "ironic", "support", "opposition"]}
@@ -36,14 +38,22 @@ func cell_rect(index: int) -> Rect2:
 func cursor_shape_at(point: Vector2) -> int:
 	for index in 4:
 		if cell_rect(index).has_point(point):
-			return CURSOR_HELP
+			return CURSOR_DRAG if _enabled and int(_balances.get(IDS[_mode][index], 0)) > 0 else CURSOR_HELP
 	return CURSOR_ARROW
 
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and _enabled:
+		for index in 4:
+			var id: String = IDS[_mode][index]
+			if cell_rect(index).has_point(event.position) and int(_balances.get(id, 0)) > 0:
+				token_pressed.emit(id, get_global_transform_with_canvas() * event.position)
+				accept_event()
+				return
 	if event is InputEventMouseMotion:
 		_hover = -1
 		for index in 4:
 			if cell_rect(index).has_point(event.position): _hover = index
+		mouse_default_cursor_shape = cursor_shape_at(event.position)
 		queue_redraw()
 
 func _draw() -> void:
