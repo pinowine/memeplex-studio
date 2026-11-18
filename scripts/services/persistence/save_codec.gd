@@ -227,7 +227,8 @@ func _validate_current(data: Dictionary) -> PackedStringArray:
 				if str(flow_draft.get("kernel_id","")) != str(variant.kernel_id) or str(flow_draft.get("preset_id","")) != str(variant.get("preset_id","")): errors.append(DeskLocalization.source("LOC_TRANSMISSION_CONFIGURATION_CANNOT_REPLACE_THE_BASE_FORM_EA8990C3"))
 			else:
 				var parent_id: String = str(variant.parent_ids[0]) if not variant.parent_ids.is_empty() else ""
-				if competition._canonical(source_checker.inherited_profile(variant,parent_id)) != competition._canonical(entry.profile): errors.append(DeskLocalization.source("LOC_EXTERNAL_TRANSMISSION_EXPRESSION_DOES_NOT_MATCH_ITS_121705CA"))
+				var profile_version := int(variant.get("mutation_policy", {}).get("profile_version", 1))
+				if competition._canonical(source_checker.inherited_profile(variant,parent_id,profile_version)) != competition._canonical(entry.profile): errors.append(DeskLocalization.source("LOC_EXTERNAL_TRANSMISSION_EXPRESSION_DOES_NOT_MATCH_ITS_121705CA"))
 			if str(variant.get("source_event","")) != "":
 				var found := false
 				for event: Dictionary in data.events:
@@ -347,6 +348,10 @@ func _mutation_threshold(variant: Dictionary, parent: Dictionary, _variants_by_i
 	var metric_version: Variant = policy.get("metric_version", 1)
 	if not _integer(metric_version) or int(metric_version) not in [1, MonitorMetrics.DEVIATION_VERSION]:
 		errors.append("Community propagation policy has an unknown deviation metric")
+		return base
+	var profile_version: Variant = policy.get("profile_version", 1)
+	if not _integer(profile_version) or int(profile_version) not in [1, CompetitionState.INHERITED_PROFILE_VERSION]:
+		errors.append("Community propagation policy has an unknown profile version")
 		return base
 	var ledger_size := int(policy.ledger_size)
 	if int(policy.hour) < 0 or int(policy.hour) > int(data.hour) or ledger_size < 0 or ledger_size > data.economy.transactions.size():

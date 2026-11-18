@@ -6,6 +6,7 @@ const EffectRules = preload("res://scripts/gameplay/events/effect_rules.gd")
 const MonitorMetrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
 const IndependentEndings = preload("res://scripts/gameplay/competition/independent_endings.gd")
 const PropagationRules = preload("res://scripts/gameplay/propagation/propagation_rules.gd")
+const INHERITED_PROFILE_VERSION := 2
 static var _geography_cache: Dictionary = {}
 var rules: MemeGameplayRules
 var catalog: MemeDemoCatalog
@@ -162,7 +163,7 @@ func profile(draft: Dictionary) -> Dictionary:
 	result.propagation_meta = propagation_rules.metadata(result,draft)
 	return result
 
-func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionary:
+func inherited_profile(variant: Dictionary, parent_id: String = "", profile_version: int = INHERITED_PROFILE_VERSION) -> Dictionary:
 	if variant.get("flow_draft") is Dictionary:
 		# The child draft contains its patch changes and the parent's unmodified skill inputs.
 		var derived := profile(variant.flow_draft)
@@ -170,7 +171,7 @@ func inherited_profile(variant: Dictionary, parent_id: String = "") -> Dictionar
 		var distinct := {}
 		for character in str(variant.text): distinct[character] = true
 		derived.expression = clampf(float(distinct.size()) / rules.expression_character_scale, rules.expression_floor, 1.0)
-		derived.reach = maxf(1.0,float(derived.reach))
+		if profile_version == 1: derived.reach = maxf(1.0,float(derived.reach))
 		return derived
 	var source: Dictionary = _state.registry.get(parent_id,{}).get("profile",{}).duplicate(true)
 	if source.is_empty(): source = profile(variant)
