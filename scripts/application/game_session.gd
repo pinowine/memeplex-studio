@@ -222,6 +222,10 @@ func _draft_errors(draft: Dictionary, revision_view: bool = false) -> PackedStri
 	var cost: int = catalog.first_publish_cost if simulation.publish_count == 0 else catalog.revision_publish_cost
 	if simulation.economy.balance < cost:
 		errors.append(DeskLocalization.format_text("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, simulation.economy.balance]))
+	var index: int = atlas.selected_country if atlas.selected_country >= 0 else atlas.clock.studio_index
+	if simulation.publish_count > 0 and errors.is_empty() and index >= 0 and index < atlas.settings.countries.size():
+		if not simulation.publication_changed(draft, str(atlas.settings.countries[index].id)):
+			errors.append(DeskLocalization.source("LOC_WB_PUBLICATION_UNCHANGED"))
 	return errors
 
 func _commit_draft(draft: Dictionary, index: int) -> bool:
@@ -702,13 +706,13 @@ func focus_meme_on_map(id: String) -> void:
 		atlas.select_meme(id)
 
 func _queue_context_trial() -> void:
-	if _context_trial_queued or not _ready_to_run or desk.get("_active_sheet") != "cultivate": return
+	if _context_trial_queued or not _ready_to_run or desk.get("_active_sheet") not in ["edit", "cultivate"]: return
 	_context_trial_queued = true
 	_update_context_trial.call_deferred()
 
 func _update_context_trial() -> void:
 	_context_trial_queued = false
-	if not _ready_to_run or desk.get("_active_sheet") != "cultivate": return
+	if not _ready_to_run or desk.get("_active_sheet") not in ["edit", "cultivate"]: return
 	var editor: Control = hud.design_workbench()
 	if _context_trial_seed != simulation.seed_value:
 		_context_trial_seed = simulation.seed_value
@@ -721,11 +725,14 @@ func _update_context_trial() -> void:
 		country_id = str(country.id)
 		country_title = tr(country.short_name_key)
 	var draft: Dictionary = hud.get_draft()
-	var signature := JSON.stringify([country_id, country_title, draft, _context_trial_skills])
+	var signature := JSON.stringify([country_id, country_title, draft, _context_trial_skills, simulation.current_variant_id, simulation.variants.size()])
 	if signature == _context_trial_signature: return
 	_context_trial_signature = signature
 	# A drag may request several steps; compare only its settled draft once per frame.
-	var report: Dictionary = {} if country_id.is_empty() else simulation.draft_fitness(draft).get("countries", {}).get(country_id, {})
+	var preview: Dictionary = simulation.publication_preview(draft, country_id)
+	editor.set_publication_preview(preview)
+	var report: Dictionary = preview.get("after", {})
+	if simulation.publish_count == 0 and not country_id.is_empty(): report = simulation.draft_fitness(draft).get("countries", {}).get(country_id, {})
 	editor.set_context_trial(country_id, country_title, report)
 
 func inspection_state() -> Dictionary:

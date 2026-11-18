@@ -531,8 +531,8 @@
   },
   "LOC_OPENING_MAP_MONITOR_TEXT": {
     "source": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
-    "zh_CN": "投放后，地图会列出模因，你的排在前面。悬停标签高亮传播点，点击查看传播度、增长率和偏移度。",
-    "en": "After launch, this panel lists the memes on the map, with yours first. Hover over a tag to highlight its spread points; click it to see spread, growth, deviation and other details."
+    "zh_CN": "投放后，地图会列出模因，你的排在前面。悬停标签高亮传播点，点击查看传播度、增长率和偏移度。也记得点开自己的模因，看看“结局进度”里要满足的条件哦~",
+    "en": "After launch, this panel lists the memes on the map, with yours first. Hover over a tag to highlight its spread points; click it to see spread, growth and deviation. Remember to open your meme’s details and check the conditions under Ending progress~"
   },
   "LOC_OPENING_LANGUAGE_WARNING": {
     "source": "你的模因在这个国家因为语言不匹配，可能没有多少人能看懂。即便如此还要继续的话，我也不会管你的哦~",

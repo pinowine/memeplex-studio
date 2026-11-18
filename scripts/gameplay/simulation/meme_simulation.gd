@@ -176,11 +176,58 @@ func bind_world(world: RefCounted, settings: Resource) -> PackedStringArray:
 
 func draft_fitness(draft: Dictionary) -> Dictionary:
 	var data := draft.duplicate(true)
+	data.patch_ids = ExpressionText.patch_ids(data)
 	data.flow_skill_ids = design_state.snapshot().unlocked_skills.duplicate()
 	var profile_data: Dictionary = competition.profile(data)
 	var countries := {}
 	for row: Dictionary in catalog.gameplay_rules.countries: countries[str(row.id)] = competition.fitness(profile_data,str(row.id))
 	return {"countries":countries,"profile":profile_data,"evidence_status":"game_policy"}
+
+func publication_changed(draft: Dictionary, target_country_id: String = "") -> bool:
+	return bool(publication_preview(draft, target_country_id).changed)
+
+func publication_preview(draft: Dictionary, target_country_id: String = "") -> Dictionary:
+	if publish_count == 0: return {"changed":true}
+	var active := Lifecycle.new(self).active_source(variant_by_id(current_variant_id))
+	var published := Lifecycle.content(active)
+	var skills: Array = design_state.snapshot().unlocked_skills
+	var candidate := _publication_content(draft, skills)
+	var baseline := _publication_content(published.flow_draft, skills)
+	var target := country_id if target_country_id.is_empty() else target_country_id
+	var relocation := target != str(deployments.back().country_id)
+	return {"changed":candidate != baseline or relocation, "relocation":relocation, "country_id":target,
+		"before":competition.fitness(competition.live_profile(str(active.id)), target),
+		"after":competition.fitness(candidate.profile, target)}
+
+func _publication_content(draft: Dictionary, skills: Array) -> Dictionary:
+	var data := draft.duplicate(true)
+	data.patch_ids = ExpressionText.patch_ids(data)
+	# Research applies to circulating memes without a paid revision.
+	data.flow_skill_ids = skills.duplicate()
+	var composed: Dictionary = ExpressionText.compose(catalog, data)
+	var result := {"profile":competition.profile(data), "patch_ids":ExpressionText.patch_ids(data)}
+	for field: String in ["expression", "meaning", "meaning_id", "language_versions"]:
+		result[field] = composed.get(field, "" if field != "language_versions" else [])
+	for field: String in ["kernel_id", "preset_id", "target", "reuse_permission", "replaceable_slots"]:
+		result[field] = data[field]
+	return _publication_value(result)
+
+func _publication_value(value: Variant, field: String = "") -> Variant:
+	if value is Vector2: return _publication_value([value.x, value.y])
+	if value is StringName: return String(value)
+	# Removing a patch can leave floating-point residue in its scalar fields.
+	if value is float: return snappedf(value, 0.0000001)
+	if value is Dictionary:
+		var result := {}
+		for key: String in value: result[key] = _publication_value(value[key], key)
+		return result
+	if value is Array or value is PackedStringArray:
+		var result: Array = []
+		for item: Variant in value: result.append(_publication_value(item))
+		if field in ["language_ids", "group_ids", "topic_ids", "patch_ids", "replaceable_slots"]: result.sort()
+		elif field == "language_versions": result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return str(a.language_id) < str(b.language_id))
+		return result
+	return value
 
 func _required_context_errors() -> PackedStringArray:
 	return design_state.required_context_errors()
@@ -466,6 +513,8 @@ func publish(data: Dictionary) -> PackedStringArray:
 	var cost: int = catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost
 	if economy.balance < cost:
 		errors.append(DeskLocalization.source_format("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, economy.balance]))
+	if publish_count > 0 and errors.is_empty() and not publication_changed(data):
+		errors.append(DeskLocalization.source("LOC_WB_PUBLICATION_UNCHANGED"))
 	if not errors.is_empty():
 		status = DeskLocalization.source_join("；",errors)
 		changed.emit()
@@ -496,6 +545,7 @@ func publish(data: Dictionary) -> PackedStringArray:
 	for field in ["module_patch_record", "skill_effects", "context_layer_record", "context_layer_attachment"]:
 		if data.has(field): variants.back()[field] = data[field].duplicate(true)
 	var profile_draft := data.duplicate(true)
+	profile_draft.patch_ids = patch_ids.duplicate()
 	profile_draft.flow_skill_ids = design_state.snapshot().unlocked_skills.duplicate()
 	variants.back().flow_draft = _encoded_draft(profile_draft)
 	variants.back().flow_profile = competition.profile(profile_draft)

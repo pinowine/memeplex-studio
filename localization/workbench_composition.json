@@ -689,6 +689,21 @@
     "zh_CN": "发布修改 · %d MEME",
     "en": "Publish changes · %d MEME"
   },
+  "LOC_WB_PUBLICATION_UNCHANGED": {
+    "source": "草稿和投放国家都没有变化。",
+    "zh_CN": "草稿和投放国家都没有变化。",
+    "en": "The draft and deployment country are unchanged."
+  },
+  "LOC_WB_FIT_COMPARISON": {
+    "source": "已发布 → 草稿",
+    "zh_CN": "已发布 → 草稿",
+    "en": "Published → Draft"
+  },
+  "LOC_WB_FIT_SCORE_CHANGE": {
+    "source": "适配评分 %.1f → %.1f",
+    "zh_CN": "适配评分 %.1f → %.1f",
+    "en": "Fit score %.1f → %.1f"
+  },
   "LOC_COMMUNITY_PATCH_EXPRESSION": {
     "source": "它是一个%s，下方的表达已按这个补丁改写。",
     "zh_CN": "它是一个%s，下方的表达已按这个补丁改写。",

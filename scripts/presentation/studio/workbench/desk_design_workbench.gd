@@ -117,6 +117,7 @@ var _draft_status: Label
 var _cost: Label
 var _publish: Button
 var _publication_hint := ""
+var _publication_preview: Dictionary = {}
 var _skill_presentation: Dictionary = {}
 var _textures: Dictionary = {}
 var _sync_count := 0
@@ -317,13 +318,21 @@ func refresh_publication() -> void:
 	var phase := str(_state.get("phase", "draft"))
 	if int(_state.get("publish_count", 0)) > 0:
 		_publish.text = DeskLocalization.format_text("LOC_WB_PUBLISH_CHANGES_COST", cost)
-		_publish.disabled = not can_revise or phase not in ["draft", "running"] or balance < cost
+		var unchanged := not bool(_publication_preview.get("changed", true))
+		_publish.disabled = not can_revise or phase not in ["draft", "running"] or balance < cost or unchanged
 		_publication_hint = DeskLocalization.format_text("LOC_MEME_D_47732400", balance)
 		if phase == "event":
 			_publication_hint = DeskLocalization.text("LOC_COLLECT_OR_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_A156F2DD") + "\n" + _publication_hint
+		elif unchanged:
+			_publication_hint = DeskLocalization.text("LOC_WB_PUBLICATION_UNCHANGED")
 		elif balance < cost:
 			_publication_hint = DeskLocalization.format_text("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, balance])
 	if before != [_footer.get_parent(), _footer.visible, _publish.text, _draft_status.text]: _queue_text_layout()
+
+func set_publication_preview(preview: Dictionary) -> void:
+	if _publication_preview == preview: return
+	_publication_preview = preview.duplicate(true)
+	refresh_publication()
 
 
 func sheet_pages() -> Dictionary:
@@ -1099,8 +1108,26 @@ func publication_hover_info(viewport_point: Vector2) -> Dictionary:
 	if not _hover_enabled or _publish == null or not _publish.is_visible_in_tree(): return {}
 	var local := _publish.get_global_transform_with_canvas().affine_inverse() * viewport_point
 	if not Rect2(Vector2.ZERO, _publish.size).has_point(local): return {}
-	return {"kind":"publication", "title":_publish.text, "hover_description":_publication_hint,
+	return {"kind":"publication", "title":_publish.text, "hover_description":_publication_hint, "rows":_publication_rows(),
 		"cursor_shape":Input.CURSOR_FORBIDDEN if _publish.disabled else Input.CURSOR_POINTING_HAND}
+
+func _publication_rows() -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	if not _publication_preview.has("before"): return rows
+	var before: Dictionary = _publication_preview.before
+	var after: Dictionary = _publication_preview.after
+	rows.append({"category":tr(str(_publication_preview.country_id) + "_SHORT"), "value":DeskLocalization.text("LOC_WB_FIT_COMPARISON")})
+	rows.append({"value":DeskLocalization.format_text("LOC_WB_FIT_SCORE_CHANGE", [float(before.score)*100.0, float(after.score)*100.0])})
+	var changes: Array[Dictionary] = []
+	for key: String in ContextTrialSlip.COMPONENTS:
+		var delta := float(after.components[key]) - float(before.components[key])
+		if is_zero_approx(delta): continue
+		changes.append({"component":key, "delta":delta})
+	changes.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return absf(float(a.delta)) > absf(float(b.delta)))
+	for change: Dictionary in changes.slice(0, 3):
+		var key: String = change.component
+		rows.append({"category":DeskLocalization.text(str(ContextTrialSlip.TITLES[key])), "value":"%.1f → %.1f" % [float(before.components[key])*100.0, float(after.components[key])*100.0]})
+	return rows
 
 
 func _spread_hover(viewport_point: Vector2) -> Dictionary:
