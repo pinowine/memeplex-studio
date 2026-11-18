@@ -186,6 +186,12 @@ func clear_hover() -> void:
 	_refresh()
 
 func _input(event: InputEvent) -> void:
+	if _active and visible and not _blocked and event is InputEventKey and event.pressed and not event.echo:
+		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+		if key == KEY_SPACE:
+			if not _transitioning and str(_steps[_index].get("action", "")) == "continue": advance()
+			get_viewport().set_input_as_handled()
+			return
 	# The optional local editor owns developer shortcuts, including their releases.
 	if OS.is_debug_build():
 		var workbench := get_tree().root.get_node_or_null("LocalTextWorkbenchRuntime")
@@ -404,6 +410,7 @@ func _present_step() -> void:
 	_hover_target = ""
 	_hover_text = ""
 	_display_index = _index
+	_card_placed = false
 	_typewriter.progress = 0.0 if _typewriter_enabled else _body_text.length() + 3.0
 	_transitioning = false
 	_appearance = 1.0
@@ -566,7 +573,10 @@ func _refresh() -> void:
 	else:
 		body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		_actions.alignment = BoxContainer.ALIGNMENT_BEGIN
-	_card_destination = _place_card(card.size)
+	if _card_placed and bool(step.get("map_navigation", false)):
+		_card_destination = _card_destination.clamp(Vector2.ONE * CARD_MARGIN, (size - card.size - Vector2.ONE * CARD_MARGIN).max(Vector2.ONE * CARD_MARGIN))
+	else:
+		_card_destination = _place_card(card.size)
 	if not _card_placed:
 		_card_position = _card_destination
 		_card_placed = true

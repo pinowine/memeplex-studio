@@ -536,8 +536,6 @@ func _tutorial_reserved_areas() -> Array:
 	if hover.is_visible_in_tree(): rectangles.append(hover._receipt.get_global_rect())
 	var source_hover: Control = page.hud.design_workbench()._source_hover
 	if source_hover.is_visible_in_tree(): rectangles.append(source_hover.get_global_rect())
-	if page.atlas.hover_note.is_visible_in_tree():
-		rectangles.append(_tutorial_project_rect(page.atlas.hover_note))
 	var reader: Control = page.desk._slot_reader
 	if reader != null and reader.is_visible_in_tree():
 		rectangles.append(reader.inspection().target_rect)
@@ -559,6 +557,13 @@ func hover_starter(index: int) -> void:
 
 func _process(_delta: float) -> void:
 	if tutorial == null or not tutorial._active: return
+	if str(tutorial._steps[tutorial._index].id) == "language_warning":
+		var country_id := str(page.atlas.settings.countries[page.atlas.selected_country].id)
+		var language_id := str(page.hud.get_draft().get("language_id", ""))
+		var key := "LOC_OPENING_LANGUAGE_CORRECTED" if language_id in page.catalog.gameplay_rules.country(country_id).primary_languages else "LOC_OPENING_LANGUAGE_WARNING"
+		if str(tutorial._steps[tutorial._index].text) != key:
+			tutorial._steps[tutorial._index].text = key
+			tutorial._refresh()
 	var target := str(tutorial._steps[tutorial._index].get("target", ""))
 	if target not in ["monitor/ideology", "monitor/pragmatics"]: return
 	var point := tutorial.get_viewport().get_mouse_position()

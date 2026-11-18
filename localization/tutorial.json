@@ -371,8 +371,8 @@
   },
   "LOC_OPENING_SPREAD_TREE_TEXT": {
     "source": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
-    "zh_CN": "先从“文本传播”开始。点一下节点，就能查看它的效果和研究费用；连线表示需要先学会什么。",
-    "en": "Start with Text Delivery. Select a node to see its effect and research cost. Lines show what you need to learn first."
+    "zh_CN": "先从“文本传播”开始。把鼠标悬停在节点上，就能查看它的效果和研究费用；连线表示需要先学会什么。",
+    "en": "Start with Text Delivery. Hover over a node to see its effect and research cost. Lines show what you need to learn first."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
     "source": "能力详情",
@@ -543,5 +543,10 @@
     "source": "有人把你的模因改写了。\n\n现在的表达：\n%s\n\n现在的含义：\n%s",
     "zh_CN": "有人把你的模因改写了。\n\n现在的表达：\n%s\n\n现在的含义：\n%s",
     "en": "Someone has rewritten your meme.\n\nCurrent expression:\n%s\n\nCurrent meaning:\n%s"
+  },
+  "LOC_OPENING_LANGUAGE_CORRECTED": {
+    "source": "很好，你已经学会了阅读。",
+    "zh_CN": "很好，你已经学会了阅读。",
+    "en": "Good. You have learned to read."
   }
 }
