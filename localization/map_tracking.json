@@ -768,5 +768,25 @@
     "source": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
     "zh_CN": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
     "en": "A meme circulating independently of your control. It may emerge elsewhere or split from an existing meme."
+  },
+  "MM_ENDING_PROGRESS_LOW_REACH": {
+    "source": "各国最高采用 %s / ≤%s · 全球传播 %s / ≤%s",
+    "zh_CN": "各国最高采用 %s / ≤%s · 全球传播 %s / ≤%s",
+    "en": "Highest adoption in any country %s / ≤%s · Global spread %s / ≤%s"
+  },
+  "MM_ENDING_PROGRESS_NOT_GROWING": {
+    "source": "采用、曝光与传播均未增长",
+    "zh_CN": "采用、曝光与传播均未增长",
+    "en": "Adoption, exposure and spread are not growing"
+  },
+  "MM_ENDING_PROGRESS_STILL_GROWING": {
+    "source": "采用、曝光或传播仍在增长",
+    "zh_CN": "采用、曝光或传播仍在增长",
+    "en": "Adoption, exposure or spread is still growing"
+  },
+  "MM_ENDING_PROGRESS_FORGOTTEN_HELP": {
+    "source": "投放超过%d小时后，各国采用率均不高于1%%、全球传播度不高于0.1%%，且采用、曝光、传播度连续%d小时不增长。",
+    "zh_CN": "投放超过%d小时后，各国采用率均不高于1%%、全球传播度不高于0.1%%，且采用、曝光、传播度连续%d小时不增长。",
+    "en": "After %d hours of circulation, adoption must stay at or below 1%% in every country and global spread at or below 0.1%%, with no growth in adoption, exposure or spread for %d consecutive hours."
   }
 }

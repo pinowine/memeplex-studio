@@ -174,7 +174,12 @@ static func _ending_rows(world: Dictionary, raw: Dictionary, country_titles: Dic
 				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_GAIN", [gain, _points(float(progress.gain_min))]))
 				help = DeskLocalization.format_text("MM_ENDING_PROGRESS_ADAPTATION_HELP", [rules.adaptation_stable_window_hours])
 			"forgotten":
-				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_CARRIERS", [str(int(progress.adopted)), str(int(progress.exposed))]))
+				if int(progress.get("forgotten_version", 1)) == 2:
+					values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_LOW_REACH", [_percentage(float(progress.max_adoption)), _percentage(float(progress.max_adoption_max)), _share(float(progress.spread)), _share(float(progress.spread_max))]))
+					values.append(DeskLocalization.text("MM_ENDING_PROGRESS_NOT_GROWING" if bool(progress.nonincreasing) else "MM_ENDING_PROGRESS_STILL_GROWING"))
+					help = DeskLocalization.format_text("MM_ENDING_PROGRESS_FORGOTTEN_HELP", [int(progress.seed_required_hours), int(progress.required_hours)])
+				else:
+					values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_CARRIERS", [str(int(progress.adopted)), str(int(progress.exposed))]))
 				values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_SEED", [int(progress.seed_hours), int(progress.seed_required_hours)]))
 		values.append(DeskLocalization.format_text("MM_ENDING_PROGRESS_HOURS", [int(progress.hours), int(progress.required_hours)]))
 		rows.append({"goal_id":id, "label":DeskLocalization.text("MM_ENDING_" + id.to_upper() + "_TITLE"), "value":" · ".join(values), "help_key":"", "help":help})
