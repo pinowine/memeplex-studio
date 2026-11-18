@@ -115,7 +115,7 @@ func _rebuild(interactive_countries: bool) -> void:
 		header.add_theme_constant_override("separation", 8)
 		section_body.add_child(header)
 		var icon := SectionIcon.new()
-		icon.kind = "impact" if str(section.kind) in ["metric", "ending"] else str(section.kind)
+		icon.kind = "impact" if str(section.kind) == "metric" else str(section.kind)
 		icon.ink = _section_ink(str(section.kind))
 		header.add_child(icon)
 		var title := _label(str(section.title), 14, icon.ink)
@@ -159,7 +159,6 @@ func _rebuild(interactive_countries: bool) -> void:
 			content.add_child(empty)
 		for row_index in section.rows.size():
 			var row: Dictionary = section.rows[row_index]
-			var ending := str(section.kind) == "ending"
 			var country_id := str(row.get("country_id", ""))
 			if not country_id.is_empty():
 				var chip := Fields.TagChip.new()
@@ -181,12 +180,11 @@ func _rebuild(interactive_countries: bool) -> void:
 			content.add_child(fields)
 			var label: Control
 			label = _label(str(row.label), 12, Style.SECONDARY_INK)
-			if ending: label.add_theme_font_override("font", Handwriting.SEMIBOLD_FONT)
 			if str(row.get("help_key", "")) in ["MM_HELP_SPREAD", "MM_HELP_DEVIATION"]:
 				label.add_theme_color_override("font_color", Typography.ACCENT if str(row.help_key) == "MM_HELP_SPREAD" else Color("ad4438"))
 			if not prose and country_id.is_empty(): label.custom_minimum_size.x = 88
 			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			label.size_flags_stretch_ratio = 0.6 if ending else 0.75
+			label.size_flags_stretch_ratio = 0.75
 			label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 			fields.add_child(label)
 			var tags: Array = []
@@ -204,9 +202,9 @@ func _rebuild(interactive_countries: bool) -> void:
 					tags.append(chip)
 				value = flow
 			else:
-				value = _label(str(row.value), 12 if ending else 14, Style.INK)
+				value = _label(str(row.value), 14, Style.INK)
 			value.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			value.size_flags_stretch_ratio = 1.4 if ending else 1.25
+			value.size_flags_stretch_ratio = 1.25
 			fields.add_child(value)
 			_row_views.append({"section":section_index, "index":row_index, "label":label, "value":value, "tags":tags, "context":context})
 
@@ -249,6 +247,6 @@ func _label(text: String, font_size: int, ink: Color) -> Label:
 	return label
 
 func _section_ink(kind: String) -> Color:
-	if kind in ["metric", "ending"]: return Style.SECTION_PURPLE
+	if kind == "metric": return Style.SECTION_PURPLE
 	if kind == "meme": return Style.SECTION_BROWN
 	return Style.SECTION_TEAL

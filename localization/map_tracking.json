@@ -474,31 +474,6 @@
     "zh_CN": "最后的回声",
     "en": "Last echo"
   },
-  "MM_ENDING_PROGRESS_RANGE": {
-    "source": "波动 %s / ≤%s 个百分点",
-    "zh_CN": "波动 %s / ≤%s 个百分点",
-    "en": "Range %s / ≤%s pp"
-  },
-  "MM_ENDING_PROGRESS": {
-    "source": "结局进度",
-    "zh_CN": "结局进度",
-    "en": "Ending progress"
-  },
-  "MM_ENDING_PROGRESS_GAP": {
-    "source": "差距 %s / ≤%s 个百分点",
-    "zh_CN": "差距 %s / ≤%s 个百分点",
-    "en": "Gap %s / ≤%s pp"
-  },
-  "MM_ENDING_PROGRESS_HOURS": {
-    "source": "持续 %dh / %dh",
-    "zh_CN": "持续 %dh / %dh",
-    "en": "Held %dh / %dh"
-  },
-  "MM_ENDING_PROGRESS_LEAD": {
-    "source": "领先 %s / %s 个百分点",
-    "zh_CN": "领先 %s / ≥%s 个百分点",
-    "en": "Lead %s / ≥%s pp"
-  },
   "MM_ENDING_EXTINCTION_TITLE": {
     "source": "传播终止",
     "zh_CN": "传播终止",
@@ -534,11 +509,6 @@
     "zh_CN": "新的表达接过了话题的中心。",
     "en": "The new expression has taken the centre of the conversation."
   },
-  "MM_ENDING_PROGRESS_SEED": {
-    "source": "投放期 %dh / %dh",
-    "zh_CN": "投放 %dh / >%dh",
-    "en": "Age %dh / >%dh"
-  },
   "MM_ENDING_AUTONOMOUS_LINEAGE_REASON": {
     "source": "无人控制的突变后代已覆盖至少10%的世界人口，并持续24模拟小时。",
     "zh_CN": "无人控制的突变后代已覆盖至少10%的世界人口，并持续24模拟小时。",
@@ -558,16 +528,6 @@
     "source": "人类灭绝",
     "zh_CN": "人类灭绝",
     "en": "Human extinction"
-  },
-  "MM_ENDING_PROGRESS_CARRIERS": {
-    "source": "采用 %s / 0 · 曝光 %s / 0",
-    "zh_CN": "采用 %s / 0 · 曝光 %s / 0",
-    "en": "Adopted %s / 0 · Exposed %s / 0"
-  },
-  "MM_ENDING_PROGRESS_GAIN": {
-    "source": "增幅 %s / ≥%s 个百分点",
-    "zh_CN": "增幅 %s / ≥%s 个百分点",
-    "en": "Gain %s / ≥%s pp"
   },
   "MM_ENDING_VIRAL_ICON_TITLE": {
     "source": "流行符号",
@@ -609,11 +569,6 @@
     "zh_CN": "同一来源长出了不同的表达。",
     "en": "Different expressions have grown from the same source."
   },
-  "MM_ENDING_PROGRESS_BASELINE": {
-    "source": "基准 %s / ≥%s",
-    "zh_CN": "改写前基准 %s / ≥%s",
-    "en": "Pre-revision baseline %s / ≥%s"
-  },
   "MM_ENDING_SUCCESSFUL_ADAPTATION_COMMENT": {
     "source": "一次调整，让更多人愿意接过这句话。",
     "zh_CN": "一次调整，让更多人愿意接过这句话。",
@@ -643,11 +598,6 @@
     "source": "势均力敌",
     "zh_CN": "势均力敌",
     "en": "Balanced duel"
-  },
-  "MM_ENDING_PROGRESS_BOTH": {
-    "source": "双方 %s、%s / ≥%s",
-    "zh_CN": "双方 %s、%s / ≥%s",
-    "en": "Both %s, %s / ≥%s"
   },
   "MM_ENDING_WORLD_EXTINCTION_COMMENT": {
     "source": "没有人能接住下一句话。这不是胜利。",
@@ -699,50 +649,10 @@
     "zh_CN": "你收起这一页，桌上还留着空白的稿纸。",
     "en": "You put this page away. Another creation lies ahead."
   },
-  "MM_ENDING_PROGRESS_SPREAD": {
-    "source": "传播 %s / %s",
-    "zh_CN": "传播 %s / ≥%s",
-    "en": "Spread %s / ≥%s"
-  },
-  "MM_ENDING_PROGRESS_DEVIATION": {
-    "source": "偏移 %s / ≤%s",
-    "zh_CN": "偏移 %s / ≤%s",
-    "en": "Deviation %s / ≤%s"
-  },
   "MM_ENDING_OWN_WORLD_COMMENT": {
     "source": "你的表达走得很远，归属仍在你手中。",
     "zh_CN": "你的表达走得很远，归属仍在你手中。",
     "en": "Your expression has travelled far, and its ownership remains yours."
-  },
-  "MM_ENDING_PROGRESS_HELP": {
-    "source": "每行给出当前值、目标值与连续观察时间。",
-    "zh_CN": "当前值、目标值与连续观察时间。",
-    "en": "Each row shows current values, targets and consecutive observation time."
-  },
-  "MM_ENDING_PROGRESS_ADOPTION": {
-    "source": "采用 %s / %s",
-    "zh_CN": "采用 %s / ≥%s",
-    "en": "Adoption %s / ≥%s"
-  },
-  "MM_ENDING_PROGRESS_SPLIT": {
-    "source": "由你的模因分裂的独立改写",
-    "zh_CN": "由直接分裂形成的新模因",
-    "en": "A new meme created by a direct split"
-  },
-  "MM_ENDING_PROGRESS_REVISION": {
-    "source": "基准达标后发布改写",
-    "zh_CN": "基准达标后发布改写",
-    "en": "Reach the baseline, then publish a revision"
-  },
-  "MM_ENDING_PROGRESS_UNREVISED": {
-    "source": "未发布改写",
-    "zh_CN": "未发布改写",
-    "en": "Unrevised"
-  },
-  "MM_ENDING_PROGRESS_ADAPTATION_HELP": {
-    "source": "先让投放国采用率的%d小时平均值达到基准，再发布改变含义的新版本。改写后的采用率和增幅需达到目标，并保持指定时间。",
-    "zh_CN": "先让投放国采用率的%d小时平均值达到基准，再发布改变含义的新版本。改写后的采用率和增幅需达到目标，并保持指定时间。",
-    "en": "Reach the baseline with a %d-hour average in the deployment country, then publish a revision that changes meaning. The revised adoption and gain must meet their targets for the required time."
   },
   "MM_PRIMARY_LANGUAGE": {
     "source": "主语言",
@@ -768,25 +678,5 @@
     "source": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
     "zh_CN": "这是独立传播的模因，不受你的创作控制。它可能由外界产生，也可能从已有模因分化而来。",
     "en": "A meme circulating independently of your control. It may emerge elsewhere or split from an existing meme."
-  },
-  "MM_ENDING_PROGRESS_LOW_REACH": {
-    "source": "各国最高采用 %s / ≤%s · 全球传播 %s / ≤%s",
-    "zh_CN": "各国最高采用 %s / ≤%s · 全球传播 %s / ≤%s",
-    "en": "Highest adoption in any country %s / ≤%s · Global spread %s / ≤%s"
-  },
-  "MM_ENDING_PROGRESS_NOT_GROWING": {
-    "source": "采用、曝光与传播均未增长",
-    "zh_CN": "采用、曝光与传播均未增长",
-    "en": "Adoption, exposure and spread are not growing"
-  },
-  "MM_ENDING_PROGRESS_STILL_GROWING": {
-    "source": "采用、曝光或传播仍在增长",
-    "zh_CN": "采用、曝光或传播仍在增长",
-    "en": "Adoption, exposure or spread is still growing"
-  },
-  "MM_ENDING_PROGRESS_FORGOTTEN_HELP": {
-    "source": "投放超过%d小时后，各国采用率均不高于1%%、全球传播度不高于0.1%%，且采用、曝光、传播度连续%d小时不增长。",
-    "zh_CN": "投放超过%d小时后，各国采用率均不高于1%%、全球传播度不高于0.1%%，且采用、曝光、传播度连续%d小时不增长。",
-    "en": "After %d hours of circulation, adoption must stay at or below 1%% in every country and global spread at or below 0.1%%, with no growth in adoption, exposure or spread for %d consecutive hours."
   }
 }
