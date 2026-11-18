@@ -269,7 +269,7 @@ func _layout_grouped_bars(top: float, width: float) -> float:
 		var x := PADDING.x + index * (column_width + ROW_GAP)
 		var y := top + _add_text(str(row.label), Vector2(x, top), column_width, BOLD_FONT, 12, ReceiptStyle.SECONDARY_INK, "category") + ROW_GAP
 		for tag: Dictionary in row.tags:
-			var ink := _section_color(str(tag.kind))
+			var ink: Color = ContextTag.CardFace.PALETTES[str(tag.kind)].body
 			var primary := bool(tag.primary)
 			var text := "%s %d%%" % [str(tag.name), roundi(float(tag.share) * 100)]
 			var text_height := _add_text(text, Vector2(x + 6, y + 4), column_width - 12, BODY_FONT, 12, ReceiptStyle.INK, "bar_primary" if primary else "bar_label", HORIZONTAL_ALIGNMENT_CENTER)
@@ -285,10 +285,10 @@ func _layout_grouped_bars(top: float, width: float) -> float:
 func _draw() -> void:
 	for bar: Dictionary in _grouped_bars:
 		var rect: Rect2 = bar.rect
-		draw_rect(rect, Color(bar.color, .06))
+		draw_rect(rect, Color(bar.color, .12))
 		if bool(bar.primary): draw_rect(rect, Color(bar.color, .55), false, 1)
 		rect.size.x *= float(bar.share)
-		draw_rect(rect, Color(bar.color, .12 + .20 * float(bar.share)))
+		draw_rect(rect, Color(bar.color, .25 + .40 * float(bar.share)))
 	for tag: Dictionary in _tag_panels:
 		draw_style_box(tag.paper, tag.rect)
 	for y: float in _separators:
