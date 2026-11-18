@@ -231,67 +231,67 @@
   },
   "MM_HELP_LANGUAGE": {
     "source": "这个模因使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
-    "zh_CN": "模因使用的语言，与各国的语言分布匹配。多种语言取匹配最强者。",
+    "zh_CN": "模因带有的语言，拿来对照各国懂这门语言的人口占比；带了多门语言时按最高的那门算。",
     "en": "Languages used by this meme to match each country's language distribution. Multiple languages use the strongest match."
   },
   "MM_HELP_GROUP": {
     "source": "这个模因面向的人群。多个人群取匹配最强者，不叠加人口。",
-    "zh_CN": "模因面向的人群。多个群体按匹配最强者计算人口。",
+    "zh_CN": "模因面向的群体；装了多个群体卡时，按当地匹配最高的一组算，人口不累加。",
     "en": "Audiences addressed by this meme. Multiple audiences use the strongest match without adding population."
   },
   "MM_HELP_TOPICS": {
     "source": "这个模因涉及的话题，按所在国家对这些话题的偏好计算匹配。",
-    "zh_CN": "这个模因涉及的话题，按所在国家对这些话题的偏好计算匹配。",
+    "zh_CN": "模因聊到的话题，对照各国受众平时爱聊什么来算契合度。",
     "en": "Topics addressed by this meme, matched against each country's topic preferences."
   },
   "MM_HELP_STANCE": {
     "source": "这个模因在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
-    "zh_CN": "这个模因在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
+    "zh_CN": "模因在自由与威权、平等与等级上的倾向，拿来对照当地的社会风气。",
     "en": "The meme's stance on liberty and authority, and equality and hierarchy, used to match country context."
   },
   "MM_HELP_PRAGMATICS": {
     "source": "这个模因表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
-    "zh_CN": "这个模因表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
+    "zh_CN": "模因说话偏真诚还是反讽、支持还是反对，拿来对照当地受众的口味。",
     "en": "How this meme conveys sincerity or irony, and support or opposition, used to match country context."
   },
   "MM_HELP_DETACHED": {
     "source": "这一层已经脱离表达，在传播适配中使用中性匹配值。",
-    "zh_CN": "这一层已经脱离表达，在传播适配中使用中性匹配值。",
+    "zh_CN": "这一项没接入当前表达，算契合度时按居中处理。",
     "en": "This layer is detached from the expression and uses a neutral match in transmission fitness."
   },
   "MM_HELP_CHANNEL": {
     "source": "发布这个模因时使用的渠道，决定基础触达系数。",
-    "zh_CN": "发布这个模因时使用的渠道，决定基础触达系数。",
+    "zh_CN": "投放时走的基础渠道，决定起步能触达多少人。",
     "en": "The channel used to publish this meme, which determines its base reach factor."
   },
   "MM_HELP_REACH": {
     "source": "渠道触达系数结合已学习传播技能后的实际倍数，用来放大传播压力。",
-    "zh_CN": "渠道触达系数结合已学习传播技能后的实际倍数，用来放大传播压力。",
+    "zh_CN": "基础渠道叠加上已点亮的传播能力后，实际能把传播声势放大多少倍。",
     "en": "The actual reach multiplier after channel reach and learned transmission skills, used to scale transmission pressure."
   },
   "MM_HELP_LANGUAGE_ACCESS": {
     "source": "语言可达性是可理解性计算的一部分，与可识别度和语境依赖共同作用。",
-    "zh_CN": "语言可达性是可理解性计算的一部分，与可识别度和语境依赖共同作用。",
+    "zh_CN": "当地人能跨过多少语言门槛，和可识别度、语境依赖一块儿决定好不好懂。",
     "en": "Language access contributes to comprehension together with recognizability and context dependence."
   },
   "MM_HELP_RECOGNIZABILITY": {
     "source": "表达被识别的程度，与语言可达性共同影响可理解性。",
-    "zh_CN": "表达被识别的程度，与语言可达性共同影响可理解性。",
+    "zh_CN": "句式或梗的特征有多好认，和语言可达性一块儿决定好不好懂。",
     "en": "How recognizable the expression is, contributing to comprehension alongside language access."
   },
   "MM_HELP_CONTEXT_DEPENDENCY": {
     "source": "对特定人群语境的依赖。依赖越高，人群不匹配时可理解性降低越多。",
-    "zh_CN": "对特定人群语境的依赖。依赖越高，人群不匹配时可理解性降低越多。",
+    "zh_CN": "有多挑圈子。依赖越高，传到不对口的群体眼里就越像天书。",
     "en": "Dependence on a particular audience context. Higher dependence reduces comprehension more when that audience does not match."
   },
   "MM_HELP_REMIX_COST": {
     "source": "外部群体继续传播和改写的成本，用于计算群体复用系数，进而影响传播压力。",
-    "zh_CN": "外部群体继续传播和改写的成本，用于计算群体复用系数，进而影响传播压力。",
+    "zh_CN": "外人拿去接话或二创有多费劲；门槛越低，大家越乐意跟着改和转。",
     "en": "The cost of community reuse and remixing. It contributes to the reuse factor that scales transmission pressure."
   },
   "MM_HELP_EXPRESSION": {
     "source": "根据实际表达中不同字符数计算的表达强度，用于竞争适配。",
-    "zh_CN": "根据实际表达中不同字符数计算的表达强度，用于竞争适配。",
+    "zh_CN": "按成品字句的丰富程度算出的表达分量，和别的模因同台抢注意力时会用到。",
     "en": "Expression strength calculated from distinct characters in the actual text, used in competition fitness."
   },
   "MM_HELP_LEGEND": {
@@ -331,7 +331,7 @@
   },
   "MM_HELP_DEVIATION": {
     "source": "相对初始表达的综合差异。严格超过50%时分裂，恰好50%不分裂。分裂后原模因回退相关效果并归零，新模因独立命名；地图传播量按回退造成的传播能力损失分配，总量不增加。",
-    "zh_CN": "编辑、传播事件和时间带来的累计偏移。虚线标出当前分化阈值，基础为50%。传播研究可以减少偏移、减慢自然增长或提高阈值，同时占用Meme点数，部分研究也会降低传播效率。超过阈值后，新模因独立发展，原模因回退相关修改。",
+    "zh_CN": "你每次改动、外头发生的传播事件，再加上时间推移，都会一点点拉大偏移度。虚线是当前的分化阈值（默认 50%）；一旦跨过这条线，变异出去的部分就会自立门户变成新模因，你手里的原模因则会退回这轮跑偏前的样子。在传播页做研究能压低偏移、减慢自然跑偏或抬高阈值，只是要花 Meme 点数，个别研究还会拖慢一点传播效率。",
     "en": "Deviation accumulates through edits, events and time. The dashed line marks the current split threshold, initially 50 percent. Transmission research can reduce drift, slow its growth or raise the threshold. It costs Meme points, and some research also slows spread. Above the threshold, a new independent meme emerges and the original rolls back the relevant edits."
   },
   "MM_ENDING_TITLE": {

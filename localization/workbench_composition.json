@@ -71,12 +71,12 @@
   },
   "LOC_PROP_NODE_TEXT_DESCRIPTION": {
     "source": "以文字发布当前模因。",
-    "zh_CN": "把当前模因写成文字，发到支持文字的渠道，让读者直接阅读。",
+    "zh_CN": "把模因写成纯文字帖子发出去，让人直接读字看懂。",
     "en": "Write the current meme as a post and share it through channels that support text."
   },
   "LOC_PROP_NODE_TEXT_EFFECT": {
     "source": "开放基础文字投放。",
-    "zh_CN": "允许通过文字渠道投放模因。",
+    "zh_CN": "解锁基础的文字投放渠道。",
     "en": "Allow meme publication through text channels."
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_TITLE": {
@@ -86,12 +86,12 @@
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_DESCRIPTION": {
     "source": "将已有文字层转成受支持语言的译文。",
-    "zh_CN": "把帖子里的文字译成其他语言，让使用这些语言的读者也能看懂。",
+    "zh_CN": "自动把帖子里的文字翻成其他语言，不懂原文的人也能看明白。",
     "en": "Translate the words in a post so readers of other supported languages can understand them."
   },
   "LOC_PROP_NODE_MACHINE_TRANSLATION_EFFECT": {
     "source": "以平台支持的语言版本生成文字译文。",
-    "zh_CN": "文字传播按目标国家对原文及现有译文语言的最高掌握率计算语言匹配。",
+    "zh_CN": "文字传播时，从原文和已有译文中挑当地人最懂的一门语言计算理解度。",
     "en": "Text delivery uses the highest local proficiency among the original and available translation languages."
   },
   "LOC_PROP_NODE_IMAGE_TITLE": {
@@ -101,12 +101,12 @@
   },
   "LOC_PROP_NODE_IMAGE_DESCRIPTION": {
     "source": "使用图像承载表达。",
-    "zh_CN": "用画面表达内容，让读者通过表情、动作等视觉信息理解这个梗。图中文字可搭配翻译和嵌字传播。",
+    "zh_CN": "把梗做成配图，靠画面里的表情和动作传神达意；图上的字还能配合翻译和嵌字。",
     "en": "Use images to convey the meme through expressions, actions and other visual cues. Captions can be translated and placed back into the image."
   },
   "LOC_PROP_NODE_IMAGE_EFFECT": {
     "source": "独立视觉信息承担部分的语言理解障碍降低90%。",
-    "zh_CN": "图像传播将独立视觉信息部分的语言障碍降低90%，图中文字仍按语言匹配计算。",
+    "zh_CN": "靠画面本身就能看懂的部分，语言障碍降低 90%；图上的配字仍看当地人懂不懂这门语言。",
     "en": "Image delivery reduces language barriers by 90 percent for independent visual information while embedded text retains its language requirement."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_TITLE": {
@@ -116,12 +116,12 @@
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_DESCRIPTION": {
     "source": "将对应译文排入原图文字区域。",
-    "zh_CN": "把图片中的原文换成对应译文，重新排进原来的文字区域，供不同语言的读者阅读。",
+    "zh_CN": "把图片里的原文换成外语译文，重新排进原来的文字位置，做成多语种梗图。",
     "en": "Replace the original captions with translations laid out in the same text regions, making image editions for different languages."
   },
   "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_EFFECT": {
     "source": "将对应译文排入图中文字区域，形成多语图文版本。",
-    "zh_CN": "图中文字按目标国家对原文及现有译文语言的最高掌握率计算语言匹配。",
+    "zh_CN": "图上的配字会从原文和已有译文中，挑当地人最懂的一门语言计算理解度。",
     "en": "Image lettering uses the highest local proficiency among the original and available translation languages."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_TITLE": {
@@ -131,12 +131,12 @@
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_DESCRIPTION": {
     "source": "为传播副本附上出处和用法。",
-    "zh_CN": "转发时附上出处和用法，交代这个梗从哪里来、通常用来表达什么，帮助没接触过它的人理解。",
+    "zh_CN": "转帖时顺手附一段背景说明，交代这个梗出自哪儿、平时怎么用，帮圈外人看懂门道。",
     "en": "Include the source and usual meaning when sharing the meme, helping people understand it even if they have never encountered it before."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT": {
     "source": "随传播附上出处与用法，有效语境依赖降至原值60%。",
-    "zh_CN": "附有背景说明的模因在传播计算中的语境依赖乘以0.6。\n偏移度降低3个百分点，自然增长减慢35%，分化阈值提高4个百分点，传播效率降低4%。",
+    "zh_CN": "附带背景说明后，模因对特定语境的依赖降至原来的 60%。\n当前偏移度降低 3%，自然偏移减慢 35%，分化阈值提高 4%，传播效率降低 4%。",
     "en": "Multiply context dependency by 0.6 when the meme has an accompanying context note.\nDeviation falls by 3 percentage points. Natural drift slows by 35 percent, the split threshold rises by 4 points, and spread efficiency falls by 4 percent."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_TITLE": {
@@ -146,12 +146,12 @@
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_DESCRIPTION": {
     "source": "为图像提供可读的文字出口。",
-    "zh_CN": "给图片附一段文字，说明画面内容和含义，帮助读者理解。",
+    "zh_CN": "给图片附一段文字解说，把画面内容和笑点讲清楚。",
     "en": "Attach a description of the image and its meaning to help readers understand it."
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT": {
     "source": "通过文字渠道送出经编写的图像信息说明。",
-    "zh_CN": "图像传播的语言匹配取图片可读率与对应语言图像说明可读率乘以0.85后的较高值。",
+    "zh_CN": "看不懂原图时，可改读对应语言的图解文字（折算 85% 的可读效果），取原图和图解里更好懂的一边。",
     "en": "For image delivery, use the higher of the image's readability and a matching image description's readability multiplied by 0.85."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE": {
@@ -161,12 +161,12 @@
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_DESCRIPTION": {
     "source": "按接收地区和渠道选择可用版本。",
-    "zh_CN": "向不同受众分享时，从现成的文字、译文、图片和图像说明中，挑选当地读者看得懂、渠道也支持的一种。",
+    "zh_CN": "发往不同地区和渠道时，从手头现成的文字、译文、图片和图解里挑最合适的一版送出去。",
     "en": "Choose from existing text, translations, images and image descriptions to match the local language and the channel being used."
   },
   "LOC_PROP_NODE_FORMAT_DISTRIBUTION_EFFECT": {
     "source": "按目标语言和渠道格式，从已有版本中选择适配版本。",
-    "zh_CN": "从渠道支持的已有版本中选择“目标国家可读率×版本质量”最高的版本投递。",
+    "zh_CN": "自动在当前渠道支持的现成版本里，挑当地最容易看懂、综合质量最高的一版投递。",
     "en": "Deliver the available channel-compatible version with the highest local readability multiplied by version quality."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE": {
@@ -176,12 +176,12 @@
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_DESCRIPTION": {
     "source": "让社区填写模板中的开放部分。",
-    "zh_CN": "公开模因中允许替换的部分，供别人填入自己的内容，把同一套表达用在各自的生活里。",
+    "zh_CN": "把模因里能替换的部分空出来当公开模板，让别人填进自己的日常经历。",
     "en": "Share the replaceable parts of the meme so others can fill them with their own experiences and reuse the expression."
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_EFFECT": {
     "source": "社区填写开放槽位，形成参与传播的衍生版本。",
-    "zh_CN": "每48小时为已有采用者且开放槽位的模板尝试生成1个不重复的二创版本。",
+    "zh_CN": "只要模板留有空位且已有人采用，每 48 小时尝试长出 1 个不重样的社区二创版本。",
     "en": "Every 48 hours, attempt to create one new derivative of an adopted template with open slots."
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE": {
@@ -191,12 +191,12 @@
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_DESCRIPTION": {
     "source": "向社区提供可编辑源包。",
-    "zh_CN": "把可编辑素材随模板一起公开。别人可以在原素材上修改和二创，省去从头制作的工夫。",
+    "zh_CN": "把可编辑的源素材随模板一起放出来，别人改字换图不用再从头抠。",
     "en": "Publish editable assets alongside the template so others can adapt the original material without rebuilding it from scratch."
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT": {
     "source": "提供可编辑源包，社区复用计算中的重混成本降至40%。",
-    "zh_CN": "提供可编辑源素材的模板在社区复用计算中的重混成本乘以0.4。\n偏移度降低2个百分点，自然增长减慢25%，分化阈值提高3个百分点，传播效率降低3%。",
+    "zh_CN": "公开源素材后，社区拿去改编二创的门槛降至原来的 40%。\n当前偏移度降低 2%，自然偏移减慢 25%，分化阈值提高 3%，传播效率降低 3%。",
     "en": "Multiply remix cost by 0.4 in community reuse calculations for templates with editable source material.\nDeviation falls by 2 percentage points. Natural drift slows by 25 percent, the split threshold rises by 3 points, and spread efficiency falls by 3 percent."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_TITLE": {
@@ -206,12 +206,12 @@
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_DESCRIPTION": {
     "source": "保留形式时容纳更大的内容变化。",
-    "zh_CN": "允许别人沿用同一个句式或版式，换成不同话题。保留形式的二创可以容纳更大的内容差异，仍归入同一模因谱系。",
+    "zh_CN": "允许别人留着句式或版式的壳子去套不同话题，就算内容差得远，大家仍认它算同一路模因。",
     "en": "Let others keep the same sentence pattern or layout while changing the subject. Derivatives that preserve the form can differ more in content while remaining in the same meme lineage."
   },
   "LOC_PROP_NODE_SEMANTIC_DETACHMENT_EFFECT": {
     "source": "保持模板形式的衍生，其分裂阈值提高至至少0.75。",
-    "zh_CN": "保留模板形式并填满开放槽位的二创版本，其分裂阈值提高到至少0.75、最高0.9。",
+    "zh_CN": "保留原版式并填满空位的二创版本，分化阈值提高到至少 75%（最高 90%），更不容易分家失控。",
     "en": "Raise the split threshold to at least 0.75, capped at 0.9, for derivatives that preserve the template form and fill its open slots."
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_TITLE": {
@@ -221,12 +221,12 @@
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_DESCRIPTION": {
     "source": "从社区版本建立返回原模板的入口。",
-    "zh_CN": "在社区二创中保留指向原模板的入口。读者看到别人改编的版本时，也有机会顺着链接找到源头。",
+    "zh_CN": "在社区改编的二创版本里留好指路链接，看到二创的人也能顺着摸回原版。",
     "en": "Keep a link to the source template in community remixes so readers who encounter an adaptation can follow it back to its source."
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT": {
     "source": "真实衍生曝光带回原模板的发现入口。",
-    "zh_CN": "非玩家衍生版本新增曝光时，按新增曝光占当地人口的比例为父版本增加当地引荐权重。",
+    "zh_CN": "外头长出来的二创每在当地多一拨人刷到，就会顺带把流量引回上一级原版，新曝光占比越高引流越强。",
     "en": "When an external derivative gains exposure, add local referral weight to its parent equal to new exposure divided by local population."
   },
   "LOC_PROP_NODE_VERSION_INDEX_TITLE": {
@@ -236,12 +236,12 @@
   },
   "LOC_PROP_NODE_VERSION_INDEX_DESCRIPTION": {
     "source": "让受众找到适合当地的已有版本。",
-    "zh_CN": "把同一模因的不同版本整理成目录，让读者找到更适合当地语言和群体的表达。",
+    "zh_CN": "把同一模因的各路改版收进目录，方便各地受众直接翻到最合当地语言和脾气的那一版。",
     "en": "Organize versions of the same meme into a directory so readers can find an expression suited to their local language and community."
   },
   "LOC_PROP_NODE_VERSION_INDEX_EFFECT": {
     "source": "索引同源的已有版本，引荐更适配当地的表达。",
-    "zh_CN": "当地采用人数达到人口百万分之一且至少有两个同源版本时，向当地适配分数最高且优于当前版本的版本增加引荐，权重等于两者分数差。\n偏移度降低4个百分点。",
+    "zh_CN": "当地采用人数达到百万分之一、且至少有两个同源版本时，自动把受众引向更契合当地的版本，契合度高得越多引流越明显。\n当前偏移度降低 4%。",
     "en": "Once local adopters reach one per million residents and at least two related versions exist, refer to the locally best-fitting version if its fitness exceeds the current version’s, using their score difference as weight.\nDeviation falls by 4 percentage points."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE": {
@@ -251,12 +251,12 @@
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_DESCRIPTION": {
     "source": "让社区在原帖降温后继续检索和复用模板。",
-    "zh_CN": "把模板收进可检索的仓库。原帖不再热门后，社区仍能在需要相似表达时找到它、继续改编。",
+    "zh_CN": "把模板存进随时可搜的仓库。就算原帖热度退了，往后大家碰上相似处境还能把它翻出来接着改。",
     "en": "Keep templates in a searchable library so communities can find and adapt them when they need a similar expression after the original post has cooled."
   },
   "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT": {
     "source": "发布满48小时、原帖降温且出现复用需求时，再次引荐模板。",
-    "zh_CN": "模板发布满48小时、同源版本至少2个、当地采用人数达到人口百万分之一且注意力低于采用人数×2.5%向下取整时，按当地传播倍率超出1的部分增加该模板的引荐权重，同源二创在当地新增曝光会使权重至少为0.25。\n偏移度降低4个百分点，自然增长减半，分化阈值提高5个百分点，传播效率降低8%。",
+    "zh_CN": "发布满 48 小时、已有同源版本且原帖在当地降温后，一旦当地相关讨论回暖就会重新推荐这套模板；若同源二创正在当地涨曝光，推荐力度还会获得额外保底。\n当前偏移度降低 4%，自然偏移减半，分化阈值提高 5%，传播效率降低 8%。",
     "en": "For a template at least 48 hours old with another related version, local adopters at least one per million residents and local attention below floor(adopters × 0.025), add local referral weight equal to max(0, local propagation multiplier − 1), raised to at least 0.25 when a related external version gains exposure locally.\nDeviation falls by 4 percentage points. Natural drift is halved, the split threshold rises by 5 points, and spread efficiency falls by 8 percent."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_TITLE": {
@@ -266,12 +266,12 @@
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_DESCRIPTION": {
     "source": "在形成真实采用的地区建立联络点。",
-    "zh_CN": "让当地已经在使用这个梗的人，借助所在社群的人际联系，成为向外分享的联络人。",
+    "zh_CN": "让当地已经在玩这个梗的人当二传手，顺着自己混的社群往外带。",
     "en": "Turn local people who already use the meme into contacts who share it through their community ties."
   },
   "LOC_PROP_NODE_COMMUNITY_HUB_EFFECT": {
     "source": "真实采用与有效群体联系形成当地传播联络点。",
-    "zh_CN": "首发国的采用人数达到当地人口百万分之一时，为当地占比至少25%的已投放人群建立传播节点。",
+    "zh_CN": "首发国的采用人数达到当地人口百万分之一后，凡是在当地占比满 25% 的目标群体都会建起联络点。",
     "en": "At the origin country, create hubs for published groups with at least 25 percent local share once adopters reach one per million residents."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_TITLE": {
@@ -281,12 +281,12 @@
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_DESCRIPTION": {
     "source": "沿陆地接触边发起定向转发。",
-    "zh_CN": "请当地的联络人把内容发给邻近地区的熟人，让模因沿已有的陆地联系传过去。",
+    "zh_CN": "托当地联络人把梗捎给隔壁地区的熟人，顺着现成的陆路往来传过去。",
     "en": "Have local contacts share the meme with people they know in neighboring regions, following existing land connections."
   },
   "LOC_PROP_NODE_NEIGHBOR_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有陆地接触边转发。",
-    "zh_CN": "允许传播节点沿现有陆地联系向同一目标人群占比至少25%的国家转发。",
+    "zh_CN": "联络点可顺着陆路联系，把模因传给同一目标群体占比满 25% 的邻国。",
     "en": "Allow hubs to forward along existing land contacts to countries where the same published group has at least 25 percent share."
   },
   "LOC_PROP_NODE_SEA_FORWARD_TITLE": {
@@ -296,12 +296,12 @@
   },
   "LOC_PROP_NODE_SEA_FORWARD_DESCRIPTION": {
     "source": "沿跨海接触边发起定向转发。",
-    "zh_CN": "借助联络人与海另一边社群的联系，把内容分享过去，让跨海联系也能带动传播。",
+    "zh_CN": "借着联络人与海对岸社群的交情，把梗跨海捎过去。",
     "en": "Use contacts with communities across the sea to share the meme along those existing connections."
   },
   "LOC_PROP_NODE_SEA_FORWARD_EFFECT": {
     "source": "从活跃联络点沿既有跨海接触边转发。",
-    "zh_CN": "允许传播节点沿现有跨海联系向同一目标人群占比至少25%的国家转发。",
+    "zh_CN": "联络点可顺着跨海联系，把模因传给同一目标群体占比满 25% 的海外国家。",
     "en": "Allow hubs to forward along existing sea contacts to countries where the same published group has at least 25 percent share."
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_TITLE": {
@@ -311,12 +311,12 @@
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_DESCRIPTION": {
     "source": "让产生真实采用的接收国继续转发。",
-    "zh_CN": "收到内容的社群开始使用这个梗后，再把它分享给自己认识的其他地区，形成一站接一站的接力。",
+    "zh_CN": "接过梗的新地区一旦自己玩开了，也能接着往它认识的其他地方传，一站接一站续下去。",
     "en": "Once a receiving community starts using the meme, its members can share it with contacts in other regions and continue the relay."
   },
   "LOC_PROP_NODE_COMMUNITY_RELAY_EFFECT": {
     "source": "接收国形成真实采用后，作为新联络点继续转发。",
-    "zh_CN": "成功接收转发的国家在采用人数达到当地人口百万分之一时，可为当地占比至少25%的已投放人群建立中继节点。",
+    "zh_CN": "接收转发的国家等采用人数也达到当地人口百万分之一时，同样能为占比满 25% 的目标群体建起新中继点。",
     "en": "After a successful transfer, receiving countries can create relay hubs for published groups with at least 25 percent local share once adopters reach one per million residents."
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_TITLE": {
@@ -326,12 +326,12 @@
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_DESCRIPTION": {
     "source": "用已发布版本中的两个群体连接圈层。",
-    "zh_CN": "由熟悉两个圈层的人介绍这个梗，让另一群体知道它在原来的圈子里如何使用。",
+    "zh_CN": "靠两个圈子都混得熟的人居中牵线，让另一拨人也看懂这梗在原圈子里是怎么玩的。",
     "en": "Have people familiar with both communities introduce the meme and explain how it is used in its original circle."
   },
   "LOC_PROP_NODE_GROUP_BRIDGE_EFFECT": {
     "source": "通过已发布版本中的有效群体联系开展跨圈引荐。",
-    "zh_CN": "已投放至少两个人群时，允许转发到任一已投放人群占比至少25%的联系国家。",
+    "zh_CN": "模因同时面向至少两个群体时，只要相连国家里其中任一群体占比满 25%，就能跨圈传过去。",
     "en": "With at least two published groups, allow forwarding to connected countries where any published group has at least 25 percent share."
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_TITLE": {
@@ -341,12 +341,12 @@
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_DESCRIPTION": {
     "source": "按联络点状态运行多段传播路径。",
-    "zh_CN": "让各地联络人分别向有联系的社群分享，接收方用起来后再继续转发，多条传播路线可以同时推进。",
+    "zh_CN": "让各地联络人顺着各自认识的圈子分头分享，新地方玩起来后再接着往外带，多条路线一齐往前推。",
     "en": "Have local contacts share through their community ties and let receiving communities pass it onward after adopting it, allowing several routes to progress at once."
   },
   "LOC_PROP_NODE_DISTRIBUTED_NETWORK_EFFECT": {
     "source": "让陆海中继与跨圈联络点共同运行多段并行接力。",
-    "zh_CN": "社区转发由每小时只选最高权重的1条路线改为选择全部有效路线，并共同分配原有传播预算。",
+    "zh_CN": "社群转发不再每小时只挑最热的一条路线，而是同时跑通所有有效路线，平分原有的传播精力。",
     "en": "Select all valid community routes each hour instead of only the highest-weight route, sharing the existing propagation budget."
   },
   "LOC_PROP_ROUTE_ACCESSIBILITY": {
@@ -511,7 +511,7 @@
   },
   "LOC_PROP_NODE_ALTERNATIVE_TEXT_REFERENCE": {
     "source": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C《WCAG 2.2》成功准则1.1.1，2023。",
-    "zh_CN": "“所有呈现给用户的非文本内容，都有能实现同等目的的替代文本……”\nW3C《WCAG 2.2》成功准则1.1.1，2023。",
+    "zh_CN": "“真正重要的东西，用眼睛是看不见的。”\n安托万·德·圣-埃克苏佩里《小王子》第21章，1943。",
     "en": "“All non-text content that is presented to the user has a text alternative that serves the equivalent purpose…”\nW3C, WCAG 2.2, Success Criterion 1.1.1, 2023."
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_REFERENCE": {
@@ -616,22 +616,22 @@
   },
   "LOC_GUIDANCE_MUTATION_NAVIGATE": {
     "source": "欸，有人改写了你的模因。去编辑页看看吧，我给你指一下改在哪儿。",
-    "zh_CN": "欸，有人改写了你的模因。去编辑页看看吧，我给你指一下改在哪儿。",
+    "zh_CN": "欸，外头有人动手改了你的模因。先翻到编辑页来，我指给你看哪儿变了。",
     "en": "Someone has rewritten your meme. Come to the editor and I’ll show you what changed."
   },
   "LOC_GUIDANCE_COMPETITION_NAVIGATE": {
     "source": "啊哦，别人的模因也来了。打开地图，我指给你看。",
-    "zh_CN": "啊哦，别人的模因也来了。打开地图，我指给你看。",
+    "zh_CN": "啊哦，外头野生的模因也冒头了。打开地图，我指给你看它在哪儿折腾。",
     "en": "Another meme has arrived. Open the map and I’ll point it out."
   },
   "LOC_GUIDANCE_MUTATION_EFFECT": {
     "source": "你看，外面的人做了这些改动：\n%s\n它们已经用在下方的表达和含义里了，也会和你之后的修改一起生效。接不接受它，就看你咯。",
-    "zh_CN": "你看，外面的人做了这些改动：\n%s\n它们已经用在下方的表达和含义里了，也会和你之后的修改一起生效。",
+    "zh_CN": "喏，外头那帮人给你加了点料：\n%s\n底下的表达和含义已经跟着变了，往后你再动手改也会叠在这上面……算不算帮倒忙，你自己掂量咯。",
     "en": "Here is what people changed:\n%s\nYou can see it in the expression and meaning below. It will also combine with your later edits."
   },
   "LOC_GUIDANCE_MUTATION_SPLIT": {
     "source": "你看，外面的人做了这些改动：\n%s\n它已经偏离得足够远，分成另一条模因了。你的原稿保留着，这张卡记录的是它怎么变出去的。",
-    "zh_CN": "你看，外面的人做了这些改动：\n%s\n它已经偏离得足够远，分成另一条模因了。你的原稿保留着，这张卡记录的是它怎么变出去的。",
+    "zh_CN": "喏，外头那帮人做了这些改动：\n%s\n这回步子迈得太大，直接分家变成另一条独立模因了。好在你手里的原稿还在，这张卡就当留个分家纪念吧。",
     "en": "Here is what people changed:\n%s\nIt moved far enough to become a separate meme. Your original remains; this card records how the new one branched off."
   },
   "LOC_EXTERNAL_REPHRASE_PATCH": {
