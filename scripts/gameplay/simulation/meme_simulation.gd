@@ -492,7 +492,7 @@ func validate_draft(data: Dictionary) -> PackedStringArray:
 	var group_found := false
 	for group in catalog.groups:
 		group_found = group_found or str(group.id) == str(data.get("group_id", ""))
-	if not group_found and not (str(data.get("group_id", "")).is_empty() and not _draft_layer_attached(data,"group")):
+	if not group_found and not str(data.get("group_id", "")).is_empty():
 		errors.append(DeskLocalization.source("LOC_UNREGISTERED_INITIAL_AUDIENCE_62693555"))
 	if str(data.get("target", "")).strip_edges().is_empty():
 		errors.append(DeskLocalization.source("LOC_ENTER_THE_TARGET_YOU_SUPPORT_OR_OPPOSE_206B04DC"))
@@ -512,7 +512,6 @@ func validate_draft(data: Dictionary) -> PackedStringArray:
 	if str(data.get("reuse_permission", "unknown")) not in ["allowed", "conditional", "restricted", "unknown"]:
 		errors.append(DeskLocalization.source("LOC_UNREGISTERED_REUSE_PERMISSION_2B61EEA0"))
 	var topics := PackedStringArray(data.get("topic_ids", []))
-	if topics.is_empty() and _draft_layer_attached(data,"topics"): errors.append(DeskLocalization.source("LOC_SELECT_AT_LEAST_ONE_TOPIC_E653923A"))
 	for topic in topics:
 		if topic not in catalog.topics: errors.append(DeskLocalization.source("LOC_UNREGISTERED_TOPIC_F5347B52") + topic)
 	if ExpressionText.Composition.supports(preset_id):
@@ -533,6 +532,8 @@ func publish(data: Dictionary) -> PackedStringArray:
 	errors.append_array(catalog.DESIGN_RULES.patch_errors(str(data.get("preset_id", "")), patch_ids))
 	if data.has("patch_ids") and data.patch_ids != patch_ids: errors.append("Player patches must match the author record")
 	errors.append_array(_required_context_errors())
+	if PackedStringArray(data.get("topic_ids", [])).is_empty() and _draft_layer_attached(data,"topics"):
+		errors.append(DeskLocalization.source("LOC_SELECT_AT_LEAST_ONE_TOPIC_E653923A"))
 	errors.append_array(_core_errors(data))
 	errors.append_array(design_state.record_errors())
 	errors.append_array(design_state.layer_errors(_encoded_draft(data)))
