@@ -65,10 +65,8 @@ static func validate(draft: Dictionary, module_ids: Array) -> PackedStringArray:
 static func compose(draft: Dictionary, module_ids: Array) -> Dictionary:
 	if not validate(draft,module_ids).is_empty(): return {}
 	var modules := _modules(module_ids)
-	var defaults: Dictionary = definition(str(draft.preset_id)).default_context
 	var languages := _values(draft,"language")
-	var language_id := str(draft.get("language_id",defaults.language_id))
-	if language_id not in languages: language_id = languages[0] if not languages.is_empty() else str(defaults.language_id)
+	var language_id := _expression_language(draft)
 	var segments := _expression_segments(draft,modules,language_id)
 	var meaning := _meaning(draft,modules)
 	var source_ids := {}
@@ -132,8 +130,15 @@ static func _expression_segments(draft: Dictionary, modules: Array[String], lang
 		segment.text = native_text
 	return result
 
+static func _expression_language(draft: Dictionary) -> String:
+	var languages := _values(draft,"language")
+	var default_language := str(definition(str(draft.preset_id)).default_context.language_id)
+	var language_id := str(draft.get("language_id",default_language))
+	if language_id in languages: return language_id
+	return languages[0] if not languages.is_empty() else default_language
+
 static func rephrase_expression(draft: Dictionary, module_ids: Array, language_id: String = "") -> Dictionary:
-	if language_id.is_empty(): language_id = str(draft.language_id)
+	if language_id.is_empty(): language_id = _expression_language(draft)
 	var seed := _seed(str(draft.preset_id))
 	var lead := _language_text(seed,language_id)
 	var native_lead := DeskLocalization.chinese_text(lead) if seed == "V" else DeskLocalization.english_text(lead)
