@@ -35,7 +35,7 @@ static func semantic_signature(raw: Dictionary) -> String:
 		if not attached: continue
 		if layer in ["language", "group", "topics"]:
 			var field: String = "topic_ids" if layer == "topics" else layer + "_ids"
-			var values: Array = Array(source.get(field, [] if layer == "topics" else [str(source.get(layer + "_id", ""))]))
+			var values: Array = Array(source.get(field, [] if layer == "topics" else [str(source.get(layer + "_id", ""))])).duplicate()
 			values.sort()
 			semantic[layer].values = values
 		elif layer == "stance":
