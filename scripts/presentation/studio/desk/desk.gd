@@ -119,7 +119,11 @@ func _focus_slot(layer: String, viewport_rect: Rect2) -> void:
 	_component_target = ""
 	_slot_restoring = false
 	var world_rect: Rect2 = get_viewport().get_canvas_transform().affine_inverse()*viewport_rect
-	_camera.focus_slot("slot/"+layer,world_rect,1.9)
+	var vertical_frame := Rect2()
+	if layer in ["language", "group", "topics", "stance", "pragmatic"]:
+		var board: Control = _page.hud.design_workbench().context_slice()
+		vertical_frame = get_viewport().get_canvas_transform().affine_inverse() * board._viewport_rect(Rect2(Vector2.ZERO, board.size))
+	_camera.focus_slot("slot/"+layer,world_rect,1.9,vertical_frame)
 	_sync_reader_blocks()
 
 func close_slot_details() -> void:

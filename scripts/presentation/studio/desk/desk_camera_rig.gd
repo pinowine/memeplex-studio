@@ -82,7 +82,7 @@ func focus_equipment(id: String, center: Vector2, dimensions: Vector2, angle: fl
 func capture_view() -> Dictionary:
 	return {"position":position, "zoom":zoom, "target":_target_id, "state":_state, "rotation":rotation}
 
-func focus_slot(id: String, world_rect: Rect2, magnification := 2.0) -> bool:
+func focus_slot(id: String, world_rect: Rect2, magnification := 2.0, vertical_frame := Rect2()) -> bool:
 	if not world_rect.has_area() or not world_rect.position.is_finite(): return false
 	var axes := id in ["slot/stance", "slot/pragmatic"]
 	var limit := 3.8 if axes else 2.2
@@ -90,9 +90,14 @@ func focus_slot(id: String, world_rect: Rect2, magnification := 2.0) -> bool:
 	if axes: magnification = minf(view.x * .52 / world_rect.size.x, view.y * .80 / world_rect.size.y) / _fit_zoom()
 	var zoom_factor := clampf(magnification, 1.0, limit)
 	var scale := _fit_zoom() * zoom_factor
-	# Leave the right side for the explanation paper, not for a second object move.
+	var center := world_rect.get_center()
+	if vertical_frame.has_area():
+		scale = minf(scale, view.y * .88 / vertical_frame.size.y)
+		zoom_factor = scale / _fit_zoom()
+		center.y = vertical_frame.get_center().y
+	# Reserve the right side for the inventory paper.
 	var offset := Vector2(view.x * 0.18, -view.y * 0.02) / scale
-	var target := Rect2(world_rect.position + offset.rotated(rotation), world_rect.size)
+	var target := Rect2(center - world_rect.size * .5 + offset.rotated(rotation), world_rect.size)
 	return focus_on(id, target, zoom_factor, rotation)
 
 func restore_view(view: Dictionary) -> bool:
