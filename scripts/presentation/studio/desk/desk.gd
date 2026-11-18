@@ -161,6 +161,11 @@ func _slot_pointer_guard(event: InputEvent) -> bool:
 		return true
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if _material_cards.handles_viewport_point(event.position): return false
+		if _focused_stack in ["stance_token", "pragmatic_token"] and not _slot_restoring:
+			var board: Control = _page.hud.design_workbench().context_slice()
+			var layer := "stance" if _focused_stack == "stance_token" else "pragmatic"
+			var local: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * event.position
+			if (board._layout_layers[layer].plot_rect as Rect2).has_point(local): return false
 		if not _slot_reader.handles_viewport_point(_foreground_point(event.position)):
 			close_slot_details()
 			return true

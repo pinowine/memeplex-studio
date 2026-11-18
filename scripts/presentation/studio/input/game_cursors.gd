@@ -4,6 +4,7 @@ const CURSORS := {
 	Input.CURSOR_ARROW: {"texture": preload("res://assets/image/ui/cursors/arrow.svg"), "hotspot": Vector2(4, 3)},
 	Input.CURSOR_HELP: {"texture": preload("res://assets/image/ui/cursors/info.svg"), "hotspot": Vector2(16, 16)},
 	Input.CURSOR_POINTING_HAND: {"texture": preload("res://assets/image/ui/cursors/hand.svg"), "hotspot": Vector2(15, 3)},
+	Input.CURSOR_DRAG: {"texture": preload("res://assets/image/ui/cursors/hand.svg"), "hotspot": Vector2(15, 3)},
 	Input.CURSOR_CROSS: {"texture": preload("res://assets/image/ui/cursors/inspect.svg"), "hotspot": Vector2(14, 14)},
 	Input.CURSOR_FORBIDDEN: {"texture": preload("res://assets/image/ui/cursors/forbidden.svg"), "hotspot": Vector2(16, 16)},
 }
