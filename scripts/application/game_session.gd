@@ -61,7 +61,6 @@ func _ready() -> void:
 	simulation.completed.connect(_complete_run)
 	await _initialization_stage("LOC_LOADING_INTERFACE")
 	hud.configure(catalog)
-	hud.draft_publish_requested.connect(_publish)
 	hud.country_selection_requested.connect(_choose_country)
 	hud.speed_requested.connect(_set_speed)
 	hud.step_requested.connect(_step)
@@ -190,42 +189,12 @@ func _bind_country(index: int) -> void:
 	var country: Resource = atlas.settings.countries[index]
 	simulation.bind_country(str(country.id), tr(country.short_name_key))
 
-func _publish(draft: Dictionary) -> void:
-	if not _ready_to_run or _interface_paused(): return
-	if not startup_ready():
-		simulation.status = DeskLocalization.source("LOC_ANSWER_S_CALL_SELECT_A_STARTING_MEME_9CFFACED")
-		_render()
-		return
-	if simulation.publish_count == 0:
-		_choose_country()
-		return
-	# Turning a page is presentation only; a new version starts at explicit publish.
-	var revision_view: bool = simulation.publish_count > 0 and simulation.phase in ["running", "complete"] and hud.get_node("%Workbench").visible
-	var errors := _draft_errors(draft, revision_view)
-	if not errors.is_empty():
-		simulation.status = DeskLocalization.source_join("；",errors)
-		_render()
-		return
-	if revision_view:
-		var revision_errors := simulation.begin_revision(draft)
-		if not revision_errors.is_empty():
-			hud.report_design_errors(revision_errors)
-			return
-		draft = simulation.latest_draft.duplicate(true)
-		hud.set_draft(draft)
-	var index: int = atlas.selected_country if atlas.selected_country >= 0 else atlas.clock.studio_index
-	_commit_draft(draft, index)
-
-func _draft_errors(draft: Dictionary, revision_view: bool = false) -> PackedStringArray:
+func _draft_errors(draft: Dictionary) -> PackedStringArray:
 	var errors := simulation.validate_draft(draft)
-	if simulation.phase != "draft" and not revision_view: errors.append(DeskLocalization.source("LOC_RETURN_TO_THE_WORKBENCH_AND_CREATE_YOUR_1A4056D3"))
-	var cost: int = catalog.first_publish_cost if simulation.publish_count == 0 else catalog.revision_publish_cost
+	if simulation.phase != "draft": errors.append(DeskLocalization.source("LOC_RETURN_TO_THE_WORKBENCH_AND_CREATE_YOUR_1A4056D3"))
+	var cost: int = catalog.first_publish_cost
 	if simulation.economy.balance < cost:
 		errors.append(DeskLocalization.format_text("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, simulation.economy.balance]))
-	var index: int = atlas.selected_country if atlas.selected_country >= 0 else atlas.clock.studio_index
-	if simulation.publish_count > 0 and errors.is_empty() and index >= 0 and index < atlas.settings.countries.size():
-		if not simulation.publication_changed(draft, str(atlas.settings.countries[index].id)):
-			errors.append(DeskLocalization.source("LOC_WB_PUBLICATION_UNCHANGED"))
 	return errors
 
 func _commit_draft(draft: Dictionary, index: int) -> bool:
@@ -293,7 +262,6 @@ func _open_workbench() -> void:
 	if simulation.phase == "event":
 		hud.show_event(simulation.active_event)
 		return
-	# Browsing the workbench does not start a revision; explicit publication does.
 	hud.show_workbench(true)
 	_render()
 
@@ -706,13 +674,13 @@ func focus_meme_on_map(id: String) -> void:
 		atlas.select_meme(id)
 
 func _queue_context_trial() -> void:
-	if _context_trial_queued or not _ready_to_run or desk.get("_active_sheet") not in ["edit", "cultivate"]: return
+	if _context_trial_queued or not _ready_to_run or desk.get("_active_sheet") != "cultivate": return
 	_context_trial_queued = true
 	_update_context_trial.call_deferred()
 
 func _update_context_trial() -> void:
 	_context_trial_queued = false
-	if not _ready_to_run or desk.get("_active_sheet") not in ["edit", "cultivate"]: return
+	if not _ready_to_run or desk.get("_active_sheet") != "cultivate": return
 	var editor: Control = hud.design_workbench()
 	if _context_trial_seed != simulation.seed_value:
 		_context_trial_seed = simulation.seed_value
@@ -725,14 +693,11 @@ func _update_context_trial() -> void:
 		country_id = str(country.id)
 		country_title = tr(country.short_name_key)
 	var draft: Dictionary = hud.get_draft()
-	var signature := JSON.stringify([country_id, country_title, draft, _context_trial_skills, simulation.current_variant_id, simulation.variants.size()])
+	var signature := JSON.stringify([country_id, country_title, draft, _context_trial_skills])
 	if signature == _context_trial_signature: return
 	_context_trial_signature = signature
 	# A drag may request several steps; compare only its settled draft once per frame.
-	var preview: Dictionary = simulation.publication_preview(draft, country_id)
-	editor.set_publication_preview(preview)
-	var report: Dictionary = preview.get("after", {})
-	if simulation.publish_count == 0 and not country_id.is_empty(): report = simulation.draft_fitness(draft).get("countries", {}).get(country_id, {})
+	var report: Dictionary = {} if country_id.is_empty() else simulation.draft_fitness(draft).get("countries", {}).get(country_id, {})
 	editor.set_context_trial(country_id, country_title, report)
 
 func inspection_state() -> Dictionary:

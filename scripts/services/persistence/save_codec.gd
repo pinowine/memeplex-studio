@@ -21,6 +21,7 @@ var catalog: MemeDemoCatalog
 var competition: RefCounted
 var design_state: MemeDemoDesignState
 var economy: MemeDemoEconomy
+var _author_configurations: Dictionary = {}
 
 func _init(owner_simulation: RefCounted) -> void:
 	simulation = owner_simulation
@@ -53,6 +54,7 @@ func validate_payload(data: Dictionary) -> PackedStringArray:
 	return errors
 
 func _decode(data: Dictionary, errors: PackedStringArray) -> Dictionary:
+	_author_configurations.clear()
 	var decoded := _decode_precision(data, errors)
 	if not errors.is_empty(): return {}
 	_upgrade_pace_signatures(decoded)
@@ -541,7 +543,15 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 		for field: String in effective:
 			if field not in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "flow_draft", "flow_profile", "creator", "owned", "controlled", "semantic_distance"]:
 				errors.append("Saved effect overrides cannot replace identity or history: " + field)
-		if effective.has("flow_profile"):
+		if variant.has("live_author_edit"):
+			var expected := _recorded_author_content(variant, variant.live_author_edit, data)
+			if expected.is_empty() or competition._canonical(effective) != competition._canonical(expected):
+				errors.append("Live author content must match its recorded design operations")
+				continue
+			if competition._canonical(effective.flow_profile) != competition._canonical(entry.get("effective_profile", {})):
+				errors.append("Live author propagation differs from its current expression")
+			_validate_live_profile(effective.flow_profile, errors)
+		elif effective.has("flow_profile"):
 			if not effective.flow_profile is Dictionary or not variant.get("rollback_from_id") is String or not variants_by_id.has(str(variant.get("rollback_from_id", ""))):
 				errors.append("Effect rollback requires its actual split source and live profile")
 				continue
@@ -639,11 +649,11 @@ func _validate_content_snapshots(data: Dictionary, variants_by_id: Dictionary) -
 				errors.append("Mutation history requires its actual source content snapshot")
 				continue
 			var source: Dictionary = variants_by_id[str(variant.parent_ids[0])]
-			if not _is_recorded_content(variant.mutation_parent_content, source, data.variants, variants_by_id):
+			if not _is_recorded_content(variant.mutation_parent_content, source, data.variants, variants_by_id, data):
 				errors.append("Mutation source content differs from its recorded expression history")
 		if variant.has("confluence_companion_content"):
 			var companion_id := str(variant.get("confluence_source_id", ""))
-			if not variant.confluence_companion_content is Dictionary or not variants_by_id.has(companion_id) or not _is_recorded_content(variant.confluence_companion_content, variants_by_id[companion_id], data.variants, variants_by_id):
+			if not variant.confluence_companion_content is Dictionary or not variants_by_id.has(companion_id) or not _is_recorded_content(variant.confluence_companion_content, variants_by_id[companion_id], data.variants, variants_by_id, data):
 				errors.append("Confluence companion content differs from its immutable expression history")
 		if not errors.is_empty(): return errors
 		if variant.has("effective_history"):
@@ -651,7 +661,7 @@ func _validate_content_snapshots(data: Dictionary, variants_by_id: Dictionary) -
 				errors.append("Effect rollback history must be an array")
 				continue
 			for historical: Variant in variant.effective_history:
-				if not historical is Dictionary or not _is_recorded_content(historical, variant, data.variants, variants_by_id):
+				if not historical is Dictionary or not _is_recorded_content(historical, variant, data.variants, variants_by_id, data):
 					errors.append("Historical rollback content must reconstruct from an actual split")
 		if not errors.is_empty(): return errors
 	var event_copies: Array = data.events.duplicate()
@@ -661,7 +671,7 @@ func _validate_content_snapshots(data: Dictionary, variants_by_id: Dictionary) -
 		if not event.has("target_content_snapshot"): continue
 		var target_id := str(event.get("target_variant_id", ""))
 		if target_id.is_empty() and event.target_content_snapshot is Dictionary and event.target_content_snapshot.is_empty(): continue
-		if not variants_by_id.has(target_id) or not event.target_content_snapshot is Dictionary or not _is_recorded_content(event.target_content_snapshot, variants_by_id[target_id], data.variants, variants_by_id):
+		if not variants_by_id.has(target_id) or not event.target_content_snapshot is Dictionary or not _is_recorded_content(event.target_content_snapshot, variants_by_id[target_id], data.variants, variants_by_id, data):
 			errors.append("Event target content differs from its immutable expression history")
 	return errors
 
@@ -744,12 +754,39 @@ func _same_content_snapshot(actual: Dictionary, expected: Dictionary) -> bool:
 			if record.get(field, {}) is Dictionary and record.get(field, {}).is_empty(): record.erase(field)
 	return competition._canonical(a) == competition._canonical(b)
 
-func _is_recorded_content(snapshot: Dictionary, source: Dictionary, variants: Array, variants_by_id: Dictionary) -> bool:
+func _recorded_author_content(source: Dictionary, record: Variant, data: Dictionary) -> Dictionary:
+	if not record is Dictionary or record.size() != 3 or record.get("schema") != 1 or not _integer(record.get("operation_count")) or not _integer(record.get("hour")): return {}
+	var count := int(record.operation_count)
+	if count <= 0 or count > data.design_state.operations.size() or int(record.hour) < 0 or int(record.hour) > int(data.hour): return {}
+	if not _author_configurations.has(count):
+		var ledger := DesignState.new(catalog)
+		ledger._state = data.design_state.duplicate(true)
+		_author_configurations[count] = ledger.recorded_configuration(count, data.events, data.variants)
+	var configuration: Dictionary = _author_configurations[count]
+	if configuration.is_empty(): return {}
+	if not bool(MemeLifecycle.content(source).get("owned", false)) or str(configuration.draft.kernel_id) != str(source.kernel_id) or str(configuration.draft.preset_id) != str(source.preset_id): return {}
+	return simulation._live_author_content(configuration.draft, configuration.skills, source)
+
+func _is_recorded_content(snapshot: Dictionary, source: Dictionary, variants: Array, variants_by_id: Dictionary, data: Dictionary) -> bool:
 	var pristine := source.duplicate(true)
 	pristine.erase("effective_content")
+	pristine.erase("live_author_edit")
 	if source.has("meme_id"):
 		pristine.deviation_effect_deltas = {} if str(source.meme_id) == str(source.id) else _recorded_effect_deltas(source, variants_by_id)
 		pristine.deviation_patch_effects = {} if str(source.meme_id) == str(source.id) else _recorded_patch_effects(source, variants_by_id)
+	if snapshot.has("live_author_edit"):
+		var authored := _recorded_author_content(source, snapshot.live_author_edit, data)
+		if authored.is_empty(): return false
+		var reconstructed := pristine.duplicate(true)
+		reconstructed.effective_content = authored
+		reconstructed.live_author_edit = snapshot.live_author_edit.duplicate(true)
+		if _same_content_snapshot(snapshot, MemeLifecycle.revision_snapshot(reconstructed)): return true
+		for candidate: Dictionary in variants:
+			if str(candidate.get("split_from_id", "")) != str(source.id): continue
+			reconstructed.deviation_effect_deltas = {}
+			reconstructed.deviation_patch_effects = {}
+			if _same_content_snapshot(snapshot, MemeLifecycle.revision_snapshot(reconstructed)): return true
+		return false
 	if _same_content_snapshot(snapshot, MemeLifecycle.revision_snapshot(pristine)): return true
 	if not source.get("deviation_anchor") is Dictionary: return false
 	var birth_id := str(source.get("meme_id", source.id))
@@ -764,6 +801,7 @@ func _is_recorded_content(snapshot: Dictionary, source: Dictionary, variants: Ar
 		var expected: Dictionary = MemeLifecycle.rollback_content(source.deviation_anchor, candidate)
 		for field: String in ["creator", "owned", "controlled"]: expected[field] = birth[field]
 		var reconstructed := source.duplicate(true)
+		reconstructed.erase("live_author_edit")
 		reconstructed.effective_content = expected
 		reconstructed.deviation_effect_deltas = {}
 		reconstructed.deviation_patch_effects = {}

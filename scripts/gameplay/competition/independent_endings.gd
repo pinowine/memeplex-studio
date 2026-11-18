@@ -44,7 +44,7 @@ static func semantic_signature(raw: Dictionary) -> String:
 		else: semantic[layer].position = source.get("pragmatic_position", [])
 	return JSON.stringify(semantic, "", true, true).sha256_text()
 
-static func record_publication(state: Dictionary, variants: Array, current_id: String, country_id: String, hour: int, competition: RefCounted) -> Dictionary:
+static func record_publication(state: Dictionary, variants: Array, current_id: String, country_id: String, hour: int, competition: RefCounted, author_edit: bool = false) -> Dictionary:
 	var records: Dictionary = _records(variants)
 	if not records.has(current_id): return state
 	var current: Dictionary = records[current_id]
@@ -56,7 +56,7 @@ static func record_publication(state: Dictionary, variants: Array, current_id: S
 		state = {"version":Metrics.DEVIATION_VERSION, "target_meme_id":meme_id, "target_record_id":current_id, "country_id":country_id, "target_started_hour":hour, "last_hour":hour, "signature":signature, "stable_peak":0.0, "local_samples":[], "adaptation":{"baseline":0.0, "revision_hour":-1, "signature":"", "eligible":false}, "windows":windows, "pairs":{}, "rows":[]}
 	else:
 		var previous_signature: String = str(state.signature)
-		if not current.get("parent_ids", []).is_empty() and records.has(str(current.parent_ids[0])):
+		if not author_edit and not current.get("parent_ids", []).is_empty() and records.has(str(current.parent_ids[0])):
 			previous_signature = semantic_signature(records[str(current.parent_ids[0])])
 		if signature != previous_signature:
 			var baseline: float = float(state.stable_peak)

@@ -201,8 +201,8 @@
   },
   "LOC_OPENING_MONITOR_POINTS_TEXT": {
     "source": "这就是你的模因点数和增长情况。数字会说话，不过通常不会说你爱听的话。",
-    "zh_CN": "上面是你能花的 Meme 点数。第一次有人采用你的模因，就能拿到20点。以后采用人数增加，或传到更多国家，也能再拿点数。研究和改写要花点数，可别一口气花光哦。下面两条线是当前语言的传播度和偏移度，看看传得多广、转述后的意思又偏了多少。",
-    "en": "The number above is your available Meme points. The first person to adopt your meme earns you 20 points. More adopters or more countries can earn you further points. Research and revisions cost points, so don’t spend them all at once. The two lines track the current language’s spread and deviation: how widely it travels and how much its meaning changes as people retell it."
+    "zh_CN": "上面是你能花的 Meme 点数。第一次有人采用你的模因，就能拿到20点。以后采用人数增加，或传到更多国家，也能再拿点数。研究要花点数，可别一口气花光哦。下面两条线是当前语言的传播度和偏移度，看看传得多广、转述后的意思又偏了多少。",
+    "en": "The number above is your available Meme points. The first person to adopt your meme earns you 20 points. More adopters or more countries can earn you further points. Research costs points, so don’t spend them all at once. The two lines track the current language’s spread and deviation: how widely it travels and how much its meaning changes as people retell it."
   },
   "LOC_OPENING_MONITOR_IDEOLOGY_TITLE": {
     "source": "切换面板",
@@ -431,8 +431,8 @@
   },
   "LOC_OPENING_CONFIRM_TEXT": {
     "source": "确定投放国家后，点破它上方的投放气泡。还想比较的话，继续悬停查看；要换目标，就单击另一个国家。",
-    "zh_CN": "确定投放国家后，点破它上方的投放气泡。以后换补丁、语言或其他配置，要点“发布修改”才会在地图上生效。点完我就先挂了哦~",
-    "en": "When you’re ready, pop the launch bubble above the selected country. You can keep hovering to compare profiles or click another country to change your target. Later changes to patches, languages or other settings take effect on the map when you click “Publish changes”."
+    "zh_CN": "确定投放国家后，点破它上方的投放气泡。以后换补丁、语言或其他配置，改完就会生效。点完我就先挂了哦~",
+    "en": "When you’re ready, pop the launch bubble above the selected country. You can keep hovering to compare profiles or click another country to change your target. Later changes to patches, languages or other settings take effect immediately."
   },
   "LOC_OPENING_HOVER_FINE": {
     "source": "火都烧起来了，还能说一句“问题不大”。很好，情绪稳定也是一种生产力。",

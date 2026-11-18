@@ -815,6 +815,22 @@ func snapshot(variants: Array = []) -> Dictionary:
 func payload() -> Dictionary:
 	return _state.duplicate(true)
 
+func recorded_configuration(operation_count: int, events: Array, variants: Array) -> Dictionary:
+	var replay = get_script().new(catalog, rules)
+	replay._state.design_version = int(_state.design_version)
+	replay._state.unlocked_skills = ["text"] if int(_state.design_version) == 9 else []
+	for operation: Dictionary in _state.operations.slice(0, operation_count):
+		var source := {}
+		var params: Dictionary = operation.params
+		if operation.action in ["claim", "request_material"]:
+			for event: Dictionary in events:
+				if str(event.get("instance_id", "")) == str(params.get("instance_id", "")): source = event; break
+		elif operation.action == "publish":
+			for variant: Dictionary in variants:
+				if str(variant.id) == str(params.get("variant_id", "")): source = variant; break
+		if not replay._perform(operation.action, params, source).is_empty(): return {}
+	return {"draft":replay._state.context_draft.duplicate(true), "skills":replay._state.unlocked_skills.duplicate()}
+
 func record_errors() -> PackedStringArray:
 	return PackedStringArray([DeskLocalization.source("LOC_DESIGN_ACTION_RECORD_HAS_REACHED_ITS_FINITE_37CDC932")] if _state.operations.size() >= RECORD_LIMIT else [])
 

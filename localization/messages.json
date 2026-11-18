@@ -2715,9 +2715,9 @@
     "en": "Slice depth must be in the range 0–1."
   },
   "LOC_CONTEXT_CONFIGURATION_REQUIRES_YOUR_OWN_DRAFT_AWAITING_084C0398": {
-    "source": "语境配置需要自己的待发布草稿。",
-    "zh_CN": "语境配置需要自己的待发布草稿。",
-    "en": "Context configuration requires your own draft awaiting publication."
+    "source": "语境配置需要你当前的模因配置。",
+    "zh_CN": "语境配置需要你当前的模因配置。",
+    "en": "Context configuration requires your current meme configuration."
   },
   "LOC_THE_SLICE_IS_ALREADY_IN_ITS_MATCHING_8BB39140": {
     "source": "切片已经在对应位置。",
@@ -2840,9 +2840,9 @@
     "en": "Not enough modules have been taken out; paper slips cannot be duplicated."
   },
   "LOC_AN_EXPRESSION_PATCH_REQUIRES_YOUR_OWN_DRAFT_984A1272": {
-    "source": "表达补丁需要自己的待发布草稿。",
-    "zh_CN": "表达补丁需要自己的待发布草稿。",
-    "en": "An expression patch requires your own draft awaiting publication."
+    "source": "表达补丁需要你当前的模因配置。",
+    "zh_CN": "表达补丁需要你当前的模因配置。",
+    "en": "An expression patch requires your current meme configuration."
   },
   "LOC_PATCH_CONTENT_MUST_BE_BOUNDED_NON_EMPTY_F87EF1F2": {
     "source": "补丁内容需为有限非空文本。",
@@ -2855,9 +2855,9 @@
     "en": "This slot has no expression patch."
   },
   "LOC_REMOVING_A_PATCH_REQUIRES_YOUR_OWN_DRAFT_C0DFA4F7": {
-    "source": "移除补丁需要自己的待发布草稿。",
-    "zh_CN": "移除补丁需要自己的待发布草稿。",
-    "en": "Removing a patch requires your own draft awaiting publication."
+    "source": "移除补丁需要你当前的模因配置。",
+    "zh_CN": "移除补丁需要你当前的模因配置。",
+    "en": "Removing a patch requires your current meme configuration."
   },
   "LOC_REQUIRES_AN_INSTALLED_PATCH_YOUR_OWN_DRAFT_CAC2A0FE": {
     "source": "需要已安装补丁、自己的草稿与有限非空文本。",
@@ -7410,9 +7410,9 @@
     "en": "Transmission has fallen silent. This run is sealed away."
   },
   "LOC_WAR_NO_REVISION": {
-    "source": "战争开始或本局结束后无法继续发布，请开始新局",
-    "zh_CN": "本轮发布已经结束，请开始新局继续创作",
-    "en": "Publication has ended for this run. Start a new run to keep creating."
+    "source": "战争开始或本局结束后无法继续编辑或研究，请开始新局",
+    "zh_CN": "本局的编辑和研究已经停止，请开始新局继续创作",
+    "en": "Editing and research have ended for this run. Start a new run to keep creating."
   },
   "LOC_INDEPENDENT_RUN_COMPLETE": {
     "source": "本局的故事已经落在纸上。",

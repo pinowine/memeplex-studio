@@ -25,7 +25,6 @@ const ContextTagFlow = preload("res://scripts/presentation/context/context_tag_f
 const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const PaperIcon = preload("res://scripts/presentation/studio/workbench/desk_workbench_icon.gd")
 const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_style.gd")
-const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const HEADING_FONT = preload("res://assets/image/fonts/body_semibold_font.tres")
 const BODY_FONT = preload("res://assets/image/fonts/development_font.tres")
 const INK := Color("384238")
@@ -112,12 +111,6 @@ var _detail_scroll: ScrollContainer
 var _detail_stack: VBoxContainer
 var _source: RichTextLabel
 var _errors: Label
-var _footer: Control
-var _draft_status: Label
-var _cost: Label
-var _publish: Button
-var _publication_hint := ""
-var _publication_preview: Dictionary = {}
 var _skill_presentation: Dictionary = {}
 var _textures: Dictionary = {}
 var _sync_count := 0
@@ -166,7 +159,6 @@ func _refresh_locale() -> void:
 	_refresh_neuron()
 	_refresh_part()
 	_refresh_overview()
-	refresh_publication()
 	if _neuron != null: _neuron.queue_redraw()
 	if _spread_tree != null: _spread_tree.queue_redraw()
 	_queue_text_layout()
@@ -220,21 +212,6 @@ func load_assets(textures: Dictionary = {}) -> void:
 	_layout()
 
 
-func bind_publish(button: Button, cost: Label) -> void:
-	_publish=button
-	_cost=cost
-	button.reparent(_footer)
-	PaperStyle.apply_button(button)
-	ReceiptUI.primary(button)
-	button.add_theme_stylebox_override("hover_pressed", button.get_theme_stylebox("pressed"))
-	button.add_theme_color_override("font_hover_pressed_color", button.get_theme_color("font_pressed_color"))
-	button.clip_text = false
-	if not button.minimum_size_changed.is_connected(_queue_text_layout): button.minimum_size_changed.connect(_queue_text_layout)
-	cost.hide()
-	refresh_publication()
-	_layout()
-
-
 func set_draft(draft: Dictionary) -> void:
 	if _draft == draft: return
 	if str(_draft.get("preset_id","")) != str(draft.get("preset_id","")) or str(_draft.get("kernel_id","")) != str(draft.get("kernel_id","")):
@@ -255,7 +232,6 @@ func set_draft(draft: Dictionary) -> void:
 	_refresh_part()
 	_refresh_starters()
 	_refresh_overview()
-	refresh_publication()
 
 
 func get_draft() -> Dictionary:
@@ -264,11 +240,10 @@ func get_draft() -> Dictionary:
 
 func sync_state(snapshot: Dictionary) -> void:
 	var design: Dictionary=snapshot.get("design_state",{})
-	var relevant := {"propagation_delivery":snapshot.get("propagation_delivery", {}),"design_state":design,"meme_points":snapshot.get("meme_points",0),"point_cost":snapshot.get("point_cost",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0),"current_variant_id":snapshot.get("current_variant_id",""),"propagation_research_ready":snapshot.get("propagation_research_ready",false)}
+	var relevant := {"propagation_delivery":snapshot.get("propagation_delivery", {}),"design_state":design,"meme_points":snapshot.get("meme_points",0),"phase":snapshot.get("phase","draft"),"lineage":snapshot.get("lineage",[]),"publish_count":snapshot.get("publish_count",0),"current_variant_id":snapshot.get("current_variant_id",""),"propagation_research_ready":snapshot.get("propagation_research_ready",false)}
 	relevant.war_started = bool(snapshot.get("world_competition", {}).get("endgame", {}).get("war_started", false))
 	if _state == relevant: return
 	_state=relevant.duplicate(true)
-	refresh_publication()
 	var previous_modules: Array = _design.get("module_slots", [])
 	_design=design.duplicate(true)
 	var slots: Array=_design.get("module_slots",[])
@@ -299,41 +274,7 @@ func set_active_sheet(id: String) -> void:
 	set_interaction_enabled(_interaction_enabled)
 	for key in _pages:
 		if not _sheet_hosts.has(key): _pages[key].visible=key==id
-	refresh_publication()
-	if _cost!=null: _cost.hide()
 	_layout()
-
-
-func refresh_publication() -> void:
-	if _publish == null: return
-	var before := [_footer.get_parent(), _footer.visible, _publish.text, _draft_status.text]
-	var editable := _tab in ["edit", "cultivate"]
-	var can_revise := not bool(_state.get("war_started", false)) and str(_state.get("phase", "draft")) != "complete"
-	if editable and _footer.get_parent() != _pages[_tab]: _footer.reparent(_pages[_tab])
-	_footer.visible = editable and can_revise and int(_state.get("publish_count", 0)) > 0
-	_publish.visible = _footer.visible
-	_draft_status.text = DeskLocalization.text("LOC_WB_DRAFT_AWAITING_PUBLICATION")
-	_draft_status.visible = bool(_publication_preview.get("changed", true))
-	var cost := int(_state.get("point_cost", 0))
-	var balance := int(_state.get("meme_points", 0))
-	var phase := str(_state.get("phase", "draft"))
-	if int(_state.get("publish_count", 0)) > 0:
-		_publish.text = DeskLocalization.format_text("LOC_WB_PUBLISH_CHANGES_COST", cost)
-		var unchanged := not bool(_publication_preview.get("changed", true))
-		_publish.disabled = not can_revise or phase not in ["draft", "running"] or balance < cost or unchanged
-		_publication_hint = DeskLocalization.format_text("LOC_MEME_D_47732400", balance)
-		if phase == "event":
-			_publication_hint = DeskLocalization.text("LOC_COLLECT_OR_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_A156F2DD") + "\n" + _publication_hint
-		elif unchanged:
-			_publication_hint = DeskLocalization.text("LOC_WB_PUBLICATION_UNCHANGED")
-		elif balance < cost:
-			_publication_hint = DeskLocalization.format_text("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, balance])
-	if before != [_footer.get_parent(), _footer.visible, _publish.text, _draft_status.text]: _queue_text_layout()
-
-func set_publication_preview(preview: Dictionary) -> void:
-	if _publication_preview == preview: return
-	_publication_preview = preview.duplicate(true)
-	refresh_publication()
 
 
 func sheet_pages() -> Dictionary:
@@ -377,12 +318,6 @@ func _build() -> void:
 		page.mouse_filter=Control.MOUSE_FILTER_IGNORE
 		add_child(page)
 		_pages[TABS[index]]=page
-	_footer=Control.new()
-	_footer.name="PublishFooter"
-	_footer.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	_pages.edit.add_child(_footer)
-	_draft_status = _label(_footer, "", "DraftPublicationStatus", 12)
-	_draft_status.add_theme_color_override("font_color", SECONDARY_INK)
 	_errors=_label(self,"","DesignErrors")
 	_errors.add_theme_color_override("font_color",Color("a44635"))
 	_errors.hide()
@@ -891,7 +826,6 @@ func _layout() -> void:
 	_place(_errors,Rect2(8,0,maxf(240,size.x-16),30))
 	for button in _tabs: button.hide()
 	_starter.hide()
-	if _cost!=null: _cost.hide()
 	queue_redraw()
 
 
@@ -905,7 +839,6 @@ func _layout_sheet(id: String,area: Vector2) -> void:
 
 func _layout_edit_sheet(w: float, h: float) -> void:
 	var inset := float(SPACE_BETWEEN)
-	var footer_space := _layout_publication_footer("edit", w, h)
 	var right := w * .52
 	var span := w - right - SPACE_WITHIN
 	var has_cards := false
@@ -917,32 +850,19 @@ func _layout_edit_sheet(w: float, h: float) -> void:
 	var clip_step := CardFace.minimum_card_size("module").x + SPACE_WITHIN * 2
 	var clip_start := w - inset - 96.0 - clip_step * (_physical_clips.size() - 1)
 	_overview_data.columns = 2 if span >= 280 else 1
-	_place(_neuron, Rect2(GROUP_SPACING, 144, right - GROUP_SPACING * 2, maxf(100, h - 168 - footer_space)))
+	_place(_neuron, Rect2(GROUP_SPACING, 144, right - GROUP_SPACING * 2, maxf(100, h - 168)))
 	_neuron.show()
 	for index in _physical_clips.size():
 		var x := clip_start + float(index) * clip_step
 		_place(_physical_clips[index], Rect2(x, 6, 96, clip_height))
 		_physical_clips[index].rotation = deg_to_rad([-5.0, 3.5, -2.0, 5.5][index])
 		_place(_lineage_cards[index], Rect2(Vector2(4, 15), CardFace.minimum_card_size("module")))
-	_place(_detail_scroll, Rect2(right, content_y, span, maxf(78, h - content_y - inset - footer_space)))
-
-
-func _layout_publication_footer(id: String, w: float, h: float) -> float:
-	if _publish == null or not _footer.visible or _footer.get_parent() != _pages[id]: return 0.0
-	var button_size := _publish.get_combined_minimum_size().max(Vector2(238, 32))
-	var height := maxf(48, button_size.y + SPACE_WITHIN * 2)
-	var width := w - SPACE_BETWEEN * 2
-	_place(_footer, Rect2(SPACE_BETWEEN, h - height - GROUP_SPACING, width, height))
-	_place(_publish, Rect2(width - button_size.x, SPACE_WITHIN, button_size.x, button_size.y))
-	_place(_draft_status, Rect2(0, 0, maxf(0, width - button_size.x - GROUP_SPACING), height))
-	_draft_status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	return height + SPACE_BETWEEN
+	_place(_detail_scroll, Rect2(right, content_y, span, maxf(78, h - content_y - inset)))
 
 
 func _layout_culture_sheet(w: float,h: float) -> void:
 	_context_title.hide()
-	var footer_space := _layout_publication_footer("cultivate", w, h)
-	_place(_context_slice,Rect2(0,0,w,maxf(240,h - footer_space)))
+	_place(_context_slice,Rect2(0,0,w,maxf(240,h)))
 	_place(_context_details,Rect2())
 	_place(_context_trial,Rect2())
 	_context_details.hide()
@@ -1050,8 +970,8 @@ func inspection() -> Dictionary:
 		"content_editable":false,"final_expression":_final_expression.current_text(),"final_expression_rect":_final_expression.get_global_rect(),"information_sections":4,"source_text":_source.text,"skill_details":_skill_presentation.get("description", ""),"buy_disabled":not _interaction_enabled or _tab != "spread" or _skill_presentation.get("status", "") != "available","error_text":_errors.text,
 		"composition":_composition.duplicate(true),"meaning":_meaning.current_text(),"expression_context":_final_expression.context_text(),"expression_annotations":_final_expression.inspection(),"meaning_annotations":_meaning.inspection(),"context_annotations":{"plain_text":_final_expression.context_text(),"annotations":_final_expression.inspection().context_annotations},"module_errors":_module_errors.duplicate(),"module_availability":module_availability(),
 		"source_hover":{"visible":_source_hover.visible,"text":_source_hover.content_text(),"sources":_source_hover_records.duplicate(true),"rect":_source_hover.get_global_rect(),"mouse_filter":_source_hover.mouse_filter,"receipt":_source_hover.inspection()},"neuron_visible":_neuron.is_visible_in_tree(),"part_details_visible":_part_content.is_visible_in_tree(),"language_selector_visible":false,"specimen_art":{"visible":false},
-		"footer_rect":_footer.get_global_rect(),"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
-		"starter_options":_starter.item_count,"publication_connected":_publish!=null,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
+		"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
+		"starter_options":_starter.item_count,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
 		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
 		"overview":{"name":_overview_name.text,"data":_summary_text,"columns":_overview_data.columns,"cells":_summary_inspection(),"name_rect":_overview_name.get_global_rect(),"data_rect":_overview_data.get_global_rect()},
 		"spread_tree":_spread_tree.inspection(),"spread_layout":_spread_layout_inspection(),"module_slot_rects":_physical_clips.map(func(clip: Control)->Rect2:return clip.get_global_rect()),
@@ -1073,8 +993,6 @@ func _spread_layout_inspection() -> Dictionary:
 
 func hover_info(viewport_point: Vector2) -> Dictionary:
 	if not _hover_enabled: return {}
-	var publication := publication_hover_info(viewport_point)
-	if not publication.is_empty(): return publication
 	if _tab == "spread": return _spread_hover(viewport_point)
 	if _tab != "edit" or not _pages.edit.is_visible_in_tree(): return {}
 	var clip_slot := module_clip_at(viewport_point)
@@ -1103,32 +1021,6 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 			if str(tag.id).is_empty(): return {}
 			return {"kind":tag.kind, "id":tag.id, "title":tag.text, "description":tag.help, "hover_description":tag.help, "hover_note":tag.note}
 	return {}
-
-
-func publication_hover_info(viewport_point: Vector2) -> Dictionary:
-	if not _hover_enabled or _publish == null or not _publish.is_visible_in_tree(): return {}
-	var local := _publish.get_global_transform_with_canvas().affine_inverse() * viewport_point
-	if not Rect2(Vector2.ZERO, _publish.size).has_point(local): return {}
-	return {"kind":"publication", "title":_publish.text, "hover_description":_publication_hint, "rows":_publication_rows(),
-		"cursor_shape":Input.CURSOR_FORBIDDEN if _publish.disabled else Input.CURSOR_POINTING_HAND}
-
-func _publication_rows() -> Array[Dictionary]:
-	var rows: Array[Dictionary] = []
-	if not _publication_preview.has("before"): return rows
-	var before: Dictionary = _publication_preview.before
-	var after: Dictionary = _publication_preview.after
-	rows.append({"category":tr(str(_publication_preview.country_id) + "_SHORT"), "value":DeskLocalization.text("LOC_WB_FIT_COMPARISON")})
-	rows.append({"value":DeskLocalization.format_text("LOC_WB_FIT_SCORE_CHANGE", [float(before.score)*100.0, float(after.score)*100.0])})
-	var changes: Array[Dictionary] = []
-	for key: String in ContextTrialSlip.COMPONENTS:
-		var delta := float(after.components[key]) - float(before.components[key])
-		if is_zero_approx(delta): continue
-		changes.append({"component":key, "delta":delta})
-	changes.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return absf(float(a.delta)) > absf(float(b.delta)))
-	for change: Dictionary in changes.slice(0, 3):
-		var key: String = change.component
-		rows.append({"category":DeskLocalization.text(str(ContextTrialSlip.TITLES[key])), "value":"%.1f → %.1f" % [float(before.components[key])*100.0, float(after.components[key])*100.0]})
-	return rows
 
 
 func _spread_hover(viewport_point: Vector2) -> Dictionary:

@@ -260,9 +260,6 @@ func _logical_target(id: String) -> Variant:
 				var clip: Control = editor.module_clip_parent(index)
 				if clip != null: return clip
 			return null
-		"editor/publish":
-			var publish: Control = editor._publish
-			return publish if publish.is_visible_in_tree() else page.desk._stack.tab_control("edit")
 		"context/slot": return _context_target(editor)
 		"context/current_topic": return _context_current_topic(editor.context_slice())
 		"spread/skill": return _skill_target(editor)

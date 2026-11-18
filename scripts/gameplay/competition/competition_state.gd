@@ -361,6 +361,10 @@ func record_publication(variants: Array, current_id: String, country_id: String,
 	_state.ending_progress = IndependentEndings.record_publication(_state.ending_progress, variants, current_id, country_id, hour, self)
 	if not _state.ending_progress.is_empty(): _state.ending_evaluated_hour = int(_state.ending_progress.last_hour)
 
+func record_author_edit(variants: Array, current_id: String, country_id: String, hour: int) -> void:
+	_state.ending_progress = IndependentEndings.record_publication(_state.ending_progress, variants, current_id, country_id, hour, self, true)
+	if not _state.ending_progress.is_empty(): _state.ending_evaluated_hour = int(_state.ending_progress.last_hour)
+
 func evaluate_ending(variants: Array, hour: int, current_id: String = "", country_id: String = "") -> Dictionary:
 	if not _state.victory.is_empty(): return _state.victory.duplicate(true)
 	if current_id.is_empty(): current_id = str(_state.ending_progress.get("target_record_id", ""))
@@ -672,6 +676,21 @@ func set_live_skills(skill_ids: Array, variants: Array) -> void:
 		if str(variant.get("creator", "")) == "player" or not variant.get("origin_ids", []).is_empty():
 			_state.propagation.lineage_ids.append(str(variant.id))
 	_fitness_cache.clear()
+
+func set_effective_profile(id: String, profile_data: Dictionary) -> void:
+	_state.registry[id].effective_profile = profile_data.duplicate(true)
+	_fitness_cache.erase(id)
+	var runtime: Dictionary = _state.propagation
+	runtime.hubs.erase(id)
+	runtime.transfers = runtime.transfers.filter(func(record: Dictionary): return str(record.owner) != id)
+	runtime.pressure = {}
+	runtime.allocated_total = 0.0
+	for transfer: Dictionary in runtime.transfers:
+		var target := str(transfer.target)
+		var variant_id := str(transfer.target_variant)
+		if not runtime.pressure.has(target): runtime.pressure[target] = {}
+		runtime.pressure[target][variant_id] = float(runtime.pressure[target].get(variant_id, 0.0)) + float(transfer.pressure)
+		runtime.allocated_total += float(transfer.pressure)
 
 
 func live_profile(id: String, state: Dictionary = {}) -> Dictionary:

@@ -5,7 +5,7 @@ const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd
 const SEMANTIC_PROFILE_FIELDS := ["language_id", "language_ids", "group_id", "group_ids", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment"]
 const PATCH_SCALAR_FIELDS := ["language_access", "recognizability", "context_dependency", "remix_cost"]
 const DRAFT_CONTENT_FIELDS := ["slots", "module_patch_record", "community_changes", "community_rephrase", "confluence_contents"]
-const CONTENT_FIELDS := ["id", "family_id", "parent_ids", "origin_ids", "creator", "owned", "controlled", "text", "meaning", "meaning_id", "language_versions", "kernel_id", "preset_id", "source_presets", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "patch_ids", "flow_draft", "flow_profile", "source_event", "mutation_definition_id", "mutation_patch_id", "translation_version", "confluence_source_id", "deviation_effect_deltas", "deviation_patch_effects"]
+const CONTENT_FIELDS := ["id", "family_id", "parent_ids", "origin_ids", "creator", "owned", "controlled", "text", "meaning", "meaning_id", "language_versions", "kernel_id", "preset_id", "source_presets", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "patch_ids", "flow_draft", "flow_profile", "source_event", "mutation_definition_id", "mutation_patch_id", "translation_version", "confluence_source_id", "deviation_effect_deltas", "deviation_patch_effects", "live_author_edit"]
 var _simulation: RefCounted
 
 func _init(simulation: RefCounted) -> void:
@@ -218,6 +218,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 		if not parent.has("effective_history"): parent.effective_history = []
 		parent.effective_history.append(revision_snapshot(parent))
 	parent.effective_content = rolled
+	parent.erase("live_author_edit")
 	parent.rollback_from_id = str(raw.id)
 	parent.deviation_effect_deltas = {}
 	parent.deviation_patch_effects = {}

@@ -18,6 +18,7 @@ const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
 const EventResponse = preload("res://scripts/gameplay/events/event_response.gd")
 const EventMutation = preload("res://scripts/gameplay/events/event_mutation.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
+const AUTHOR_CONTENT_ACTIONS := ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes"]
 
 var catalog: MemeDemoCatalog
 var economy := MemeDemoEconomy.new()
@@ -184,52 +185,6 @@ func draft_fitness(draft: Dictionary) -> Dictionary:
 	for row: Dictionary in catalog.gameplay_rules.countries: countries[str(row.id)] = competition.fitness(profile_data,str(row.id))
 	return {"countries":countries,"profile":profile_data,"evidence_status":"game_policy"}
 
-func publication_changed(draft: Dictionary, target_country_id: String = "") -> bool:
-	return bool(publication_preview(draft, target_country_id).changed)
-
-func publication_preview(draft: Dictionary, target_country_id: String = "") -> Dictionary:
-	if publish_count == 0: return {"changed":true}
-	var active := Lifecycle.new(self).active_source(variant_by_id(current_variant_id))
-	var published := Lifecycle.content(active)
-	var skills: Array = design_state.snapshot().unlocked_skills
-	var candidate := _publication_content(draft, skills)
-	var baseline := _publication_content(published.flow_draft, skills)
-	var target := country_id if target_country_id.is_empty() else target_country_id
-	var relocation := target != str(deployments.back().country_id)
-	return {"changed":candidate != baseline or relocation, "relocation":relocation, "country_id":target,
-		"before":competition.fitness(competition.live_profile(str(active.id)), target),
-		"after":competition.fitness(candidate.profile, target)}
-
-func _publication_content(draft: Dictionary, skills: Array) -> Dictionary:
-	var data := draft.duplicate(true)
-	data.patch_ids = ExpressionText.patch_ids(data)
-	# Research applies to circulating memes without a paid revision.
-	data.flow_skill_ids = skills.duplicate()
-	var composed: Dictionary = ExpressionText.compose(catalog, data)
-	var result := {"profile":competition.profile(data), "patch_ids":ExpressionText.patch_ids(data)}
-	for field: String in ["expression", "meaning", "meaning_id", "language_versions"]:
-		result[field] = composed.get(field, "" if field != "language_versions" else [])
-	for field: String in ["kernel_id", "preset_id", "target", "reuse_permission", "replaceable_slots"]:
-		result[field] = data[field]
-	return _publication_value(result)
-
-func _publication_value(value: Variant, field: String = "") -> Variant:
-	if value is Vector2: return _publication_value([value.x, value.y])
-	if value is StringName: return String(value)
-	# Removing a patch can leave floating-point residue in its scalar fields.
-	if value is float: return snappedf(value, 0.0000001)
-	if value is Dictionary:
-		var result := {}
-		for key: String in value: result[key] = _publication_value(value[key], key)
-		return result
-	if value is Array or value is PackedStringArray:
-		var result: Array = []
-		for item: Variant in value: result.append(_publication_value(item))
-		if field in ["language_ids", "group_ids", "topic_ids", "patch_ids", "replaceable_slots"]: result.sort()
-		elif field == "language_versions": result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return str(a.language_id) < str(b.language_id))
-		return result
-	return value
-
 func _required_context_errors() -> PackedStringArray:
 	return design_state.required_context_errors()
 
@@ -239,7 +194,6 @@ func elapsed_hours() -> float:
 
 func advance_active_seconds(delta: float) -> int:
 	if phase != "running" or speed == 0 or not is_finite(delta) or delta <= 0.0: return 0
-	# Published profiles keep circulating while the next draft is being edited.
 	var remaining_seconds := delta
 	var advanced_hours := 0
 	while remaining_seconds > 0.0 and phase == "running" and speed > 0:
@@ -285,7 +239,7 @@ func design_action(action: String, params: Dictionary = {}) -> PackedStringArray
 		if not params.get("position") is Vector2: return PackedStringArray([DeskLocalization.source("LOC_PATCH_PLACEMENT_REQUIRES_PAPER_LOCAL_COORDINATES_FC1D71FE")])
 		params = params.duplicate(true)
 		params.position = _vector_array(params.position)
-	if action in ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes"]:
+	if action in AUTHOR_CONTENT_ACTIONS:
 		var draft: Variant = params.get("draft")
 		if not draft is Dictionary or not draft.get("slots") is Dictionary or not draft.get("political_position") is Vector2 or not draft.get("pragmatic_position") is Vector2:
 			return PackedStringArray([DeskLocalization.source("LOC_APPLYING_A_SOLID_REQUIRES_A_VALID_AUTHOR_CAF24FE0")])
@@ -298,12 +252,44 @@ func design_action(action: String, params: Dictionary = {}) -> PackedStringArray
 		for key in ["political_position", "pragmatic_position"]: encoded[key] = _vector_array(encoded[key])
 		for key in ["replaceable_slots", "topic_ids"]:
 			if encoded.has(key): encoded[key] = Array(encoded[key])
+		if not current_variant_id.is_empty():
+			encoded.community_changes = ExpressionText.Community.collect(encoded.get("community_changes", []), variant_by_id(current_variant_id), variants)
 		params = params.duplicate(true)
 		params.erase("draft")
 		params.base = encoded
 	var errors: PackedStringArray = design_state.perform(action, params)
-	if errors.is_empty(): changed.emit()
+	if errors.is_empty():
+		if action in AUTHOR_CONTENT_ACTIONS: _sync_live_author_content()
+		changed.emit()
 	return errors
+
+func _live_author_content(draft: Dictionary, skills: Array, source: Dictionary) -> Dictionary:
+	var data := draft.duplicate(true)
+	data.patch_ids = ExpressionText.patch_ids(data)
+	data.flow_skill_ids = skills.duplicate()
+	var composed := ExpressionText.compose(catalog, data)
+	var result := {"text":str(composed.expression), "patch_ids":data.patch_ids.duplicate(), "flow_draft":_encoded_draft(data), "flow_profile":competition.profile(data)}
+	for field: String in ["meaning", "meaning_id", "language_versions"]: result[field] = composed[field]
+	for field: String in ["language_id", "topic_ids", "political_known", "political_position", "pragmatic_position"]: result[field] = result.flow_draft[field]
+	result.context_layer_attachment = result.flow_profile.context_layer_attachment.duplicate(true)
+	var identity := Lifecycle.content(source)
+	for field: String in ["creator", "owned", "controlled"]: result[field] = identity[field]
+	result.semantic_distance = MonitorMetrics.deviation(source.deviation_anchor, result)
+	return result
+
+func _sync_live_author_content() -> void:
+	if current_variant_id.is_empty(): return
+	var source := variant_by_id(current_variant_id)
+	var draft := context_draft()
+	var state := design_state.payload()
+	# The author edits one live meme; its birth revision remains immutable.
+	source.effective_content = _live_author_content(draft, state.unlocked_skills, source)
+	source.live_author_edit = {"schema":1, "operation_count":state.operations.size(), "hour":hour}
+	competition.set_effective_profile(current_variant_id, source.effective_content.flow_profile)
+	latest_draft = draft.duplicate(true)
+	draft_distance = float(source.effective_content.semantic_distance)
+	if phase == "draft": phase = "running"
+	competition.record_author_edit(variants, current_variant_id, country_id, hour)
 
 func context_draft() -> Dictionary:
 	var draft: Dictionary = design_state.snapshot().context_draft.duplicate(true)
@@ -402,6 +388,9 @@ func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringAr
 		draft = latest_draft.duplicate(true)
 		if draft.is_empty() and not str(candidate.snapshot().starter_preset_id).is_empty(): draft = starter_draft(str(candidate.snapshot().starter_preset_id))
 	if not draft.is_empty():
+		if not current_variant_id.is_empty():
+			draft = draft.duplicate(true)
+			draft.community_changes = ExpressionText.Community.collect(draft.get("community_changes", []), variant_by_id(current_variant_id), variants)
 		errors = validate_draft(draft)
 		errors.append_array(_core_errors(draft))
 		if not errors.is_empty(): return errors
@@ -412,6 +401,7 @@ func buy_propagation_skill(id: String, draft: Dictionary = {}) -> PackedStringAr
 	economy.transactions.back().propagation_skill_id = id
 	design_state = candidate
 	competition.set_live_skills(Array(design_state.snapshot().unlocked_skills), variants)
+	_sync_live_author_content()
 	changed.emit()
 	return errors
 
@@ -511,36 +501,28 @@ func publish(data: Dictionary) -> PackedStringArray:
 	if not competition.has_country(country_id): errors.append(DeskLocalization.source("LOC_THE_DEPLOYMENT_COUNTRY_IS_NOT_IN_THE_9557C167"))
 	if country_id.is_empty():
 		errors.append(DeskLocalization.source("LOC_SELECT_A_DEPLOYMENT_COUNTRY_ON_THE_MAP_AA28A76D"))
-	var cost: int = catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost
+	var cost: int = catalog.first_publish_cost
 	if economy.balance < cost:
 		errors.append(DeskLocalization.source_format("LOC_NOT_ENOUGH_MEME_NEED_D_HAVE_D_46321C6B", [cost, economy.balance]))
-	if publish_count > 0 and errors.is_empty() and not publication_changed(data):
-		errors.append(DeskLocalization.source("LOC_WB_PUBLICATION_UNCHANGED"))
 	if not errors.is_empty():
 		status = DeskLocalization.source_join("；",errors)
 		changed.emit()
 		return errors
 	var pristine := _capture_lifecycle_state()
 	# Publication and distribution commit together after validation.
-	economy.charge(cost, DeskLocalization.source("LOC_FIRST_DEPLOYMENT_23FC9181") if publish_count == 0 else DeskLocalization.source("LOC_REVISED_DEPLOYMENT_AF934607"), hour)
+	economy.charge(cost, DeskLocalization.source("LOC_FIRST_DEPLOYMENT_23FC9181"), hour)
 	var kernel := find_kernel(str(data.kernel_id))
 	var preset_id := str(data.get("preset_id", ""))
 	var preset := catalog.find_preset(preset_id)
 	var source_presets: Array = [preset.source_record()] if preset != null else []
 	var anchor := preset.family_anchor if preset != null else kernel.family_anchor
-	var family_id := ""
+	var family_id := _new_id("family")
 	var parent_ids: Array[String] = []
-	var old := Lifecycle.new(self).active_source(variant_by_id(current_variant_id))
-	if not old.is_empty() and old.kernel_id == str(kernel.id) and str(old.get("preset_id", "")) == preset_id:
-		family_id = old.family_id
-		parent_ids.append(old.id)
-	else:
-		family_id = _new_id("family")
-		families[family_id] = {"id":family_id, "owner":"player", "anchor":anchor, "split_threshold":MonitorMetrics.SPLIT_THRESHOLD, "derived_from":[], "preset_id":preset_id, "source_presets":source_presets.duplicate(true)}
+	families[family_id] = {"id":family_id, "owner":"player", "anchor":anchor, "split_threshold":MonitorMetrics.SPLIT_THRESHOLD, "derived_from":[], "preset_id":preset_id, "source_presets":source_presets.duplicate(true)}
 	var id := _new_id("variant")
 	var composed: Dictionary = ExpressionText.compose(catalog, data)
 	var text: String = str(composed.expression)
-	variants.append({"id":id, "family_id":family_id, "parent_ids":parent_ids, "origin_ids":[id] if parent_ids.is_empty() else old.origin_ids.duplicate(), "creator":"player", "owned":true, "controlled":true, "text":text, "kernel_id":str(kernel.id), "preset_id":preset_id, "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":str(data.language_id), "pragmatic_position":_vector_array(data.pragmatic_position), "political_position":_vector_array(data.political_position) if data.get("political_known", false) else [], "target":str(data.target), "topic_ids":Array(data.get("topic_ids", []))})
+	variants.append({"id":id, "family_id":family_id, "parent_ids":parent_ids, "origin_ids":[id], "creator":"player", "owned":true, "controlled":true, "text":text, "kernel_id":str(kernel.id), "preset_id":preset_id, "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":str(data.language_id), "pragmatic_position":_vector_array(data.pragmatic_position), "political_position":_vector_array(data.political_position) if data.get("political_known", false) else [], "target":str(data.target), "topic_ids":Array(data.get("topic_ids", []))})
 	variants.back().patch_ids = patch_ids.duplicate()
 	for field: String in ["meaning", "meaning_id", "language_versions"]: variants.back()[field] = composed[field]
 	for field in ["module_patch_record", "skill_effects", "context_layer_record", "context_layer_attachment"]:
@@ -552,7 +534,7 @@ func publish(data: Dictionary) -> PackedStringArray:
 	variants.back().flow_profile = competition.profile(profile_draft)
 	competition.register(variants.back(),variants.back().flow_profile,country_id,hour)
 	design_state.record_publish(variants.back())
-	var activation: Dictionary = Lifecycle.new(self).activate(variants.back(), old)
+	var activation: Dictionary = Lifecycle.new(self).activate(variants.back())
 	if activation.has("error"):
 		_restore_lifecycle_state(pristine)
 		status = str(activation.error)
@@ -569,34 +551,6 @@ func publish(data: Dictionary) -> PackedStringArray:
 	status = DeskLocalization.source_format("LOC_DEPLOYED_TO_S_LATER_EXTERNAL_VERSIONS_CANNOT_CAE6EE96", country_title, [0])
 	changed.emit()
 	return errors
-
-func begin_revision(draft: Dictionary = {}) -> PackedStringArray:
-	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
-	if phase == "draft" and draft.is_empty(): return PackedStringArray()
-	if phase == "event":
-		status = DeskLocalization.source("LOC_COLLECT_OR_ACKNOWLEDGE_THE_CURRENT_EVENT_FIRST_A156F2DD")
-		changed.emit()
-		return PackedStringArray([status])
-	var authored: Dictionary = latest_draft if draft.is_empty() else draft
-	if not authored.is_empty():
-		var errors := validate_draft(authored)
-		errors.append_array(_core_errors(authored))
-		if not errors.is_empty(): return errors
-		var candidate: MemeDemoDesignState = DesignState.new(catalog)
-		candidate._state = design_state.payload()
-		errors = candidate.apply_unlocked(_encoded_draft(authored), phase != "draft")
-		if not errors.is_empty():
-			status = DeskLocalization.source_join("；",errors)
-			changed.emit()
-			return errors
-		design_state = candidate
-		latest_draft = context_draft()
-	phase = "draft"
-	ending.clear()
-	speed = 0
-	status = DeskLocalization.source("LOC_CREATE_YOUR_OWN_NEW_VERSION_CIRCULATING_EXTERNAL_00887F90")
-	changed.emit()
-	return PackedStringArray()
 
 func variant_by_id(id: String) -> Dictionary:
 	for item in variants:
@@ -1113,7 +1067,7 @@ func _finish(result: Dictionary) -> void:
 
 func snapshot() -> Dictionary:
 	var state := totals_state()
-	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "variants":competition.active_variants(variants).size(), "events":events.duplicate(true), "lineage":competition.active_variants(variants), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else catalog.revision_publish_cost, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
+	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "variants":competition.active_variants(variants).size(), "events":events.duplicate(true), "lineage":competition.active_variants(variants), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else 0, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
 	state.propagation_research_ready = propagation_research_ready()
 	state.publish_count = publish_count
 	state.propagation = competition.propagation_inspection()

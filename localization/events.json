@@ -1465,9 +1465,9 @@
     "en": "World War III"
   },
   "LOC_EVENT_WORLD_WAR_THREE_NARRATIVE": {
-    "source": "第三次世界大战爆发。人口急剧减少，三天内将无人存活。投放与修订已停止。",
-    "zh_CN": "第三次世界大战爆发。各国人口迅速减少，地图将在三天内归于寂静。发布流程已经结束。",
-    "en": "World War III has broken out. Populations are falling rapidly, and the map will fall silent within three days. Publication has ended."
+    "source": "第三次世界大战爆发。人口急剧减少，三天内将无人存活。投放与编辑已停止。",
+    "zh_CN": "第三次世界大战爆发。各国人口迅速减少，地图将在三天内归于寂静。投放与编辑已经停止。",
+    "en": "World War III has broken out. Populations are falling rapidly, and the map will fall silent within three days. Deployment and editing have ended."
   },
   "LOC_EVENT_WORLD_WAR_THREE_COMMENT": {
     "source": "先看仍有人生活的地方；模因需要有人接住。",
