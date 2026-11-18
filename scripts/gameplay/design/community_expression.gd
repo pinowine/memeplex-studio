@@ -31,7 +31,21 @@ static func change(raw: Dictionary) -> Dictionary:
 		if not a.is_equal_approx(b): delta.axes[field] = [b.x-a.x, b.y-a.y]
 	for id: String in current.topic_ids:
 		if id not in previous.topic_ids: delta.topics.append(id)
-	if current.language_id != previous.language_id: delta.language_id = str(current.language_id)
+	if int(raw.get("translation_version", 1)) == 2:
+		var before_languages: Dictionary = effective_draft(previous)
+		var after_languages: Dictionary = effective_draft(current)
+		for language: String in after_languages.language_ids:
+			if language not in before_languages.get("language_ids", [before_languages.language_id]): delta.language_id = language
+		delta.translation_version = 2
+	elif current.language_id != previous.language_id:
+		var before_languages: Dictionary = effective_draft(previous)
+		var after_languages: Dictionary = effective_draft(current)
+		delta.language_id = str(after_languages.language_id)
+		# Unsaved projections follow the old replacement; saved unmarked deltas keep their append semantics.
+		delta.translation_version = 1
+		delta.previous_language_id = str(before_languages.language_id)
+		delta.previous_language_ids = Array(before_languages.get("language_ids", [before_languages.language_id])).duplicate()
+		delta.replacement_language_ids = Array(after_languages.get("language_ids", [after_languages.language_id])).duplicate()
 	if raw.has("confluence_companion_content"):
 		var companion: Dictionary = raw.confluence_companion_content
 		delta.confluence.append({"text":str(companion.text), "meaning":str(companion.get("meaning", companion.text))})
@@ -74,6 +88,9 @@ static func effective_draft(draft: Dictionary) -> Dictionary:
 			if id not in effective.topic_ids: effective.topic_ids.append(id)
 		if not str(delta.language_id).is_empty():
 			var languages: Array = Array(effective.get("language_ids", [effective.language_id]))
+			if int(delta.get("translation_version", 2)) == 1 and str(effective.language_id) == str(delta.previous_language_id) and languages == delta.previous_language_ids:
+				effective.language_id = str(delta.language_id)
+				languages = delta.replacement_language_ids.duplicate()
 			if str(delta.language_id) not in languages: languages.append(str(delta.language_id))
 			effective.language_ids = languages
 	effective.erase("community_changes")

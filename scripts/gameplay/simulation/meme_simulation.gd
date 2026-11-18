@@ -1011,6 +1011,7 @@ func _spawn_remix(event_id: String, creator: String, definition_id: String = "",
 		variants.back().mutation_patch_id = str(mutation.patch_id)
 		variants.back().topic_ids = Array(mutation.flow_draft.topic_ids)
 		variants.back().language_id = str(mutation.flow_draft.language_id)
+		if mutation.has("translation_version"): variants.back().translation_version = int(mutation.translation_version)
 		if mutation.has("companion_id"):
 			variants.back().confluence_source_id = str(mutation.companion_id)
 			variants.back().confluence_companion_content = companion_content

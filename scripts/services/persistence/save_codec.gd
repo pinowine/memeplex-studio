@@ -442,12 +442,15 @@ func _validate_variant_compositions(variants: Array, variants_by_id: Dictionary)
 			var inherited: Array = parent.patch_ids
 			var definition := simulation._event_definition(str(variant.get("mutation_definition_id", ""))) as MemeDemoEvent
 			var expression_only := definition != null and definition.mutation_kind == &"expression"
+			if variant.has("translation_version") and (not _integer(variant.translation_version) or variant.translation_version not in [1, EventMutation.TRANSLATION_VERSION] or not expression_only or definition.mutation_expression_mode != &"translation"):
+				return PackedStringArray(["A saved translation requires its recorded rewrite version"])
+			var translation_version := int(variant.get("translation_version", 1))
 			var added_patches := 0 if expression_only else 1
 			if not parent.get("flow_draft") is Dictionary or variant.patch_ids.size() != inherited.size() + added_patches or variant.patch_ids.slice(0, inherited.size()) != inherited:
 				return PackedStringArray(["A mutation must preserve its parent's patches and add one patch"])
 			if parent.flow_draft.get("reuse_permission", "unknown") == "restricted":
 				return PackedStringArray(["A restricted source version cannot produce a community rewrite"])
-			var mutation := EventMutation.derive(catalog, parent, str(variant.get("mutation_patch_id", "")), definition, draft.has("community_rephrase")) if definition != null else MutationRules.derive(catalog, parent, str(variant.patch_ids.back()), draft.has("community_rephrase"))
+			var mutation := EventMutation.derive(catalog, parent, str(variant.get("mutation_patch_id", "")), definition, draft.has("community_rephrase"), translation_version) if definition != null else MutationRules.derive(catalog, parent, str(variant.patch_ids.back()), draft.has("community_rephrase"))
 			if mutation.is_empty(): return PackedStringArray(["A saved rewrite requires a compatible event mutation"])
 			if definition != null and definition.mutation_kind == &"confluence":
 				var companion_id := str(variant.get("confluence_source_id", ""))

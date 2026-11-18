@@ -3,6 +3,7 @@ extends RefCounted
 const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
+const TRANSLATION_VERSION := 2
 
 static func candidate(catalog: MemeDemoCatalog, parent: Dictionary, definition: MemeDemoEvent) -> Dictionary:
 	if not parent.get("flow_draft") is Dictionary: return {}
@@ -15,10 +16,10 @@ static func candidate(catalog: MemeDemoCatalog, parent: Dictionary, definition: 
 			if not result.is_empty(): return result
 	return {}
 
-static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: String, definition: MemeDemoEvent, persist_transform := true) -> Dictionary:
+static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: String, definition: MemeDemoEvent, persist_transform := true, translation_version: int = TRANSLATION_VERSION) -> Dictionary:
 	if definition.mutation_kind == &"expression":
 		if not patch_id.is_empty(): return {}
-		return _rewrite_expression(catalog, parent, definition, persist_transform)
+		return _rewrite_expression(catalog, parent, definition, persist_transform, translation_version)
 	if patch_id.is_empty(): return {}
 	var result := MutationRules.derive(catalog, parent, patch_id, persist_transform)
 	if result.is_empty(): return {}
@@ -43,7 +44,7 @@ static func derive(catalog: MemeDemoCatalog, parent: Dictionary, patch_id: Strin
 	result.meaning_changed = true
 	return result
 
-static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, definition: MemeDemoEvent, persist_transform: bool) -> Dictionary:
+static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, definition: MemeDemoEvent, persist_transform: bool, translation_version: int) -> Dictionary:
 	var draft: Dictionary = ExpressionText.Community.inherited_draft(parent) if persist_transform else parent.flow_draft.duplicate(true)
 	draft.slots = ExpressionText.base_slots(draft)
 	# A new phrasing keeps the inherited message and releases the author's inventory claims.
@@ -54,9 +55,22 @@ static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, de
 	draft.patch_ids = parent.patch_ids.duplicate()
 	if persist_transform and definition.mutation_expression_mode == &"rephrase": draft.community_rephrase = true
 	if definition.mutation_expression_mode == &"translation":
-		var current := Composition.LANGUAGES.find(str(draft.language_id))
-		draft.language_id = str(Composition.LANGUAGES[(current + 1) % Composition.LANGUAGES.size()])
-		draft.language_ids = [draft.language_id]
+		if translation_version == 1:
+			# Version 1 replaced the language; saved rewrites must reproduce that history.
+			var current := Composition.LANGUAGES.find(str(draft.language_id))
+			draft.language_id = str(Composition.LANGUAGES[(current + 1) % Composition.LANGUAGES.size()])
+			draft.language_ids = [draft.language_id]
+		else:
+			var source := ExpressionText.Community.effective_draft(draft)
+			draft.language_id = str(source.language_id)
+			var current := Composition.LANGUAGES.find(str(source.language_id))
+			var languages: Array = Array(source.get("language_ids", [source.language_id])).duplicate()
+			for offset in range(1, Composition.LANGUAGES.size()):
+				var language := str(Composition.LANGUAGES[(current + offset) % Composition.LANGUAGES.size()])
+				if language not in languages:
+					languages.append(language)
+					break
+			draft.language_ids = languages
 	if not Composition.validate(draft, draft.patch_ids).is_empty(): return {}
 	var composed := ExpressionText.compose(catalog, draft)
 	if not persist_transform and definition.mutation_expression_mode == &"rephrase":
@@ -65,8 +79,11 @@ static func _rewrite_expression(catalog: MemeDemoCatalog, parent: Dictionary, de
 		composed.expression_segments = rewritten.segments
 		for version: Dictionary in composed.language_versions:
 			version.expression = str(Composition.rephrase_expression(draft,draft.patch_ids,str(version.language_id)).expression)
-	if str(composed.expression) == str(parent.text) or str(composed.meaning_id) != str(parent.meaning_id): return {}
-	return {"patch_id":"", "patch_ids":draft.patch_ids.duplicate(), "flow_draft":draft, "composition":composed, "meaning_changed":false}
+	var unchanged: bool = composed.language_versions == parent.language_versions if definition.mutation_expression_mode == &"translation" and translation_version == TRANSLATION_VERSION else str(composed.expression) == str(parent.text)
+	if unchanged or str(composed.meaning_id) != str(parent.meaning_id): return {}
+	var result := {"patch_id":"", "patch_ids":draft.patch_ids.duplicate(), "flow_draft":draft, "composition":composed, "meaning_changed":false}
+	if definition.mutation_expression_mode == &"translation": result.translation_version = translation_version
+	return result
 
 static func _position(value: Variant) -> Vector2:
 	return value if value is Vector2 else Vector2(float(value[0]), float(value[1]))
