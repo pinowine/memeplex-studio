@@ -10,10 +10,12 @@ static func arrival_count(clock: MemeDemoEventClock, seed_value: int, hour: int,
 			if arrival_hour <= hour: arrivals += 1
 	return arrivals
 
-static func choose_event(definitions: Array[MemeDemoEvent], hour: int, time_scale: float, event_counts: Dictionary, last_event_hours: Dictionary, condition_values: Dictionary, random: RandomNumberGenerator) -> MemeDemoEvent:
+static func choose_event(definitions: Array[MemeDemoEvent], hour: int, time_scale: float, event_counts: Dictionary, last_event_hours: Dictionary, condition_values: Dictionary, random: RandomNumberGenerator, country: Dictionary = {}, reached: bool = true) -> MemeDemoEvent:
 	var candidates: Array[MemeDemoEvent] = []
+	var weights: Array[float] = []
 	var total_weight := 0.0
 	for definition: MemeDemoEvent in definitions:
+		if not reached and definition.origin != &"world": continue
 		var event_id := str(definition.id)
 		var previous_count := int(event_counts.get(event_id, 0))
 		if definition.weight <= 0.0 or hour < definition.start_hour * time_scale:
@@ -30,14 +32,34 @@ static func choose_event(definitions: Array[MemeDemoEvent], hour: int, time_scal
 		if not qualified or random.randf() >= definition.occurrence_chance:
 			continue
 		candidates.append(definition)
-		total_weight += definition.weight
+		var weight := definition.weight
+		if not country.is_empty() and not definition.topic_ids.is_empty():
+			var affinity := 0.0
+			for topic: String in definition.topic_ids: affinity = maxf(affinity, float(country.topics.get(topic, 0.0)))
+			weight *= affinity
+		weights.append(weight)
+		total_weight += weight
 	if total_weight <= 0.0: return null
 	var remaining_weight := random.randf() * total_weight
-	for definition: MemeDemoEvent in candidates:
-		remaining_weight -= definition.weight
-		if remaining_weight < 0.0: return definition
+	for index in candidates.size():
+		remaining_weight -= weights[index]
+		if remaining_weight < 0.0: return candidates[index]
 	push_error(DeskLocalization.source("LOC_WEIGHTED_EVENT_SAMPLING_DID_NOT_SELECT_AN_01245473"))
 	return null
+
+static func country_weights(contributions: Dictionary) -> Dictionary:
+	var total := 0.0
+	var unreached := 0
+	for value: float in contributions.values():
+		total += value
+		if value == 0.0: unreached += 1
+	var result := {}
+	for id: String in contributions:
+		var contribution := float(contributions[id])
+		if total == 0.0: result[id] = 1.0 / contributions.size()
+		elif contribution == 0.0: result[id] = 0.1 / unreached
+		else: result[id] = contribution / total * (0.9 if unreached > 0 else 1.0)
+	return result
 
 static func _condition_passes(condition: MemeDemoCondition, values: Dictionary) -> bool:
 	var actual := float(values[str(condition.field)])

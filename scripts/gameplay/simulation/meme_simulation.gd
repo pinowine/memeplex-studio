@@ -712,9 +712,11 @@ func _schedule_events() -> void:
 	var arrivals := EventScheduler.arrival_count(catalog.event_clock, seed_value, hour, _event_clock_arrivals)
 	if events.size() >= arrivals: return
 	if not events.is_empty() and hour - int(events[-1].hour) < catalog.event_clock.minimum_interval_hours(): return
+	var contributions := _event_country_contributions()
+	var cid := _sample_event_country(EventScheduler.country_weights(contributions))
 	var definition := EventScheduler.choose_event(_eligible_events(), hour, catalog.gameplay_rules.event_time_scale,
-		event_counts, last_event_hours, _event_condition_values(), _rng)
-	if definition != null: _execute_event(definition)
+		event_counts, last_event_hours, _event_condition_values(), _rng, catalog.gameplay_rules.country(cid), float(contributions[cid]) > 0.0)
+	if definition != null: _execute_event(definition, cid)
 
 ## 统一创建事件身份、应用效果并登记来源，界面只接收记录副本。
 func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -> void:
@@ -722,6 +724,7 @@ func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -
 	var pristine := _capture_lifecycle_state()
 	var id := str(definition.id)
 	var cid := occurring_country if not occurring_country.is_empty() else _event_country(definition)
+	if cid.is_empty(): return
 	var country: Dictionary = catalog.gameplay_rules.country(cid)
 	var title := _event_country_title(cid)
 	var response := EventResponse.resolve(definition, country, catalog.groups)
@@ -791,22 +794,39 @@ func _event_country_title(cid: String) -> String:
 		if str(country.id) == cid: return str(country.short_name_key)
 	return cid
 
-func _event_country(definition: MemeDemoEvent) -> String:
-	var weights: Array[float] = []
+func _event_country_contributions() -> Dictionary:
+	var population := 0
+	var budget := 0
+	for row: Dictionary in competition._state.world:
+		population += competition._population(str(row.id))
+		budget += floori(competition._population(str(row.id)) * catalog.gameplay_rules.attention_fraction)
+	var result := {}
+	for cid: String in competition._state.countries:
+		var country: Dictionary = competition._state.countries[cid]
+		var counts := {"adopted":0, "exposed":0, "attention":0}
+		for raw: Dictionary in variants:
+			if bool(raw.get("retired", false)) or not bool(Lifecycle.content(raw).get("controlled", false)): continue
+			for field: String in counts: counts[field] += int(country[field].get(str(raw.id), 0))
+		result[cid] = MonitorMetrics.spread(counts, population, budget)
+	return result
+
+func _sample_event_country(weights: Dictionary) -> String:
 	var total := 0.0
-	var rewrite_cache := {}
-	for country: Dictionary in catalog.gameplay_rules.countries:
-		var weight := sqrt(float(country.population))
-		if definition.origin == &"transmission":
-			weight = 0.0
-			for item: Dictionary in _event_candidates(str(country.id), definition, rewrite_cache): weight += float(item.weight)
-		weights.append(weight)
-		total += weight
+	for weight: float in weights.values(): total += weight
 	var cursor := _rng.randf() * total
-	for index in weights.size():
-		cursor -= weights[index]
-		if cursor < 0.0: return str(catalog.gameplay_rules.countries[index].id)
-	return country_id
+	for cid: String in weights:
+		cursor -= float(weights[cid])
+		if cursor < 0.0: return cid
+	return str(weights.keys()[-1])
+
+func _event_country(definition: MemeDemoEvent) -> String:
+	var contributions := _event_country_contributions()
+	var weights := EventScheduler.country_weights(contributions)
+	if definition.origin != &"world":
+		for cid: String in contributions:
+			if float(contributions[cid]) == 0.0: weights.erase(cid)
+	if weights.is_empty(): return ""
+	return _sample_event_country(weights)
 
 func _event_target(cid: String, definition: MemeDemoEvent = null) -> Dictionary:
 	var candidates := _event_candidates(cid, definition, {})
