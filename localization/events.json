@@ -6,17 +6,17 @@
   },
   "LOC_EVENT_TOPIC_TECHNOLOGY_HELP": {
     "source": "将表达关联到科学发现、新技术、人工智能与网络工具。",
-    "zh_CN": "将表达关联到科学发现、新技术、人工智能与网络工具。",
+    "zh_CN": "把表达接到科学发现、新技术、人工智能和网络工具这些事上。",
     "en": "Connect the expression to scientific discoveries, new technologies, artificial intelligence and network tools."
   },
   "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_POSITIVE": {
     "source": "选票让长期执政者交出了席位",
-    "zh_CN": "选票让连任三届的联盟交出了多数席位",
+    "zh_CN": "连坐三届的位置总算换人了，选票还是管点用的",
     "en": "Voters forced a three-term coalition to give up its majority"
   },
   "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_NEGATIVE": {
     "source": "新的联盟仍要争夺财政分配权",
-    "zh_CN": "新的联盟还要争财政支出该怎样分配",
+    "zh_CN": "旧人刚下去，新上桌的这几家还得先为怎么分钱吵一架",
     "en": "The new coalition still has to argue over how public money is allocated"
   },
   "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_TITLE": {
@@ -26,22 +26,22 @@
   },
   "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_NARRATIVE": {
     "source": "%s公布议会选举结果：海岸联盟失去连续掌握三届的多数席位，改革党以降低住房税为条件开启组阁谈判。",
-    "zh_CN": "%s公布议会选举结果：海岸联盟失去连续三届掌握的多数席位，改革党以降低住房税为条件开启组阁谈判。",
+    "zh_CN": "%s公布议会选举结果：海岸联盟丢掉了连续掌握三届的多数席位，改革党随即开出降低住房税的条件，加入组阁谈判。",
     "en": "%s announces its parliamentary election results. The Coast Coalition loses the majority it held for three terms, and the Reform Party makes lower housing taxes a condition of coalition talks."
   },
   "LOC_EVENT_WORLD_COURTYARD_ASSEMBLY_COMMENT": {
     "source": "组阁之前，每一票都像可以兑换的筹码。",
-    "zh_CN": "海岸联盟丢了连续三届的多数席位，改革党把降低住房税摆上谈判桌。新内阁能否组成，还看这项条件怎么谈。",
+    "zh_CN": "连坐三届的位置说丢就丢，现在全看住房税这条能不能谈拢了……反正组阁这几天，谁手里捏着几票谁就是大爷。",
     "en": "The Coast Coalition lost its three-term majority, and the Reform Party put lower housing taxes on the table. The voters have had their say, but forming a new cabinet still depends on what the parties can agree to in those talks."
   },
   "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_POSITIVE": {
     "source": "公开账目让挪用经费有了可追索的证据",
-    "zh_CN": "公开采购记录，为追查被挪用的经费留下了证据",
+    "zh_CN": "采购明细一摊开，哪笔钱被人动过手脚总算有迹可循了",
     "en": "Open procurement records leave evidence for tracing diverted funds"
   },
   "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_NEGATIVE": {
     "source": "账目公开后才知道被公开的钱去了哪里",
-    "zh_CN": "采购记录公开了，人们才知道那些钱去了哪里",
+    "zh_CN": "要不是今天把旧明细放出来，谁知道三所学校能买回同一台机器",
     "en": "Only when the procurement records are released does the public learn where the missing money went"
   },
   "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_TITLE": {
@@ -51,22 +51,22 @@
   },
   "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_NARRATIVE": {
     "source": "%s财政部开放过去五年的采购明细，民间会计发现三所学校向同一家空壳公司采购了相同编号的实验设备。",
-    "zh_CN": "%s财政部开放过去五年的采购明细，民间会计发现三所学校向同一家空壳公司采购了相同编号的实验设备。",
+    "zh_CN": "%s财政部开放了过去五年的采购明细。几名民间会计逐条比对后发现，竟有三所学校向同一家空壳公司买下了机身编号完全相同的实验设备。",
     "en": "%s's treasury releases five years of procurement records. Volunteer accountants find three schools bought laboratory equipment with identical serial numbers from one shell company."
   },
   "LOC_EVENT_WORLD_BUDGET_OPEN_DATA_COMMENT": {
     "source": "数字本身很安静，重复的设备编号就不一样了。",
-    "zh_CN": "三所学校竟向同一家空壳公司买到了编号相同的实验设备。民间会计从五年采购明细里揪出了线索，经费如何获批还待追查。",
+    "zh_CN": "三所学校找同一家空壳公司买实验设备，连机身编号都懒得重编一个，我以前见过糊弄差事的，还真没见过糊弄得这么省事的。",
     "en": "Three schools ended up with lab equipment sharing the exact same serial number from one shell company. Opening five years of procurement records let volunteer accountants spot the match, and now someone has to explain how those payments were approved."
   },
   "LOC_EVENT_WORLD_ARCHIVE_RELEASE_POSITIVE": {
     "source": "地方居民终于能决定自己的议会",
-    "zh_CN": "地方居民终于能选出自己的议会",
+    "zh_CN": "总算不用再捆在一块儿凑合过日子了，往后各选各的议会",
     "en": "Local residents can finally choose their own parliaments"
   },
   "LOC_EVENT_WORLD_ARCHIVE_RELEASE_NEGATIVE": {
     "source": "边界画完了，养老金还没画完",
-    "zh_CN": "议会日程定下了，跨区养老金却还没谈妥",
+    "zh_CN": "分家协议签得倒是痛快，交了半辈子的跨区养老金到底找谁领",
     "en": "Parliament schedules are set, while cross-region pensions remain unresolved"
   },
   "LOC_EVENT_WORLD_ARCHIVE_RELEASE_TITLE": {
@@ -76,22 +76,22 @@
   },
   "LOC_EVENT_WORLD_ARCHIVE_RELEASE_NARRATIVE": {
     "source": "%s的三个自治地区签署《白港协议》，约定一年内分别建立议会。共同货币暂留十八个月，跨区养老金的归属仍未谈妥。",
-    "zh_CN": "%s的三个自治地区签署《白港协议》，约定一年内分别建立议会。共同货币暂留十八个月，跨区养老金的归属仍未谈妥。",
+    "zh_CN": "%s的三个自治地区签署《白港协议》，约定一年内各自建立议会。共同货币暂时保留十八个月，至于跨区养老金由谁接手，眼下还没谈拢。",
     "en": "Three autonomous regions in %s sign the Whiteharbor Agreement to establish separate parliaments within a year. Their common currency stays for eighteen months, while pension obligations remain disputed."
   },
   "LOC_EVENT_WORLD_ARCHIVE_RELEASE_COMMENT": {
     "source": "人们会先用新国旗讨论旧账单。",
-    "zh_CN": "《白港协议》定下了一年内各建议会、共同货币暂留十八个月的日程。跨区养老金归谁管，牵涉其中的人还在等个准信。",
+    "zh_CN": "旗子各挂各的，钱袋子还得再共用十八个月……至于养老金归谁发，你看协议上但凡写着“另行协商”的地方，多半都是最难啃的骨头。",
     "en": "Separate parliaments within a year and eighteen more months of a shared currency give the Whiteharbor Agreement a timetable. Cross-region pensions remain unresolved, though. Until responsibility for them is settled, people who depend on those payments have reason to worry."
   },
   "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_POSITIVE": {
     "source": "恢复秩序让公共空间可以重新开放",
-    "zh_CN": "恢复秩序，让公共空间能够重新开放",
+    "zh_CN": "先把街面上的乱子摁住，大伙儿出门才能踏实点",
     "en": "Restoring order allows public spaces to reopen"
   },
   "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_NEGATIVE": {
     "source": "十一个人合影也算局势复杂",
-    "zh_CN": "临时规定把超过十人的毕业合影也归进了审批范围",
+    "zh_CN": "十一个人站一块儿拍张毕业照也得提前打报告，干脆按排号笑算了",
     "en": "The rule sweeps graduation photos of over ten people into the permit pile"
   },
   "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_TITLE": {
@@ -101,22 +101,22 @@
   },
   "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_NARRATIVE": {
     "source": "%s临时内阁以港口骚乱为由，要求超过十人的户外集会提前报备。大学社团发现毕业合影也被列入审批范围。",
-    "zh_CN": "%s临时内阁以港口骚乱为由，要求超过十人的户外集会提前报备。大学社团发现毕业合影也被列入审批范围。",
+    "zh_CN": "%s临时内阁以港口骚乱为由，要求超过十人的户外集会一律提前报备。不少大学社团随后发现，连草坪上的毕业合影也被划进了报备范围。",
     "en": "%s's interim cabinet requires advance approval for outdoor gatherings of more than ten people after unrest at a port. University clubs learn graduation photos also need permission."
   },
   "LOC_EVENT_WORLD_NIGHT_QUIET_RULE_COMMENT": {
     "source": "限制越具体，反话越容易找到落脚点。",
-    "zh_CN": "临时内阁以港口骚乱为由，要求超过十人的户外集会报备。大学社团连拍毕业合影都得先审批，合影和骚乱竟用上了同一套规矩。",
+    "zh_CN": "说是防着港口那边再闹起来，结果把大学拍毕业照的也一勺烩了，十一个人站一块儿就算集会……摄影师听了都得愣半天。",
     "en": "The interim cabinet cited unrest at the port, then required prior approval for outdoor gatherings of more than ten people. Once even a graduation photo needs clearance, the rule gives anyone inclined to sarcasm a very precise place to start counting."
   },
   "LOC_EVENT_TRANSIT_FARE_POSITIVE": {
     "source": "远郊居民终于不用为距离支付额外代价",
-    "zh_CN": "改为每程固定收费后，远郊通勤者每月的车费减少了",
+    "zh_CN": "住远郊的人总算松口气，每天上下班不用再按站数挨刀了",
     "en": "A flat fare per trip saves outer-suburb commuters money on monthly passes"
   },
   "LOC_EVENT_TRANSIT_FARE_NEGATIVE": {
     "source": "统一票价把两站路也统一成了远途",
-    "zh_CN": "取消按里程计费后，短途乘客每程多花近一半车费",
+    "zh_CN": "我就坐两站路去买个菜，凭什么跟跨城通勤的人掏一样的车钱",
     "en": "Dropping distance-based fares makes short-trip riders pay nearly half again as much"
   },
   "LOC_EVENT_TRANSIT_FARE_TITLE": {
@@ -126,22 +126,22 @@
   },
   "LOC_EVENT_TRANSIT_FARE_NARRATIVE": {
     "source": "%s议会取消按里程计费，改为每程固定收费。远郊通勤者省下月票钱，短途乘客的单程支出却增加近一半。",
-    "zh_CN": "%s议会取消按里程计费，改为每程固定收费。远郊通勤者每月的车费减少，短途乘客的单程支出却增加近一半。",
+    "zh_CN": "%s议会取消了公共交通按里程计费，统一改为上车一口价。住远郊的通勤族省下不少月票钱，只坐两三站的短途乘客每趟却要多掏近一半车费。",
     "en": "%s's parliament replaces distance-based transit fares with one flat fare per trip. Outer-suburb commuters save on monthly passes, while short-trip riders pay almost half again as much."
   },
   "LOC_EVENT_TRANSIT_FARE_COMMENT": {
     "source": "同一张票，远处的人和近处的人算出的账不同。",
-    "zh_CN": "改成每程固定收费后，远郊通勤者每月少花了车费，短途乘客每程却多付近一半。两边谈起新票价，先报每天坐多远，大概就能明白彼此的感受。",
+    "zh_CN": "网上现在为这张车票吵成一锅粥，其实根本不用听他们讲什么大道理，先问一句平时上班坐几站路就全明白了。",
     "en": "Replacing distance fares with a flat rate saves outer-suburb commuters money on monthly passes while raising the cost of a short ride by nearly half. Their reactions need not match. Before deciding who has misunderstood the rule, it helps to ask how far each person travels."
   },
   "LOC_EVENT_WORLD_BORDER_WAR_POSITIVE": {
     "source": "边防部队称行动能阻止下一轮越境袭击",
-    "zh_CN": "边防部队称，这次行动能阻止下一轮越境袭击",
+    "zh_CN": "边防那边放话了，这回出手就是为了把下一轮越境袭击堵在门外",
     "en": "Border forces say the operation can prevent another cross-border attack"
   },
   "LOC_EVENT_WORLD_BORDER_WAR_NEGATIVE": {
     "source": "火车运走了货，也运走了回家的日期",
-    "zh_CN": "口岸关闭、列车被征用，边境家庭的归途也更难确定",
+    "zh_CN": "口岸一关、火车一征，今年还能不能回得去家又没准信了",
     "en": "Closed crossings and requisitioned trains leave border families less certain when they can go home"
   },
   "LOC_EVENT_WORLD_BORDER_WAR_TITLE": {
@@ -151,22 +151,22 @@
   },
   "LOC_EVENT_WORLD_BORDER_WAR_NARRATIVE": {
     "source": "%s边境河谷的停火协议在生效第九天破裂，双方关闭两处口岸并征用货运列车。当地救援站开始登记失散家庭。",
-    "zh_CN": "%s边境河谷的停火协议在生效第九天破裂，双方关闭两处口岸并征用货运列车。当地救援站开始登记失散家庭。",
+    "zh_CN": "%s边境河谷的停火协议在生效第九天破裂，双方随即关闭两处口岸并征用货运列车，沿线救援站已开始登记失散家庭。",
     "en": "A ceasefire in %s's border valley breaks on its ninth day. Both sides close two crossings and requisition freight trains. Relief stations begin registering separated families."
   },
   "LOC_EVENT_WORLD_BORDER_WAR_COMMENT": {
     "source": "战争新闻里的地名，会变成普通人的去向。",
-    "zh_CN": "停火协议只撑了九天，两处口岸关闭，货运列车也被征用。救援站开始登记失散家庭，他们眼下最急的恐怕是找到亲人。",
+    "zh_CN": "停火协议满打满算才撑了九天……这种时候新闻里报的是两个口岸的名字，落到救援站门口，全是一张张找人的登记表。",
     "en": "The ceasefire lasted only nine days before both sides closed two crossings and requisitioned freight trains. Relief stations are already registering separated families, so for those families the urgent question is where their relatives are."
   },
   "LOC_EVENT_WORLD_ROOFTOP_MATCH_POSITIVE": {
     "source": "重力反转让老战术失灵，新玩家有了机会",
-    "zh_CN": "重力反转打乱老战术，也给新玩家留了机会",
+    "zh_CN": "重力一翻过来老套路全白搭，新手这回也能上去乱拳打死老师傅了",
     "en": "Reversing gravity disrupts old tactics and gives newcomers a chance"
   },
   "LOC_EVENT_WORLD_ROOFTOP_MATCH_NEGATIVE": {
     "source": "买了对战游戏，先练两小时排队",
-    "zh_CN": "新游首日排队超过两小时，赛事宣传跑在了服务器前面",
+    "zh_CN": "比赛通稿吹得震天响，买完游戏的我还在登录界面排第二个钟头呢",
     "en": "First-day login queues pass two hours while tournament plans race ahead"
   },
   "LOC_EVENT_WORLD_ROOFTOP_MATCH_TITLE": {
@@ -176,17 +176,17 @@
   },
   "LOC_EVENT_WORLD_ROOFTOP_MATCH_NARRATIVE": {
     "source": "%s的灯塔工作室发布竞技游戏《玻璃海》，主打可改变重力的三人对战。首日服务器排队超过两小时，赛事方已宣布秋季邀请赛。",
-    "zh_CN": "%s的灯塔工作室发布竞技游戏《玻璃海》，主打可改变重力的三人对战。首日服务器排队超过两小时，赛事方已宣布秋季邀请赛。",
+    "zh_CN": "%s灯塔工作室发售三人竞技游戏《玻璃海》，主打随时翻转重力的场地对抗。开服当天登录排队超过两小时，赛事方却已提前官宣了秋季邀请赛。",
     "en": "Lighthouse Studio in %s releases Glass Sea, a three-player competitive game with reversible gravity. Launch queues exceed two hours, and an autumn invitational is announced."
   },
   "LOC_EVENT_WORLD_ROOFTOP_MATCH_COMMENT": {
     "source": "排队的截图常常比第一场比赛先传出去。",
-    "zh_CN": "《玻璃海》的秋季邀请赛已经开始宣传，想试试重力反转三人对战的玩家，开服首日却先排了超过两小时的队。",
+    "zh_CN": "开服第一天光进门就得排两小时队，秋季邀请赛倒是先张罗上了，我严重怀疑赛事组自己现在也卡在加载条那儿。",
     "en": "Glass Sea already has an autumn invitational on the calendar, showing plenty of confidence in its reversible-gravity matches. With first-day server queues passing two hours, though, eager players have a long wait before they can try the new mechanics."
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_POSITIVE": {
     "source": "五代租客让一间房容下了不同的人生",
-    "zh_CN": "不换布景演完五代租客，独角戏靠表演撑起了整间屋子",
+    "zh_CN": "连布景都没换就演活了五代租客，一个人硬是把整座空屋子撑满了",
     "en": "Playing five generations on one set lets the performance carry the whole room"
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_NEGATIVE": {
@@ -201,22 +201,22 @@
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_NARRATIVE": {
     "source": "%s演员索娜带着独角戏《空房间》完成新一站演出。她不换布景便扮演五代租客，本场谢幕持续十七分钟，下一站门票也开始加售。",
-    "zh_CN": "%s演员索娜带着独角戏《空房间》完成新一站演出。她不换布景便扮演五代租客，本场谢幕持续十七分钟。当天晚上，下一站的门票就被抢购一空。",
+    "zh_CN": "%s演员索娜带着独角戏《空房间》演完新一站，全程不换布景一人分饰五代租客。当晚谢幕掌声持续了十七分钟，下一站加推的门票也在散场后抢购一空。",
     "en": "Actor Sona takes her solo play Empty Rooms to another stop in %s. She plays five generations of tenants without changing the set. The curtain call lasts seventeen minutes, and more tickets go on sale for the next stop."
   },
   "LOC_EVENT_WORLD_COURTYARD_MARKET_COMMENT": {
     "source": "观众会把舞台上的房间带回自己的日常。",
-    "zh_CN": "五代租客的日子都挤在同一套布景里。索娜谢幕用了十七分钟，当天晚上，下一站的门票就被抢购一空。",
+    "zh_CN": "一个人不换布景演完五代租客，光是记词就够吓人的了……怪不得谢幕能拍十七分钟巴掌，大伙儿八成是在台上看见自己租过的那间屋子了。",
     "en": "Sona plays five generations of tenants without changing the set, which helps explain a seventeen-minute curtain call. Packing so many lives into one rented room gives audiences plenty to recognize from their own experience, and the next stop is already adding tickets."
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_POSITIVE": {
     "source": "不可靠叙述给读者留下了共同推理的空间",
-    "zh_CN": "寄错地址的遗嘱和真假难辨的叙述者给了读者共读推理的空间",
+    "zh_CN": "一封寄错门的遗嘱把所有人都绕进去了，光是猜那个“我”到底是谁就够盘半宿",
     "en": "A misdelivered will and an elusive narrator give readers a mystery to untangle together"
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_NEGATIVE": {
     "source": "叙述者可能不存在，预售尾款肯定存在",
-    "zh_CN": "叙述者存不存在还在争，预售尾款倒得照付",
+    "zh_CN": "书里的叙述者存不存在另说，反正我预售的尾款是实打实扣掉了",
     "en": "Readers can dispute the narrator's existence; the preorder balance still has to be paid"
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_TITLE": {
@@ -226,22 +226,22 @@
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_NARRATIVE": {
     "source": "%s作家艾缇的新小说《第七码头》在发行前售罄，故事从一封寄错地址的遗嘱展开。书店安排通宵签售，读者争论叙述者是否存在。",
-    "zh_CN": "%s作家艾缇的新小说《第七码头》在发行前售罄，故事从一封寄错地址的遗嘱展开。书店安排通宵签售，读者争论叙述者是否存在。",
+    "zh_CN": "%s作家艾缇的新小说《第七码头》尚未正式上架便宣告售罄。全书由一封寄错地址的遗嘱切入，多家书店临时加排通宵签售，拿到样书的读者已经在争论书里的叙述者是否确有其人。",
     "en": "Writer Aeti's The Seventh Pier sells out before release in %s. Its story begins with a will sent to the wrong address. Bookshops plan overnight signings as readers dispute whether its narrator exists."
   },
   "LOC_EVENT_WORLD_LIBRARY_LATE_HOURS_COMMENT": {
     "source": "一本书的争论，会写出书外的另一段故事。",
-    "zh_CN": "《第七码头》从一封寄错地址的遗嘱写起，读者连叙述者是否存在也争了起来。书还没发行就已售罄，书店准备通宵签售。",
+    "zh_CN": "书还没正式上架就先抢光了，读者半夜不睡觉在那儿吵叙述者到底有没有这个人……要我说，作者在家里看评论区怕是比写书的时候还乐呵。",
     "en": "The Seventh Pier sold out before release, and bookshops have scheduled overnight signings. A will sent to the wrong address is hook enough, and the dispute over whether the narrator even exists gives readers a puzzle to argue through together."
   },
   "LOC_EVENT_WORLD_CAPTION_GUIDELINE_POSITIVE": {
     "source": "小制作也能让观众围绕一句台词共同创作",
-    "zh_CN": "小制作也能给观众留下一句接着创作的台词",
+    "zh_CN": "没什么大场面的小成本片子，偏偏靠一句冷飕飕的台词让人记了好几个礼拜",
     "en": "A small production gives audiences one line to build on"
   },
   "LOC_EVENT_WORLD_CAPTION_GUIDELINE_NEGATIVE": {
     "source": "看完电影后，所有告别都开始需要查票",
-    "zh_CN": "同一句告别说了又说，照片里的人影却只减不增",
+    "zh_CN": "后劲太大了，散场去坐地铁听见广播报站都下意识想摸一下车票",
     "en": "The clerk repeats the same farewell while the photograph loses one passenger after another"
   },
   "LOC_EVENT_WORLD_CAPTION_GUIDELINE_TITLE": {
@@ -251,22 +251,22 @@
   },
   "LOC_EVENT_WORLD_CAPTION_GUIDELINE_NARRATIVE": {
     "source": "%s上映的低成本电影《纸月车站》连续三周登顶票房。片中售票员每次说完同一句告别语，就有一位乘客从照片中消失。",
-    "zh_CN": "%s上映的低成本电影《纸月车站》连续三周登顶票房。片中售票员每次说完同一句告别语，就有一位乘客从照片中消失。",
+    "zh_CN": "%s上映的低成本电影《纸月车站》已连续三周稳居票房榜首。片中车站售票员每重复一次那句固定的送行话，旧合照上就会悄无声息地少掉一位乘客。",
     "en": "Low-budget film Paper Moon Station leads %s's box office for three weeks. Each time its ticket clerk repeats a farewell, another passenger vanishes from a photograph."
   },
   "LOC_EVENT_WORLD_CAPTION_GUIDELINE_COMMENT": {
     "source": "重复的台词给不同场景留出了入口。",
-    "zh_CN": "低成本的《纸月车站》连续三周领跑票房。“南生一直在等那辆车，十年后，大概也没人记得他了。”观众走出影院还惦记着这句话。",
+    "zh_CN": "小成本片子能连压三周票房，全靠售票员那句反复念叨的送行话了……现在外头好多道别的帖子都在学那个调调，你做模因倒是可以留个心眼。",
     "en": "Paper Moon Station was made on a small budget, yet it has led the box office for three straight weeks. Every time the ticket clerk repeats that farewell, another passenger vanishes from the photo—a simple, unsettling device that stays with viewers after they leave."
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_POSITIVE": {
     "source": "旧船坞成了普通人能走进去的公共记忆",
-    "zh_CN": "旧船坞变成了游客可以走进去的共同记忆",
+    "zh_CN": "废弃的老船坞亮起灯来还真挺像样，顺手给以后的自己留句话也算个念想",
     "en": "An old dock becomes a shared memory visitors can enter"
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_NEGATIVE": {
     "source": "未来的自己先收到今天的门票账单",
-    "zh_CN": "修好园区花了七年，给未来的明信片却只留一小时寄出",
+    "zh_CN": "园区磨磨蹭蹭修了七年，轮到我写明信片倒只给一个钟头倒计时",
     "en": "The park took seven years to build, then gave visitors one hour to write to the future"
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_TITLE": {
@@ -276,22 +276,22 @@
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_NARRATIVE": {
     "source": "%s的云鲸主题公园完成七年建设，开放沿旧船坞铺设的夜间园区。最受关注的项目要求游客在一小时内寄出给未来自己的明信片。",
-    "zh_CN": "%s的云鲸主题公园完成七年建设，开放沿旧船坞铺设的夜间园区。最受关注的项目要求游客在一小时内寄出给未来自己的明信片。",
+    "zh_CN": "%s云鲸主题公园历时七年施工，正式开放沿旧船坞改建的夜间园区。园内排起长队的热门项目，是限时一小时写完并投递给未来自己的明信片。",
     "en": "After seven years of construction, Cloud Whale opens a night district along an old dock in %s. Its most discussed attraction gives visitors one hour to mail a postcard to their future selves."
   },
   "LOC_EVENT_WORLD_TERM_BREAK_NOTICE_COMMENT": {
     "source": "景点越有仪式感，游客越会带走一套动作。",
-    "zh_CN": "修了七年的旧船坞夜间园区终于开放，最受关注的明信片项目只留一小时寄出。倒计时催人落笔，写给未来的自己却总想多想一会儿。",
+    "zh_CN": "自己修个园子磨蹭了七年，催游客写明信片倒只给一小时，这帮做策划的心思我也懂，不卡着表，好多人能咬着笔杆子发呆到闭园。",
     "en": "Cloud Whale spent seven years building this night district along the old dock, and its most discussed attraction gives visitors an hour to mail a postcard to their future selves. Writing to your future self can take a little thought, even with a clock running. Will they remember why they chose those words when the card arrives?"
   },
   "LOC_EVENT_CITY_TOURNAMENT_POSITIVE": {
     "source": "业余球队让冠军与普通劳动者连在一起",
-    "zh_CN": "快递员球队补时逆转夺冠，奖金还能修好借用的学校球场",
+    "zh_CN": "平时跑单练出来的体格真不含糊，赢下职业队还记得把借来的学校球场修好",
     "en": "Delivery riders win in added time and use the prize to repair a borrowed school pitch"
   },
   "LOC_EVENT_CITY_TOURNAMENT_NEGATIVE": {
     "source": "职业球队输给了一群还要赶晚班的人",
-    "zh_CN": "职业球队在补时阶段被业余的灰鸥队反超丢冠",
+    "zh_CN": "天天全职训练的职业队，补时让人家下了晚班来踢球的给绝杀了",
     "en": "A professional club lets the title slip in added time against amateur riders"
   },
   "LOC_EVENT_CITY_TOURNAMENT_TITLE": {
@@ -301,22 +301,22 @@
   },
   "LOC_EVENT_CITY_TOURNAMENT_NARRATIVE": {
     "source": "%s屋顶联赛的决赛中，由快递员组成的灰鸥队在补时反超职业球队。夺冠奖金将用来修复他们长期借用的学校球场。",
-    "zh_CN": "%s屋顶联赛的决赛中，由快递员组成的灰鸥队在补时反超职业球队。夺冠奖金将用来修复他们长期借用的学校球场。",
+    "zh_CN": "%s屋顶联赛决赛爆出冷门，由快递员凑起来的灰鸥队在伤停补时阶段反超职业俱乐部夺冠，赛后宣布把奖金拿去翻修他们常年借用的学校球场。",
     "en": "In %s's Rooftop League final, the Grey Gulls, a team of delivery riders, beat a professional side in added time. Their prize will repair the school pitch they have long borrowed."
   },
   "LOC_EVENT_CITY_TOURNAMENT_COMMENT": {
     "source": "人们会记住最后一球，也会记住谁明天还要上班。",
-    "zh_CN": "灰鸥队的快递员们在补时反超职业队，冠军奖金将用来修好那块长期借用的学校球场。",
+    "zh_CN": "业余队补时翻盘已经够热闹了，偏偏赢球这帮人明天一早还得接着去送快递，连奖金都是拿去补学校那块破球场的……换谁看都很难不偏心他们吧。",
     "en": "The Grey Gulls—a team of delivery riders—beat a professional side in added time and earmarked the prize money to repair the school pitch they have long borrowed. The comeback alone is exciting, and putting the winnings back into that field makes them easy to root for."
   },
   "LOC_EVENT_WORLD_BRIDGE_DETOUR_POSITIVE": {
     "source": "救援队和民间车队正在共同疏散居民",
-    "zh_CN": "救援队与民间车队正沿山路共同转运受困居民",
+    "zh_CN": "山路不好走，好在救援队和自发赶来的私家车一直没停，正一趟趟往外接人",
     "en": "Rescue teams and volunteer drivers evacuate stranded residents together along mountain roads"
   },
   "LOC_EVENT_WORLD_BRIDGE_DETOUR_NEGATIVE": {
     "source": "百年一遇的洪水又赶上了今年",
-    "zh_CN": "预警模型再度低估上游汇水，连续降雨又把铁路逼停",
+    "zh_CN": "雨一下五天铁路又断了，预警模型怎么回回都在这种时候算少水量",
     "en": "The warning model underestimated upstream runoff again as five days of rain halted rail service"
   },
   "LOC_EVENT_WORLD_BRIDGE_DETOUR_TITLE": {
@@ -326,22 +326,22 @@
   },
   "LOC_EVENT_WORLD_BRIDGE_DETOUR_NARRATIVE": {
     "source": "%s北岭流域连续五天降雨，落石与涨水使铁路再度停运。气象局称预警模型仍低估上游汇水，救援车辆沿山路转运受困居民。",
-    "zh_CN": "%s北岭流域连续五天降雨，落石与涨水使铁路再度停运。气象局称预警模型仍低估上游汇水，救援车辆沿山路转运受困居民。",
+    "zh_CN": "%s北岭流域连下五天暴雨，落石和涨水再次逼停铁路。气象局承认预警模型低估了上游汇水量，目前救援车队正沿山路分批转运受困居民。",
     "en": "Five days of rain bring rockfalls and rising water, disrupting North Ridge rail services again in %s. The weather service says its warning model still underestimates upstream runoff. Rescue vehicles evacuate stranded residents along mountain roads."
   },
   "LOC_EVENT_WORLD_BRIDGE_DETOUR_COMMENT": {
     "source": "灾情里传播得快的，往往是求助地点和一句问责。",
-    "zh_CN": "五天连雨后，落石和涨水再次逼停铁路，救援车正沿山路转运居民。气象局称预警模型仍低估了上游汇水。",
+    "zh_CN": "铁路又断了，气象局那边倒是老实，直接认了模型没算准上游的水量……就是苦了山路上那帮冒雨往外拉人的司机。",
     "en": "Five days of rain brought rockfalls and rising water that shut down North Ridge rail service again, leaving rescue vehicles to evacuate residents along mountain roads. The weather service admits its model still underestimates upstream runoff, a gap that will need fixing."
   },
   "LOC_EVENT_WORLD_SHIFT_ROSTER_POSITIVE": {
     "source": "停工令承认高温下劳动者需要保护",
-    "zh_CN": "劳动部门下达午后露天停工令，承认高温下需要停工保护",
+    "zh_CN": "四十多度的天总算发了午后停工令，大太阳底下干活的人好歹能名正言顺歇口气",
     "en": "Officials order an afternoon halt to outdoor work during the nine-day heatwave"
   },
   "LOC_EVENT_WORLD_SHIFT_ROSTER_NEGATIVE": {
     "source": "太阳已经下班，计时器还在加班",
-    "zh_CN": "连着九天超四十度，平台时限不改，骑手还得晒超时罚单",
+    "zh_CN": "外头地面都快烤化了，停工令管得住工地，怎么就管不住软件里那个倒计时",
     "en": "Nine days above forty degrees, yet delivery platforms keep their deadlines and issue late penalties"
   },
   "LOC_EVENT_WORLD_SHIFT_ROSTER_TITLE": {
@@ -351,22 +351,22 @@
   },
   "LOC_EVENT_WORLD_SHIFT_ROSTER_NARRATIVE": {
     "source": "%s南部连续九天气温超过四十度，劳动部门宣布新一轮午后露天停工令。送货平台仍按原时限考核，骑手开始公开晒出这轮高温中的超时罚单。",
-    "zh_CN": "%s南部连续九天气温超过四十度，劳动部门宣布新一轮午后露天停工令。送货平台仍按原时限考核，骑手开始公开晒出这轮高温中的超时罚单。",
+    "zh_CN": "%s南部连续九天气温突破四十度，劳动部门下达新一轮午后露天停工令。不过几家配送平台的送达时限分秒未改，不少骑手干脆把这几天的超时扣款单集中晒到了网上。",
     "en": "After nine days above forty degrees in southern %s, officials announce another suspension of afternoon outdoor work. Delivery platforms keep their deadlines, and riders publish the late-delivery penalties received during this heatwave."
   },
   "LOC_EVENT_WORLD_SHIFT_ROSTER_COMMENT": {
     "source": "天气会变成劳动议题，因为有人无法躲进室内。",
-    "zh_CN": "连续九天超过四十度，劳动部门要求午后露天停工，平台却照旧考核送货时限。骑手晒出的超时罚单，把这两套要求摆到了一起。",
+    "zh_CN": "一边是红头文件叫你午后别出门干活，一边是手机软件照常扣你超时的钱，骑手把罚单往网上一晒，两边谁脸上都不太好看。",
     "en": "After nine days above forty degrees, labor officials ordered another afternoon halt to outdoor work, yet delivery platforms kept their original deadlines. Riders are publishing the late penalties they received in the heat, asking whether the order applies to platform timers too."
   },
   "LOC_EVENT_WORLD_BLUE_COMET_POSITIVE": {
     "source": "公共空间短暂让位给所有人都能看的天空",
-    "zh_CN": "市政同意为观测熄灭河岸广告屏，学校也借出望远镜，方便市民凌晨看彗星",
+    "zh_CN": "河边那排刺眼的广告屏总算肯黑两小时，借台学校的望远镜就能去等彗星了",
     "en": "Switched-off riverside screens and borrowed school telescopes help residents watch the comet"
   },
   "LOC_EVENT_WORLD_BLUE_COMET_NEGATIVE": {
     "source": "彗星路过两小时，广告屏终于休息两小时",
-    "zh_CN": "河岸广告屏肯熄灯两小时，还得靠彗星路过",
+    "zh_CN": "平时投诉光污染没人理，合着得请一颗彗星路过才能让广告牌歇会儿",
     "en": "It took a passing comet to get the riverside ad screens turned off for two hours"
   },
   "LOC_EVENT_WORLD_BLUE_COMET_TITLE": {
@@ -376,22 +376,22 @@
   },
   "LOC_EVENT_WORLD_BLUE_COMET_NARRATIVE": {
     "source": "%s穹顶天文台公布蓝尾彗星的观测窗口，周末凌晨可用肉眼看见。市政部门同意熄灭河岸广告屏两小时，学校借出望远镜。",
-    "zh_CN": "%s穹顶天文台公布蓝尾彗星的观测窗口，周末凌晨可用肉眼看见。市政部门同意熄灭河岸广告屏两小时，学校借出望远镜。",
+    "zh_CN": "%s穹顶天文台预报，本周末凌晨肉眼就能看见掠过近地的蓝尾彗星。市政部门已答应届时关掉河岸广告大屏两小时，多所学校也向市民借出了望远镜。",
     "en": "The Dome Observatory in %s announces a blue-tail comet will be visible before dawn this weekend. Riverside advertising screens go dark for two hours, and schools lend telescopes."
   },
   "LOC_EVENT_WORLD_BLUE_COMET_COMMENT": {
     "source": "罕见的同一片天空，很容易成为共同记忆。",
-    "zh_CN": "蓝尾彗星周末凌晨肉眼可见。为方便观测，市政同意让河岸广告屏熄灭两小时，学校也借出了望远镜。",
+    "zh_CN": "为了让大伙儿凌晨看眼彗星，连河岸那排常年不灭的广告屏都舍得关两小时……要我说，就算没起得来看见彗星，能少看两小时广告也不亏。",
     "en": "The blue-tail comet will be visible to the naked eye before dawn this weekend, with riverside ad screens going dark for two hours and schools lending out telescopes. Those arrangements give people a clearer view and a chance to look more closely, a welcome bit of coordination for the night sky."
   },
   "LOC_EVENT_WORLD_FIRST_FROST_POSITIVE": {
     "source": "开放果园让受损收成仍能被邻里分享",
-    "zh_CN": "果农开放受灾果园，让居民把落果捡回家免得白白烂掉",
+    "zh_CN": "与其烂在地里不如让街坊捡回去吃，受了灾的果农这事办得真敞亮",
     "en": "Growers open frost-hit orchards so residents can gather fallen pears"
   },
   "LOC_EVENT_WORLD_FIRST_FROST_NEGATIVE": {
     "source": "果农还没赚到，水果已经先涨价了",
-    "zh_CN": "初霜毁了过半青梨，批发市场转头就拉高了鲜果报价",
+    "zh_CN": "地里的果农还没顾上擦眼泪呢，城里批发市场的价签倒是连夜往上翻了一截",
     "en": "Early frost ruins over half the green pears as wholesale markets raise fresh-fruit prices"
   },
   "LOC_EVENT_WORLD_FIRST_FROST_TITLE": {
@@ -401,22 +401,22 @@
   },
   "LOC_EVENT_WORLD_FIRST_FROST_NARRATIVE": {
     "source": "%s东部果园提前三周遭遇初霜，青梨收成损失过半。果农开放受损果园让居民自取落果，批发市场却同时上调鲜果报价。",
-    "zh_CN": "%s东部果园提前三周遭遇初霜，青梨收成损失过半。果农开放受损果园让居民自取落果，批发市场同时上调鲜果报价。",
+    "zh_CN": "%s东部果园比往年提早三周撞上初霜，树上的青梨冻损过半。当地果农敞开果园请附近居民免费捡走落果，城里的批发市场则在当天调高了鲜果报价。",
     "en": "Frost reaches eastern %s's orchards three weeks early, destroying over half the green-pear crop. Growers invite residents to collect fallen fruit while wholesalers raise fresh-fruit prices."
   },
   "LOC_EVENT_WORLD_FIRST_FROST_COMMENT": {
     "source": "人们讨论季节，也会讨论谁替坏天气买单。",
-    "zh_CN": "初霜提前三周到来，青梨收成损失过半，批发市场已经上调了鲜果报价。果农开放受损果园，让居民把落果捡回家。",
+    "zh_CN": "霜冻早来了三个礼拜，果农心疼梨子白白烂掉请街坊去捡，批发商转头先把价涨上去了……同一场冷空气，各人算盘打得真是半点不耽误。",
     "en": "Frost arrived three weeks early and wiped out more than half the green-pear crop. Growers opened their orchards so residents could gather fallen fruit, while wholesale markets raised fresh-fruit prices—a contrast that leaves people worrying about how the growers will get through the season."
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_POSITIVE": {
     "source": "限水能让家庭保住基本生活用水",
-    "zh_CN": "分时供水有助于维持居民的基本生活用水",
+    "zh_CN": "水库都快见底了，先按时段供水省着点用，起码能保住家家户户做饭洗漱",
     "en": "Timed rationing helps preserve households' basic water supply"
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_NEGATIVE": {
     "source": "旧城露出了钟，酒店还没到停水时间",
-    "zh_CN": "水库降到七十年最低，居民还得催湖岸酒店停掉泳池补水",
+    "zh_CN": "水底老钟楼都晒着太阳了，凭什么居民拎桶接水，湖边酒店的泳池还能哗哗补水",
     "en": "The reservoir hits a seventy-year low while residents press lakeside hotels to stop filling pools"
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_TITLE": {
@@ -426,22 +426,22 @@
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_NARRATIVE": {
     "source": "%s西部水库降至七十年来最低水位，水下旧城的钟楼重新露出。供水公司开始分时供水，居民要求停止湖岸酒店泳池补水。",
-    "zh_CN": "%s西部水库降至七十年来最低水位，水下旧城的钟楼重新露出。供水公司开始分时供水，居民要求停止湖岸酒店泳池补水。",
+    "zh_CN": "%s西部水库跌至七十年来最低水位，淹没多年的旧城钟楼重新露出水面。自来水公司启动分时限水后，大批居民要求立刻叫停湖岸度假酒店的泳池补水。",
     "en": "A western reservoir in %s reaches its lowest level in seventy years, revealing a submerged bell tower. Water rationing begins, and residents demand hotels stop filling their pools."
   },
   "LOC_EVENT_WORLD_DRY_RESERVOIR_COMMENT": {
     "source": "旱情会把水位和社会地位放在同一张照片里。",
-    "zh_CN": "水库退到七十年来最低，水下旧城的钟楼都露出来了。居民家里开始分时供水，湖岸酒店的泳池却还在补水，居民要求把它停掉。",
+    "zh_CN": "水库退到七十年没见的低位，连淹在水底的老钟楼都露了头……本来还算个稀罕景，偏偏旁边酒店的泳池还在照常换水，也难怪家里断水的住户要炸锅。",
     "en": "The reservoir has dropped to a seventy-year low, exposing the bell tower of a submerged old town. With households already on timed water rationing, it is no wonder residents are demanding that lakeside hotels stop refilling their pools."
   },
   "LOC_EVENT_WORLD_RED_SNOW_POSITIVE": {
     "source": "公开检测让罕见天气有了可核查的解释",
-    "zh_CN": "公开检测，为暗红色降雪给出可核查的解释",
+    "zh_CN": "化验结果出来是高空沙尘染的色，总算不用自己吓自己了",
     "en": "Published tests give the unusual red snow a checkable explanation"
   },
   "LOC_EVENT_WORLD_RED_SNOW_NEGATIVE": {
     "source": "雪都换颜色了，通知还没换模板",
-    "zh_CN": "暗红色的雪已经落下，事前却没有气象提示",
+    "zh_CN": "漫天下的都是红雪，等学校都停课了才出来解释，气象台昨晚集体睡着了？",
     "en": "Dark-red snow fell without any advance weather alert"
   },
   "LOC_EVENT_WORLD_RED_SNOW_TITLE": {
@@ -451,22 +451,22 @@
   },
   "LOC_EVENT_WORLD_RED_SNOW_NARRATIVE": {
     "source": "%s高地多座城镇降下暗红色雪，学校停课等待检测。研究站确认颜色来自高空沙尘，居民仍在追问为何没有提前收到气象提示。",
-    "zh_CN": "%s高地多座城镇降下暗红色雪，学校停课等待检测。研究站确认颜色来自高空沙尘，居民仍在追问为何没有提前收到气象提示。",
+    "zh_CN": "%s高地多座城镇一夜降下暗红色积雪，当地学校紧急停课等待取样化验。高山研究站随后确认雪色源自高空卷入的沙尘，不过居民仍在追问气象部门事前为何毫无预警。",
     "en": "Dark-red snow closes schools in several highland towns in %s. A research station traces the color to airborne dust, while residents ask why no weather alert was issued."
   },
   "LOC_EVENT_WORLD_RED_SNOW_COMMENT": {
     "source": "罕见景象带来好奇，通知迟到带来别的含义。",
-    "zh_CN": "研究站查明暗红色雪来自高空沙尘。这场降雪让学校停了课，居民还在追问事前为何缺少气象提示。",
+    "zh_CN": "一觉醒来外头飘红雪，换谁看都像灾难片开场……现在虽然查清楚只是高空沙尘，但事前半句提醒没有，气象台这几天怕是电话要被打爆了。",
     "en": "The research station has traced the dark-red snow to airborne dust, giving the unusual color an explanation. Schools have already had to close while waiting for tests, so residents have good reason to ask why no warning came beforehand. Finding the cause does not answer that question."
   },
   "LOC_EVENT_WORLD_GENERATIVE_AI_POSITIVE": {
     "source": "自动化能提高公共服务效率，也能降低创作门槛",
-    "zh_CN": "自动化能提高公共服务效率，也让创作工具更容易用上",
+    "zh_CN": "文字配图和语音全免费开放，一个人鼓捣点小作品可比以前省事太多了",
     "en": "Automation can speed up public services and make creative tools more accessible"
   },
   "LOC_EVENT_WORLD_GENERATIVE_AI_NEGATIVE": {
     "source": "机器替我写了申请，也替人决定我能否获批",
-    "zh_CN": "设计公司忙着缩减外包，政府采购部门也拿它试着自动审件",
+    "zh_CN": "设计公司拿它砍外包就算了，连递上去的申请材料都要交给机器先筛一遍？",
     "en": "Design firms cut freelance work while government buyers test automated review"
   },
   "LOC_EVENT_WORLD_GENERATIVE_AI_TITLE": {
@@ -476,22 +476,22 @@
   },
   "LOC_EVENT_WORLD_GENERATIVE_AI_NARRATIVE": {
     "source": "%s的镜海实验室公开生成式人工智能“织灯”，免费提供文字、图像和语音生成。设计公司宣布缩减外包，政府采购部门则试用自动审件。",
-    "zh_CN": "%s的镜海实验室公开生成式人工智能“织灯”，免费提供文字、图像和语音生成。设计公司宣布缩减外包，政府采购部门则试用自动审件。",
+    "zh_CN": "%s镜海实验室向公众免费开放生成式人工智能“织灯”，支持文字、图像与语音一键生成。消息公布后，多家设计公司宣布缩减外包预算，当地采购部门也开始拿它测试自动初审。",
     "en": "Mirrorsea Labs in %s releases Weavelight, offering free text, image, and voice generation. Design firms announce fewer freelance contracts, while government buyers test automated application review."
   },
   "LOC_EVENT_WORLD_GENERATIVE_AI_COMMENT": {
     "source": "同一项技术，会被当作能力、饭碗或审查员。",
-    "zh_CN": "“织灯”免费生成文字、图像和语音。设计公司宣布缩减外包，政府采购部门则在试用自动审件。",
+    "zh_CN": "免费开放是挺大方的，结果前脚刚发出来，设计公司就忙着砍外包，公家那边还拿它试着筛材料……咦，它不会哪天也学会干我这行吧？算了，应该还不至于。",
     "en": "Weavelight offers free text, image and voice generation, which sounds useful. Design firms have announced fewer freelance contracts, so someone who lives on that work may find the convenience hard to celebrate. Government buyers are testing automated review too; how these tools are used deserves as much attention as what they can produce."
   },
   "LOC_EVENT_WORLD_ROBILAZZI_PROOF_POSITIVE": {
     "source": "长期投入和公开复核解决了跨越几代人的问题",
-    "zh_CN": "九十六页证明经三个独立小组逐行复核，这道数学难题有了解答",
+    "zh_CN": "整整九十六页，三个独立小组一行行挑刺都没挑出毛病，这回是真的证出来了",
     "en": "Three independent teams verify the ninety-six-page proof line by line"
   },
   "LOC_EVENT_WORLD_ROBILAZZI_PROOF_NEGATIVE": {
     "source": "人类证出了猜想，我还拆不明白这个月的账单",
-    "zh_CN": "猜想证出来了，九十六页证明还是没让我少皱一点眉头",
+    "zh_CN": "人家把几百年的数学猜想都拆明白了，我连这个月的水电费还没算利索",
     "en": "The conjecture is proved; getting through ninety-six pages is still another matter"
   },
   "LOC_EVENT_WORLD_ROBILAZZI_PROOF_TITLE": {
@@ -501,22 +501,22 @@
   },
   "LOC_EVENT_WORLD_ROBILAZZI_PROOF_NARRATIVE": {
     "source": "%s数学家伊莱娜·维索公布罗比拉齐猜想的九十六页证明：所有充分大的偶数都能拆成两个素数之和。三个独立小组完成逐行复核。",
-    "zh_CN": "%s数学家伊莱娜·维索公布罗比拉齐猜想的九十六页证明：所有充分大的偶数都能拆成两个素数之和。三个独立小组完成逐行复核。",
+    "zh_CN": "%s数学家伊莱娜·维索发表了长达九十六页的罗比拉齐猜想证明，证实所有充分大的偶数都能拆成两个素数之和。目前三个独立审稿组已完成逐行复核。",
     "en": "Mathematician Ilena Viso in %s publishes a ninety-six-page proof of the Robilazzi conjecture: every sufficiently large even integer is a sum of two primes. Three independent teams check it line by line."
   },
   "LOC_EVENT_WORLD_ROBILAZZI_PROOF_COMMENT": {
     "source": "能看懂证明的人不多，能借题发挥的人会多得多。",
-    "zh_CN": "“所有充分大的偶数都能拆成两个素数之和”，命题一句话就能说完，证明却写了九十六页。三个独立小组已经逐行完成复核。",
+    "zh_CN": "足足九十六页的证明，老实讲我连标题底下第一行符号都认不全，但这完全不妨碍网上大伙儿今天突然个个都像数学系毕业的。",
     "en": "Not everyone will follow all ninety-six pages, but the statement that every sufficiently large even integer is a sum of two primes is easier to remember. Three independent teams have checked the proof line by line. Borrowing that statement for a joke does not require the same work as proving it."
   },
   "LOC_EVENT_PLATFORM_TOOL_POSITIVE": {
     "source": "低能耗离线计算让个人设备少依赖云端",
-    "zh_CN": "低能耗离线计算有望让个人设备少依赖云端",
+    "zh_CN": "离线识别还能把功耗压到十分之一，以后不用什么话都往云端传了",
     "en": "Low-power offline computing could make personal devices less dependent on the cloud"
   },
   "LOC_EVENT_PLATFORM_TOOL_NEGATIVE": {
     "source": "设备薄了一半，工资要攒两月",
-    "zh_CN": "掌心大小的新终端，首批售价顶得上普通职员两个月工资",
+    "zh_CN": "机器缩到巴掌大，价钱倒是胀到了我两个月工资，省下来的那点电费够回本吗",
     "en": "A palm-sized terminal launches at two months of an ordinary clerk's pay"
   },
   "LOC_EVENT_PLATFORM_TOOL_TITLE": {
@@ -526,22 +526,22 @@
   },
   "LOC_EVENT_PLATFORM_TOOL_NARRATIVE": {
     "source": "%s铄光公司发布掌心大小的光算终端“萤石”，宣称离线语音识别能耗降至旧款十分之一。首批售价相当于普通职员两个月工资。",
-    "zh_CN": "%s铄光公司发布掌心大小的光算终端“萤石”，宣称离线语音识别能耗降至旧款十分之一。首批售价相当于普通职员两个月工资。",
+    "zh_CN": "%s铄光公司推出掌心大小的光算终端“萤石”，宣称离线语音识别的耗电量只有上一代的十分之一，不过首批定价顶得上当地普通职员两个月薪水。",
     "en": "Shineglass in %s announces Fluorite, a palm-sized optical terminal claiming offline speech recognition at one tenth the previous model's energy use. It costs two months of an ordinary clerk's pay."
   },
   "LOC_EVENT_PLATFORM_TOOL_COMMENT": {
     "source": "发布会说的是性能，评论区算的是工资。",
-    "zh_CN": "掌心大小的“萤石”，按厂商的说法，离线语音识别能耗只有旧款的十分之一，首批售价却相当于普通职员两个月工资。",
+    "zh_CN": "巴掌大的小玩意儿，能耗降到十分之一听着确实厉害，就是标价顶普通职员两个月工资……发布会弹幕里现在全是算自己得不吃不喝攒多久的。",
     "en": "Fluorite claims offline speech recognition at one-tenth the energy use of the previous model, which is impressive on paper. The first batch costs two months of an ordinary clerk's pay, though. Anyone thinking of buying one has another number to consider alongside the performance claims."
   },
   "LOC_EVENT_WORLD_STAFF_RETRAINING_POSITIVE": {
     "source": "自动运输减少危险路段的驾驶时间",
-    "zh_CN": "自动货运能减少司机在危险路段的驾驶时间",
+    "zh_CN": "夜里跑险路的苦差事交给自动货车，老司机总算能少提心吊胆几趟",
     "en": "Automated freight can reduce drivers' time on dangerous stretches of road"
   },
   "LOC_EVENT_WORLD_STAFF_RETRAINING_NEGATIVE": {
     "source": "车可以无人，失业名单还得有人填",
-    "zh_CN": "线路扩张了，工会追问转岗名额和夜间故障该由谁值守",
+    "zh_CN": "车是可以没人开了，替下来的司机往哪儿去、半夜趴窝谁去修，总得给句准话",
     "en": "Routes expand, and unions want answers on retraining slots and human night-shift cover"
   },
   "LOC_EVENT_WORLD_STAFF_RETRAINING_TITLE": {
@@ -551,22 +551,22 @@
   },
   "LOC_EVENT_WORLD_STAFF_RETRAINING_NARRATIVE": {
     "source": "%s交通部门为无人货运试点新增三条普通公路，这批订单仍由港口仓储商承接。工会要求随线路扩张公布转岗名额，并为夜间故障保留人工值守。",
-    "zh_CN": "%s交通部门为无人货运试点新增三条普通公路，这批订单仍由港口仓储商承接。工会要求随线路扩张公布转岗名额，并为夜间故障保留人工值守。",
+    "zh_CN": "%s交通部门把三条普通公路新纳入无人货运试点，货运订单继续由港口仓储商承接。当地运输工会随即发声，要求同步公开司机的转岗名额，并在夜间故障抢修上保留人工值守。",
     "en": "Transport officials in %s add three public roads to a driverless freight pilot, with port warehouses handling this round of orders. Unions demand retraining slots alongside the expansion and human night-shift fault response."
   },
   "LOC_EVENT_WORLD_STAFF_RETRAINING_COMMENT": {
     "source": "技术落地之后，抽象效率会变成具体的班表。",
-    "zh_CN": "无人货运又扩了三条普通公路，订单仍由港口仓储商承接。工会追着问转岗名额和夜间值守，原来的司机与检修工需要知道自己往后做什么。",
+    "zh_CN": "试点一口气多铺了三条公路，转岗名额倒是还没影儿……等哪天车半夜坏在荒郊野岭，多半还得打电话叫原来的老师傅起床去拖。",
     "en": "The driverless freight pilot just added three more public roads, with port warehouses still handling the orders. Unions are pressing for retraining slots and human night-shift fault crews because route expansion means little to workers if their jobs are left hanging."
   },
   "LOC_EVENT_WORLD_GLASS_FERN_POSITIVE": {
     "source": "跨机构样本验证让陌生生命进入公共知识",
-    "zh_CN": "样本送往两所外地实验室，让这种陌生生命能被跨机构核验",
+    "zh_CN": "样本分送两家外地实验室交叉核验，这株洞穴新物种总算不只是传闻了",
     "en": "Sending samples to two outside labs lets other institutions verify this unfamiliar form of life"
   },
   "LOC_EVENT_WORLD_GLASS_FERN_NEGATIVE": {
     "source": "植物学会了不晒太阳，我还没学会不加班",
-    "zh_CN": "洞穴深处的蕨类靠微弱化学能就能活，听着像在形容苦撑的人",
+    "zh_CN": "一株草在黑洞洞的地方不晒太阳也能硬撑着活，怎么越听越像在说我自己",
     "en": "A cave fern living on faint chemical energy without sunlight sounds uncomfortably relatable"
   },
   "LOC_EVENT_WORLD_GLASS_FERN_TITLE": {
@@ -576,22 +576,22 @@
   },
   "LOC_EVENT_WORLD_GLASS_FERN_NARRATIVE": {
     "source": "%s远山大学在石灰岩洞穴发现透明蕨类“璃叶”，它借助共生细菌利用微弱化学能。样本已送往两所外地实验室，洞穴暂时限制游客进入。",
-    "zh_CN": "%s远山大学在石灰岩洞穴发现透明蕨类“璃叶”，它借助共生细菌利用微弱化学能。样本已送往两所外地实验室，洞穴暂时限制游客进入。",
+    "zh_CN": "%s远山大学考察队在石灰岩深洞里发现了通体透明的新蕨类“璃叶”，不靠阳光，单凭共生细菌转化的一点化学能就能存活。目前样本已分送两所外地实验室复核，洞口也暂时对游客封闭。",
     "en": "Farhill University in %s finds a transparent fern called Glassleaf using weak chemical energy through symbiotic bacteria. Two outside laboratories receive samples, and tourist access to the cave is restricted."
   },
   "LOC_EVENT_WORLD_GLASS_FERN_COMMENT": {
     "source": "新物种给人们提供了一种新的自我比喻。",
-    "zh_CN": "“璃叶”靠共生细菌利用微弱化学能，在洞穴里活了下来。样本已送到两所外地实验室，具体机制还待细查；这种靠微弱能量撑着的活法，倒很容易让人想到自己。",
+    "zh_CN": "不见光、靠一丁点化学能也能硬撑着长出来……我看生物系还没写完论文，上夜班的那帮人已经准备认这株草当精神老乡了。",
     "en": "Glassleaf survives in a limestone cave by drawing on weak chemical energy through symbiotic bacteria. Two outside labs have received samples to examine. For anyone inclined to borrow the image, though, a plant living without sunlight already offers a way to talk about their own days."
   },
   "LOC_EVENT_WORLD_EXAM_CALENDAR_POSITIVE": {
     "source": "公开能耗让可重复的进展有了明确尺度",
-    "zh_CN": "向电网持续供电十分钟并公开全部能耗数据，进展与短板都摆在明处",
+    "zh_CN": "实打实往电网送了十分钟电，连耗电底数都全摊出来，这步迈得够扎实",
     "en": "Supplying the grid for ten minutes and publishing full energy data sets a transparent benchmark"
   },
   "LOC_EVENT_WORLD_EXAM_CALENDAR_NEGATIVE": {
     "source": "未来供电十分钟，今天的电费一分没少",
-    "zh_CN": "点火设备仍需外部供电，商业化计划也还没获批",
+    "zh_CN": "试验站往未来送了十分钟电，我家这个月的电费单倒是一分钱没少",
     "en": "Ignition still needs outside power, and commercial operation has not been approved"
   },
   "LOC_EVENT_WORLD_EXAM_CALENDAR_TITLE": {
@@ -601,22 +601,22 @@
   },
   "LOC_EVENT_WORLD_EXAM_CALENDAR_NARRATIVE": {
     "source": "%s白环试验站首次向电网持续供电十分钟。科研署公开全部能耗数据，指出点火设备仍需外部供电，商业化计划尚未获批。",
-    "zh_CN": "%s白环试验站首次向电网持续供电十分钟。科研署公开全部能耗数据，指出点火设备仍需外部供电，商业化计划尚未获批。",
+    "zh_CN": "%s白环聚变试验站首次实现向市政电网连续供电十分钟。科研署同步公开了整场实验的能耗底账，坦承点火装置眼下还得仰仗外部输电，离商业化并网尚有距离。",
     "en": "The White Ring trial station in %s supplies the grid for ten minutes. The agency publishes all energy data: ignition still draws outside power, and commercial operation has not been approved."
   },
   "LOC_EVENT_WORLD_EXAM_CALENDAR_COMMENT": {
     "source": "实验的十分钟，足够被讲成不同的未来。",
-    "zh_CN": "白环试验站首次向电网持续供电十分钟，科研署公开了全部能耗数据。点火仍需外部供电，商业化也待批准，夸突破和泼冷水的人各能从报告里挑出半句。",
+    "zh_CN": "科研署这回挺实在，送了十分钟电，也老老实实写了点火还得靠外头输电……不过传到网上嘛，想吹上天或者泼冷水的人，都能从同一页报告里抠出半句话来用。",
     "en": "The White Ring station supplied the grid for ten minutes for the first time, and the agency published all of its energy data. Because the report also notes that ignition still needs outside power and commercial plans remain unapproved, both boosters and skeptics have material to quote."
   },
   "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_POSITIVE": {
     "source": "可查证的原图能纠正流传的错误信息",
-    "zh_CN": "可查证的原图，能帮人核对流传的信息",
+    "zh_CN": "把档案馆里的原图编号翻出来对一遍，至少不用对着假图瞎吵了",
     "en": "A verifiable original lets readers check the information being circulated"
   },
   "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_NEGATIVE": {
     "source": "原图找到了，吵架的路还很长",
-    "zh_CN": "原图编号都查清了，两个论坛还在为图例截掉一半吵个不停",
+    "zh_CN": "原图编号都扒出来了，两边还能为谁故意裁掉半截图例再战三百回合",
     "en": "Even with the archive number verified, the two forums keep fighting over a cropped legend"
   },
   "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_TITLE": {
@@ -626,22 +626,22 @@
   },
   "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_NARRATIVE": {
     "source": "%s石阶论坛与潮汐论坛围绕一张新公开的百年前地图再次争吵。原图馆藏编号查明后，双方仍争论对方为何只截取图例一半。",
-    "zh_CN": "%s石阶论坛与潮汐论坛围绕一张新公开的百年前地图再次争吵。原图馆藏编号查明后，双方仍争论对方为何只截取图例一半。",
+    "zh_CN": "%s老对头石阶论坛与潮汐论坛又因一张新公开的百年前地图吵得不可开交。哪怕原图的馆藏编号已被人核实，两边网友仍在互骂对方发帖时故意裁掉了半边图例。",
     "en": "Stone Steps and Tide forums in %s renew their feud over a newly released century-old map. Even after its archive number is verified, users argue about why the other side cropped half the legend."
   },
   "LOC_EVENT_WORLD_PUBLIC_SOURCE_CHECK_COMMENT": {
     "source": "找到出处能解决证据问题，未必解决站队问题。",
-    "zh_CN": "百年前老地图的馆藏编号已经查清，石阶和潮汐两个论坛还在追问：对方为什么只截了一半图例？",
+    "zh_CN": "石阶和潮汐那两拨人我早见怪不怪了，就算你把一百年前画地图的人请回来当面作证，他们也能接着吵对方截图的时候为什么手歪了一下。",
     "en": "Even after the archive number of that century-old map was verified, Stone Steps and Tide kept right on fighting. Both forums are asking why the other side cropped half the legend. Knowing the source does not answer that on its own; the missing half still needs to be considered."
   },
   "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_POSITIVE": {
     "source": "清理批量操纵能减少虚假声量",
-    "zh_CN": "清理协同操纵，有助于减少批量制造的虚假声量",
+    "zh_CN": "把成批刷热度的水军号清一清，评论区总算能多看几句活人话",
     "en": "Removing coordinated manipulation can reduce fabricated popularity"
   },
   "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_NEGATIVE": {
     "source": "机器人还在发言，新闻档案先闭嘴了",
-    "zh_CN": "判定阈值不公开，连独立媒体新建的新闻归档号也一起被冻结",
+    "zh_CN": "刷屏的假号还没死绝，刚建起来存旧闻的归档号倒先给一锅端了",
     "en": "With thresholds kept secret, newly created news archive accounts get frozen in the same sweep"
   },
   "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_TITLE": {
@@ -651,22 +651,22 @@
   },
   "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_NARRATIVE": {
     "source": "%s广场网在新一轮清理中以“协同操纵”为由封禁约二十万账号，仍未公开判定阈值。独立媒体称其新建的新闻归档账号也在本轮被冻结。",
-    "zh_CN": "%s广场网在新一轮清理中以“协同操纵”为由封禁约二十万账号，仍未公开判定阈值。独立媒体称其新建的新闻归档账号也在本轮被冻结。",
+    "zh_CN": "%s社交平台广场网以“协同操纵”为由一口气封禁约二十万个账号，具体判定门槛依旧秘而不宣。多家独立媒体随后投诉，称他们刚注册用来备份旧报道的归档号也在同一晚被冻结。",
     "en": "SquareNet in %s bans roughly two hundred thousand accounts for coordinated manipulation in another moderation sweep, still withholding its thresholds. Independent outlets say their newly created news archive accounts were frozen in this round too."
   },
   "LOC_EVENT_WORLD_PLATFORM_ORDER_TRIAL_COMMENT": {
     "source": "封号会缩小渠道，也会让剩下的表达更绕。",
-    "zh_CN": "广场网以“协同操纵”为由封禁约二十万账号，判定阈值仍未公开。独立媒体说，新建的新闻归档号也被算了进去。",
+    "zh_CN": "一口气封了二十万个号，问起判定标准就是不便透露，顺手还把人家存旧新闻的号给冻上了……这种大扫除，扫帚往哪儿挥全看平台心情。",
     "en": "SquareNet banned roughly two hundred thousand accounts for coordinated manipulation while still keeping its detection thresholds secret. Now independent outlets say their newly created news archive accounts were frozen in the same sweep, raising questions about what those rules actually catch."
   },
   "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_POSITIVE": {
     "source": "公开页面的镜像能保住社区共同记忆",
-    "zh_CN": "非营利档案团体协商接收公共页面镜像，能替旧站留下一部分记录",
+    "zh_CN": "好在有非营利团队出面谈公共页面镜像，十几年的老帖子不至于全烂在硬盘里",
     "en": "A nonprofit archive negotiating a public mirror could save nineteen years of public pages"
   },
   "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_NEGATIVE": {
     "source": "十九年的朋友，要在三十天里逐页打包",
-    "zh_CN": "十九年的老站只给三十天期限，用户还得逐页导出旧帖",
+    "zh_CN": "攒了十九年的熟人和旧话，只给三十天一页页手动往外搬，连个打包按钮都舍不得给",
     "en": "Users get just thirty days to export nineteen years of posts one page at a time"
   },
   "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_TITLE": {
@@ -676,22 +676,22 @@
   },
   "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_NARRATIVE": {
     "source": "%s运营十九年的“回声巷”宣布三十天后关站。用户只能逐页导出旧帖，非营利档案团体协商接收公共页面镜像。",
-    "zh_CN": "%s运营十九年的“回声巷”宣布三十天后关站。用户只能逐页导出旧帖，非营利档案团体协商接收公共页面镜像。",
+    "zh_CN": "%s陪伴老网民十九年的社交站点“回声巷”突然贴出停运告示，只留三十天缓冲期。由于后台只支持逐页手动保存旧帖，一家非营利档案团队正加紧和站方商量接手公共页面的镜像。",
     "en": "Echo Lane announces closure after nineteen years in %s, giving users thirty days. Posts can be exported only page by page, and a nonprofit negotiates a mirror of public pages."
   },
   "LOC_EVENT_WORLD_NETWORK_MAINTENANCE_COMMENT": {
     "source": "平台关闭时，人们才看清关系寄存在哪些按钮里。",
-    "zh_CN": "开了十九年的“回声巷”只留三十天告别。公共页面镜像还在协商，用户只能一页页导出旧帖。",
+    "zh_CN": "十九年的老站就留三十天让人搬家，还只能一页页手动点保存……我敢打赌，当年写这个后台的人压根没想过真有散伙这天。",
     "en": "Echo Lane is shutting down after nineteen years with only thirty days’ notice, and users can export old posts only page by page. A nonprofit is still negotiating a mirror for public pages, so anyone who wants to keep their own copy now has those thirty days to work through the export."
   },
   "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_POSITIVE": {
     "source": "普通劳动者可以自己决定如何被看见",
-    "zh_CN": "夜班清洁工自己拍下清晨归途，也自己决定怎样被看见",
+    "zh_CN": "不用别人替他配煽情解说，十六段自己拍的回家路比什么都清楚",
     "en": "A night cleaner films the dawn journey home and decides how that life is shown"
   },
   "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_NEGATIVE": {
     "source": "城市刚醒，他的一天已经用完了",
-    "zh_CN": "没有一句旁白的清晨归途，拍出的是夜班之后已经耗尽的力气",
+    "zh_CN": "整座城刚揉着眼睛醒过来，拍视频的人已经把一整天的力气耗光了",
     "en": "Without a word of narration, the dawn commute shows how little energy the night shift leaves behind"
   },
   "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_TITLE": {
@@ -701,22 +701,22 @@
   },
   "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_NARRATIVE": {
     "source": "%s一位夜班清洁工用手机发布纪录短片系列《夜班之后》的新一集。影片没有旁白，只有十六段清晨回家路上的固定镜头，多家平台开始推荐本集。",
-    "zh_CN": "%s一位夜班清洁工用手机发布纪录短片系列《夜班之后》的新一集。影片没有旁白，只有十六段清晨回家路上的固定镜头，多家平台开始推荐本集。",
+    "zh_CN": "%s一名夜班清洁工用手机上传了纪实短片《夜班之后》的新一集，全片没配一句旁白，只剪进了清晨下班路上十六个安静的固定机位，很快被多家视频平台推上首页。",
     "en": "A night cleaner in %s releases another episode of the phone-shot documentary series After the Night Shift. It has no narration, only sixteen fixed shots on the journey home at dawn. Several platforms begin recommending the episode."
   },
   "LOC_EVENT_WORLD_LANGUAGE_HELP_DESK_COMMENT": {
     "source": "没有旁白的画面，也会让人写出很多句子。",
-    "zh_CN": "十六段固定镜头，只拍夜班清洁工清晨回家的路。《夜班之后》新一集没有旁白，已经得到多家平台推荐。",
+    "zh_CN": "全程一句旁白都没有，就十六段天蒙蒙亮往家走的手机镜头……有时候人累极了确实不想吭声，底下评论区倒是替他把话全补上了。",
     "en": "The new episode of After the Night Shift has no narration at all, just sixteen fixed phone shots on the way home at dawn. Several platforms have started recommending it. Without a voice spelling out how to feel, viewers have room to recognize something of their own early journeys in those images."
   },
   "LOC_EVENT_WORLD_OPEN_PROTOCOL_POSITIVE": {
     "source": "共同协议让朋友不再被不同平台隔开",
-    "zh_CN": "保留原账号就能跨服务互发消息，省去了为联系人反复换软件的麻烦",
+    "zh_CN": "不用为不同圈子的熟人来回切三四个聊天软件，一个号能发通真是省心",
     "en": "Messaging across services from an existing account spares users from juggling apps"
   },
   "LOC_EVENT_WORLD_OPEN_PROTOCOL_NEGATIVE": {
     "source": "墙还没拆，门口先多了两份身份证明",
-    "zh_CN": "两家大平台以无法核验第三方客户端身份为由，拒绝接入互通",
+    "zh_CN": "嘴上说是怕第三方客户端验不准身份，说白了还是舍不得把自家院墙拆了",
     "en": "Two major platforms refuse to connect, citing third-party client verification"
   },
   "LOC_EVENT_WORLD_OPEN_PROTOCOL_TITLE": {
@@ -726,22 +726,22 @@
   },
   "LOC_EVENT_WORLD_OPEN_PROTOCOL_NARRATIVE": {
     "source": "%s聊天软件“线桥”允许用户保留账号与其他服务互发消息。两家大型平台拒绝接入，理由是无法核验第三方客户端身份。",
-    "zh_CN": "%s聊天软件“线桥”允许用户保留账号与其他服务互发消息。两家大型平台拒绝接入，理由是无法核验第三方客户端身份。",
+    "zh_CN": "%s聊天软件“线桥”开放跨平台互通，用户不必重开账号就能给外部软件的好友发消息。不过当地两家社交巨头当即回绝接入，理由是没法核验第三方客户端的真实身份。",
     "en": "Chat app Threadbridge in %s allows messages between services while keeping existing accounts. Two major platforms refuse access, citing third-party client verification."
   },
   "LOC_EVENT_WORLD_OPEN_PROTOCOL_COMMENT": {
     "source": "能否互通，会决定一句话能走多远。",
-    "zh_CN": "“线桥”让用户留着原账号跨服务发消息，两家大平台以无法核验第三方客户端身份为由拒绝接入。要联系那边的人，用户仍得在几个软件之间来回切。",
+    "zh_CN": "小软件忙着修桥，大平台忙着砌墙，理由找得还挺体面，叫无法核验第三方身份……翻译成人话就是别来我地盘抢人。",
     "en": "Threadbridge lets users keep their accounts while messaging across services, yet two major platforms refused access over third-party client verification. The reason given is security; the practical result for users is that reaching people on those services still means moving between apps."
   },
   "LOC_EVENT_WORLD_DELETED_SEARCH_POSITIVE": {
     "source": "停用过时缓存能减少错误页面继续流传",
-    "zh_CN": "停用过时快照，有助于减少错误页面继续流传",
+    "zh_CN": "清掉早就失效的老旧缓存，至少搜东西的时候少点进几个死链接",
     "en": "Retiring outdated caches can reduce the circulation of obsolete pages"
   },
   "LOC_EVENT_WORLD_DELETED_SEARCH_NEGATIVE": {
     "source": "网页学会了遗忘，承诺也跟着升级了",
-    "zh_CN": "快照停了，几起公共承诺的原始页面在现网站上也已找不到",
+    "zh_CN": "原网站偷偷删了帖，这边连历史快照也一块儿关了，当年拍胸脯的话直接死无对证",
     "en": "The cache is gone, and several public promises' original pages are missing from their current sites too"
   },
   "LOC_EVENT_WORLD_DELETED_SEARCH_TITLE": {
@@ -751,22 +751,22 @@
   },
   "LOC_EVENT_WORLD_DELETED_SEARCH_NARRATIVE": {
     "source": "%s搜索服务“寻径”停止历史网页快照，称维护成本超过广告收入。调查记者发现，数起公共承诺的原始页面在现网站已无法找到。",
-    "zh_CN": "%s搜索服务“寻径”停止历史网页快照，称维护成本超过广告收入。调查记者发现，数起公共承诺的原始页面在现网站已无法找到。",
+    "zh_CN": "%s搜索引擎“寻径”下线了攒下二十年的历史网页快照，官方说法是存储开销盖过了广告进账。几名调查记者随后发现，早年数起公共承诺的原帖在原网站上也早已不见踪影。",
     "en": "Search service Pathfind in %s removes twenty years of cached pages, citing upkeep costs. Reporters find original pages containing several public promises are also absent from their current sites."
   },
   "LOC_EVENT_WORLD_DELETED_SEARCH_COMMENT": {
     "source": "找不到的原文，会让截图承担更重的争论。",
-    "zh_CN": "“寻径”停掉了历史网页快照，理由是维护开支超过广告收入。调查记者核对几起公共承诺时，发现现网站已经找不到原始页面，如今也少了快照可查。",
+    "zh_CN": "说是维护费比广告赚得还多，就把二十年的旧网页快照全撤了……巧的是好几桩公开承诺的原帖前阵子刚没影儿，这下谁想翻旧话只能翻自己手机相册了。",
     "en": "Pathfind says it shut down its historical page cache because upkeep costs outgrew ad revenue. Reporters also found that the original pages for several public promises are gone from their current websites, making it harder to verify what was promised years ago."
   },
   "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_POSITIVE": {
     "source": "预算和内阁终于要向选民负责",
-    "zh_CN": "王室签下《春潮宪章》，把预算和组阁权正式交给民选议会",
+    "zh_CN": "预算和组阁权总算交到民选议会手里，花多少钱得先过选民这一关了",
     "en": "The Springtide Charter hands budget and cabinet-formation powers to an elected parliament"
   },
   "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_NEGATIVE": {
     "source": "钥匙交出来了，庄园税还想再商量一年",
-    "zh_CN": "旧顾问院还留着一年过渡任期，王室地产税刚上听证会就得博弈",
+    "zh_CN": "大印是交出来了，旧顾问院还得再留一年，刚聊到王室庄园交税就拉扯上了",
     "en": "An old advisory chamber stays for a year as royal estate taxes face their first hearing"
   },
   "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_TITLE": {
@@ -776,22 +776,22 @@
   },
   "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_NARRATIVE": {
     "source": "%s王室签署《春潮宪章》，将预算和组阁权移交民选议会。旧顾问院保留一年过渡任期，首场公开听证围绕王室地产税展开。",
-    "zh_CN": "%s王室签署《春潮宪章》，将预算和组阁权移交民选议会。旧顾问院保留一年过渡任期，首场公开听证围绕王室地产税展开。",
+    "zh_CN": "%s王室正式签署《春潮宪章》，把财政预算与内阁组建权移交给民选议会。原王室顾问院仍保留一年过渡期，而新议会的首场公开听证就直接挑中了王室地产税议题。",
     "en": "The royal court in %s signs the Springtide Charter, handing budgets and cabinet formation to an elected parliament. An advisory chamber stays for a year; the first public hearing debates tax on royal estates."
   },
   "LOC_EVENT_WORLD_CONSTITUTION_TRANSITION_COMMENT": {
     "source": "权力移交时，留下的过渡条款也会成为话题。",
-    "zh_CN": "《春潮宪章》把预算和组阁权交给民选议会。旧顾问院还有一年过渡任期，议会的首场听证已经开始讨论王室地产税。",
+    "zh_CN": "签字仪式办得挺风光，转头第一场听证会就卡在王室自家那点地产税上了……还有个留任一年的旧顾问院在旁边坐着呢，好戏才刚开场。",
     "en": "The Springtide Charter hands budgets and cabinet formation to an elected parliament, and the first public hearing takes up taxes on royal estates. With the old advisory chamber staying on for a one-year transition, the way that tax is discussed may show something of how the new arrangement will work."
   },
   "LOC_EVENT_COMPETITOR_BIRTH_POSITIVE": {
     "source": "平静口吻让难以直说的不满有了出口",
-    "zh_CN": "把失控的工作放进“一切正常”的旁白，给难直说的处境留了出口",
+    "zh_CN": "排期都炸成一锅粥了，借张着火图平静说句“一切正常”，同事一眼就能懂",
     "en": "Pairing failing schedules with 'This Is Fine' gives workers a dry way to describe chaos"
   },
   "LOC_EVENT_COMPETITOR_BIRTH_NEGATIVE": {
     "source": "房间都着火了，日报还显示一切正常",
-    "zh_CN": "屋里已经着火，嘴上还在说“一切正常”，越平静越显得荒唐",
+    "zh_CN": "屋顶都快烧塌了，周报上还得工工整整写着一切正常",
     "en": "The room is burning while the caption insists 'This Is Fine'"
   },
   "LOC_EVENT_COMPETITOR_BIRTH_TITLE": {
@@ -801,22 +801,22 @@
   },
   "LOC_EVENT_COMPETITOR_BIRTH_NARRATIVE": {
     "source": "%s一则配着“一切正常”的着火房间画面流行起来，使用者把明显失控的工作安排写进平静的旁白。",
-    "zh_CN": "%s一则配着“一切正常”的着火房间画面流行起来，使用者把明显失控的工作安排写进平静的旁白。",
+    "zh_CN": "%s一张端坐火场却配文“一切正常”的漫画在打工人之间迅速传开，大家纷纷把眼看就要崩盘的工作排期塞进那句平静的台词里。",
     "en": "A burning-room image captioned This Is Fine spreads in %s; users pair calm narration with work schedules visibly falling apart."
   },
   "LOC_EVENT_COMPETITOR_BIRTH_COMMENT": {
     "source": "平静与失控之间的落差，就是它的识别点。",
-    "zh_CN": "房间烧起来了，旁白还在说“一切正常”。大家把失控的工作安排填进这句平静的话里，火气已经在画面上了。",
+    "zh_CN": "欸，外头冒出来一条新梗，屋里火都烧上房梁了还端着杯子说一切正常……跟咱们平时赶进度的精神状态倒是挺像，你去地图上盯一眼它跑哪儿去了。",
     "en": "The room is on fire, yet the caption calmly says 'This Is Fine.' By dropping visibly failing work schedules into that composed narration, users can show how badly things are unravelling without raising their voices."
   },
   "LOC_EVENT_ENVIRONMENT_GATE_REPLY_POSITIVE": {
     "source": "看穿结尾也能继续参与这套共同仪式",
-    "zh_CN": "读者明知末尾要讨餐费，还是乐意帮着把前半段故事编得更离奇",
+    "zh_CN": "明知道最后一句肯定要讨顿饭钱，还是忍不住想看他前半段能编得多离谱",
     "en": "Readers know the meal-money request is coming and still pitch in with wilder openings"
   },
   "LOC_EVENT_ENVIRONMENT_GATE_REPLY_NEGATIVE": {
     "source": "前面拯救世界，最后借我一顿饭钱",
-    "zh_CN": "再曲折的星期四长故事，最后一句还是绕回那一小笔餐费",
+    "zh_CN": "前面还在外太空拯救人类呢，图穷匕见就为了让我请顿星期四炸鸡",
     "en": "However grand the Thursday story starts, the last line still asks for meal money"
   },
   "LOC_EVENT_ENVIRONMENT_GATE_REPLY_TITLE": {
@@ -826,22 +826,22 @@
   },
   "LOC_EVENT_ENVIRONMENT_GATE_REPLY_NARRATIVE": {
     "source": "%s用户开始在星期四发布离奇长故事，末尾突然请求一小笔餐费。读者即使看穿结尾，也继续帮故事补上更夸张的前半段。",
-    "zh_CN": "%s用户开始在星期四发布离奇长故事，末尾突然请求一小笔餐费。读者即使看穿结尾，也继续帮故事补上更夸张的前半段。",
+    "zh_CN": "%s每逢周四就有大批网友编出跌宕起伏的长段子，直到最后一行才图穷匕见讨顿炸鸡钱。看客哪怕早猜到了底牌，还是乐此不疲地帮着把前半截编得更悬乎。",
     "en": "Users in %s post outrageous Thursday stories ending in a small meal-money request. Readers recognize the twist and still write more extravagant setups."
   },
   "LOC_EVENT_ENVIRONMENT_GATE_REPLY_COMMENT": {
     "source": "预期中的转折，也能成为参与的理由。",
-    "zh_CN": "每逢星期四，离奇长故事总在末尾讨一小笔餐费。读者早猜到结尾，还乐意把前半段编得更夸张，比比谁的铺垫更像回事。",
+    "zh_CN": "一到礼拜四满屏都是这种神转折，大伙儿早把结尾摸透了，现在纯粹是在比谁前半段装得更像正经小说……你要是下午刷见了别真给人转钱啊。",
     "en": "Every Thursday brings another outrageous long story that swerves at the very end into asking for a bit of meal money. Readers know the twist by heart and still help write even wilder setups, because the fun now lies in how far the opening can go before the punchline lands."
   },
   "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_POSITIVE": {
     "source": "时间对照让个人经历容易被别人理解",
-    "zh_CN": "同一件事的开始与现状并排一放，搬家或求职的变化都很清楚",
+    "zh_CN": "刚搬进来和住满一年的照片往一块儿一摆，不用多写字就能看出日子怎么过的",
     "en": "Pairing the start of a move or job search with the present makes the change clear in two photos"
   },
   "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_NEGATIVE": {
     "source": "计划书还在发光，现实已经开始漏雨",
-    "zh_CN": "原本晒个人经历的两张对照图，也被商家拿去展示产品改版",
+    "zh_CN": "连晒生活落差的两格图都被商家拿去吹产品升级了，广告真是无孔不入",
     "en": "A format built for personal milestones is also borrowed to show off product redesigns"
   },
   "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_TITLE": {
@@ -851,22 +851,22 @@
   },
   "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_NARRATIVE": {
     "source": "%s用户把搬家、求职和旅行的开始与现状并排发布。同一件事前后的两张照片成了通用模板，商家也开始用它展示产品改版。",
-    "zh_CN": "%s用户把搬家、求职和旅行的开始与现状并排发布。同一件事前后的两张照片成了通用模板，商家也开始用它展示产品改版。",
+    "zh_CN": "%s不少网友把刚搬家、刚找工作或刚出门旅行时的照片与眼下的狼狈模样并排晒出，这种“刚开始／现在”双格图很快火出圈，连商家都借去晒自家的产品改版。",
     "en": "Users in %s pair the beginnings of moves, job searches and trips with their current state. Two photos of the same subject become a reusable format, later adopted for product redesigns."
   },
   "LOC_EVENT_ENVIRONMENT_RECEIPT_PAIR_COMMENT": {
     "source": "同一主体前后的差别，比两张无关图片更能留住含义。",
-    "zh_CN": "搬家、求职、旅行，两张图并排就能看出同一件事前后的变化。商家也借去展示产品改版，仍沿用这个前后对照。",
+    "zh_CN": "左边一张刚出发，右边一张灰头土脸的现状，本来挺实在的个人晒图，转眼就被品牌方拿去发改版海报了……好用的模板总归逃不过这一步。",
     "en": "Putting the beginning of a move, job hunt, or trip beside its current state tells a whole story in two photos. Because that before-and-after pairing of the same subject works so cleanly, businesses have started using the exact same layout for product redesigns."
   },
   "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_POSITIVE": {
     "source": "反着说的感谢让压力有了共同表达",
-    "zh_CN": "夸张的“栓Q”配上加班或新作业截图，把不情愿说得既明白又不正面呛声",
+    "zh_CN": "不好当面翻脸的时候甩一句拉长音的“栓Q”，群里谁都能听出那股咬牙切齿的劲儿",
     "en": "Exaggerated 'Shuan Q' voice notes paired with new task screenshots turn thanks into a clear protest"
   },
   "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_NEGATIVE": {
     "source": "谢谢你，我的休息时间已经没有意见了",
-    "zh_CN": "嘴上发着“栓Q”，截图里的临时加班和追加作业一样也没少",
+    "zh_CN": "嘴上阴阳怪气发了一百句栓Q，手里的临时加班和加量作业还是一样没少干",
     "en": "Saying 'Shuan Q' lets off steam while the extra overtime and homework still have to be done"
   },
   "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_TITLE": {
@@ -876,22 +876,22 @@
   },
   "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_NARRATIVE": {
     "source": "%s上班族开始用“栓Q”回应临时加班通知，语音里夸张的感谢与截图中的新任务形成反差。学生也借来回应突然追加的作业。",
-    "zh_CN": "%s上班族开始用“栓Q”回应临时加班通知，语音里夸张的感谢与截图中的新任务形成反差。学生也借来回应突然追加的作业。",
+    "zh_CN": "%s上班族流行起拿一句腔调夸张的“栓Q”配上下班前突袭的派活截图，很快连学生群也跟着借去应付临时加塞的周末作业。",
     "en": "Workers in %s answer surprise overtime notices with Shuan Q, pairing exaggerated thanks with new assignments. Students use it for unexpected extra homework."
   },
   "LOC_EVENT_ENVIRONMENT_ROSTER_STANCE_COMMENT": {
     "source": "感谢的字面没有变，语境把方向翻了过去。",
-    "zh_CN": "上班族用“栓Q”回应临时加班，学生拿它回追加作业。那声夸张的谢谢配上任务截图，听出来的全是不情愿。",
+    "zh_CN": "下班前突然来活儿，直接顶回去怕丢饭碗，回个拉长音的“栓Q”倒是刚刚好……你看，连学生对付临时加作业都学会这一手了。",
     "en": "Workers are pairing exaggerated “Shuan Q” thanks with surprise overtime notices, and students use it for unexpected homework too. It still sounds like a thank-you, while the accompanying task gives that gratitude a reluctant edge. Taking the words literally would miss what the reply is doing in that situation."
   },
   "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_POSITIVE": {
     "source": "简短暗号让赞美能迅速跟上现场节奏",
-    "zh_CN": "四个字母就能把直播间里给逆转选手的欢呼借到日常小事上",
+    "zh_CN": "比赛翻盘那一下根本来不及打长句，四个字母刷出去全场气氛就接上了",
     "en": "Four letters carry the thrill of a comeback win into everyday praise"
   },
   "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_NEGATIVE": {
     "source": "永远的神也开始负责推荐午饭",
-    "zh_CN": "从逆转取胜到顺利办完手续，什么事都能刷一句“YYDS”",
+    "zh_CN": "昨天拿来夸绝杀夺冠，今天连食堂阿姨多给半勺肉都能封个神",
     "en": "From a comeback victory to routine paperwork, everything gets the same 'YYDS'"
   },
   "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_TITLE": {
@@ -901,22 +901,22 @@
   },
   "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_NARRATIVE": {
     "source": "%s赛事直播观众把“YYDS”刷给逆转取胜的选手，随后粉丝将这四个字母用在演员、饭馆和一次顺利办完的手续上。",
-    "zh_CN": "%s赛事直播观众把“YYDS”刷给逆转取胜的选手，随后粉丝将这四个字母用在演员、饭馆和一次顺利办完的手续上。",
+    "zh_CN": "%s赛事直播间里刷给翻盘选手的满屏“YYDS”一路火到场外，从喜欢的演员、街角小馆子到一趟没排队的办事窗口，什么都能顺嘴封上一句。",
     "en": "Sports viewers in %s type YYDS for a comeback winner. Fans then use the four letters for actors, restaurants and even paperwork completed without trouble."
   },
   "LOC_EVENT_ENVIRONMENT_SPORT_WAVE_COMMENT": {
     "source": "暗号保持不变，赞美的对象会不断换人。",
-    "zh_CN": "赛事直播间的“YYDS”，从逆转取胜的选手传到演员、饭馆和一次顺利办完的手续上。四个字母照用，夸奖的分量随场合变了。",
+    "zh_CN": "最早是直播间里给翻盘选手喊破音的词，现在办个证件没排队也能叫“YYDS”……词用得太顺嘴就是这样，早晚连楼下煎饼摊都得封神。",
     "en": "Viewers typed “YYDS” for a comeback winner on a sports stream, and people later used the same four letters for actors, restaurants, and paperwork finished without trouble. The shorthand travels easily, though the weight of the praise changes with the occasion. You still need the situation to know what someone is celebrating."
   },
   "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_POSITIVE": {
     "source": "把双方所得并列能让隐含条件变得清楚",
-    "zh_CN": "“我得到／你得到”分栏列出来，招聘广告和日常交换条件都一目了然",
+    "zh_CN": "把岗位要求拆成“我得到／你得到”两栏一对，画大饼的招聘启事当场就露馅了",
     "en": "Splitting terms into 'I get / You get' lays out the real give-and-take at a glance"
   },
   "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_NEGATIVE": {
     "source": "我得到工作，你得到我的全部时间",
-    "zh_CN": "招聘条件拆成双栏，哪边的要求太多就更难藏了",
+    "zh_CN": "我得到一份微薄底薪，你得到我二十四小时随叫随到，这笔买卖看着就眼熟",
     "en": "Two columns can expose how uneven a job offer’s demands are"
   },
   "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_TITLE": {
@@ -926,537 +926,537 @@
   },
   "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_NARRATIVE": {
     "source": "%s求职社区使用“我得到／你得到”的交易提议双栏，逐项拆开招聘广告。情侣与游戏玩家也开始用相同布局交换条件。",
-    "zh_CN": "%s求职社区使用“我得到／你得到”的交易提议双栏，逐项拆开招聘广告。情侣与游戏玩家也开始用相同布局交换条件。",
+    "zh_CN": "%s求职论坛流行起“我得到／你得到”双栏交易图，专门把长篇招聘启事里的漂亮话拆成赤裸裸的交换清单，随后连情侣约法三章和游戏组队也照搬了同一套版式。",
     "en": "Job seekers in %s use a two-column Trade Offer to compare what each side gets from job ads. Couples and gamers adopt the layout to state their own terms."
   },
   "LOC_EVENT_ENVIRONMENT_RULE_REVERSAL_COMMENT": {
     "source": "两边的条件可以夸张，交换关系必须还能看懂。",
-    "zh_CN": "招聘条件拆成“我得到／你得到”两栏，双方的要求就摆在了眼前。情侣和游戏玩家也借来谈条件，一长段说明变成了逐项对照。",
+    "zh_CN": "一长段绕来绕去的招聘说明，让人拆成“我拿什么、你拿什么”两列往那儿一摆，哪边吃亏简直一清二楚……连小情侣讲条件都跟着学坏了。",
     "en": "Job seekers are using the two-column “Trade Offer” layout to show what each side gets from a recruitment ad. It makes the terms harder to bury in a long explanation. The same arrangement gives couples and gamers a direct way to set out what each side is asking for when they discuss their own conditions."
   },
   "LOC_EVENT_CROSS_LANGUAGE_POSITIVE": {
     "source": "翻译保留了语境，陌生读者也能接上同一句话",
-    "zh_CN": "补上译文和使用场景，另一语言社群的新读者也能照着原意接话",
+    "zh_CN": "不光翻了字面意思，连什么场合该怎么接话都举了例，隔壁语种的人一下就玩起来了",
     "en": "Translating both the words and usage examples lets another language community join in"
   },
   "LOC_EVENT_CROSS_LANGUAGE_NEGATIVE": {
     "source": "字面可以翻过去，生活经验未必一起过去",
-    "zh_CN": "字面能译过去，背后的生活经验却未必能一起跟上",
+    "zh_CN": "词是硬翻过去了，没过过同一种苦日子的人怕是很难笑到一块儿去",
     "en": "The words can cross languages before the shared experience behind them does"
   },
   "LOC_EVENT_CROSS_LANGUAGE_TITLE": {
     "source": "网友将这条模因译入另一语言社群",
-    "zh_CN": "双语用户附使用场景将模因译入另一语言社群",
+    "zh_CN": "双语网友附带例句将模因搬进外语社群",
     "en": "Bilingual user translates meme with usage examples for another language community"
   },
   "LOC_EVENT_CROSS_LANGUAGE_NARRATIVE": {
     "source": "%s一位双语用户给这条模因补上译文和使用场景，转发到另一语言社群。新读者沿用原本的指向，也开始在本地话题下接话。",
-    "zh_CN": "%s一位双语用户给这条模因补上译文和使用场景，转发到另一语言社群。新读者沿用原本的指向，也开始在本地话题下接话。",
+    "zh_CN": "%s一位双语网友把这条模因翻成外语，还顺手配了几段日常聊天里怎么接茬的例句，转进另一语言社群。那边的新面孔很快摸清了用法，已经在本地帖子底下跟着玩起来了。",
     "en": "A bilingual user in %s translates the meme with usage examples and shares it in another language community. New readers keep its intended reference and use it in local discussions."
   },
   "LOC_EVENT_CROSS_LANGUAGE_COMMENT": {
     "source": "跨语言传播先解决谁能看懂，再解决谁愿意接。",
-    "zh_CN": "双语用户把译文和使用场景一起带到另一语言社群。新读者明白了这句话在说什么、何时适用，也能拿来接当地的话题。",
+    "zh_CN": "这人还挺上道，没光甩一句干巴巴的译文过去，连什么场合怎么接话都给人标好了……省了你不少跨语种售后的功夫哦~",
     "en": "A literal translation alone rarely tells another language community when a phrase fits. Because this bilingual user included concrete usage examples alongside the translation, new readers kept the original reference and started using it naturally in local discussions."
   },
   "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_POSITIVE": {
     "source": "清晰的来源让新观众容易找到原作",
-    "zh_CN": "百万关注账号保留署名和原链接并置顶讨论，替原作带去了大批新读者",
+    "zh_CN": "百万粉大号转帖还老老实实留了原作者和链接，顺着摸过来的人一下多了好几倍",
     "en": "A million-follower account keeps the author credit and link while pinning the discussion"
   },
   "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_NEGATIVE": {
     "source": "转发者的口吻也可能盖过作者的本意",
-    "zh_CN": "大号的置顶能带来新读者，也可能让它的说法盖过原作者",
+    "zh_CN": "大号置顶是带火了，就是现在外人提起来全以为是他家的梗",
     "en": "A major account’s commentary can still overshadow the author’s own voice"
   },
   "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_TITLE": {
     "source": "百万关注账号保留署名转发",
-    "zh_CN": "百万关注评论账号保留署名与原链接转发模因",
+    "zh_CN": "百万粉评论号带署名与原链接置顶转发",
     "en": "Million-follower commentary account reposts meme with author credit and link"
   },
   "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_NARRATIVE": {
     "source": "%s拥有百万关注的评论账号转发这条模因，保留作者署名与原始链接，并把相关讨论置顶。大量新读者第一次接触到它。",
-    "zh_CN": "%s拥有百万关注的评论账号转发这条模因，保留作者署名与原始链接，并把相关讨论置顶。大量新读者第一次接触到它。",
+    "zh_CN": "%s一个坐拥百万粉丝的评论大号转发了这条模因，不仅留着原作者署名和出处链接，还把整串讨论置顶挂在主页，引来大波头一回见它的新看客。",
     "en": "An account with a million followers in %s reposts the meme with its author credit and original link, pinning the discussion for readers seeing it for the first time."
   },
   "LOC_EVENT_TRANSMISSION_CREDIT_PRESERVED_COMMENT": {
     "source": "署名与链接把注意力接回了原来的作品。",
-    "zh_CN": "百万关注的评论账号转发时，保留了作者署名和原始链接，还置顶了相关讨论。新读者顺着链接，就能找到你的原作。",
+    "zh_CN": "百万粉大号转帖还肯留原链接，算你碰上讲武德的了……就是以后底下万一吵翻了天，别人顺藤摸瓜找你也很方便哦~",
     "en": "A commentary account with a million followers reposted the meme, kept the author credit and original link, and pinned the discussion. That brings in a wave of first-time readers who can still trace the work straight back to its source."
   },
   "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_POSITIVE": {
     "source": "重复的结构让新人一眼看出如何加入",
-    "zh_CN": "每个回复只换一件日常小事，外人顺着首页推荐也能看懂怎么接龙",
+    "zh_CN": "每层楼只换一件鸡毛蒜皮的小事，路人刷到首页瞄两眼就会跟着往下接了",
     "en": "Swapping in one everyday incident per reply makes the thread easy to join from the front page"
   },
   "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_NEGATIVE": {
     "source": "同一串回复也会让旁观者很快感到重复",
-    "zh_CN": "同一套句式接得太长，旁观者也容易很快看腻",
+    "zh_CN": "一模一样的句式盖了几百层楼，刚开始还觉得逗，往下划三屏就审美疲劳了",
     "en": "A long chain in the same pattern can quickly tire onlookers"
   },
   "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_TITLE": {
     "source": "网友用同一句式发起接龙",
-    "zh_CN": "社群发起模因接龙并经首页推荐破圈",
+    "zh_CN": "社群发起日常小事接龙，帖子冲上首页",
     "en": "Community reply chain using the meme reaches wider audience via front-page recommendation"
   },
   "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_NARRATIVE": {
     "source": "%s一个社群用这条模因发起接龙，每个回复换一件日常小事。首页推荐把整串讨论推给原社群之外的用户。",
-    "zh_CN": "%s一个社群用这条模因发起接龙，每个回复换一件日常小事。首页推荐把整串讨论推给原社群之外的用户。",
+    "zh_CN": "%s一个兴趣社群拿这条模因玩起了盖楼接龙，每层回复各自填进一桩日常小事。整串帖子被推上平台首页后，连圈外的路人也跑来凑热闹往下接。",
     "en": "A community in %s starts a reply chain using the meme for small everyday incidents. A front-page recommendation carries the thread beyond its original group."
   },
   "LOC_EVENT_TRANSMISSION_ANSWER_CHAIN_COMMENT": {
     "source": "接龙把阅读变成了一次低成本的参与。",
-    "zh_CN": "社群接龙每条只换一件日常小事，首页推荐又把整串讨论推到圈外。新来的人照着已有回复，也能接上自己那一句。",
+    "zh_CN": "这种填空题最招人手痒了，随便塞件今天倒霉的小事就能混进队形里……我刚才顺手往下翻了翻，第三百多层居然还有人在认真编。",
     "en": "One community turned the meme into a reply chain where each post swaps in a small everyday incident. Now that a front-page recommendation has pushed the thread outside the original group, newcomers can read a few replies and see right away how to add their own."
   },
   "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_POSITIVE": {
     "source": "范例补上了新人缺少的共同经验",
-    "zh_CN": "整理者列出三种具体用法和适用情境，把只围观的人也带进了讨论",
+    "zh_CN": "有人好心列了三个现成例子，平时光窥屏不吭声的人这下也知道怎么下嘴了",
     "en": "Three concrete examples with clear contexts turn onlookers into active users"
   },
   "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_NEGATIVE": {
     "source": "范例也可能把宽泛的用法固定成标准答案",
-    "zh_CN": "三种范例让人有处下手，也可能把宽泛用法固定成标准答案",
+    "zh_CN": "本来怎么瞎用都行的梗，让人列成一二三条用法说明，看着倒像在做阅读题",
     "en": "The three examples may also turn a flexible expression into a prescribed answer"
   },
   "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_TITLE": {
     "source": "使用范例帮助新读者看懂模因",
-    "zh_CN": "社区整理者补充三种用法带动围观用户发帖",
+    "zh_CN": "热心网友整理三种用法，带动潜水党下场造句",
     "en": "Community editor's three usage examples prompt onlookers to post their own"
   },
   "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_NARRATIVE": {
     "source": "%s一位社区整理者为这条模因补充三种具体用法，逐一展示适合的情境。原先只围观的用户开始照着范例发布自己的版本。",
-    "zh_CN": "%s一位社区整理者为这条模因补充三种具体用法，逐一展示适合的情境。原先只围观的用户开始照着范例发布自己的版本。",
+    "zh_CN": "%s一位热心做整理的网友给这条模因总结出三种常见用法，挨个标明什么场合甩出来最对味。原本只敢在底下看热闹的潜水用户，也开始照猫画虎发自己的版本。",
     "en": "A community editor in %s supplies three concrete uses of the meme with suitable contexts. Readers who only watched begin posting their own examples."
   },
   "LOC_EVENT_TRANSMISSION_USAGE_EXAMPLE_COMMENT": {
     "source": "看懂用法之后，转述才容易保留原意。",
-    "zh_CN": "整理者列出三种用法和适用情境，原先只围观的人也开始发自己的版本。照着例子换内容，原意也更容易留住。",
+    "zh_CN": "居然还有人专门给梗写使用说明书，分了一二三条列得明明白白……不过你还别嫌啰嗦，好些平时只窥屏的人还真得靠这几道例题才敢开口。",
     "en": "A community editor laid out three uses of the meme with suitable contexts, and readers who had only watched began posting their own versions. The examples give them somewhere to start. Knowing when the phrase fits also helps them keep its meaning when they change the content for themselves."
   },
   "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_POSITIVE": {
     "source": "场景示范让表达的指向更容易理解",
-    "zh_CN": "直播示范和反复传播的切片，给观众补上了表达的具体场景",
+    "zh_CN": "光看字还没反应过来笑点在哪，听主播对着直播画面念出来一下就对味了",
     "en": "Live examples and reposted clips give viewers a clearer reference for the phrase"
   },
   "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_NEGATIVE": {
     "source": "主播的语气可能成为观众唯一记住的版本",
-    "zh_CN": "同一种现场反复播，主播的语气也可能成了观众唯一记住的版本",
+    "zh_CN": "切片满天飞，现在不管谁发这句话，我脑子里全是那个主播扯嗓子的动静",
     "en": "Repeated clips may leave viewers remembering only the host’s delivery"
   },
   "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_TITLE": {
     "source": "创作者直播展示模因的用法",
-    "zh_CN": "视频创作者直播引用模因，切片经多频道搬运流传",
+    "zh_CN": "主播看片时随口引用模因，录播切片四处流传",
     "en": "Video creator uses meme on livestream as clips spread across channels"
   },
   "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_NARRATIVE": {
     "source": "%s一位视频创作者在直播中用这条模因评论实时画面，切片随后被多个频道搬运。观众通过相同场景反复听见这套表达。",
-    "zh_CN": "%s一位视频创作者在直播中用这条模因评论实时画面，切片随后被多个频道搬运。观众通过相同场景反复听见这套表达。",
+    "zh_CN": "%s一名人气主播在直播里对着实时画面甩出了这条模因，录屏切片当晚就被好几个搬运号剪出去疯传，不少观众硬是靠这段切片才听懂它原本是什么语气。",
     "en": "A video creator in %s uses the meme to comment on live footage. Clips reach several channels, giving viewers repeated examples in the same setting."
   },
   "LOC_EVENT_TRANSMISSION_WORKSHOP_DEMONSTRATION_COMMENT": {
     "source": "现场反应替文字补足了语气。",
-    "zh_CN": "创作者在直播里对着实时画面用了它，切片又被几个频道搬运。观众从语气和现场反应里，听出了光看文字时拿不准的意思。",
+    "zh_CN": "文字摆在纸上本来没声儿，让那主播拉长音念了一遍，现在满网都是学他那个怪腔调的……也不知道算不算抢了你的署名权。",
     "en": "A video creator used the meme to comment on live footage, and several channels reposted the clips. Seeing it in the same setting gives viewers a reference for how the words fit the moment and how they sound. The reaction can supply some of the tone that a written phrase leaves open."
   },
   "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_POSITIVE": {
     "source": "共同时间把零散用户连成可辨认的群体",
-    "zh_CN": "交班前集中发帖让散落各处的晚班用户互相认出，也引来外人留意",
+    "zh_CN": "每天临近交班刷上一句，隔着屏幕也知道这会儿还有人跟我一块儿熬着",
     "en": "Posting before handover helps scattered night-shift workers find one another"
   },
   "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_NEGATIVE": {
     "source": "错过那个时段的人不一定理解热闹从何而来",
-    "zh_CN": "没赶上那个时段的外人，未必明白这场日常招呼是什么意思",
+    "zh_CN": "大白天点进去一头雾水，合着半夜不睡觉的那拨人背着我们有暗号是吧",
     "en": "Outside that time window, newcomers may miss what the recurring ritual means"
   },
   "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_TITLE": {
     "source": "社群在固定时段集中使用模因",
-    "zh_CN": "晚班社群在交班前集中发布模因形成每日仪式",
+    "zh_CN": "夜班人群每天交班前准点刷梗打卡",
     "en": "Night-shift community posts meme before handover in daily ritual"
   },
   "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_NARRATIVE": {
     "source": "%s一个晚班社群开始在交班前集中发布这条模因。固定时段让散落各处的用户互相找到，也让外人注意到这场每天重现的小仪式。",
-    "zh_CN": "%s一个晚班社群开始在交班前集中发布这条模因。固定时段让散落各处的用户互相找到，也让外人注意到这场每天重现的小仪式。",
+    "zh_CN": "%s一拨上夜班的网友养成习惯，每天临近交班就在广场上准点刷出这条模因。原本互不认识的夜猫子靠这声招呼对上了暗号，连白天上网的人也开始好奇半夜这阵动静。",
     "en": "A night-shift community in %s posts the meme before each handover. The shared time helps scattered users find each other and attracts outsiders to the recurring ritual."
   },
   "LOC_EVENT_TRANSMISSION_RITUAL_TIMING_COMMENT": {
     "source": "传播有时需要的是同一刻，而非更多解释。",
-    "zh_CN": "交班前，晚班社群集中发出这句话。散在各处的人借这声招呼认出了同样快下班的同伴，圈外人也开始留意每天这个时段的动静。",
+    "zh_CN": "掐着交班的点一块儿发帖，跟以前工厂拉下班铃差不多……白天睡饱了才刷手机的人点进去，多半还得纳闷这帮人半夜在起什么哄。",
     "en": "A night-shift community has taken to posting the meme right before handover. That fixed window lets scattered workers spot who else is finishing the same stretch, and the daily repetition has started drawing outsiders' attention too."
   },
   "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_POSITIVE": {
     "source": "新的现实让旧表达重新获得用途",
-    "zh_CN": "眼下处境让旧模因重新合用，新读者加入，老用户也再用起来",
+    "zh_CN": "当年随手留的一句旧话，搁在眼下这桩事里居然严丝合缝，老帖真给盘活了",
     "en": "A dated screenshot from an old thread fits current events and brings in new and old users alike"
   },
   "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_NEGATIVE": {
     "source": "旧日期可能被当成预言，也可能被断章取义",
-    "zh_CN": "旧日期容易被当成预言，截图也可能脱离原来的话题",
+    "zh_CN": "截图角落挂个老日期就开始喊神预言，也没人去翻翻人家原帖当初在聊什么",
     "en": "An old timestamp can pass for prophecy while the original context gets lost"
   },
   "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_TITLE": {
     "source": "一条旧回复被重新翻出",
-    "zh_CN": "网友翻出旧话题中的模因截图并重新带动使用",
+    "zh_CN": "带旧日期的老帖截图被扒出，意外贴合近况翻红",
     "en": "Readers rediscover meme in old thread as dated screenshots revive its use"
   },
   "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_NARRATIVE": {
     "source": "%s网友在回看旧话题时翻出这条模因，发现它刚好贴合当下处境。带日期的截图让新读者加入，老用户也再次开始使用。",
-    "zh_CN": "%s网友在回看旧话题时翻出这条模因，发现它刚好贴合当下处境。带日期的截图让新读者加入，老用户也再次开始使用。",
+    "zh_CN": "%s有网友考古旧帖时翻出了这条模因，截下来的老日期配上眼下的新闻简直严丝合缝。这张陈年截图很快转遍了首页，连早就不玩它的老用户都忍不住捡回来接着刷。",
     "en": "Readers in %s rediscover the meme in an old thread and find it fits the present. Dated screenshots bring in new readers as older users start using it again."
   },
   "LOC_EVENT_TRANSMISSION_OLD_REPLY_REVISITED_COMMENT": {
     "source": "旧表达复活时，带回来的不只是原来的受众。",
-    "zh_CN": "旧话题里翻出的截图，日期还停在当年，话却恰好说中了眼下的处境。新读者接着转发，老用户也把歇过一阵的话重新捡了起来。",
+    "zh_CN": "互联网考古最神的就是这种时刻，截图角落那个旧年份往上一摆，本来平平无奇的一句话立马就有了点算命先生的意思。",
     "en": "Someone dug the meme out of an old thread and found that it fits the present situation almost too well. Screenshots showing the original date are pulling in new readers while giving older users a reason to pick the phrase back up."
   },
   "LOC_EVENT_FATIGUE_WAVE_POSITIVE": {
     "source": "减少重复推荐能给其他作品留出空间",
-    "zh_CN": "降低重复推荐，能给其他作品腾出一点版面",
+    "zh_CN": "满屏来回刷同一句早看烦了，平台压一压推荐，首页总算能换点新鲜东西",
     "en": "Fewer repeat recommendations can leave room for other work"
   },
   "LOC_EVENT_FATIGUE_WAVE_NEGATIVE": {
     "source": "别人替我决定了哪一句话值得说",
-    "zh_CN": "官方文化账号点名批它“重复、低俗、没有表达价值”，数个平台随即降权",
+    "zh_CN": "连大伙儿平时随口接什么梗都要发篇长文定性，未免管得太宽了点",
     "en": "An official cultural account calls the meme 'repetitive, vulgar, and without expressive value,' and platforms cut its reach"
   },
   "LOC_EVENT_FATIGUE_WAVE_TITLE": {
     "source": "官方账号将这条模因定性为烂梗",
-    "zh_CN": "官方文化账号点名批评模因，多平台降低推荐频率",
+    "zh_CN": "官方文化号点名痛批烂梗，多家平台下调推荐",
     "en": "Official cultural account criticizes meme as platforms reduce recommendations"
   },
   "LOC_EVENT_FATIGUE_WAVE_NARRATIVE": {
     "source": "%s一个官方文化账号在整治低质内容的说明中点名这条模因，称其“重复、低俗、没有表达价值”。数个平台随即降低相关内容的推荐频率。",
-    "zh_CN": "%s一个官方文化账号在整治低质内容的说明中点名这条模因，称其“重复、低俗、没有表达价值”。数个平台随即降低相关内容的推荐频率。",
+    "zh_CN": "%s一个官方文化账号在清理低质内容的通告里直接点名这条模因，批它“重复、低俗、毫无表达价值”，几家主流平台随后悄悄压低了相关帖子的推荐权重。",
     "en": "An official cultural account in %s names the meme in a notice on low-quality content, calling it repetitive and worthless. Several platforms reduce its recommendations."
   },
   "LOC_EVENT_FATIGUE_WAVE_COMMENT": {
     "source": "定性会改变可见度，也会改变使用它的立场含义。",
-    "zh_CN": "官方文化账号批它“重复、低俗、没有表达价值”，几个平台随即降低推荐频率。这句评语已经改变了它被人看见的机会。",
+    "zh_CN": "哎呀，被点名批评“毫无表达价值”了呢……平台那边手脚倒快，马上就把推荐给掐小了，不过有时候越这么按头不让说，底下偏要逆反的人反而越来劲。",
     "en": "An official cultural account named the meme in a notice on low-quality content, calling it repetitive and worthless, and several platforms reduced its recommendation rate. That change gives the judgment a practical effect: people have fewer chances to encounter the phrase. Continuing to circulate it may now take more than repeating the same post."
   },
   "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_POSITIVE": {
     "source": "公开指出冒犯能让被忽略的经验进入讨论",
-    "zh_CN": "被当成笑点的群体发表联名声明指出贬低指代，促使相关社群主动屏蔽",
+    "zh_CN": "天天拿人家当廉价笑料，这回当事人把话摊开讲清楚，早该划条线了",
     "en": "A joint statement spells out degrading references and prompts related communities to filter the meme"
   },
   "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_NEGATIVE": {
     "source": "一句玩笑把没有参与的人也算进了代价",
-    "zh_CN": "这条模因把特定群体当笑点，相关社群已开始主动屏蔽它",
+    "zh_CN": "本来图一乐的玩笑话，现在好几个版面直接设成违禁词，发都发不出去",
     "en": "Treated as the punchline, the targeted group protests and related communities begin filtering the meme"
   },
   "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_TITLE": {
     "source": "被指向的群体公开表示受到冒犯",
-    "zh_CN": "被当笑点的群体发联名声明抗议，相关社群开始屏蔽模因",
+    "zh_CN": "被调侃群体发联名信抗议，多个社区屏蔽相关词条",
     "en": "Targeted group issues joint statement as related communities filter the meme"
   },
   "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_NARRATIVE": {
     "source": "%s一个被这条模因当作笑点的群体发表联名声明，逐项指出其中让成员感到被贬低的指代。相关社群开始主动屏蔽它。",
-    "zh_CN": "%s一个被这条模因当作笑点的群体发表联名声明，逐项指出其中让成员感到被贬低的指代。相关社群开始主动屏蔽它。",
+    "zh_CN": "%s长期被这条模因拿来开涮的一群人发出联名抗议，把话里让人不舒服的暗讽一条条摆上台面，好几个相关社区的版主随后将它加进了屏蔽词库。",
     "en": "A group made the punchline of the meme in %s issues a joint statement identifying references members find degrading. Related communities begin filtering it."
   },
   "LOC_EVENT_TRANSMISSION_AUDIENCE_REFUSAL_COMMENT": {
     "source": "被拿来当笑点的人，也会决定传播能否继续。",
-    "zh_CN": "被当成笑点的群体发出联名声明，逐项列明让成员感到受贬低的指代。相关社群开始主动屏蔽，玩笑里的对象也说出了自己的回应。",
+    "zh_CN": "开玩笑开到正主找上门来了，人家还一条条列得有理有据……好几个版面已经把词给封了，这路子再硬走下去怕是要撞墙。",
     "en": "The group made the punchline of the meme issued a joint statement listing the references its members find degrading. Related communities have begun filtering it. The people being referred to have explained their objections, and deciding whether to keep sharing the joke should include listening to those reasons."
   },
   "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_POSITIVE": {
     "source": "降低刷屏频率能让正常讨论重新出现",
-    "zh_CN": "整理乱刷截图并分享屏蔽词建议，能帮不想看的人清静评论区",
+    "zh_CN": "照着好心人发的屏蔽词清单设完，点进热搜评论区总算清静多了",
     "en": "Sharing filter instructions helps users clear unrelated replies out of popular threads"
   },
   "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_NEGATIVE": {
     "source": "它已经替所有问题提前交了同一份答卷",
-    "zh_CN": "多个热门话题被重复回复占满，“不管说什么都有人刷它”成了新抱怨",
+    "zh_CN": "不管多严肃的新闻底下都有人在那儿无脑复读这一句，真把人看吐了",
     "en": "Popular threads fill with repetitive replies until users trade screenshots and filter tips"
   },
   "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_TITLE": {
     "source": "高频重复引发集体厌烦",
-    "zh_CN": "热门话题遭模因重复刷屏，网友整理截图并流传屏蔽词建议",
+    "zh_CN": "无关热帖遭模因刷屏，网友互传屏蔽词自救",
     "en": "Repeated replies flood popular discussions as users share filter instructions"
   },
   "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_NARRATIVE": {
     "source": "%s多个热门话题被这条模因的重复回复占满，用户开始把“不管说什么都有人刷它”的截图放在一起。屏蔽词建议随之流传。",
-    "zh_CN": "%s多个热门话题被这条模因的重复回复占满，用户开始把“不管说什么都有人刷它”的截图放在一起。屏蔽词建议随之流传。",
+    "zh_CN": "%s好几个八竿子打不着的热门话题底下都被这条模因刷了屏，忍无可忍的网友把各路离谱复读截成合集挂出来吐槽，顺带传开了设置屏蔽词的手把手教程。",
     "en": "Repeated replies using the meme fill popular discussions in %s. Users collect examples of it appearing under unrelated posts and share instructions for filtering it."
   },
   "LOC_EVENT_TRANSMISSION_REPETITION_COMPLAINT_COMMENT": {
     "source": "高曝光不会自动变成持续的好感。",
-    "zh_CN": "同一句回复占满好几个热门话题，用户攒起无关帖子下的刷屏截图，连屏蔽词建议都传开了。刷屏带来的曝光，成了别人设置屏蔽的理由。",
+    "zh_CN": "火过头就是这个下场，连八竿子打不着的新闻底下都有人在那儿复读……现在教人怎么屏蔽它的帖子，转发量都快赶上你这模因本身了。",
     "en": "Several popular discussions are packed with repeated uses of the meme, and users are collecting screenshots from unrelated posts while sharing filter instructions. That is a different sort of visibility: people are learning how to avoid the phrase. Repeating it still more may make it harder to find someone willing to join in."
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_POSITIVE": {
     "source": "追查出处让隐藏的伤害可以被讨论",
-    "zh_CN": "追出早期使用者的歧视性发言，让转发者开始审视使用时的立场问题",
+    "zh_CN": "把最早带火这词的人扒个底朝天也好，免得大伙儿稀里糊涂替烂人扬名",
     "en": "Uncovering an early user's discriminatory remark makes reposters reconsider what reuse signals"
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_NEGATIVE": {
     "source": "作者的旧话替所有转发者补上了未说的立场",
-    "zh_CN": "追到早期使用者的旧话，转发者也容易被误认为赞同那番话",
+    "zh_CN": "我就随手转个梗图乐呵一下，怎么突然还要替八百年前发帖的人背锅了",
     "en": "Reposting the meme may be mistaken for endorsing an early user’s views"
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_TITLE": {
     "source": "旧出处引发信任危机",
-    "zh_CN": "早期使用者歧视性发言曝光，引发继续使用是否等于认同的争论",
+    "zh_CN": "早期玩梗者黑历史被扒，网友争论跟风算不算站队",
     "en": "Early user's discriminatory statement sparks debate over continuing to use the meme"
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_NARRATIVE": {
     "source": "%s网友追出这条模因早期使用者的一段歧视性发言。转发者开始删除旧帖，争论集中在继续使用是否等于认同原作者。",
-    "zh_CN": "%s网友追出这条模因早期使用者的一段歧视性发言。转发者开始删除旧帖，争论集中在继续使用是否等于认同这名使用者的立场。",
+    "zh_CN": "%s有网友顺藤摸瓜，扒出了最早带火这条模因的人曾发表过歧视言论。不少转发过的人赶紧连夜删帖，评论区正为接着玩梗算不算替那人站台吵成一团。",
     "en": "Readers in %s trace the meme to an early user with a discriminatory statement. Reposters delete older posts as debate turns to whether reuse endorses the source."
   },
   "LOC_EVENT_TRANSMISSION_SOURCE_QUESTION_COMMENT": {
     "source": "出处争议会把表达与使用者一起拖进讨论。",
-    "zh_CN": "一名早期使用者的歧视性发言被翻出，转发者开始删除旧帖。继续用这句话，是否也算认同他的立场，成了争论的焦点。",
+    "zh_CN": "最早玩这句话的人翻了车，连带着现在谁转发谁就得先写三百字免责声明……网上追起旧事来，连坐速度可比传播快多了。",
     "en": "Readers uncovered a discriminatory remark by an early user, and reposters began deleting older posts. The dispute is about whether using a borrowed phrase also endorses its source. A repost on its own cannot tell us everything the person repeating it believes."
   },
   "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_POSITIVE": {
     "source": "原始记录帮助读者重新判断引用是否准确",
-    "zh_CN": "原始视频和热门转载下的纠正链接，给读者留下了核对情境的依据",
+    "zh_CN": "完整原视频放出来就好办了，断章取义截出来的半句话确实该歇歇了",
     "en": "Original footage and correction links under major reposts let readers check the quote’s context"
   },
   "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_NEGATIVE": {
     "source": "转发速度比看完视频快了太多",
-    "zh_CN": "模因引用的那句话原本出自另一段情境，部分读者核实后停用了原版本",
+    "zh_CN": "原片前头铺垫了足足五分钟，哪有截出来的那五秒钟转起来带劲",
     "en": "After original footage shows the quote came from another context, some readers drop that version"
   },
   "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_TITLE": {
     "source": "事实核查指出模因引用有误",
-    "zh_CN": "事实核查账号公布原视频，指出模因引语脱离原情境",
+    "zh_CN": "核查账号放出完整原视频，证实模因引语系断章取义",
     "en": "Fact-checking account publishes original footage showing meme quote came from another context"
   },
   "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_NARRATIVE": {
     "source": "%s事实核查账号公布原始视频，证明这条模因引用的那句话来自另一段情境。纠正链接被放在热门转载下，部分读者停止使用原版本。",
-    "zh_CN": "%s事实核查账号公布原始视频，证明这条模因引用的那句话来自另一段情境。纠正链接被放在热门转载下，部分读者停止使用原版本。",
+    "zh_CN": "%s一个事实核查账号放出了未剪辑的原始录像，证实这条模因里疯传的那句话其实截自完全相反的上下文。核查链接被刷上热转前排后，不少人默默停用了原版。",
     "en": "A fact-checking account in %s publishes footage showing that the meme quote came from a different context. Corrections appear under major reposts, and some readers stop using that version."
   },
   "LOC_EVENT_TRANSMISSION_PUBLIC_CORRECTION_COMMENT": {
     "source": "具体的更正会改变具体的信任。",
-    "zh_CN": "事实核查账号放出原始视频，指出引语出自另一段情境。热门转载下补上了纠正链接，部分读者核对原片后停用了旧版本。",
+    "zh_CN": "核查号把完整录像放出来了，原来人家前半句根本不是那个意思……虽说已经有不少人默默删帖了，但我赌五毛钱，过两天肯定还有没看原片的人接着转。",
     "en": "A fact-checking account published original footage showing that the meme’s quote came from another context. Correction links appear under major reposts, and some readers have stopped using that version. Those links give people somewhere to check the context before deciding whether to repeat the quote themselves."
   },
   "LOC_EVENT_CRITICAL_QUOTE_POSITIVE": {
     "source": "相同形式也能表达相反立场",
-    "zh_CN": "批评者保留原句式却换上相反画面，借现成形式完成了反讽",
+    "zh_CN": "一字不改照抄他们当初吹牛的原话，底下直接换上翻车现场，杀人诛心不过如此",
     "en": "Critics keep the recognizable wording and swap the footage to turn praise into mockery"
   },
   "LOC_EVENT_CRITICAL_QUOTE_NEGATIVE": {
     "source": "曾经表示支持的一句话成了对支持者的回敬",
-    "zh_CN": "句式没变，底下的画面却换成相反立场，原本的赞同直接变成了嘲讽",
+    "zh_CN": "当初真心实意拿来加油打气的一句话，现在硬生生给他们玩成了阴阳怪气的脏词",
     "en": "The wording stays intact while opposing footage flips approval into ridicule"
   },
   "LOC_EVENT_CRITICAL_QUOTE_TITLE": {
     "source": "批评者借用这条模因反讽原来的支持者",
-    "zh_CN": "批评者社群保留模因句式并配相反画面进行嘲讽",
+    "zh_CN": "批评者照搬模因原话，换上翻车画面反向嘲讽",
     "en": "Critical community pairs original meme wording with opposing footage in mockery"
   },
   "LOC_EVENT_CRITICAL_QUOTE_NARRATIVE": {
     "source": "%s一个批评者社群保留这条模因的句式，把它放到与原支持对象相反的画面上。新版本仍能被认出来，赞同的口吻却成了嘲讽。",
-    "zh_CN": "%s一个批评者社群保留这条模因的句式，把它放到与原支持对象相反的画面上。新版本仍能被认出来，赞同的口吻却成了嘲讽。",
+    "zh_CN": "%s一拨唱反调的网友原封不动留着这条模因的句式，偏偏把底图全换成了与原意唱反调的翻车现场。话还是那句熟话，听在耳朵里却全成了阴阳怪气。",
     "en": "A critical community in %s keeps the meme wording but places it over footage opposing its original subject. The form stays recognizable while approval turns into mockery."
   },
   "LOC_EVENT_CRITICAL_QUOTE_COMMENT": {
     "source": "认得出原句，反转才会产生力量。",
-    "zh_CN": "批评者沿用原句式，把画面换成与原支持对象相反的内容，赞同的口吻就成了嘲讽。熟悉的那套话掉转方向，听着格外扎人。",
+    "zh_CN": "最损的就是这种招数了，连标点符号都不改你的，光把底下的图一换，原先夸人的话当场变成打脸现场……偏偏大家还一眼就能认出是你的手笔。",
     "en": "A critical community kept the meme’s wording and placed it over footage opposing its original subject. The familiar words still suggest approval, but the footage makes that approval sound mocking. Recognizing the phrase is part of what makes the turn work."
   },
   "LOC_EVENT_SEMANTIC_SPLIT_POSITIVE": {
     "source": "新的经验能让既有形式长出新的用途",
-    "zh_CN": "新社群拿它谈论原作之外的生活经验，让同一套表达多了一层用法",
+    "zh_CN": "管它最早是聊什么的，拿来形容咱们这摊破事反正再贴切不过了",
     "en": "A new community applies the meme to everyday experiences beyond its original subject"
   },
   "LOC_EVENT_SEMANTIC_SPLIT_NEGATIVE": {
     "source": "所有人都在用同一句话，却未必在说同一件事",
-    "zh_CN": "旧用户还认得表面表达，但新旧两边对它到底指什么已经出现分歧",
+    "zh_CN": "满屏刷的还是同一句话，点进去一看，新来这帮人聊的跟我们压根不是一码事",
     "en": "Older users recognize the surface wording while disagreeing with newcomers on what it refers to"
   },
   "LOC_EVENT_SEMANTIC_SPLIT_TITLE": {
     "source": "新的社群给这条模因赋予另一层含义",
-    "zh_CN": "新社群借用旧表达，模因指向出现分歧",
+    "zh_CN": "新圈子借走模因另起炉灶，新老受众各聊各话",
     "en": "New community gives familiar meme a different reference"
   },
   "LOC_EVENT_SEMANTIC_SPLIT_NARRATIVE": {
     "source": "%s一个新接触到这条模因的社群，用它谈论原作没有涉及的生活经验。旧用户仍看得懂表面表达，双方对它所指的事情开始分歧。",
-    "zh_CN": "%s一个新接触到这条模因的社群，用它谈论原作没有涉及的生活经验。旧用户仍看得懂表面表达，双方对它所指的事情开始分歧。",
+    "zh_CN": "%s另一个圈子的网友把这条模因捡去吐槽他们自己的日常，跟最早那拨人聊的事压根不挨边。现在两边嘴里挂着同一句话，心里想的却早已是两码事了。",
     "en": "A community newly encountering the meme in %s uses it for experiences outside its original subject. Older users recognize the surface form but disagree about what it now refers to."
   },
   "LOC_EVENT_SEMANTIC_SPLIT_COMMENT": {
     "source": "语义分叉发生在共同形式仍然存在的时候。",
-    "zh_CN": "新社群拿旧表达聊原作之外的生活经验。两边认得同一句话，指的事情却渐渐对不上了。",
+    "zh_CN": "新来这拨人把你的壳子借走了，里头装的完全是另一摊事……最逗的是老用户点进去还能看懂字面，聊上三句才发现两边根本不在一个频道。",
     "en": "A community newly encountering the meme is using it for experiences the original never covered. Older users recognize the wording but disagree with them about what it refers to. Before deciding who has misunderstood whom, it is worth asking which experience each group is talking about."
   },
   "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_POSITIVE": {
     "source": "新的措辞让原本不熟悉句式的人也能看懂",
-    "zh_CN": "转述成直接说明后，新读者不用先学原句式也能接上同一层意思",
+    "zh_CN": "把绕来绕去的原句拆成一句大白话，没追过前情的人一眼也能看明白在吵什么",
     "en": "Turning the meme into a direct explanation lets new readers pick up the same meaning"
   },
   "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_NEGATIVE": {
     "source": "意思还在，熟悉的那句话已经不在了",
-    "zh_CN": "同一层意思留住了，原先那套标志性的句式却在新读者口中换掉了",
+    "zh_CN": "大白话是好懂了，原先那句拐着弯儿的灵魂腔调也跟着一块儿没了",
     "en": "The underlying meaning survives, while the original wording is replaced in new replies"
   },
   "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_TITLE": {
     "source": "网友用直白的说法转述这条模因",
-    "zh_CN": "网友将模因转述为直接说明，新读者沿用新措辞接话",
+    "zh_CN": "网友抛开原句改用大白话转述，新说法反客为主",
     "en": "Readers retell meme as direct explanation and continue with the new phrasing"
   },
   "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_NARRATIVE": {
     "source": "%s网友把这条模因转述成一段直接的说明，不再沿用原有句式。新读者能理解同一层意思，却开始用这套新措辞继续接话。",
-    "zh_CN": "%s网友把这条模因转述成一段直接的说明，不再沿用原有句式。新读者能理解同一层意思，却开始用这套新措辞继续接话。",
+    "zh_CN": "%s有网友嫌原句绕口，干脆用一段直白的大白话把里头的意思重讲了一遍。后进来的路人不用补课也能听懂，索性都顺着这句新编的大白话接着往下聊了。",
     "en": "Readers in %s retell the meme as a direct explanation, replacing its original wording. New readers understand the same meaning and continue using the new phrasing."
   },
   "LOC_EVENT_TRANSMISSION_CAPTION_SHORTENING_COMMENT": {
     "source": "表达换了一套说法，指向仍然可以保持。",
-    "zh_CN": "网友把原句式换成直接的说明，新读者听懂了同一层意思，也沿用这套新措辞。你最初攒出来的那句话，渐渐退到了后面。",
+    "zh_CN": "意思还是你那个意思，就是人家嫌原话绕，直接拿大白话给翻译了一遍……结果新来的人全跟着学那句省事的去了，你辛辛苦苦攒出来的金句倒没人念了。",
     "en": "Readers have paraphrased the meme into a direct explanation instead of keeping its original wording. New readers still take the same meaning from it, though they are continuing the conversation with the new phrasing rather than yours."
   },
   "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_POSITIVE": {
     "source": "换一种说法也能把同一意思传给新人",
-    "zh_CN": "换成圈内顺口的说法，也能把原来那层意思传给新人",
+    "zh_CN": "换成咱们圈里顺嘴的黑话一讲，群里那帮熟人秒懂，比原话带感多了",
     "en": "The group’s own wording can carry the same meaning to newcomers"
   },
   "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_NEGATIVE": {
     "source": "原作与复述听起来不同，指向却仍然相同",
-    "zh_CN": "原来的表达被圈内新措辞替换，且这套新说法已开始单独流传",
+    "zh_CN": "被他们改成圈内黑话单飞出去之后，现在谁还记得最早是从哪句梗变来的",
     "en": "The group's own wording replaces the original expression and starts circulating on its own"
   },
   "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_TITLE": {
     "source": "社群开始用自己的说法复述模因",
-    "zh_CN": "兴趣社群用内部说法重述模因，新措辞开始单独流传",
+    "zh_CN": "小圈子用自家黑话重编模因，新说法脱离原作单飞",
     "en": "Interest group retells meme in its own words as new phrasing circulates independently"
   },
   "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_NARRATIVE": {
     "source": "%s一个兴趣社群把这条模因的意思用自己的说法重新讲了一遍。原来的表达被替换，大家仍围绕同一层含义接话，新措辞开始单独流传。",
-    "zh_CN": "%s一个兴趣社群把这条模因的意思用自己的说法重新讲了一遍。原来的表达被替换，大家仍围绕同一层含义接话，新措辞开始单独流传。",
+    "zh_CN": "%s一个兴趣小圈子把这条模因的意思揉进了自家的行话里重说了一遍，聊的还是那档子事，嘴里的词却全换了茬，这套新说法眼下已经脱离原帖单独传开了。",
     "en": "An interest group in %s retells the meme meaning in its own words. The original expression is replaced while members keep discussing the same meaning; the new wording begins circulating on its own."
   },
   "LOC_EVENT_TRANSMISSION_IN_GROUP_SHORTHAND_COMMENT": {
     "source": "同一个意思，可能留下几种不同的表达。",
-    "zh_CN": "兴趣社群用圈内顺口的说法重述了同一层含义。新措辞开始单独流传，原意换了词句，也传到了新人那里。",
+    "zh_CN": "小圈子最爱干这事了，非得把外头来的话回炉重造，换成他们自己人听得懂的行话才舒坦……你看，现在那句改头换面的版本自己跑得比原版还欢。",
     "en": "An interest group restated the meme’s meaning in its own words, replacing the original expression while keeping the same point in discussion. The new wording is now circulating on its own. The familiar sentence is no longer needed for people in that exchange to refer to the same thing."
   },
   "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_POSITIVE": {
     "source": "新的场景让形式获得了另一种可用的含义",
-    "zh_CN": "搬运账号把留下的部分放进别的争论，让现成表达在另一话题里被接走",
+    "zh_CN": "管它原帖前头写了什么，单截这一句出来怼对面那帮人简直百发百中",
     "en": "Cropping the meme into another dispute gives new readers a ready-made judgment to use"
   },
   "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_NEGATIVE": {
     "source": "没有变的字句也能被搬去指认别的人",
-    "zh_CN": "裁掉原有前后文后，新读者把它当成了对另一个群体的评价",
+    "zh_CN": "让营销号掐头去尾截剩半张图，好端端一句话硬是给当成了地图炮",
     "en": "With the surrounding context cut away, new readers take the meme as a judgment on another group"
   },
   "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_TITLE": {
     "source": "脱离原场景的转载改变了指向",
-    "zh_CN": "裁掉前后文的转载改变模因指向",
+    "zh_CN": "营销号掐头去尾搬运截图，模因被当成站队新靶子",
     "en": "Reposting account cuts context and shifts the meme onto another group"
   },
   "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_NARRATIVE": {
     "source": "%s一个搬运账号裁掉这条模因原有的前后文，把剩下的部分用在完全不同的争论里。新读者将它当成对另一群体的评价。",
-    "zh_CN": "%s一个搬运账号裁掉这条模因原有的前后文，把剩下的部分用在完全不同的争论里。新读者将它当成对另一群体的评价。",
+    "zh_CN": "%s一个搬运号把这条模因前后的铺垫全给裁没了，单拎出中间半句丢进了另一场毫不相干的骂战里，不明真相的路人当场把它认成了嘲讽另一群人的地图炮。",
     "en": "A reposting account in %s cuts the surrounding context and uses the remaining meme in a different dispute. New readers take it as a judgment about another group."
   },
   "LOC_EVENT_TRANSMISSION_CONTEXT_REMOVED_COMMENT": {
     "source": "语境被剪掉以后，剩下的空位会有人填上。",
-    "zh_CN": "搬运账号裁掉前后文，把剩下的部分放进另一场争论。字句照旧，新读者接走的却成了对另一个群体的评价。",
+    "zh_CN": "营销号截图那把剪刀你又不是第一天见，前因后果咔嚓一剪，好端端一句话转眼就替别人背上了骂名……偏偏看客就吃没头没尾这一套。",
     "en": "A reposting account cut away the surrounding context and dropped the remaining meme into a different dispute. The words did not change, but new readers took them as a judgment on another group. Someone repeating it from there may be passing on a judgment they never saw in the original setting."
   },
   "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_POSITIVE": {
     "source": "熟悉的地方经验为表达提供新的共同理解",
-    "zh_CN": "地方社群结合本地经验重新解释，让它能用来形容当地相似的处境",
+    "zh_CN": "借这词来叫咱们本地这摊烂摊子太顺嘴了，省得每次都要从头解释半天",
     "en": "Reinterpreting the meme through local experience gives the community a shared term for its own situation"
   },
   "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_NEGATIVE": {
     "source": "名字借来了，原来那件事已经不在场",
-    "zh_CN": "原来的具体对象变成了泛指，当地人用它说的是另一种相似却不同的处境",
+    "zh_CN": "传到他们本地人嘴里全变味了，早没人记得这词当初是专指哪桩事的了",
     "en": "The original target becomes a broad label for a related but different local situation"
   },
   "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_TITLE": {
     "source": "本地社群用模因给自己的处境命名",
-    "zh_CN": "地方社群以本地经验重释模因，原对象变为泛指",
+    "zh_CN": "地方社区借模因吐槽本地顽疾，专指旧梗变成日常泛称",
     "en": "Local community reinterprets meme through local experience and broadens its target"
   },
   "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_NARRATIVE": {
     "source": "%s一个地方社群用本地经验重新解释这条模因。原来的对象变成泛指，大家开始用它描述一种相似却不相同的处境。",
-    "zh_CN": "%s一个地方社群用本地经验重新解释这条模因。原来的对象变成泛指，大家开始用它描述一种相似却不相同的处境。",
+    "zh_CN": "%s一个地方论坛把这条模因拿去套用自家的日常槽点。叫得久了，早先特指那桩事的名字彻底变成了当地人的口头泛称，但凡碰上差不多的糟心场面都能拿它顶一句。",
     "en": "A local community in %s reinterprets the meme through local experience. Its original object becomes a broader label for a related but different situation."
   },
   "LOC_EVENT_TRANSMISSION_LOCAL_GLOSSARY_COMMENT": {
     "source": "本地化有时会连同指向一起改写。",
-    "zh_CN": "地方社群按本地经验重新解释这条模因，把原来的特指变成泛指。相似又有差别的处境，让这句话在当地有了新的用法。",
+    "zh_CN": "本来是冲着具体一桩事去的，结果让当地人拿去当日常口头禅使唤了……也好，能在外地生下根来，哪怕意思跑偏半里地也算本事。",
     "en": "A local community reinterpreted the meme through its own experience, turning the original target into a broader label for a related but distinct local situation. That slight shift in reference is what lets the phrase take root in local talk."
   },
   "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_POSITIVE": {
     "source": "共同使用让个人经历有了稳定的表达搭配",
-    "zh_CN": "上班族反复拿它配加班和绩效排名的表达，让职场吐槽有了固定拍档",
+    "zh_CN": "每次发加班餐和绩效表顺手配一句它，不用多吐半个脏字同事就懂了",
     "en": "Repeatedly pairing the meme with overtime and ranking jokes gives office workers a steady shorthand"
   },
   "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_NEGATIVE": {
     "source": "原来的意思被每次一起出现的抱怨拉走了",
-    "zh_CN": "反复与加班、绩效并用，让宽泛句式逐渐被读成职场评价",
+    "zh_CN": "硬是被打工人跟加班表焊死在一块儿了，现在在别的地方发这句都串味",
     "en": "Repeated pairing with overtime and performance rankings draws a broad phrase toward workplace commentary"
   },
   "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_TITLE": {
     "source": "这条模因与职场梗形成固定搭配",
-    "zh_CN": "模因与加班、绩效梗形成固定搭配",
+    "zh_CN": "打工人高频混搭加班与绩效吐槽，模因被焊死在职场语境",
     "en": "Meme forms recurring pairing with overtime and performance-ranking jokes"
   },
   "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_NARRATIVE": {
     "source": "%s上班族反复把这条模因与加班、绩效排名的表达放在一起使用。新读者逐渐把原本宽泛的句式理解成对职场规则的评价。",
-    "zh_CN": "%s上班族反复把这条模因与加班、绩效排名的表达放在一起使用。新读者逐渐把原本宽泛的句式理解成对职场规则的评价。",
+    "zh_CN": "%s大批上班族一晒加班记录和末位淘汰表就顺手带上这条模因。见得次数多了，后来的网友干脆把它当成了专门阴阳职场考勤的固定台词。",
     "en": "Workers in %s repeatedly pair the meme with overtime and performance-ranking jokes. New readers begin reading the formerly broad phrase as a comment on workplace rules."
   },
   "LOC_EVENT_TRANSMISSION_PERSONAL_LEDGER_COMMENT": {
     "source": "经常相邻的表达，会开始分享同一层含义。",
-    "zh_CN": "上班族反复把它配上加班和绩效排名，新读者渐渐将这套宽泛的句式读成了职场评价。用得多了，话题也就跟着固定下来。",
+    "zh_CN": "本来挺宽泛的一句话，非让那帮苦命上班族天天跟加班表绑一块儿发，现在好了，我一看见这几个字都条件反射想先看一眼打卡机。",
     "en": "Workers kept pairing the meme with jokes about overtime and performance rankings. After seeing them together repeatedly, new readers began treating a once-broad phrase as a comment on workplace rules. The recurring pairing gives newcomers a context even if they never saw the phrase used more broadly."
   },
   "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_POSITIVE": {
     "source": "互相引用让两种表达共享新的联想",
-    "zh_CN": "与“前后对照”并排剪辑并多次转载后，观众只看半句就能想起整个组合",
+    "zh_CN": "两张毫不相干的老梗拼在一个视频里意外地搭，现在刷出前半句底下全在默契接下联",
     "en": "After repeated reposts beside a before-and-after format, either half calls up the whole pairing"
   },
   "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_NEGATIVE": {
     "source": "拆开任意一边，观众仍会自动补上另一边",
-    "zh_CN": "两条原本独立的表达合流后，单拿其中半句出来也会自动带出另一半",
+    "zh_CN": "硬跟那套对比图绑成了连体婴，想单独发一句都躲不开底下跟风补下半截的",
     "en": "Show either half, and viewers supply the other in their heads"
   },
   "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_TITLE": {
     "source": "两套梗被剪进同一个对照模板",
-    "zh_CN": "模因与对照模板合流，半句唤起整组",
+    "zh_CN": "创作者将两套梗混剪成连体搭档，刷半句自动带出下半截",
     "en": "Meme and comparison format merge into a recognizable pairing"
   },
   "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_NARRATIVE": {
     "source": "%s创作者把这条模因与另一套“前后对照”的表达并排剪辑。多次转载后，观众开始用其中任意半句唤起整个组合。",
-    "zh_CN": "%s创作者把这条模因与另一套“前后对照”的表达并排剪辑。多次转载后，观众开始用其中任意半句唤起整个组合。",
+    "zh_CN": "%s不少二创作者把这条模因和另一套流行的“前后对比”梗并排剪进同一个视频。来回搬运多了以后，现在评论区只要有人敲出前半句，楼下不用约就会整整齐齐补上另一半。",
     "en": "Creators in %s place the meme beside a before-and-after format. After repeated reposting, viewers use either half to invoke the whole combination."
   },
   "LOC_EVENT_TRANSMISSION_REMIX_COMPARISON_COMMENT": {
     "source": "合流需要反复共现，单次拼贴还不够。",
-    "zh_CN": "它与“前后对照”并排剪辑，经过多次转载，观众只听半句就能想起整组。两套表达反复出现，慢慢成了彼此的提示。",
+    "zh_CN": "两个八竿子打不着的梗让人硬凑成了一对，现在跟春联似的，上联刚露头，评论区自动就把下联给续上了……你想拆都拆不开了。",
     "en": "Creators placed the meme beside a before-and-after format, and after repeated reposting viewers now use either half to call up the whole combination. Repeated co-occurrence bound the two formats together until one automatically brings the other to mind."
   },
   "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_POSITIVE": {
     "source": "共同暗号让退出争论不必重新解释",
-    "zh_CN": "固定收尾成了共同暗号，想退出争论时不必再另作解释",
+    "zh_CN": "评论区碰到胡搅蛮缠的人懒得多费唾沫，甩出这句带尾巴的暗号直接体面退场",
     "en": "Adding a fixed ending gives users a recognizable way to step out of an overlong argument"
   },
   "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_NEGATIVE": {
     "source": "接话的邀请也被改写成了不想再接话",
-    "zh_CN": "原本用来引人接话的表达，加上固定收尾后变成了结束对话的信号",
+    "zh_CN": "以前发出来是找人一块儿聊天的，现在倒好，谁发这句就等于直接把门摔上了",
     "en": "A phrase that once invited replies now signals that its user is done"
   },
   "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_TITLE": {
     "source": "新的收尾句把模因变成退出暗号",
-    "zh_CN": "网友为模因加上固定收尾，使其变为结束争论的信号",
+    "zh_CN": "网友给模因接上固定散场句，吵架太累时拿来关麦走人",
     "en": "Readers add fixed ending to meme to signal leaving an argument"
   },
   "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_NARRATIVE": {
     "source": "%s网友给这条模因加上一句固定收尾，在争论太久时用它表示不再继续。原本引人接话的表达开始承担结束对话的功能。",
-    "zh_CN": "%s网友给这条模因加上一句固定收尾，在争论太久时用它表示不再继续。原本引人接话的表达开始承担结束对话的功能。",
+    "zh_CN": "%s网友给这条模因后头续上了一句固定的送客话，专门留着在评论区拉扯太久、懒得再吵的时候甩出来封口。原先招人接茬的开场白，就这么变成了关麦散场的信号。",
     "en": "Readers in %s add a fixed ending to the meme to signal leaving an overlong argument. A phrase that invited replies begins serving as a way to end them."
   },
   "LOC_EVENT_TRANSMISSION_EXIT_PHRASE_COMMENT": {
     "source": "收尾改变了这句话在对话里的用途。",
-    "zh_CN": "网友加上一句固定收尾，争论太久时就用它散场。原本招人接话的表达，多了这截尾巴，成了结束对话的暗号。",
+    "zh_CN": "好好的开场白让人家接了截送客的尾巴，现在谁在楼里甩出这句，意思就是老子不伺候了……在网上吵架，能体面撤退确实也是刚需。",
     "en": "Readers added a fixed ending to the meme and now use it when an argument drags on too long. With that ending attached, a phrase that used to invite replies has taken on the job of ending the exchange."
   },
   "LOC_EVENT_WORLD_WAR_THREE_TITLE": {
@@ -1466,12 +1466,12 @@
   },
   "LOC_EVENT_WORLD_WAR_THREE_NARRATIVE": {
     "source": "第三次世界大战爆发。人口急剧减少，三天内将无人存活。投放与编辑已停止。",
-    "zh_CN": "第三次世界大战爆发。各国人口迅速减少，地图将在三天内归于寂静。投放与编辑已经停止。",
+    "zh_CN": "第三次世界大战爆发。各国人口骤减，整张地图将在三天内彻底归于死寂，投放与编辑已全部停止。",
     "en": "World War III has broken out. Populations are falling rapidly, and the map will fall silent within three days. Deployment and editing have ended."
   },
   "LOC_EVENT_WORLD_WAR_THREE_COMMENT": {
     "source": "先看仍有人生活的地方；模因需要有人接住。",
-    "zh_CN": "先看仍有人生活的地方；模因需要有人接住。",
+    "zh_CN": "机器都停了……趁地图上还有几盏灯亮着，最后看一眼还有人在的地方吧，毕竟没人活着，什么模因都传不下去了。",
     "en": "Watch where people still live. A meme needs someone to carry it."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_ALDEN_TITLE": {
@@ -1866,197 +1866,197 @@
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_ALDEN_COMMENT": {
     "source": "船期会改，码头上的叫法倒留得久。",
-    "zh_CN": "船期会改，码头上的叫法倒留得久。",
+    "zh_CN": "船期表三天两头改，码头工人嘴里的老叫法倒是一直没变过……随信夹来的小册子你先收着。",
     "en": "Schedules change. Harbor names tend to linger."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_VERESK_COMMENT": {
     "source": "听惯的广播，换个人念就觉得路也变了。",
-    "zh_CN": "听惯的广播，换个人念就觉得路也变了。",
+    "zh_CN": "天天坐同一趟车的人耳朵都尖，广播换个人念，闭着眼都能觉出不对味来。",
     "en": "A different voice on the announcements can make the route feel unfamiliar."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_LINDAL_COMMENT": {
     "source": "借书单背面常有比书目更亲近的话。",
-    "zh_CN": "借书单背面常有比书目更亲近的话。",
+    "zh_CN": "正经书没翻两页，借书卡背面的涂鸦倒是让人传阅了一路。",
     "en": "The back of a loan slip can sound warmer than its list of titles."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_MARASU_COMMENT": {
     "source": "有些地名，要出过海才听得出差别。",
-    "zh_CN": "有些地名，要出过海才听得出差别。",
+    "zh_CN": "隔座岛就换个念法，没跟渔船跑过一趟的人照着地图念准保露怯。",
     "en": "Some place names sound different once you have sailed past them."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_SERRANOVA_COMMENT": {
     "source": "司机学会之前，乘客已经替他报站了。",
-    "zh_CN": "司机学会之前，乘客已经替他报站了。",
+    "zh_CN": "一车人七嘴八舌教司机念站名，我猜司机到终点站耳朵都快起茧了。",
     "en": "The passengers are calling the stops before the driver learns them."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_ORUVIA_COMMENT": {
     "source": "对岸同一句问路，尾音未必一样。",
-    "zh_CN": "对岸同一句问路，尾音未必一样。",
+    "zh_CN": "售票窗口天天听南北两头的口音，攒出来的小抄可比正经教材管用多了。",
     "en": "The same question may end on a different note across the water."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_NASHIR_COMMENT": {
     "source": "信上的注音，也记着写信人的耐心。",
-    "zh_CN": "信上的注音，也记着写信人的耐心。",
+    "zh_CN": "生怕收信的人念劈叉了，还在旁边一行行标上读音，这工匠也是个实在人。",
     "en": "The pronunciation notes record the writer’s patience too."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_SOLERIA_COMMENT": {
     "source": "大家笑出声的地方，并不总在同一秒。",
-    "zh_CN": "大家笑出声的地方，并不总在同一秒。",
+    "zh_CN": "同一段台词换几种方言配音，连全场的笑点都能往前挪两秒或者往后慢半拍。",
     "en": "The laughter does not always arrive at the same second."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_AVENDON_COMMENT": {
     "source": "一句早上好，也够词典编辑忙上一晚。",
-    "zh_CN": "一句早上好，也够词典编辑忙上一晚。",
+    "zh_CN": "为了一句“早上好”到底是客套还是阴阳怪气，这几位老兄硬是吵到了后半夜……闲得挺敬业。",
     "en": "A single good morning can keep dictionary editors up all night."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_RHENIVIA_COMMENT": {
     "source": "师傅说得太快的地方，学徒终于有字可查。",
-    "zh_CN": "师傅说得太快的地方，学徒终于有字可查。",
+    "zh_CN": "以前老师傅嘴里嘟囔太快听不清的地方，印成册子总算不用再硬着头皮去问第二遍了。",
     "en": "An apprentice can finally look up the instruction a master says too quickly."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_MEHRAN_COMMENT": {
     "source": "票根小，记住的那句倒很长。",
-    "zh_CN": "票根小，记住的那句倒很长。",
+    "zh_CN": "那么丁点儿大一张票根，硬是密密麻麻抄了一整句词上去，眼神真好。",
     "en": "The ticket is small; the remembered line takes up more room."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_CANTALIA_COMMENT": {
     "source": "停顿也抄下来，才听得见是谁在犹豫。",
-    "zh_CN": "停顿也抄下来，才听得见是谁在犹豫。",
+    "zh_CN": "连谁半截卡壳、谁叹了口气都老老实实标在稿子上，看字就跟坐现场似的。",
     "en": "Keep the pauses and you can hear who hesitated."
   },
   "LOC_EVENT_CONTEXT_LANGUAGE_VISHARA_COMMENT": {
     "source": "孩子的注音，比通知写得密。",
-    "zh_CN": "孩子的注音，比通知写得密。",
+    "zh_CN": "小孩子在空白处歪歪扭扭标的注音，比老师印的通知正文占的地方还大。",
     "en": "The child’s notes are denser than the notice itself."
   },
   "LOC_EVENT_CONTEXT_GROUP_STUDENTS_COMMENT": {
     "source": "能传到别班的便签，通常写得够短。",
-    "zh_CN": "能传到别班的便签，通常写得够短。",
+    "zh_CN": "复习到头昏脑涨的时候，一张桌角传过来的废话纸条比什么鸡汤都提神。",
     "en": "A note that reaches another class is usually short enough to carry."
   },
   "LOC_EVENT_CONTEXT_GROUP_CULTURE_FANS_COMMENT": {
     "source": "灯已经关了，台词还在门外接着演。",
-    "zh_CN": "灯已经关了，台词还在门外接着演。",
+    "zh_CN": "场馆大灯都熄了还不肯走，聚在台阶底下对台词的那拨人，回去肯定还得发长评。",
     "en": "The lights are out, but the lines keep going outside."
   },
   "LOC_EVENT_CONTEXT_GROUP_AGRICULTURAL_WORKERS_COMMENT": {
     "source": "价格表只写数字，留言板把那一季补全了。",
-    "zh_CN": "价格表只写数字，留言板把那一季补全了。",
+    "zh_CN": "收购牌上就冷冰冰几个数，想知道今年地里到底好不好伺候，还得看旁边木板上的牢骚。",
     "en": "The prices give the numbers. The messages supply the season."
   },
   "LOC_EVENT_CONTEXT_GROUP_INDUSTRIAL_WORKERS_COMMENT": {
     "source": "交接本翻到最后，常能找到前人的办法。",
-    "zh_CN": "交接本翻到最后，常能找到前人的办法。",
+    "zh_CN": "夜班没修利索的毛病画个草图留给早班，省得两拨人见面还得扯嗓子比划半天。",
     "en": "Turn far enough through a handover book and an earlier solution often appears."
   },
   "LOC_EVENT_CONTEXT_GROUP_SERVICE_WORKERS_COMMENT": {
     "source": "作废的小票，也能把一天记得很准。",
-    "zh_CN": "作废的小票，也能把一天记得很准。",
+    "zh_CN": "要是把柜台打废的小票背面全订成册，估计比市面上一半喜剧片都精彩。",
     "en": "A voided receipt can still keep an accurate account of a day."
   },
   "LOC_EVENT_CONTEXT_GROUP_HEALTH_WORKERS_COMMENT": {
     "source": "交班时能说清的一句话，值一夜安稳。",
-    "zh_CN": "交班时能说清的一句话，值一夜安稳。",
+    "zh_CN": "忙了一宿的人哪有工夫看长篇大论，交班纸上最顶用的永远是最后那句提醒。",
     "en": "A clear sentence at handover is worth a calmer night."
   },
   "LOC_EVENT_CONTEXT_GROUP_EDUCATORS_COMMENT": {
     "source": "同一节课，隔壁教室可能有另一种讲法。",
-    "zh_CN": "同一节课，隔壁教室可能有另一种讲法。",
+    "zh_CN": "办公室里传一圈的便签，到最后多半都在吐槽今天班上哪个学生又接了句神仙下联。",
     "en": "The next classroom may have another way of teaching the same lesson."
   },
   "LOC_EVENT_CONTEXT_GROUP_SMALL_BUSINESS_COMMENT": {
     "source": "送货车绕了路，店主的消息反而走得更近。",
-    "zh_CN": "送货车绕了路，店主的消息反而走得更近。",
+    "zh_CN": "本来建群是为了通气哪条路没挖断，聊着聊着全开始互相偷师门口招牌怎么写了。",
     "en": "The vans take a detour; the shopkeepers’ messages take a shorter route."
   },
   "LOC_EVENT_CONTEXT_GROUP_TECH_WORKERS_COMMENT": {
     "source": "注释短，是因为大家都见过那个故障。",
-    "zh_CN": "注释短，是因为大家都见过那个故障。",
+    "zh_CN": "半夜三点提的故障单备注越短，说明这破问题大伙儿早就熟得不能再熟了。",
     "en": "The note is short because everyone has seen that fault."
   },
   "LOC_EVENT_CONTEXT_GROUP_RETIREES_COMMENT": {
     "source": "椅子暂时撤走，话题却没少一个。",
-    "zh_CN": "椅子暂时撤走，话题却没少一个。",
+    "zh_CN": "长椅拆去刷漆了也耽误不了他们唠嗑，站那张施工告示牌底下照样能聊一上午。",
     "en": "The bench is gone for now. The conversation has lost nothing."
   },
   "LOC_EVENT_CONTEXT_GROUP_DIASPORAS_COMMENT": {
     "source": "菜还没出锅，家里的旧称呼已经叫遍了。",
-    "zh_CN": "菜还没出锅，家里的旧称呼已经叫遍了。",
+    "zh_CN": "这边刚下班那边才天亮，隔着屏幕教你放多少盐的时候，老家的小名还是叫得最顺嘴。",
     "en": "The family names have all been called before dinner is ready."
   },
   "LOC_EVENT_CONTEXT_TOPIC_IDENTITY_COMMENT": {
     "source": "表格留白以后，人们才开始认真填名字。",
-    "zh_CN": "表格留白以后，人们才开始认真填名字。",
+    "zh_CN": "以前全是勾选项没人多想，真在表上留出空栏让你自己填称呼，好多人倒捧着笔琢磨起来了。",
     "en": "Once the form leaves space, people start choosing their names carefully."
   },
   "LOC_EVENT_CONTEXT_TOPIC_LANGUAGE_COMMENT": {
     "source": "一个笑话译不顺，往往要先问清谁在笑。",
-    "zh_CN": "一个笑话译不顺，往往要先问清谁在笑。",
+    "zh_CN": "一句双关语能折腾出十几种翻法，字幕组这帮人较起真来真是半个字都不肯让。",
     "en": "Before fixing a translated joke, ask who is laughing."
   },
   "LOC_EVENT_CONTEXT_TOPIC_TRUST_COMMENT": {
     "source": "转发走得快，求证总要多走几步。",
-    "zh_CN": "转发走得快，求证总要多走几步。",
+    "zh_CN": "传话的人早跑没影了，还得靠最早发帖的老实人把聊天记录从头到尾贴出来救场。",
     "en": "Forwarding is quick. Checking takes a few more steps."
   },
   "LOC_EVENT_CONTEXT_TOPIC_HOUSING_COMMENT": {
     "source": "租客关心的字，常藏在每页最下面。",
-    "zh_CN": "租客关心的字，常藏在每页最下面。",
+    "zh_CN": "房东突然说重印合同，换谁都得先拿放大镜去翻最底下那两行小字改了哪儿。",
     "en": "The words tenants need are often near the bottom of the page."
   },
   "LOC_EVENT_CONTEXT_TOPIC_HEALTHCARE_COMMENT": {
     "source": "挂号的路讲清了，候诊室就少一点着急。",
-    "zh_CN": "挂号的路讲清了，候诊室就少一点着急。",
+    "zh_CN": "医院挂号系统一改版，走廊长椅上坐着的病友往往比导医台讲得还接地气。",
     "en": "Clear booking instructions take some of the worry out of waiting."
   },
   "LOC_EVENT_CONTEXT_TOPIC_CLIMATE_COMMENT": {
     "source": "窗边那支温度计，终于有了同伴。",
-    "zh_CN": "窗边那支温度计，终于有了同伴。",
+    "zh_CN": "天气预报报个平均数大家总觉得不解气，非得把自己窗台晒出来的度数贴上去比一比才舒坦。",
     "en": "The thermometer by the window finally has company."
   },
   "LOC_EVENT_CONTEXT_TOPIC_ENERGY_COMMENT": {
     "source": "一张停电单，能改掉整条街的晚饭时间。",
-    "zh_CN": "一张停电单，能改掉整条街的晚饭时间。",
+    "zh_CN": "一张计划停电的黄纸贴在电线杆上，整条街小老板今晚先干什么就全跟着它转了。",
     "en": "An outage notice can change dinnertime along the whole street."
   },
   "LOC_EVENT_CONTEXT_TOPIC_FOOD_COMMENT": {
     "source": "同一道菜，排队的人能说出许多来处。",
-    "zh_CN": "同一道菜，排队的人能说出许多来处。",
+    "zh_CN": "排着队等试吃的时候最容易跟陌生人搭上话，聊上两句连自家放不放蒜的秘方都交代了。",
     "en": "The people in the queue can give the same dish several histories."
   },
   "LOC_EVENT_CONTEXT_TOPIC_TRANSPORT_COMMENT": {
     "source": "赶末班车的人，最记得时刻表改了哪一行。",
-    "zh_CN": "赶末班车的人，最记得时刻表改了哪一行。",
+    "zh_CN": "白天坐车的人未必留意，天天踩着点赶末班车的那拨人，发车时间挪五分钟都能要了亲命。",
     "en": "Last-bus passengers know exactly which line of the timetable changed."
   },
   "LOC_EVENT_CONTEXT_TOPIC_MIGRATION_COMMENT": {
     "source": "安顿下来之前，总要先问几遍路。",
-    "zh_CN": "安顿下来之前，总要先问几遍路。",
+    "zh_CN": "刚搬来人生地不熟，居委会那张印着去哪儿交水费、哪天倒垃圾的多语纸条比什么欢迎词都实在。",
     "en": "Getting settled usually begins with asking directions more than once."
   },
   "LOC_EVENT_CONTEXT_TOPIC_TOURISM_COMMENT": {
     "source": "地图没印出来的小路，住客替它补上了。",
-    "zh_CN": "地图没印出来的小路，住客替它补上了。",
+    "zh_CN": "旅游手册印得再漂亮，也不如前一个退房的人在背面用圆珠笔圈出来的那家早点铺好使。",
     "en": "The guests add paths the printed map left out."
   },
   "LOC_EVENT_CONTEXT_TOPIC_TRADE_COMMENT": {
     "source": "等货的时候，日期上的每个字都格外显眼。",
-    "zh_CN": "等货的时候，日期上的每个字都格外显眼。",
+    "zh_CN": "船一晚点，买卖双方就得坐下来对着货单一字一句抠当初是怎么写的……这种场面谁都不想多碰。",
     "en": "When you are waiting for goods, every word beside the date stands out."
   },
   "LOC_EVENT_CONTEXT_TOPIC_SCIENCE_COMMENT": {
     "source": "数据抄下来以后，下一步是自己量一次。",
-    "zh_CN": "数据抄下来以后，下一步是自己量一次。",
+    "zh_CN": "观测站刚贴出一页原始读数，底下那帮较真的发烧友已经搬出仪器准备自己验一遍了。",
     "en": "Once you have copied the readings, try taking your own."
   },
   "LOC_EVENT_CONTEXT_TOPIC_CARE_COMMENT": {
     "source": "轮值表上的空格，填的是谁能腾出一个下午。",
-    "zh_CN": "轮值表上的空格，填的是谁能腾出一个下午。",
+    "zh_CN": "楼道里挂的这张买菜取药轮班表看着不起眼，真能坚持每周不空档，比喊多少口号都难得。",
     "en": "Each blank on the rota asks who can spare an afternoon."
   },
   "LOC_EVENT_CONTEXT_TOPIC_PUBLIC_SAFETY_COMMENT": {
     "source": "报修单写得具体，别人才能找到那盏灯。",
-    "zh_CN": "报修单写得具体，别人才能找到那盏灯。",
+    "zh_CN": "光写一句路灯坏了多半石沉大海，还是得拍张黑灯瞎火的现场照贴上去才有人来修。",
     "en": "A precise repair report helps someone find the right lamp."
   },
   "LOC_EVENT_ENVIRONMENT_CASE_S03_TITLE": {
