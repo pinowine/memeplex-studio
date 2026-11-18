@@ -121,15 +121,16 @@ func candidate_meme_pool() -> Array[String]:
 	_meme_pool.resize(mini(_meme_pool.size(), random.randi_range(6, 8)))
 	return _meme_pool.duplicate()
 
-func can_add_meme(excluding_variant_id: String = "") -> bool:
+func can_add_meme(excluding_variant_id: String = "", reserved_slots: int = 0) -> bool:
 	var identities := {}
 	for variant: Dictionary in variants:
 		if str(variant.id) == excluding_variant_id: continue
 		identities[str(variant.get("meme_id", variant.id))] = true
-	return identities.size() < candidate_meme_pool().size()
+	return identities.size() < candidate_meme_pool().size() - reserved_slots
 
 func _external_preset_available(id: String) -> bool:
-	if id not in candidate_meme_pool() or not can_add_meme(): return false
+	# Leave room for a player revision to become an independent meme.
+	if id not in candidate_meme_pool() or not can_add_meme("", 1): return false
 	for variant: Dictionary in variants:
 		if str(variant.get("preset_id", "")) == id and variant.get("parent_ids", []).is_empty(): return false
 	return true
