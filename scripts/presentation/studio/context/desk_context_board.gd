@@ -332,6 +332,19 @@ func _draw_slot_socket(id: String, rect: Rect2, selected: bool, occupied: bool) 
 	outline.append(outline[0])
 	draw_polyline(outline, Color(INK, .75 if selected else .38), 1.7 if selected else 1.0, true)
 
+func can_choose_context_slot(layer: String, slot: int) -> bool:
+	var kind := "topic" if layer == "topics" else layer
+	for record: Dictionary in _state.get("resources", []):
+		if str(record.kind) != kind or int(record.get("available", 0)) <= 0: continue
+		if ContextController.can_install(_state, _rules, layer, slot, {"type":"context_resource", "resource_id":str(record.id)}): return true
+	return false
+
+func install_context_resource(layer: String, slot: int, resource_id: String) -> bool:
+	if not _enabled or not ContextController.can_install(_state, _rules, layer, slot, {"type":"context_resource", "resource_id":resource_id}): return false
+	perform("install_context", {"layer":layer, "slot":slot, "resource_id":resource_id})
+	var current: Array = _layers().get(layer, {}).get("slots", [])
+	return str(current[slot].get("resource_id", "")) == resource_id
+
 func _draw_slots(id: String) -> void:
 	var info: Dictionary = _layout_layers[id]
 	var slots: Array = _layers().get(id, {}).get("slots", [])
@@ -342,8 +355,9 @@ func _draw_slots(id: String) -> void:
 		if not occupied:
 			var center := rect.get_center() - Vector2(2, 2)
 			var radius := minf(8, minf(rect.size.x, rect.size.y) * .12)
-			draw_line(center - Vector2(radius, 0), center + Vector2(radius, 0), Color(INK, .55), 1.8, true)
-			draw_line(center - Vector2(0, radius), center + Vector2(0, radius), Color(INK, .55), 1.8, true)
+			var plus_ink := Color(INK, .55 if can_choose_context_slot(id, index) else .16)
+			draw_line(center - Vector2(radius, 0), center + Vector2(radius, 0), plus_ink, 1.8, true)
+			draw_line(center - Vector2(0, radius), center + Vector2(0, radius), plus_ink, 1.8, true)
 
 func set_token_drag(token_id: String) -> void:
 	var layer := ""
@@ -584,13 +598,15 @@ func cursor_shape_at(point: Vector2) -> int:
 	else:
 		var slot := _slot_at(id, point)
 		var slots: Array = _layers().get(id, {}).get("slots", [])
-		if slot >= 0 and slot < slots.size() and not slots[slot].is_empty(): return Control.CURSOR_POINTING_HAND
+		if slot >= 0 and slot < slots.size():
+			if not slots[slot].is_empty() or can_choose_context_slot(id, slot): return Control.CURSOR_POINTING_HAND
+			return Control.CURSOR_FORBIDDEN
 	return Control.CURSOR_ARROW if hover_info(get_global_transform_with_canvas() * point).is_empty() else Control.CURSOR_HELP
 
 func _update_pointer(point: Vector2) -> void:
 	var id := _layer_at(point)
 	var target := id
-	var cursor := Control.CURSOR_POINTING_HAND if not id.is_empty() else Control.CURSOR_ARROW
+	var cursor := cursor_shape_at(point)
 	if not id.is_empty() and _attached(id):
 		if id in ["stance", "pragmatic"]:
 			var anchor := _axis_point(id)
@@ -646,6 +662,9 @@ func _release_pointer(point: Vector2) -> void:
 	if id.is_empty(): return
 	if not moved:
 		var index := slot if slot >= 0 else _slot_at(id,point)
+		if id in ["language", "group", "topics"] and index >= 0:
+			var slots: Array = _layers().get(id, {}).get("slots", [])
+			if slots[index].is_empty() and not can_choose_context_slot(id, index): return
 		slot_pressed.emit(id,index,layer_viewport_rect(id))
 		return
 	if held == "resource" and resource_dragged and _slot_at(id, point) != slot:

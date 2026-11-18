@@ -56,6 +56,7 @@ var _slot_reader: Control
 var _slot_return_state: Dictionary = {}
 var _slot_details: Dictionary = {}
 var _focused_stack := ""
+var _context_picker: Dictionary = {}
 var _fax_drop_preview := false
 var _slot_restoring := false
 var _material_storage_visible := false
@@ -95,18 +96,21 @@ func _sheet_view_active(sheet: String) -> bool:
 	var sheet_focused := _revealed_focus == "sheet/" + sheet or (slot_details_active() and not _slot_restoring and str(_slot_return_state.active_sheet) == sheet)
 	return _active_sheet == sheet and (camera.state == "overview" or (camera.state == "focused" and sheet_focused))
 
-func _context_slot_pressed(layer: String, _index: int, viewport_rect: Rect2) -> void:
+func _context_slot_pressed(layer: String, index: int, viewport_rect: Rect2) -> void:
 	if not _can_focus_slot("cultivate"): return
 	if layer in ["stance", "pragmatic"]:
 		var board: Control = _page.hud.design_workbench().context_slice()
 		viewport_rect = board._viewport_rect(board._layout_layers[layer].plot_rect)
 	_focus_slot(layer,viewport_rect)
+	if layer in ["language", "group", "topics"] and _page.hud.design_workbench().context_slice().can_choose_context_slot(layer, index):
+		_context_picker = {"layer":layer, "slot":index}
 
 func _module_slots_pressed(viewport_rect: Rect2) -> void:
 	if not _can_focus_slot("edit"): return
 	_focus_slot("module",viewport_rect)
 
 func _focus_slot(layer: String, viewport_rect: Rect2) -> void:
+	_context_picker = {}
 	_page.atlas._on_map_exited()
 	if not slot_details_active():
 		_slot_return_state = {"camera":_camera.capture_view(),"revealed_focus":_revealed_focus,"active_sheet":_active_sheet}
@@ -121,6 +125,7 @@ func _focus_slot(layer: String, viewport_rect: Rect2) -> void:
 func close_slot_details() -> void:
 	if not slot_details_active() or _slot_restoring: return
 	_slot_restoring = true
+	_context_picker = {}
 	_focused_stack = ""
 	_material_cards.clear_stack_focus()
 	_slot_reader.hide_details()
@@ -138,6 +143,7 @@ func _slot_view_restored() -> void:
 	if _camera.inspection().state == "overview": _page._tutorial_observe("overview_returned")
 
 func _cancel_slot_details() -> void:
+	_context_picker = {}
 	_slot_return_state = {}
 	_slot_details = {}
 	_slot_restoring = false
@@ -152,13 +158,8 @@ func _slot_pointer_guard(event: InputEvent) -> bool:
 		return true
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if _material_cards.handles_viewport_point(event.position): return false
-		var board: Control = _page.hud.design_workbench().context_slice()
-		if _sheet_view_active("cultivate") and board.is_visible_in_tree():
-			var point: Vector2 = board.get_global_transform_with_canvas().affine_inverse() * event.position
-			if Rect2(Vector2.ZERO,board.size).has_point(point): return false
-		if _sheet_view_active("edit") and _page.hud.design_workbench().module_clip_at(event.position) >= 0:
-			return false
 		if not _slot_reader.handles_viewport_point(_foreground_point(event.position)):
+			close_slot_details()
 			return true
 	return false
 
@@ -866,8 +867,14 @@ func _inspect_material(kind: String, id: String) -> void:
 	if not slot_details_active(): _focus_material_stack(kind)
 	if _camera.inspection().state == "focused":
 		_page._tutorial_observe("inventory_card_selected", {"kind":kind, "id":id})
+		if not _context_picker.is_empty():
+			var board: Control = _page.hud.design_workbench().context_slice()
+			if board.install_context_resource(str(_context_picker.layer), int(_context_picker.slot), id):
+				_material_cards.return_to_inventory(kind, id)
+				close_slot_details()
 
 func _focus_material_stack(kind: String) -> void:
+	_context_picker = {}
 	if not _page.startup_ready() or _page.hud.modal_visible(): return
 	if _camera.inspection().state in ["travelling","returning"]: return
 	_page.atlas._on_map_exited()
