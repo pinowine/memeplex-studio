@@ -361,6 +361,7 @@ func _process(_delta: float) -> void:
 		camera.position = Vector3(0,3,0)
 		camera.basis = Basis.from_euler(Vector3(-PI/2,0,0))
 		camera.size = 2.25
+	_sync_content_capture()
 	content.sync(_delta, desktop.clock_angles(), page.presentation_daylight())
 	_update_handset()
 	var showing_modal: bool = page.presentation_modal_visible()
@@ -375,6 +376,14 @@ func _process(_delta: float) -> void:
 	_cursor.apply(cursor_shape)
 	button_feedback.tick(_delta)
 	hover_outline.sync()
+
+func _sync_content_capture() -> void:
+	# Cover the full 3D view, including aspect padding and camera offsets.
+	var raster_scale := Vector2(LOGICAL_SIZE) / get_viewport().get_visible_rect().size
+	var origin := camera.unproject_position(Vector3(-.8, .006, -.45)) * raster_scale
+	var horizontal := camera.unproject_position(Vector3(.2, .006, -.45)) * raster_scale
+	var vertical := camera.unproject_position(Vector3(-.8, .006, .55)) * raster_scale
+	logical.canvas_transform = Transform2D((horizontal - origin) / 1000, (vertical - origin) / 1000, origin)
 
 func _update_handset(force := false) -> void:
 	var connected: bool = desktop.handset_connected()
