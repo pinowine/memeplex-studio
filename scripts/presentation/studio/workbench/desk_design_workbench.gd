@@ -313,6 +313,7 @@ func refresh_publication() -> void:
 	_footer.visible = editable and can_revise and int(_state.get("publish_count", 0)) > 0
 	_publish.visible = _footer.visible
 	_draft_status.text = DeskLocalization.text("LOC_WB_DRAFT_AWAITING_PUBLICATION")
+	_draft_status.visible = bool(_publication_preview.get("changed", true))
 	var cost := int(_state.get("point_cost", 0))
 	var balance := int(_state.get("meme_points", 0))
 	var phase := str(_state.get("phase", "draft"))
