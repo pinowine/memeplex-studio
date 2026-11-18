@@ -606,8 +606,8 @@
   },
   "LOC_COMMUNITY_REPHRASE": {
     "source": "把说法缩短了，保留原来的含义。",
-    "zh_CN": "把说法缩短了，保留原来的含义。",
-    "en": "Shortened the wording while keeping its meaning."
+    "zh_CN": "换了一种说法，保留原来的含义。",
+    "en": "Rephrased the wording while keeping its meaning."
   },
   "LOC_COMMUNITY_CONFLUENCE": {
     "source": "把另一条模因的表达与含义接了进来。",
