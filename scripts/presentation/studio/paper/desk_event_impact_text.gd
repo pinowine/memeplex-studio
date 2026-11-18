@@ -11,7 +11,8 @@ const METRICS := {
 	"revival":["LOC_EVENT_RESPONSE_REVIVAL_EFFECT", "LOC_EVENT_RESPONSE_REVIVAL_EFFECT_HELP", ""],
 	"adoption":["LOC_EVENT_IMPACT_ADOPTION", "LOC_EVENT_IMPACT_ADOPTION_HELP", "LOC_EVENT_NOTE_ADOPTION"],
 	"remix":["LOC_EVENT_IMPACT_REMIX", "LOC_EVENT_IMPACT_REMIX_HELP", "LOC_EVENT_NOTE_REMIX"],
-	"semantic_shift":["LOC_EVENT_IMPACT_DRIFT", "LOC_EVENT_IMPACT_DRIFT_HELP", "LOC_EVENT_NOTE_DRIFT"]
+	"semantic_shift":["LOC_EVENT_IMPACT_DRIFT", "LOC_EVENT_IMPACT_DRIFT_HELP", "LOC_EVENT_NOTE_DRIFT"],
+	"deviation":["MM_DEVIATION", "MM_HELP_DEVIATION", ""]
 }
 
 const COHORTS := {
@@ -61,6 +62,8 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 				clause.append(_amount(" " + _signed(effect.amount * 100.0) + "%"))
 			"semantic_shift":
 				clause.append(_amount(" = " + _number(effect.amount * 100.0) + "%"))
+			"deviation":
+				clause.append(_amount(" " + _signed(effect.amount * 100.0) + "%"))
 			"remix":
 				clause.append(_amount(" +%d" % int(created.remix)))
 		_append_clause(segments, clause, "variants" if kind == "remix" else "effects")
