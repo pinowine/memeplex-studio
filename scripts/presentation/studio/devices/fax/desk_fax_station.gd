@@ -13,15 +13,11 @@ signal call_changed(record: Dictionary)
 signal starter_selected(preset_id: String)
 signal starter_previewed(preset_id: String)
 signal startup_finished(preset_id: String)
-signal material_requested(record: Dictionary, point: Vector2)
-signal material_collect_requested(record: Dictionary)
 signal history_selected(record: Dictionary)
 signal details_changed(record: Dictionary)
 signal event_output_started(record: Dictionary, page: Control)
 signal event_output_delivered(record: Dictionary, page: Control)
 
-const KeyBindings := preload("res://scripts/presentation/ui/menus/key_bindings.gd")
-const RewardSlip := preload("res://scripts/presentation/studio/paper/desk_event_material_slip.gd")
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
 const StarterContextCard := preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
 const BODY_FONT := preload("res://assets/image/fonts/development_font.tres")
@@ -67,9 +63,6 @@ var _seal_center := Vector2.ZERO
 var _seal_radius: float = 18.0
 var _paper_height: float = 160.0
 var _paper_polygon := PackedVector2Array()
-var _reward_rows: Array[Dictionary] = []
-var _reward_slips: Dictionary = {}
-var _requesting_slip: Control
 var _page_keyboard_shortcuts := false
 var _output_stack_area := Rect2()
 var _handwritten_font: Font
@@ -250,18 +243,8 @@ func _output_at(viewport_point: Vector2) -> Control:
 		if page.visible and Geometry2D.is_point_in_polygon(viewport_point, StationView.global_polygon(page, Rect2(Vector2.ZERO, page.size))): return page
 	return null
 
-func material_record_at(viewport_point: Vector2) -> Dictionary:
-	var paper := _output_at(viewport_point) if _output.continuous_output else null
-	for slip: Control in _reward_slips.values():
-		if _output.continuous_output and slip.get_parent() != paper: continue
-		if slip.can_collect() and Rect2(Vector2.ZERO, slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse() * viewport_point):
-			return slip.record.duplicate(true)
-	return {}
-
 func hover_details(viewport_point: Vector2) -> String:
 	if not viewport_point.is_finite(): return ""
-	if not material_record_at(viewport_point).is_empty():
-		return DeskLocalization.format_text("LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D", KeyBindings.display_name("collect"))
 	for control: Button in ([] if _handset_only else _view.keys + [_view.dial_button,_view.pickup_button,_view.hangup_button]):
 		if control.is_visible_in_tree() and Rect2(Vector2.ZERO,control.size).has_point(control.get_global_transform_with_canvas().affine_inverse()*viewport_point):
 			return _key_action_label(control)
@@ -323,147 +306,8 @@ func restore_output_history(events: Array) -> int:
 	return _output.restore_history(events)
 
 
-func sync_reward_state(rows: Array) -> void:
-	_reward_rows.clear()
-	for row: Variant in rows:
-		if row is Dictionary: _reward_rows.append(row.duplicate(true))
-	_sync_reward_slips()
-
-func confirm_material_request(record: Dictionary, accepted: bool) -> void:
-	var key := _reward_key(record)
-	var slip: Control = _reward_slips.get(key, _requesting_slip)
-	if is_instance_valid(slip):
-		slip.set_committed(accepted)
-		if accepted:
-			slip.hide()
-			slip.queue_free()
-			_reward_slips.erase(key)
-
-func request_collect_materials() -> int:
-	if _blocked: return 0
-	var records: Array[Dictionary] = []
-	for slip: Control in _reward_slips.values():
-		if slip.can_collect(): records.append(slip.record.duplicate(true))
-	# Awarding a material refreshes the slips, so keep records across callbacks.
-	for record: Dictionary in records:
-		_requesting_slip = _reward_slips.get(_reward_key(record))
-		material_collect_requested.emit(record)
-		_requesting_slip = null
-	return records.size()
-
-func active_drag_material() -> Dictionary:
-	for slip: Control in _reward_slips.values():
-		if slip.is_dragging(): return slip.record.duplicate(true)
-	return {}
-
-func _reward_key(row: Dictionary) -> String:
-	return "%s/%s/%s" % [str(row.get("instance_id", "")), str(row.get("kind", "")), str(row.get("id", ""))]
-
-func _sync_reward_slips() -> void:
-	if not _built or _view.reward_tray == null: return
-	if _output.continuous_output:
-		_sync_printed_cards()
-		return
-	var wanted := {}
-	var active_index := 0
-	var tray_index := 0
-	var active_id := str(_output.active_event.get("instance_id", ""))
-	for row: Dictionary in _reward_rows:
-		if row.get("requested", false): continue
-		var current: bool = str(row.get("instance_id", "")) == active_id and not active_id.is_empty()
-		if not current and not row.get("acknowledged", false): continue
-		var key := _reward_key(row)
-		wanted[key] = true
-		var slip: Control
-		if _reward_slips.has(key):
-			slip = _reward_slips[key]
-		else:
-			slip = RewardSlip.new()
-			slip.name = "RewardSlip"+str(_reward_slips.size())
-			(_view.sheet if current else _view.reward_tray).add_child(slip)
-			slip.configure(row, self, theme)
-			slip.dropped.connect(_request_material)
-			_reward_slips[key] = slip
-		if not slip.is_dragging():
-			var host := _view.sheet if current else _view.reward_tray
-			if slip.get_parent() != host: slip.reparent(host, false)
-			slip.rotation = 0.0
-			if current:
-				var width := maxf(34.0,minf(82.0,(_view.sheet.size.x-_seal_radius*2-34.0)/maxi(1,_active_reward_count())))
-				slip.size = Vector2(width,44.0 if _view.sheet.size.x > 250 else 36.0)
-				slip.position = Vector2(9.0+active_index*(width+3.0),_seal_center.y-slip.size.y*.5+_view.sheet.size.y-_paper_height)
-				active_index += 1
-			else:
-				slip.size = Vector2(82,52)
-				slip.position = Vector2((tray_index%2)*86,(tray_index/2)*20)
-				slip.rotation = deg_to_rad(float((tray_index%3)-1)*2.0)
-				tray_index += 1
-		slip.visible = _focus_mode != "archive" and (not current or _output.event_state == "ready")
-		slip.set_interaction_enabled(slip.visible and not _blocked and _focus_mode != "phone" and _output.event_state != "retracting")
-	_view.reward_tray.visible = tray_index > 0 and _focus_mode not in ["archive", "phone"]
-	_view.reward_tray.size.y = maxf(52.0,ceilf(float(tray_index)/2.0)*20.0+32.0)
-	for key in _reward_slips.keys():
-		if not wanted.has(key):
-			_reward_slips[key].queue_free()
-			_reward_slips.erase(key)
-
 func _page_for_event(instance_id: String) -> Control:
 	return _output.page_for_event(instance_id)
-
-func _sync_printed_cards() -> void:
-	_view.reward_tray.hide()
-	var wanted := {}
-	var per_page := {}
-	for row: Dictionary in _reward_rows:
-		if row.get("requested", false): continue
-		var page := _page_for_event(str(row.get("instance_id", "")))
-		if page == null: continue
-		var key := _reward_key(row)
-		wanted[key] = true
-		var slip: Control = _reward_slips.get(key)
-		if not is_instance_valid(slip):
-			slip = RewardSlip.new()
-			slip.name = "PrintedMaterial" + str(_reward_slips.size())
-			page.add_child(slip)
-			slip.configure(row, self, theme, false)
-			slip.dropped.connect(_request_material)
-			_reward_slips[key] = slip
-		slip.record = row.duplicate(true)
-		var page_key := str(page.get_instance_id())
-		var index := int(per_page.get(page_key, 0))
-		per_page[page_key] = index + 1
-		if not slip.is_dragging():
-			if slip.get_parent() != page: slip.reparent(page, false)
-			var positions: Dictionary = page.get_meta("attachment_positions", {})
-			var card_rect: Rect2 = positions.get(str(row.get("kind", "")) + "/" + str(row.get("id", "")), Rect2(8,116 + index * 94,72,88))
-			slip.size = card_rect.size
-			slip.position = card_rect.position
-			slip.rotation = deg_to_rad(float((index % 3) - 1) * 2.0)
-		slip.visible = true
-		var selected_source := _focus_mode != "archive" or str(row.get("instance_id", "")) == str(_archived_event.get("instance_id", ""))
-		slip.set_interaction_enabled(page != _output.feeding_page and not _blocked and selected_source)
-	for key: String in _reward_slips.keys():
-		if not wanted.has(key):
-			_reward_slips[key].queue_free()
-			_reward_slips.erase(key)
-
-func _active_reward_count() -> int:
-	var count := 0
-	for row: Dictionary in _reward_rows:
-		if str(row.get("instance_id", "")) == str(_output.active_event.get("instance_id", "")) and not row.get("requested", false): count += 1
-	return count
-
-func _request_material(record: Dictionary, point: Vector2) -> void:
-	var local := get_global_transform_with_canvas().affine_inverse()*point
-	var origin_page := _page_for_event(str(record.get("instance_id", "")))
-	var on_origin := origin_page != null and Geometry2D.is_point_in_polygon(point, StationView.global_polygon(origin_page, Rect2(Vector2.ZERO, origin_page.size)))
-	if _blocked or not Rect2(Vector2.ZERO,size).has_point(local) or (on_origin if _output.continuous_output else (_focus_mode == "archive" or Geometry2D.is_point_in_polygon(point,_paper_polygon))):
-		confirm_material_request(record, false)
-		return
-	_requesting_slip = _reward_slips.get(_reward_key(record))
-	material_requested.emit(record.duplicate(true), point)
-	_requesting_slip = null
-
 
 func offer_starters(options: Array, selected_id: String = "") -> bool:
 	_build()
@@ -488,9 +332,6 @@ func reject_starter(message: String) -> void:
 
 func clear_starter_offer() -> void:
 	_preview_starter_index = -1
-	for slip in _reward_slips.values(): slip.queue_free()
-	_reward_slips.clear()
-	_reward_rows.clear()
 	_call_session.clear_starter_offer()
 	_refresh()
 
@@ -714,9 +555,6 @@ func reset_station() -> void:
 	_output.reset()
 	_archived_event = {}
 	_paper_text = ""
-	for slip in _reward_slips.values(): slip.queue_free()
-	_reward_slips.clear()
-	_reward_rows.clear()
 	_stamp_armed = false
 	_diagnostic = DeskLocalization.source("LOC_INTELLIGENCE_INBOX_RESYNCHRONIZED_33AEBEC8")
 	_call_session.reset()
@@ -749,7 +587,6 @@ func inspection() -> Dictionary:
 		"paper_rect":_output.feeding_page.get_global_rect() if is_instance_valid(_output.feeding_page) else (_view.sheet.get_global_rect() if _built else Rect2()),"paper_full_size":_output.output_geometry.get("size",Vector2.ZERO) if is_instance_valid(_output.feeding_page) else (Vector2(_view.sheet.size.x,_paper_height) if _built else Vector2.ZERO),
 		"paper_visible":(_output.feeding_page.visible and _output.feed_progress > 0.0) if is_instance_valid(_output.feeding_page) else (_view.sheet.visible if _built else false),"paper_polygon":StationView.global_polygon(_output.feeding_page,Rect2(Vector2.ZERO,_output.feeding_page.size)) if is_instance_valid(_output.feeding_page) else _paper_polygon.duplicate(),"paper_rotation":_output.feeding_page.rotation if is_instance_valid(_output.feeding_page) else (_view.sheet.rotation if _built else 0.0),
 		"paper_text":_paper_text,"rendered_paper_text":(_view.paper_meta.text+"\n" if _view.paper_meta.visible else "")+_view.paper_title.text+"\n\n"+_view.body.text if _built else "","paper_view":"archive" if _focus_mode == "archive" else ("full" if _focus_mode == "paper" and _focus_progress > .5 else "compact"),"read_only":_focus_mode == "archive","archived_event":_archived_event.duplicate(true),"paper_scroll_active":_view.body.scroll_active if _built else false,"paper_border_widths":[(_view.paper.get_theme_stylebox("panel") as StyleBoxFlat).get_border_width(SIDE_LEFT),(_view.paper.get_theme_stylebox("panel") as StyleBoxFlat).get_border_width(SIDE_TOP),(_view.paper.get_theme_stylebox("panel") as StyleBoxFlat).get_border_width(SIDE_RIGHT),(_view.paper.get_theme_stylebox("panel") as StyleBoxFlat).get_border_width(SIDE_BOTTOM)] if _built else [],"paper_shadow_visible":_view.paper_shadow.visible if _built else false,"paper_shadow_size":(_view.paper_shadow.get_theme_stylebox("panel") as StyleBoxFlat).shadow_size if _built else 0,"seal_center":seal_global,"seal_radius":_seal_radius,"seal_rect":Rect2(seal_global-Vector2.ONE*_seal_radius,Vector2.ONE*_seal_radius*2),
-		"reward_slips":_reward_slips.values().map(func(slip): return slip.inspection()),"reward_rows":_reward_rows.duplicate(true),
 		"physical_keys":physical_keys,"source_mouth":_source_mouth,"source_key_zones":KEY_ZONES,"keyboard_points":key_points,"keyboard_rects":key_rects,
 		"machine_rect":_machine_rect,"viewport_rect":_viewport_rect,"call_state":_call_session.state,"number":_call_session.dialed_number,"diagnostic":_diagnostic,
 		"contacts":_call_session.contacts.duplicate(true),"call_log":_call_session.call_log.duplicate(true),"last_read":_output.last_read.duplicate(true),
@@ -763,7 +600,6 @@ func inspection() -> Dictionary:
 
 func handle_key(event: InputEventKey) -> bool:
 	if _blocked or not event.pressed or event.echo: return false
-	if KeyBindings.matches(event, "collect") and request_collect_materials() > 0: return true
 	if _handset_only: return false
 	if not _focused: return false
 	if event.keycode == KEY_ESCAPE:
@@ -787,9 +623,6 @@ func _input(event: InputEvent) -> void:
 		if _output_at(event.position) != null and browse_history(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1):
 			get_viewport().set_input_as_handled()
 			return
-	if event is InputEventMouseButton:
-		for slip in _reward_slips.values():
-			if slip.visible and Rect2(Vector2.ZERO,slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse()*event.position): return
 	if event is InputEventKey and handle_key(event):
 		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -827,7 +660,6 @@ func _build() -> void:
 	_output.set_durations(feed_duration, retract_duration)
 	_output.state_changed.connect(_on_output_state_changed)
 	_output.progress_changed.connect(_layout_scene)
-	_output.pages_changed.connect(_sync_reward_slips)
 	_output.read_completed.connect(read_completed.emit)
 	_output.output_started.connect(event_output_started.emit)
 	_output.output_delivered.connect(event_output_delivered.emit)
@@ -863,20 +695,9 @@ func _launch_for_event(record: Dictionary) -> Dictionary:
 	var angle := float(mouth.angle) + (0.0 if spatial else rng.randf_range(-.045, .045))
 	var width := float(mouth.width)
 	var velocity := Vector2.ZERO if spatial else Vector2(rng.randf_range(-7.0, 7.0), rng.randf_range(-5.0, 2.0))
-	var attachments := _plan_attachments(record, width)
+	var attachments := {"cards":{}, "height":width * A4_RATIO}
 	return {"origin":mouth.origin,"angle":angle,"size":Vector2(width,attachments.height),
 		"drift":velocity,"duration_scale":rng.randf_range(.86,1.16),"instance_id":str(record.get("instance_id","")),"attachments":attachments.cards}
-
-
-func _plan_attachments(event: Dictionary, width: float) -> Dictionary:
-	var cards := {}
-	var row := 0
-	for reward: Dictionary in event.get("design_rewards", []):
-		var kind := str(reward.get("kind", ""))
-		var dimensions := Vector2(144,78) if kind == "topic" else Vector2(112,82)
-		cards[kind + "/" + str(reward.get("id", ""))] = Rect2(Vector2((width-dimensions.x)*.5,116+row*92),dimensions)
-		row += 1
-	return {"cards":cards,"height":maxf(width*A4_RATIO,128+row*92) if not cards.is_empty() else width*A4_RATIO}
 
 
 func _update_paper_contents(expanded: bool) -> void:
@@ -933,9 +754,6 @@ func _refresh() -> void:
 	_view.sheet.visible = ((not _output.active_event.is_empty() and _output.feed_progress > 0.0) or (_focused and _focus_mode == "archive" and not _archived_event.is_empty())) and _focus_mode != "phone"
 	if _output.continuous_output and (_focus_mode != "archive" or _external_details): _view.sheet.hide()
 	_view.paper_shadow.visible = _view.sheet.visible
-	_view.reward_tray.position = Vector2(clampf(_machine_rect.end.x+10,10,maxf(10,size.x-184)),clampf(_machine_rect.end.y-80,10,maxf(10,size.y-180)))
-	_view.reward_tray.size = Vector2(180,160)
-	_sync_reward_slips()
 	_view.sheet.mouse_filter = Control.MOUSE_FILTER_STOP if paper_ui else Control.MOUSE_FILTER_IGNORE
 	_view.body.mouse_filter = Control.MOUSE_FILTER_PASS if paper_ui else Control.MOUSE_FILTER_IGNORE
 	_view.number_label.text = _call_session.dialed_number if not _call_session.dialed_number.is_empty() else DeskLocalization.source("LOC_NUMBER_23E2A8CD")
@@ -980,7 +798,6 @@ func _layout_scene() -> void:
 	_seal_radius = geometry.seal_radius
 	_seal_center = geometry.seal_center
 	_paper_polygon = geometry.paper_polygon
-	_sync_reward_slips()
 	_output.sync_current_page()
 
 
@@ -1113,16 +930,6 @@ func call_connected() -> bool:
 func output_papers() -> Array[Control]:
 	return _output.all_pages()
 
-func material_faces() -> Array[Dictionary]:
-	var faces: Array[Dictionary] = []
-	for key: String in _reward_slips:
-		var slip: Control = _reward_slips[key]
-		faces.append({"source":slip._face, "key":"fax/" + key, "owner":slip, "visible":slip.is_visible_in_tree()})
-	return faces
-
-func cancel_material_drag() -> void:
-	for slip in _reward_slips.values(): slip.cancel_drag()
-
 func _disable_unused_hardware() -> void:
 	_view.book.hide()
 	for button: Button in _view.keys + [_view.dial_button, _view.pickup_button, _view.hangup_button]:
@@ -1152,20 +959,9 @@ func has_unread_event() -> bool:
 func event_delivered(instance_id: String) -> bool:
 	return instance_id in _output.read_event_ids
 
-func has_pending_materials() -> bool:
-	for row: Dictionary in _reward_rows:
-		if not bool(row.get("requested", false)) and _page_for_event(str(row.get("instance_id", ""))) != null:
-			return true
-	return false
-
 func interaction_focused() -> bool:
 	return _focused
 
 func history_focus_page() -> Control:
 	var instance_id := str(_camera_pending_archive.get("instance_id", history_details().get("instance_id", "")))
 	return _output.page_for_event(instance_id)
-
-func material_slips() -> Array[Control]:
-	var slips: Array[Control] = []
-	for slip: Control in _reward_slips.values(): slips.append(slip)
-	return slips

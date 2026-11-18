@@ -1,7 +1,7 @@
 extends RefCounted
 
 const SPEED_ACTION_IDS := ["pause", "slower", "faster", "speed_paused", "speed_normal", "speed_fast"]
-const ACTION_IDS := SPEED_ACTION_IDS + [ "collect", "focus_overview", "focus_map", "focus_cultivate", "focus_edit", "focus_spread", "focus_fax", "focus_monitor", "focus_printer", "focus_clock", "focus_speed"]
+const ACTION_IDS := SPEED_ACTION_IDS + [ "focus_overview", "focus_map", "focus_cultivate", "focus_edit", "focus_spread", "focus_fax", "focus_monitor", "focus_printer", "focus_clock", "focus_speed"]
 const LABELS := {
 	"pause":"LOC_KEY_PAUSE",
 	"slower":"LOC_KEY_SLOWER",
@@ -9,7 +9,6 @@ const LABELS := {
 	"speed_paused":"LOC_KEY_SPEED_PAUSED",
 	"speed_normal":"LOC_KEY_SPEED_NORMAL",
 	"speed_fast":"LOC_KEY_SPEED_FAST",
-	"collect":"LOC_KEY_COLLECT",
 	"focus_overview":"LOC_KEY_OVERVIEW",
 	"focus_map":"LOC_KEY_MAP",
 	"focus_cultivate":"LOC_KEY_CULTIVATE",
@@ -28,7 +27,6 @@ const DEFAULTS := {
 	"speed_paused":KEY_F1,
 	"speed_normal":KEY_F2,
 	"speed_fast":KEY_F3,
-	"collect":KEY_ENTER,
 	"focus_overview":KEY_0,
 	"focus_map":KEY_1,
 	"focus_cultivate":KEY_2,

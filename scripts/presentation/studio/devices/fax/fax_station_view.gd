@@ -53,7 +53,6 @@ var player_line: Label
 var reply_buttons: Array[Button] = []
 var close_button: Button
 var keys: Array[Button] = []
-var reward_tray: Control
 var output_host: Control
 var paper_fibers: Control
 
@@ -171,10 +170,6 @@ func build() -> void:
 	seal_guide.name = "SealGuide"
 	seal_guide.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sheet.add_child(seal_guide)
-	reward_tray = Control.new()
-	reward_tray.name = "UncollectedRewardSlips"
-	reward_tray.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(reward_tray)
 	seal = _image("ReceivedSeal",sheet)
 	seal_text = _label("ReceivedSealFallback",DeskLocalization.source("LOC_ACKNOWLEDGED_836134F7"),sheet,18)
 	seal_text.add_theme_font_override("font", HANDWRITTEN_FONT)
@@ -453,8 +448,6 @@ func layout_station(frame: Dictionary, measure_mouth: Callable) -> Dictionary:
 	sheet.visible = ((has_active_event and feed_progress > 0.0) or (focused and focus_mode == "archive" and has_archive)) and focus_mode != "phone"
 	if continuous_output and (focus_mode != "archive" or external_details): sheet.hide()
 	paper_shadow.visible = sheet.visible
-	reward_tray.position = Vector2(clampf(machine_rect.end.x+10,10,maxf(10,size.x-184)),clampf(machine_rect.end.y-80,10,maxf(10,size.y-180)))
-	reward_tray.size = Vector2(180,160)
 	if external_details and fixed_desktop:
 		book.hide()
 		identity.hide()

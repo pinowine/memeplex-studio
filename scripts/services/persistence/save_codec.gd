@@ -909,7 +909,7 @@ func _validate_event_copy(event: Dictionary, errors: PackedStringArray) -> void:
 	var expected := JSON.stringify(JSON.parse_string(JSON.stringify(definition.design_rewards)), "", true, true)
 	# An empty delivery is checked against the unique-card history below.
 	if (actual != expected and not event.design_rewards.is_empty()) or event.design_source_preset_id != str(definition.external_preset_id): errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_OR_PRESET_SOURCE_CONFLICTS_WITH_2FE2F3F5"))
-	var expected_text: String = ((DeskLocalization.source("LOC_CLAIMED_9C9021A0") if event.acknowledged else DeskLocalization.source("LOC_CLAIM_AFTER_COLLECTING_008ABC0C")) + simulation._reward_summary(event.design_rewards)) if not event.design_rewards.is_empty() else ""
+	var expected_text: String = ((DeskLocalization.source("LOC_CLAIMED_9C9021A0") if event.acknowledged else DeskLocalization.source("LOC_EVENT_MATERIALS")) + simulation._reward_summary(event.design_rewards)) if not event.design_rewards.is_empty() else ""
 	if event.reward_text != expected_text: errors.append(DeskLocalization.source("LOC_EVENT_SUPPLY_TEXT_DOES_NOT_MATCH_ITS_038EBF27"))
 	for field in ["impact_text", "mentor_comment"]:
 		if str(event[field]).strip_edges().is_empty(): errors.append(DeskLocalization.source("LOC_SAVED_EVENT_TEXT_IS_EMPTY_BD4C7C07") + field)

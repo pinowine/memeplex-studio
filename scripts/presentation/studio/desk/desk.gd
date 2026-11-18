@@ -57,7 +57,6 @@ var _slot_return_state: Dictionary = {}
 var _slot_details: Dictionary = {}
 var _focused_stack := ""
 var _context_picker: Dictionary = {}
-var _fax_drop_preview := false
 var _slot_restoring := false
 var _material_storage_visible := false
 var _fax: DeskFaxStation
@@ -192,16 +191,10 @@ func _update_hover_strip() -> void:
 			else: _hover_strip.show_hover(foreground_info)
 			return
 	var point := get_viewport().get_mouse_position()
-	var material: Dictionary = _fax.material_record_at(point)
-	if _page.atlas.hover_note.is_visible_in_tree() and material.is_empty():
+	if _page.atlas.hover_note.is_visible_in_tree():
 		_hover_strip.clear_hover()
 		return
-	if not material.is_empty(): _page.atlas.hover_note.hide()
-	var info: Dictionary = _material_cards.details_for_item(str(material.kind), str(material.id)) if not material.is_empty() else {}
-	if not material.is_empty():
-		info.count = int(material.count)
-		info.status = DeskLocalization.source("LOC_NOT_YET_COLLECTED_46C47B8A")
-	if info.is_empty(): info = _page.atlas.meme_field_hover_info(point)
+	var info: Dictionary = _page.atlas.meme_field_hover_info(point)
 	if info.is_empty() and _material_cards != null: info = _material_cards.hover_info(point)
 	if info.is_empty(): info = editor.hover_info(point)
 	if info.is_empty(): info = _monitor.hover_info(point)
@@ -379,9 +372,6 @@ func configure(page: Node2D) -> void:
 	_fax.configure({"machine":_textures.fax,"portrait_67":_textures.portrait_67,"stamp":_textures.stamp_67,
 		"phonebook":_textures.phonebook,"stamp_prop":_textures.stamp}, page.hud.theme, {"source_mouth":FAX_SLOT,"page_keyboard_shortcuts":true})
 	_fax.bind_machine(_art.fax, FAX_SLOT)
-	_fax.read_completed.connect(page._read_intelligence)
-	_fax.material_requested.connect(_request_event_material)
-	_fax.material_collect_requested.connect(_collect_event_material)
 	_fax.focus_changed.connect(_fax_focus_changed)
 	_props = PropInteraction.new()
 	_props.name = "DeskInteractions"
@@ -913,25 +903,6 @@ func _logical_material_point(point: Vector2) -> Vector2:
 	if _page.has_meta("studio3d"): return _page.get_meta("studio3d").logical_pointer_from_root(point)
 	return point
 
-func _collect_event_material(record: Dictionary) -> void:
-	var errors: PackedStringArray = _page._request_event_material(record)
-	if errors.is_empty():
-		_material_cards.sync_state(_page.simulation.snapshot())
-		_material_cards.store_item(str(record.kind),str(record.id))
-	_fax.confirm_material_request(record,errors.is_empty())
-
-
-func _request_event_material(record: Dictionary, point: Vector2) -> void:
-	if _material_cards == null or _fax.inspection().blocked:
-		_fax.confirm_material_request(record, false)
-		return
-	_material_cards.remember_event_position(record, point)
-	var errors: PackedStringArray = _page._request_event_material(record)
-	if not errors.is_empty(): _material_cards.discard_event_position(record)
-	else: _material_cards.sync_state(_page.simulation.snapshot())
-	_fax.confirm_material_request(record, errors.is_empty())
-	if errors.is_empty(): _drop_material(str(record.get("kind","")),str(record.get("id","")),point)
-
 func _unclip_module(slot: int, _id: String) -> void:
 	var editor: Control = _page.hud.design_workbench()
 	editor._request("remove_module", {"slot":slot})
@@ -1089,22 +1060,12 @@ func event_ready() -> bool:
 	return _fax != null and _fax.inspection().event_state == "ready"
 
 
-func _sync_reward_input() -> void:
-	# Exclude actual interactive slips, not their mouse-ignoring tray.
-	for prop_id in _props._props:
-		var live: Array = _props._exclusions.get(prop_id, []).filter(is_instance_valid)
-		_props._exclusions[prop_id] = live
-		for slip in _fax.material_slips(): _props.add_exclusion(prop_id, slip)
-
-
 func sync_state(state: Dictionary) -> void:
 	for box: Control in _token_boxes.values(): box.sync_state(state)
 	if _material_cards != null:
 		_material_cards.sync_state(state)
 		_sync_module_papers()
 	_fax.restore_output_history(state.get("events",[]))
-	_fax.sync_reward_state(state.get("event_materials",state.get("design_state",{}).get("event_materials",[])))
-	_sync_reward_input()
 	var current: Dictionary = state.get("design_state",{}).get("context_draft",{})
 	var current_name := MemeIdentity.name(_page.catalog, current)
 	var monitor_state := state.duplicate()
@@ -1197,14 +1158,6 @@ func _process(_delta: float) -> void:
 	# Loose paper keeps its desk pose and drag behavior while inspecting the fax.
 	if _material_cards != null:
 		_material_cards.set_enabled(not blocked, fax_focused)
-		var fax_drag := _fax.active_drag_material()
-		if not fax_drag.is_empty():
-			_material_cards.preview_drop(str(fax_drag.kind),get_viewport().get_mouse_position())
-			_material_cards.preview_placement(str(fax_drag.kind),str(fax_drag.id),get_viewport().get_mouse_position())
-			_fax_drop_preview = true
-		elif _fax_drop_preview:
-			_material_cards.clear_drop_preview()
-			_fax_drop_preview = false
 	var editor: Control = _page.hud.design_workbench()
 	var dragged: Dictionary = _material_cards.focused_dragged_material()
 	editor.context_slice().set_token_drag(_monitor._drag_id if _monitor._dragging else str(dragged.get("id", "")))

@@ -774,7 +774,7 @@ func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -
 	event_counts[id] = int(event_counts.get(id, 0)) + 1
 	last_event_hours[id] = hour
 	var rewards := design_state.unique_event_rewards(definition.design_rewards, events)
-	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(remix_created), "mentor_comment":definition.mentor_comment, "effect_text":definition.title if observed.is_empty() else DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_CLAIM_AFTER_COLLECTING_008ABC0C", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
+	var record := {"instance_id":event_id, "definition_id":id, "title":definition.title, "narrative":definition.narrative, "impact_text":definition.impact_summary(remix_created), "mentor_comment":definition.mentor_comment, "effect_text":definition.title if observed.is_empty() else DeskLocalization.source_join("\n",observed), "origin":str(definition.origin), "hour":hour, "discoveries":Array(definition.discovery_ids), "acknowledged":false, "design_rewards":rewards, "design_source_preset_id":str(definition.external_preset_id), "reward_text":(DeskLocalization.source_join("", ["LOC_EVENT_MATERIALS", _reward_summary(rewards)])) if not rewards.is_empty() else ""}
 	record.target_content_snapshot = Lifecycle.revision_snapshot(target) if not target.is_empty() else {}
 	record.merge({"country_id":cid, "country_title":title, "category":str(definition.category), "response":response, "response_duration_hours":duration, "applied_effects":applied, "target_variant_id":str(target.get("id", "")), "target_variant_text":str(target.get("text", ""))})
 	var response_text := EventResponse.summary(response)
@@ -1022,6 +1022,13 @@ func acknowledge_event() -> void:
 		return
 	var paper := active_event.duplicate(true)
 	paper.acknowledged = true
+	for record: Dictionary in event_materials():
+		if str(record.instance_id) != str(paper.instance_id) or bool(record.requested): continue
+		var errors := design_state.request_event_material(paper, str(record.kind), str(record.id))
+		if not errors.is_empty():
+			status = DeskLocalization.source_join("；", errors)
+			changed.emit()
+			return
 	var design_errors: PackedStringArray = design_state.claim_event(paper)
 	if not design_errors.is_empty():
 		status = DeskLocalization.source_join("；",design_errors)
@@ -1138,8 +1145,8 @@ func _event_definition(id: String) -> MemeDemoEvent:
 func _reward_summary(rewards: Array) -> String:
 	var parts := PackedStringArray()
 	for reward: Dictionary in rewards:
-		parts.append("%s ×%d" % [str(design_state.rules.reward_resource(str(reward.kind),str(reward.id)).get("title",reward.id)),int(reward.count)])
-	return "、".join(parts)
+		parts.append(DeskLocalization.source_format("%s ×%d", [str(design_state.rules.reward_resource(str(reward.kind),str(reward.id)).get("title",reward.id)),int(reward.count)], [0]))
+	return DeskLocalization.source_join("、", parts)
 
 func _number(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))

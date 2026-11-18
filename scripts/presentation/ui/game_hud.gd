@@ -33,6 +33,7 @@ const DesignWorkbench = preload("res://scripts/presentation/studio/workbench/des
 @onready var _slot_edits: Array[LineEdit] = [%SlotEdit0, %SlotEdit1, %SlotEdit2, %SlotEdit3, %SlotEdit4]
 
 var _screen_modals: Control
+var _event_slide: Tween
 var _locale_catalog: Resource
 var _guide_enabled := true
 var _kernels: Array = []
@@ -91,6 +92,13 @@ func _ready() -> void:
 	%PoliticalKnown.toggled.connect(_on_political_known)
 	_on_political_known(%PoliticalKnown.button_pressed)
 	%EventCard.hide()
+	var event_paper: StyleBox = %EventCard.get_theme_stylebox("panel").duplicate()
+	event_paper.content_margin_left = 24
+	event_paper.content_margin_right = 24
+	event_paper.content_margin_top = 24
+	event_paper.content_margin_bottom = 20
+	%EventCard.add_theme_stylebox_override("panel", event_paper)
+	%EventCard.get_node("Column/NarrativeHeading").hide()
 	%ResultCard.hide()
 	%Instruments.hide()
 	%History.show()
@@ -316,15 +324,23 @@ func render(state: Dictionary) -> void:
 
 func show_event(event: Dictionary) -> void:
 	%EventTitle.text = DeskLocalization.text(str(event.get("title", DeskLocalization.source("LOC_TRANSMISSION_EVENT_286300D4"))))
-	%EventOrigin.text = "%s / %s" % [str(event.get("origin", "")), str(event.get("definition_id", ""))]
+	%EventOrigin.hide()
 	%Narrative.text = DeskLocalization.text(str(event.get("narrative", DeskLocalization.source("LOC_NO_NARRATIVE_TEXT_PROVIDED_983CDF7F"))))
+	if not str(event.get("reward_text", "")).is_empty(): %Narrative.text += "\n\n" + DeskLocalization.text(str(event.reward_text))
 	%ImpactSummary.text = DeskLocalization.text(str(event.get("impact_text", "")))
 	%MentorComment.text = "67：" + DeskLocalization.text(str(event.get("mentor_comment", DeskLocalization.text("LOC_CHECK_WHERE_THE_MESSAGE_CAME_FROM_BEFORE_5E5A9B91"))))
 	%ActualEffect.text = "\n".join(DeskLocalization.lines(Array(str(event.get("effect_text",DeskLocalization.source("LOC_NO_ACTUAL_EFFECT_RECORD_PROVIDED_B7B90294"))).split("\n"))))
 	%ActualEffect.hide()
 	%EffectDetails.button_pressed = false
-	%EventCard.visible = _desk_controller == null
-	%EventContinue.disabled = _desk_controller != null
+	%EventCard.show()
+	%EventContinue.disabled = false
+	%EventContinue.text = DeskLocalization.text("LOC_EVENT_UNDERSTOOD")
+	layout_screen_modals()
+	if _event_slide != null and _event_slide.is_valid(): _event_slide.kill()
+	var destination: Vector2 = %EventCard.position
+	%EventCard.position.y = _screen_modals.size.y if _screen_modals != null else size.y
+	_event_slide = create_tween()
+	_event_slide.tween_property(%EventCard, "position", destination, .38).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_refresh_modal()
 	if _desk_controller != null: _desk_controller.receive_event(event)
 
@@ -439,7 +455,7 @@ func _refresh_modal() -> void:
 	%ModalShade.visible = modal_visible() and _menu_mode != "preferences"
 	%ModalShade.color = Color(0.04, 0.05, 0.04, 0.40) if _menu_mode in ["settings", "preferences"] else Color(0.14, 0.14, 0.14, 0.64)
 	%Create.disabled = modal_visible()
-	%EventContinue.disabled = not _menu_mode.is_empty() or (_desk_controller != null and not _desk_controller.event_ready())
+	%EventContinue.disabled = not _menu_mode.is_empty()
 	%EffectDetails.disabled = not _menu_mode.is_empty()
 	# The same shade intercepts the event card while a menu is above it.
 	if not _menu_mode.is_empty():
@@ -520,6 +536,8 @@ func layout_screen_modals() -> void:
 	_screen_modals.position = Vector2.ZERO
 	_screen_modals.size = view
 	var available := (view-Vector2(96,96)).max(Vector2(1,1))
+	var paper_size := Vector2(620, 520).min(available)
+	_desk_place(%EventCard, Rect2((view-paper_size)*.5, paper_size))
 	for panel: Control in [%SettingsMenu,%DeveloperMenu]:
 		var desired := Vector2(600,650)
 		if panel == %SettingsMenu:

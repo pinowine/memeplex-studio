@@ -26,7 +26,6 @@ var _clock_anchor: float = 0.0
 var _map_seed: int = 0
 var _menu_resume_speed: int = 0
 var _ready_to_run := false
-var _pending_read_id: String = ""
 var _startup_complete: bool = false
 var _direct_starter_selection := false
 var _direct_starter_index := -1
@@ -134,8 +133,6 @@ func _catalog_error(message: String) -> void:
 
 func _process(delta: float) -> void:
 	if not _ready_to_run: return
-	if not _pending_read_id.is_empty() and hud.menu_mode().is_empty():
-		_read_intelligence(_pending_read_id)
 	if atlas.world.seed_value != _map_seed:
 		_map_seed = atlas.world.seed_value
 		simulation.reset(simulation.seed_value + 1, atlas.world)
@@ -267,46 +264,23 @@ func _open_workbench() -> void:
 
 func _on_event(event: Dictionary) -> void:
 	hud.show_event(event)
-	# Ordinary intelligence is committed on receipt; its physical printing is asynchronous.
-	if event.get("design_rewards", []).is_empty():
-		simulation.status = DeskLocalization.source_format("LOC_RECEIVED_D_MESSAGES_B3820ECB", simulation.events.size())
-		simulation.acknowledge_event()
-	else:
-		simulation.status = DeskLocalization.source("LOC_THIS_FAX_INCLUDES_MATERIALS_MOVE_THE_CARD_4D9E87DA")
-	atlas.set_speed(clock_speed())
-
-func _event_has_pending_material(instance_id: String) -> bool:
-	for record: Dictionary in simulation.event_materials():
-		if str(record.instance_id) == instance_id and not bool(record.requested): return true
-	return false
-
-func _read_intelligence(instance_id: String) -> void:
-	# Printing alone cannot release a material event; its physical card must be taken.
-	if simulation.phase != "event" or str(simulation.active_event.get("instance_id", "")) != instance_id: return
-	if _event_has_pending_material(instance_id): return
-	if hud.menu_mode() != "":
-		_pending_read_id = instance_id
-		return
-	_pending_read_id = ""
-	simulation.status = DeskLocalization.source_format("LOC_RECEIVED_D_MESSAGES_B3820ECB", simulation.events.size())
-	simulation.acknowledge_event()
 	atlas.set_speed(clock_speed())
 
 func _acknowledge() -> void:
-	if desk != null and desk.get("_fax") != null: return
-	if _interface_paused(): return
+	if hud.menu_mode() != "": return
 	if simulation.phase != "event":
 		hud.dismiss_fax()
 		atlas.set_speed(clock_speed())
 		return
+	hud.dismiss_fax()
 	simulation.acknowledge_event()
-	atlas.set_speed(simulation.speed)
+	atlas.set_speed(clock_speed())
 
 func _interface_paused() -> bool:
 	return hud.menu_mode() != "" or desk.interaction_paused() or (_shell != null and _shell.blocks_input())
 
 func _clock_paused() -> bool:
-	return hud.modal_visible() or (_shell != null and _shell.pauses_clock()) or desk._fax.has_pending_materials()
+	return hud.modal_visible() or (_shell != null and _shell.pauses_clock())
 
 func clock_speed() -> int:
 	return simulation.speed if simulation.phase == "running" and not _clock_paused() else 0
@@ -339,6 +313,10 @@ func _open_settings() -> void:
 func _input(event: InputEvent) -> void:
 	if not _ready_to_run or not event is InputEventKey or not event.pressed or event.echo: return
 	var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
+	if key == KEY_SPACE and hud.menu_mode().is_empty() and hud.get_node("%EventCard").visible:
+		_acknowledge()
+		get_viewport().set_input_as_handled()
+		return
 	if key == KEY_ESCAPE:
 		if _shell != null and _shell.main_menu.visible:
 			_shell.main_menu.back()
@@ -410,7 +388,6 @@ func _load() -> bool:
 		_render()
 		return false
 	atlas.set_meta("demo_external_clock", true)
-	_pending_read_id = ""
 	if _shell != null: _shell.context_guidance.close()
 	desk.reset_journal()
 	if hud.menu_mode() != "":
@@ -444,7 +421,6 @@ func _restart() -> void:
 	if not _load_catalog():
 		_shell.loading.fail()
 		return
-	_pending_read_id = ""
 	get_node("DeskLayer/Desk").reset_journal()
 	hud.set_menu("")
 	_menu_resume_speed = 0
@@ -594,15 +570,6 @@ func _buy_skill(skill_id: String) -> void:
 		if not updated.is_empty(): hud.set_draft(updated)
 	hud.report_design_errors(errors)
 	_render()
-
-func _request_event_material(record: Dictionary) -> PackedStringArray:
-	if not _ready_to_run or not startup_ready() or hud.menu_mode() != "" or desk._stack.is_switching():
-		return PackedStringArray([DeskLocalization.source("LOC_PUT_DOWN_WHAT_YOU_ARE_HOLDING_BEFORE_B69F635E")])
-	var errors: PackedStringArray = simulation.request_event_material(str(record.get("instance_id", "")), str(record.get("kind", "")), str(record.get("id", "")))
-	if not errors.is_empty(): hud.report_design_errors(errors)
-	elif desk._fax.event_delivered(str(record.get("instance_id", ""))):
-		_read_intelligence(str(record.instance_id))
-	return errors
 
 func _render() -> void:
 	if simulation == null: return

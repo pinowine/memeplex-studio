@@ -233,7 +233,6 @@ func allows_input(event: InputEvent) -> bool:
 		if key == KEY_ESCAPE and bool(_steps[_index].get("contextual", false)):
 			if event.pressed and not event.echo: skip()
 			return false
-		if KeyBindings.matches(event, "collect") and bool(_steps[_index].get("contextual_drag", false)): return true
 		if key == KEY_ESCAPE and (str(_steps[_index].get("action", "")) == "overview_returned" or str(_steps[_index].get("target", "")).begins_with("map/")):
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
@@ -452,7 +451,7 @@ func _refresh() -> void:
 	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
 	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title", "")))
 	var text_key := _hover_text if _display_index == _index and not _hover_text.is_empty() else str(step.get("text", ""))
-	var text := DeskLocalization.format_text(text_key, KeyBindings.display_name("collect")) if text_key == "LOC_GUIDANCE_FIRST_FAX" else DeskLocalization.text(text_key)
+	var text := DeskLocalization.text(text_key)
 	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
 	body.custom_minimum_size.y = 72 if choosing else 0
 	body.set_meta(&"text_workbench_source", DeskLocalization.text_source(text_key))

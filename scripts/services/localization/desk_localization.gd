@@ -333,7 +333,7 @@ static func _history_rewards(record: Dictionary) -> void:
 	for reward: Dictionary in record.get("design_rewards",[]):
 		var definition: Dictionary = rules.reward_resource(str(reward.get("kind","")),str(reward.get("id","")))
 		canonical_parts.append(source_format("%s ×%d",[str(definition.get("title",reward.get("id",""))),int(reward.get("count",0))],[0]))
-	var prefix := DeskLocalization.source("LOC_CLAIMED_9C9021A0") if bool(record.get("acknowledged",false)) else DeskLocalization.source("LOC_CLAIM_AFTER_COLLECTING_008ABC0C")
+	var prefix := DeskLocalization.source("LOC_CLAIMED_9C9021A0") if bool(record.get("acknowledged",false)) else DeskLocalization.source("LOC_EVENT_MATERIALS")
 	var summary := source_join("、",canonical_parts)
 	if source == prefix+summary: source_join("",[prefix,summary])
 	else: english_text(source)

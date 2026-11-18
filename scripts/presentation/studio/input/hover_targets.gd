@@ -79,7 +79,7 @@ func target_at(point: Vector2) -> Dictionary:
 			var shape := _material_shape(card)
 			if card.inventory_docked or not _desk.slot_details_active(): shape = Input.CURSOR_CROSS
 			return _card(card.face, key, shape)
-	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	var slips: Array = cards._pending_cards.values()
 	for slip: Control in slips:
 		if not slip._enabled or not _contains(slip, point): continue
 		return _card(slip._face, "", _material_shape(slip.record)) if slip._face != null else _rect("slip/" + str(slip.get_instance_id()), slip, Rect2(Vector2.ZERO, slip.size), _material_shape(slip.record))

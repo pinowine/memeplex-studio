@@ -111,8 +111,8 @@
   },
   "LOC_OPENING_FAX_OUTPUT_TEXT": {
     "source": "注意一下这个位置吐出的纸张。新闻和附件都从这里来，别当废纸扔了。",
-    "zh_CN": "注意一下这个位置吐出的纸张。新闻、讯息……我会在远处传真给你。",
-    "en": "Keep an eye on the paper coming out here. News and attachments arrive through this slot. Don’t throw them away."
+    "zh_CN": "传真送来时，事件纸张会弹到你面前。读完点“知道了”，材料就会自动入库；桌上的纸堆可以随时翻阅。",
+    "en": "New faxes open in front of you. Read the event and choose “Got it” to store its materials. You can read the paper pile on the desk again later."
   },
   "LOC_OPENING_PRINTER_TITLE": {
     "source": "打印机",

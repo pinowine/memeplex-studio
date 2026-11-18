@@ -27,7 +27,7 @@ func pointer_cursor_shape(point: Vector2) -> int:
 		return Input.CURSOR_CROSS if _desk._can_focus_slot("edit") else Input.CURSOR_POINTING_HAND
 	var cards: Control = _desk._material_cards
 	if not cards._enabled and not String(cards._props._hit_prop(point)).is_empty(): return Input.CURSOR_FORBIDDEN
-	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	var slips: Array = cards._pending_cards.values()
 	for slip: Control in slips:
 		if not slip._enabled and _hover_targets._contains(slip, point): return Input.CURSOR_FORBIDDEN
 	var atlas: Node2D = _desk._page.atlas
@@ -61,7 +61,7 @@ func _dragged_material() -> Dictionary:
 		return cards._cards.get(String(cards._props._pressed), {})
 	var focused: Dictionary = cards.focused_dragged_material()
 	if not focused.is_empty(): return focused
-	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	var slips: Array = cards._pending_cards.values()
 	for slip: Control in slips:
 		if slip.is_dragging(): return slip.record
 	var monitor: Control = _desk._monitor
@@ -99,7 +99,7 @@ func pointer_dragging() -> bool:
 	if editor._neuron._dragging: return true
 	var board: Control = editor.context_slice()
 	if board._resource_dragging or board._axis_drag: return true
-	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	var slips: Array = cards._pending_cards.values()
 	for slip: Control in slips:
 		if slip.is_dragging(): return true
 	return false
@@ -186,8 +186,6 @@ func material_faces() -> Array[Dictionary]:
 	for key: String in cards._pending_cards:
 		var slip: Control = cards._pending_cards[key]
 		faces.append({"source":slip._face, "key":"pending/" + key, "owner":slip, "visible":slip.is_visible_in_tree()})
-	for entry: Dictionary in _desk._fax.material_faces():
-		faces.append(entry)
 	for key: String in cards._cards:
 		var card: Dictionary = cards._cards[key]
 		var on_edit := int(card.clipped_slot) >= 0
@@ -211,7 +209,7 @@ func material_handles_viewport_point(point: Vector2) -> bool:
 		if not board._layer_at(local).is_empty(): return true
 	var cards: Control = _desk._material_cards
 	if cards.handles_viewport_point(point): return true
-	var slips: Array = cards._pending_cards.values() + _desk._fax.material_slips()
+	var slips: Array = cards._pending_cards.values()
 	for slip: Control in slips:
 		if not slip.is_visible_in_tree() or slip.mouse_filter == Control.MOUSE_FILTER_IGNORE: continue
 		if Rect2(Vector2.ZERO, slip.size).has_point(slip.get_global_transform_with_canvas().affine_inverse() * point):
@@ -241,7 +239,6 @@ func cancel_interactions() -> void:
 	_desk._monitor.cancel_drag()
 	_desk._props.cancel_drag(&"studio_view_changed")
 	_desk._material_cards._return_free_cards()
-	_desk._fax.cancel_material_drag()
 
 func return_overview() -> void:
 	_desk.return_overview()

@@ -704,11 +704,6 @@
     "zh_CN": "H%d / %s\nMeme %d · 注意力 %d\n曝光 %d · 采用 %d",
     "en": "H%d / %s\nMeme %d · Attention %d\nExposure %d · Adoption %d"
   },
-  "LOC_THIS_FAX_INCLUDES_MATERIALS_MOVE_THE_CARD_4D9E87DA": {
-    "source": "传真附有物资：将纸片移出事件纸张后继续。",
-    "zh_CN": "传真附有物资：将纸片移出事件纸张后继续。",
-    "en": "This fax includes materials. Move the card off its event page to continue."
-  },
   "LOC_REUSE_ALLOWED_AD9E7D8B": {
     "source": "允许再利用",
     "zh_CN": "允许再利用",
@@ -1153,11 +1148,6 @@
     "source": "作者归属采用里程碑 %d",
     "zh_CN": "作者归属采用里程碑 %d",
     "en": "Author-owned adoption milestone %d"
-  },
-  "LOC_CLAIM_AFTER_COLLECTING_008ABC0C": {
-    "source": "收录后领取：",
-    "zh_CN": "收录后领取：",
-    "en": "Claim after collecting: "
   },
   "LOC_ALL_SYNTHETIC_AUDIENCES_ADD04D9F": {
     "source": "全部合成人群",
@@ -1693,11 +1683,6 @@
     "source": "单击展开卡摞",
     "zh_CN": "单击展开卡摞",
     "en": "Click to open stack"
-  },
-  "LOC_ENTER_TO_COLLECT_INTO_STACKS_DRAG_TO_76B4E32D": {
-    "source": "%s收取并归堆 · 拖拽自由摆放",
-    "zh_CN": "%s收取并归堆 · 拖拽自由摆放",
-    "en": "%s to collect into stacks · Drag to place freely"
   },
   "LOC_S_STACK_430C52F7": {
     "source": "%s卡摞",
@@ -7324,11 +7309,6 @@
     "zh_CN": "自己的故事讲完了，把下一句留给也有同感的人。",
     "en": "Once your story is told, leave the next line to someone who knows the feeling."
   },
-  "LOC_GUIDANCE_FIRST_FAX": {
-    "source": "纸出来了。带来的材料有两种收法：按 %s 快捷收取，或把纸上的卡片拖到卡片摞／工作纸。只读传真不会取走材料；先拿好，再继续传播。",
-    "zh_CN": "看这里。带卡片的事件打印出来后，游戏时间会暂停，等待你收取。\n⏎ %s：快捷收取材料。\n↗ 拖拽：沿箭头把卡片拖到对应卡片摞，也可拖到桌面上。\n收齐待领卡片后，时间会继续运行。",
-    "en": "The fax is here. When an event with cards is printed, game time pauses until you collect them.\n⏎ %s: collect the materials quickly.\n↗ Drag: follow the arrow to the matching card stack, or drop a card onto a work sheet.\nCollecting all waiting cards releases this pause; other pause states still apply."
-  },
   "LOC_GUIDANCE_FIRST_COMPETITOR": {
     "source": "地图上出现了别人的模因。它们也在争取注意力；不同颜色区分家族，空心圈表示出生或投放位置，实心点是各国采用人数的抽样。",
     "zh_CN": "啊哦，地图上出现了别人的模因。它们也在争取注意力；不过如果它们离你还很远，大可不必担心。",
@@ -7423,11 +7403,6 @@
     "source": "出字速度",
     "zh_CN": "出字速度",
     "en": "Typing speed"
-  },
-  "LOC_KEY_COLLECT": {
-    "source": "收取传真材料",
-    "zh_CN": "收取传真材料",
-    "en": "Collect fax materials"
   },
   "LOC_KEY_OVERVIEW": {
     "source": "快捷聚焦桌面全景",
