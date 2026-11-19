@@ -72,10 +72,8 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 		_append_clause(segments, [_field("LOC_EVENT_IMPACT_" + kind, "LOC_EVENT_IMPACT_" + kind + "_HELP", "meme", "LOC_EVENT_NOTE_" + kind), _meme_text(str(variant.id), Identity.name(catalog, variant))], "variants")
 	for reward: Dictionary in record.design_rewards:
 		var entry: Dictionary = catalog.DESIGN_RULES.reward_resource(str(reward.kind), str(reward.id))
-		var description := str(entry.get("hover_description", CardCopy.hover_description(str(reward.id))))
-		var note := str(entry.get("hover_note", CardCopy.hover_note(str(reward.id))))
 		_append_clause(segments, [_field("LOC_EVENT_REWARD_KIND_" + str(reward.kind).to_upper(), "LOC_EVENT_REWARD_MATERIAL_HELP", str(reward.kind), ""),
-			_field(str(entry.title), description, str(reward.kind), note), _amount(" ×%d" % int(reward.count))], "rewards")
+			_resource_field(entry, str(reward.kind)), _amount(" ×%d" % int(reward.count))], "rewards")
 	return segments
 
 static func _append_response(segments: Array[Dictionary], response: Dictionary, record: Dictionary, catalog: MemeDemoCatalog) -> void:
@@ -84,7 +82,7 @@ static func _append_response(segments: Array[Dictionary], response: Dictionary, 
 		var id := "topic_" + topic_id
 		var topic: Dictionary = catalog.DESIGN_RULES.context_resource(id)
 		if topics.size() > 1: topics.append(_text("  "))
-		topics.append(_field(str(topic.title), str(topic.get("hover_description", CardCopy.hover_description(id))), "topic", str(topic.get("hover_note", CardCopy.hover_note(id)))))
+		topics.append(_resource_field(topic, "topic"))
 	if topics.size() > 1: _append_clause(segments, topics, "scope")
 	for metric: String in ["attention", "spread", "production"]:
 		var amount := float(response[metric])
@@ -94,23 +92,22 @@ static func _append_response(segments: Array[Dictionary], response: Dictionary, 
 		_append_clause(segments, changes, "effects")
 	var sentiment := float(response.sentiment)
 	if not is_zero_approx(sentiment):
-		_append_clause(segments, [_text("LOC_EVENT_RESPONSE_EXPRESSION_PREFERENCE"), _expression(sentiment), _text("LOC_EVENT_RESPONSE_PREFERRED")], "audience")
+		_append_clause(segments, [_text("LOC_EVENT_RESPONSE_EXPRESSION_PREFERENCE"), _expression(sentiment, catalog), _text("LOC_EVENT_RESPONSE_PREFERRED")], "audience")
 	var dissent: Dictionary = {}
 	for cohort: Dictionary in response.cohorts:
 		if is_zero_approx(float(cohort.share)): continue
 		if float(cohort.sentiment) * sentiment >= 0.0: continue
 		if dissent.is_empty() or float(cohort.sentiment) * sentiment < float(dissent.sentiment) * sentiment: dissent = cohort
 	if not dissent.is_empty():
-		var clause: Array[Dictionary] = [_field(str(COHORTS[str(dissent.id)]), "LOC_EVENT_RESPONSE_COHORT_HELP", "group", ""),
-			_text(DeskLocalization.source_format("LOC_EVENT_RESPONSE_POPULATION_SHARE", _number(float(dissent.share) * 100.0))), _text(" "),
-			_expression(float(dissent.sentiment)), _text("LOC_EVENT_RESPONSE_PREFERRED")]
+		var audience := _field(DeskLocalization.source_join("", [str(COHORTS[str(dissent.id)]), DeskLocalization.source_format("LOC_EVENT_RESPONSE_POPULATION_SHARE", _number(float(dissent.share) * 100.0))]), "LOC_EVENT_RESPONSE_COHORT_HELP", "group", "")
+		var clause: Array[Dictionary] = [audience, _expression(float(dissent.sentiment), catalog), _text("LOC_EVENT_RESPONSE_PREFERRED")]
 		if float(dissent.irony) >= 0.15:
 			clause.append(_text("  "))
-			clause.append(_field("LOC_EVENT_RESPONSE_IRONY", "LOC_EVENT_RESPONSE_IRONY_HELP", "pragmatic_token", ""))
+			clause.append(_irony(catalog))
 			clause.append(_text(" " + _number(float(dissent.irony) * 100.0) + "%"))
 		_append_clause(segments, clause, "audience")
 	elif float(response.irony) >= 0.15:
-		_append_clause(segments, [_field("LOC_EVENT_RESPONSE_IRONY", "LOC_EVENT_RESPONSE_IRONY_HELP", "pragmatic_token", ""), _amount(" " + _number(float(response.irony) * 100.0) + "%")], "audience")
+		_append_clause(segments, [_irony(catalog), _amount(" " + _number(float(response.irony) * 100.0) + "%")], "audience")
 
 static func _groups(ids: PackedStringArray, catalog: MemeDemoCatalog) -> Array[Dictionary]:
 	var segments: Array[Dictionary] = []
@@ -120,7 +117,7 @@ static func _groups(ids: PackedStringArray, catalog: MemeDemoCatalog) -> Array[D
 		for id: String in ids:
 			if not segments.is_empty(): segments.append(_text("  "))
 			var group: Dictionary = catalog.DESIGN_RULES.context_resource("group_" + id)
-			segments.append(_field(str(group.title), str(group.get("hover_description", CardCopy.hover_description("group_" + id))), "group", str(group.get("hover_note", CardCopy.hover_note("group_" + id)))))
+			segments.append(_resource_field(group, "group"))
 	return segments
 
 static func _append_clause(segments: Array[Dictionary], clause: Array[Dictionary], group: String) -> void:
@@ -141,10 +138,20 @@ static func _amount(value: String) -> Dictionary:
 static func _duration(hours: float) -> Dictionary:
 	return {"text":DeskLocalization.source_format("LOC_EVENT_IMPACT_DURATION", _number(hours)), "impact_role":"duration"}
 
-static func _expression(sentiment: float) -> Dictionary:
+static func _expression(sentiment: float, catalog: MemeDemoCatalog) -> Dictionary:
 	var id := "support" if sentiment > 0.0 else "opposition"
 	var title := "LOC_EVENT_RESPONSE_POSITIVE_TERM" if sentiment > 0.0 else "LOC_EVENT_RESPONSE_NEGATIVE_TERM"
-	return _field(title, CardCopy.hover_description(id), "pragmatic_token", CardCopy.hover_note(id))
+	return _resource_field(catalog.DESIGN_RULES.context_resource(id), "pragmatic_token", title)
+
+static func _irony(catalog: MemeDemoCatalog) -> Dictionary:
+	return _resource_field(catalog.DESIGN_RULES.context_resource("ironic"), "pragmatic_token", "LOC_EVENT_RESPONSE_IRONY")
+
+static func _resource_field(entry: Dictionary, kind: String, title: String = "") -> Dictionary:
+	var id := str(entry.id)
+	var field := _field(str(entry.title) if title.is_empty() else title, str(entry.get("hover_description", CardCopy.hover_description(id))), kind, str(entry.get("hover_note", CardCopy.hover_note(id))))
+	field.tooltip_title = str(entry.title)
+	field.resource_id = id
+	return field
 
 static func _field(title: String, body: String, kind: String, note: String) -> Dictionary:
 	return {"text":title, "tooltip_title":title, "tooltip_body":body, "tooltip_note":note, "field_kind":kind}

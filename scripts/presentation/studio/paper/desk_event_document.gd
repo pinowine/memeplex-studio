@@ -108,11 +108,10 @@ func _init() -> void:
 	visibility_changed.connect(_hide_hover)
 	_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float): _hide_hover())
 
-func add_action_button(control: Control) -> void:
+func add_action_button(button: Button) -> void:
 	var layout := _footer.get_parent()
-	if control.get_parent() == null: layout.add_child(control)
-	else: control.reparent(layout, false)
-	layout.move_child(control, _footer.get_index())
+	button.reparent(layout, false)
+	layout.move_child(button, _footer.get_index())
 
 func mount_hover_overlay(parent: Node) -> void:
 	var previous := _hover.get_parent()
@@ -212,7 +211,7 @@ func _add_metadata(block: Dictionary) -> void:
 	var country := str(block.get("country_title", ""))
 	if not country.is_empty():
 		var field: Dictionary = block.get("country_field", {})
-		var location: Control = _compact_field(field, "Country", 11) if not field.is_empty() else _label(country, 11, Style.SECONDARY_INK)
+		var location: Control = _tag_field(field, "Country", false) if not field.is_empty() else _label(country, 11, Style.SECONDARY_INK)
 		location.name = "Country"
 		if location is Label: location.autowrap_mode = TextServer.AUTOWRAP_OFF
 		dateline.add_child(location)
@@ -249,6 +248,15 @@ func _compact_field(field: Dictionary, node_name: String, font_size: int, ink: C
 	_write_field(label, field, 0, ink)
 	_bind_fields(label, [field])
 	return label
+
+func _tag_field(field: Dictionary, node_name: String, show_icon: bool = true) -> Control:
+	var tag := MemeFields.TagChip.new()
+	tag.name = node_name
+	tag.configure({"text":str(field.text), "help":str(field.tooltip_body), "kind":str(field.field_kind), "hover_info":field.get("tooltip_info", {})}, true, false, show_icon)
+	tag.mouse_default_cursor_shape = Control.CURSOR_HELP
+	tag.mouse_entered.connect(_show_field_hover.bind(field))
+	tag.mouse_exited.connect(_hide_hover)
+	return tag
 
 func _add_rule(container: VBoxContainer = null) -> HSeparator:
 	var rule := HSeparator.new()
@@ -336,6 +344,8 @@ func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) ->
 	var label := _body(12, Style.SECONDARY_INK)
 	label.name = "ImpactLabel"
 	label.custom_minimum_size.x = ceilf(72.0 * float(label.get_theme_font_size("normal_font_size")) / 10.0)
+	if str(segments[int(indices[0])].impact_group) == "audience":
+		label.custom_minimum_size.x = maxf(label.custom_minimum_size.x, label.get_theme_font("normal_font").get_string_size(str(segments[int(indices[0])].text), HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("normal_font_size")).x + 2)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	row.add_child(label)
 	var values := VBoxContainer.new()
@@ -347,6 +357,11 @@ func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) ->
 	body.name = "ImpactText"
 	values.add_child(body)
 	_impact_labels.append(body)
+	var tags := HFlowContainer.new()
+	tags.name = "TopicTags"
+	tags.add_theme_constant_override("h_separation", 4)
+	tags.add_theme_constant_override("v_separation", 4)
+	values.add_child(tags)
 	var stats := HBoxContainer.new()
 	stats.name = "ImpactNumbers"
 	stats.add_theme_constant_override("separation", 8)
@@ -365,11 +380,15 @@ func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) ->
 			"label": _write_impact_field(label, segment, index)
 			"amount": _write_impact_field(amount, segment, index)
 			"duration": _write_impact_field(duration, segment, index)
-			_: _write_impact_field(body, segment, index)
+			_:
+				if str(segment.get("field_kind", "")) == "topic" and segment.has("resource_id"):
+					tags.add_child(_tag_field(segment, "Topic_" + str(segment.resource_id)))
+				else: _write_impact_field(body, segment, index)
 	for field_label: RichTextLabel in [label, body, amount, duration]:
 		_bind_fields(field_label, segments)
 		field_label.visible = not field_label.get_parsed_text().strip_edges().is_empty()
 	stats.visible = amount.visible or duration.visible
+	tags.visible = tags.get_child_count() > 0
 	if str(segments[int(indices[0])].impact_group) == "rewards":
 		stats.reparent(row)
 		stats.size_flags_horizontal = Control.SIZE_SHRINK_END
@@ -397,18 +416,7 @@ func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 	label.meta_hover_started.connect(func(meta: Variant):
 		var field: Dictionary = segments[int(meta)]
 		label.set_meta("annotation_cursor", Input.CURSOR_POINTING_HAND if not str(field.get("variant_id", "")).is_empty() else Input.CURSOR_HELP)
-		if str(field.get("tooltip_body", "")).is_empty():
-			_hide_hover()
-			return
-		_hover.set_width(float(field.get("tooltip_width", ReceiptHover.DEFAULT_WIDTH)))
-		if field.has("tooltip_info"):
-			var info: Dictionary = field.tooltip_info
-			_hover.set_width(float(info.hover_width))
-			_hover.set_content(str(info.title), info.rows, str(info.description), info.presentation)
-		else:
-			_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
-		_hover.show()
-		_hover._follow_pointer())
+		_show_field_hover(field))
 	label.meta_clicked.connect(func(meta: Variant):
 		var id := str(segments[int(meta)].get("variant_id", ""))
 		if not id.is_empty():
@@ -420,6 +428,20 @@ func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 	label.mouse_exited.connect(func():
 		label.remove_meta("annotation_cursor")
 		_hide_hover())
+
+func _show_field_hover(field: Dictionary) -> void:
+	if str(field.get("tooltip_body", "")).is_empty():
+		_hide_hover()
+		return
+	_hover.set_width(float(field.get("tooltip_width", ReceiptHover.DEFAULT_WIDTH)))
+	if field.has("tooltip_info"):
+		var info: Dictionary = field.tooltip_info
+		_hover.set_width(float(info.hover_width))
+		_hover.set_content(str(info.title), info.rows, str(info.description), info.presentation)
+	else:
+		_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
+	_hover.show()
+	_hover._follow_pointer()
 
 func _add_comment(block: Dictionary) -> void:
 	_add_rule()

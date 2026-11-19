@@ -1276,7 +1276,7 @@ func _event_country_field(record: Dictionary) -> Dictionary:
 		if str(country.id) != country_id: continue
 		return {"text":str(record.country_title), "tooltip_title":str(country.official_name_key),
 			"tooltip_body":DeskLocalization.source(str(country.description_key)),
-			"tooltip_note":str(country.description_key) + "_NOTE", "field_kind":"language", "tooltip_width":360.0}
+			"tooltip_note":str(country.description_key) + "_NOTE", "field_kind":"group", "tooltip_width":360.0}
 	return {}
 
 func show_meme_details(details: Dictionary) -> bool:
