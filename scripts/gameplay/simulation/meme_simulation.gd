@@ -277,7 +277,6 @@ func _live_author_content(draft: Dictionary, skills: Array, source: Dictionary) 
 	var result := {"text":str(composed.expression), "patch_ids":data.patch_ids.duplicate(), "flow_draft":_encoded_draft(data), "flow_profile":competition.profile(data)}
 	for field: String in ["meaning", "meaning_id", "language_versions"]: result[field] = composed[field]
 	for field: String in ["language_id", "topic_ids", "political_known", "political_position", "pragmatic_position"]: result[field] = result.flow_draft[field]
-	result.context_layer_attachment = result.flow_profile.context_layer_attachment.duplicate(true)
 	var identity := Lifecycle.content(source)
 	for field: String in ["creator", "owned", "controlled"]: result[field] = identity[field]
 	result.semantic_distance = MonitorMetrics.deviation(source.deviation_anchor, result)
@@ -518,10 +517,6 @@ func validate_draft(data: Dictionary) -> PackedStringArray:
 		errors.append_array(ExpressionText.Composition.validate(data, ExpressionText.patch_ids(data)))
 	return errors
 
-func _draft_layer_attached(data: Dictionary,layer: String) -> bool:
-	var flags: Variant = data.get("context_layer_attachment",{})
-	return not (flags is Dictionary and flags.get(layer) is bool and flags[layer] == false)
-
 ## 校验来源、语境和费用后投放；外部版本不获得作者控制权。
 func publish(data: Dictionary) -> PackedStringArray:
 	if bool(endgame.war_started) or phase == "complete": return PackedStringArray([DeskLocalization.source("LOC_WAR_NO_REVISION")])
@@ -532,7 +527,7 @@ func publish(data: Dictionary) -> PackedStringArray:
 	errors.append_array(catalog.DESIGN_RULES.patch_errors(str(data.get("preset_id", "")), patch_ids))
 	if data.has("patch_ids") and data.patch_ids != patch_ids: errors.append("Player patches must match the author record")
 	errors.append_array(_required_context_errors())
-	if PackedStringArray(data.get("topic_ids", [])).is_empty() and _draft_layer_attached(data,"topics"):
+	if PackedStringArray(data.get("topic_ids", [])).is_empty():
 		errors.append(DeskLocalization.source("LOC_SELECT_AT_LEAST_ONE_TOPIC_E653923A"))
 	errors.append_array(_core_errors(data))
 	errors.append_array(design_state.record_errors())
@@ -569,7 +564,7 @@ func publish(data: Dictionary) -> PackedStringArray:
 	variants.append({"id":id, "family_id":family_id, "parent_ids":parent_ids, "origin_ids":[id], "creator":"player", "owned":true, "controlled":true, "text":text, "kernel_id":str(kernel.id), "preset_id":preset_id, "source_presets":source_presets.duplicate(true), "semantic_distance":0.0, "language_id":str(data.language_id), "pragmatic_position":_vector_array(data.pragmatic_position), "political_position":_vector_array(data.political_position) if data.get("political_known", false) else [], "target":str(data.target), "topic_ids":Array(data.get("topic_ids", []))})
 	variants.back().patch_ids = patch_ids.duplicate()
 	for field: String in ["meaning", "meaning_id", "language_versions"]: variants.back()[field] = composed[field]
-	for field in ["module_patch_record", "skill_effects", "context_layer_record", "context_layer_attachment"]:
+	for field in ["module_patch_record", "skill_effects", "context_layer_record"]:
 		if data.has(field): variants.back()[field] = data[field].duplicate(true)
 	var profile_draft := data.duplicate(true)
 	profile_draft.patch_ids = patch_ids.duplicate()
@@ -658,7 +653,7 @@ func _spread_world() -> void:
 	_reward_milestones()
 
 func _audience_factor(profile: Dictionary) -> float:
-	var ids: Array = profile.get("group_ids", [str(profile.group_id)]).duplicate() if competition.attached(profile, "group") else [""]
+	var ids: Array = profile.get("group_ids", [str(profile.group_id)]).duplicate()
 	ids.sort()
 	var seen := {}
 	var total := 0.0

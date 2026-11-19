@@ -5,7 +5,7 @@ const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd
 
 const DEFAULT_RULES = preload("res://data/rules/design_rules.tres")
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
-const DESIGN_VERSION := 10
+const DESIGN_VERSION := 11
 const RECORD_LIMIT := 65536
 var catalog: MemeDemoCatalog
 var rules: MemeDesignRules
@@ -30,11 +30,9 @@ func _reset_layers() -> void:
 			for slot in context_slot_capacity(layer):
 				slots.append({})
 				origins.append("")
-			_state.context_layers[layer] = {"slots":slots,"origins":origins,"depth":float(rules.context_depths[index])}
+			_state.context_layers[layer] = {"slots":slots,"origins":origins}
 		else:
-			_state.context_layers[layer] = {"origin":[0.0,0.0],"current":[0.0,0.0],"offsets":[0,0],"known":false,"depth":float(rules.context_depths[index])}
-		_state.context_layers[layer].attached = true
-		_state.context_layers[layer].plane_id = "context-plane:%s:%s" % [str(_state.starter_preset_id) if not str(_state.starter_preset_id).is_empty() else "unselected",layer]
+			_state.context_layers[layer] = {"origin":[0.0,0.0],"current":[0.0,0.0],"offsets":[0,0],"known":false}
 func _preset_context_base(id: String) -> Dictionary:
 	var preset: Resource = catalog.find_preset(id)
 	var base: Dictionary = rules.starter_contexts.get(id,{}).duplicate(true)
@@ -71,8 +69,6 @@ func _initialize_layers(base: Dictionary, install_language: bool = true) -> Pack
 		_state.context_layers[pair[0]].origin = point.duplicate()
 		_state.context_layers[pair[0]].current = point.duplicate()
 		_state.context_layers[pair[0]].known = bool(base.get("political_known",false)) if pair[0] == "stance" else true
-	for layer: String in _state.context_layers:
-		_state.context_layers[layer].plane_id = "context-plane:%s:%s" % [str(_state.starter_preset_id) if not str(_state.starter_preset_id).is_empty() else "imported",layer]
 	_state.layers_initialized = true
 	return _apply_layers(base)
 
@@ -114,9 +110,8 @@ func required_context_errors() -> PackedStringArray:
 		var data: Dictionary = _state.context_layers.get(layer,{})
 		var valid := false
 		var slots: Array = data.get("slots",[])
-		if bool(data.get("attached",true)):
-			for index in mini(context_slot_capacity(layer),slots.size()):
-				valid = valid or _valid_context_slot(layer,slots[index])
+		for index in mini(context_slot_capacity(layer),slots.size()):
+			valid = valid or _valid_context_slot(layer,slots[index])
 		if not valid: errors.append(DeskLocalization.source_format("LOC_INSTALL_AT_LEAST_ONE_VALID_S_SLOT_2A8F7FA2", (DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A") if layer == "language" else DeskLocalization.source("LOC_AUDIENCE_D14FC4B5")), [0]))
 	return errors
 
@@ -150,19 +145,7 @@ func _perform_layer(action: String, params: Dictionary, apply_result: bool = tru
 	_layer_repeat = false
 	var layer := str(params.get("layer",""))
 	if not _state.layers_initialized or not _state.context_layers.has(layer): return PackedStringArray([DeskLocalization.source("LOC_CONFIRM_A_STARTING_MEME_FIRST_11EAF3C4")])
-	if action == "set_context_depth":
-		if not _number(params.get("depth")) or float(params.depth) < 0 or float(params.depth) > 1: return PackedStringArray([DeskLocalization.source("LOC_SLICE_DEPTH_MUST_BE_IN_THE_RANGE_6D1A19C1")])
-		_state.context_layers[layer].depth = float(params.depth)
-		return PackedStringArray()
 	if not params.get("base") is Dictionary: return PackedStringArray([DeskLocalization.source("LOC_CONTEXT_CONFIGURATION_REQUIRES_YOUR_OWN_DRAFT_AWAITING_084C0398")])
-	if action in ["detach_context_layer","attach_context_layer"]:
-		var data: Dictionary = _state.context_layers[layer]
-		var target := action == "attach_context_layer"
-		if bool(data.get("attached",true)) == target: return PackedStringArray([DeskLocalization.source("LOC_THE_SLICE_IS_ALREADY_IN_ITS_MATCHING_8BB39140")] )
-		if params.has("plane_id") and str(params.plane_id) != str(data.plane_id): return PackedStringArray([DeskLocalization.source("LOC_SLICE_SOURCE_MISMATCH_7FA89B1D")] )
-		data.attached = target
-		return _apply_layers(params.base)
-	if not bool(_state.context_layers[layer].attached): return PackedStringArray([DeskLocalization.source("LOC_RETURN_THIS_SLICE_TO_THE_BRAIN_FIRST_4F3C38DA")] )
 	if action in ["install_context","remove_context","move_context"]:
 		if layer not in ["language","group","topics"] or not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= context_slot_capacity(layer): return PackedStringArray([DeskLocalization.source("LOC_INVALID_CONTEXT_SLOT_17C28A5F") + " (%s[%s])" % [layer, str(params.get("slot", "?"))]])
 		var slot := int(params.slot)
@@ -254,8 +237,6 @@ func _layer_fields() -> Dictionary:
 			result[pair[1]] = values[0] if not values.is_empty() else ""
 			# 多资源槽位额外记录列表，单资源槽位使用对应的主身份字段。
 			if values.size() > 1: result[pair[0]+"_ids"] = values
-	result.context_layer_attachment = {}
-	for layer: String in _state.context_layers: result.context_layer_attachment[layer] = bool(_state.context_layers[layer].attached)
 	return result
 
 func _apply_layers(base: Dictionary) -> PackedStringArray:
@@ -437,7 +418,7 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 		if not _integer(params.get("slot")) or int(params.slot) < 0 or int(params.slot) >= rules.module_slots:
 			return PackedStringArray([DeskLocalization.source("LOC_SLOT_IS_OUTSIDE_ITS_FINITE_RANGE_F48EA765")])
 		slot = int(params.slot)
-	if action in ["install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes", "set_context_depth", "detach_context_layer", "attach_context_layer"]:
+	if action in ["install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes"]:
 		errors = _perform_axes(params) if action == "move_context_axes" else _perform_layer(action, params)
 		if errors.is_empty() and not _layer_repeat:
 			_state.operations.append({"action":action,"params":params.duplicate(true)})
@@ -453,7 +434,6 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			for layer: String in ["language", "group", "topics"]:
 				_state.context_layers[layer].slots.fill({})
 			for layer: String in ["stance", "pragmatic"]: _state.context_layers[layer].offsets = [0, 0]
-			for layer: String in _state.context_layers: _state.context_layers[layer].attached = bool(base.get("context_layer_attachment", {}).get(layer, true))
 			errors = _initialize_layers(base)
 			if not errors.is_empty(): return errors
 			_state.context_draft = base.duplicate(true)
@@ -700,7 +680,6 @@ func author_marks_valid(draft: Dictionary, state: Dictionary = {}) -> bool:
 		var fields: Dictionary = draft.context_layer_record.get("fields",{})
 		for key in fields:
 			if not draft.has(key):
-				if key == "context_layer_attachment": return false
 				continue
 			if key == "political_position" and not bool(fields.get("political_known",false)) and draft[key] is Array and draft[key].is_empty(): continue
 			if _canonical(draft[key]) != _canonical(fields[key]): return false
@@ -708,13 +687,6 @@ func author_marks_valid(draft: Dictionary, state: Dictionary = {}) -> bool:
 		if not draft.has(key): continue
 		var recorded: Dictionary = draft.get("context_layer_record",{}).get("fields",{})
 		if not recorded.has(key) or _canonical(draft[key]) != _canonical(recorded[key]): return false
-	if draft.has("context_layer_attachment"):
-		var flags: Variant = draft.context_layer_attachment
-		if not flags is Dictionary or flags.size() != 5: return false
-		var recorded: Dictionary = draft.get("context_layer_record",{}).get("fields",{})
-		for layer: String in ["language","group","topics","stance","pragmatic"]:
-			if not flags.get(layer) is bool: return false
-			if not recorded.has("context_layer_attachment") and not flags[layer]: return false
 	var marks: Variant = draft.get("skill_effects", [])
 	if not marks is Array: return false
 	var seen := {}
@@ -835,7 +807,6 @@ func payload() -> Dictionary:
 func recorded_configuration(operation_count: int, events: Array, variants: Array) -> Dictionary:
 	var replay = get_script().new(catalog, rules)
 	replay._state.design_version = int(_state.design_version)
-	replay._state.unlocked_skills = ["text"] if int(_state.design_version) == 9 else []
 	for operation: Dictionary in _state.operations.slice(0, operation_count):
 		var source := {}
 		var params: Dictionary = operation.params
@@ -868,12 +839,10 @@ func _normalize_empty_context_slots(data: Dictionary) -> Dictionary:
 func validate_payload(data: Dictionary, events: Array, variants: Array, economy: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	data = _normalize_empty_context_slots(data)
-	if not _integer(data.get("design_version")) or int(data.design_version) not in [9, DESIGN_VERSION] or not data.get("rules_signature") is String or data.rules_signature != rules.signature() or not data.get("operations") is Array or data.operations.size() > RECORD_LIMIT:
+	if not _integer(data.get("design_version")) or int(data.design_version) != DESIGN_VERSION or not data.get("rules_signature") is String or data.rules_signature != rules.signature() or not data.get("operations") is Array or data.operations.size() > RECORD_LIMIT:
 		return PackedStringArray([DeskLocalization.source("LOC_INVALID_DESIGN_SAVE_VERSION_DEFINITIONS_OR_ACTION_1AA0AD8F")])
 	var replay = get_script().new(catalog, rules)
-	var initial_skills: Array = ["text"] if int(data.design_version) == 9 else []
 	replay._state.design_version = int(data.design_version)
-	replay._state.unlocked_skills = initial_skills.duplicate()
 	var published := {}
 	for operation: Variant in data.operations:
 		if not operation is Dictionary or not operation.get("action") is String or not operation.get("params") is Dictionary:
@@ -903,23 +872,18 @@ func validate_payload(data: Dictionary, events: Array, variants: Array, economy:
 		if transaction is Dictionary and str(transaction.get("reason", "")).begins_with(DeskLocalization.source("LOC_SKILL_UNLOCKED_811EF328")):
 			var id := str(transaction.reason).trim_prefix(DeskLocalization.source("LOC_SKILL_UNLOCKED_811EF328"))
 			var skill: Dictionary = rules.find("skills", id)
-			if skill.is_empty() or id in initial_skills or purchases.has(id) or transaction.get("delta") != -int(skill.get("cost", -1)):
+			if skill.is_empty() or purchases.has(id) or transaction.get("delta") != -int(skill.get("cost", -1)):
 				errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_INCOME_AND_EXPENDITURE_DO_121EAB4E"))
 			purchases[id] = true
 	for id in _skill_ids(data):
-		if id not in initial_skills and not purchases.has(id): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_LACKS_AN_ACTUAL_DEDUCTION_59FBBF1C"))
-	if purchases.size() != _skill_ids(data).size() - initial_skills.size(): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILLS_AND_DEDUCTION_COUNTS_DO_78EE7B1D"))
+		if not purchases.has(id): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILL_LACKS_AN_ACTUAL_DEDUCTION_59FBBF1C"))
+	if purchases.size() != _skill_ids(data).size(): errors.append(DeskLocalization.source("LOC_DESIGN_SAVE_SKILLS_AND_DEDUCTION_COUNTS_DO_78EE7B1D"))
 	return errors
 
 func restore(data: Dictionary, events: Array = [], variants: Array = [], economy: Dictionary = {}) -> PackedStringArray:
 	var errors := validate_payload(data, events, variants, economy)
 	if not errors.is_empty(): return errors
 	_state = _normalize_empty_context_slots(data)
-	# Old runs can contain layers detached through the retired slice view.
-	for layer: String in _state.context_layers:
-		var row: Dictionary = _state.context_layers[layer]
-		if not bool(row.attached):
-			errors.append_array(_perform("attach_context_layer", {"layer":layer, "plane_id":row.plane_id, "base":_state.context_draft}))
 	return errors
 
 func _skill_ids(data: Dictionary) -> Array:

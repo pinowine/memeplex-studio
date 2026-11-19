@@ -48,7 +48,6 @@ static func resolve(definition: MemeDemoEvent, country: Dictionary, groups: Arra
 	return response
 
 static func preference(response: Dictionary, profile: Dictionary) -> float:
-	if not _attached(profile, "topics") or not _attached(profile, "pragmatic"): return 1.0
 	var matching := 0.0
 	for topic: String in profile.topic_ids:
 		if topic in response.topic_ids: matching += 1.0
@@ -56,13 +55,12 @@ static func preference(response: Dictionary, profile: Dictionary) -> float:
 	var topical_share := matching / float(profile.topic_ids.size())
 	var pragmatic: Array = profile.pragmatic_position
 	var group_delta := 0.0
-	if _attached(profile, "group"):
-		for group: Dictionary in response.groups:
-			if str(group.id) == str(profile.group_id): group_delta = float(group.sentiment_delta)
+	for group: Dictionary in response.groups:
+		if str(group.id) == str(profile.group_id): group_delta = float(group.sentiment_delta)
 	var delta := 0.0
 	for cohort: Dictionary in response.cohorts:
 		var weight := float(cohort.share)
-		if bool(profile.political_known) and _attached(profile, "stance"):
+		if bool(profile.political_known):
 			var dx := float(profile.political_position[0]) - float(cohort.stance[0])
 			var dy := float(profile.political_position[1]) - float(cohort.stance[1])
 			weight *= exp(-1.5 * (dx * dx + dy * dy))
@@ -71,9 +69,6 @@ static func preference(response: Dictionary, profile: Dictionary) -> float:
 		var tone := 1.0 - absf(float(pragmatic[0]) - float(cohort.pragmatic[0]))
 		delta += weight * (0.5 * reading + 0.15 * absf(sentiment * float(pragmatic[1])) * tone)
 	return 1.0 + topical_share * delta
-
-static func _attached(profile: Dictionary, layer: String) -> bool:
-	return bool(profile.get("context_layer_attachment", {}).get(layer, true))
 
 static func summary(response: Dictionary) -> String:
 	var parts := PackedStringArray()

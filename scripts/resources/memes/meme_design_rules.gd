@@ -2,7 +2,7 @@
 class_name MemeDesignRules
 extends Resource
 
-const DEFINITION_VERSION := 9
+const DEFINITION_VERSION := 10
 const Composition = preload("res://scripts/gameplay/design/meme_composition.gd")
 const EVENT_REWARD_KINDS := ["module", "language", "group", "topic", "stance_token", "pragmatic_token"]
 const EVENT_REWARD_LIMIT := 1
@@ -24,7 +24,6 @@ const EVENT_REWARD_COUNT := 1
 		skills = DeskLocalization.source_value(value)
 @export var context_definitions: MemeContextDefinitions
 @export var axis_step: float = 0.1
-@export var context_depths: PackedFloat32Array = PackedFloat32Array([0.1, 0.3, 0.5, 0.7, 0.9])
 
 func context_resource(id: String) -> Dictionary:
 	id = str(card_replacements.get(id,id))
@@ -130,7 +129,6 @@ func signature() -> String:
 		"skills": skills,
 		"contexts": context_definitions.entries if context_definitions != null else [],
 		"axis_step": axis_step,
-		"depths": Array(context_depths),
 	}
 	if not card_replacements.is_empty(): data.card_replacements = card_replacements
 	return JSON.stringify(data, "", true, true).sha256_text()
@@ -143,7 +141,7 @@ func validate(catalog: Resource) -> PackedStringArray:
 	if definition_version != DEFINITION_VERSION or module_slots != 4:
 		errors.append("Invalid current design version or finite module slot limit")
 	if context_definitions == null:
-		errors.append("Missing brain context definitions")
+		errors.append("Missing context definitions")
 	else:
 		errors.append_array(context_definitions.validate(catalog))
 	for id: String in card_replacements:
@@ -152,11 +150,8 @@ func validate(catalog: Resource) -> PackedStringArray:
 			var entry := context_resource(id)
 			if str(entry.get("kind", "")) != kind or str(entry.get("value", "")) != id.trim_prefix(kind + "_"):
 				errors.append("Replacement context must preserve its original value")
-	if not is_finite(axis_step) or axis_step < 0.01 or axis_step > 1 or context_depths.size() != 5:
-		errors.append("Invalid brain slice limits")
-	for depth in context_depths:
-		if not is_finite(depth) or depth < 0 or depth > 1:
-			errors.append("Invalid brain slice depth")
+	if not is_finite(axis_step) or axis_step < 0.01 or axis_step > 1:
+		errors.append("Invalid context axis step")
 	for kind in ["modules", "skills"]:
 		var seen := {}
 		var values: Array[Dictionary] = modules if kind == "modules" else skills

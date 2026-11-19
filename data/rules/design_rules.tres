@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1")
-definition_version = 9
+definition_version = 10
 module_slots = 4
 starter_presets = PackedStringArray("versailles_2020", "nobody_2020", "ok_boomer_2020")
 starter_contexts = {
@@ -493,4 +493,3 @@ skills = Array[Dictionary]([
 ])
 
 context_definitions = ExtResource("contexts")
-context_depths = PackedFloat32Array(0.1, 0.3, 0.5, 0.7, 0.9)

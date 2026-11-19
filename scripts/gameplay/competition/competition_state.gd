@@ -143,10 +143,7 @@ func profile(draft: Dictionary) -> Dictionary:
 		if skill_id in skill_ids: continue
 		skill_ids.append(skill_id)
 		skill_bonus += float(rules.skill_reach.get(skill_id,0.0))
-	var attachment := {}
-	var saved: Dictionary = draft.get("context_layer_attachment",{}) if draft.get("context_layer_attachment",{}) is Dictionary else {}
-	for layer in ["language","group","topics","stance","pragmatic"]: attachment[layer] = bool(saved.get(layer,true))
-	var result := {"language_id":str(draft.get("language_id","seowon")),"group_id":str(draft.get("group_id","culture_fans")),"topic_ids":Array(draft.get("topic_ids",[])),"political_known":bool(draft.get("political_known",false)),"political_position":_pair(draft.get("political_position",[])),"pragmatic_position":_pair(draft.get("pragmatic_position",[])),"language_access":float(draft.get("language_access",0.8)),"recognizability":float(draft.get("recognizability",0.8)),"context_dependency":float(draft.get("context_dependency",0.5)),"remix_cost":float(draft.get("remix_cost",0.3)),"reach":(float(channel.reach_factor) if channel != null else 1.0)*(1.0+skill_bonus),"channel_id":channel_id,"expression":expression,"text":text,"skill_ids":skill_ids,"context_layer_attachment":attachment}
+	var result := {"language_id":str(draft.get("language_id","seowon")),"group_id":str(draft.get("group_id","culture_fans")),"topic_ids":Array(draft.get("topic_ids",[])),"political_known":bool(draft.get("political_known",false)),"political_position":_pair(draft.get("political_position",[])),"pragmatic_position":_pair(draft.get("pragmatic_position",[])),"language_access":float(draft.get("language_access",0.8)),"recognizability":float(draft.get("recognizability",0.8)),"context_dependency":float(draft.get("context_dependency",0.5)),"remix_cost":float(draft.get("remix_cost",0.3)),"reach":(float(channel.reach_factor) if channel != null else 1.0)*(1.0+skill_bonus),"channel_id":channel_id,"expression":expression,"text":text,"skill_ids":skill_ids}
 	result.reach *= propagation_rules.Deviation.expression_factor(ExpressionText.patch_ids(draft).size(), skill_ids)
 	for key in ["language_ids","group_ids"]:
 		var values: Variant = draft.get(key,[])
@@ -205,15 +202,15 @@ func fitness(profile_data: Dictionary, country_id: String) -> Dictionary:
 	var country: Dictionary = rules.country(country_id)
 	var components := {}
 	var delivery: Dictionary = propagation_rules.delivery(profile_data,country)
-	components.language = float(delivery.language) if attached(profile_data,"language") else 0.5
-	components.group = _context_match(country.groups,profile_data,"group") if attached(profile_data,"group") else 0.5
+	components.language = float(delivery.language)
+	components.group = _context_match(country.groups,profile_data,"group")
 	var topic_score := 0.0
 	for topic in profile_data.topic_ids: topic_score += float(country.topics.get(str(topic),0.0))
-	components.topics = topic_score / maxf(1.0,profile_data.topic_ids.size()) if attached(profile_data,"topics") else 0.5
-	components.stance = _axis_match(profile_data.political_position,country.stance) if profile_data.political_known and attached(profile_data,"stance") else 0.5
-	components.pragmatic = _axis_match(profile_data.pragmatic_position,country.pragmatic) if attached(profile_data,"pragmatic") else 0.5
+	components.topics = topic_score / maxf(1.0,profile_data.topic_ids.size())
+	components.stance = _axis_match(profile_data.political_position,country.stance) if profile_data.political_known else 0.5
+	components.pragmatic = _axis_match(profile_data.pragmatic_position,country.pragmatic)
 	components.expression = float(profile_data.expression)
-	var matched: float = _context_match(country.groups,profile_data,"group") if attached(profile_data,"group") else 0.5
+	var matched: float = _context_match(country.groups,profile_data,"group")
 	components.access = float(profile_data.language_access) * float(profile_data.recognizability) * (1.0 - float(delivery.context_dependency) * (1.0 - matched)) * float(delivery.quality)
 	var score := 0.0
 	for key in components: score += float(components[key]) * float(rules.fitness_weights[key])
@@ -227,11 +224,8 @@ func _context_match(distribution: Dictionary, profile_data: Dictionary, layer: S
 		for id: Variant in ids: result = maxf(result,float(distribution.get(str(id),0.0)))
 	return result
 
-func attached(profile_data: Dictionary,layer: String) -> bool:
-	return bool(profile_data.get("context_layer_attachment",{}).get(layer,true))
-
 func active_topics(profile_data: Dictionary) -> PackedStringArray:
-	return PackedStringArray(profile_data.get("topic_ids",[])) if attached(profile_data,"topics") else PackedStringArray()
+	return PackedStringArray(profile_data.get("topic_ids",[]))
 
 func _axis_match(a: Array,b: Array) -> float:
 	return clampf(1.0 - (absf(float(a[0])-float(b[0])) + absf(float(a[1])-float(b[1]))) / 4.0,0.0,1.0)
@@ -538,10 +532,6 @@ func validate_payload(data: Dictionary,variants: Array,hour: int) -> PackedStrin
 		if p.get("skill_ids") is Array:
 			for skill in p.skill_ids:
 				if skill not in rules.skill_reach: errors.append(DeskLocalization.source("LOC_UNREGISTERED_COMPETITION_ABILITY_3F326216"))
-		if not p.get("context_layer_attachment") is Dictionary or p.context_layer_attachment.size() != 5: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_BRAIN_SLICE_ATTACHMENT_FIELDS_82C89361"))
-		else:
-			for layer in ["language","group","topics","stance","pragmatic"]:
-				if not p.context_layer_attachment.get(layer) is bool: errors.append(DeskLocalization.source("LOC_COMPETITION_BRAIN_SLICE_ATTACHMENTS_MUST_BE_BOOLEAN_E91BE184"))
 		for key in ["political_position","pragmatic_position"]:
 			if not p.get(key) is Array or p[key].size() != 2: errors.append(DeskLocalization.source("LOC_INVALID_COMPETITION_COORDINATES_C8C82B36"))
 			else:
@@ -709,7 +699,6 @@ func _country_row(id: String) -> Dictionary:
 	return {}
 
 func _published_groups(profile_data: Dictionary) -> Array:
-	if not attached(profile_data,"group"): return []
 	return profile_data.get("group_ids",[str(profile_data.group_id)]).duplicate()
 
 func _landed(countries: Dictionary, variant_id: String, country_id: String) -> bool:

@@ -94,10 +94,9 @@ static func _context_groups(profile: Dictionary, catalog: MemeDemoCatalog) -> Di
 		definitions[str(entry.kind) + "/" + str(entry.value)] = entry
 	var groups := {"language":[], "group":[], "topic":[], "stance":[], "pragmatic":[]}
 	for kind: String in ["language", "group", "topic"]:
-		var layer := "topics" if kind == "topic" else kind
 		var ids: Array = profile.topic_ids if kind == "topic" else profile.get(kind + "_ids", [str(profile[kind + "_id"])])
 		for id: String in ids:
-			groups[kind].append(_tag(kind, definitions[kind + "/" + id], bool(profile.context_layer_attachment[layer])))
+			groups[kind].append(_tag(kind, definitions[kind + "/" + id]))
 	for layer: String in ["stance", "pragmatic"]:
 		var point: Array = profile.political_position if layer == "stance" else profile.pragmatic_position
 		var axes := [["freedom", "authority"], ["equality", "hierarchy"]] if layer == "stance" else [["sincere", "ironic"], ["support", "opposition"]]
@@ -105,21 +104,20 @@ static func _context_groups(profile: Dictionary, catalog: MemeDemoCatalog) -> Di
 			for index in 2:
 				if is_zero_approx(float(point[index])): continue
 				var id: String = axes[index][1 if float(point[index]) > 0.0 else 0]
-				groups[layer].append(_tag(layer, definitions[layer + "_token/" + id], bool(profile.context_layer_attachment[layer])))
+				groups[layer].append(_tag(layer, definitions[layer + "_token/" + id]))
 		if groups[layer].is_empty():
 			var key := "LOC_STARTER_STANCE_UNSET" if layer == "stance" and not bool(profile.political_known) else ("LOC_STARTER_POLITICAL_NEUTRAL" if layer == "stance" else "LOC_STARTER_AXIS_CENTER")
-			groups[layer].append(_tag(layer, {"title":key, "description":""}, bool(profile.context_layer_attachment[layer])))
+			groups[layer].append(_tag(layer, {"title":key, "description":""}))
 	return groups
 
-static func _tag(kind: String, definition: Dictionary, attached: bool) -> Dictionary:
+static func _tag(kind: String, definition: Dictionary) -> Dictionary:
 	var text := Identity.display_text(str(definition.title))
 	var info := definition.duplicate(true) if definition.has("id") else {}
 	var help := ""
 	if not info.is_empty():
 		CardCopy.apply_to(info)
 		help = DeskLocalization.text(str(info.hover_description))
-	if not attached: text += DeskLocalization.text("LOC_DETACHED_INACTIVE_F53886E7")
-	return {"text":text, "kind":kind, "help_key":"", "help":help, "hover_info":info, "attached":attached}
+	return {"text":text, "kind":kind, "help_key":"", "help":help, "hover_info":info}
 
 static func monitor_metrics(snapshot: Dictionary, variant_id: String) -> Dictionary:
 	var world: Dictionary = snapshot.world_competition

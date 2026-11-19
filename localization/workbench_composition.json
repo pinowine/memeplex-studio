@@ -9,11 +9,6 @@
     "zh_CN": "立场",
     "en": "Stance"
   },
-  "LOC_WB_UNATTACHED": {
-    "source": "未接入",
-    "zh_CN": "未接入",
-    "en": "Detached"
-  },
   "LOC_WB_UNSPECIFIED": {
     "source": "未明确",
     "zh_CN": "未明确",

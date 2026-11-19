@@ -1839,11 +1839,6 @@
     "zh_CN": "未放入",
     "en": "Not installed"
   },
-  "LOC_DETACHED_INACTIVE_F53886E7": {
-    "source": "（离体，不生效）",
-    "zh_CN": "（离体，不生效）",
-    "en": "(detached; inactive)"
-  },
   "LOC_REGISTERED_F_F_21CB4430": {
     "source": "已登记 %.1f / %.1f",
     "zh_CN": "已登记 %.1f / %.1f",
@@ -1923,11 +1918,6 @@
     "source": "匹配记录，非支持或采用预测。",
     "zh_CN": "匹配记录，非支持或采用预测。",
     "en": "A match record, not a prediction of support or adoption."
-  },
-  "LOC_CORTEX_LANGUAGE_0D41EBCC": {
-    "source": "皮层 / 语言",
-    "zh_CN": "皮层 / 语言",
-    "en": "Cortex / Language"
   },
   "LOC_TEXT_DD818618": {
     "source": "文本",
@@ -2619,16 +2609,6 @@
     "zh_CN": "竞争能力未登记。",
     "en": "Unregistered competition ability."
   },
-  "LOC_INVALID_COMPETITION_BRAIN_SLICE_ATTACHMENT_FIELDS_82C89361": {
-    "source": "竞争脑切片绑定字段非法。",
-    "zh_CN": "竞争脑切片绑定字段非法。",
-    "en": "Invalid competition brain-slice attachment fields."
-  },
-  "LOC_COMPETITION_BRAIN_SLICE_ATTACHMENTS_MUST_BE_BOOLEAN_E91BE184": {
-    "source": "竞争脑切片绑定必须为布尔值。",
-    "zh_CN": "竞争脑切片绑定必须为布尔值。",
-    "en": "Competition brain-slice attachments must be Boolean values."
-  },
   "LOC_INVALID_COMPETITION_COORDINATES_C8C82B36": {
     "source": "竞争坐标非法。",
     "zh_CN": "竞争坐标非法。",
@@ -2685,39 +2665,19 @@
     "en": "Confirm a starting meme and install language and audience contexts first."
   },
   "LOC_INSTALL_AT_LEAST_ONE_VALID_S_SLOT_2A8F7FA2": {
-    "source": "至少安装一个有效的%s槽位并将该语境放回纸面，才能继续。",
-    "zh_CN": "至少安装一个有效的%s槽位并将该语境放回纸面，才能继续。",
-    "en": "Install at least one valid %s slot and return that context to the paper before continuing."
+    "source": "至少安装一个有效的%s槽位才能继续。",
+    "zh_CN": "至少安装一个有效的%s槽位才能继续。",
+    "en": "Install at least one valid %s slot before continuing."
   },
   "LOC_CONFIRM_A_STARTING_MEME_FIRST_11EAF3C4": {
     "source": "请先确认开局模因。",
     "zh_CN": "请先确认开局模因。",
     "en": "Confirm a starting meme first."
   },
-  "LOC_SLICE_DEPTH_MUST_BE_IN_THE_RANGE_6D1A19C1": {
-    "source": "切片深度需在 0—1 范围内。",
-    "zh_CN": "切片深度需在 0—1 范围内。",
-    "en": "Slice depth must be in the range 0–1."
-  },
   "LOC_CONTEXT_CONFIGURATION_REQUIRES_YOUR_OWN_DRAFT_AWAITING_084C0398": {
     "source": "语境配置需要你当前的模因配置。",
     "zh_CN": "语境配置需要你当前的模因配置。",
     "en": "Context configuration requires your current meme configuration."
-  },
-  "LOC_THE_SLICE_IS_ALREADY_IN_ITS_MATCHING_8BB39140": {
-    "source": "切片已经在对应位置。",
-    "zh_CN": "切片已经在对应位置。",
-    "en": "The slice is already in its matching position."
-  },
-  "LOC_SLICE_SOURCE_MISMATCH_7FA89B1D": {
-    "source": "切片来源不匹配。",
-    "zh_CN": "切片来源不匹配。",
-    "en": "Slice source mismatch."
-  },
-  "LOC_RETURN_THIS_SLICE_TO_THE_BRAIN_FIRST_4F3C38DA": {
-    "source": "请先把这张切片放回脑体。",
-    "zh_CN": "请先把这张切片放回脑体。",
-    "en": "Return this slice to the brain first."
   },
   "LOC_INVALID_CONTEXT_SLOT_17C28A5F": {
     "source": "语境槽位无效。",
@@ -2775,9 +2735,9 @@
     "en": "Not enough points for this direction."
   },
   "LOC_DRAFT_CONTEXT_CONFLICTS_WITH_BRAIN_SLICE_CONFIGURATION_CBA3F275": {
-    "source": "草稿语境与脑切片配置不一致。",
-    "zh_CN": "草稿语境与脑切片配置不一致。",
-    "en": "Draft context conflicts with brain-slice configuration."
+    "source": "草稿语境与培育页配置不一致。",
+    "zh_CN": "草稿语境与培育页配置不一致。",
+    "en": "Draft context conflicts with the cultivate configuration."
   },
   "LOC_DRAFT_CONTAINS_AN_UNINSTALLED_EXPANDED_CONTEXT_52E5354E": {
     "source": "草稿含有未安装的扩展语境。",
@@ -2955,9 +2915,9 @@
     "en": "The patch is now clipped into your expression."
   },
   "LOC_THE_FIVE_BRAIN_SLICES_CARRY_LANGUAGE_AUDIENCE_F7F933BF": {
-    "source": "五层脑切片分别承载语言、群体、话题、立场与语用。",
-    "zh_CN": "五层脑切片分别承载语言、群体、话题、立场与语用。",
-    "en": "The five brain slices carry language, audience, topics, stance and pragmatics."
+    "source": "培育页承载语言、群体、话题、立场与语用。",
+    "zh_CN": "培育页承载语言、群体、话题、立场与语用。",
+    "en": "Cultivate carries language, audience, topics, stance and pragmatics."
   },
   "LOC_INVALID_DESIGN_SAVE_VERSION_DEFINITIONS_OR_ACTION_1AA0AD8F": {
     "source": "设计存档版本、定义或操作记录错误。",

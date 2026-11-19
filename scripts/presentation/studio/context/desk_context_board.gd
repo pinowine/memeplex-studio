@@ -3,14 +3,12 @@ extends Control
 
 signal action_requested(action: String, params: Dictionary)
 signal selected_info_changed(info: Dictionary)
-signal depth_changed(layer: String, depth: float)
 signal resource_detached(record: Dictionary, global_point: Vector2)
 signal slot_pressed(layer: String, index: int, viewport_rect: Rect2)
 
 const ContextController := preload("res://scripts/presentation/studio/context/desk_context_controller.gd")
 const LAYERS := ContextController.LAYERS
 static var TITLES := {"language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), "group":DeskLocalization.source("LOC_AUDIENCE_D14FC4B5"), "topics":DeskLocalization.source("LOC_TOPICS_A2C81C5A"), "stance":DeskLocalization.source("LOC_STANCE_8A2DE4CD"), "pragmatic":DeskLocalization.source("LOC_PRAGMATICS_7063D1D8")}
-const DEPTHS := ContextController.DEPTHS
 const ResourceGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const CardFace := preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
 const ComponentCopy := preload("res://scripts/presentation/studio/desk/desk_component_hover_copy.gd")
@@ -29,7 +27,6 @@ const REACHABLE_INK := Color("648f72", .24)
 var _rules: MemeDesignRules
 var _state: Dictionary = {}
 var _layer := "language"
-var _depth := 0.1
 var _selected_slot := -1
 var _enabled := true
 var _action_callback := Callable()
@@ -87,7 +84,6 @@ func configure(rules: MemeDesignRules) -> void:
 
 func set_state(design: Dictionary) -> void:
 	_state = (design.get("design_state", design) as Dictionary).duplicate(true)
-	_depth = float(_layers().get(_layer, {}).get("depth", DEPTHS[LAYERS.find(_layer)]))
 	_refresh()
 
 func sync_state(design: Dictionary) -> void:
@@ -126,20 +122,13 @@ func select_layer(id: String) -> void:
 	_cancel_input()
 	_layer = id
 	_selected_slot = -1
-	_depth = float(_layers().get(id, {}).get("depth", DEPTHS[LAYERS.find(id)]))
 	selected_info_changed.emit(selected_info())
 	_sync_graphics()
 	queue_redraw()
 
-func set_depth(value: float) -> void:
-	if is_finite(value): _depth = clampf(value, 0.0, 1.0)
-
-func depth_control() -> VSlider:
-	return null
-
 func selected_info() -> Dictionary:
 	var data: Dictionary = _layers().get(_layer, {})
-	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "depth":_depth, "slot":_selected_slot, "attached":_attached(_layer), "instructions":DeskLocalization.text("LOC_CLICK_TO_FOCUS_THIS_SECTION_DRAG_A_3E6ABE39")}
+	var result := {"layer":_layer, "title":DeskLocalization.text(TITLES[_layer]), "slot":_selected_slot, "instructions":DeskLocalization.text("LOC_CLICK_TO_FOCUS_THIS_SECTION_DRAG_A_3E6ABE39")}
 	if _layer in ["stance", "pragmatic"]:
 		result.merge(data.duplicate(true), true)
 		result.instructions = DeskLocalization.text("LOC_DRAG_THE_MARKER_ALONG_ONE_AXIS_AT_291BFA50")
@@ -152,9 +141,6 @@ func selected_info() -> Dictionary:
 
 func _layers() -> Dictionary:
 	return _state.get("context_layers", {})
-
-func _attached(id: String) -> bool:
-	return bool(_layers().get(id, {}).get("attached", true))
 
 func _resource(id: String) -> Dictionary:
 	return ContextController.resource(_state, _rules, id)
@@ -250,7 +236,7 @@ func _sync_graphics() -> void:
 		var rectangles: Array = _layout_layers[id].slot_rects
 		for index in mini(slots.size(), rectangles.size()):
 			var resource := _resource(str(slots[index].get("resource_id", slots[index].get("id", ""))))
-			if resource.is_empty() or not _attached(id): continue
+			if resource.is_empty(): continue
 			var key := "%s:%d" % [id, index]
 			wanted[key] = true
 			var graphic: Control = _resource_graphics.get(key)
@@ -558,27 +544,25 @@ func _begin_pointer(point: Vector2) -> void:
 	var id := _layer_at(point)
 	if id.is_empty(): return
 	_layer = id
-	_depth = float(_layers().get(id, {}).get("depth", DEPTHS[LAYERS.find(id)]))
 	_selected_slot = _slot_at(id, point)
 	_press_point = point
 	_held_layer = id
 	_held_slot = _selected_slot
 	_held = "selection"
-	if _attached(id):
-		if id in ["stance", "pragmatic"]:
-			var anchor := _axis_point(id)
-			if id == "stance" and not bool(_layers().get(id, {}).get("known", false)): anchor = _axis_origin(id)
-			if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS:
-				_held = "axis"
-				_axis_drag = true
-		else:
-			var slots: Array = _layers().get(id, {}).get("slots", [])
-			var pickups: Array = _layout_layers[id].slot_pickup_rects
-			for index in pickups.size():
-				if (pickups[index] as Rect2).has_point(point) and index < slots.size() and not slots[index].is_empty():
-					_held = "resource"
-					_held_slot = index
-					_selected_slot = index
+	if id in ["stance", "pragmatic"]:
+		var anchor := _axis_point(id)
+		if id == "stance" and not bool(_layers().get(id, {}).get("known", false)): anchor = _axis_origin(id)
+		if point.distance_to(anchor) <= AXIS_HANDLE_RADIUS:
+			_held = "axis"
+			_axis_drag = true
+	else:
+		var slots: Array = _layers().get(id, {}).get("slots", [])
+		var pickups: Array = _layout_layers[id].slot_pickup_rects
+		for index in pickups.size():
+			if (pickups[index] as Rect2).has_point(point) and index < slots.size() and not slots[index].is_empty():
+				_held = "resource"
+				_held_slot = index
+				_selected_slot = index
 	selected_info_changed.emit(selected_info())
 	_sync_graphics()
 	queue_redraw()
@@ -607,7 +591,7 @@ func _update_pointer(point: Vector2) -> void:
 	var id := _layer_at(point)
 	var target := id
 	var cursor := cursor_shape_at(point)
-	if not id.is_empty() and _attached(id):
+	if not id.is_empty():
 		if id in ["stance", "pragmatic"]:
 			var anchor := _axis_point(id)
 			if id == "stance" and not bool(_layers().get(id, {}).get("known", false)): anchor = _axis_origin(id)
@@ -717,8 +701,6 @@ func inspection() -> Dictionary:
 	var visible: Array = []
 	for id: String in LAYERS:
 		var info: Dictionary = _layout_layers.get(id, {}).duplicate(true)
-		info.plane_id = str(_layers().get(id, {}).get("plane_id", ""))
-		info.attached = _attached(id)
 		info.slot_shape = _slot_shape(id)
 		info.slot_material = "fitted_card_socket" if id in ["language","group","topics"] else "pencil_axes"
 		info.pin_style = ""
@@ -747,7 +729,7 @@ func inspection() -> Dictionary:
 			info.axis_point = _axis_point(id)
 			info.axis_origin = _axis_origin(id)
 			info.known = bool(_layers().get(id, {}).get("known", false)) if id == "stance" else true
-			info.current_marker_visible = info.attached and info.known
+			info.current_marker_visible = info.known
 			info.origin_marker_shape = "hollow_circle"
 			info.current_marker_shape = "solid_circle" if info.known else "none"
 			info.target = _target() if id == "pragmatic" else ""
@@ -757,7 +739,7 @@ func inspection() -> Dictionary:
 		layers[id] = info
 		visible.append(id)
 	var selected: Dictionary = layers.get(_layer, {})
-	return {"layout_mode":"assembly_board", "layout_version":16, "layers":layers, "visible_layers":visible, "section_icon_count":_heading_icons.size(), "column_rules":_column_rules(), "instruction_labels_visible":false, "depth_control_visible":false, "subviewport_count":0, "displayed_cells":5, "active_plane_count":LAYERS.filter(func(id): return _attached(str(id))).size(), "layer":_layer, "plane_id":selected.get("plane_id", ""), "attached":_attached(_layer), "depth":_depth, "visual_depth":_depth, "plane_depth":_depth, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":-1, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "brain_texture":"", "image_opacity":0.0, "single_brain":false, "brain_image_count":0, "panel_background_count":0, "brain_rect":Rect2(), "brain_source_rect":Rect2(), "topic_pin_style":"none", "plane_only":false, "gesture":_held, "gesture_layer":_held_layer, "native_detach_enabled":false,"focus_unit":"block","drag_threshold":DRAG_THRESHOLD,"resource_dragging":_resource_dragging}
+	return {"layout_mode":"assembly_board", "layout_version":17, "layers":layers, "visible_layers":visible, "section_icon_count":_heading_icons.size(), "column_rules":_column_rules(), "instruction_labels_visible":false, "subviewport_count":0, "displayed_cells":5, "layer":_layer, "slot_shape":selected.get("slot_shape", ""), "slot_shapes":"physical_card_silhouettes", "slot_centres":selected.get("slot_centres", []), "slot_quads":selected.get("slot_quads", []), "slot_pickup_rects":selected.get("slot_pickup_rects", []), "axis_point":selected.get("axis_point", Vector2.ZERO), "axis_origin":selected.get("axis_origin", Vector2.ZERO), "axis_drag":_axis_drag, "axis":-1, "interaction_enabled":_enabled, "selection":selected_info(), "action_count":_action_count, "slot_rejections":_slot_rejections, "resource_graphics":_resource_graphics.keys(), "panel_background_count":0, "topic_pin_style":"none", "gesture":_held, "gesture_layer":_held_layer, "focus_unit":"block", "drag_threshold":DRAG_THRESHOLD, "resource_dragging":_resource_dragging}
 
 func _viewport_rect(rect: Rect2) -> Rect2:
 	var transform := get_global_transform_with_canvas()
@@ -777,7 +759,7 @@ func hover_info(viewport_point: Vector2) -> Dictionary:
 		return {"kind":"topic" if layer == "topics" else layer, "title":TITLES[layer], "hover_description":copy.description, "hover_note":copy.note}
 	var index := _slot_at(layer,point)
 	var data: Dictionary = _layers().get(layer,{})
-	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":"","attached":_attached(layer)}
+	var result := {"layer":layer,"slot":index,"title":TITLES[layer],"text":""}
 	if layer in ["stance","pragmatic"]:
 		result.kind = layer
 		result.text = ""

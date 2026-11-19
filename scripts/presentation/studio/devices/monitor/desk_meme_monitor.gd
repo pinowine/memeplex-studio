@@ -166,7 +166,6 @@ func _sync_language(state: Dictionary) -> void:
 	for raw: Dictionary in state.get("lineage", []):
 		var profile: Dictionary = raw.get("flow_profile", {})
 		if language.is_empty() or language not in profile.get("language_ids", [profile.get("language_id", "")]): continue
-		if not bool(profile.get("context_layer_attachment", {}).get("language", true)): continue
 		var metrics := Details.monitor_metrics(state, str(raw.id))
 		spread += float(metrics.spread)
 		deviation += float(metrics.deviation) * float(metrics.spread)

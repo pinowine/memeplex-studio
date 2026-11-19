@@ -3,10 +3,10 @@ extends RefCounted
 const Metrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
 const Deviation = preload("res://scripts/gameplay/competition/meme_deviation.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
-const SEMANTIC_PROFILE_FIELDS := ["language_id", "language_ids", "group_id", "group_ids", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment"]
+const SEMANTIC_PROFILE_FIELDS := ["language_id", "language_ids", "group_id", "group_ids", "topic_ids", "political_known", "political_position", "pragmatic_position"]
 const PATCH_SCALAR_FIELDS := ["language_access", "recognizability", "context_dependency", "remix_cost"]
 const DRAFT_CONTENT_FIELDS := ["slots", "module_patch_record", "context_layer_record", "community_changes", "community_rephrase", "confluence_contents"]
-const CONTENT_FIELDS := ["id", "family_id", "parent_ids", "origin_ids", "creator", "owned", "controlled", "text", "meaning", "meaning_id", "language_versions", "kernel_id", "preset_id", "source_presets", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "patch_ids", "flow_draft", "flow_profile", "source_event", "mutation_definition_id", "mutation_patch_id", "translation_version", "confluence_source_id", "deviation_effect_deltas", "deviation_patch_effects", "live_author_edit"]
+const CONTENT_FIELDS := ["id", "family_id", "parent_ids", "origin_ids", "creator", "owned", "controlled", "text", "meaning", "meaning_id", "language_versions", "kernel_id", "preset_id", "source_presets", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "patch_ids", "flow_draft", "flow_profile", "source_event", "mutation_definition_id", "mutation_patch_id", "translation_version", "confluence_source_id", "deviation_effect_deltas", "deviation_patch_effects", "live_author_edit"]
 var _simulation: RefCounted
 
 func _init(simulation: RefCounted) -> void:
@@ -27,7 +27,7 @@ static func revision_snapshot(raw: Dictionary) -> Dictionary:
 static func semantic_snapshot(raw: Dictionary) -> Dictionary:
 	var visible := content(raw)
 	var result := {}
-	for field: String in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment"]:
+	for field: String in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position"]:
 		if visible.has(field): result[field] = visible[field].duplicate(true) if visible[field] is Dictionary or visible[field] is Array else visible[field]
 	for field: String in ["flow_draft", "flow_profile"]:
 		var source: Dictionary = visible.get(field, {})
@@ -44,7 +44,7 @@ static func semantic_snapshot(raw: Dictionary) -> Dictionary:
 static func rollback_content(anchor: Dictionary, candidate: Dictionary) -> Dictionary:
 	var visible := content(candidate)
 	var result := {}
-	for field: String in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment"]:
+	for field: String in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position"]:
 		if anchor.has(field): result[field] = anchor[field].duplicate(true) if anchor[field] is Dictionary or anchor[field] is Array else anchor[field]
 	for field: String in ["flow_draft", "flow_profile"]:
 		var profile: Dictionary = visible.get(field, {}).duplicate(true)

@@ -545,7 +545,7 @@ func _validate_meme_lifecycle(data: Dictionary, variants_by_id: Dictionary) -> P
 			continue
 		var effective: Dictionary = variant.get("effective_content", {})
 		for field: String in effective:
-			if field not in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "context_layer_attachment", "flow_draft", "flow_profile", "creator", "owned", "controlled", "semantic_distance"]:
+			if field not in ["text", "meaning", "meaning_id", "language_versions", "patch_ids", "language_id", "topic_ids", "political_known", "political_position", "pragmatic_position", "flow_draft", "flow_profile", "creator", "owned", "controlled", "semantic_distance"]:
 				errors.append("Saved effect overrides cannot replace identity or history: " + field)
 		if variant.has("live_author_edit"):
 			var expected := _recorded_author_content(variant, variant.live_author_edit, data)
@@ -849,11 +849,6 @@ func _validate_live_profile(profile: Dictionary, errors: PackedStringArray) -> v
 	if profile.get("topic_ids") is Array:
 		for topic: Variant in profile.topic_ids:
 			if topic not in catalog.topics: errors.append("Live propagation topic is not registered")
-	if not profile.get("context_layer_attachment") is Dictionary or profile.context_layer_attachment.size() != 5:
-		errors.append("Live context attachment must describe all five layers")
-	else:
-		for layer: String in ["language", "group", "topics", "stance", "pragmatic"]:
-			if not profile.context_layer_attachment.get(layer) is bool: errors.append("Live context attachments must be boolean")
 
 func _validate_preset_sources(entry: Dictionary, label: String, errors: PackedStringArray) -> void:
 	if not entry.get("preset_id", "") is String or not entry.get("source_presets") is Array:

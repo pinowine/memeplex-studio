@@ -142,12 +142,6 @@ func _entry_title(kind: String, value: String) -> String:
 				if str(entry.get("kind", "")) == kind and str(entry.get("value", "")) == value: return DeskLocalization.text(str(entry.get("title", value)))
 	return value
 
-func _attachment_label(layer: String, text: String) -> String:
-	var flags: Variant = _draft.get("context_layer_attachment", {})
-	if flags is Dictionary and flags.get(layer) is bool and not flags[layer]:
-		return text + DeskLocalization.text("LOC_DETACHED_INACTIVE_F53886E7")
-	return text
-
 func _context_labels() -> Dictionary:
 	var topics := PackedStringArray()
 	for id: String in _draft.get("topic_ids", []): topics.append(_entry_title("topic", id))
@@ -159,7 +153,7 @@ func _context_labels() -> Dictionary:
 		else: stance = DeskLocalization.text("LOC_REGISTERED_5F2F3886")
 	var target := str(_draft.get("target", "")).strip_edges()
 	if not _authored_target.is_empty() and target == _authored_target: target = DeskLocalization.text(target)
-	return {"language":_attachment_label("language", _entry_title("language", str(_draft.get("language_id", "")))), "group":_attachment_label("group", _entry_title("group", str(_draft.get("group_id", "")))), "topics":_attachment_label("topics", "、".join(topics) if not topics.is_empty() else DeskLocalization.text("LOC_NOT_INSTALLED_3F136C06")), "political_known":bool(_draft.get("political_known", false)), "stance":_attachment_label("stance", stance), "target":_attachment_label("pragmatic", target if not target.is_empty() else DeskLocalization.text("LOC_NO_TARGET_ENTERED_0397EF33"))}
+	return {"language":_entry_title("language", str(_draft.get("language_id", ""))), "group":_entry_title("group", str(_draft.get("group_id", ""))), "topics":"、".join(topics) if not topics.is_empty() else DeskLocalization.text("LOC_NOT_INSTALLED_3F136C06"), "political_known":bool(_draft.get("political_known", false)), "stance":stance, "target":target if not target.is_empty() else DeskLocalization.text("LOC_NO_TARGET_ENTERED_0397EF33")}
 
 func _change_text(row: Dictionary) -> String:
 	var delta := float(row.delta)

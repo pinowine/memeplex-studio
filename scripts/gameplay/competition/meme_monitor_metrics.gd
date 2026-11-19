@@ -67,7 +67,4 @@ static func _context_distance(before: Dictionary, after: Dictionary) -> float:
 	var known_after := bool(after.get("political_known", false))
 	distance += 1.0 if known_before != known_after else (_axis_distance(before.get("political_position", [0.0, 0.0]), after.get("political_position", [0.0, 0.0])) if known_before else 0.0)
 	distance += _axis_distance(before.get("pragmatic_position", [0.0, 0.0]), after.get("pragmatic_position", [0.0, 0.0]))
-	var attachment := 0.0
-	for layer: String in ["language", "group", "topics", "stance", "pragmatic"]:
-		if bool(before.get("context_layer_attachment", {}).get(layer, true)) != bool(after.get("context_layer_attachment", {}).get(layer, true)): attachment += 0.2
-	return (distance + attachment) / 6.0
+	return distance / 5.0

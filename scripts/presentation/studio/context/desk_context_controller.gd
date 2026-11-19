@@ -3,7 +3,6 @@ class_name DeskContextController
 extends RefCounted
 
 const LAYERS := ["language", "group", "topics", "stance", "pragmatic"]
-const DEPTHS := [0.1, 0.3, 0.5, 0.7, 0.9]
 
 var _prefix: String
 var _session := Crypto.new().generate_random_bytes(12).hex_encode()
@@ -20,7 +19,7 @@ static func resource(state: Dictionary, rules: MemeDesignRules, id: String) -> D
 
 static func can_install(state: Dictionary, rules: MemeDesignRules, layer: String, slot: int, packet: Dictionary) -> bool:
 	var actual: Dictionary = state.get("context_layers", {}).get(layer, {})
-	if layer not in ["language", "group", "topics"] or not bool(actual.get("attached", true)) or str(packet.get("type", "")) != "context_resource":
+	if layer not in ["language", "group", "topics"] or str(packet.get("type", "")) != "context_resource":
 		return false
 	var slots: Array = actual.get("slots", [])
 	var entry := resource(state, rules, str(packet.get("resource_id", "")))

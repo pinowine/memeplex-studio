@@ -327,9 +327,8 @@ static func _scene_sources(draft: Dictionary) -> Array[Dictionary]:
 
 static func _topics(draft: Dictionary) -> Array[String]:
 	var result: Array[String] = []
-	if _attached(draft,"topics"):
-		for value: Variant in draft.get("topic_ids",[]):
-			if str(value) not in result: result.append(str(value))
+	for value: Variant in draft.get("topic_ids",[]):
+		if str(value) not in result: result.append(str(value))
 	result.sort()
 	return result
 
@@ -341,7 +340,6 @@ static func _primary_group(draft: Dictionary) -> String:
 
 static func _values(draft: Dictionary, kind: String) -> Array[String]:
 	var result: Array[String] = []
-	if not _attached(draft,kind): return result
 	for value: Variant in draft.get(kind+"_ids",[draft.get(kind+"_id","")]):
 		if not str(value).is_empty() and str(value) not in result: result.append(str(value))
 	return result
@@ -358,10 +356,7 @@ static func _modules(values: Array) -> Array[String]:
 	return result
 
 static func _meaning_attached(draft: Dictionary, field: String) -> bool:
-	return _attached(draft,"pragmatic") if field == "pragmatic_position" else _attached(draft,"stance") and bool(draft.get("political_known",false))
-
-static func _attached(draft: Dictionary, layer: String) -> bool:
-	return bool(draft.get("context_layer_attachment",{}).get(layer,true))
+	return true if field == "pragmatic_position" else bool(draft.get("political_known",false))
 
 static func _position(value: Variant) -> Vector2:
 	return value if value is Vector2 else Vector2(float(value[0]),float(value[1]))

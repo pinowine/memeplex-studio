@@ -28,11 +28,8 @@ static func semantic_signature(raw: Dictionary) -> String:
 	var source: Dictionary = visible.get("flow_profile", visible.get("flow_draft", {}))
 	var semantic: Dictionary = {}
 	for field: String in ["text", "meaning", "meaning_id", "language_versions"]: semantic[field] = visible.get(field, "")
-	var attachment: Dictionary = source.get("context_layer_attachment", {})
 	for layer: String in ["language", "group", "topics", "stance", "pragmatic"]:
-		var attached: bool = bool(attachment.get(layer, true))
-		semantic[layer] = {"attached":attached}
-		if not attached: continue
+		semantic[layer] = {}
 		if layer in ["language", "group", "topics"]:
 			var field: String = "topic_ids" if layer == "topics" else layer + "_ids"
 			var values: Array = Array(source.get(field, [] if layer == "topics" else [str(source.get(layer + "_id", ""))])).duplicate()

@@ -550,7 +550,7 @@ func _build_culture() -> void:
 	_context_slice.resource_detached.connect(func(record: Dictionary,point: Vector2) -> void:
 		material_tabletop_requested.emit(str(record.get("kind","")),str(record.get("id","")))
 		context_resource_detached.emit(record,point))
-	_context_title = _label(page,DeskLocalization.source("LOC_CORTEX_LANGUAGE_0D41EBCC"),"ContextLayerTitle",20)
+	_context_title = _label(page,DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"),"ContextLayerTitle",20)
 	_context_details = RichTextLabel.new()
 	_context_details.name = "ContextLayerDetails"
 	Typography.apply_control(_context_details, "hint", true)
@@ -1366,9 +1366,6 @@ func _sort_expression_details() -> void:
 
 
 func _context_values(kind: String) -> PackedStringArray:
-	var layer := "topics" if kind == "topic" else kind
-	if not bool(_draft.get("context_layer_attachment", {}).get(layer, true)):
-		return PackedStringArray([DeskLocalization.text("LOC_WB_UNATTACHED")])
 	var ids := Array(_draft.get(kind + "_ids", [_draft.get(kind + "_id", "")]))
 	var names := PackedStringArray()
 	for id: String in ids:
@@ -1379,8 +1376,6 @@ func _context_values(kind: String) -> PackedStringArray:
 
 
 func _axis_values(kind: String, field: String) -> PackedStringArray:
-	if not bool(_draft.get("context_layer_attachment", {}).get(kind, true)):
-		return PackedStringArray([DeskLocalization.text("LOC_WB_UNATTACHED")])
 	if kind == "stance" and not bool(_draft.get("political_known", false)):
 		return PackedStringArray([DeskLocalization.text("LOC_WB_UNSPECIFIED")])
 	var value: Variant = _draft.get(field, Vector2.ZERO)
