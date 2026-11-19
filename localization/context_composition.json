@@ -752,7 +752,7 @@
   "LOC_CONTEXT_COMPOSE_B_SUBJECT_NOUN": {
     "source": "%s里拿%s的老经验压人的话",
     "zh_CN": "%s谈%s时拿老经验压人的话",
-    "en": "a lecture among %s using old experience of %s to talk down to others"
+    "en": "old-timers among %s pulling rank over %s"
   },
   "LOC_CONTEXT_COMPOSE_DETACHED_TOPICS": {
     "source": "手头正在忙的事情",

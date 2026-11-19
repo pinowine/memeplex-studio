@@ -2,7 +2,7 @@
   "LOC_RECEIPT_CONTEXT_STANCE_PURPOSE": {
     "source": "立场描述表达对自由与威权、平等与等级的倾向。",
     "zh_CN": "看这段话在自由与威权、平等与等级之间往哪头偏。",
-    "en": "Stance describes where an expression lies between freedom and authority, and between equality and hierarchy."
+    "en": "Shows which way the line leans between liberty and authority, and between equality and hierarchy."
   },
   "LOC_RECEIPT_CONTEXT_STANCE_NOTE": {
     "source": "“人是天生的政治动物。”\n亚里士多德《政治学》第一卷第二章",
@@ -12,7 +12,7 @@
   "LOC_RECEIPT_CONTEXT_PRAGMATIC_PURPOSE": {
     "source": "语用描述表达是真诚还是反讽，以及对所谈对象是支持还是反对。",
     "zh_CN": "看说话的人是真心实意还是阴阳怪气，到底在帮腔还是唱反调。",
-    "en": "Pragmatics describes whether an expression is sincere or ironic, and whether it supports or opposes its subject."
+    "en": "Shows whether the speaker means it straight or tongue-in-cheek, and whether they're backing something up or tearing it down."
   },
   "LOC_RECEIPT_CONTEXT_PRAGMATIC_NOTE": {
     "source": "“一个词的意义就是它在语言中的用法。”\n路德维希·维特根斯坦《哲学研究》§43（1953）",
@@ -43,7 +43,7 @@
   "LOC_RECEIPT_MONITOR_PURPOSE": {
     "source": "追踪模因点数的收支，以及可用的意识形态和语用资源。",
     "zh_CN": "查看手头能用的 Meme 点数、立场点数和语用点数。本局头一回有人采用你的模因可得 20 Meme；往后采用的人多了，或传到更多国家，还会继续进账。",
-    "en": "Shows your available Meme, stance and pragmatics points. The first person to adopt your meme in this run earns you 20 Meme. Growth in adopters or spread to more countries can earn further points."
+    "en": "Check the Meme, stance and pragmatics points you have on hand. The first adopter in this run brings in 20 Meme, and growing your audience or reaching new countries keeps points coming."
   },
   "LOC_RECEIPT_MONITOR_NOTE": {
     "source": "屏幕泛着绿光，数字在里面轻轻跳了一下。那一点变化，够你盯上很久。",
@@ -103,17 +103,17 @@
   "LOC_RECEIPT_EDIT_PURPOSE": {
     "source": "查看基模、装配表达补丁，辨认成品的说法和含义。",
     "zh_CN": "查看基模结构、夹装表达补丁，对照成品最后拼出来的说法和意思。",
-    "en": "Shows the base meme, fits expression patches, and reveals what the finished version says and means."
+    "en": "Inspect the base meme's structure, clip on expression patches and check what the finished line says and means."
   },
   "LOC_RECEIPT_EDIT_NOTE": {
     "source": "铅笔还搁在纸边。有几个词刚刚换过位置，整句话已经不太像昨天。",
     "zh_CN": "“写完后至少看两遍，竭力将可有可无的字、句、段删去，毫不足惜。”\n鲁迅《答北斗杂志社问》（1931）",
-    "en": "“the people crazy enough to think they can change the world are the ones who do.”\nApple, 50 Years of Thinking Different (letter)"
+    "en": "“Read it through at least twice after finishing, and ruthlessly strike out every dispensable word, sentence, and paragraph without regret.”\nLu Xun, In Reply to The Dipper Magazine (1931)"
   },
   "LOC_RECEIPT_CULTIVATE_PURPOSE": {
     "source": "组合语言、群体和话题，调整模因的立场与语气。",
     "zh_CN": "搭配语言、群体和话题卡，拧一拧模因的立场和说话腔调。",
-    "en": "Combines languages, groups, and topics, and shapes the meme's stance and tone."
+    "en": "Pair up language, audience and topic cards, and dial in your meme's stance and tone of voice."
   },
   "LOC_RECEIPT_CULTIVATE_NOTE": {
     "source": "一张空椅子，一句没说完的话。先有人坐下来，意思才慢慢长出来。",
@@ -123,7 +123,7 @@
   "LOC_RECEIPT_SPREAD_PURPOSE": {
     "source": "解锁传播能力，让模因更容易被接触、转述和再创作。",
     "zh_CN": "点亮传播能力树，决定模因怎么被人刷到、转述和二创。",
-    "en": "Unlocks abilities that help people encounter, repeat, and remix your meme."
+    "en": "Light up the ability tree to shape how people stumble across, retell and remix your meme."
   },
   "LOC_RECEIPT_SPREAD_NOTE": {
     "source": "隔壁的声音已经传到街角。你的话还在门口，等一阵顺路的风。",
@@ -133,82 +133,82 @@
   "LOC_NEURON_SPEAKER": {
     "source": "发出表达、持有某种态度的一方。",
     "zh_CN": "开口说话、亮出态度的一方。",
-    "en": "The voice expressing a view or taking a stance."
+    "en": "The side opening its mouth and stating an attitude."
   },
   "LOC_NEURON_VISIBLE_SITUATION": {
     "source": "表达所面对的事实或可见情境。",
     "zh_CN": "摆在眼前的事实或处境。",
-    "en": "The facts or visible situation the expression responds to."
+    "en": "The plain fact or situation sitting right in front of everyone."
   },
   "LOC_NEURON_CLAIM": {
     "source": "表达的核心表态，与眼前情境形成对照。",
     "zh_CN": "核心表态，跟眼前的处境摆在一块儿拉出反差。",
-    "en": "The central claim, set against the visible situation."
+    "en": "The core remark, set beside the situation in front of it for contrast."
   },
   "LOC_NEURON_ROLE_A": {
     "source": "关系中的一方。",
     "zh_CN": "摆在台面上的一方。",
-    "en": "One side of the relationship."
+    "en": "One side laid out on the table."
   },
   "LOC_NEURON_ROLE_B": {
     "source": "关系中的另一方。",
     "zh_CN": "跟它对照的另一方。",
-    "en": "The other side of the relationship."
+    "en": "The other side set next to it for comparison."
   },
   "LOC_NEURON_RELATION": {
     "source": "表达的核心，说明两方或两个群体之间的关系。",
     "zh_CN": "挑明这两边到底是什么关系。",
-    "en": "The core expression of the relationship between two sides or groups."
+    "en": "Spells out where the two sides stand toward each other."
   },
   "LOC_NEURON_TRIGGER": {
     "source": "引发参与和回应的起点。",
     "zh_CN": "勾人进来接话或跟风的由头。",
-    "en": "The starting point that invites participation and responses."
+    "en": "The hook that pulls people in to reply or follow along."
   },
   "LOC_NEURON_ACTION": {
     "source": "参与者可以模仿、重复或接续的动作。",
     "zh_CN": "别人能照着学、复读或往下续的固定动作。",
-    "en": "An action participants can imitate, repeat or continue."
+    "en": "A repeatable move others can copy, echo or carry forward."
   },
   "LOC_NEURON_RESPONSE_AND_EXIT": {
     "source": "其他人如何回应，以及参与何时结束。",
     "zh_CN": "旁人怎么接茬，又在什么时候散场。",
-    "en": "How others respond and when participation ends."
+    "en": "How bystanders chime in, and when the crowd calls it a wrap."
   },
   "LOC_NEURON_INVARIANT_TRACE": {
     "source": "改写后依然保留、让表达可被认出的痕迹。",
     "zh_CN": "怎么改写都留着的标志性尾巴，让人一眼认出原梗。",
-    "en": "A recognizable trace retained through rewrites."
+    "en": "The telltale signature that survives rewrites so people spot the original joke at a glance."
   },
   "LOC_NEURON_INSIDER_CONTEXT": {
     "source": "让圈内人读懂表达的共同经验和背景。",
     "zh_CN": "混过同一个圈子才秒懂的共同经历和背景。",
-    "en": "The shared experience and background that make the expression legible to insiders."
+    "en": "Shared history and background that only regulars from the same circle catch right away."
   },
   "LOC_NEURON_RECOGNITION_RULE": {
     "source": "判断谁能识别表达、凭什么识别的规则。",
     "zh_CN": "谁能听懂这句暗号，又凭哪处细节对上号。",
-    "en": "The rule defining who recognizes the expression and on what basis."
+    "en": "Who catches the signal, and which small detail tips them off."
   },
   "LOC_NEURON_PREMISE": {
     "source": "共同想象的世界以此为前提。",
     "zh_CN": "大伙儿接着往下编故事时默认成立的前提。",
-    "en": "The premise of the shared imaginary world."
+    "en": "The starting assumption everyone accepts before adding to the story."
   },
   "LOC_NEURON_SHARED_RULE": {
     "source": "所有参与者都需要保留的共同规则。",
     "zh_CN": "所有参与接龙的人都默认遵守的底线设定。",
-    "en": "The shared rule every participant preserves."
+    "en": "The ground rule everyone joining the chain keeps intact."
   },
   "LOC_NEURON_OPEN_GAP": {
     "source": "留给其他人继续补充和改写的空间。",
     "zh_CN": "特意留出来的空白，等后来的人往里填新花样。",
-    "en": "Room for others to contribute and rewrite."
+    "en": "Blank space left on purpose for the next person to fill in."
   },
   "LOC_NEURON_PARENT_DELTA": {
     "source": "相对父版本 %s：",
     "zh_CN": "相比上一版 %s：",
-    "en": "Compared with parent %s:"
+    "en": "Compared with previous version %s:"
   },
   "LOC_NEURON_PATCH_ADDED": {
     "source": "新增补丁：%s",
@@ -228,17 +228,17 @@
   "LOC_NEURON_PATCH_UNCHANGED": {
     "source": "补丁模块未改变。",
     "zh_CN": "补丁没有变动。",
-    "en": "Patches are unchanged."
+    "en": "No change to patches."
   },
   "LOC_NEURON_PARTS_CHANGED": {
     "source": "改变的表达组分：%s",
     "zh_CN": "改动的句子部分：%s",
-    "en": "Changed expression components: %s"
+    "en": "Changed parts of the line: %s"
   },
   "LOC_NEURON_PARENT_UNAVAILABLE": {
     "source": "缺少父版本记录，无法比较模块变化。",
     "zh_CN": "找不到上一版的记录，没法比对补丁改了哪里。",
-    "en": "The parent record is unavailable, so module changes cannot be compared."
+    "en": "Can't find the previous version's record, so patch changes can't be compared."
   },
   "LOC_LOG_RECEIPT_HEADING": {
     "source": "运行小票",

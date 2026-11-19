@@ -17,162 +17,162 @@
   "LOC_RECEIPT_CARD_GROUP_COMMUTERS": {
     "source": "一群需要定时上班打卡、下班打卡、请假审批的成年人。",
     "zh_CN": "每天掐着点上下班打卡、请天假还得层层报批的上班族。",
-    "en": "Adults who must clock in and out at set times and obtain approval to take leave."
+    "en": "Office workers clocking in and out on the dot every day, who need three signatures just to take a day off."
   },
   "LOC_RECEIPT_CARD_GROUP_STUDENTS": {
     "source": "一群日常围着课程、作业和考试安排生活的人。",
     "zh_CN": "日子被课表、作业和一场接一场的考试排满的在校生。",
-    "en": "People whose daily lives revolve around classes, assignments and exams."
+    "en": "Students whose days are packed wall to wall with timetables, homework and one exam after another."
   },
   "LOC_RECEIPT_CARD_GROUP_CULTURE_FANS": {
     "source": "一群因电影、音乐或其他文化爱好聚在一起的人，常常讨论作品、交流收藏。",
     "zh_CN": "扎堆在城市里追新片、看演出、刷网络热帖的文化常客。",
-    "en": "People enthusiastic about internet and urban culture, often concentrated in more economically developed urban areas."
+    "en": "City regulars crowding into premieres, live shows and fast-moving online threads."
   },
   "LOC_RECEIPT_CARD_TOPIC_POLICY": {
     "source": "公共事务怎么决定、规则由谁制定，以及这些决定如何影响日常生活。",
     "zh_CN": "公共事务怎么拍板、由谁定调，最后又怎么落到普通人头上。",
-    "en": "How public decisions are made, who sets the rules and how those decisions affect daily life."
+    "en": "How public decisions get made, who sets the tone and how it all lands on ordinary people."
   },
   "LOC_RECEIPT_CARD_TOPIC_COST_OF_LIVING": {
     "source": "维持日常生活所需的开销，包括住房、吃饭和出行。",
     "zh_CN": "房租、菜价和车费，每个月睁开眼就得往外掏的日常开销。",
-    "en": "The expense of everyday life, including housing, food and travel."
+    "en": "Rent, groceries and fares: the everyday bills waiting the moment you open your eyes each month."
   },
   "LOC_RECEIPT_CARD_TOPIC_WORK": {
     "source": "人们为了谋生或完成职责付出的劳动，以及工作中的待遇与关系。",
     "zh_CN": "上班谋生这档子事，连同工时、薪水和办公室里的人情拉扯。",
-    "en": "The work people do to earn a living or fulfil their duties, along with their working conditions and relationships."
+    "en": "Earning a living on the clock, along with hours, paychecks and the tug-of-war of office politics."
   },
   "LOC_RECEIPT_CARD_TOPIC_PLATFORM_TOOLS": {
     "source": "人们发布、查找和分享内容时使用的平台与工具。",
     "zh_CN": "发帖、搜东西、转消息离不开的各路网站和软件工具。",
-    "en": "The platforms and tools people use to publish, find and share content."
+    "en": "The websites and apps people rely on to post, search and pass news around."
   },
   "LOC_RECEIPT_CARD_TOPIC_SPORT": {
     "source": "围绕体育运动、比赛和运动员的活动与讨论。",
     "zh_CN": "赛场上的输赢、裁判的哨子，还有散场后吵不完的复盘。",
-    "en": "Activities and conversations about sports, competitions and athletes."
+    "en": "Wins and losses on the pitch, the referee's whistle and the post-match arguments that never end."
   },
   "LOC_RECEIPT_CARD_TOPIC_EDUCATION": {
     "source": "人们学习知识和技能的过程，也包括学校里的教学、考试与升学。",
     "zh_CN": "课堂、刷题、升学，还有出了校门也躲不开的考证与进修。",
-    "en": "How people gain knowledge and skills, including teaching, exams and progression through school."
+    "en": "Classrooms, practice papers and entrance exams, plus the certificates and night courses waiting after graduation."
   },
   "LOC_RECEIPT_CARD_TOPIC_IDENTITY": {
     "source": "人们怎样看待自己属于哪个群体，以及别人用什么称呼辨认他们。",
     "zh_CN": "自认是哪路人，又乐不乐意被外人贴上那个标签。",
-    "en": "How people understand their group membership and the labels others use to identify them."
+    "en": "Which crowd you count yourself part of, and whether you're happy wearing the label outsiders pin on you."
   },
   "LOC_RECEIPT_CARD_TOPIC_LANGUAGE": {
     "source": "人们表达和理解意思的方式，包括词语、语气和不同语言之间的翻译。",
     "zh_CN": "用词、腔调、口音，还有一句话翻成外语后漏掉的那点意思。",
-    "en": "How people express and understand meaning through words, tone and translation between languages."
+    "en": "Word choice, cadence, accent and the bit of meaning that slips away when a line gets translated."
   },
   "LOC_RECEIPT_CARD_TOPIC_ENTERTAINMENT": {
     "source": "人们观看、聆听或参与的文化娱乐活动，例如电影、音乐和演出。",
     "zh_CN": "电影、新歌、游戏和演出，大伙儿拿来消遣解闷的文娱谈资。",
-    "en": "Cultural and leisure activities people watch, listen to or take part in, such as films, music and performances."
+    "en": "Films, new songs, games and live shows: the pastimes people lean on to unwind and talk rubbish."
   },
   "LOC_RECEIPT_CARD_TOPIC_ARCHIVE": {
     "source": "为以后查阅而保存的文字、影像和其他记录，也包括整理这些记录的工作。",
     "zh_CN": "怕以后死无对证而存下来的旧帖、截图、录像和老文件。",
-    "en": "Writing, images and other records kept for future reference, along with the work of organising them."
+    "en": "Old posts, screenshots, recordings and files squirreled away so nobody can pretend it never happened."
   },
   "LOC_RECEIPT_CARD_TOPIC_TRUST": {
     "source": "相信一个人、一种说法或一份信息可靠，并愿意据此作判断。",
     "zh_CN": "网上飘过来的话到底有几分真，说话的人又值不值得信。",
-    "en": "Belief that a person, a claim or a piece of information is reliable enough to base a judgement on."
+    "en": "How much truth there is in something floating around online, and whether the person saying it is worth believing."
   },
   "LOC_RECEIPT_CARD_TOPIC_COMMUNITY": {
     "source": "因共同生活的地方或共同兴趣而保持来往的人群，以及他们之间的关系。",
     "zh_CN": "住一条街或者混同一个圈子攒下来的熟人关系与群聊日常。",
-    "en": "People who keep in touch through a shared place or interest, and the relationships among them."
+    "en": "Acquaintances and group-chat regulars built up from sharing the same street or hanging around the same circle."
   },
   "LOC_RECEIPT_CARD_MODULE_STANCE": {
     "source": "用问句表达已经有答案的态度，往往是在赞叹、质疑或讽刺。",
     "zh_CN": "明知故问地把话反着抛出去，不求回答，只管表态或刺人一下。",
-    "en": "A question whose answer is already implied, often expressing admiration, doubt or mockery."
+    "en": "Throwing out a question when you already know the answer, just to make your point or needle someone."
   },
   "LOC_RECEIPT_CARD_MODULE_RELATION": {
     "source": "把不同人物或处境放在一起，借相同处和差别说清想法。",
     "zh_CN": "把两拨人或前后两副光景摆一块儿比，高下和落差不用多解释。",
-    "en": "Placing people or situations side by side to make a point through their similarities and differences."
+    "en": "Setting two crowds or before-and-after scenes side by side so the gap speaks for itself."
   },
   "LOC_RECEIPT_CARD_MODULE_RITUAL": {
     "source": "结束一段对话或表演，也让参与者可以选择不加入或先离开。",
     "zh_CN": "给聊太久的话题递个台阶，先把话说完，体面关麦走人。",
-    "en": "Ending a conversation or performance while allowing people to sit it out or leave."
+    "en": "Offering an off-ramp when a thread has dragged on long enough: say your last piece and bow out cleanly."
   },
   "LOC_RECEIPT_CARD_MODULE_BOUNDARY": {
     "source": "交代一件事为什么发生，或一句话为什么这样说。",
     "zh_CN": "把前因后果或话外音摊开讲清，免得外人听个半截瞎猜。",
-    "en": "An account of why something happened or why someone chose to say it that way."
+    "en": "Spelling out the backstory or subtext in the open so outsiders don't guess from half a sentence."
   },
   "LOC_RECEIPT_CARD_MODULE_SHARED_WORLD": {
     "source": "在一段话里留下接话的空间，让别人也能讲自己的经历或想法。",
     "zh_CN": "话只说七分，故意留个活口引底下的人把自己的遭遇续上来。",
-    "en": "Leaving room in a conversation for others to add their experiences or ideas."
+    "en": "Saying seven parts out of ten and leaving an open hook so people underneath chime in with their own stories."
   },
   "LOC_RECEIPT_CARD_FREEDOM": {
     "source": "看重个人按自己意愿选择生活、表达意见和行动的权利。",
     "zh_CN": "自己想怎么活、怎么开口说话，最好少来别人指手画脚。",
-    "en": "Valuing a person's right to choose how to live, speak and act."
+    "en": "Living and speaking on your own terms, with as few outsiders bossing you around as possible."
   },
   "LOC_RECEIPT_CARD_AUTHORITY": {
     "source": "认可规则制定者或组织的指挥权，重视服从共同秩序。",
     "zh_CN": "信奉上面定调、底下照办，觉得有统一的秩序才不会乱套。",
-    "en": "Accepting the authority of rule-makers or organisations and valuing obedience to a shared order."
+    "en": "Trusting the people at the top to set the rules and everyone below to follow, convinced things fall apart without shared order."
   },
   "LOC_RECEIPT_CARD_EQUALITY": {
     "source": "认为每个人都应得到同等尊重，权利和机会不应由身份高低决定。",
     "zh_CN": "觉得谁也不比谁高一等，机会和体面不该按身份排座次。",
-    "en": "The belief that everyone deserves equal respect and that status should not determine rights or opportunities."
+    "en": "Believing nobody ranks above anyone else and that fair shots and basic dignity shouldn't depend on status."
   },
   "LOC_RECEIPT_CARD_HIERARCHY": {
     "source": "认可身份、资历或成就带来的高低次序，以及相应的权力和待遇差别。",
     "zh_CN": "认准资历、身份和本事就该分出个高低上下，各安其位。",
-    "en": "Accepting ranks based on status, seniority or achievement, with corresponding differences in power and treatment."
+    "en": "Taking it as given that seniority, credentials and ability sort people into higher and lower rungs, each in their proper place."
   },
   "LOC_RECEIPT_CARD_SINCERE": {
     "source": "说话人直接表达自己的真实想法，希望听的人按字面理解。",
     "zh_CN": "心里怎么想嘴上就怎么说，不绕弯子，盼着听的人照字面认账。",
-    "en": "Speaking one's true thoughts directly and expecting the listener to take the words at face value."
+    "en": "Saying straight out what's on your mind without games, hoping listeners take the words at face value."
   },
   "LOC_RECEIPT_CARD_IRONIC": {
     "source": "借字面意思与真实态度之间的反差表达想法，常带着调侃或讽刺。",
     "zh_CN": "正话反说，专门靠字面和真意之间的落差来调侃或刺人。",
-    "en": "Expressing a view through the contrast between literal words and the speaker's attitude, often with humour or sarcasm."
+    "en": "Saying the opposite of what you mean, using the gap between surface words and real intent to tease or sting."
   },
   "LOC_RECEIPT_CARD_SUPPORT": {
     "source": "对一个人、一种主张或一个行动表示认同，愿意站在这一边。",
     "zh_CN": "痛痛快快站到这一边，替认准的人或主张帮腔撑腰。",
-    "en": "Agreeing with a person, position or action and being willing to take that side."
+    "en": "Stepping squarely onto someone's side to back up a person or cause you believe in."
   },
   "LOC_RECEIPT_CARD_OPPOSITION": {
     "source": "对一个人、一种主张或一个行动持否定态度。",
     "zh_CN": "把不同意摆在明面上，专门冲着某个人或某种做法唱反调。",
-    "en": "Disagreement with a person, position or action."
+    "en": "Putting your disagreement out in the open, aimed straight at a person or practice you want to push back on."
   },
   "LOC_RECEIPT_STACK_LANGUAGE": {
     "source": "由共同词语和语法组成的表达方式，让使用同一种语言的人彼此理解。",
     "zh_CN": "决定你的模因说哪国话、能被哪片地方的人直接看懂。",
-    "en": "Shared words and grammar through which speakers of the same language understand one another."
+    "en": "Decides what language your meme speaks and which places can read it firsthand."
   },
   "LOC_RECEIPT_STACK_GROUP": {
     "source": "因生活经历、身份或兴趣相近而形成的人群。",
     "zh_CN": "处境、行当或脾气相投的一拨人，决定这话主要是说给谁听的。",
-    "en": "People grouped by similar experiences, identities or interests."
+    "en": "A crowd sharing similar routines, jobs or temperaments, deciding who this line is mainly spoken to."
   },
   "LOC_RECEIPT_STACK_TOPIC": {
     "source": "一段谈话或表达所围绕的事情，例如工作、教育或日常开销。",
     "zh_CN": "大家聚在一块儿正聊着的事，从上班上学到柴米油盐都在里头。",
-    "en": "The subject of a conversation or expression, such as work, education or everyday expenses."
+    "en": "What people are gathered around talking about right now, from school and work to the price of dinner."
   },
   "LOC_RECEIPT_STACK_MODULE": {
     "source": "表达补丁包含反问、对照、释义、接话和退出等说话方式。",
     "zh_CN": "给基模换腔调的改装件，反问、对比、补解释或是留活口都靠它。",
-    "en": "Expression patches represent ways of speaking, including rhetorical questions, comparisons, explanations, continuations and exits."
+    "en": "Add-ons that reshape how a base meme talks: rhetorical questions, side-by-side contrasts, extra context or an open prompt."
   },
   "LOC_RECEIPT_CARD_NOTE_LANGUAGE_NINGHUA": {
     "source": "*一页描红纸*，笔画压得很深。纸背还能摸到最后一个字。",
@@ -242,7 +242,7 @@
   "LOC_RECEIPT_CARD_NOTE_TOPIC_LANGUAGE": {
     "source": "*双语菜单*上多了一行铅笔字。两种语言都被纠正了。",
     "zh_CN": "“你把一条巴别鱼塞进耳朵里，就能立刻听懂任何语言说的任何话。”\n道格拉斯·亚当斯《银河系漫游指南》第六章（1979）",
-    "en": "“be conservative in what you do, be liberal in what you accept from others.”\nTransmission Control Protocol, RFC 793, Jon Postel"
+    "en": "“if you stick a Babel fish in your ear you can instantly understand anything said to you in any form of language.”\nDouglas Adams, The Hitchhiker’s Guide to the Galaxy, chapter 6 (1979)"
   },
   "LOC_RECEIPT_CARD_NOTE_TOPIC_ENTERTAINMENT": {
     "source": "*电影票*被折成小方块，放映时间磨没了，背面的剧透还在。",
@@ -262,7 +262,7 @@
   "LOC_RECEIPT_CARD_NOTE_TOPIC_COMMUNITY": {
     "source": "*寻猫启事*的角落多了一行字：找到了，谢谢各位。胶带还粘得很牢。",
     "zh_CN": "“棍棒把坏东西挡在外面，绳子把好东西连在一起。”\n安部公房《绳》，游戏《死亡搁浅》开篇引文（2019）",
-    "en": "“Rough consensus and running code”\nIntroduction to the IETF, Internet Engineering Task Force"
+    "en": "“The stick to keep the bad away, the rope to bring the good close.”\nKobo Abe, Rope, opening epigraph to Death Stranding (2019)"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_STANCE": {
     "source": "纸上*一个问号*被描得很粗，下面擦剩了半个感叹号。",
@@ -277,12 +277,12 @@
   "LOC_RECEIPT_CARD_NOTE_MODULE_RITUAL": {
     "source": "*一张离席留言*，字迹写到纸边就停了。椅子底下还压着半截纸。",
     "zh_CN": "“假如再也见不到你，祝你早安，午安，晚安。”\n电影《楚门的世界》（1998）",
-    "en": "“i’m lovin’ it”\nMcDonald’s: i’m lovin’ it campaign"
+    "en": "“In case I don’t see ya, good afternoon, good evening, and good night!”\nThe Truman Show (1998)"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_BOUNDARY": {
     "source": "*薄薄的描图纸*盖在原稿上。铅笔批注很密，末尾沾了一点橡皮屑。",
     "zh_CN": "“剖析幽默就像解剖青蛙，没几个人感兴趣，青蛙还会死掉。”\nE. B. 怀特《幽默的剖析》（1941）",
-    "en": "“he could be any one of us...”\nTeam Fortress 2: Meet the Spy, Valve"
+    "en": "“Analyzing humor is like dissecting a frog. Few people are interested and the frog dies of it.”\nE. B. White, Some Remarks on Humor (1941)"
   },
   "LOC_RECEIPT_CARD_NOTE_MODULE_SHARED_WORLD": {
     "source": "故事写到一半，纸边又粘上*一条纸*。新添的字迹换了个人。",
@@ -312,7 +312,7 @@
   "LOC_RECEIPT_CARD_NOTE_SINCERE": {
     "source": "*一张写歪了的明信片*。称呼改过两次，正文一字没涂。",
     "zh_CN": "“我们想得太多，感受得太少。”\n查理·卓别林《大独裁者》（1940）",
-    "en": "“Because I’m Worth It”\nL’Oréal Paris: Because I’m Worth It campaign"
+    "en": "“We think too much and feel too little.”\nCharlie Chaplin, The Great Dictator (1940)"
   },
   "LOC_RECEIPT_CARD_NOTE_IRONIC": {
     "source": "*剪下来的天气预报*写着晴。纸被雨淋透，太阳的图案还笑着。",
@@ -347,6 +347,6 @@
   "LOC_RECEIPT_STACK_NOTE_MODULE": {
     "source": "*剪下来的句子*码成一摞。最上面一条还粘着透明胶，边角有点卷。",
     "zh_CN": "“风格即人。”\n布封《论风格》，法兰西学术院入院演说（1753）",
-    "en": "“Make something people want.”\nY Combinator website motto"
+    "en": "“Style is the man himself.”\nComte de Buffon, Discourse on Style, Académie Française (1753)"
   }
 }

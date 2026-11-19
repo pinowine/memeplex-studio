@@ -7,7 +7,7 @@
   "LOC_WORLD_LANGUAGE_ALDEN_DESCRIPTION": {
     "source": "沿着航线和商路传播的语言，常从别处借来词语。简短的词序能交代事情，重音和惯用语又给同一句话添上不同意味。",
     "zh_CN": "沿着航线和商路传播的语言，常从别处借来词语。词序交代句中关系，重音和惯用语让同一句话有不同意味。",
-    "en": "A language carried along shipping lanes and trade routes, quick to borrow words. Word order carries much of its grammar; stress and idioms give the same sentence different shades of meaning."
+    "en": "A language carried along shipping lanes and trade routes, quick to borrow words from elsewhere. Word order shows how a sentence fits together, while stress and idioms give the same line different shades of meaning."
   },
   "LOC_WORLD_LANGUAGE_VERESK": {
     "source": "东陆语",
@@ -157,7 +157,7 @@
   "LOC_WORLD_GROUP_SERVICE_WORKERS_DESCRIPTION": {
     "source": "从开门营业忙到送走最后一位客人。排班、客流和顾客的评价会穿进他们下班后的聊天。",
     "zh_CN": "从开门营业忙到送走最后一位客人。排班、客流和顾客评价，也是下班后的话题。",
-    "en": "Their working day runs from opening time to the last customer. Rotas, busy periods and customer reviews follow them into conversations after work."
+    "en": "Busy from opening time until the last customer walks out. Shift rotas, foot traffic and customer reviews stay in their chats long after closing."
   },
   "LOC_WORLD_GROUP_HEALTH_WORKERS": {
     "source": "医护人员",
@@ -197,7 +197,7 @@
   "LOC_WORLD_GROUP_TECH_WORKERS_DESCRIPTION": {
     "source": "与设备、软件和技术系统打交道的人。工具更新得很快，故障、经验和招工消息在同行之间流转。",
     "zh_CN": "成天围着机器、代码和后台系统转的人。工具换代快，半夜的故障单、踩坑心得和招工风声总在同行群里打转。",
-    "en": "People working with equipment, software and technical systems. Tools change quickly; faults, practical advice and job leads circulate among peers."
+    "en": "People who spend their days around machines, code and backend systems. Tools turn over fast, and midnight fault tickets, hard-won fixes and hiring rumors stay in constant rotation across peer chats."
   },
   "LOC_WORLD_GROUP_RETIREES": {
     "source": "退休居民",
@@ -207,7 +207,7 @@
   "LOC_WORLD_GROUP_RETIREES_DESCRIPTION": {
     "source": "从固定工作中退下来，重新安排日常生活的人。有人照顾家人，有人参加社区活动，旧同事和邻居仍是重要的消息来源。",
     "zh_CN": "退下工作岗位后重新打理日子的人。带孙辈、赶早市或是去社区排练，老同事和街坊群依旧是他们最灵通的消息网。",
-    "en": "People rebuilding their routines after leaving regular work. Family care, community activities, former colleagues and neighbours keep their days connected."
+    "en": "People settling into a new rhythm after stepping away from regular jobs. Between minding grandkids, hitting morning markets and showing up for community rehearsals, old colleagues and neighborhood chats remain their fastest grapevine."
   },
   "LOC_WORLD_GROUP_DIASPORAS": {
     "source": "跨境社群",
@@ -217,7 +217,7 @@
   "LOC_WORLD_GROUP_DIASPORAS_DESCRIPTION": {
     "source": "在别处生活，同时与故乡保持往来的人。聊天群里的消息跨着时区，语言和习惯也在新生活里慢慢变化。",
     "zh_CN": "人在异乡落脚、心里还牵着老家的群体。亲友群里的消息总隔着时差，说话夹杂着两边的词，过日子的习惯也在慢慢磨合。",
-    "en": "People living elsewhere while keeping ties with home. Their group messages cross time zones, and their language and habits change with their new lives."
+    "en": "People putting down roots abroad with home still on their minds. Family chats run across time differences, sentences mix words from both sides, and everyday habits slowly adjust."
   },
   "LOC_WORLD_TOPIC_HOUSING": {
     "source": "住房",
@@ -227,7 +227,7 @@
   "LOC_WORLD_TOPIC_HOUSING_DESCRIPTION": {
     "source": "从租金、搬家到买房，围绕住处作出的选择。房间的大小、离工作的远近和每月的账单都在里面。",
     "zh_CN": "租房、搬家还是咬牙买房，屋子多大、通勤多远、月底交多少房钱，全绕不开这一桩。",
-    "en": "Choices about finding somewhere to live: rent, moving, buying, space, the journey to work and the monthly bill."
+    "en": "Renting, moving or scraping together enough to buy. How big the rooms are, how far the commute runs and what the landlord asks at the end of the month all come back to this."
   },
   "LOC_WORLD_TOPIC_HEALTHCARE": {
     "source": "医疗健康",
@@ -237,7 +237,7 @@
   "LOC_WORLD_TOPIC_HEALTHCARE_DESCRIPTION": {
     "source": "身体出了什么问题，去哪里求助，治疗要花多少钱。挂号、用药和照顾病人的经验很容易引出长谈。",
     "zh_CN": "身子哪儿不舒服、去哪家医院挂得上号、看一回病得掏多少钱。只要聊起吃药和陪护，陌生人也能接上半天话。",
-    "en": "What is wrong, where to seek help and how to pay for treatment. Appointments, medicines and caring for someone can start long conversations."
+    "en": "What hurts, which hospital still has slots open and what a visit is going to cost. Bring up prescriptions or sitting by a hospital bed and even strangers can talk for hours."
   },
   "LOC_WORLD_TOPIC_CLIMATE": {
     "source": "气候环境",
@@ -247,7 +247,7 @@
   "LOC_WORLD_TOPIC_CLIMATE_DESCRIPTION": {
     "source": "人们如何应对天气与环境的长期变化，也谈眼前的酷暑、雨季和身边的河流。",
     "zh_CN": "既聊一年比一年反常的气候变化，也抱怨眼下熬人的酷暑、不按时来的雨季和家门口涨落的水位。",
-    "en": "How people live with long-term changes in weather and the environment, alongside this summer's heat, the rains and the river nearby."
+    "en": "Talk of weather growing stranger year by year, right alongside gripes about punishing summer heat, late rains and the water level outside the front door."
   },
   "LOC_WORLD_TOPIC_ENERGY": {
     "source": "能源",
@@ -417,7 +417,7 @@
   "LOC_WORLD_GROUP_SERVICE_WORKERS_NOTE": {
     "source": "关店前还剩一张没擦的桌子，末班车快到了。",
     "zh_CN": "“顾客永远是对的。”\n哈里·戈登·塞尔弗里奇，百货业格言（1909）",
-    "en": "“Have it your way.”\nBurger King advertising slogan (1974)"
+    "en": "“The customer is always right.”\nHarry Gordon Selfridge, department-store maxim (1909)"
   },
   "LOC_WORLD_GROUP_HEALTH_WORKERS_NOTE": {
     "source": "值班表边缘写满换班的名字，有一个名字被圈了两次。",
@@ -457,7 +457,7 @@
   "LOC_WORLD_TOPIC_HEALTHCARE_NOTE": {
     "source": "候诊单上的号码又往前跳了一格。",
     "zh_CN": "“有时，去治愈；常常，去帮助；总是，去安慰。”\n爱德华·特鲁多墓志铭",
-    "en": "“Medical care for the sick.”\nReport to the 17th National Congress of the CPC (2007)"
+    "en": "“To cure sometimes, to relieve often, to comfort always.”\nEdward Livingston Trudeau, epitaph"
   },
   "LOC_WORLD_TOPIC_CLIMATE_NOTE": {
     "source": "往年的水位线留在桥墩上，今年的线又高了一点。",

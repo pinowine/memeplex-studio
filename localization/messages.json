@@ -127,7 +127,7 @@
   "LOC_EVENT_ORIGIN_WORLD_HELP": {
     "source": "随着世界的运行发生的事件，看起来似乎和模因没有什么关系。",
     "zh_CN": "世界各地发生的新闻与日常事件。",
-    "en": "Events arising as the world runs its course. They seem to have little to do with memes."
+    "en": "News and everyday happenings from around the world."
   },
   "LOC_EVENT_ORIGIN_WORLD_NOTE": {
     "source": "“天地不仁，以万物为刍狗。”——老子《道德经》第五章",
@@ -437,7 +437,7 @@
   "LOC_PUBLICATION_COSTS_AND_YOUR_MEME_BALANCE_COME_7F026B09": {
     "source": "发布成本与点数余额由当前运行状态提供；不足时不扣款。",
     "zh_CN": "发布成本与当前点数余额。",
-    "en": "Publication costs and your Meme balance come from the current run. Insufficient funds are not deducted."
+    "en": "Publication cost and your current Meme balance."
   },
   "LOC_MEME_TRADING_UNAVAILABLE_6F00CE34": {
     "source": "模因交易（不可用）",
@@ -542,7 +542,7 @@
   "LOC_CTRL_D_TO_TOGGLE_RUNTIME_CONTENT_IS_3C2C62C7": {
     "source": "Ctrl+D 开关；运行时内容与编辑副本相互隔离。",
     "zh_CN": "Ctrl+D 开关开发菜单；在独立副本中编辑内容。",
-    "en": "Ctrl+D to toggle. Runtime content is isolated from the editable copy."
+    "en": "Ctrl+D toggles the developer menu; edits happen on an isolated copy."
   },
   "LOC_NO_CONTENT_CONFIGURED_BC36B6B8": {
     "source": "尚未配置内容。",
@@ -812,7 +812,7 @@
   "LOC_CURRENT_CONTENT_D_CASE_PRESETS_THE_EVENT_922995D7": {
     "source": "当前内容：%d 个案例预设；事件工具仅修改开发内容副本。",
     "zh_CN": "当前内容：%d 个案例预设；事件工具编辑开发内容副本。",
-    "en": "Current content: %d case presets. The event tool edits only the developer content copy."
+    "en": "Current content: %d case presets; the event tool edits the developer content copy."
   },
   "LOC_MEME_B54CDAD8": {
     "source": "模因",
@@ -1067,7 +1067,7 @@
   "LOC_DEPLOYED_TO_S_LATER_EXTERNAL_VERSIONS_CANNOT_CAE6EE96": {
     "source": "已投放到 %s；后续外部版本不能直接编辑。",
     "zh_CN": "已投放到 %s。",
-    "en": "Deployed to %s. Later external versions cannot be edited directly."
+    "en": "Deployed to %s."
   },
   "LOC_AUTHOR_OWNED_ADOPTION_MILESTONE_D_85F3EA92": {
     "source": "作者归属采用里程碑 %d",
@@ -1082,7 +1082,7 @@
   "LOC_S_ATTRACTION_MULTIPLIER_F_FOR_F_GAME_C6C49FBD": {
     "source": "%s：吸引系数 ×%.2f，持续 %.0f 游戏小时；总注意力预算不增加。",
     "zh_CN": "%s：吸引系数 ×%.2f，持续 %.0f 游戏小时。",
-    "en": "%s: attraction multiplier ×%.2f for %.0f game hours; the total attention budget does not increase."
+    "en": "%s: attraction multiplier ×%.2f for %.0f game hours."
   },
   "LOC_TRUST_D1CD931B": {
     "source": "信任",
@@ -1097,12 +1097,12 @@
   "LOC_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_ADOPT_6CA6F2FB": {
     "source": "已曝光而未采用者新增采用 %d。",
     "zh_CN": "新增采用 %d 人（此前已曝光但尚未采用）。",
-    "en": "%d previously exposed non-adopters now adopt."
+    "en": "%d new adopters (previously exposed, not yet adopted)."
   },
   "LOC_S_D_PREVIOUSLY_EXPOSED_NON_ADOPTERS_NOW_BA3D841D": {
     "source": "%s：已曝光而未采用者中新增采用 %d；未凭空增加曝光。",
     "zh_CN": "%s：已曝光而未采用者中新增采用 %d。",
-    "en": "%s: %d previously exposed non-adopters now adopt; no exposure is created from nothing."
+    "en": "%s: %d previously exposed non-adopters now adopt."
   },
   "LOC_EXTERNAL_REWRITES_SEMANTIC_DRIFT_FROM_THE_FIXED_35C3A40D": {
     "source": "外部改写相对固定家族锚点的语义偏移设为 %.2f；下一次改写按分家规则处理。",
@@ -1112,12 +1112,12 @@
   "LOC_REUSE_PERMISSION_IS_RESTRICTED_THIS_RULES_COMPLIANT_23A0C53C": {
     "source": "再利用许可受限：这次规范内的重混未产生版本；许可不是对外部世界的强制控制。",
     "zh_CN": "再利用许可受限，本次重混未生成版本。",
-    "en": "Reuse permission is restricted, so this remix produced no version. Permission cannot force the outside world to comply."
+    "en": "Reuse permission is restricted; this remix produced no version."
   },
   "LOC_S_FATIGUE_DECREASES_BY_F_AND_THE_40D510A3": {
     "source": "%s：疲劳降低 %.2f，旧表达重新进入使用；不恢复对外部分家的控制。",
     "zh_CN": "%s：疲劳最多降低 %.2f。",
-    "en": "%s: fatigue decreases by up to %.2f. This does not restore control of external offshoot families."
+    "en": "%s: fatigue drops by up to %.2f."
   },
   "LOC_NO_DEPLOYED_VERSION_IS_AVAILABLE_TO_REWRITE_151CB474": {
     "source": "没有可改写的已投放版本。",
@@ -1132,7 +1132,7 @@
   "LOC_S_S_VERSION_S_WAS_CREATED_BY_E8F39714": {
     "source": "%s %s；版本 %s 由 %s 制作，玩家不可编辑；来源保留。",
     "zh_CN": "%s %s；版本 %s 由 %s 制作；来源保留。",
-    "en": "%s %s; version %s was created by %s and cannot be edited by the player. Its source is retained."
+    "en": "%s %s; version %s was created by %s; source retained."
   },
   "LOC_VARIANT_OF_ORIGINAL_FAMILY_80F6D83C": {
     "source": "原家族变体",
@@ -1152,7 +1152,7 @@
   "LOC_S_IS_BEING_CARRIED_ON_BY_OTHERS_36686912": {
     "source": "%s 正被其他人接续传播；发声者没有署名，你还无法接管它。",
     "zh_CN": "%s 正被其他人接续传播；发声者没有署名。",
-    "en": "%s is being carried on by others. Its speaker is unnamed, so you cannot take control of it yet."
+    "en": "%s is being carried on by others; its speaker is unnamed."
   },
   "LOC_EVENT_PAUSE_NARRATIVE_AND_ACTUAL_EFFECTS_ARE_C7BD1B68": {
     "source": "事件暂停：叙事描述与实际作用分别显示。",
@@ -1907,7 +1907,7 @@
   "LOC_DIAL_CALLS_THE_SELECTED_NUMBER_PICK_UP_6D7A3316": {
     "source": "拨号：呼叫已选号码。接听：拿起听筒。挂断：结束通话。三个听筒图标对应这三个实体键，来信仍会继续打印。",
     "zh_CN": "拨号：呼叫已选号码。接听：拿起听筒。挂断：结束通话。来信会继续打印。",
-    "en": "Dial calls the selected number. Pick up lifts the receiver. Hang up ends the call. The three receiver icons correspond to these physical keys; incoming messages keep printing."
+    "en": "Dial: call the selected number. Pick up: lift the receiver. Hang up: end the call. Incoming faxes keep printing."
   },
   "LOC_DELETE_ONE_DIGIT_732D612B": {
     "source": "删除一位",
@@ -2487,12 +2487,12 @@
   "LOC_THIS_MODULE_IS_NOT_IN_STORAGE_7C77E7E3": {
     "source": "仓库中没有该模块。",
     "zh_CN": "仓库中没有该补丁。",
-    "en": "This module is not in storage."
+    "en": "This patch is not in storage."
   },
   "LOC_NOT_ENOUGH_MODULES_HAVE_BEEN_TAKEN_OUT_F84E3A66": {
     "source": "已搬出的模块数量不足，不能复制纸片。",
     "zh_CN": "已搬出的补丁数量不足，不能复制纸片。",
-    "en": "Not enough modules have been taken out; paper slips cannot be duplicated."
+    "en": "Not enough patches have been taken out; paper slips cannot be duplicated."
   },
   "LOC_AN_EXPRESSION_PATCH_REQUIRES_YOUR_OWN_DRAFT_984A1272": {
     "source": "表达补丁需要你当前的模因配置。",
@@ -2532,7 +2532,7 @@
   "LOC_A_CONNECTION_REQUIRES_TWO_DISTINCT_PLACED_MODULE_E271A8B2": {
     "source": "连接需要两个已放置的不同模块槽。",
     "zh_CN": "连接需要两个已放置的不同补丁槽。",
-    "en": "A connection requires two distinct, placed module slots."
+    "en": "A connection requires two distinct placed patch slots."
   },
   "LOC_THIS_CONNECTION_ALREADY_EXISTS_1BFCDA18": {
     "source": "该连接已经存在。",
@@ -2572,7 +2572,7 @@
   "LOC_ONLY_PLAYER_PUBLISHED_VERSIONS_MAY_REGISTER_MODULES_C45E35C2": {
     "source": "只有玩家已发布版本可登记模块。",
     "zh_CN": "只有玩家已发布版本可登记补丁。",
-    "en": "Only player-published versions may register modules."
+    "en": "Only player-published versions may register patches."
   },
   "LOC_WRONG_DRAFT_SYNC_TYPE_EAFCB504": {
     "source": "草稿同步类型错误。",
@@ -2597,7 +2597,7 @@
   "LOC_THIS_SKILL_IS_ALREADY_UNLOCKED_IT_CANNOT_9F356EAA": {
     "source": "该技能已解锁，不能重复扣款。",
     "zh_CN": "该技能已解锁。",
-    "en": "This skill is already unlocked; it cannot charge again."
+    "en": "This skill is already unlocked."
   },
   "LOC_APPLYING_AN_ABILITY_REQUIRES_YOUR_OWN_VALID_5A5FFD6C": {
     "source": "能力应用需要自己的合法草稿记录。",
@@ -2642,7 +2642,7 @@
   "LOC_DESIGN_SAVE_GRANTS_A_PUBLICATION_MODULE_REWARD_C11AB2C0": {
     "source": "设计存档重复发布模块奖励。",
     "zh_CN": "设计存档重复发布补丁奖励。",
-    "en": "Design save grants a publication-module reward more than once."
+    "en": "Design save grants a publication-patch reward more than once."
   },
   "LOC_STARTING_SELECTION_MUST_PRECEDE_FIRST_PUBLICATION_01D580DD": {
     "source": "开局选择必须在首发之前。",
@@ -2652,7 +2652,7 @@
   "LOC_DESIGN_SAVE_LACKS_A_PLAYER_VERSION_MODULE_62FFDE84": {
     "source": "设计存档缺少玩家版本模块来源。",
     "zh_CN": "设计存档缺少玩家版本补丁来源。",
-    "en": "Design save lacks a player-version module source."
+    "en": "Design save lacks a player-version patch source."
   },
   "LOC_VERSION_EXPRESSION_PATCH_OR_ABILITY_PROVENANCE_DOES_C71016AF": {
     "source": "版本表达补丁或能力来源不符合操作记录。",
@@ -3787,7 +3787,7 @@
   "LOC_SEMANTICS_REPETITIVE_LOW_LEVEL_COMPETITION_BECOMES_A_186DD22F": {
     "source": "语义：把低水平重复竞争概括为自我消耗的系统关系。\n语用：用于解释教育、劳动和消费压力，也常被泛化成“任何忙碌”，导致概念稀释。\n跨语境：与“躺平”构成行动/退出的对立词组；从结构批评到日常抱怨的迁移值得分层标注。",
     "zh_CN": "语义：把低水平重复竞争概括为自我消耗的系统关系。\n语用：用于解释教育、劳动和消费压力，也常被泛化成“任何忙碌”，导致概念稀释。\n跨语境：与“躺平”构成行动/退出的对立词组；含义也从结构批评扩展到日常抱怨。",
-    "en": "Semantics: repetitive, low-level competition becomes a self-consuming systemic relationship.\nPragmatics: explains pressure in education, work and consumption, but is often generalized to any busyness, diluting the concept.\nAcross contexts: it contrasts action with exit through the paired term lying flat. Its movement from structural critique to everyday complaint deserves differentiated annotation."
+    "en": "Semantics: sums up repetitive, low-level competition as a self-draining system.\nPragmatics: explains pressure in schooling, work and spending, though overuse for any busy day dilutes the term.\nAcross contexts: pairs with lying flat as action versus exit, broadening from structural critique to everyday griping."
   },
   "LOC_R07_ACTIVITY_BUDDY_A398620F": {
     "source": "R07 · 搭子",
@@ -4347,12 +4347,12 @@
   "LOC_ROUTE_67_CONTINUATION": {
     "source": "Six seven—your turn.",
     "zh_CN": "六七，轮到你了。",
-    "en": "Six seven—your turn."
+    "en": "Six seven, your turn."
   },
   "LOC_ROUTE_67_EXIT_CONTINUATION": {
     "source": "Six seven—take a turn or sit this one out.",
     "zh_CN": "六七，接一轮，或者这回先歇着。",
-    "en": "Six seven—take a turn or sit this one out."
+    "en": "Six seven, jump in for a round, or sit this one out."
   },
   "LOC_EDIT_EXTERNAL_EXPRESSION": {
     "source": "外部表达",
@@ -4367,7 +4367,7 @@
   "LOC_LANGUAGE_NINGHUA_DESCRIPTION": {
     "source": "宁华的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
     "zh_CN": "宁华的本地语言语境，同语社群也分布在别国。组合句会据此选词。",
-    "en": "The local language context of Ninghua, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "en": "The local language context of Ninghua, with speaker communities abroad as well. Composed lines choose wording to match."
   },
   "LOC_LANGUAGE_SHIOHARA": {
     "source": "汐原语",
@@ -4377,7 +4377,7 @@
   "LOC_LANGUAGE_SHIOHARA_DESCRIPTION": {
     "source": "汐原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
     "zh_CN": "汐原的本地语言语境，同语社群也分布在别国。组合句会据此选词。",
-    "en": "The local language context of Shiohara, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "en": "The local language context of Shiohara, with speaker communities abroad as well. Composed lines choose wording to match."
   },
   "LOC_LANGUAGE_SEOWON": {
     "source": "瑞原语",
@@ -4387,7 +4387,7 @@
   "LOC_LANGUAGE_SEOWON_DESCRIPTION": {
     "source": "瑞原的本地语言语境，同语社群也分布在别国。系统组合句会按语境选用措辞，不自动翻译或改写玩家原文，也不改变界面语言。",
     "zh_CN": "瑞原的本地语言语境，同语社群也分布在别国。组合句会据此选词。",
-    "en": "The local language context of Seowon, also used by communities abroad. System-composed sentences use context-specific wording. This does not automatically translate or rewrite player-authored text or change the interface language."
+    "en": "The local language context of Seowon, with speaker communities abroad as well. Composed lines choose wording to match."
   },
   "LOC_EVENT_QUEUE_STATE_MISMATCH": {
     "source": "存档中的事件队列与未确认事件记录不一致。",
@@ -4407,7 +4407,7 @@
   "LOC_CARD_LANGUAGE_NINGHUA_DESCRIPTION": {
     "source": "宁华的官方语言，一种历史悠久的象形文字，目前已逐渐转变成分析语",
     "zh_CN": "宁华的官方语言，有悠久的象形文字传统，语法逐渐转向依靠词序和虚词。",
-    "en": "The official language of Ninghua: an ancient pictographic language that has gradually become analytic."
+    "en": "The official language of Ninghua, carrying a long pictographic tradition while its grammar increasingly leans on word order and particles."
   },
   "LOC_CARD_LANGUAGE_NINGHUA_COMMENTARY": {
     "source": "“高屋建瓴，短径殊途，平生只求术。”──若朝诗人，王留。",
@@ -4417,7 +4417,7 @@
   "LOC_CARD_LANGUAGE_SHIOHARA_DESCRIPTION": {
     "source": "汐原的通行语言，街头传闻与日常寒暄在这里交汇。",
     "zh_CN": "汐原的通行语言，街头传闻、日常寒暄都用它来讲。",
-    "en": "The common language of Shiohara, where street rumours meet everyday conversation."
+    "en": "The everyday language of Shiohara, used alike for street gossip and casual greetings."
   },
   "LOC_CARD_LANGUAGE_SHIOHARA_COMMENTARY": {
     "source": "潮声带走半句话，另一半留给听的人。",
@@ -4427,7 +4427,7 @@
   "LOC_CARD_LANGUAGE_SEOWON_DESCRIPTION": {
     "source": "瑞原的通行语言，连接城市里的讲述者与听众。",
     "zh_CN": "瑞原的通行语言，城市里的人用它讲故事，也听别人讲。",
-    "en": "The common language of Seowon, connecting the city’s storytellers and listeners."
+    "en": "The everyday language of Seowon, in which city people tell their stories and listen to everyone else's."
   },
   "LOC_CARD_LANGUAGE_SEOWON_COMMENTARY": {
     "source": "同一句话，走过不同街区，就有了不同的回声。",
@@ -4482,7 +4482,7 @@
   "LOC_CARD_TOPIC_IDENTITY_COMMENTARY": {
     "source": "人们用一个称呼，寻找彼此的位置。",
     "zh_CN": "人们借着一个称呼，认出自己和彼此的位置。",
-    "en": "With a name, people find their place among one another."
+    "en": "Through a shared name, people recognize themselves and where they stand with one another."
   },
   "LOC_CARD_TOPIC_LANGUAGE_COMMENTARY": {
     "source": "表达抵达他人之前，总要经过语言。",
@@ -4517,7 +4517,7 @@
   "LOC_CARD_AUTHORITY_COMMENTARY": {
     "source": "秩序的声音，要求一个明确的方向。",
     "zh_CN": "讲秩序的话，要给人一个明确的方向。",
-    "en": "The voice of order asks for a clear direction."
+    "en": "Words meant to keep order need to point in a clear direction."
   },
   "LOC_CARD_EQUALITY_COMMENTARY": {
     "source": "同一张桌旁，不该只有一种声音。",
@@ -4557,12 +4557,12 @@
   "LOC_CARD_MODULE_RELATION_COMMENTARY": {
     "source": "多一个听众，旧话也可能有了新意。",
     "zh_CN": "别人熬夜复习，你说自己没准备。两句话并排放，那点小得意就露出来了。",
-    "en": "Everyone else studied all night; you say you didn't prepare. Set those lines side by side, and the pride is hard to hide."
+    "en": "Everyone else crammed all night; you say you barely prepared. Put those two lines side by side and the smugness shows right through."
   },
   "LOC_CARD_MODULE_RITUAL_COMMENTARY": {
     "source": "重复让一句话变成大家都认得的暗号。",
     "zh_CN": "别人可以停在这里，你也可以说一句“到这里吧”。",
-    "en": "You can let someone else sit out, or be the one to say, 'Let's leave it there.'"
+    "en": "Others can stop right here, or you can be the one to say, 'Let's leave it at that.'"
   },
   "LOC_CARD_MODULE_BOUNDARY_COMMENTARY": {
     "source": "语言的边界，有时也是新故事的入口。",
@@ -4577,12 +4577,12 @@
   "LOC_GUIDANCE_FIRST_COMPETITOR": {
     "source": "地图上出现了别人的模因。它们也在争取注意力；不同颜色区分家族，空心圈表示出生或投放位置，实心点是各国采用人数的抽样。",
     "zh_CN": "啊哦，地图上出现了别人的模因，它们也在争取注意力。不同颜色代表不同家族，空心圈是起点，实心点是各地采用的人数……如果离你还很远，大可不必担心。",
-    "en": "Another meme has appeared on the map. It competes for attention too. Colors distinguish families; hollow circles mark origins or launch sites, and solid dots sample adoption by country."
+    "en": "Uh-oh, someone else's meme has shown up on the map, and it's competing for attention too. Different colors mark different families, hollow rings mark starting points, and solid dots track local adopters… If it's still far from you, no need to worry yet."
   },
   "LOC_GUIDANCE_FIRST_MUTATION": {
     "source": "你的模因已经被别人改写了。回到编辑页时，先看自己的最终表达，再决定下一次修改。外部突变有自己的来源和传播轨迹；它不会自动改掉你手里的原稿。",
     "zh_CN": "这也是不可避免的……你的模因已经被别人改写了。回到编辑页时，先看自己的最终表达，再决定是否要修改。或者，你也可以接受这个世界自己的运转？",
-    "en": "Someone has remixed your meme. Here in the editor, check your own final expression before deciding what to change next. An external mutation has its own origin and propagation history; it does not automatically replace your draft."
+    "en": "Bound to happen sooner or later… Someone out there has rewritten your meme. Back on the Edit sheet, check your final expression first, then decide whether to tweak anything. Or maybe you're happy letting the world run with it on its own?"
   },
   "LOC_GUIDANCE_GOT_IT": {
     "source": "知道了",
@@ -4742,6 +4742,6 @@
   "LOC_GUIDANCE_DEVIATION": {
     "source": "你的模因会随着时间、事件和你的编辑逐渐偏离原意，当偏移度超过50%时，它会变成一种新的模因──不再受到你的管控。如果你想要避免这一点，可以尝试避免修改过多的原模因，或者点一些“传播”节点以增强你模因的包容度。",
     "zh_CN": "注意一下这条线。随着时间、事件和你自己的修改，模因会慢慢偏离原意；一旦偏移度超过 50%，它就会独立出去，不再受你管控了。想避免这一点的话，平时别改动太多原模因，或者去传播页点一些提升包容度的节点。",
-    "en": "Your meme gradually drifts from its original meaning through time, events and your edits. Above 50 percent deviation it becomes a new meme beyond your control. To avoid this, keep more of the original meme or research Transmission nodes to increase its tolerance."
+    "en": "Keep an eye on this line. Time, outside events and your own edits slowly pull a meme away from its original meaning; cross 50 percent deviation and it breaks off on its own, out of your hands. If you'd rather avoid that, go easy on editing the original or unlock tolerance nodes on the Spread sheet."
   }
 }

@@ -7,47 +7,47 @@
   "LOC_COMPOSE_ERROR_SEED": {
     "source": "这张模因尚无可用的表达组合。",
     "zh_CN": "当前模因还没有可用的表达组合。",
-    "en": "This meme has no authored composition."
+    "en": "This meme has no usable expression combinations yet."
   },
   "LOC_COMPOSE_ERROR_SLOTS": {
     "source": "最多使用四张表达补丁。",
     "zh_CN": "最多只能同时夹四张表达补丁。",
-    "en": "Use up to four expression patches."
+    "en": "You can clip on up to four expression patches at once."
   },
   "LOC_COMPOSE_ERROR_DUPLICATE": {
     "source": "同一表达补丁只能使用一次。",
     "zh_CN": "同一种表达补丁只能装一张。",
-    "en": "Each expression patch can be used once."
+    "en": "You can only install one copy of each expression patch."
   },
   "LOC_COMPOSE_ERROR_PATCH": {
     "source": "这张补丁不能保留当前模因的识别方式。",
     "zh_CN": "当前模因装不上这张补丁。",
-    "en": "This patch does not fit this meme."
+    "en": "This meme can't take that patch."
   },
   "LOC_COMPOSE_ERROR_EXIT": {
     "source": "先装续写补丁，才能给接话的人留出退出选择。",
     "zh_CN": "得先装上“接话”补丁，才能再配“退出”补丁。",
-    "en": "Add continuation before giving participants a way to sit out."
+    "en": "Install the Continue patch first before adding Exit."
   },
   "LOC_COMPOSE_ERROR_LANGUAGE": {
     "source": "这种语言尚无可读译义。",
     "zh_CN": "还没有配好这门语言的表达。",
-    "en": "This language has no authored gloss."
+    "en": "There's no expression ready for this language yet."
   },
   "LOC_COMPOSE_ERROR_GROUP": {
     "source": "这种人群尚无适用的表达。",
     "zh_CN": "还没有配好面向这个群体的说法。",
-    "en": "This audience has no authored adaptation."
+    "en": "There's no phrasing ready for this audience yet."
   },
   "LOC_COMPOSE_ERROR_SCENE": {
     "source": "这些话题没有共同的可用情景，请减少话题或换一张模因。",
     "zh_CN": "这几个话题凑不到同一个场景里聊，撤掉一张话题卡或者换个模因试试。",
-    "en": "These topics have no shared authored scene. Remove a topic or choose another meme."
+    "en": "These topics don't fit into the same scene. Try removing a topic card or switching memes."
   },
   "LOC_COMPOSE_ERROR_MEANING": {
     "source": "这组意义坐标会改变模因已经说出的主张，请换方向或换模因。",
     "zh_CN": "往这个方向调会跟模因原本的意思拧着来，换个方向或者换张模因试试。",
-    "en": "These meaning coordinates contradict the meme's stated use. Change direction or choose another meme."
+    "en": "Pulling this way clashes with what the meme already says. Try another direction or a different meme."
   },
   "LOC_COMPOSE_PROMPT_SPEAKER": {
     "source": "谁在说话",

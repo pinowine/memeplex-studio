@@ -1497,317 +1497,317 @@
   "LOC_TEXT_COMPOSE_V2_V_MEANING_0": {
     "source": "拿%s装作烦恼，借熟人的回应抬高自己",
     "zh_CN": "故意提起%s，嘴上叹气，其实就等别人顺嘴夸两句。",
-    "en": "The speaker mentions %s and waits for praise."
+    "en": "The speaker brings up %s with a sigh, really just waiting for someone to offer a compliment."
   },
   "LOC_TEXT_COMPOSE_V2_V_MEANING_1": {
     "source": "拿%s反问别人，把等人夸奖藏进求助",
     "zh_CN": "装作犯愁地反问怎么就拿到了%s，把求夸藏进请教里。",
-    "en": "The speaker pretends to ask for help understanding how %s came so easily."
+    "en": "The speaker asks in mock distress how %s happened, hiding a bid for praise inside a request for advice."
   },
   "LOC_TEXT_COMPOSE_V2_V_MEANING_2": {
     "source": "把%s和旁人的忙碌摆在一起，一句话就分出高下",
     "zh_CN": "把%s和旁人的辛苦摆在一块儿比，显摆自己赢得毫不费力。",
-    "en": "The speaker compares %s with everyone else's effort to boast about an easy success."
+    "en": "The speaker sets %s beside everyone else's hard grind to show off how effortlessly it came."
   },
   "LOC_TEXT_COMPOSE_V2_V_MEANING_3": {
     "source": "对着旁人的忙碌追问自己为何得到%s，让求助成了显摆",
     "zh_CN": "当着苦熬的旁人追问自己怎么就拿下了%s，就等别人服软。",
-    "en": "The speaker asks why %s came so easily and waits for others to admit defeat."
+    "en": "In front of people still grinding away, the speaker asks how %s came so easily, waiting for them to concede defeat."
   },
   "LOC_TEXT_COMPOSE_V2_V_MEANING_4": {
     "source": "用一个平常理由解释%s，越说随意越显得走运",
     "zh_CN": "随口找个不起眼的理由解释%s，说得越轻巧越显出自己走运。",
-    "en": "The speaker gives an ordinary reason for %s to boast about how little effort it took."
+    "en": "The speaker tosses off an unremarkable excuse for %s; the lighter it sounds, the luckier it makes them look."
   },
   "LOC_TEXT_COMPOSE_V2_V_MEANING_5": {
     "source": "假装没想通那个理由怎会换来%s，等别人点破自己的优势",
     "zh_CN": "故作不解地问这么点巧合怎么就换来了%s，等人点破自己的本事。",
-    "en": "The speaker asks how a small coincidence led to %s and waits to be called lucky."
+    "en": "Playing puzzled, the speaker asks how such a small fluke led to %s, waiting for someone to credit real skill."
   },
   "LOC_TEXT_COMPOSE_V2_V_MEANING_6": {
     "source": "把自己的巧合和别人的付出对上，衬出%s来得轻松",
     "zh_CN": "拿自己的歪打正着去对别人的苦功，衬出%s来得有多轻松。",
-    "en": "The speaker compares personal luck with others' effort to boast about how easily %s came."
+    "en": "The speaker sets a lucky fluke against everyone else's long hours to show how easily %s landed."
   },
   "LOC_TEXT_COMPOSE_V2_V_MEANING_7": {
     "source": "把巧合、付出和%s揉成一句反问，让人替自己承认赢得轻松",
     "zh_CN": "把巧合与旁人的苦熬搁一块儿反问，好像拿下%s压根不算什么难事。",
-    "en": "The speaker contrasts personal luck with others' effort and asks what was so hard about %s."
+    "en": "Setting a fluke beside everyone else's hard work, the speaker asks rhetorically as if %s were nothing hard at all."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_0": {
     "source": "没人开口就忙着%s，笑的是自己收不住的表达欲",
     "zh_CN": "明明半个人都没问，自己就忙不迭地%s，根本收不住话头。",
-    "en": "The speaker starts %s unasked and cannot stop."
+    "en": "Nobody asked a thing, yet the speaker jumps straight into %s and can't stop talking."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_1": {
     "source": "拿旁人的安静衬出自己忙着%s，把过分投入变成自嘲",
     "zh_CN": "别人早歇了，只有自己还一个劲地%s。",
-    "en": "The speaker keeps busy with %s long after everyone else has stopped."
+    "en": "Everyone else has called it a day, leaving the speaker still %s nonstop."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_2": {
     "source": "顺着一点由头就开始%s，让过度热情有了具体来处",
     "zh_CN": "逮着一点小由头就开始%s，顺带交代自己怎么会这么上头。",
-    "en": "The speaker uses a small prompt to begin %s and explains the enthusiasm."
+    "en": "Seizing on the smallest excuse to start %s, the speaker explains along the way how the obsession took hold."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_3": {
     "source": "别人早已停下，自己却抓着一点由头忙着%s，笑点落在投入的落差",
     "zh_CN": "旁人早散场了，自己还揪着一点由头起劲地%s。",
-    "en": "The speaker keeps pursuing %s on a small pretext after everyone else has stopped."
+    "en": "Everyone else has gone home, yet the speaker clings to a tiny pretext and keeps %s with gusto."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_4": {
     "source": "没人邀请就把%s变成集体活动，热情已经拉上了身边人",
     "zh_CN": "没人问起就顾自%s，还非要拽上身边的人一块儿聊。",
-    "en": "The speaker starts %s unasked and draws everyone into the conversation."
+    "en": "Without anyone asking, the speaker launches into %s and insists on dragging everyone nearby into the chat."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_5": {
     "source": "把旁人的冷淡和自己拉人一起%s放在同一幕里，尴尬也成了共玩的开场",
     "zh_CN": "明知旁边的人兴致缺缺，还是硬拉着大伙儿一块儿%s。",
-    "en": "The speaker tries to involve others in %s despite their lack of interest."
+    "en": "Knowing full well the room isn't interested, the speaker still tries to pull everyone into %s."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_6": {
     "source": "借一点由头把%s变成邀请，越讲越想拉人一起玩",
     "zh_CN": "先交代自己为什么突然想%s，越说越起劲，顺手拉大伙儿一块儿掺和。",
-    "en": "The speaker explains the urge to begin %s and invites everyone to join."
+    "en": "After explaining the sudden urge to start %s, the speaker warms to the subject and waves everyone else in."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_7": {
     "source": "顺着自己的由头拉人一起%s，把独自上头与他人的兴致差写进同一次邀请",
     "zh_CN": "讲完自己为什么突然想%s，还试着把提不起劲的旁人也拽进来聊。",
-    "en": "The speaker explains the urge to begin %s and tries to involve the less interested listeners."
+    "en": "Having explained the sudden urge to start %s, the speaker still tries to rope unenthusiastic bystanders into the talk."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_12": {
     "source": "把无人问起的%s改成随意加入的邀请，热情有了留给旁人的余地",
     "zh_CN": "没人问就自己开麦%s，不过只招呼听得进去的人凑过来。",
-    "en": "The speaker starts %s unasked and invites only those who want to listen."
+    "en": "Nobody asked, yet the speaker takes the floor and starts %s, inviting over only whoever feels like listening."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_13": {
     "source": "对着兴致不同的人邀请他们一起%s，把听与不听都留作自然选择",
     "zh_CN": "看得出旁人未必感兴趣，只招呼同道中人一块儿%s，不听也随便。",
-    "en": "The speaker acknowledges others' lack of interest and invites willing listeners into %s."
+    "en": "Seeing that most people aren't interested, the speaker invites only fellow enthusiasts into %s and leaves the rest in peace."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_14": {
     "source": "说清自己为何想%s，再把加入的决定交回听众",
     "zh_CN": "交代清楚自己为什么想%s，招呼大伙儿来聊，不凑热闹也没关系。",
-    "en": "The speaker explains the urge to begin %s and invites everyone to join or decline."
+    "en": "The speaker explains why they feel like %s and invites everyone over, with no hard feelings if people pass."
   },
   "LOC_TEXT_COMPOSE_V2_N_MEANING_15": {
     "source": "承认大家兴致不同，借自己的由头邀请人一起%s，让这场上头可以参加也可以路过",
     "zh_CN": "说明自己为什么突然想%s，只约有兴致的人接着聊，路过不接茬也无所谓。",
-    "en": "The speaker explains the urge to begin %s, invites interested listeners and accepts that others may pass."
+    "en": "After explaining the sudden urge to start %s, the speaker invites only interested listeners along and lets passersby scroll on."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_0": {
     "source": "用一句轻飘飘的回应截住%s，让对方的资历失去压人的分量",
     "zh_CN": "甩一句短话把%s轻轻挡回去，懒得再往下听。",
-    "en": "The speaker brushes off %s and stops listening."
+    "en": "The speaker deflects %s with one short line and stops listening."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_1": {
     "source": "反问%s凭什么成立，把训人的资格送回对方面前",
     "zh_CN": "直接反问%s凭什么站得住脚。",
-    "en": "The speaker questions the basis of %s."
+    "en": "The speaker fires back, asking how %s holds water at all."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_2": {
     "source": "用两代人的实际条件拆开%s，让老经验显出时差",
     "zh_CN": "搬出两代人眼下的实际落差，正面顶回%s。",
-    "en": "The speaker rebuts %s by comparing two generations' circumstances."
+    "en": "Pointing to the real gap between two generations today, the speaker pushes straight back against %s."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_3": {
     "source": "拿现实差别反问%s，逼对方面对经验失效的地方",
     "zh_CN": "拿今昔条件的巨大落差反问%s，戳破老经验早就不管用了。",
-    "en": "The speaker questions %s through the difference between old and present conditions."
+    "en": "Using the wide gap between past and present conditions, the speaker questions %s to show that old advice no longer works."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_4": {
     "source": "拿眼前的具体处境挡住%s，让敷衍的回应有了现实分量",
     "zh_CN": "摆出自己眼下的实在难处，把%s顶了回去。",
-    "en": "The speaker answers %s with a concrete personal difficulty."
+    "en": "Laying out real present-day difficulties, the speaker pushes %s right back."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_5": {
     "source": "从自己的处境追问%s，把被训的人变成要求解释的人",
     "zh_CN": "拿自己碰上的具体难处反问%s，逼对方给个交代。",
-    "en": "The speaker questions %s through a personal difficulty and demands an explanation."
+    "en": "Bringing up concrete personal difficulties, the speaker turns %s into a pointed question and demands a straight answer."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_6": {
     "source": "把新旧条件和眼前难处放在一起回应%s，拒绝把代价全算给年轻人",
     "zh_CN": "把两代人的条件差和眼前的难处一并摊开，反驳%s。",
-    "en": "The speaker rebuts %s with generational differences and a personal difficulty."
+    "en": "Putting generational differences and present-day hardships on the table together, the speaker rebuts %s."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_7": {
     "source": "用眼前难处和代际条件连成一问，要求%s给出经得起现实的理由",
     "zh_CN": "摊开代际落差与自身难处，追问%s到底能解决什么实际问题。",
-    "en": "The speaker lays out generational differences and a personal difficulty, then asks what %s would actually solve."
+    "en": "Laying out the generational gap alongside personal hardships, the speaker asks what real problem %s is supposed to solve."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_8": {
     "source": "对%s丢下一句敷衍便回到自己的事，收走了继续训话的听众",
     "zh_CN": "丢下一句客套话打发掉%s，转头忙自己的事去了。",
-    "en": "The speaker brushes off %s and returns to personal business."
+    "en": "Tossing off a polite brush-off to end %s, the speaker turns back to their own business."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_9": {
     "source": "反问%s之后转身办自己的事，把解释的负担留给对方",
     "zh_CN": "反问完%s转身就走，把解释的烂摊子留给对方。",
-    "en": "The speaker questions %s and leaves the explanation to the lecturer."
+    "en": "After firing a question back at %s, the speaker walks away and leaves the explaining to the other side."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_10": {
     "source": "指出新旧条件的差别便退出%s，把时间留给眼前的生活",
     "zh_CN": "点破今昔处境不同便掐断%s，转身去干手头的事。",
-    "en": "The speaker points out the difference in circumstances and ends %s to get on with life."
+    "en": "Pointing out that times have changed, the speaker cuts %s short and gets back to the work at hand."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_11": {
     "source": "用现实差别问住%s后离开，让旧经验无法继续占用自己的时间",
     "zh_CN": "拿代际落差问住%s后直接走人，不再陪对方空耗工夫。",
-    "en": "The speaker questions %s through generational differences and leaves without further argument."
+    "en": "Stumping %s with the gap between generations, the speaker walks off instead of wasting more breath."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_12": {
     "source": "亮出自己的处境便退出%s，让做正事代替继续受教",
     "zh_CN": "亮明眼下的难处就退出%s，先顾手头的正经事。",
-    "en": "The speaker explains a personal difficulty and ends %s to deal with it."
+    "en": "Stating present difficulties plainly, the speaker steps out of %s to handle real work first."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_13": {
     "source": "拿自己的难处反问%s，再去处理眼前的事，让说教留在原地",
     "zh_CN": "拿自己的难处反问完%s便抽身离开，让训话的人自己琢磨去。",
-    "en": "The speaker questions %s through a personal difficulty and leaves the lecturer to find an answer."
+    "en": "Turning personal difficulties into a question against %s, the speaker steps away and leaves the lecturer to chew on it."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_14": {
     "source": "把代际条件和现实代价摆清便离开%s，把回应收在行动里",
     "zh_CN": "摆清两代人的条件和现实代价后直接结束%s，干正事要紧。",
-    "en": "The speaker lays out generational differences and real costs, then ends %s to get on with necessary work."
+    "en": "Setting out generational realities and real-world costs, the speaker closes the door on %s to get actual work done."
   },
   "LOC_TEXT_COMPOSE_V2_B_MEANING_15": {
     "source": "把处境、代价和代际差别压进最后一问便离开%s，连争辩的节奏也由自己决定",
     "zh_CN": "把代际落差和切身难处压进最后一句反问，甩下%s转身走人。",
-    "en": "The speaker questions %s through generational differences and a personal difficulty, then leaves."
+    "en": "Packing generational gaps and firsthand trouble into one parting question, the speaker leaves %s behind and walks off."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_0_0": {
     "source": "这句认真求认同的自白，",
     "zh_CN": "说话的人一脸认真，是真把这点烦恼当回事在讲。",
-    "en": " The speaker means this earnestly."
+    "en": " It is said with a straight face, treating the small worry as a genuine headache."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_1_0": {
     "source": "这句半真半假的打趣，",
     "zh_CN": "嘴上装得挺犯愁，那点小得意根本没往深里藏。",
-    "en": " The speaker feigns distress."
+    "en": " The fretful sigh is put on, and that flicker of smugness barely hides underneath."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_2_0": {
     "source": "这句故意夸大的玩笑，",
     "zh_CN": "故意把烦恼演得苦大仇深，生怕旁人听不出是反话。",
-    "en": " The speaker exaggerates the complaint."
+    "en": " The misery is laid on so thick that nobody could miss the irony."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_0_1": {
     "source": "这句带着善意的自我解释，",
     "zh_CN": "口气倒还诚恳，真盼着听的人能体谅自己的处境。",
-    "en": " The speaker wants to be understood."
+    "en": " The tone stays sincere, genuinely hoping listeners will sympathize."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_1_1": {
     "source": "这句留着余地的自嘲，",
     "zh_CN": "带着半真半假的打趣劲儿，跟熟人开个无伤大雅的玩笑。",
-    "en": " The speaker jokes with friends."
+    "en": " Half-teasing and half-serious, it reads as harmless banter among friends."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_2_1": {
     "source": "这句邀请熟人一起笑的夸张话，",
     "zh_CN": "故意说得神乎其神，图的就是逗大伙儿乐呵一下。",
-    "en": " The speaker wants to make everyone laugh."
+    "en": " Everything is played up to an absurd pitch just to get a laugh out of the room."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_0_2": {
     "source": "这句较起真的显摆，",
     "zh_CN": "语气里憋着股较真的劲儿，明摆着要跟人比个高低。",
-    "en": " The speaker competes openly with others."
+    "en": " An edge of rivalry runs through it, openly measuring up against everyone else."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_1_2": {
     "source": "这句带刺的反话，",
     "zh_CN": "话里绵里藏针，顺带刺了旁人一下。",
-    "en": " The remark is sarcastic."
+    "en": " A needle hides inside the soft phrasing, delivering a quiet jab along the way."
   },
   "LOC_TEXT_COMPOSE_V2_V_TONE_2_2": {
     "source": "这句冲着别人去的嘲弄，",
     "zh_CN": "干脆端起腔调阴阳怪气，专门借这话挖苦别人。",
-    "en": " The speaker deliberately mocks others."
+    "en": " Dropping all pretense, the line drips with sarcasm meant to sting."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_0_0": {
     "source": "这段认真袒露热情的独白，",
     "zh_CN": "说得一板一眼，是真心实意想把心头好安利出去。",
-    "en": " The speaker earnestly shares an interest."
+    "en": " Every word is delivered earnestly, eager to win converts for a favorite subject."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_1_0": {
     "source": "这段明知自己上头的自嘲，",
     "zh_CN": "心里也清楚自己上头得有点好笑，顺手拿这份热情自嘲。",
-    "en": " The speaker jokes about personal enthusiasm."
+    "en": " Aware of how funny the obsession looks, the speaker pokes fun at their own enthusiasm."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_2_0": {
     "source": "这段把失控热情演给人看的闹剧，",
     "zh_CN": "故意把走火入魔的劲头演得更疯三分，自己先乐在其中。",
-    "en": " The speaker exaggerates personal enthusiasm."
+    "en": " The obsession gets hammed up three notches wilder, with the speaker enjoying the bit first."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_0_1": {
     "source": "这段坦率分享兴趣的话，",
     "zh_CN": "语气挺坦率，盼着旁人也能体会到里头的妙处。",
-    "en": " The speaker wants others to understand an interest."
+    "en": " Candid and open, it hopes bystanders might catch what makes the subject so good."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_1_1": {
     "source": "这段愿意拉人同乐的自嘲，",
     "zh_CN": "拿自己的话痨打趣，想逗大伙儿一块儿笑出声。",
-    "en": " The speaker wants a shared laugh."
+    "en": " Poking fun at their own chatterbox streak, the speaker tries to get everyone laughing together."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_2_1": {
     "source": "这段邀人一起表演的玩笑，",
     "zh_CN": "故意把阵仗吆喝得热热闹闹，像在搭台拉人看戏。",
-    "en": " The speaker makes a show of enthusiasm."
+    "en": " The pitch gets barked out like a street show, drummed up to draw a crowd."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_0_2": {
     "source": "这段执意占住话题的独白，",
     "zh_CN": "哪怕底下鸦雀无声，也铁了心要把话讲完。",
-    "en": " The speaker insists on being heard."
+    "en": " Even if the whole room stays dead silent, the speaker is determined to finish every word."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_1_2": {
     "source": "这段拿旁人冷淡开刀的反话，",
     "zh_CN": "顺手还调侃了一把看客的冷淡反应。",
-    "en": " The speaker jokes about the listeners’ indifference."
+    "en": " Along the way, it pokes fun at how unimpressed the audience looks."
   },
   "LOC_TEXT_COMPOSE_V2_N_TONE_2_2": {
     "source": "这段故意冲着听众演的夸张话，",
     "zh_CN": "越没人搭理越来劲，存心演给冷场的听众看。",
-    "en": " The speaker deliberately provokes the listeners."
+    "en": " The colder the crowd goes, the harder the speaker performs right in their faces."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_0_0": {
     "source": "这句认真划出界线的回应，",
     "zh_CN": "口气不轻不重，但把界线划得很认真。",
-    "en": " The speaker answers earnestly."
+    "en": " Even-toned and measured, it draws a firm boundary and means it."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_1_0": {
     "source": "这句带着不耐烦的敷衍，",
     "zh_CN": "嘴上顺着应和，满脸都写着懒得搭理。",
-    "en": " The speaker wants to brush the remark aside."
+    "en": " The words nod along on the surface, yet every syllable says the speaker cannot be bothered."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_2_0": {
     "source": "这句把训话当笑料的回应，",
     "zh_CN": "压根没把对面的长篇训话当真，全当听了个笑话。",
-    "en": " The speaker treats the lecture as a joke."
+    "en": " Never taking the long-winded lecture seriously for a second, it treats the whole speech as a joke."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_0_1": {
     "source": "这句仍愿意说明处境的回应，",
     "zh_CN": "话虽顶了回去，心里倒还留着点讲道理、求理解的余地。",
-    "en": " The speaker still wants to be understood."
+    "en": " Sharp as the pushback is, it still leaves room to talk sense and be understood."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_1_1": {
     "source": "这句给对方留台阶的打趣，",
     "zh_CN": "故意带点玩笑腔，好歹给对面留了半级下台的梯子。",
-    "en": " The speaker softens the reply with a joke."
+    "en": " Kept light with a joking lilt, it leaves the other person half a step down with grace."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_2_1": {
     "source": "这句把分歧化成共同笑料的回应，",
     "zh_CN": "把两代人的分歧打了个哈哈，盼着两边一笑揭过。",
-    "en": " The speaker hopes both sides can laugh it off."
+    "en": " Laughing off the generational divide, it hopes both sides can let the whole thing go."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_0_2": {
     "source": "这句直接顶回去的拒绝，",
     "zh_CN": "半点弯子都没绕，硬邦邦地把话顶了回去。",
-    "en": " The speaker pushes back directly."
+    "en": " Without softening a single corner, it sends the remark straight back where it came from."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_1_2": {
     "source": "这句不打算再受教的冷嘲，",
     "zh_CN": "耐性早就磨光了，只剩冷冰冰的一句回敬。",
-    "en": " The speaker has lost patience."
+    "en": " All patience is gone, leaving only an icy one-line brush-off."
   },
   "LOC_TEXT_COMPOSE_V2_B_TONE_2_2": {
     "source": "这句让训话者难堪的讥讽，",
     "zh_CN": "存心拿这句刺耳的反话让训话的人下不来台。",
-    "en": " The speaker deliberately ridicules the lecturer."
+    "en": " Barbed irony aims squarely at leaving the lecturer embarrassed in public."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_0_0": {
     "source": "，也让那点高人一头的得意露了出来。",
@@ -1817,42 +1817,42 @@
   "LOC_TEXT_COMPOSE_V2_V_STANCE_1_0": {
     "source": "，炫耀的分量落在谁能替成功作证。",
     "zh_CN": "话里最得意的，还是能拿到师长或上头的点头认可。",
-    "en": " This also involves valuing approval from teachers or senior peers."
+    "en": " What brings the most pride here is winning a nod from teachers or superiors."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_2_0": {
     "source": "，那点得意也归在自己作主的生活里。",
     "zh_CN": "字里行间最在乎的，是日子能按自己的心意挑。",
-    "en": " This also involves valuing a self-chosen life."
+    "en": " Between the lines, what matters most is choosing how to live on one's own terms."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_0_1": {
     "source": "，连自己的好运也显得可以拿来平常地聊。",
     "zh_CN": "哪怕晒了回好运气，也摆出大家平起平坐闲聊的姿态。",
-    "en": " This also involves treating everyone's good fortune as equally worth sharing."
+    "en": " Even while showing off a stroke of luck, it keeps the easy footing of equals chatting."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_1_1": {
     "source": "，权威给的名次也被拉回了平常人的聊天。",
     "zh_CN": "就算提到了名次头衔，也不觉得谁该因此高人一等。",
-    "en": " This also involves refusing to let rankings decide who deserves respect."
+    "en": " Even with rankings and titles in the picture, nobody is treated as above anyone else."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_2_1": {
     "source": "，各自过得开心比排出高低更有分量。",
     "zh_CN": "说到底，各人按自己的活法过得舒坦比排座次更要紧。",
-    "en": " This also involves accepting each person's right to define success."
+    "en": " Living comfortably on your own terms counts for more here than where anyone ranks."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_0_2": {
     "source": "，话里的比较最终坐实了赢家的位置。",
     "zh_CN": "绕了一圈，还是想让听的人认下自己更胜一筹。",
-    "en": " This also involves seeking recognition of being a step ahead."
+    "en": " After all the circling around, it still wants listeners to admit who came out ahead."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_1_2": {
     "source": "，被认可的名次成了压住旁人的凭据。",
     "zh_CN": "搬出正式认可的名次，就是为了坐实自己压人一头。",
-    "en": " This also involves using an official ranking to claim higher standing."
+    "en": " Bringing out official rankings is meant to cement a spot above the crowd."
   },
   "LOC_TEXT_COMPOSE_V2_V_STANCE_2_2": {
     "source": "，自己争来的优势成了值得守住的位置。",
     "zh_CN": "凭自己本事挑的路，最后还是要赢在别人前头才算痛快。",
-    "en": " This also involves seeking to outdo others on a self-chosen path."
+    "en": " Picking your own road only feels complete once it puts you out in front of everyone else."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_0_0": {
     "source": "，热情和打扰之间的距离留给听的人体会。",
@@ -1862,42 +1862,42 @@
   "LOC_TEXT_COMPOSE_V2_N_STANCE_1_0": {
     "source": "，话题由谁带着走也成了这场玩笑的一部分。",
     "zh_CN": "在说话人看来，聊什么、怎么聊本就该由懂行的人领头。",
-    "en": " This also involves expecting the most knowledgeable person to lead."
+    "en": " In this view, whoever knows the subject best ought to set the direction of the talk."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_2_0": {
     "source": "，自己想说什么成了开口的理由。",
     "zh_CN": "反正只要自己想开口，哪用得着等别人先点名发问。",
-    "en": " This also involves treating the wish to speak as reason enough."
+    "en": " Wanting to speak is reason enough, with no need to wait until called on."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_0_1": {
     "source": "，说的人和听的人都可以平等地接住这个梗。",
     "zh_CN": "自己痛快说完了，也把话筒平分给所有想接茬的人。",
-    "en": " This also involves giving listeners an equal chance to speak."
+    "en": " Once finished speaking, it hands the floor equally to anyone who wants the next turn."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_1_1": {
     "source": "，抢先开口也没有替谁定下更高的位置。",
     "zh_CN": "就算主动起了头，也没打算替底下听的人拿主意下定论。",
-    "en": " This also involves leaving others free to reach their own conclusions even when leading."
+    "en": " Even after kicking off the topic, there is no urge to hand down conclusions for everyone else."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_2_1": {
     "source": "，每个人按自己的兴致接话就好。",
     "zh_CN": "谁爱接什么全看各自兴致，谁也不必迁就谁。",
-    "en": " This also involves letting everyone decide what to say."
+    "en": " What anyone chimes in with is up to their own mood, and nobody has to humor anyone else."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_0_2": {
     "source": "，懂得多的人顺势成了话题中心。",
     "zh_CN": "话虽敞着说，心里还是更看得上真正懂行的回答。",
-    "en": " This also involves preferring replies from people who know the subject."
+    "en": " Open as the invitation sounds, replies from people who know their stuff still rank higher."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_1_2": {
     "source": "，掌握细节的人也掌握了谁来听的安排。",
     "zh_CN": "在说话人眼里，谁摸透了门道，谁就该掌管这场讨论的边界。",
-    "en": " This also involves expecting the most knowledgeable person to set the scope."
+    "en": " Whoever knows the craft inside out is expected to set the boundaries of the discussion."
   },
   "LOC_TEXT_COMPOSE_V2_N_STANCE_2_2": {
     "source": "，自己的热情也带着争取主场的意思。",
     "zh_CN": "这股子表达欲背后，也是想把话题的主场抢到自己手里。",
-    "en": " This also involves wanting others to hear out a personal view first."
+    "en": " Behind all that eagerness to talk sits a bid to claim the floor as home turf."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_0_0": {
     "source": "，年轻人把说话的边界握回自己手里。",
@@ -1907,41 +1907,41 @@
   "LOC_TEXT_COMPOSE_V2_B_STANCE_1_0": {
     "source": "，争的也是谁有资格规定别人怎么过日子。",
     "zh_CN": "争的也是这场对话到底该听谁发号施令。",
-    "en": " This also involves seeking to set the rules of this exchange."
+    "en": " Underneath, the clash is over who gets to give the orders in this exchange."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_2_0": {
     "source": "，自己的生活不再等长辈批准。",
     "zh_CN": "自己的日子自己拍板，用不着等前辈点头放行。",
-    "en": " This also involves refusing to let an elder decide how to live."
+    "en": " One's own life is one's own call, without waiting for an elder's stamp of approval."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_0_1": {
     "source": "，年龄不再自动换来更高的发言位置。",
     "zh_CN": "多活几年可换不来居高临下训人的特权。",
-    "en": " This also involves refusing to let age decide who must obey whom."
+    "en": " Having lived a few extra years buys nobody the privilege of talking down from on high."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_1_1": {
     "source": "，训人的资格也得接受同样的检验。",
     "zh_CN": "哪怕是发话定调的一方，放到台面上也得经得起追问。",
-    "en": " This also involves holding rule-makers open to the same questions."
+    "en": " Even the side setting the rules has to stand up to open questioning."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_2_1": {
     "source": "，双方各过各的生活，也各担自己的选择。",
     "zh_CN": "两代人各过各的日子，谁也别替谁拿主意。",
-    "en": " This also involves allowing both sides to make their own choices."
+    "en": " Each generation has its own life to live, and neither side gets to run the other's."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_0_2": {
     "source": "，旧资历被顶开，也露出了新的圈内高低。",
     "zh_CN": "顶开老资历的同时，也透出觉得自己看问题高明一截的傲气。",
-    "en": " This also involves claiming better judgement than the lecturer."
+    "en": " Pushing aside seniority also carries the pride of seeing things more clearly than the old guard."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_1_2": {
     "source": "，较量落在谁能占住教训人的位置。",
     "zh_CN": "话赶话顶回去，也是想反过来占住教训人的上风口。",
-    "en": " This also involves seeking the right to lecture in return."
+    "en": " Talking back word for word is also a move to take the upper hand and do the lecturing instead."
   },
   "LOC_TEXT_COMPOSE_V2_B_STANCE_2_2": {
     "source": "，夺回自主也带着不愿再居人下的意思。",
     "zh_CN": "把主导权抓回自己手里，就是咽不下被人看轻一等这口气。",
-    "en": " This also involves refusing to be treated as inferior."
+    "en": " Taking back the wheel comes down to refusing to be looked down on as a lesser equal."
   }
 }

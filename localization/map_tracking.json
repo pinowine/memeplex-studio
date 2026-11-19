@@ -87,12 +87,12 @@
   "MM_HELP_NAME": {
     "source": "这个模因的独立名称。完整表达和实际含义在详情中分别显示。",
     "zh_CN": "模因的独立名称。完整表达与实际含义见详情。",
-    "en": "The independent name of this meme. Details show its expression and meaning separately."
+    "en": "The meme's standalone name. Open details to read its full expression and meaning."
   },
   "MM_HELP_ORIGIN": {
     "source": "这个模因第一次发布或诞生的国家。后续传播不会改变起源国。",
     "zh_CN": "模因首次发布或诞生的国家。",
-    "en": "The country where this meme was first published or born. Later spread does not change its origin."
+    "en": "The country where this meme was first launched or born."
   },
   "MM_HELP_SPREAD": {
     "source": "采用、曝光和注意力各自占全球容量的比例，取平均得到传播度，最高为100%。",
@@ -102,7 +102,7 @@
   "MM_HELP_COUNTRY_SPREAD": {
     "source": "悬停国家名称，高亮该国的这个模因传播点。",
     "zh_CN": "悬停国家名，高亮该国的模因传播点。",
-    "en": "Hover the country name to highlight this meme’s points in that country."
+    "en": "Hover a country name to highlight the meme's spread points there."
   },
   "MM_HELP_EXPRESSION_TEXT": {
     "source": "这个模因实际传播的文字。语境和改写可能让它与最初版本不同。",
@@ -137,37 +137,37 @@
   "MM_HELP_LANGUAGE": {
     "source": "这个模因使用的语言，用来匹配各国的语言分布。多种语言取匹配最强者。",
     "zh_CN": "模因带有的语言，拿来对照各国懂这门语言的人口占比；带了多门语言时按最高的那门算。",
-    "en": "Languages used by this meme to match each country's language distribution. Multiple languages use the strongest match."
+    "en": "Languages carried by this meme, checked against the share of speakers in each country. With multiple languages, the strongest match counts."
   },
   "MM_HELP_GROUP": {
     "source": "这个模因面向的人群。多个人群取匹配最强者，不叠加人口。",
     "zh_CN": "模因面向的群体；装了多个群体卡时，按当地匹配最高的一组算，人口不累加。",
-    "en": "Audiences addressed by this meme. Multiple audiences use the strongest match without adding population."
+    "en": "Audiences this meme speaks to. With multiple audience cards installed, only the best-matching local group counts; populations don't stack."
   },
   "MM_HELP_TOPICS": {
     "source": "这个模因涉及的话题，按所在国家对这些话题的偏好计算匹配。",
     "zh_CN": "模因聊到的话题，对照各国受众平时爱聊什么来算契合度。",
-    "en": "Topics addressed by this meme, matched against each country's topic preferences."
+    "en": "Topics this meme brings up, weighed against what local audiences like talking about."
   },
   "MM_HELP_STANCE": {
     "source": "这个模因在自由与权威、平等与等级两个方向上的立场，用来匹配国家语境。",
     "zh_CN": "模因在自由与威权、平等与等级上的倾向，拿来对照当地的社会风气。",
-    "en": "The meme's stance on liberty and authority, and equality and hierarchy, used to match country context."
+    "en": "Where the meme leans on liberty versus authority and equality versus hierarchy, weighed against local public mood."
   },
   "MM_HELP_PRAGMATICS": {
     "source": "这个模因表达真诚或反讽、支持或反对的方式，用来匹配国家语境。",
     "zh_CN": "模因说话偏真诚还是反讽、支持还是反对，拿来对照当地受众的口味。",
-    "en": "How this meme conveys sincerity or irony, and support or opposition, used to match country context."
+    "en": "Whether the meme speaks sincerely or ironically, in support or opposition, weighed against local tastes."
   },
   "MM_HELP_EXPRESSION": {
     "source": "根据实际表达中不同字符数计算的表达强度，用于竞争适配。",
     "zh_CN": "按成品字句的丰富程度算出的表达分量，和别的模因同台抢注意力时会用到。",
-    "en": "Expression strength calculated from distinct characters in the actual text, used in competition fitness."
+    "en": "How much weight the finished wording carries based on its variety of characters, used when competing for attention."
   },
   "MM_HELP_LEGEND": {
     "source": "标记点持续显示；起始点带外圈，传播点为实心点。国家内的点密度反映采用、曝光和注意力的综合传播度。仅悬停时减淡其他模因的点，离开即恢复。",
     "zh_CN": "起始点带外圈，传播点为实心点，持续显示。各国点密度反映采用、曝光与注意力的综合传播度。悬停标签时，其他模因的点减淡；移开后恢复。",
-    "en": "Markers stay visible. Origins have an outer ring and spread points are solid. Country density reflects adoption, exposure and attention together. Hover temporarily fades other memes; moving away restores every point."
+    "en": "Origins wear an outer ring and spread points are solid, staying visible on the map. Dot density in each country reflects combined adoption, exposure and attention. Hovering a tag fades other memes until you move away."
   },
   "MAP_MEME_MONITOR": {
     "source": "模因监控",
@@ -192,7 +192,7 @@
   "MM_HELP_DEVIATION": {
     "source": "相对初始表达的综合差异。严格超过50%时分裂，恰好50%不分裂。分裂后原模因回退相关效果并归零，新模因独立命名；地图传播量按回退造成的传播能力损失分配，总量不增加。",
     "zh_CN": "你每次改动、外头发生的传播事件，再加上时间推移，都会一点点拉大偏移度。虚线是当前的分化阈值（默认 50%）；一旦跨过这条线，变异出去的部分就会自立门户变成新模因，你手里的原模因则会退回这轮跑偏前的样子。在传播页做研究能压低偏移、减慢自然跑偏或抬高阈值，只是要花 Meme 点数，个别研究还会拖慢一点传播效率。",
-    "en": "Deviation accumulates through edits, events and time. The dashed line marks the current split threshold, initially 50 percent. Transmission research can reduce drift, slow its growth or raise the threshold. It costs Meme points, and some research also slows spread. Above the threshold, a new independent meme emerges and the original rolls back the relevant edits."
+    "en": "Every edit you make, every transmission event outside, and the passage of time all push deviation up bit by bit. The dashed line marks the split threshold (50% by default). Cross it, and the mutated branch breaks off as an independent meme while your original rolls back to before this round of drift. Research on the Spread sheet can trim deviation, slow natural drift or raise the threshold, though it costs Meme points and a few nodes slow spread slightly."
   },
   "MM_ENDING_TITLE": {
     "source": "结局",
