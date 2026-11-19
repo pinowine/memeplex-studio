@@ -19,7 +19,7 @@ const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
 const EventResponse = preload("res://scripts/gameplay/events/event_response.gd")
 const EventMutation = preload("res://scripts/gameplay/events/event_mutation.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
-const AUTHOR_CONTENT_ACTIONS := ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes", "set_reuse_permission"]
+const AUTHOR_CONTENT_ACTIONS := ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes"]
 
 var catalog: MemeDemoCatalog
 var economy := MemeDemoEconomy.new()
@@ -251,7 +251,7 @@ func design_action(action: String, params: Dictionary = {}) -> PackedStringArray
 			return PackedStringArray([DeskLocalization.source("LOC_APPLYING_A_SOLID_REQUIRES_A_VALID_AUTHOR_CAF24FE0")])
 		for key in ["remix_cost", "context_dependency", "language_access", "recognizability"]:
 			if not _number(draft.get(key)): return PackedStringArray([DeskLocalization.source("LOC_AN_AUTHOR_DRAFT_NUMERIC_VALUE_HAS_THE_CCD0F240")])
-		var draft_errors := PackedStringArray() if action in ["install_context","remove_context","move_context","move_context_axis", "move_context_axes", "set_reuse_permission"] else validate_draft(draft)
+		var draft_errors := PackedStringArray() if action in ["install_context","remove_context","move_context","move_context_axis", "move_context_axes"] else validate_draft(draft)
 		draft_errors.append_array(_core_errors(draft))
 		if not draft_errors.is_empty(): return draft_errors
 		var encoded: Dictionary = draft.duplicate(true)

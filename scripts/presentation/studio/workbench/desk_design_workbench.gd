@@ -121,7 +121,6 @@ var _selected_installed_slot := -1
 var _context_slice: Control
 var _context_title: Label
 var _context_details: RichTextLabel
-var _circulation_toggle: Button
 var _overview_name: Label
 var _overview_data: GridContainer
 var _summary_cells: Dictionary = {}
@@ -553,11 +552,6 @@ func _build_culture() -> void:
 	_context_details.selection_enabled = true
 	_context_details.mouse_filter = Control.MOUSE_FILTER_PASS
 	page.add_child(_context_details)
-	_circulation_toggle = _button(page, "", "CirculationToggle")
-	_circulation_toggle.focus_mode = Control.FOCUS_NONE
-	_circulation_toggle.add_theme_font_size_override("font_size", 13)
-	_circulation_toggle.pressed.connect(_toggle_circulation_mode)
-	_refresh_circulation_toggle()
 
 
 func _build_spread() -> void:
@@ -734,23 +728,10 @@ func _select_variant(id: String) -> void:
 		return
 
 
-func _toggle_circulation_mode() -> void:
-	var current := str(_draft.get("reuse_permission", _design.get("context_draft", {}).get("reuse_permission", "allowed")))
-	var next := "allowed" if current == "restricted" else "restricted"
-	_request("set_reuse_permission", {"reuse_permission":next})
-
-func _refresh_circulation_toggle() -> void:
-	if _circulation_toggle == null: return
-	var current := str(_design.get("context_draft", {}).get("reuse_permission", _draft.get("reuse_permission", "allowed")))
-	var is_restricted := current == "restricted"
-	_circulation_toggle.text = DeskLocalization.text("LOC_CULTIVATE_RESTRICTED_SPREAD" if is_restricted else "LOC_CULTIVATE_OPEN_SPREAD")
-	_circulation_toggle.tooltip_text = DeskLocalization.text("LOC_CULTIVATE_SPREAD_HELP")
-
 func _refresh_culture() -> void:
 	if _context_slice == null: return
 	_context_slice.set_state(_design)
 	_show_context_info(_context_slice.selected_info())
-	_refresh_circulation_toggle()
 
 
 func _request(action: String, params: Dictionary) -> void:
@@ -760,7 +741,7 @@ func _request(action: String, params: Dictionary) -> void:
 		if not errors.is_empty():
 			_show_module_errors(errors)
 			return
-	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context","move_context_axis", "move_context_axes", "set_reuse_permission"]:
+	if action in ["install_module","remove_module","edit_module_content","install_context","remove_context","move_context","move_context_axis", "move_context_axes"]:
 		request["draft"]=get_draft()
 		if action=="install_module":
 			var module_id := str(request.get("module_id",""))
@@ -874,10 +855,6 @@ func _layout_culture_sheet(w: float,h: float) -> void:
 	_place(_context_slice,Rect2(0,0,w,maxf(240,h)))
 	_place(_context_details,Rect2())
 	_context_details.hide()
-	if _circulation_toggle != null:
-		_place(_circulation_toggle, Rect2(w * .405, h * .934, w * .54, maxf(28.0, h * .05)))
-		_circulation_toggle.show()
-		_refresh_circulation_toggle()
 
 func _layout_spread_sheet(w: float,h: float) -> void:
 	_place(_spread_tree_scroll, Rect2(SPACE_BETWEEN, SPACE_BETWEEN, w - SPACE_BETWEEN * 2, h - SPACE_BETWEEN * 2))
@@ -892,9 +869,6 @@ func set_interaction_enabled(enabled: bool) -> void:
 	for clip: Control in _physical_clips: clip.set_interaction_enabled(enabled and _tab == "edit")
 	_spread_tree.set_interaction_enabled(enabled and _tab == "spread")
 	if _context_slice != null: _context_slice.set_interaction_enabled(enabled and _tab == "cultivate")
-	if _circulation_toggle != null:
-		_circulation_toggle.disabled = not (enabled and _tab == "cultivate")
-		_circulation_toggle.mouse_filter = Control.MOUSE_FILTER_STOP if (enabled and _tab == "cultivate") else Control.MOUSE_FILTER_IGNORE
 	_sync_hover_enabled()
 
 

@@ -564,21 +564,6 @@
     "zh_CN": "衍生新梗海外落地回链",
     "en": "Spin-off backlink return"
   },
-  "LOC_CULTIVATE_OPEN_SPREAD": {
-    "source": "扩散状态：公开传播（点击切换小圈子限流）",
-    "zh_CN": "扩散状态：公开传播（点击切换小圈子限流）",
-    "en": "Circulation: Open sharing (click for small-circle throttle)"
-  },
-  "LOC_CULTIVATE_RESTRICTED_SPREAD": {
-    "source": "扩散状态：小圈子限流（已停跨国外溢，点击恢复公开传播）",
-    "zh_CN": "扩散状态：小圈子限流（已停跨国外溢，点击恢复公开传播）",
-    "en": "Circulation: Small-circle throttle (spillover paused, click to reopen)"
-  },
-  "LOC_CULTIVATE_SPREAD_HELP": {
-    "source": "公开传播允许热度顺着邻国与航线外溢；切到小圈子限流会停止跨国扩散并压低各地热度上限，方便控分或主动退场。",
-    "zh_CN": "公开传播允许热度顺着邻国与航线外溢；切到小圈子限流会停止跨国扩散并压低各地热度上限，方便控分或主动退场。",
-    "en": "Open sharing lets popularity spill across land and sea routes; small-circle throttle pauses cross-border spillover and lowers local ceilings so you can pace or wind down a meme."
-  },
   "LOC_GUIDANCE_RETURN_TO_DESK": {"source":"我带你去看个变化。","zh_CN":"我带你去看个变化。","en":"Let me show you what changed."},
   "LOC_GUIDANCE_DEVIATION_NAVIGATE": {"source":"先点开监视器，看看这条曲线。","zh_CN":"先点开监视器，看看这条曲线。","en":"Open the monitor so we can look at the curve."}
 }

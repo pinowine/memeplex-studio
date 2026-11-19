@@ -572,17 +572,6 @@ func _perform(action: String, params: Dictionary, source: Dictionary = {}) -> Pa
 			errors = _composition_errors(draft)
 			if not errors.is_empty(): return errors
 			_state.context_draft = draft
-		"set_reuse_permission":
-			var permission := str(params.get("reuse_permission", ""))
-			if permission not in ["unknown", "allowed", "conditional", "restricted"] or not params.get("base") is Dictionary:
-				return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_REUSE_PERMISSION_2B61EEA0")])
-			var draft: Dictionary = _canonical(params.base)
-			errors = _current_patch_errors(draft)
-			if not errors.is_empty(): return errors
-			errors = _composition_errors(draft)
-			if not errors.is_empty(): return errors
-			draft.reuse_permission = permission
-			_state.context_draft = draft
 		_:
 			return PackedStringArray([DeskLocalization.source("LOC_UNREGISTERED_DESIGN_ACTION_F210E360") + action])
 	_state.operations.append({"action":action, "params":params.duplicate(true)})
