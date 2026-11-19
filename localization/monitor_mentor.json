@@ -6,7 +6,7 @@
   },
   "LOC_MENTOR_AUTHORITY": {
     "source": "威权点数。它能让你的模因往威权那边靠。提醒一下，有人听你的，不代表你说得对。",
-    "zh_CN": "威权点数。它能让你的模因往威权那边靠。提醒一下，有人听你的，不代表你说得对。\n\n“合法使用暴力的垄断权”\n马克斯·韦伯《以政治为业》（1919）",
+    "zh_CN": "威权点数，让模因的语气更偏威权。顺带一提，口吻强硬一点，未必真有人服你。\n\n“合法使用暴力的垄断权”\n马克斯·韦伯《以政治为业》（1919）",
     "en": "Authority points move your meme toward authority.\n\n“the monopoly of the legitimate use of physical force”\nMax Weber, Politics as a Vocation (1919)"
   },
   "LOC_MENTOR_EQUALITY": {
@@ -16,7 +16,7 @@
   },
   "LOC_MENTOR_HIERARCHY": {
     "source": "等级点数。它会把你的模因推向等级。谁在上面、谁在下面……通常正是大家争论的部分。",
-    "zh_CN": "等级点数。它会把你的模因推向等级。谁在上面、谁在下面……通常正是大家争论的部分。\n\n“所有动物一律平等，但有些动物比其他动物更加平等。”\n乔治·奥威尔《动物农场》第10章（1945）",
+    "zh_CN": "等级点数，让模因更强调高低次序。至于谁该排在上面，往往就是评论区吵起来的原因。\n\n“所有动物一律平等，但有些动物比其他动物更加平等。”\n乔治·奥威尔《动物农场》第10章（1945）",
     "en": "Hierarchy points move your meme toward hierarchy.\n\n“All animals are equal, but some animals are more equal than others.”\nGeorge Orwell, Animal Farm, chapter 10 (1945)"
   },
   "LOC_MENTOR_SINCERE": {
@@ -26,7 +26,7 @@
   },
   "LOC_MENTOR_IRONIC": {
     "source": "反讽点数。给你的模因添一点话外音。记住，别人没听懂，不一定是别人的问题。",
-    "zh_CN": "反讽点数。给你的模因添一点话外音。记住，别人没听懂，不一定是别人的问题。\n\n“这样挺好。”\nGunshow《着火了》，KC Green",
+    "zh_CN": "反讽点数，给模因加一点言外之意。要是有人真照字面意思理解了，到时候也别觉得奇怪。\n\n“这样挺好。”\nGunshow《着火了》，KC Green",
     "en": "Irony points add a little meaning between the lines.\n\n“This is fine.”\nGunshow: On Fire, KC Green"
   },
   "LOC_MENTOR_SUPPORT": {
@@ -36,7 +36,7 @@
   },
   "LOC_MENTOR_OPPOSITION": {
     "source": "反对点数。它让你的模因更倾向于说“不”。很好，不过反对什么，最好还是讲清楚。",
-    "zh_CN": "反对点数。它让你的模因更倾向于说“不”。很好，不过反对什么，最好还是讲清楚。\n\n“你刚才说的那些差不多就是些疯话罢了……”\n《军团要塞2：过期失效》，Valve",
+    "zh_CN": "反对点数，让你的模因更倾向于说“不”。至于到底在反对什么，最好还是让人听得出来。\n\n“你刚才说的那些差不多就是些疯话罢了……”\n《军团要塞2：过期失效》，Valve",
     "en": "Opposition points make your meme more inclined to say no.\n\n“Everything you just said was insane...”\nTeam Fortress 2: Expiration Date, Valve"
   },
   "LOC_HANDSET_HINT": {

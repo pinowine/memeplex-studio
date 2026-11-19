@@ -1,7 +1,7 @@
 {
   "LOC_OPENING_THE_BOOKS_IS_NOT_THE_SAME_E82A344C": {
     "source": "账本摊开不等于账已结清，先核对那些看起来最安静的数字。",
-    "zh_CN": "账本摊开不等于账已结清，先核对那些看起来最安静的数字。",
+    "zh_CN": "先核对桌面上变动最少的几项数字。",
     "en": "Opening the books is not the same as settling them. Check the quiet-looking numbers first."
   },
   "LOC_OPENING_PICKUP_TITLE": {
@@ -61,7 +61,7 @@
   },
   "LOC_OPENING_STARTER_TEXT": {
     "source": "这里有三个基础模因。把鼠标移上去看看，选一个你顺眼的。审美问题，我暂时不计入绩效。",
-    "zh_CN": "这里有三个基础模因。把鼠标移上去看看，选一个你顺眼的。审美问题，我暂时不计入绩效。",
+    "zh_CN": "这里有三个基础模因，把鼠标移上去可以看看各自的特点。既然你是新手，我建议先挑一个你能理解的。",
     "en": "Here are three base memes. Hover over them, then pick one you like. Your taste won’t count towards your performance review. For now."
   },
   "LOC_OPENING_STARTER_CONFIRM_TITLE": {
@@ -71,7 +71,7 @@
   },
   "LOC_OPENING_STARTER_CONFIRM_TEXT": {
     "source": "看中了？点击下方的“确定选择”。现在反悔还来得及，签了字可就是你的项目了。",
-    "zh_CN": "看中了？点击下方的“确定选择”。现在反悔还来得及，签了字可就是你的项目了。",
+    "zh_CN": "就选这个？确定了就点下方的“确定选择”，想换别的现在还来得及。",
     "en": "Found one? Click “Confirm selection” below. You can still change your mind; once you sign, it’s your project."
   },
   "LOC_OPENING_RETURN_DESK_TITLE": {
@@ -101,7 +101,7 @@
   },
   "LOC_OPENING_MACHINES_TEXT": {
     "source": "接电话的东西，我会不定期打给你评估工作情况。同时也会把一些新闻传真给你，可能会有一些有用的东西……",
-    "zh_CN": "我用这个东西和你沟通，不要拔插头……当然你也拔不了。",
+    "zh_CN": "我平时靠这台机器联系你。不要去拔插头……当然你也拔不下来。",
     "en": "Click the body to focus. Lift the receiver to answer; put it down to hang up. News and supplies arrive through the paper outlet. The other keys are inactive."
   },
   "LOC_OPENING_FAX_OUTPUT_TITLE": {
@@ -111,7 +111,7 @@
   },
   "LOC_OPENING_FAX_OUTPUT_TEXT": {
     "source": "注意一下这个位置吐出的纸张。新闻和附件都从这里来，别当废纸扔了。",
-    "zh_CN": "传真送来时，纸张会直接弹到你面前。看完点“知道了”，随附的材料就会自动收好；想重看旧消息的话，点桌上的纸堆就行。",
+    "zh_CN": "有新传真送来时，纸张会直接弹到你面前。读完点“知道了”，随附的材料就会自动收好；桌上的纸堆可以随时翻阅旧消息。",
     "en": "New faxes open in front of you. Read the event and choose “Got it” to store its materials. You can read the paper pile on the desk again later."
   },
   "LOC_OPENING_PRINTER_TITLE": {
@@ -121,7 +121,7 @@
   },
   "LOC_OPENING_PRINTER_TEXT": {
     "source": "它会自动记录你的操作，还有各种机器的日志，工作要留痕……鼠标滚轮可以滚动查看。",
-    "zh_CN": "它会自动记录你的操作，还有各种机器的日志，工作要留痕……鼠标滚轮可以滚动查看。",
+    "zh_CN": "它会自动记录你的操作和机器日志，工作总要留痕……鼠标滚轮可以上下翻看。",
     "en": "It automatically records your actions and the machines’ logs. Work needs a paper trail… Use the mouse wheel to scroll through it."
   },
   "LOC_OPENING_LABELS_TITLE": {
@@ -131,7 +131,7 @@
   },
   "LOC_OPENING_LABELS_TEXT": {
     "source": "我不在的时候，它会提醒你这些机器叫什么。认不出来就看一眼，别靠猜。",
-    "zh_CN": "我不在的时候，把鼠标停在机器或卡片上，旁边的票据会显示名称和说明。认不出来就看一眼，别靠猜。",
+    "zh_CN": "把鼠标停在机器或卡片上，旁边的票据会显示它的名称和说明。我不在的时候，它可以提醒你这些东西是做什么的。",
     "en": "Hover over a machine or material to see its name and details beside the pointer."
   },
   "LOC_OPENING_CLOCK_TITLE": {
@@ -141,7 +141,7 @@
   },
   "LOC_OPENING_CLOCK_TEXT": {
     "source": "决定好工作室选址后，它会根据当地时间流动……不会提醒你下班时间的。",
-    "zh_CN": "决定好工作室选址后，它会根据当地时间流动……不会提醒你下班时间的。",
+    "zh_CN": "定下工作室选址后，它会按当地时间走动……不会提醒你下班时间的。",
     "en": "Once you choose a location for the studio, it follows the local time… It won’t remind you when your shift ends."
   },
   "LOC_OPENING_STACKS_TITLE": {
@@ -151,7 +151,7 @@
   },
   "LOC_OPENING_STACKS_TEXT": {
     "source": "存储一些用来给你的模因打模组的小卡片。我免费给了你一些，可以点开来看看。",
-    "zh_CN": "这里存放给模因加装的小卡片，我免费送了你几张，可以点开看看。\n右上角的数字是里面的张数，直接往外拖就能抽出最上面那张。",
+    "zh_CN": "这四摞用来存放改装模因的卡片，我先免费给了你几张。点开可以查看里面的卡片，右上角标着数量；直接往外拖也能抽出最上面那张。",
     "en": "These hold little cards for modifying your meme. I’ve given you a few for free. You can open the stacks and have a look.\nThe number shows how many cards are inside. Drag the stack to take its top card."
   },
   "LOC_OPENING_LANGUAGE_OPEN_TITLE": {
@@ -161,7 +161,7 @@
   },
   "LOC_OPENING_LANGUAGE_OPEN_TEXT": {
     "source": "点开语言摞。先弄清楚你手里有什么，再想怎么把它们卖给全世界。",
-    "zh_CN": "点开语言摞。先弄清楚你手里有什么，再想怎么把它们卖给全世界。",
+    "zh_CN": "先点开语言这一摞看看。",
     "en": "Open the language stack. Find out what you’ve got before planning to sell it to the whole world."
   },
   "LOC_OPENING_LANGUAGE_DETAIL_TITLE": {
@@ -171,7 +171,7 @@
   },
   "LOC_OPENING_LANGUAGE_DETAIL_TEXT": {
     "source": "把鼠标停在卡片上，旁边的票据会显示这门语言的详情。之后还会遇到更多语言，先记住这个查看方法。",
-    "zh_CN": "把鼠标停在卡片上，旁边的票据会显示这门语言的详情。之后还会遇到更多语言，先记住这个查看方法。",
+    "zh_CN": "把鼠标停在卡片上，旁边的票据会显示这门语言的详情。之后遇到其他卡片也是同样的方法。",
     "en": "Hover over the card to read its language details on the note beside it. You can inspect other languages the same way."
   },
   "LOC_OPENING_LANGUAGE_RETURN_TITLE": {
@@ -181,7 +181,7 @@
   },
   "LOC_OPENING_LANGUAGE_RETURN_TEXT": {
     "source": "Esc 回到桌面，还有很多东西要学。",
-    "zh_CN": "看完了就回桌面吧，后面还有很多东西要学。",
+    "zh_CN": "看完了？后面还有很多东西要学。",
     "en": "There’s still plenty to learn."
   },
   "LOC_OPENING_MONITOR_OPEN_TITLE": {
@@ -191,7 +191,7 @@
   },
   "LOC_OPENING_MONITOR_OPEN_TEXT": {
     "source": "点开显示器。这里追踪了你的模因点数，要想你的模因能健康生长，至少要避免它的逆增长哦。",
-    "zh_CN": "点开显示器。这里追踪了你的模因点数，要想你的模因能健康生长，至少要避免它的逆增长哦。",
+    "zh_CN": "点开显示器。这里追踪着你的 Meme 点数，要想模因健康生长，至少得避免逆增长哦。",
     "en": "Open the monitor. It tracks your meme points. If you want your meme to grow healthily, at least try to avoid negative growth."
   },
   "LOC_OPENING_MONITOR_POINTS_TITLE": {
@@ -201,7 +201,7 @@
   },
   "LOC_OPENING_MONITOR_POINTS_TEXT": {
     "source": "这就是你的模因点数和增长情况。数字会说话，不过通常不会说你爱听的话。",
-    "zh_CN": "上面是你能花的 Meme 点数。第一次有人采用你的模因，就能拿到 20 点；之后采用人数增加，或者传到更多国家，还会继续进账。研究要花点数，别一口气用光了。下面两条线是当前语言的传播度和偏移度，分别记录它传得多广、转述后意思偏了多少。",
+    "zh_CN": "上面是可用的 Meme 点数。第一次有人采用你的模因会拿到 20 点，之后采用人数增加或传去更多国家也会继续进账；研究能力需要消耗点数。下面两条线分别记录当前语言的传播度和偏移度。",
     "en": "The number above is your available Meme points. The first person to adopt your meme earns you 20 points. More adopters or more countries can earn you further points. Research costs points, so don’t spend them all at once. The two lines track the current language’s spread and deviation: how widely it travels and how much its meaning changes as people retell it."
   },
   "LOC_OPENING_MONITOR_IDEOLOGY_TITLE": {
@@ -211,7 +211,7 @@
   },
   "LOC_OPENING_MONITOR_IDEOLOGY_TEXT": {
     "source": "点第二个按钮，可以切换面板。另外还有一些值得注意的数字。",
-    "zh_CN": "点第二个按钮，可以切换面板。另外还有一些值得注意的数字。",
+    "zh_CN": "点第二个按钮切换面板，还有几项数值需要留意。",
     "en": "Click the second button to switch panels. There are a few other numbers worth watching."
   },
   "LOC_OPENING_IDEOLOGY_POINTS_TITLE": {
@@ -221,7 +221,7 @@
   },
   "LOC_OPENING_IDEOLOGY_POINTS_TEXT": {
     "source": "这是你目前可用的意识形态点数，它们可以用于扭转你的模因的政治色彩。把鼠标移到四个数值上看看，看完点“继续”。",
-    "zh_CN": "这是你目前可用的立场点数，用来调整模因的政治倾向。把鼠标移到四个方向的数值上看看，看完点“继续”。",
+    "zh_CN": "这些是可用的立场点数，用来调整模因的立场倾向。把鼠标移到四个方向的数值上看看，看完点“继续”。",
     "en": "Use these stance points to shift your meme's stance. Hover over the four direction values, then click Continue."
   },
   "LOC_OPENING_MONITOR_PRAGMATICS_TITLE": {
@@ -231,7 +231,7 @@
   },
   "LOC_OPENING_MONITOR_PRAGMATICS_TEXT": {
     "source": "点第三个按钮。还有一门学科，你迟早要和它打交道。",
-    "zh_CN": "点第三个按钮。还有一门学科，你迟早要和它打交道。",
+    "zh_CN": "点第三个按钮。还有一门深邃的学科，你迟早要和它打交道。",
     "en": "Click the third button. There’s another discipline you’ll have to deal with sooner or later."
   },
   "LOC_OPENING_PRAGMATICS_POINTS_TITLE": {
@@ -241,7 +241,7 @@
   },
   "LOC_OPENING_PRAGMATICS_POINTS_TEXT": {
     "source": "语言学，一门神奇的学科。这些点数代表了你的模因的可用语用学点数……自己看看吧。看完点“继续”，我们回到桌面。",
-    "zh_CN": "语用学，一门神奇的学科。这些数字代表你目前可用的语用点数……自己移上去看看吧。看完点“继续”，我们回到桌面。",
+    "zh_CN": "语用学，一门神奇的学科。这些是你目前可用的语用点数……自己移上去看看吧。看完点“继续”，我们回到桌面。",
     "en": "Linguistics. A marvellous discipline. These figures are your meme’s available pragmatics points… Take a look for yourself. Click Continue when you’re ready to return to the desk."
   },
   "LOC_OPENING_SPEED_TITLE": {
@@ -251,7 +251,7 @@
   },
   "LOC_OPENING_SPEED_TEXT": {
     "source": "这是你可以操控的三个档位的时间流速，为什么我们可以操控时间呢？……这个问题我劝你最好不要细想。",
-    "zh_CN": "这是你可以操控的三个档位的时间流速，为什么我们可以操控时间呢？……这个问题我劝你最好不要细想。",
+    "zh_CN": "这是你可以操控的三个时间流速档位。至于为什么我们可以操控时间……这个问题我劝你最好不要细想。",
     "en": "These are the three time settings you can control. Why can we control time? …I’d advise you not to think too hard about that."
   },
   "LOC_OPENING_TABS_TITLE": {
@@ -261,7 +261,7 @@
   },
   "LOC_OPENING_TABS_TEXT": {
     "source": "你可以在这里切换四个操作界面。下面我来带你投放你的第一个模因吧。",
-    "zh_CN": "你可以在这里切换四个操作界面，平时工作主要就看这几页。下面我来带你投放第一个模因吧。",
+    "zh_CN": "这排标签用来切换四个操作界面，平时工作主要就看这几页。下面我带你投放第一个模因吧。",
     "en": "You can switch between four work sheets here. Now, let’s deploy your first meme."
   },
   "LOC_OPENING_EDIT_TITLE": {
@@ -271,7 +271,7 @@
   },
   "LOC_OPENING_EDIT_TEXT": {
     "source": "先点开编辑页。一个模因总得有点自己的表达，照抄主管的话可不算创作。",
-    "zh_CN": "先点开编辑页。这里用来查看基模、装配补丁，看看最后会说出什么。\n你问基模是什么？简单来说，浩如烟海的模因可以概括为几种基础构型，这种构型就叫“基模”。等你见过的模因多了，自然就明白了。",
+    "zh_CN": "先点开编辑页。这里用来查看基模、安装补丁，看看最后会说出什么。\n你问基模是什么？简单来说，浩如烟海的模因可以概括为几种基础构型，这种构型就叫“基模”。随着你见过的模因越来越多，你会理解的。",
     "en": "Open the Edit sheet. Here you can inspect the base meme, fit patches and see the resulting expression."
   },
   "LOC_OPENING_EXPRESSION_TITLE": {
@@ -281,8 +281,8 @@
   },
   "LOC_OPENING_EXPRESSION_TEXT": {
     "source": "右栏显示装配后的最终表达，可以滚动查看。把鼠标移到文字上，看看语言、群体、话题和补丁怎样影响了这句话。",
-    "zh_CN": "右栏显示装配后的最终表达，可以滚动查看。把鼠标移到文字上，就能看到语言、群体、话题和补丁各自影响了哪一部分。",
-    "en": "The right column shows the final expression. Scroll to read it, and hover over the text to see how language, audience, topics and patches shaped it."
+    "zh_CN": "右栏下方是拼合后的最终表达与含义。把鼠标移到文字上，旁边的票据会显示语言、群体、话题和补丁各自影响了哪里。",
+    "en": "The lower right column shows the final expression and meaning. Hover over the text to see how language, audience, topics and patches shaped it."
   },
   "LOC_OPENING_PREVIEW_TITLE": {
     "source": "预览与指纹",
@@ -291,7 +291,7 @@
   },
   "LOC_OPENING_PREVIEW_TEXT": {
     "source": "左侧的神经元图展示基模的结构。如果模因发生本质上的变化，它也会呈现出来。",
-    "zh_CN": "左侧的神经元图展示基模的结构。如果模因发生本质上的变化，它也会呈现出来。",
+    "zh_CN": "左侧的神经元图展示基模的结构。如果模因发生本质上的变化，也会在这里呈现出来。",
     "en": "The neuron diagram on the left shows the base meme structure and changes to it."
   },
   "LOC_OPENING_MODULE_TITLE": {
@@ -301,7 +301,7 @@
   },
   "LOC_OPENING_MODULE_TEXT": {
     "source": "把桌上的一张模组卡拖到空夹子里。夹子不是装饰，装好以后模因才会真正得到它的效果。",
-    "zh_CN": "把桌上的补丁卡拖进任意一个空的安装栏，松手就能夹好；想取下的时候，把夹着的纸片拖出来就行。",
+    "zh_CN": "把桌上的补丁卡拖到编辑页上方的空夹子处，松手就能夹好；想取下时直接把纸片拖出来就行。",
     "en": "Drop a patch card anywhere in an empty installation lane; there is no need to hit the thin wire. Drag an installed slip out to remove it."
   },
   "LOC_OPENING_CONTEXT_TITLE": {
@@ -311,7 +311,7 @@
   },
   "LOC_OPENING_CONTEXT_TEXT": {
     "source": "接下来点培养页。模因不能凭空活着，得有人说、有人听，还得有话可说。",
-    "zh_CN": "接下来点培养页。模因不能凭空活着，得有人说、有人听，还得有话可说。这些合在一起，就是我们说的“语境”。",
+    "zh_CN": "接下来点培养页。模因不能凭空活着，得有人说、有人听，还得有话可说。这些合在一起，我们通常称为“语境”。",
     "en": "Next, open Cultivate. A meme can’t live on thin air. Someone needs to say it, someone needs to hear it, and there needs to be something to talk about."
   },
   "LOC_OPENING_CONTEXT_LAYERS_TITLE": {
@@ -321,7 +321,7 @@
   },
   "LOC_OPENING_CONTEXT_LAYERS_TEXT": {
     "source": "这里按语言、群体和话题摆放语境卡。卡片要放进对应的位置，乱塞东西这种习惯，我们暂时不鼓励。",
-    "zh_CN": "这里按语言、群体和话题摆放语境卡。卡片要放进对应的位置，乱塞东西这种习惯，我们暂时不鼓励。",
+    "zh_CN": "这里按语言、群体和话题分区摆放语境卡，把卡片拖进对应的槽位就能装上，拖回桌面即可取下。",
     "en": "Language, group and topic cards sit in their own context layers here. Put each card in the matching slot. We don’t encourage stuffing things in at random."
   },
   "LOC_OPENING_CONTEXT_AXES_TITLE": {
@@ -331,7 +331,7 @@
   },
   "LOC_OPENING_CONTEXT_AXES_TEXT": {
     "source": "坐标决定这份表达站在哪里。调整会用到相应点数，别把“立场鲜明”理解成“把预算花光”。",
-    "zh_CN": "拖动实心点可以调整立场和语用，每格 0.1。离开空心起点会消耗对应方向的点数，拖回去则会归还。别把“立场鲜明”理解成“把预算花光”。",
+    "zh_CN": "拖动实心点可以调整立场和语用，每格 0.1。离开空心起点会消耗对应方向的点数，拖回起点时归还。",
     "en": "Drag the solid dot to adjust stance or pragmatics in steps of 0.1. Moving away from the hollow origin spends points for that direction; moving back returns them."
   },
   "LOC_OPENING_CONTEXT_REMOVE_TITLE": {
@@ -347,11 +347,11 @@
   "LOC_OPENING_CONTEXT_ITEM_TITLE": {
     "source": "装回话题卡",
     "zh_CN": "装上语言卡",
-    "en": "Put the topic card back"
+    "en": "Install a language card"
   },
   "LOC_OPENING_CONTEXT_ITEM_TEXT": {
     "source": "再把刚取出的那张话题卡拖回话题区，任意一个空槽都可以。模因会按装入的话题重新组织表达。",
-    "zh_CN": "初始模因的语言卡还在语言摞里。把它拖到语言区的空槽里吧，别人总得先看懂这门语言，才能理解你的模因。",
+    "zh_CN": "初始模因的语言卡还在桌上的语言摞里。把它拖进语言区的空槽吧，装上语言，别人才能看懂你的模因。",
     "en": "The starting meme’s language card is still in the language stack. Drag it into an empty language slot so people can understand the meme in that language."
   },
   "LOC_OPENING_SPREAD_TITLE": {
@@ -361,7 +361,7 @@
   },
   "LOC_OPENING_SPREAD_TEXT": {
     "source": "传播页：研究能力，安排传播。",
-    "zh_CN": "接下来去传播页。在这里研究传播能力，安排模因怎么往外走。",
+    "zh_CN": "接下来去传播页，在这里研究传播能力。",
     "en": "Spread: research abilities and organize delivery."
   },
   "LOC_OPENING_SPREAD_TREE_TITLE": {
@@ -371,7 +371,7 @@
   },
   "LOC_OPENING_SPREAD_TREE_TEXT": {
     "source": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
-    "zh_CN": "先从“文本传播”开始。把鼠标停在节点上可以查看效果和研究费用，连线代表前置顺序。",
+    "zh_CN": "能力树从上方的“文本传播”开始，往下分成“解释原意”“配图与模板”“开放二创”三条路线。节点之间的连线表示前置顺序。",
     "en": "Start with Text Delivery. Hover over a node to see its effect and research cost. Lines show what you need to learn first."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
@@ -381,8 +381,8 @@
   },
   "LOC_OPENING_SPREAD_DETAILS_TEXT": {
     "source": "右侧查看能力名称和传播效果，下方确认费用与余额并完成研究。",
-    "zh_CN": "把鼠标移到能力节点或右侧名称上，可以查看具体效果和研究费用；往下滚动还能看到后续能力。",
-    "en": "Hover over an ability node or its name to see its effects and research cost. Scroll to see later abilities."
+    "zh_CN": "把鼠标停在能力节点或名称上，旁边的票据会显示它的传播效果和研究费用。",
+    "en": "Hover over an ability node or its name to see its effects and research cost on the note beside it."
   },
   "LOC_OPENING_SKILL_TITLE": {
     "source": "研究文本传播",
@@ -391,7 +391,7 @@
   },
   "LOC_OPENING_SKILL_TEXT": {
     "source": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
-    "zh_CN": "按住“文本传播”节点或右侧名称 1.5 秒，用初始的 10 Meme 完成研究。等第一个人采用你的模因，就能拿到 20 Meme。",
+    "zh_CN": "按住“文本传播”节点或名称 1.5 秒，花费初始的 10 Meme 完成研究。等投放后第一个人采用你的模因，会奖励 20 Meme，并开放后续路线的研究。",
     "en": "Hold the text delivery node or its name for 1.5 seconds to spend your starting 10 Meme on research. When the first person adopts your meme, you receive 20 Meme."
   },
   "LOC_OPENING_MAP_INTRO_TITLE": {
@@ -401,7 +401,7 @@
   },
   "LOC_OPENING_MAP_INTRO_TEXT": {
     "source": "这就是投放地图。把鼠标停在国家上查看资料，单击国家即可选中。按住鼠标中键拖动地图，滚轮缩放。",
-    "zh_CN": "这就是投放地图。把鼠标停在国家上查看资料，单击国家即可选中。按住鼠标中键拖动地图，滚轮缩放。",
+    "zh_CN": "这就是投放地图。按住鼠标中键可以拖动地图，滚轮用来缩放；把鼠标停在国家上查看资料，单击即可选中。",
     "en": "Here’s the launch map. Hover over a country to read its profile, then click to select it. Hold the middle mouse button to pan and use the wheel to zoom."
   },
   "LOC_OPENING_COUNTRY_TITLE": {
@@ -411,7 +411,7 @@
   },
   "LOC_OPENING_COUNTRY_TEXT": {
     "source": "先悬停比较各国的受众、语言和话题，再单击你想投放的国家。",
-    "zh_CN": "先悬停比较各国的受众、语言和话题，再单击你想投放的国家。",
+    "zh_CN": "先挑一个你觉得合适的国家，单击选中它。",
     "en": "Hover over countries to compare their audiences, languages and topics, then click the country where you want to launch."
   },
   "LOC_OPENING_COUNTRY_DETAILS_TITLE": {
@@ -421,7 +421,7 @@
   },
   "LOC_OPENING_COUNTRY_DETAILS_TEXT": {
     "source": "把鼠标停在国家上，就能看到当地的受众、语言、话题和文化背景。悬停可以比较资料；单击国家才会更换投放目标。",
-    "zh_CN": "把鼠标停在国家上，就能看到当地的受众、语言、话题和文化背景。悬停可以比较资料；单击国家才会更换投放目标。",
+    "zh_CN": "资料卡里列着当地的语言、受众构成、偏好话题和说话风气。看看它和你手头这份模因合不合拍；想换目标的话，单击别的国家就行。",
     "en": "Hover over a country to see its audiences, languages, topics and cultural background. Move between countries to compare their profiles; click a country to change your launch target."
   },
   "LOC_OPENING_CONFIRM_TITLE": {
@@ -431,32 +431,32 @@
   },
   "LOC_OPENING_CONFIRM_TEXT": {
     "source": "确定投放国家后，点破它上方的投放气泡。还想比较的话，继续悬停查看；要换目标，就单击另一个国家。",
-    "zh_CN": "确定投放国家后，点破它上方的投放气泡。之后更换补丁、语言或其他配置，改完都会立即生效。点完我就先挂了哦~",
+    "zh_CN": "选好了就点破目标国家上方的投放气泡吧。之后再更换补丁、语境卡或调整坐标，都会立即生效。点完我就先挂了哦~",
     "en": "When you’re ready, pop the launch bubble above the selected country. You can keep hovering to compare profiles or click another country to change your target. Later changes to patches, languages or other settings take effect immediately."
   },
   "LOC_OPENING_HOVER_FINE": {
     "source": "火都烧起来了，还能说一句“问题不大”。很好，情绪稳定也是一种生产力。",
-    "zh_CN": "火都烧起来了，还能说一句“问题不大”。很好，情绪稳定也是一种生产力。",
+    "zh_CN": "房间都烧起来了，还能坐着说一句“问题不大”……心理素质倒是挺让人羡慕的。",
     "en": "The room is in flames and it still says 'This is fine.' Well, keeping your composure counts for something."
   },
   "LOC_OPENING_HOVER_PEAK": {
     "source": "哦，巅峰之作。希望大家是在夸你的模因，而不是在反讽。",
-    "zh_CN": "哦，写着“巅峰”呢。希望大家到时候是在夸你的模因，不是在说反话。",
+    "zh_CN": "上面写着“巅峰”呢……但愿到时候大家刷这个词是真心在夸你。",
     "en": "It says 'peak.' Let's hope people mean that as praise for your meme and aren't using it ironically."
   },
   "LOC_OPENING_HOVER_67": {
     "source": "哦？事先声明，这不会影响我对你的绩效评估。",
-    "zh_CN": "哦？事先声明，这不会影响我对你的绩效评估。",
+    "zh_CN": "嗯？随便看，这不会影响我对你的绩效评估。",
     "en": "Hm? This won't affect your performance review."
   },
   "LOC_OPENING_HOVER_IDEOLOGY": {
     "source": "这是你目前可用的意识形态点数，它们可以用于扭转你的模因的政治色彩。点数有限，立场倒是可以很坚定。",
-    "zh_CN": "这是你目前可用的立场点数，可以用来调整模因的政治倾向。点数有限，立场倒是可以很坚定。",
+    "zh_CN": "这些是可用的立场点数，向某个方向调整立场时会消耗对应点数。",
     "en": "These are your available stance points. Shifting the stance in a direction spends points for that direction."
   },
   "LOC_OPENING_HOVER_PRAGMATICS": {
     "source": "这些是可用的语用学点数。话怎么说，和说了什么一样重要……有时候更重要。",
-    "zh_CN": "这些是可用的语用点数，用来调整模因说话的姿态。话怎么说，和说了什么一样重要……有时候更重要。",
+    "zh_CN": "这些是可用的语用点数，用来调整模因说话的姿态。话怎么说，有时比说了什么更重要。",
     "en": "These are your available pragmatics points. They shape how your meme comes across; how you say something matters as much as what you say, sometimes more."
   },
   "LOC_GUIDE_STARTER_PAPER": {
@@ -511,7 +511,7 @@
   },
   "LOC_OPENING_MODULE_RESULT_TEXT": {
     "source": "再看最终表达，比较补丁前后的说法和含义。把鼠标移到文字上，悬停票据会列出表达的来源，也能看出补丁改了哪里。",
-    "zh_CN": "再看最终表达，比较补丁前后的说法和含义。把鼠标移到文字上，旁边的票据会列出表达的来源，也能看出补丁改了哪里。",
+    "zh_CN": "装好了，再看看最终表达，似乎发生了一点变化？把鼠标移到文字上，票据也会标出补丁改动的地方。",
     "en": "Compare the final expression before and after the patch. Hover over the text to see its sources and what the patch changed."
   },
   "LOC_OPENING_EDITOR_CONTEXT_TITLE": {
@@ -521,7 +521,7 @@
   },
   "LOC_OPENING_EDITOR_CONTEXT_TEXT": {
     "source": "语言、群体和话题集中显示在这里。想调整这些模块，接下来到培养页装卸卡片。",
-    "zh_CN": "语言、群体和话题集中显示在这里。想更换它们的话，接下来到培养页装卸卡片。",
+    "zh_CN": "这里汇总显示当前的语言、群体、话题和立场等设定。要装卸卡片或调整坐标，接下来去“培养页”操作。",
     "en": "Language, group and topic modules are summarized here. To change them, install or remove cards on the Cultivate sheet next."
   },
   "LOC_OPENING_MAP_MONITOR_TITLE": {
@@ -531,7 +531,7 @@
   },
   "LOC_OPENING_MAP_MONITOR_TEXT": {
     "source": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
-    "zh_CN": "投放后，这里会列出地图上的模因。悬停标签可高亮它的传播点，点击标签可查看传播度、增长和偏移等详情。你的模因会排在前面。",
+    "zh_CN": "投放之后，地图上流传的模因会列在这里，你的模因排在前面。悬停标签可以高亮传播点并预览概况，点击标签能打开完整的传播详情。",
     "en": "After launch, this panel lists the memes on the map, with yours first. Hover over a tag to highlight its spread points; click it to see spread, growth and deviation."
   },
   "LOC_OPENING_LANGUAGE_WARNING": {
