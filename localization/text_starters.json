@@ -25,9 +25,9 @@
     "en": "Keep the contrast between playing down the effort and showing off the result in a written account."
   },
   "LOC_TEXT_STARTER_VERSAILLES_HINT": {
-    "source": "把成绩说成轻松得来，等别人听出炫耀。期末考试是游戏编写的文字例子。",
-    "zh_CN": "嘴上抱怨怎么这么烦，其实就等着别人顺嘴夸你两句。这种套路看着老，每次发出去偏偏都有人接茬。\n\n“我出门从不离开日记。在火车上，总该有点耸人听闻的东西可读。”\n奥斯卡·王尔德《不可儿戏》第二幕（1895）",
-    "en": "Makes success sound effortless and leaves others to notice the brag.\n\n“I never travel without my diary. One should always have something sensational to read in the train.”\nOscar Wilde, The Importance of Being Earnest, Act II (1895)"
+    "source": "把成绩说成轻松得来，等别人听出炫耀。起量更快，遇上事件时偏移波动更大。",
+    "zh_CN": "嘴上抱怨怎么这么烦，其实就等着别人顺嘴夸你两句。自带抢眼体质（注意力权重 +12%），起量最快；只是撞上新闻风波时意思更容易跑偏（事件偏移 +25%）。\n\n“我出门从不离开日记。在火车上，总该有点耸人听闻的东西可读。”\n奥斯卡·王尔德《不可儿戏》第二幕（1895）",
+    "en": "Makes success sound effortless and leaves others to notice the brag. Draws 12 percent more attention early on, while news events shift its meaning 25 percent faster.\n\n“I never travel without my diary. One should always have something sensational to read in the train.”\nOscar Wilde, The Importance of Being Earnest, Act II (1895)"
   },
   "LOC_TEXT_STARTER_NOBODY_TITLE": {
     "source": "Nobody：没人问起",
@@ -55,9 +55,9 @@
     "en": "Keep the contrast between an unprompted silence and someone speaking up."
   },
   "LOC_TEXT_STARTER_NOBODY_HINT": {
-    "source": "先留一句无人发问的空白，再写谁忍不住说了什么。剧集话题是游戏改编。",
-    "zh_CN": "明明半个人都没问，自己硬要在底下开麦讲半天。你要是半夜刷到过那种长篇大论，大概就懂这股劲儿了。\n\n“我是无名之辈！你是谁？”\n艾米莉·狄金森《我是无名之辈！你是谁？》（1891年初刊）",
-    "en": "Leave the opening silent, then show who speaks without being asked.\n\n“I'm Nobody! Who are you?”\nEmily Dickinson, I'm Nobody! Who are you? (first published 1891)"
+    "source": "先留一句无人发问的空白，再写谁忍不住说了什么。混搭群体和话题不折损，平时自然跑偏略快。",
+    "zh_CN": "明明半个人都没问，自己硬要在底下开麦讲半天。留白句式什么都能往里装，双群体与多话题混搭不折损效果，立场范围也更宽；代价是平时自然走样稍快（+20%）。\n\n“我是无名之辈！你是谁？”\n艾米莉·狄金森《我是无名之辈！你是谁？》（1891年初刊）",
+    "en": "Leaves the opening silent, then shows who speaks unprompted. Mixes multiple audiences and topics without dilution across wider stance bounds, while drifting 20 percent faster on its own.\n\n“I'm Nobody! Who are you?”\nEmily Dickinson, I'm Nobody! Who are you? (first published 1891)"
   },
   "LOC_TEXT_STARTER_BOOMER_TITLE": {
     "source": "OK boomer：结束说教",
@@ -85,8 +85,8 @@
     "en": "Keep the short reply to a generational lecture and the refusal to keep arguing."
   },
   "LOC_TEXT_STARTER_BOOMER_HINT": {
-    "source": "用一句短回复打断代际说教。学校里的对话是游戏编写的情境。",
-    "zh_CN": "碰上长篇大论摆资历的人，直接甩一句短话把天聊死。省事是挺省事的，就是对面血压容易上来。\n\n“好了，老一辈。”\n克洛伊·斯沃布里克，新西兰议会发言（2019年11月5日）",
-    "en": "Cuts off a generational lecture with a short reply.\n\n“OK boomer.”\nChlöe Swarbrick, New Zealand Parliament (5 November 2019)"
+    "source": "用一句短回复打断代际说教。立场语气对路时爆发更强，自然跑偏最慢。",
+    "zh_CN": "碰上长篇大论摆资历的人，直接甩一句短话把天聊死。对准当地立场与说话习惯时契合加成放大（1.3 倍），平时意思也最稳（自然跑偏 -25%）；只是跟当地风气拧着来时冷场更快。\n\n“好了，老一辈。”\n克洛伊·斯沃布里克，新西兰议会发言（2019年11月5日）",
+    "en": "Cuts off a generational lecture with a short reply. Amplifies local stance and tone alignment by 1.3x and drifts 25 percent slower on its own, though mismatched crowds tune it out quickly.\n\n“OK boomer.”\nChlöe Swarbrick, New Zealand Parliament (5 November 2019)"
   }
 }

@@ -9,23 +9,23 @@ map_settings = ExtResource("world")
 policy_version = 1
 horizon_hours = 1872
 hours_per_active_second = 2.0
-viral_spread_min = 0.15
+viral_spread_min = 0.14
 viral_lead_min = 0.03
 viral_hours = 72
 local_adoption_min = 0.15
 local_deviation_max = 0.20
-local_range_max = 0.05
-local_hours = 192
+local_range_max = 0.07
+local_hours = 144
 duel_spread_min = 0.03
-duel_gap_max = 0.02
+duel_gap_max = 0.025
 duel_hours = 120
 adaptation_baseline_min = 0.05
-adaptation_stable_window_hours = 60
+adaptation_stable_window_hours = 48
 adaptation_adoption_min = 0.25
 adaptation_gain_min = 0.15
 adaptation_hours = 72
 forgotten_hours = 120
-substitute_spread_min = 0.02
+substitute_spread_min = 0.025
 substitute_lead_min = 0.01
 substitute_hours = 72
 fallback_war_seconds = 900.0
@@ -34,10 +34,10 @@ world_war_duration_hours = 72
 event_time_scale = 20.0
 attention_fraction = 0.025
 attention_activation = 24.0
-adoption_response = 0.0035
-exposure_response = 0.0035
-seed_pressure = 0.02
-seed_hours = 480
+adoption_response = 0.0085
+exposure_response = 0.0085
+seed_pressure = 0.015
+seed_hours = 300
 parent_relay = 0.015
 expression_character_scale = 80.0
 expression_floor = 0.10
@@ -47,16 +47,16 @@ autonomous_context_dependency = 0.3
 occupancy_multiplier = 1.55
 occupancy_cap = 0.98
 travel_distance_scale = 1000.0
-land_contact = 0.0001
-sea_contact = 0.00001
+land_contact = 0.0012
+sea_contact = 0.00045
 network_contact_multiplier = 100.0
 sea_neighbors = 2
 reference_geometry_seed = 20261003
-controlled_refresh_hours = 4000.0
-community_refresh_hours = 6000.0
+controlled_refresh_hours = 650.0
+community_refresh_hours = 950.0
 fatigue_gain = 0.0003
 fatigue_recovery = 0.0001
-fitness_weights = {"language":0.20,"group":0.15,"topics":0.20,"stance":0.10,"pragmatic":0.10,"expression":0.15,"access":0.10}
+fitness_weights = {"language":0.22,"group":0.17,"topics":0.18,"stance":0.11,"pragmatic":0.11,"expression":0.13,"access":0.08}
 skill_reach = {"text":0.0,"context_note":0.0,"usage_example":0.0,"misuse_correction":0.0,"meme_entry":0.0,"image":0.20,"translated_caption":0.0,"public_template":0.20,"form_anchor":0.0,"source_package":0.25,"free_remix":0.0,"derivative_backlink":0.0,"spinoff_momentum":0.0}
 ownership_victory_share = 0.60
 lineage_victory_share = 0.60
@@ -122,12 +122,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.335
   },
   "stance": [
-   -0.6,
-   -0.5
+   0.35,
+   0.2
   ],
   "pragmatic": [
-   -0.5,
-   0.3
+   0.35,
+   -0.15
   ],
   "primary_languages": [
    "ninghua"
@@ -184,12 +184,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.34
   },
   "stance": [
-   0.4,
-   0.5
+   0.25,
+   0.45
   ],
   "pragmatic": [
-   0.5,
-   -0.4
+   0.45,
+   -0.35
   ],
   "primary_languages": [
    "shiohara"
@@ -246,12 +246,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.22
   },
   "stance": [
-   0.1,
-   0.0
+   -0.15,
+   0.35
   ],
   "pragmatic": [
-   0.0,
-   0.0
+   0.55,
+   0.45
   ],
   "primary_languages": [
    "seowon"
@@ -308,12 +308,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.3
   },
   "stance": [
-   -0.6,
-   -0.5
+   -0.55,
+   -0.15
   ],
   "pragmatic": [
-   -0.5,
-   0.3
+   0.3,
+   0.35
   ],
   "primary_languages": [
    "alden"
@@ -370,12 +370,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.41
   },
   "stance": [
-   0.4,
-   0.5
+   0.45,
+   0.3
   ],
   "pragmatic": [
    0.5,
-   -0.4
+   0.25
   ],
   "primary_languages": [
    "veresk"
@@ -432,12 +432,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.39
   },
   "stance": [
-   0.1,
-   0.0
+   -0.45,
+   -0.6
   ],
   "pragmatic": [
-   0.0,
-   0.0
+   -0.55,
+   -0.25
   ],
   "primary_languages": [
    "lindal"
@@ -494,12 +494,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.195
   },
   "stance": [
-   -0.6,
-   -0.5
+   0.15,
+   0.1
   ],
   "pragmatic": [
-   -0.5,
-   0.3
+   -0.3,
+   -0.4
   ],
   "primary_languages": [
    "marasu",
@@ -557,12 +557,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.4
   },
   "stance": [
-   0.4,
-   0.5
+   -0.35,
+   -0.3
   ],
   "pragmatic": [
-   0.5,
-   -0.4
+   -0.2,
+   0.3
   ],
   "primary_languages": [
    "serranova"
@@ -619,12 +619,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.36
   },
   "stance": [
-   0.1,
-   0.0
+   0.05,
+   -0.2
   ],
   "pragmatic": [
-   0.0,
-   0.0
+   -0.45,
+   -0.3
   ],
   "primary_languages": [
    "oruvia",
@@ -682,12 +682,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.59
   },
   "stance": [
-   -0.6,
-   -0.5
+   0.4,
+   0.4
   ],
   "pragmatic": [
-   -0.5,
-   0.3
+   -0.35,
+   -0.1
   ],
   "primary_languages": [
    "nashir"
@@ -744,12 +744,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.22
   },
   "stance": [
-   0.4,
-   0.5
+   -0.25,
+   0.05
   ],
   "pragmatic": [
-   0.5,
-   -0.4
+   0.4,
+   0.2
   ],
   "primary_languages": [
    "soleria"
@@ -806,12 +806,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.175
   },
   "stance": [
-   0.1,
-   0.0
+   -0.3,
+   0.2
   ],
   "pragmatic": [
-   0.0,
-   0.0
+   0.65,
+   0.3
   ],
   "primary_languages": [
    "avendon"
@@ -868,12 +868,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.51
   },
   "stance": [
-   -0.6,
-   -0.5
+   0.3,
+   -0.25
   ],
   "pragmatic": [
-   -0.5,
-   0.3
+   -0.6,
+   0.15
   ],
   "primary_languages": [
    "rhenivia"
@@ -930,12 +930,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.315
   },
   "stance": [
-   0.4,
-   0.5
+   0.2,
+   0.35
   ],
   "pragmatic": [
-   0.5,
-   -0.4
+   0.35,
+   0.2
   ],
   "primary_languages": [
    "mehran"
@@ -992,12 +992,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.22
   },
   "stance": [
-   0.1,
-   0.0
+   -0.5,
+   -0.45
   ],
   "pragmatic": [
-   0.0,
-   0.0
+   0.25,
+   -0.2
   ],
   "primary_languages": [
    "cantalia",
@@ -1055,12 +1055,12 @@ countries = Array[Dictionary]([
    "public_safety": 0.15
   },
   "stance": [
-   -0.6,
-   -0.5
+   0.1,
+   0.25
   ],
   "pragmatic": [
-   -0.5,
-   0.3
+   -0.25,
+   -0.2
   ],
   "primary_languages": [
    "vishara"

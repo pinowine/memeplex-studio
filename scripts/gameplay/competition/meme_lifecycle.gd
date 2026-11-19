@@ -214,20 +214,26 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 		if str(_simulation.current_variant_id) == str(parent.id): _simulation.current_variant_id = str(raw.id)
 		_simulation.attention = _simulation.competition.snapshot(_simulation.variants, false).attention
 		return {"split":false, "new_meme":false, "meme_id":str(raw.meme_id), "distance":distance}
-	var rolled := rollback_content(reference, raw)
-	var identity := content(parent)
-	for field: String in ["creator", "owned", "controlled"]: rolled[field] = identity[field]
-	if parent.has("effective_content"):
-		if not parent.has("effective_history"): parent.effective_history = []
-		parent.effective_history.append(revision_snapshot(parent))
-	parent.effective_content = rolled
-	parent.erase("live_author_edit")
-	parent.rollback_from_id = str(raw.id)
-	parent.deviation_effect_deltas = {}
-	parent.deviation_patch_effects = {}
-	parent.deviation_pressure = 0.0
-	parent.erase("split_effect_deltas")
-	parent.erase("split_patch_effects")
+	var keep_parent: bool = bool(content(parent).get("controlled", false)) and "source_package" in policy_parent.flow_profile.get("skill_ids", [])
+	var rolled_profile: Dictionary = policy_parent.flow_profile
+	if keep_parent:
+		parent.deviation_pressure = -Deviation.raw_semantic(reference, content(parent))
+	else:
+		var rolled := rollback_content(reference, raw)
+		var identity := content(parent)
+		for field: String in ["creator", "owned", "controlled"]: rolled[field] = identity[field]
+		if parent.has("effective_content"):
+			if not parent.has("effective_history"): parent.effective_history = []
+			parent.effective_history.append(revision_snapshot(parent))
+		parent.effective_content = rolled
+		parent.erase("live_author_edit")
+		parent.rollback_from_id = str(raw.id)
+		parent.deviation_effect_deltas = {}
+		parent.deviation_patch_effects = {}
+		parent.deviation_pressure = 0.0
+		parent.erase("split_effect_deltas")
+		parent.erase("split_patch_effects")
+		rolled_profile = rolled.flow_profile
 	raw.split_from_id = str(parent.id)
 	raw.split_parent_name = str(parent.get("split_parent_name", parent.meme_name))
 	raw.split_effect_deltas = raw.deviation_effect_deltas.duplicate(true)
@@ -244,7 +250,7 @@ func activate(raw: Dictionary, source: Dictionary = {}) -> Dictionary:
 	raw.meme_name_index = name_index
 	raw.meme_name = "MEME_SPLIT_NAME_%02d" % (name_index % 16)
 	raw.deviation_anchor = semantic_snapshot(raw)
-	var allocation: Dictionary = _simulation.competition.split_revision(str(parent.id), str(raw.id), raw.flow_profile, rolled.flow_profile)
+	var allocation: Dictionary = _simulation.competition.split_revision(str(parent.id), str(raw.id), raw.flow_profile, rolled_profile, keep_parent)
 	if allocation.has("error"): return allocation
 	_simulation.attention = _simulation.competition.snapshot(_simulation.variants, false).attention
 	return {"split":true, "new_meme":true, "meme_id":str(raw.meme_id), "distance":distance, "allocation":allocation}

@@ -1,6 +1,6 @@
 extends RefCounted
 
-const POLICY_VERSION := 1
+const POLICY_VERSION := 2
 const FIRST_KEY := "propagation:first_adoption"
 const FIRST_AMOUNT := 20
 const RETURN_AMOUNTS := [20,19,18,17,15,12,10,9,8,7,6,5,4,3,2,1]
@@ -10,18 +10,18 @@ static func amount_for_level(level: int) -> int:
 	return int(RETURN_AMOUNTS[level-1]) if level <= RETURN_AMOUNTS.size() else 1
 
 static func adoption_increment(population: int, level: int) -> int:
-	var factor := 1.0 + 0.25 * float(level-1)
-	return maxi(1,ceili(float(population)*0.001*factor*factor))
+	var factor := 1.0 + 0.42 * float(level-1)
+	return maxi(1,ceili(float(population)*0.008*factor*factor))
 
-static func country_increment(level: int) -> int:
-	return 1 + floori(float(level-1)/6.0)
+static func country_increment(_level: int) -> int:
+	return 1
 
 static func minimum_interval(level: int) -> int:
-	var factor := 1.0 + 0.2 * float(level-1)
+	var factor := 1.0 + 0.15 * float(level-1)
 	return ceili(8.0*factor*factor)
 
 static func signature() -> String:
-	return JSON.stringify({"version":POLICY_VERSION,"first":FIRST_AMOUNT,"amounts":RETURN_AMOUNTS,"adoption_fraction":0.001,"adoption_growth":0.25,"country_step":6,"interval_hours":8,"interval_growth":0.2,"tail_amount":1},"",true,true).sha256_text()
+	return JSON.stringify({"version":POLICY_VERSION,"first":FIRST_AMOUNT,"amounts":RETURN_AMOUNTS,"adoption_fraction":0.008,"adoption_growth":0.42,"country_step":1,"interval_hours":8,"interval_growth":0.15,"tail_amount":1},"",true,true).sha256_text()
 
 static func _fields(adopted: int, population: int, landed: int, level: int) -> Dictionary:
 	return {"propagation_reward_version":POLICY_VERSION,"propagation_adopted":adopted,"propagation_landed":landed,"propagation_population":population,"propagation_level":level}
@@ -87,7 +87,7 @@ static func validate_ledger(transactions: Array) -> PackedStringArray:
 		var population := int(entry.propagation_population)
 		if int(entry.propagation_reward_version) != POLICY_VERSION or int(entry.propagation_level) != level:
 			errors.append("propagation rewards: policy or level mismatch")
-		if population <= 0 or adopted <= 0 or adopted > population or landed < 0 or int(entry.hour) < 0:
+		if population <= 0 or adopted <= 0 or landed < 0 or int(entry.hour) < 0:
 			errors.append("propagation rewards: invalid progress watermark")
 		if kind == "first":
 			if seen_first or not previous.is_empty() or int(entry.delta) != FIRST_AMOUNT:

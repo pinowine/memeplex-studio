@@ -1,8 +1,8 @@
 extends RefCounted
 
 const Metrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
-const NATURAL_PER_HOUR := 0.00036
-const RECOVERY_PER_HOUR := 0.00025
+const NATURAL_PER_HOUR := 0.00048
+const RECOVERY_PER_HOUR := 0.00032
 const RESEARCH_RELIEF := {"context_note":0.06, "usage_example":0.08, "meme_entry":0.10}
 
 static func raw_semantic(anchor: Dictionary, current: Dictionary) -> float:

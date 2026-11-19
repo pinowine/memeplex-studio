@@ -1,10 +1,14 @@
 extends RefCounted
 
 const Metrics = preload("res://scripts/gameplay/competition/meme_monitor_metrics.gd")
+const Deviation = preload("res://scripts/gameplay/competition/meme_deviation.gd")
 const PRIORITY: Array[String] = ["best_substitute", "viral_icon", "successful_adaptation", "balanced_duel", "local_classic", "forgotten"]
 const FORGOTTEN_VERSION := 2
 const FORGOTTEN_MAX_ADOPTION := 0.01
 const FORGOTTEN_MAX_SPREAD := 0.001
+const VIRAL_COUNTRIES_MIN := 3
+const VIRAL_COUNTRY_ADOPTION_MIN := 0.10
+const CLASSIC_MIN_AGE_HOURS := 600
 const TARGET_WINDOWS: Array[String] = ["viral_icon", "local_classic", "balanced_duel", "successful_adaptation", "forgotten"]
 
 static func _window() -> Dictionary:
@@ -41,6 +45,20 @@ static func semantic_signature(raw: Dictionary) -> String:
 		else: semantic[layer].position = source.get("pragmatic_position", [])
 	return JSON.stringify(semantic, "", true, true).sha256_text()
 
+static func _observed_deviation(visible: Dictionary, competition: RefCounted, metric_version: int = Metrics.DEVIATION_VERSION) -> float:
+	if metric_version == 1:
+		return Metrics.deviation(visible.get("deviation_anchor", visible), visible, 1)
+	var sample := visible.duplicate(true)
+	sample.flow_profile = competition.live_profile(str(visible.id))
+	return Deviation.total(sample.get("deviation_anchor", sample), sample)
+
+static func _recent_baseline(state: Dictionary) -> float:
+	if state.local_samples.is_empty():
+		return float(state.stable_peak)
+	var total := 0.0
+	for value: Variant in state.local_samples: total += float(value)
+	return total / state.local_samples.size()
+
 static func record_publication(state: Dictionary, variants: Array, current_id: String, country_id: String, hour: int, competition: RefCounted, author_edit: bool = false) -> Dictionary:
 	var records: Dictionary = _records(variants)
 	if not records.has(current_id): return state
@@ -56,17 +74,20 @@ static func record_publication(state: Dictionary, variants: Array, current_id: S
 		if not author_edit and not current.get("parent_ids", []).is_empty() and records.has(str(current.parent_ids[0])):
 			previous_signature = semantic_signature(records[str(current.parent_ids[0])])
 		if signature != previous_signature:
-			var baseline: float = float(state.stable_peak)
-			state.adaptation = {"baseline":baseline, "revision_hour":hour, "signature":signature, "eligible":baseline >= competition.rules.adaptation_baseline_min}
+			var baseline: float = _recent_baseline(state)
+			var eligible: bool = maxf(float(state.stable_peak), baseline) >= competition.rules.adaptation_baseline_min
+			state.adaptation = {"baseline":baseline, "revision_hour":hour, "signature":signature, "eligible":eligible}
 			state.windows.successful_adaptation = _window()
-			state.local_samples = []
 			var visible: Dictionary = _content(current)
-			if Metrics.deviation(visible.get("deviation_anchor", visible), visible) > competition.rules.local_deviation_max: state.windows.local_classic = _window()
+			if _observed_deviation(visible, competition) > competition.rules.local_deviation_max: state.windows.local_classic = _window()
 		state.target_record_id = current_id
 		state.signature = signature
 	state.version = Metrics.DEVIATION_VERSION
-	var metrics := _metrics(variants, current_id, country_id, hour, competition)
-	if int(state.get("forgotten_version", 1)) != FORGOTTEN_VERSION: _begin_forgotten_observation(state, metrics)
+	var metrics := _metrics(variants, current_id, country_id, int(state.last_hour), competition)
+	if int(state.get("forgotten_version", 1)) != FORGOTTEN_VERSION:
+		_begin_forgotten_observation(state, metrics)
+	elif metrics.memes.has(str(state.target_meme_id)):
+		state.forgotten_observation.current = _forgotten_sample(metrics.memes[str(state.target_meme_id)], int(state.last_hour))
 	state.rows = _rows(state, metrics, competition.rules)
 	return state
 
@@ -79,8 +100,7 @@ static func refresh_metrics(state: Dictionary, variants: Array, competition: Ref
 		for row: Dictionary in state.rows:
 			var winner := str(row.winner_meme_id)
 			if memes.has(winner):
-				var visible: Dictionary = memes[winner]
-				row.deviation = Metrics.deviation(visible.get("deviation_anchor", visible), visible)
+				row.deviation = _observed_deviation(memes[winner], competition)
 			row.qualified = _qualified(row)
 		state.version = Metrics.DEVIATION_VERSION
 	if int(state.get("forgotten_version", 1)) != FORGOTTEN_VERSION:
@@ -116,13 +136,20 @@ static func _metrics(variants: Array, current_id: String, country_id: String, ho
 	for visible: Dictionary in competition.active_variants(variants):
 		var id: String = str(visible.id)
 		var meme_id: String = _meme_id(visible)
-		var entry: Dictionary = {"record_id":id, "meme_id":meme_id, "adopted":0, "exposed":0, "attention":0, "local_adopted":0, "max_adoption":0.0, "spread":0.0, "adoption":0.0, "deviation":Metrics.deviation(visible.get("deviation_anchor", visible), visible, metric_version), "birth_hour":int(competition._state.registry[id].birth_hour)}
+		var birth_hour := int(competition._state.registry[id].birth_hour)
+		var classic_birth := birth_hour
+		var raw_record: Dictionary = records.get(id, visible)
+		if raw_record.has("rollback_from_id") and competition._state.registry.has(str(raw_record.rollback_from_id)):
+			classic_birth = maxi(birth_hour, int(competition._state.registry[str(raw_record.rollback_from_id)].birth_hour))
+		var entry: Dictionary = {"record_id":id, "meme_id":meme_id, "adopted":0, "exposed":0, "attention":0, "local_adopted":0, "countries_10pct":0, "max_adoption":0.0, "spread":0.0, "adoption":0.0, "deviation":_observed_deviation(visible, competition, metric_version), "birth_hour":birth_hour, "classic_birth_hour":classic_birth}
 		for row: Dictionary in competition._state.world:
 			var cid: String = str(row.id)
 			var country: Dictionary = competition._state.countries[cid]
 			for field: String in ["adopted", "exposed", "attention"]: entry[field] += int(country[field].get(id, 0))
 			if cid == country_id: entry.local_adopted = int(country.adopted.get(id, 0))
-			entry.max_adoption = maxf(float(entry.max_adoption), float(country.adopted.get(id, 0)) / maxf(1.0, float(competition._state.populations[cid])))
+			var local_share := float(country.adopted.get(id, 0)) / maxf(1.0, float(competition._state.populations[cid]))
+			if local_share >= VIRAL_COUNTRY_ADOPTION_MIN: entry.countries_10pct = int(entry.countries_10pct) + 1
+			entry.max_adoption = maxf(float(entry.max_adoption), local_share)
 		entry.spread = Metrics.spread(entry, population, budget)
 		entry.adoption = float(entry.local_adopted) / maxf(1.0, float(competition._state.populations.get(country_id, 0)))
 		memes[meme_id] = entry
@@ -137,11 +164,23 @@ static func _strongest(memes: Dictionary, excluded: String) -> String:
 		if selected.is_empty() or float(memes[id].spread) > float(memes[selected].spread): selected = id
 	return selected
 
+static func _strongest_external(memes: Dictionary, records: Dictionary, excluded: String) -> String:
+	var selected: String = ""
+	var ids: Array = memes.keys()
+	ids.sort()
+	for id: String in ids:
+		if id == excluded: continue
+		var record_id := str(memes[id].get("record_id", id))
+		if not records.get(record_id, {}).get("origin_ids", []).is_empty(): continue
+		if selected.is_empty() or float(memes[id].spread) > float(memes[selected].spread): selected = id
+	return selected
+
 static func _pair_sources(records: Dictionary, target_id: String) -> Dictionary:
 	var pairs: Dictionary = {}
 	for raw: Dictionary in records.values():
 		var q: String = _meme_id(raw)
 		if str(raw.id) != q or not raw.has("split_from_id"): continue
+		if "source_package" not in raw.get("flow_profile", {}).get("skill_ids", []): continue
 		var parent_record: String = str(raw.split_from_id)
 		if not records.has(parent_record): continue
 		var p: String = _meme_id(records[parent_record])
@@ -175,16 +214,18 @@ static func evaluate(state: Dictionary, variants: Array, current_id: String, cou
 	if not consecutive: state.local_samples = []
 	state.local_samples.append(float(target.adoption))
 	while state.local_samples.size() > rules.adaptation_stable_window_hours: state.local_samples.pop_front()
-	if state.local_samples.size() == rules.adaptation_stable_window_hours:
+	if not state.local_samples.is_empty():
 		var total: float = 0.0
 		for value: float in state.local_samples: total += value
-		state.stable_peak = maxf(float(state.stable_peak), total / rules.adaptation_stable_window_hours)
-	var viral: bool = float(target.spread) >= rules.viral_spread_min and float(target.spread) - other_spread >= rules.viral_lead_min
+		state.stable_peak = maxf(float(state.stable_peak), total / state.local_samples.size())
+	var viral: bool = float(target.spread) >= rules.viral_spread_min and float(target.spread) - other_spread >= rules.viral_lead_min and int(target.countries_10pct) >= VIRAL_COUNTRIES_MIN
 	state.windows.viral_icon = _tick(state.windows.viral_icon, viral, hour, consecutive)
-	var classic: bool = float(target.adoption) >= rules.local_adoption_min and float(target.deviation) <= rules.local_deviation_max
+	var classic: bool = hour - int(target.classic_birth_hour) >= CLASSIC_MIN_AGE_HOURS and float(target.adoption) >= rules.local_adoption_min and float(target.deviation) <= rules.local_deviation_max
 	state.windows.local_classic = _tick(state.windows.local_classic, classic, hour, consecutive, "", float(target.adoption), rules.local_range_max)
-	var duel: bool = not other_id.is_empty() and float(target.spread) >= rules.duel_spread_min and other_spread >= rules.duel_spread_min and absf(float(target.spread) - other_spread) <= rules.duel_gap_max
-	state.windows.balanced_duel = _tick(state.windows.balanced_duel, duel, hour, consecutive, other_id)
+	var duel_id: String = _strongest_external(metrics.memes, metrics.records, target_id)
+	var duel_spread: float = float(metrics.memes[duel_id].spread) if not duel_id.is_empty() else 0.0
+	var duel: bool = not duel_id.is_empty() and float(target.spread) >= rules.duel_spread_min and duel_spread >= rules.duel_spread_min and absf(float(target.spread) - duel_spread) <= rules.duel_gap_max
+	state.windows.balanced_duel = _tick(state.windows.balanced_duel, duel, hour, consecutive, duel_id)
 	var adaptation: bool = bool(state.adaptation.eligible) and float(target.adoption) >= rules.adaptation_adoption_min and float(target.adoption) - float(state.adaptation.baseline) >= rules.adaptation_gain_min
 	state.windows.successful_adaptation = _tick(state.windows.successful_adaptation, adaptation, hour, consecutive)
 	if int(state.get("forgotten_version", 1)) != FORGOTTEN_VERSION: _begin_forgotten_observation(state, metrics)
@@ -212,7 +253,7 @@ static func _required(id: String, rules: MemeGameplayRules) -> int:
 	return int({"viral_icon":rules.viral_hours, "local_classic":rules.local_hours, "balanced_duel":rules.duel_hours, "successful_adaptation":rules.adaptation_hours, "forgotten":rules.forgotten_hours, "best_substitute":rules.substitute_hours}[id])
 
 static func _blank_row(id: String, state: Dictionary, rules: MemeGameplayRules) -> Dictionary:
-	var row := {"id":id, "meme_id":str(state.target_meme_id), "country_id":str(state.country_id), "winner_meme_id":str(state.target_meme_id), "candidate_meme_id":"", "parent_meme_id":"", "parent_record_id":"", "other_meme_id":"", "hours":0, "required_hours":_required(id, rules), "spread":0.0, "spread_min":0.0, "lead":0.0, "lead_min":0.0, "adoption":0.0, "adoption_min":0.0, "deviation":0.0, "deviation_max":1.0, "range":0.0, "range_max":1.0, "other_spread":0.0, "gap":0.0, "gap_max":1.0, "gain":0.0, "gain_min":0.0, "baseline":float(state.adaptation.baseline), "baseline_min":rules.adaptation_baseline_min, "stable_peak":float(state.stable_peak), "adopted":0, "exposed":0, "seed_hours":0, "seed_required_hours":rules.seed_hours, "adaptation_eligible":bool(state.adaptation.eligible), "qualified":false}
+	var row := {"id":id, "meme_id":str(state.target_meme_id), "country_id":str(state.country_id), "winner_meme_id":str(state.target_meme_id), "candidate_meme_id":"", "parent_meme_id":"", "parent_record_id":"", "other_meme_id":"", "hours":0, "required_hours":_required(id, rules), "spread":0.0, "spread_min":0.0, "lead":0.0, "lead_min":0.0, "viral_countries":0, "viral_countries_min":0, "adoption":0.0, "adoption_min":0.0, "deviation":0.0, "deviation_max":1.0, "range":0.0, "range_max":1.0, "other_spread":0.0, "gap":0.0, "gap_max":1.0, "gain":0.0, "gain_min":0.0, "baseline":float(state.adaptation.baseline), "baseline_min":rules.adaptation_baseline_min, "stable_peak":float(state.stable_peak), "adopted":0, "exposed":0, "seed_hours":0, "seed_required_hours":CLASSIC_MIN_AGE_HOURS if id == "local_classic" else rules.seed_hours, "adaptation_eligible":bool(state.adaptation.eligible), "qualified":false}
 	if id == "forgotten" and int(state.get("forgotten_version", 1)) == FORGOTTEN_VERSION:
 		row.merge({"forgotten_version":FORGOTTEN_VERSION,"max_adoption":0.0,"max_adoption_max":FORGOTTEN_MAX_ADOPTION,"spread_max":FORGOTTEN_MAX_SPREAD,"nonincreasing":false})
 	return row
@@ -239,7 +280,7 @@ static func _rows(state: Dictionary, metrics: Dictionary, rules: MemeGameplayRul
 		row.winner_meme_id = winner_id
 		if metrics.memes.has(winner_id):
 			var winner: Dictionary = metrics.memes[winner_id]
-			var other: String = _strongest(metrics.memes, winner_id)
+			var other: String = _strongest_external(metrics.memes, metrics.records, winner_id) if id == "balanced_duel" else _strongest(metrics.memes, winner_id)
 			row.other_meme_id = other
 			row.spread = float(winner.spread)
 			row.other_spread = float(metrics.memes[other].spread) if not other.is_empty() else 0.0
@@ -249,7 +290,9 @@ static func _rows(state: Dictionary, metrics: Dictionary, rules: MemeGameplayRul
 			row.deviation = float(winner.deviation)
 			row.adopted = int(winner.adopted)
 			row.exposed = int(winner.exposed)
-			row.seed_hours = maxi(0, int(metrics.hour) - int(winner.birth_hour))
+			row.viral_countries = int(winner.countries_10pct)
+			var origin_hour := int(winner.classic_birth_hour) if id == "local_classic" else int(winner.birth_hour)
+			row.seed_hours = maxi(0, int(metrics.hour) - origin_hour)
 		if id == "forgotten" and row.has("forgotten_version"):
 			row.max_adoption = float(metrics.memes[target_id].max_adoption)
 			row.nonincreasing = _forgotten_declining(state.forgotten_observation)
@@ -263,18 +306,19 @@ static func _rows(state: Dictionary, metrics: Dictionary, rules: MemeGameplayRul
 
 static func _thresholds(row: Dictionary, rules: MemeGameplayRules) -> void:
 	match str(row.id):
-		"viral_icon": row.spread_min = rules.viral_spread_min; row.lead_min = rules.viral_lead_min
+		"viral_icon": row.spread_min = rules.viral_spread_min; row.lead_min = rules.viral_lead_min; row.viral_countries_min = VIRAL_COUNTRIES_MIN
 		"best_substitute": row.spread_min = rules.substitute_spread_min; row.lead_min = rules.substitute_lead_min
 		"local_classic": row.adoption_min = rules.local_adoption_min; row.deviation_max = rules.local_deviation_max; row.range_max = rules.local_range_max
 		"balanced_duel": row.spread_min = rules.duel_spread_min; row.gap_max = rules.duel_gap_max
 		"successful_adaptation": row.adoption_min = rules.adaptation_adoption_min; row.gain_min = rules.adaptation_gain_min
-
+	
 static func _qualified(row: Dictionary) -> bool:
 	match str(row.id):
-		"viral_icon", "best_substitute": return not str(row.winner_meme_id).is_empty() and float(row.spread) >= float(row.spread_min) and float(row.lead) >= float(row.lead_min)
-		"local_classic": return float(row.adoption) >= float(row.adoption_min) and float(row.deviation) <= float(row.deviation_max) and float(row.range) <= float(row.range_max)
+		"viral_icon": return not str(row.winner_meme_id).is_empty() and float(row.spread) >= float(row.spread_min) and float(row.lead) >= float(row.lead_min) and int(row.viral_countries) >= int(row.viral_countries_min)
+		"best_substitute": return not str(row.winner_meme_id).is_empty() and float(row.spread) >= float(row.spread_min) and float(row.lead) >= float(row.lead_min)
+		"local_classic": return int(row.seed_hours) >= int(row.seed_required_hours) and float(row.adoption) >= float(row.adoption_min) and float(row.deviation) <= float(row.deviation_max) and float(row.range) <= float(row.range_max)
 		"balanced_duel": return not str(row.other_meme_id).is_empty() and float(row.spread) >= float(row.spread_min) and float(row.other_spread) >= float(row.spread_min) and float(row.gap) <= float(row.gap_max)
-		"successful_adaptation": return bool(row.adaptation_eligible) and float(row.baseline) >= float(row.baseline_min) and float(row.adoption) >= float(row.adoption_min) and float(row.gain) >= float(row.gain_min)
+		"successful_adaptation": return bool(row.adaptation_eligible) and float(row.adoption) >= float(row.adoption_min) and float(row.gain) >= float(row.gain_min)
 		"forgotten":
 			if int(row.get("forgotten_version", 1)) == FORGOTTEN_VERSION:
 				return int(row.seed_hours) > int(row.seed_required_hours) and float(row.max_adoption) <= float(row.max_adoption_max) and float(row.spread) <= float(row.spread_max) and bool(row.nonincreasing)
@@ -341,7 +385,7 @@ static func validate_state(state: Dictionary, variants: Array, competition: RefC
 	elif int(adaptation.revision_hour) == -1:
 		if float(adaptation.baseline) != 0.0 or not str(adaptation.signature).is_empty() or bool(adaptation.eligible): errors.append("An adaptation revision requires its own published observation")
 	else:
-		if int(adaptation.revision_hour) < int(state.target_started_hour) or int(adaptation.revision_hour) > hour or str(adaptation.signature).length() != 64 or float(adaptation.baseline) > float(state.stable_peak) + 0.000000000001 or bool(adaptation.eligible) != (float(adaptation.baseline) >= rules.adaptation_baseline_min): errors.append("Adaptation progress differs from its published baseline")
+		if int(adaptation.revision_hour) < int(state.target_started_hour) or int(adaptation.revision_hour) > hour or str(adaptation.signature).length() != 64 or float(adaptation.baseline) > float(state.stable_peak) + 0.000000000001 or (bool(adaptation.eligible) and maxf(float(state.stable_peak), float(adaptation.baseline)) + 0.000000000001 < rules.adaptation_baseline_min): errors.append("Adaptation progress differs from its published baseline")
 	if state.windows.size() != TARGET_WINDOWS.size() or not state.windows.has_all(TARGET_WINDOWS): errors.append("Independent ending windows require every target condition")
 	else:
 		for id: String in TARGET_WINDOWS:
@@ -370,7 +414,7 @@ static func validate_state(state: Dictionary, variants: Array, competition: RefC
 			if not _unit(row[key]): errors.append("Independent ending row metrics require finite proportions")
 		for key: String in ["lead", "gain"]:
 			if not _number(row[key]) or absf(float(row[key])) > 1.0: errors.append("Independent ending differences require finite proportions")
-		for key: String in ["hours", "required_hours", "adopted", "exposed", "seed_hours", "seed_required_hours"]:
+		for key: String in ["hours", "required_hours", "adopted", "exposed", "viral_countries", "viral_countries_min", "seed_hours", "seed_required_hours"]:
 			if not _integer(row[key]) or int(row[key]) < 0: errors.append("Independent ending row counters require nonnegative integers")
 		if not row.qualified is bool or not row.adaptation_eligible is bool: errors.append("Independent ending row conditions require booleans")
 		if id == "forgotten" and int(forgotten_version) == FORGOTTEN_VERSION:
@@ -378,7 +422,7 @@ static func validate_state(state: Dictionary, variants: Array, competition: RefC
 			elif bool(row.nonincreasing) != _forgotten_declining(state.forgotten_observation) or not _close(row.max_adoption, state.forgotten_observation.current.max_adoption) or not _close(row.spread, state.forgotten_observation.current.spread) or row.adopted != state.forgotten_observation.current.adopted or row.exposed != state.forgotten_observation.current.exposed: errors.append("Forgotten display differs from its observed circulation")
 		if not errors.is_empty(): return errors
 		if row.id != id or row.meme_id != state.target_meme_id or row.country_id != state.country_id or not str(row.other_meme_id).is_empty() and not meme_ids.has(str(row.other_meme_id)): errors.append("Independent ending row differs from its target")
-		for key: String in ["required_hours", "spread_min", "lead_min", "adoption_min", "deviation_max", "range_max", "gap_max", "gain_min", "baseline", "baseline_min", "stable_peak", "seed_required_hours", "adaptation_eligible"]:
+		for key: String in ["required_hours", "spread_min", "lead_min", "viral_countries_min", "adoption_min", "deviation_max", "range_max", "gap_max", "gain_min", "baseline", "baseline_min", "stable_peak", "seed_required_hours", "adaptation_eligible"]:
 			if row[key] != expected[key]: errors.append("Independent ending row differs from its configured threshold or baseline")
 		var window: Dictionary = state.windows.get(id, _window())
 		if id == "best_substitute":
@@ -398,6 +442,8 @@ static func validate_state(state: Dictionary, variants: Array, competition: RefC
 		if id == "successful_adaptation" and int(row.hours) > 0 and int(window.start_hour) < int(state.adaptation.revision_hour): errors.append("An adaptation observation starts at its published revision")
 		if id == "forgotten" and int(row.hours) > 0 and int(window.start_hour) < int(state.last_hour) - int(row.seed_hours) + rules.seed_hours: errors.append("A forgotten observation starts after seed circulation")
 		if id == "local_classic" and int(row.hours) > 0:
+			if int(window.start_hour) < int(state.last_hour) - int(row.seed_hours) + CLASSIC_MIN_AGE_HOURS - 1:
+				errors.append("A local classic observation starts after its age requirement")
 			var count: int = mini(int(row.hours), state.local_samples.size())
 			for offset: int in count:
 				var sample: float = float(state.local_samples[state.local_samples.size() - 1 - offset])

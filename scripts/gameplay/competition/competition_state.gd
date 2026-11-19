@@ -133,9 +133,13 @@ func profile(draft: Dictionary) -> Dictionary:
 			if str(kernel.id) == str(draft.get("kernel_id","")):
 				for slot in kernel.required_slots: text += str(draft.slots.get(slot,"")) + " / "
 	if text.is_empty(): text = str(draft.get("text",""))
-	var distinct := {}
-	for character in text: distinct[character] = true
-	var expression: float = clampf(float(distinct.size()) / rules.expression_character_scale,rules.expression_floor,1.0)
+	var expression: float = rules.expression_floor
+	if ExpressionText.Composition.supports(str(draft.get("preset_id",""))):
+		expression = clampf(0.45 + 0.14 * float(ExpressionText.patch_ids(source_draft).size()), rules.expression_floor, 1.0)
+	else:
+		var distinct := {}
+		for character in text: distinct[character] = true
+		expression = clampf(maxf(0.45, float(distinct.size()) / rules.expression_character_scale), rules.expression_floor, 1.0)
 	var skill_bonus := 0.0
 	var skill_ids: Array[String] = []
 	for value: Variant in draft.get("flow_skill_ids",[]):
@@ -143,7 +147,7 @@ func profile(draft: Dictionary) -> Dictionary:
 		if skill_id in skill_ids: continue
 		skill_ids.append(skill_id)
 		skill_bonus += float(rules.skill_reach.get(skill_id,0.0))
-	var result := {"language_id":str(draft.get("language_id","seowon")),"group_id":str(draft.get("group_id","culture_fans")),"topic_ids":Array(draft.get("topic_ids",[])),"political_known":bool(draft.get("political_known",false)),"political_position":_pair(draft.get("political_position",[])),"pragmatic_position":_pair(draft.get("pragmatic_position",[])),"language_access":float(draft.get("language_access",0.8)),"recognizability":float(draft.get("recognizability",0.8)),"context_dependency":float(draft.get("context_dependency",0.5)),"remix_cost":float(draft.get("remix_cost",0.3)),"reach":(float(channel.reach_factor) if channel != null else 1.0)*(1.0+skill_bonus),"channel_id":channel_id,"expression":expression,"text":text,"skill_ids":skill_ids}
+	var result := {"language_id":str(draft.get("language_id","seowon")),"group_id":str(draft.get("group_id","culture_fans")),"topic_ids":Array(draft.get("topic_ids",[])),"political_known":bool(draft.get("political_known",false)),"political_position":_pair(draft.get("political_position",[])),"pragmatic_position":_pair(draft.get("pragmatic_position",[])),"language_access":float(draft.get("language_access",0.8)),"recognizability":float(draft.get("recognizability",0.8)),"context_dependency":float(draft.get("context_dependency",0.5)),"remix_cost":float(draft.get("remix_cost",0.3)),"reuse_permission":str(draft.get("reuse_permission","unknown")),"reach":(float(channel.reach_factor) if channel != null else 1.0)*(1.0+skill_bonus),"channel_id":channel_id,"expression":expression,"text":text,"skill_ids":skill_ids}
 	result.reach *= propagation_rules.Deviation.expression_factor(ExpressionText.patch_ids(draft).size(), skill_ids)
 	for key in ["language_ids","group_ids"]:
 		var values: Variant = draft.get(key,[])
@@ -166,9 +170,10 @@ func inherited_profile(variant: Dictionary, parent_id: String = "", profile_vers
 		# The child draft contains its patch changes and the parent's unmodified skill inputs.
 		var derived := profile(variant.flow_draft)
 		derived.text = str(variant.text)
-		var distinct := {}
-		for character in str(variant.text): distinct[character] = true
-		derived.expression = clampf(float(distinct.size()) / rules.expression_character_scale, rules.expression_floor, 1.0)
+		if not ExpressionText.Composition.supports(str(variant.flow_draft.get("preset_id", ""))):
+			var distinct := {}
+			for character in str(variant.text): distinct[character] = true
+			derived.expression = clampf(maxf(0.45, float(distinct.size()) / rules.expression_character_scale), rules.expression_floor, 1.0)
 		if profile_version == 1: derived.reach = maxf(1.0,float(derived.reach))
 		return derived
 	var source: Dictionary = _state.registry.get(parent_id,{}).get("profile",{}).duplicate(true)
@@ -176,6 +181,7 @@ func inherited_profile(variant: Dictionary, parent_id: String = "", profile_vers
 	source.language_id = str(variant.language_id)
 	source.erase("language_ids")
 	source.topic_ids = Array(variant.get("topic_ids",[]))
+	source.reuse_permission = str(variant.get("reuse_permission", "unknown"))
 	if variant.has("political_known"): source.political_known = bool(variant.political_known)
 	if variant.has("political_position") and not variant.political_position.is_empty(): source.political_position = _pair(variant.political_position)
 	if variant.has("pragmatic_position"): source.pragmatic_position = _pair(variant.pragmatic_position)
@@ -200,21 +206,54 @@ func _pair(value: Variant) -> Array:
 
 func fitness(profile_data: Dictionary, country_id: String) -> Dictionary:
 	var country: Dictionary = rules.country(country_id)
+	var preset_id := str(profile_data.get("propagation_meta", {}).get("preset_id", ""))
 	var components := {}
 	var delivery: Dictionary = propagation_rules.delivery(profile_data,country)
-	components.language = float(delivery.language)
-	components.group = _context_match(country.groups,profile_data,"group")
-	var topic_score := 0.0
-	for topic in profile_data.topic_ids: topic_score += float(country.topics.get(str(topic),0.0))
-	components.topics = topic_score / maxf(1.0,profile_data.topic_ids.size())
-	components.stance = _axis_match(profile_data.political_position,country.stance) if profile_data.political_known else 0.5
-	components.pragmatic = _axis_match(profile_data.pragmatic_position,country.pragmatic)
+	var lang := float(delivery.language)
+	components.language = maxf(lang, 0.24 + 0.52 * lang) if lang < 0.5 else lang
+	components.group = _group_match(country.groups, profile_data, preset_id)
+	if profile_data.topic_ids.is_empty():
+		components.topics = 0.12
+	else:
+		var topic_score := 0.0
+		var max_topic := 0.0
+		for topic in profile_data.topic_ids:
+			var share := float(country.topics.get(str(topic),0.0))
+			topic_score += share
+			max_topic = maxf(max_topic, share)
+		var mean_topic := topic_score / maxf(1.0,profile_data.topic_ids.size())
+		components.topics = (0.60 * max_topic + 0.40 * mean_topic) if preset_id == "nobody_2020" else mean_topic
+	var stance_match := _axis_match(profile_data.political_position,country.stance) if profile_data.political_known else 0.5
+	var pragmatic_match := _axis_match(profile_data.pragmatic_position,country.pragmatic)
+	if preset_id == "ok_boomer_2020":
+		stance_match = clampf(0.5 + (stance_match - 0.5) * 1.30, 0.0, 1.0)
+		pragmatic_match = clampf(0.5 + (pragmatic_match - 0.5) * 1.30, 0.0, 1.0)
+	components.stance = stance_match
+	components.pragmatic = pragmatic_match
 	components.expression = float(profile_data.expression)
 	var matched: float = _context_match(country.groups,profile_data,"group")
 	components.access = float(profile_data.language_access) * float(profile_data.recognizability) * (1.0 - float(delivery.context_dependency) * (1.0 - matched)) * float(delivery.quality)
 	var score := 0.0
 	for key in components: score += float(components[key]) * float(rules.fitness_weights[key])
+	if str(profile_data.get("reuse_permission", "unknown")) == "restricted":
+		score *= 0.42
 	return {"components":components,"score":clampf(score,0.01,1.0),"reach":float(profile_data.reach),"delivery":delivery}
+
+func _group_match(distribution: Dictionary, profile_data: Dictionary, preset_id: String) -> float:
+	var ids: Variant = profile_data.get("group_ids",[str(profile_data.get("group_id",""))])
+	var shares: Array[float] = []
+	var seen := {}
+	if ids is Array:
+		for id: Variant in ids:
+			var key := str(id)
+			if key.is_empty() or seen.has(key): continue
+			seen[key] = true
+			shares.append(float(distribution.get(key, 0.0)))
+	if shares.is_empty(): return 0.0
+	shares.sort()
+	shares.reverse()
+	var bonus := 0.50 if preset_id == "nobody_2020" else 0.35
+	return clampf(shares[0] + (shares[1] * bonus if shares.size() > 1 else 0.0), 0.0, 1.0)
 
 func _context_match(distribution: Dictionary, profile_data: Dictionary, layer: String) -> float:
 	var ids: Variant = profile_data.get(layer+"_ids",[str(profile_data.get(layer+"_id",""))])
@@ -278,13 +317,17 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 			var id := str(variant.id)
 			var entry: Dictionary = _state.registry[id]
 			var live_data: Dictionary = live_profile(id)
+			var skills: Array = live_data.get("skill_ids", [])
+			var preset_id := str(live_data.get("propagation_meta", {}).get("preset_id", ""))
+			var restricted: bool = str(live_data.get("reuse_permission", "unknown")) == "restricted"
 			var own: float = float(previous[cid].adopted[id]) / population
 			var pressure := own + float(_state.propagation.pressure.get(cid,{}).get(id,0.0))
-			var travel: float = rules.network_contact_multiplier if "network" in live_data.get("skill_ids",[]) else 1.0
-			for neighbor in row.contacts:
-				var neighbor_population := _population(str(neighbor))
-				if neighbor_population > 0: pressure += float(previous[neighbor].adopted[id]) / neighbor_population * float(row.contacts[neighbor]) * travel
-			if cid == str(entry.origin_country) and hour - int(entry.birth_hour) <= rules.seed_hours: pressure += rules.seed_pressure
+			if not restricted:
+				var travel: float = rules.network_contact_multiplier if "network" in skills else 1.0
+				for neighbor in row.contacts:
+					var neighbor_population := _population(str(neighbor))
+					if neighbor_population > 0: pressure += float(previous[neighbor].adopted[id]) / neighbor_population * float(row.contacts[neighbor]) * travel
+				if cid == str(entry.origin_country) and hour - int(entry.birth_hour) <= rules.seed_hours: pressure += rules.seed_pressure
 			if hour-int(entry.birth_hour) <= rules.seed_hours:
 				for parent_id in entry.parent_ids: pressure += float(previous[cid].adopted.get(parent_id,0))/population * rules.parent_relay
 			if not _fitness_cache.has(id): _fitness_cache[id] = {}
@@ -292,11 +335,29 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 			var fit: Dictionary = _fitness_cache[id][cid]
 			fits[id] = fit.score
 			var age: int = hour - int(entry.birth_hour)
-			var refresh: float = rules.controlled_refresh_hours if bool(variant.controlled) else rules.community_refresh_hours
-			var novelty: float = exp(-float(age) / refresh)
+			var novelty: float = exp(-float(age) / rules.community_refresh_hours)
+			if bool(variant.controlled):
+				var edited: bool = variant.has("live_author_edit") and (MonitorMetrics.deviation(variant.get("deviation_anchor", variant), variant) > 0.01 or not variant.get("patch_ids", []).is_empty())
+				var maintained: bool = edited or skills.size() > 1
+				var refresh: float = rules.controlled_refresh_hours if maintained else rules.controlled_refresh_hours * 0.28
+				if "public_template" in skills: refresh *= 1.35
+				if "form_anchor" in skills: refresh *= 0.80
+				var effective_age := float(age)
+				if edited:
+					var edit_age := maxi(0, hour - int(variant.live_author_edit.get("hour", entry.birth_hour)))
+					effective_age = 0.35 * float(age) + 0.65 * float(edit_age)
+				var floor_novelty := 0.18 if edited else (0.12 if maintained else 0.01)
+				novelty = exp(-effective_age / 180.0) if restricted else (floor_novelty + (1.0 - floor_novelty) * exp(-effective_age / refresh))
 			var reuse: float = reuse_factors[id]
+			var trait_boost := 1.12 if preset_id == "versailles_2020" else 1.0
+			if bool(variant.controlled) and "form_anchor" in skills:
+				trait_boost *= 1.0 + 0.50 * propagation_rules.Deviation.total(variant.get("deviation_anchor", variant), variant)
+			if variant.has("split_from_id") and "spinoff_momentum" in skills:
+				trait_boost *= 1.35
+			if restricted:
+				trait_boost *= 0.35
 			var local_factors: Dictionary = modifier_factors.get(cid, modifier_factors)
-			weights[id] = maxf(0.0,pressure * float(fit.score) * float(fit.reach) * novelty * reuse * float(local_factors.get(id,1.0)))
+			weights[id] = maxf(0.0,pressure * float(fit.score) * float(fit.reach) * novelty * reuse * trait_boost * float(local_factors.get(id,1.0)))
 		var budget := floori(population * rules.attention_fraction)
 		var demand := 0.0
 		for value in weights.values(): demand += float(value)
@@ -306,12 +367,32 @@ func step(hour: int, variants: Array, modifier_factors: Dictionary) -> void:
 		var next_exposed := {}
 		for variant: Dictionary in variants:
 			var id := str(variant.id)
+			var live_data: Dictionary = live_profile(id)
+			var skills: Array = live_data.get("skill_ids", [])
+			var restricted: bool = str(live_data.get("reuse_permission", "unknown")) == "restricted"
 			var share: float = float(allocation.get(id,0)) / maxf(1.0,budget)
-			var occupancy: float = clampf(float(fits[id]) * rules.occupancy_multiplier,0.0,rules.occupancy_cap)
+			var curve_x := clampf((float(fits[id]) - 0.28) / 0.56, 0.0, 1.0)
+			var sq := curve_x * curve_x
+			var inv := (1.0 - curve_x) * (1.0 - curve_x)
+			var occupancy: float = rules.occupancy_cap * sq / maxf(0.0001, sq + inv)
+			var protected: bool = bool(variant.controlled) and "meme_entry" in skills and propagation_rules.Deviation.total(variant.get("deviation_anchor", variant), variant) <= 0.20
+			if protected:
+				occupancy = minf(rules.occupancy_cap, occupancy * 1.15)
 			var target: float = population * share * occupancy
-			next_adopted[id] = floori(lerpf(float(previous[cid].adopted[id]),target,rules.adoption_response))
+			var home_entry: Dictionary = _state.registry[id]
+			if bool(variant.controlled) and cid == str(home_entry.origin_country) and not restricted and not active_topics(live_data).is_empty():
+				target = maxf(target, population * 0.014)
+			var prev_adopted := float(previous[cid].adopted[id])
+			var response := rules.adoption_response
+			if restricted and target < prev_adopted:
+				response = minf(1.0, response * 1.8)
+			elif protected and target < prev_adopted:
+				response *= 0.5
+			next_adopted[id] = floori(lerpf(prev_adopted, target, response))
 			var exposure_target: float = population * share
-			next_exposed[id] = maxi(int(next_adopted[id]),floori(lerpf(float(previous[cid].exposed[id]),exposure_target,rules.exposure_response)))
+			var prev_exposed := float(previous[cid].exposed[id])
+			var exp_response := minf(1.0, rules.exposure_response * 1.8) if (restricted and exposure_target < prev_exposed) else rules.exposure_response
+			next_exposed[id] = maxi(int(next_adopted[id]),floori(lerpf(prev_exposed,exposure_target,exp_response)))
 		# Variants are disjoint; adoption is a subset of that variant's exposure.
 		if _sum(next_exposed) > population: next_exposed = _cap_exposure(next_exposed,next_adopted,population)
 		for registered_id: String in _state.registry:
@@ -611,12 +692,14 @@ func replace_revision(old_id: String, new_id: String) -> Dictionary:
 	_fitness_cache.erase(new_id)
 	return {"old_id":old_id, "new_id":new_id, "retained_ratio":1.0}
 
-func split_revision(old_id: String, new_id: String, before_profile: Dictionary, rolled_profile: Dictionary) -> Dictionary:
+func split_revision(old_id: String, new_id: String, before_profile: Dictionary, rolled_profile: Dictionary, keep_parent_profile: bool = false) -> Dictionary:
 	var error := _transfer_error(old_id, new_id)
 	if not error.is_empty(): return {"error":error}
 	var before := counterfactual_capability(old_id, before_profile)
 	var after := counterfactual_capability(old_id, rolled_profile)
 	var retained := clampf(after / before, 0.0, 1.0) if before > 0.0 else 1.0
+	var max_retained := 0.65 if "spinoff_momentum" in live_profile(old_id).get("skill_ids", []) else (0.85 if keep_parent_profile else 0.55)
+	retained = minf(retained, max_retained)
 	var transfers := {}
 	for country_id: String in _state.countries:
 		var country: Dictionary = _state.countries[country_id]
@@ -628,7 +711,8 @@ func split_revision(old_id: String, new_id: String, before_profile: Dictionary, 
 			country[field][new_id] = total - remaining
 			moved[field] = total - remaining
 		transfers[country_id] = moved
-	_state.registry[old_id].effective_profile = rolled_profile.duplicate(true)
+	if not keep_parent_profile:
+		_state.registry[old_id].effective_profile = rolled_profile.duplicate(true)
 	_fitness_cache.erase(old_id)
 	_fitness_cache.erase(new_id)
 	return {"old_id":old_id, "new_id":new_id, "before_capability":before, "after_capability":after,

@@ -41,11 +41,17 @@ static func country_factor(modifiers: Array[Dictionary], hour: int, country_id: 
 		var strength := decay_weight(modifier, hour)
 		if str(modifier.effect_id) == "response":
 			var response: Dictionary = modifier.response
-			factor *= maxf(0.05, 1.0 + float(response.attention) * strength)
-			factor *= maxf(0.05, 1.0 + float(response.spread) * strength)
-			factor *= lerpf(1.0, EventResponse.preference(response, profile), strength)
+			var response_factor := maxf(0.05, 1.0 + float(response.attention) * strength)
+			response_factor *= maxf(0.05, 1.0 + float(response.spread) * strength)
+			response_factor *= lerpf(1.0, EventResponse.preference(response, profile), strength)
+			if response_factor < 1.0 and "meme_entry" in profile.get("skill_ids", []):
+				response_factor = lerpf(1.0, response_factor, 0.5)
+			factor *= response_factor
 		else:
-			factor *= maxf(0.05, 1.0 + float(modifier.amount) * strength)
+			var mod_factor := maxf(0.05, 1.0 + float(modifier.amount) * strength)
+			if mod_factor < 1.0 and "meme_entry" in profile.get("skill_ids", []):
+				mod_factor = lerpf(1.0, mod_factor, 0.5)
+			factor *= mod_factor
 	return factor
 
 static func _intersects(left: Array, right: Array) -> bool:

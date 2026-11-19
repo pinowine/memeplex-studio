@@ -19,7 +19,7 @@ const MutationRules = preload("res://scripts/gameplay/events/mutation_rules.gd")
 const EventResponse = preload("res://scripts/gameplay/events/event_response.gd")
 const EventMutation = preload("res://scripts/gameplay/events/event_mutation.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
-const AUTHOR_CONTENT_ACTIONS := ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes"]
+const AUTHOR_CONTENT_ACTIONS := ["apply_skill", "install_module", "remove_module", "edit_module_content", "install_context", "remove_context", "move_context", "move_context_axis", "move_context_axes", "set_reuse_permission"]
 
 var catalog: MemeDemoCatalog
 var economy := MemeDemoEconomy.new()
@@ -251,7 +251,7 @@ func design_action(action: String, params: Dictionary = {}) -> PackedStringArray
 			return PackedStringArray([DeskLocalization.source("LOC_APPLYING_A_SOLID_REQUIRES_A_VALID_AUTHOR_CAF24FE0")])
 		for key in ["remix_cost", "context_dependency", "language_access", "recognizability"]:
 			if not _number(draft.get(key)): return PackedStringArray([DeskLocalization.source("LOC_AN_AUTHOR_DRAFT_NUMERIC_VALUE_HAS_THE_CCD0F240")])
-		var draft_errors := PackedStringArray() if action in ["install_context","remove_context","move_context","move_context_axis", "move_context_axes"] else validate_draft(draft)
+		var draft_errors := PackedStringArray() if action in ["install_context","remove_context","move_context","move_context_axis", "move_context_axes", "set_reuse_permission"] else validate_draft(draft)
 		draft_errors.append_array(_core_errors(draft))
 		if not draft_errors.is_empty(): return draft_errors
 		var encoded: Dictionary = draft.duplicate(true)
@@ -329,7 +329,10 @@ func _check_deviation(raw: Dictionary) -> void:
 	variants.append(child)
 	_register_external_world(child)
 	if str(raw.id) == current_variant_id:
-		design_state.restore_meme(Lifecycle.content(raw).flow_draft)
+		if raw.has("live_author_edit"):
+			raw.live_author_edit.hour = hour
+		else:
+			design_state.restore_meme(Lifecycle.content(raw).flow_draft)
 		latest_draft = context_draft()
 	queue_guidance("mutation", str(child.id))
 
@@ -530,8 +533,6 @@ func publish(data: Dictionary) -> PackedStringArray:
 	errors.append_array(catalog.DESIGN_RULES.patch_errors(str(data.get("preset_id", "")), patch_ids))
 	if data.has("patch_ids") and data.patch_ids != patch_ids: errors.append("Player patches must match the author record")
 	errors.append_array(_required_context_errors())
-	if PackedStringArray(data.get("topic_ids", [])).is_empty():
-		errors.append(DeskLocalization.source("LOC_SELECT_AT_LEAST_ONE_TOPIC_E653923A"))
 	errors.append_array(_core_errors(data))
 	errors.append_array(design_state.record_errors())
 	errors.append_array(design_state.layer_errors(_encoded_draft(data)))
@@ -679,16 +680,25 @@ func _register_external_world(variant: Dictionary, event_country: String = "") -
 
 func _reward_milestones() -> void:
 	var totals := totals_state()
-	var population := int(competition.snapshot(variants, false).world_population)
+	var origin_cid: String = str(deployments[0].country_id) if not deployments.is_empty() else country_id
+	var origin_population := int(catalog.gameplay_rules.country(origin_cid).get("population", 40000000))
 	var landed := 0
+	var active: Array = competition.active_variants(variants)
+	var unlocked: Array = design_state.snapshot().unlocked_skills
 	for row: Dictionary in competition._state.world:
+		var cid := str(row.id)
 		var adopted := 0
-		var country: Dictionary = competition._state.countries[str(row.id)]
-		for variant: Dictionary in competition.active_variants(variants):
-			if bool(variant.owned): adopted += int(country.adopted.get(str(variant.id), 0))
-		if adopted >= maxi(1, floori(float(row.population) * 0.0001)): landed += 1
+		var country: Dictionary = competition._state.countries[cid]
+		var threshold := maxi(1, floori(float(row.population) * 0.05))
+		for variant: Dictionary in active:
+			var count := int(country.adopted.get(str(variant.id), 0))
+			if bool(variant.owned): adopted += count
+			if "derivative_backlink" in unlocked and not bool(variant.controlled) and not variant.get("origin_ids", []).is_empty() and count >= threshold:
+				var backlink_key := "backlink:%s:%s" % [str(variant.get("meme_id", variant.id)), cid]
+				economy.reward(backlink_key, 8, DeskLocalization.source("LOC_PROP_BACKLINK_RETURN"), hour)
+		if adopted >= threshold: landed += 1
 	var first_hour: int = int(deployments[0].hour) if not deployments.is_empty() else hour
-	for reward: Dictionary in PropagationRewards.due_rewards(hour, first_hour, int(totals.owned_adopted), population, landed, economy.transactions, economy.rewarded_keys):
+	for reward: Dictionary in PropagationRewards.due_rewards(hour, first_hour, int(totals.owned_adopted), origin_population, landed, economy.transactions, economy.rewarded_keys):
 		var reason := DeskLocalization.source_format(str(reward.reason_key), reward.get("reason_inputs", [])) if not reward.get("reason_inputs", []).is_empty() else DeskLocalization.source(str(reward.reason_key))
 		if economy.reward(str(reward.key), int(reward.amount), reason, hour):
 			economy.transactions.back().merge(reward.ledger_fields, true)
@@ -755,11 +765,41 @@ func _schedule_events() -> void:
 	var arrivals := EventScheduler.arrival_count(catalog.event_clock, seed_value, hour, _event_clock_arrivals)
 	if events.size() >= arrivals: return
 	if not events.is_empty() and hour - int(events[-1].hour) < catalog.event_clock.minimum_interval_hours(): return
+	if hour >= 420 and _needs_major_competitor():
+		var major := _choose_major_competitor_event()
+		if not major.is_empty():
+			_execute_event(major.definition, str(major.country_id))
+			return
 	var contributions := _event_country_contributions()
 	var cid := _sample_event_country(EventScheduler.country_weights(contributions))
 	var definition := EventScheduler.choose_event(_eligible_events(), hour, catalog.gameplay_rules.event_time_scale,
 		event_counts, last_event_hours, _event_condition_values(), _rng, catalog.gameplay_rules.country(cid), float(contributions[cid]) > 0.0)
 	if definition != null: _execute_event(definition, cid)
+
+func _needs_major_competitor() -> bool:
+	var view: Dictionary = competition.snapshot(variants, false)
+	for row: Dictionary in view.variants:
+		if bool(row.lineage) or bool(row.controlled): continue
+		if float(row.monitor_spread) >= catalog.gameplay_rules.duel_spread_min: return false
+		var origin := str(row.origin_country)
+		var birth := int(competition._state.registry.get(str(row.id), {}).get("birth_hour", -1000))
+		if int(catalog.gameplay_rules.country(origin).get("population", 0)) >= 55000000 and hour - birth < 240:
+			return false
+	return true
+
+func _choose_major_competitor_event() -> Dictionary:
+	var major_countries: Array[String] = []
+	for row: Dictionary in catalog.gameplay_rules.countries:
+		if int(row.population) >= 55000000: major_countries.append(str(row.id))
+	if major_countries.is_empty(): return {}
+	var cid: String = major_countries[_rng.randi_range(0, major_countries.size() - 1)]
+	var env_defs: Array[MemeDemoEvent] = []
+	for definition: MemeDemoEvent in _eligible_events():
+		if definition.origin == &"environment_meme": env_defs.append(definition)
+	if env_defs.is_empty(): return {}
+	var chosen := EventScheduler.choose_event(env_defs, hour, catalog.gameplay_rules.event_time_scale,
+		event_counts, last_event_hours, _event_condition_values(), _rng, catalog.gameplay_rules.country(cid), true)
+	return {"definition":chosen, "country_id":cid} if chosen != null else {}
 
 ## 统一创建事件身份、应用效果并登记来源，界面只接收记录副本。
 func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -> void:
@@ -798,7 +838,10 @@ func _execute_event(definition: MemeDemoEvent, occurring_country: String = "") -
 		match str(effect.effect_id):
 			"deviation":
 				var affected := variant_by_id(_active_variant_id(str(target.id)))
-				affected.deviation_pressure = maxf(-0.2, float(affected.get("deviation_pressure", 0.0)) + effect.amount)
+				var delta := effect.amount
+				if str(affected.get("preset_id", "")) == "versailles_2020": delta *= 1.25
+				if delta > 0.0 and "usage_example" in design_state.snapshot().unlocked_skills: delta *= 0.65
+				affected.deviation_pressure = maxf(-0.2, float(affected.get("deviation_pressure", 0.0)) + delta)
 			"remix":
 				if effect.amount > 0.0: observed.append(_spawn_remix(event_id, str(effect.group_ids[0]) if not effect.group_ids.is_empty() else str(target.flow_profile.group_id), id, str(target.id), cid))
 			"adoption": competition.adoption_pulse(_active_variant_id(str(target.id)), effect.amount, cid)
