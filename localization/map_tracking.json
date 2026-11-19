@@ -683,5 +683,70 @@
     "source": "分化阈值 %.0f%%",
     "zh_CN": "分化阈值 %.0f%%",
     "en": "Split threshold %.0f%%"
+  },
+  "MAP_COUNTRY_MOOD_FORMAT": {
+    "source": "社会风气：%s、%s。说话习惯：%s，%s。",
+    "zh_CN": "社会风气：%s、%s。说话习惯：%s，%s。",
+    "en": "Public mood: %s, %s. Speech habit: %s, %s."
+  },
+  "MAP_MOOD_FREEDOM": {
+    "source": "偏爱自由松散",
+    "zh_CN": "偏爱自由松散",
+    "en": "leans toward personal freedom"
+  },
+  "MAP_MOOD_ORDER": {
+    "source": "看重规矩秩序",
+    "zh_CN": "看重规矩秩序",
+    "en": "values order and rules"
+  },
+  "MAP_MOOD_BALANCED_RULE": {
+    "source": "规矩与自由折中",
+    "zh_CN": "规矩与自由折中",
+    "en": "balances rules and personal leeway"
+  },
+  "MAP_MOOD_EQUAL": {
+    "source": "讲究平起平坐",
+    "zh_CN": "讲究平起平坐",
+    "en": "favors equal footing"
+  },
+  "MAP_MOOD_RANK": {
+    "source": "认资历讲上下",
+    "zh_CN": "认资历讲上下",
+    "en": "respects seniority and rank"
+  },
+  "MAP_MOOD_BALANCED_RANK": {
+    "source": "上下分寸适中",
+    "zh_CN": "上下分寸适中",
+    "en": "keeps rank understated"
+  },
+  "MAP_SPEECH_DIRECT": {
+    "source": "习惯把意思摊开讲明",
+    "zh_CN": "习惯把意思摊开讲明",
+    "en": "prefers plain, direct speech"
+  },
+  "MAP_SPEECH_IRONIC": {
+    "source": "爱绕弯子抖反话",
+    "zh_CN": "爱绕弯子抖反话",
+    "en": "likes dry irony and indirection"
+  },
+  "MAP_SPEECH_BALANCED_WIT": {
+    "source": "直说与玩梗都能听进去",
+    "zh_CN": "直说与玩梗都能听进去",
+    "en": "takes both plain speech and dry wit"
+  },
+  "MAP_SPEECH_SUPPORT": {
+    "source": "偏爱顺着气氛捧场",
+    "zh_CN": "偏爱顺着气氛捧场",
+    "en": "warms to supportive phrasing"
+  },
+  "MAP_SPEECH_SHARP": {
+    "source": "吃犀利拆台那一套",
+    "zh_CN": "吃犀利拆台那一套",
+    "en": "responds to sharp pushback"
+  },
+  "MAP_SPEECH_BALANCED_TONE": {
+    "source": "褒贬分寸看具体场合",
+    "zh_CN": "褒贬分寸看具体场合",
+    "en": "judges tone case by case"
   }
 }

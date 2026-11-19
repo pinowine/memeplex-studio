@@ -15,6 +15,8 @@ var _country_title := ""
 var _components: Dictionary = {}
 var _fitness: Dictionary = {}
 var _previous_components: Dictionary = {}
+var _previous_score := -1.0
+var _score := -1.0
 var _last_change: Dictionary = {}
 var _displayed_changes: Array = []
 var _has_baseline := false
@@ -57,6 +59,8 @@ func reset() -> void:
 	_country_title = ""
 	_components.clear()
 	_previous_components.clear()
+	_previous_score = -1.0
+	_score = -1.0
 	_fitness.clear()
 	_last_change.clear()
 	_displayed_changes.clear()
@@ -78,6 +82,8 @@ func set_report(country_id: String, country_title: String, fitness: Dictionary, 
 		_fitness.clear()
 		_components.clear()
 		_previous_components.clear()
+		_previous_score = -1.0
+		_score = -1.0
 		_last_change.clear()
 		_displayed_changes.clear()
 		_has_baseline = false
@@ -92,9 +98,12 @@ func set_report(country_id: String, country_title: String, fitness: Dictionary, 
 		return
 	_error = ""
 	_fitness = fitness.duplicate(true)
+	var next_score := float(fitness.get("score", -1.0))
 	if not _has_baseline:
 		_components = components
 		_previous_components = components.duplicate(true)
+		_score = next_score
+		_previous_score = next_score
 		_has_baseline = true
 		_status = "baseline"
 		queue_redraw()
@@ -106,13 +115,17 @@ func set_report(country_id: String, country_title: String, fitness: Dictionary, 
 		if absf(delta) <= 0.000000001: continue
 		deltas[key] = delta
 		rows.append({"component":key, "title":TITLES[key], "before":float(_components[key]), "after":float(components[key]), "delta":delta, "direction":"up" if delta > 0 else "down"})
-	if rows.is_empty():
+	var score_changed := next_score >= 0.0 and _score >= 0.0 and absf(next_score - _score) > 0.0005
+	if rows.is_empty() and not score_changed:
 		_components = components
+		_score = next_score
 		_status = "baseline" if _last_change.is_empty() else "changed"
 		queue_redraw()
 		return
 	_previous_components = _components.duplicate(true)
+	_previous_score = _score
 	_components = components
+	_score = next_score
 	_change_sequence += 1
 	rows.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return absf(float(a.delta)) > absf(float(b.delta)))
 	_last_change = {"country_id":_country_id, "sequence":_change_sequence, "before":_previous_components.duplicate(true), "after":_components.duplicate(true), "components":deltas, "changes":rows.duplicate(true)}
@@ -168,12 +181,25 @@ func _status_text() -> String:
 	for row: Dictionary in _displayed_changes: changes.append(_change_text(row))
 	return DeskLocalization.text("LOC_RECENT_CHANGE_BB3F1A6A") + "；".join(changes)
 
+func _score_line() -> String:
+	if _score < 0.0: return _status_text()
+	if _status == "changed" and _previous_score >= 0.0 and absf(_score - _previous_score) >= 0.005:
+		return DeskLocalization.text("LOC_TRIAL_FIT_SHIFT") % [_previous_score * 100.0, _score * 100.0]
+	return DeskLocalization.text("LOC_TRIAL_FIT_SCORE") % (_score * 100.0)
+
 func _lines() -> Array:
 	var context := _context_labels()
 	var country := _country_display_title()
+	if size.y > 0.0 and size.y < 155.0:
+		var compact := [DeskLocalization.text("LOC_TRIAL_MATCH_4B9CC20A") + country, _score_line()]
+		if _status == "changed" and not _displayed_changes.is_empty():
+			for row: Dictionary in _displayed_changes: compact.append(_change_text(row))
+		else:
+			compact.append(_status_text())
+		return compact
 	if size.x >= 540:
-		return [DeskLocalization.text("LOC_TRIAL_MATCH_4B9CC20A") + country, DeskLocalization.text("LOC_LANGUAGE_3E2D7373") + str(context.language) + DeskLocalization.text("LOC_AUDIENCE_C7845353") + str(context.group) + DeskLocalization.text("LOC_TOPICS_7D9B6617") + str(context.topics), DeskLocalization.text("LOC_STANCE_5AA7DD45") + str(context.stance) + DeskLocalization.text("LOC_PRAGMATIC_TARGET_5E569867") + str(context.target), _status_text()]
-	var lines := [DeskLocalization.text("LOC_TRIAL_MATCH_4B9CC20A") + country, DeskLocalization.text("LOC_LANGUAGE_3E2D7373") + str(context.language) + DeskLocalization.text("LOC_AUDIENCE_C7845353") + str(context.group), DeskLocalization.text("LOC_TOPICS_61BF0397") + str(context.topics), DeskLocalization.text("LOC_STANCE_5AA7DD45") + str(context.stance), DeskLocalization.text("LOC_PRAGMATIC_TARGET_8EC18981") + str(context.target)]
+		return [DeskLocalization.text("LOC_TRIAL_MATCH_4B9CC20A") + country + " · " + _score_line(), DeskLocalization.text("LOC_LANGUAGE_3E2D7373") + str(context.language) + DeskLocalization.text("LOC_AUDIENCE_C7845353") + str(context.group) + DeskLocalization.text("LOC_TOPICS_7D9B6617") + str(context.topics), DeskLocalization.text("LOC_STANCE_5AA7DD45") + str(context.stance) + DeskLocalization.text("LOC_PRAGMATIC_TARGET_5E569867") + str(context.target), _status_text()]
+	var lines := [DeskLocalization.text("LOC_TRIAL_MATCH_4B9CC20A") + country, _score_line(), DeskLocalization.text("LOC_LANGUAGE_3E2D7373") + str(context.language) + DeskLocalization.text("LOC_AUDIENCE_C7845353") + str(context.group), DeskLocalization.text("LOC_TOPICS_61BF0397") + str(context.topics), DeskLocalization.text("LOC_STANCE_5AA7DD45") + str(context.stance)]
 	if _status == "changed":
 		for row: Dictionary in _displayed_changes: lines.append(_change_text(row))
 	else: lines.append(_status_text())
@@ -193,11 +219,14 @@ func _draw() -> void:
 	draw_rect(rect.grow(-1), Color(0.27, 0.31, 0.24, 0.25), false, 1)
 	var lines := _lines()
 	var narrow := size.x < 540
+	var compact := size.y > 0.0 and size.y < 155.0
+	var step := 19.0 if compact else (21.0 if narrow else 20.0)
 	for index in lines.size():
-		var y := 20.0 + float(index) * (21.0 if narrow else 20.0)
-		_draw_line(str(lines[index]), y, 13 if index == 0 else 12, INK if index == 0 or index == lines.size() - 1 else MUTED)
+		var y := 19.0 + float(index) * step
+		if compact and y > size.y - 18.0: break
+		_draw_line(str(lines[index]), y, 13 if index <= 1 and compact else (13 if index == 0 else 12), INK if index == 0 or (compact and index == 1) or index == lines.size() - 1 else MUTED)
 	if narrow:
-		_draw_line(DeskLocalization.text("LOC_A_MATCH_RECORD_NOT_A_PREDICTION_OF_EE8169CC"), size.y - 12, 10, MUTED)
+		_draw_line(DeskLocalization.text("LOC_A_MATCH_RECORD_NOT_A_PREDICTION_OF_EE8169CC"), size.y - 8 if compact else size.y - 12, 10, MUTED)
 	else:
 		draw_string(get_theme_default_font(), Vector2(maxf(12, size.x - 210), 19), DeskLocalization.text("LOC_A_MATCH_RECORD_NOT_A_PREDICTION_OF_EE8169CC"), HORIZONTAL_ALIGNMENT_LEFT, 200, 10, MUTED)
 

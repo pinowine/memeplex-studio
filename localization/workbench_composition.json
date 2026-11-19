@@ -563,5 +563,30 @@
     "source": "衍生新梗海外落地回链",
     "zh_CN": "衍生新梗海外落地回链",
     "en": "Spin-off backlink return"
+  },
+  "LOC_TRIAL_FIT_SCORE": {
+    "source": "当地契合度：%.0f%%",
+    "zh_CN": "当地契合度：%.0f%%",
+    "en": "Local fit: %.0f%%"
+  },
+  "LOC_TRIAL_FIT_SHIFT": {
+    "source": "当地契合度：%.0f%% → %.0f%%",
+    "zh_CN": "当地契合度：%.0f%% → %.0f%%",
+    "en": "Local fit: %.0f%% -> %.0f%%"
+  },
+  "LOC_CULTIVATE_OPEN_SPREAD": {
+    "source": "扩散状态：公开传播（点击切换小圈子限流）",
+    "zh_CN": "扩散状态：公开传播（点击切换小圈子限流）",
+    "en": "Circulation: Open sharing (click for small-circle throttle)"
+  },
+  "LOC_CULTIVATE_RESTRICTED_SPREAD": {
+    "source": "扩散状态：小圈子限流（已停跨国外溢，点击恢复公开传播）",
+    "zh_CN": "扩散状态：小圈子限流（已停跨国外溢，点击恢复公开传播）",
+    "en": "Circulation: Small-circle throttle (spillover paused, click to reopen)"
+  },
+  "LOC_CULTIVATE_SPREAD_HELP": {
+    "source": "公开传播允许热度顺着邻国与航线外溢；切到小圈子限流会停止跨国扩散并压低各地热度上限，方便控分或主动退场。",
+    "zh_CN": "公开传播允许热度顺着邻国与航线外溢；切到小圈子限流会停止跨国扩散并压低各地热度上限，方便控分或主动退场。",
+    "en": "Open sharing lets popularity spill across land and sea routes; small-circle throttle pauses cross-border spillover and lowers local ceilings so you can pace or wind down a meme."
   }
 }
