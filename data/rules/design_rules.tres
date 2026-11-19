@@ -213,31 +213,74 @@ skills = Array[Dictionary]([
     ]
   },
   {
-    "id": "machine_translation",
-    "title": "LOC_PROP_NODE_MACHINE_TRANSLATION_TITLE",
-    "description": "LOC_PROP_NODE_MACHINE_TRANSLATION_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_MACHINE_TRANSLATION_EFFECT",
-    "route": "accessibility",
-    "effect_kind": "readable_text_translation",
-    "kind": "medium",
-    "cost": 20,
+    "id": "context_note",
+    "title": "LOC_PROP_NODE_CONTEXT_NOTE_TITLE",
+    "description": "LOC_PROP_NODE_CONTEXT_NOTE_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT",
+    "route": "origin",
+    "effect_kind": "attached_context_explainer",
+    "kind": "carrier",
+    "cost": 15,
     "requires": [
       "text"
     ],
     "requires_any": [],
-    "target_ids": [
-      "open_feed"
-    ]
+    "target_ids": []
+  },
+  {
+    "id": "usage_example",
+    "title": "LOC_PROP_NODE_USAGE_EXAMPLE_TITLE",
+    "description": "LOC_PROP_NODE_USAGE_EXAMPLE_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_USAGE_EXAMPLE_EFFECT",
+    "route": "origin",
+    "effect_kind": "standard_usage_examples",
+    "kind": "carrier",
+    "cost": 20,
+    "requires": [
+      "context_note"
+    ],
+    "requires_any": [],
+    "target_ids": []
+  },
+  {
+    "id": "misuse_correction",
+    "title": "LOC_PROP_NODE_MISUSE_CORRECTION_TITLE",
+    "description": "LOC_PROP_NODE_MISUSE_CORRECTION_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_MISUSE_CORRECTION_EFFECT",
+    "route": "origin",
+    "effect_kind": "community_misuse_correction",
+    "kind": "carrier",
+    "cost": 25,
+    "requires": [
+      "usage_example"
+    ],
+    "requires_any": [],
+    "target_ids": []
+  },
+  {
+    "id": "meme_entry",
+    "title": "LOC_PROP_NODE_MEME_ENTRY_TITLE",
+    "description": "LOC_PROP_NODE_MEME_ENTRY_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_MEME_ENTRY_EFFECT",
+    "route": "origin",
+    "effect_kind": "canonical_meme_entry",
+    "kind": "carrier",
+    "cost": 30,
+    "requires": [
+      "misuse_correction"
+    ],
+    "requires_any": [],
+    "target_ids": []
   },
   {
     "id": "image",
     "title": "LOC_PROP_NODE_IMAGE_TITLE",
     "description": "LOC_PROP_NODE_IMAGE_DESCRIPTION",
     "effect_text": "LOC_PROP_NODE_IMAGE_EFFECT",
-    "route": "accessibility",
+    "route": "template",
     "effect_kind": "visual_carrier_delivery",
     "kind": "medium",
-    "cost": 20,
+    "cost": 15,
     "requires": [
       "text"
     ],
@@ -247,63 +290,16 @@ skills = Array[Dictionary]([
     ]
   },
   {
-    "id": "multilingual_typesetting",
-    "title": "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_TITLE",
-    "description": "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_MULTILINGUAL_TYPESETTING_EFFECT",
-    "route": "accessibility",
+    "id": "translated_caption",
+    "title": "LOC_PROP_NODE_TRANSLATED_CAPTION_TITLE",
+    "description": "LOC_PROP_NODE_TRANSLATED_CAPTION_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_TRANSLATED_CAPTION_EFFECT",
+    "route": "template",
     "effect_kind": "localized_image_typesetting",
-    "kind": "carrier",
-    "cost": 25,
-    "requires": [
-      "machine_translation",
-      "image"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "alternative_text",
-    "title": "LOC_PROP_NODE_ALTERNATIVE_TEXT_TITLE",
-    "description": "LOC_PROP_NODE_ALTERNATIVE_TEXT_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_ALTERNATIVE_TEXT_EFFECT",
-    "route": "accessibility",
-    "effect_kind": "authored_text_alternative",
     "kind": "carrier",
     "cost": 20,
     "requires": [
       "image"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "context_note",
-    "title": "LOC_PROP_NODE_CONTEXT_NOTE_TITLE",
-    "description": "LOC_PROP_NODE_CONTEXT_NOTE_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT",
-    "route": "accessibility",
-    "effect_kind": "attached_context_explainer",
-    "kind": "carrier",
-    "cost": 15,
-    "requires": [
-      "multilingual_typesetting",
-      "alternative_text"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "format_distribution",
-    "title": "LOC_PROP_NODE_FORMAT_DISTRIBUTION_TITLE",
-    "description": "LOC_PROP_NODE_FORMAT_DISTRIBUTION_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_FORMAT_DISTRIBUTION_EFFECT",
-    "route": "accessibility",
-    "effect_kind": "audience_format_routing",
-    "kind": "carrier",
-    "cost": 30,
-    "requires": [
-      "context_note"
     ],
     "requires_any": [],
     "target_ids": []
@@ -313,12 +309,12 @@ skills = Array[Dictionary]([
     "title": "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE",
     "description": "LOC_PROP_NODE_PUBLIC_TEMPLATE_DESCRIPTION",
     "effect_text": "LOC_PROP_NODE_PUBLIC_TEMPLATE_EFFECT",
-    "route": "open_source",
+    "route": "template",
     "effect_kind": "community_fillable_template",
     "kind": "carrier",
-    "cost": 20,
+    "cost": 25,
     "requires": [
-      "text"
+      "translated_caption"
     ],
     "requires_any": [],
     "target_ids": [
@@ -326,14 +322,14 @@ skills = Array[Dictionary]([
     ]
   },
   {
-    "id": "source_package",
-    "title": "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE",
-    "description": "LOC_PROP_NODE_SOURCE_PACKAGE_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT",
-    "route": "open_source",
-    "effect_kind": "editable_source_distribution",
+    "id": "form_anchor",
+    "title": "LOC_PROP_NODE_FORM_ANCHOR_TITLE",
+    "description": "LOC_PROP_NODE_FORM_ANCHOR_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_FORM_ANCHOR_EFFECT",
+    "route": "template",
+    "effect_kind": "form_preserving_semantic_tolerance",
     "kind": "carrier",
-    "cost": 15,
+    "cost": 30,
     "requires": [
       "public_template"
     ],
@@ -341,151 +337,65 @@ skills = Array[Dictionary]([
     "target_ids": []
   },
   {
-    "id": "semantic_detachment",
-    "title": "LOC_PROP_NODE_SEMANTIC_DETACHMENT_TITLE",
-    "description": "LOC_PROP_NODE_SEMANTIC_DETACHMENT_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_SEMANTIC_DETACHMENT_EFFECT",
-    "route": "open_source",
-    "effect_kind": "form_preserving_semantic_tolerance",
+    "id": "source_package",
+    "title": "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE",
+    "description": "LOC_PROP_NODE_SOURCE_PACKAGE_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT",
+    "route": "remix",
+    "effect_kind": "editable_source_distribution",
     "kind": "carrier",
-    "cost": 25,
+    "cost": 15,
+    "requires": [
+      "text"
+    ],
+    "requires_any": [],
+    "target_ids": [
+      "open_feed"
+    ]
+  },
+  {
+    "id": "free_remix",
+    "title": "LOC_PROP_NODE_FREE_REMIX_TITLE",
+    "description": "LOC_PROP_NODE_FREE_REMIX_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_FREE_REMIX_EFFECT",
+    "route": "remix",
+    "effect_kind": "open_deconstruction_remix",
+    "kind": "carrier",
+    "cost": 20,
     "requires": [
       "source_package"
     ],
     "requires_any": [],
-    "target_ids": []
+    "target_ids": [
+      "remix_workshop"
+    ]
   },
   {
     "id": "derivative_backlink",
     "title": "LOC_PROP_NODE_DERIVATIVE_BACKLINK_TITLE",
     "description": "LOC_PROP_NODE_DERIVATIVE_BACKLINK_DESCRIPTION",
     "effect_text": "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT",
-    "route": "open_source",
+    "route": "remix",
     "effect_kind": "provenance_backlink_exposure",
-    "kind": "carrier",
-    "cost": 15,
-    "requires": [
-      "semantic_detachment"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "version_index",
-    "title": "LOC_PROP_NODE_VERSION_INDEX_TITLE",
-    "description": "LOC_PROP_NODE_VERSION_INDEX_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_VERSION_INDEX_EFFECT",
-    "route": "open_source",
-    "effect_kind": "existing_variant_discovery",
-    "kind": "carrier",
-    "cost": 20,
-    "requires": [
-      "derivative_backlink"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "template_archive",
-    "title": "LOC_PROP_NODE_TEMPLATE_ARCHIVE_TITLE",
-    "description": "LOC_PROP_NODE_TEMPLATE_ARCHIVE_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_TEMPLATE_ARCHIVE_EFFECT",
-    "route": "open_source",
-    "effect_kind": "persistent_template_retrieval",
-    "kind": "carrier",
-    "cost": 35,
-    "requires": [
-      "version_index"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "community_hub",
-    "title": "LOC_PROP_NODE_COMMUNITY_HUB_TITLE",
-    "description": "LOC_PROP_NODE_COMMUNITY_HUB_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_COMMUNITY_HUB_EFFECT",
-    "route": "community",
-    "effect_kind": "adoption_gated_community_hub",
-    "kind": "carrier",
-    "cost": 20,
-    "requires": [
-      "text"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "neighbor_forward",
-    "title": "LOC_PROP_NODE_NEIGHBOR_FORWARD_TITLE",
-    "description": "LOC_PROP_NODE_NEIGHBOR_FORWARD_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_NEIGHBOR_FORWARD_EFFECT",
-    "route": "community",
-    "effect_kind": "directed_land_invitation",
-    "kind": "carrier",
-    "cost": 15,
-    "requires": [
-      "community_hub"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "sea_forward",
-    "title": "LOC_PROP_NODE_SEA_FORWARD_TITLE",
-    "description": "LOC_PROP_NODE_SEA_FORWARD_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_SEA_FORWARD_EFFECT",
-    "route": "community",
-    "effect_kind": "directed_sea_invitation",
-    "kind": "carrier",
-    "cost": 15,
-    "requires": [
-      "neighbor_forward"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "community_relay",
-    "title": "LOC_PROP_NODE_COMMUNITY_RELAY_TITLE",
-    "description": "LOC_PROP_NODE_COMMUNITY_RELAY_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_COMMUNITY_RELAY_EFFECT",
-    "route": "community",
-    "effect_kind": "receiver_adoption_relay",
     "kind": "carrier",
     "cost": 25,
     "requires": [
-      "sea_forward"
+      "free_remix"
     ],
     "requires_any": [],
     "target_ids": []
   },
   {
-    "id": "group_bridge",
-    "title": "LOC_PROP_NODE_GROUP_BRIDGE_TITLE",
-    "description": "LOC_PROP_NODE_GROUP_BRIDGE_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_GROUP_BRIDGE_EFFECT",
-    "route": "community",
-    "effect_kind": "published_group_bridge",
+    "id": "spinoff_momentum",
+    "title": "LOC_PROP_NODE_SPINOFF_MOMENTUM_TITLE",
+    "description": "LOC_PROP_NODE_SPINOFF_MOMENTUM_DESCRIPTION",
+    "effect_text": "LOC_PROP_NODE_SPINOFF_MOMENTUM_EFFECT",
+    "route": "remix",
+    "effect_kind": "spinoff_momentum_relay",
     "kind": "carrier",
-    "cost": 20,
+    "cost": 30,
     "requires": [
-      "community_relay"
-    ],
-    "requires_any": [],
-    "target_ids": []
-  },
-  {
-    "id": "distributed_network",
-    "title": "LOC_PROP_NODE_DISTRIBUTED_NETWORK_TITLE",
-    "description": "LOC_PROP_NODE_DISTRIBUTED_NETWORK_DESCRIPTION",
-    "effect_text": "LOC_PROP_NODE_DISTRIBUTED_NETWORK_EFFECT",
-    "route": "community",
-    "effect_kind": "conditional_multi_hub_routing",
-    "kind": "carrier",
-    "cost": 35,
-    "requires": [
-      "group_bridge"
+      "derivative_backlink"
     ],
     "requires_any": [],
     "target_ids": []

@@ -398,7 +398,7 @@ func _mutation_threshold(variant: Dictionary, parent: Dictionary, _variants_by_i
 			errors.append("Community template source requires its country, time and observed adoption")
 		elif not competition.has_country(str(record.country_id)) or int(record.hour) != int(policy.hour) or int(record.adopted) <= 0 or int(record.adopted) > int(catalog.gameplay_rules.country(str(record.country_id)).get("population", 0)):
 			errors.append("Community template source country, time or adoption is invalid")
-		if "public_template" not in policy.skill_ids or not competition.propagation_rules.can_template(historical_profile): errors.append("Community template publication provenance is invalid")
+		if ("public_template" not in policy.skill_ids and "free_remix" not in policy.skill_ids) or not competition.propagation_rules.can_template(historical_profile): errors.append("Community template publication provenance is invalid")
 	return expected
 
 

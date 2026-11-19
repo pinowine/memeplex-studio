@@ -792,7 +792,7 @@ func _skill_info(id: String) -> Dictionary:
 	var description := DeskLocalization.text(str(skill.get("description", "")))
 	var effect := DeskLocalization.text(str(skill.get("effect_text", "")))
 	var delivery: Dictionary = _state.get("propagation_delivery", {})
-	if route == "accessibility" and delivery.has("format"):
+	if route == "template" and delivery.has("format"):
 		var format_key := "LOC_PROP_FORMAT_" + str(delivery.format).to_upper()
 		description += "\n" + DeskLocalization.format_text("LOC_PROP_CURRENT_FORMAT", DeskLocalization.text(format_key))
 		var languages := PackedStringArray()
@@ -1036,7 +1036,11 @@ func _spread_hover(viewport_point: Vector2) -> Dictionary:
 
 
 func _skill_hover_rows(info: Dictionary) -> Array[Dictionary]:
-	var rows: Array[Dictionary] = [{"kind":"cost", "category":DeskLocalization.text("LOC_WB_COST"), "value":"%d MEME" % info.cost}]
+	var rows: Array[Dictionary] = []
+	var route := str(info.get("route", "common"))
+	if route in ["origin", "template", "remix"]:
+		rows.append({"category":DeskLocalization.text("LOC_WB_CAPABILITIES"), "value":DeskLocalization.text("LOC_PROP_ROUTE_" + route.to_upper())})
+	rows.append({"kind":"cost", "category":DeskLocalization.text("LOC_WB_COST"), "value":"%d MEME" % info.cost})
 	var status := ""
 	match str(info.status):
 		"available": status = DeskLocalization.format_text("LOC_PROP_HOLD_TO_RESEARCH", DendriteTree.HOLD_DURATION)

@@ -304,9 +304,12 @@ func deviation_threshold(raw: Dictionary) -> float:
 
 func _advance_deviation() -> void:
 	for raw: Dictionary in variants.duplicate():
-		if bool(raw.get("retired", false)) or not bool(Lifecycle.content(raw).get("controlled", false)): continue
+		var live := Lifecycle.content(raw)
+		if bool(raw.get("retired", false)) or not bool(live.get("controlled", false)): continue
 		var skills: Array = competition.live_profile(str(raw.id)).get("skill_ids", [])
-		raw.deviation_pressure = float(raw.get("deviation_pressure", 0.0)) + Deviation.hourly_growth(skills)
+		var delta := Deviation.hourly_growth(skills, str(live.get("preset_id", "")))
+		var floor_pressure := -Deviation.raw_semantic(raw.deviation_anchor, live)
+		raw.deviation_pressure = maxf(floor_pressure, float(raw.get("deviation_pressure", 0.0)) + delta)
 		_check_deviation(raw)
 
 func _check_deviation(raw: Dictionary) -> void:
@@ -691,9 +694,9 @@ func _reward_milestones() -> void:
 			economy.transactions.back().merge(reward.ledger_fields, true)
 
 func _produce_template_variants() -> void:
-	if hour % 48 != 0: return
 	var unlocked: Array = design_state.snapshot().unlocked_skills
-	if "public_template" not in unlocked: return
+	var period := 36 if "free_remix" in unlocked else (48 if "public_template" in unlocked else 0)
+	if period == 0 or hour <= 0 or hour % period != 0: return
 	for raw: Dictionary in competition.active_variants(variants):
 		var parent: Dictionary = Lifecycle.revision_snapshot(raw)
 		parent.flow_profile = competition.live_profile(str(raw.id))

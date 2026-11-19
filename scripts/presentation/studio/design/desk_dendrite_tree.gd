@@ -13,6 +13,7 @@ const TextLayout = preload("res://scripts/presentation/studio/context/desk_conte
 const LabelFont = preload("res://assets/image/fonts/body_medium_font.tres")
 const SelectedFont = preload("res://assets/image/fonts/body_bold_font.tres")
 const ACCENT := Color("41675f")
+const ROUTE_TITLES := ["LOC_PROP_ROUTE_ORIGIN", "LOC_PROP_ROUTE_TEMPLATE", "LOC_PROP_ROUTE_REMIX"]
 const UNION_PIXEL_SCALE := 2
 const NODE_ROW_SPACING := 110.0
 const NODE_TOP_MARGIN := 36.0
@@ -146,11 +147,11 @@ func _structure() -> Dictionary:
 		for parent: String in _dependencies(skill): depth = maxi(depth, int(depths.get(parent, 0)) + 1)
 		depths[id] = depth
 		highest = maxi(highest, depth)
-		var column := 1.5
+		var column := 1.0
 		match str(skill.get("route", "common")):
-			"accessibility": column = 0.0 if id in ["machine_translation", "multilingual_typesetting"] else (1.0 if id in ["image", "alternative_text"] else .5)
-			"open_source": column = 2.0
-			"community": column = 3.0
+			"origin": column = 0.0
+			"template": column = 1.0
+			"remix": column = 2.0
 		positions[id] = Vector2(column, depth)
 	return {"positions":positions, "highest":highest, "depths":depths}
 
@@ -219,7 +220,7 @@ func _rebuild() -> void:
 	_layout_depths = structure.depths
 	_vertical_layout = true
 	_edge_records.clear()
-	var lane_width := (size.x - 24.0) / 4.0
+	var lane_width := (size.x - 24.0) / 3.0
 	_label_width = maxf(40, lane_width - 44.0)
 	for skill: Dictionary in _skills:
 		var id := str(skill.id)
@@ -396,6 +397,12 @@ func union_image(active: bool = true) -> Image:
 
 func _draw() -> void:
 	_update_union_masks()
+	if size.x > 0.0 and _skills.size() > 1:
+		var lane_width := (size.x - 24.0) / 3.0
+		var header_y := NODE_TOP_MARGIN + NODE_ROW_SPACING - 44.0
+		for column in ROUTE_TITLES.size():
+			var x := 12.0 + lane_width * float(column) + 14.0
+			draw_string(SelectedFont, Vector2(x, header_y), DeskLocalization.text(ROUTE_TITLES[column]), HORIZONTAL_ALIGNMENT_LEFT, lane_width - 20.0, 14, Color(INK, .68))
 	for skill: Dictionary in _skills:
 		var id := str(skill.get("id",""))
 		if not _points.has(id): continue

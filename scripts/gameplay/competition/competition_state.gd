@@ -704,50 +704,14 @@ func _published_groups(profile_data: Dictionary) -> Array:
 func _landed(countries: Dictionary, variant_id: String, country_id: String) -> bool:
 	return _population(country_id) > 0 and int(countries[country_id].adopted.get(variant_id,0)) >= maxi(1,ceili(float(_population(country_id))*0.000001))
 
-func _has_hub_origin(variant_id: String, country_id: String, profile_data: Dictionary) -> bool:
-	if str(_state.registry[variant_id].origin_country) == country_id: return true
-	if "community_relay" not in profile_data.skill_ids: return false
-	for entry: Dictionary in _state.propagation.successful_contacts.values():
-		if str(entry.variant_id) == variant_id and str(entry.target) == country_id: return true
+func _has_hub_origin(_variant_id: String, _country_id: String, _profile_data: Dictionary) -> bool:
 	return false
 
-func _hub_groups(countries: Dictionary, variant_id: String, country_id: String, profile_data: Dictionary) -> Array:
-	var result: Array = []
-	if "community_hub" not in profile_data.skill_ids or not _landed(countries,variant_id,country_id) or not _has_hub_origin(variant_id,country_id,profile_data): return result
-	var country: Dictionary = rules.country(country_id)
-	for group: Variant in _published_groups(profile_data):
-		if float(country.groups.get(str(group),0.0)) >= 0.25: result.append(str(group))
-	return result
+func _hub_groups(_countries: Dictionary, _variant_id: String, _country_id: String, _profile_data: Dictionary) -> Array:
+	return []
 
-func _route_errors(source: String, target: String, variant_id: String, countries: Dictionary) -> PackedStringArray:
-	if not _state.registry.has(variant_id) or not countries.has(source) or not countries.has(target) or source == target or _population(source) == 0 or _population(target) == 0: return PackedStringArray(["propagation: select a released meme and two different countries"])
-	var p: Dictionary = live_profile(variant_id)
-	var source_groups := _hub_groups(countries,variant_id,source,p)
-	if source_groups.is_empty(): return PackedStringArray(["propagation: the source needs a landed community hub"])
-	var row := _country_row(target)
-	if not row.contacts.has(source): return PackedStringArray(["propagation: the selected directed contact does not exist"])
-	var land: bool = source in row.land_neighbors
-	if ("neighbor_forward" if land else "sea_forward") not in p.skill_ids: return PackedStringArray(["propagation: research the matching land or sea contact"])
-	var target_groups: Dictionary = rules.country(target).groups
-	var matched := false
-	for group: Variant in source_groups: matched = matched or float(target_groups.get(str(group),0.0)) >= 0.25
-	if not matched and "group_bridge" in p.skill_ids and _published_groups(p).size() >= 2:
-		for group: Variant in _published_groups(p): matched = matched or float(target_groups.get(str(group),0.0)) >= 0.25
-	if not matched: return PackedStringArray(["propagation: no published group connects these countries"])
-	return PackedStringArray()
-
-func configure_route(source_country: String, target_country: String, variant_id: String) -> PackedStringArray:
-	var errors := _route_errors(source_country,target_country,variant_id,_state.countries)
-	if not errors.is_empty(): return errors
-	var requests: Dictionary = _state.propagation.requests.duplicate(true)
-	var p: Dictionary = live_profile(variant_id)
-	if "distributed_network" not in p.skill_ids:
-		for key: String in requests.keys():
-			if str(requests[key].variant_id) == variant_id: requests.erase(key)
-	var key := variant_id+"|"+source_country+"|"+target_country
-	requests[key] = {"variant_id":variant_id,"source":source_country,"target":target_country}
-	_state.propagation.requests = requests
-	return errors
+func configure_route(_source_country: String, _target_country: String, _variant_id: String) -> PackedStringArray:
+	return PackedStringArray(["propagation: directed relay routes are retired"])
 
 func _cached_fitness(id: String, country_id: String) -> Dictionary:
 	if not _fitness_cache.has(id): _fitness_cache[id] = {}
@@ -757,76 +721,31 @@ func _cached_fitness(id: String, country_id: String) -> Dictionary:
 func _transfer(owner: String, source_variant: String, target_variant: String, source: String, target: String, kind: String, weight: float) -> Dictionary:
 	return {"owner":owner,"source_variant":source_variant,"target_variant":target_variant,"source":source,"target":target,"kind":kind,"weight":maxf(0.0,weight),"pressure":0.0}
 
-func _plan_propagation(previous: Dictionary, variants: Array, modifiers: Dictionary, hour: int) -> void:
+func _plan_propagation(previous: Dictionary, variants: Array, _modifiers: Dictionary, hour: int) -> void:
 	var runtime: Dictionary = _state.propagation
 	var candidates: Array[Dictionary] = []
 	var by_id := {}
-	var families := {}
 	for variant: Dictionary in variants:
 		by_id[str(variant.id)] = variant
-		if variant.get("origin_ids",[]).is_empty(): continue
-		var key := str(variant.origin_ids[0])
-		if not families.has(key): families[key] = []
-		families[key].append(str(variant.id))
-	# A completed transfer creates a relay only after adoption is observed in its receiver.
-	for transfer: Dictionary in runtime.transfers:
-		if str(transfer.kind) != "community" or not _landed(previous,str(transfer.target_variant),str(transfer.target)): continue
-		var key := str(transfer.target_variant)+"|"+str(transfer.source)+"|"+str(transfer.target)
-		runtime.successful_contacts[key] = {"variant_id":str(transfer.target_variant),"source":str(transfer.source),"target":str(transfer.target),"hour":hour}
 	runtime.hubs = {}
 	for variant: Dictionary in variants:
 		var id := str(variant.id)
-		var p: Dictionary = live_profile(id)
-		var skills: Array = p.skill_ids
-		var hubs := {}
-		for row: Dictionary in _state.world:
-			var cid := str(row.id)
-			var groups := _hub_groups(previous,id,cid,p)
-			if not groups.is_empty(): hubs[cid] = groups
-		if not hubs.is_empty(): runtime.hubs[id] = hubs
-		var explicit: Array[Dictionary] = []
-		for request: Dictionary in runtime.requests.values():
-			if str(request.variant_id) == id: explicit.append(request)
-		var community_candidates: Array[Dictionary] = []
-		for source: String in hubs:
-			for target_row: Dictionary in _state.world:
-				var target := str(target_row.id)
-				if not _route_errors(source,target,id,previous).is_empty(): continue
-				var allowed := explicit.is_empty()
-				for request: Dictionary in explicit: allowed = allowed or (request.source == source and request.target == target)
-				if not allowed: continue
-				var gap := 1.0-float(previous[target].adopted[id])/maxf(1.0,float(_population(target)))
-				community_candidates.append(_transfer(id,id,id,source,target,"community",gap*float(previous[source].adopted[id])/maxf(1.0,float(_population(source)))))
-		community_candidates.sort_custom(func(a:Dictionary,b:Dictionary)->bool: return float(a.weight)>float(b.weight))
-		if "distributed_network" in skills: candidates.append_array(community_candidates)
-		elif not community_candidates.is_empty(): candidates.append(community_candidates[0])
+		var skills: Array = live_profile(id).skill_ids
 		if variant.get("origin_ids",[]).is_empty(): continue
-		var siblings: Array = families.get(str(variant.origin_ids[0]),[])
 		for row: Dictionary in _state.world:
 			var cid := str(row.id)
 			var gained := maxi(0,int(previous[cid].exposed[id])-int(runtime.last_exposed.get(cid,{}).get(id,0)))
 			if "derivative_backlink" in skills and not bool(variant.controlled) and gained > 0:
 				for parent_id: Variant in variant.parent_ids:
 					if not by_id.has(str(parent_id)) or by_id[str(parent_id)].get("origin_ids",[]) != variant.origin_ids: continue
-					candidates.append(_transfer(id,id,str(parent_id),cid,cid,"backlink",float(gained)/maxf(1.0,float(_population(cid)))))
-			if not _landed(previous,id,cid): continue
-			if "version_index" in skills and siblings.size() >= 2:
-				var best := id
-				var baseline := float(_cached_fitness(id,cid).score)
-				var best_score := baseline
-				for sibling: String in siblings:
-					var score := float(_cached_fitness(sibling,cid).score)
-					if score > best_score+0.000001:
-						best = sibling
-						best_score = score
-				if best != id: candidates.append(_transfer(id,id,best,cid,cid,"index",best_score-baseline))
-			if "template_archive" in skills and siblings.size() >= 2 and propagation_rules.can_template(p) and hour-int(_state.registry[id].birth_hour) >= 48 and int(previous[cid].attention.get(id,0)) < floori(float(previous[cid].adopted.get(id,0))*rules.attention_fraction):
-				var local: Dictionary = modifiers.get(cid,modifiers)
-				var demand := maxf(0.0,float(local.get(id,1.0))-1.0)
-				for sibling: String in siblings:
-					if sibling == id or bool(by_id[sibling].controlled): continue
-					if int(previous[cid].exposed.get(sibling,0)) > int(runtime.last_exposed.get(cid,{}).get(sibling,0)): demand = maxf(demand,0.25)
-				if demand > 0.0: candidates.append(_transfer(id,id,id,cid,cid,"archive",demand))
+					var target_id := str(parent_id)
+					if bool(by_id[target_id].get("retired", false)):
+						var meme_id := str(by_id[target_id].get("meme_id", target_id))
+						for item: Dictionary in variants:
+							if not bool(item.get("retired", false)) and str(item.get("meme_id", item.id)) == meme_id:
+								target_id = str(item.id)
+								break
+					candidates.append(_transfer(id,id,target_id,cid,cid,"backlink",0.30*float(gained)/maxf(1.0,float(_population(cid)))))
 	var weight_by_owner := {}
 	var pool_by_owner := {}
 	for request: Dictionary in candidates:
@@ -894,27 +813,13 @@ func _validate_propagation_state(value: Variant, state: Dictionary, ids: Diction
 	if float(value.budget_total) > float(eligible_owners)*0.006+0.000000001: errors.append("propagation: source pressure budget is unbounded")
 	for request: Variant in value.transfers:
 		if not request is Dictionary or not request.has_all(["owner","source_variant","target_variant","source","target","kind","weight","pressure"]): errors.append("propagation: incomplete transfer"); continue
-		if not ids.has(str(request.owner)) or not ids.has(str(request.source_variant)) or not ids.has(str(request.target_variant)) or not state.countries.has(str(request.source)) or not state.countries.has(str(request.target)) or request.kind not in ["community","backlink","index","archive"] or not _number(request.weight) or not _number(request.pressure) or float(request.weight) < 0.0 or float(request.pressure) <= 0.0: errors.append("propagation: invalid transfer provenance"); continue
+		if not ids.has(str(request.owner)) or not ids.has(str(request.source_variant)) or not ids.has(str(request.target_variant)) or not state.countries.has(str(request.source)) or not state.countries.has(str(request.target)) or request.kind != "backlink" or not _number(request.weight) or not _number(request.pressure) or float(request.weight) < 0.0 or float(request.pressure) <= 0.0: errors.append("propagation: invalid transfer provenance"); continue
 		var owner := str(request.owner)
 		if ids[owner].get("origin_ids",[]).is_empty(): errors.append("propagation: independent memes cannot spend player network pressure")
 		if str(request.source_variant) != owner: errors.append("propagation: source owner mismatch")
 		var source_profile: Dictionary = live_profile(owner,state)
-		var skill: String = {"community":"community_hub","backlink":"derivative_backlink","index":"version_index","archive":"template_archive"}[str(request.kind)]
-		if skill not in source_profile.skill_ids: errors.append("propagation: transfer ability was not researched")
-		if request.kind == "community":
-			var row := {}
-			for world_row: Dictionary in state.world:
-				if str(world_row.id) == str(request.target): row = world_row
-			if str(request.source) not in row.contacts or owner != str(request.target_variant): errors.append("propagation: invalid community transfer edge")
-			else:
-				var edge_skill := "neighbor_forward" if str(request.source) in row.land_neighbors else "sea_forward"
-				if edge_skill not in source_profile.skill_ids: errors.append("propagation: edge ability was not researched")
-		elif request.kind == "backlink":
-			if bool(ids[owner].controlled) or str(request.target_variant) not in ids[owner].parent_ids or ids[owner].origin_ids != ids[str(request.target_variant)].origin_ids: errors.append("propagation: backlink has no derivative source")
-		elif request.kind == "index":
-			if ids[owner].origin_ids != ids[str(request.target_variant)].origin_ids or owner == str(request.target_variant): errors.append("propagation: index contains an unrelated version")
-		elif request.kind == "archive":
-			if owner != str(request.target_variant) or not propagation_rules.can_template(source_profile) or hour-int(state.registry[owner].birth_hour) < 48: errors.append("propagation: invalid archive retrieval")
+		if "derivative_backlink" not in source_profile.skill_ids: errors.append("propagation: transfer ability was not researched")
+		if bool(ids[owner].controlled) or ids[owner].origin_ids != ids[str(request.target_variant)].origin_ids: errors.append("propagation: backlink has no derivative source")
 		owner_spending[owner] = float(owner_spending.get(owner,0.0))+float(request.pressure)
 		if float(owner_spending[owner]) > 0.006+0.000000001: errors.append("propagation: one source copied its pressure budget")
 		allocated += float(request.pressure)

@@ -207,7 +207,7 @@ func validate(catalog: Resource) -> PackedStringArray:
 				var found := false
 				for channel in catalog.channels: found = found or str(channel.id) == str(target)
 				if not found: errors.append("Unknown skill channel target")
-		if skill.get("route", "") not in ["common", "accessibility", "open_source", "community"] or str(skill.get("effect_kind", "")).is_empty(): errors.append("Missing propagation route or mechanism")
+		if skill.get("route", "") not in ["common", "origin", "template", "remix"] or str(skill.get("effect_kind", "")).is_empty(): errors.append("Missing propagation route or mechanism")
 		if skill.has("draft_effects"): errors.append("Propagation mechanisms use their own rules")
 		if not _integer(skill.get("cost")) or int(skill.cost) <= 0 or not skill.get("requires") is Array or not skill.get("requires_any", []) is Array:
 			errors.append("Invalid skill cost or dependencies")
