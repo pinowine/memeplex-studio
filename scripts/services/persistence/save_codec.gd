@@ -913,8 +913,6 @@ func _validate_event_copy(event: Dictionary, errors: PackedStringArray) -> void:
 	for field in ["impact_text", "mentor_comment"]:
 		if str(event[field]).strip_edges().is_empty(): errors.append(DeskLocalization.source("LOC_SAVED_EVENT_TEXT_IS_EMPTY_BD4C7C07") + field)
 	if "\n" in event.mentor_comment or "\r" in event.mentor_comment: errors.append(DeskLocalization.source("LOC_S_SAVED_COMMENT_IS_NOT_A_SINGLE_0A288143"))
-	if event.has("response_choice") and (not event.response_choice is String or str(event.response_choice) not in ["", "ride_trend", "clarify_origin", "let_remix"] or not bool(event.acknowledged)):
-		errors.append("Saved event response choice is invalid")
 
 ## 调度计数必须来自真实事件历史，内部据此直接读取最后触发时间。
 func _validate_event_history(data: Dictionary, errors: PackedStringArray) -> void:

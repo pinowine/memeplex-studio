@@ -8,7 +8,7 @@ signal tools_requested
 signal save_requested
 signal load_requested
 signal restart_requested
-signal event_acknowledged(choice_id: String)
+signal event_acknowledged
 signal settings_requested
 signal developer_requested
 signal quit_requested
@@ -54,13 +54,6 @@ var _design_syncing := false
 var _context_topic_ids := PackedStringArray()
 var _design_metadata: Dictionary = {}
 var _active_design_sheet := "edit"
-var _event_choice_row: HBoxContainer
-var _event_choice_buttons: Dictionary = {}
-const EVENT_CHOICES := [
-	{"id":"ride_trend", "label":"LOC_EVENT_CHOICE_RIDE", "help":"LOC_EVENT_CHOICE_RIDE_HELP"},
-	{"id":"clarify_origin", "label":"LOC_EVENT_CHOICE_CLARIFY", "help":"LOC_EVENT_CHOICE_CLARIFY_HELP"},
-	{"id":"let_remix", "label":"LOC_EVENT_CHOICE_REMIX", "help":"LOC_EVENT_CHOICE_REMIX_HELP"}
-]
 
 
 func _ready() -> void:
@@ -85,26 +78,10 @@ func _ready() -> void:
 	%Step.pressed.connect(func() -> void: step_requested.emit())
 	%Return.pressed.connect(func() -> void: workbench_requested.emit())
 	%EventContinue.focus_mode = Control.FOCUS_NONE
-	%EventContinue.pressed.connect(func() -> void: event_acknowledged.emit(""))
+	%EventContinue.pressed.connect(func() -> void: event_acknowledged.emit())
 	%EventCard.font_scale = 1.15
-	var receipt_theme := ReceiptUI.create_theme()
-	_event_choice_row = HBoxContainer.new()
-	_event_choice_row.name = "EventChoiceRow"
-	_event_choice_row.add_theme_constant_override("separation", 8)
-	_event_choice_row.theme = receipt_theme
-	for spec: Dictionary in EVENT_CHOICES:
-		var choice_id := str(spec.id)
-		var btn := Button.new()
-		btn.name = "EventChoice_" + choice_id
-		btn.focus_mode = Control.FOCUS_NONE
-		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn.add_theme_font_size_override("font_size", 15)
-		btn.pressed.connect(func() -> void: event_acknowledged.emit(choice_id))
-		_event_choice_row.add_child(btn)
-		_event_choice_buttons[choice_id] = btn
-	%EventCard.add_action_button(_event_choice_row)
 	%EventCard.add_action_button(%EventContinue)
-	%EventContinue.theme = receipt_theme
+	%EventContinue.theme = ReceiptUI.create_theme()
 	%EventContinue.add_theme_font_size_override("font_size", 16)
 	ReceiptUI.primary(%EventContinue)
 	%Recreate.pressed.connect(func() -> void: workbench_requested.emit())
@@ -344,25 +321,12 @@ func render(state: Dictionary) -> void:
 		_layout_panels()
 
 
-func _refresh_event_buttons() -> void:
-	var war_event: bool = str(_event.get("definition_id", "")) == "world_war_three"
-	%EventContinue.visible = war_event
-	%EventContinue.text = DeskLocalization.text("LOC_EVENT_UNDERSTOOD")
-	if _event_choice_row != null:
-		_event_choice_row.visible = not war_event
-		for spec: Dictionary in EVENT_CHOICES:
-			var btn: Button = _event_choice_buttons.get(str(spec.id))
-			if btn != null:
-				btn.text = DeskLocalization.text(str(spec.label))
-				btn.tooltip_text = DeskLocalization.text(str(spec.help))
-
 func show_event(event: Dictionary) -> void:
 	_event = event.duplicate(true)
 	%EventCard.set_details(_desk_controller.event_details(event))
 	%EventCard.show()
 	%EventContinue.disabled = false
-	for btn: Button in _event_choice_buttons.values(): btn.disabled = false
-	_refresh_event_buttons()
+	%EventContinue.text = DeskLocalization.text("LOC_EVENT_UNDERSTOOD")
 	layout_screen_modals()
 	if _event_slide != null and _event_slide.is_valid(): _event_slide.kill()
 	var destination: Vector2 = %EventCard.position
@@ -481,7 +445,6 @@ func _refresh_modal() -> void:
 	%ModalShade.color = Color(0.04, 0.05, 0.04, 0.40) if _menu_mode in ["settings", "preferences"] else Color(0.14, 0.14, 0.14, 0.64)
 	%Create.disabled = modal_visible()
 	%EventContinue.disabled = not _menu_mode.is_empty()
-	for btn: Button in _event_choice_buttons.values(): btn.disabled = not _menu_mode.is_empty()
 	# The same shade intercepts the event card while a menu is above it.
 	if not _menu_mode.is_empty():
 		%ModalShade.z_index = 29
@@ -721,7 +684,7 @@ func refresh_localization() -> void:
 	DeskLocalization.refresh_edits(self)
 	if %EventCard.visible:
 		%EventCard.set_details(_desk_controller.event_details(_event))
-		_refresh_event_buttons()
+		%EventContinue.text = DeskLocalization.text("LOC_EVENT_UNDERSTOOD")
 	if _locale_catalog != null:
 		for option: OptionButton in [_kernel,_preset,_group,_channel,_topic,_language]:
 			for index in option.item_count:

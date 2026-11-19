@@ -261,14 +261,14 @@ func _on_event(event: Dictionary) -> void:
 	hud.show_event(event)
 	atlas.set_speed(clock_speed())
 
-func _acknowledge(choice_id: String = "") -> void:
+func _acknowledge() -> void:
 	if hud.menu_mode() != "": return
 	if simulation.phase != "event":
 		hud.dismiss_fax()
 		atlas.set_speed(clock_speed())
 		return
 	hud.dismiss_fax()
-	simulation.acknowledge_event(choice_id)
+	simulation.acknowledge_event()
 	atlas.set_speed(clock_speed())
 
 func _interface_paused() -> bool:
