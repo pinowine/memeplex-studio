@@ -14,7 +14,6 @@ const Typography = preload("res://scripts/presentation/ui/components/desk_typogr
 const Sketch = preload("res://scripts/presentation/studio/design/desk_neural_sketch.gd")
 const DendriteTree = preload("res://scripts/presentation/studio/design/desk_dendrite_tree.gd")
 const ContextSlice = preload("res://scripts/presentation/studio/context/desk_context_board.gd")
-const ContextTrialSlip = preload("res://scripts/presentation/studio/context/desk_context_trial_slip.gd")
 const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
 const ModuleClip = preload("res://scripts/presentation/studio/design/desk_module_paper_clip.gd")
 const ExpressionText = preload("res://scripts/gameplay/design/meme_expression.gd")
@@ -122,7 +121,6 @@ var _selected_installed_slot := -1
 var _context_slice: Control
 var _context_title: Label
 var _context_details: RichTextLabel
-var _context_trial: Control
 var _circulation_toggle: Button
 var _overview_name: Label
 var _overview_data: GridContainer
@@ -180,7 +178,6 @@ func mark_catalog_defaults(preset_id: String) -> void:
 	_catalog_default_name = title if str(_draft.get("name",_draft.get("title",""))) == title else ""
 	_catalog_default_target = title if str(_draft.get("target","")) == title else ""
 	if _context_slice != null: _context_slice.set_authored_target(_catalog_default_target)
-	if _context_trial != null: _context_trial.set_authored_target(_catalog_default_target)
 	_part_edit_identity = ""
 	_refresh_neuron()
 	_refresh_part()
@@ -198,7 +195,6 @@ func configure(catalog: MemeDemoCatalog, rules: MemeDesignRules = null) -> void:
 	_catalog = catalog
 	_rules = rules if rules != null else DEFAULT_RULES
 	if _context_slice != null: _context_slice.configure(_rules)
-	if _context_trial != null: _context_trial.configure(_catalog, _rules)
 	_refresh_starters()
 	_refresh_skills()
 	load_assets()
@@ -226,9 +222,7 @@ func set_draft(draft: Dictionary) -> void:
 		_catalog_default_name = ""
 		_catalog_default_target = ""
 		if _context_slice != null: _context_slice.set_authored_target("")
-		if _context_trial != null: _context_trial.set_authored_target("")
 	_draft=draft.duplicate(true)
-	if _context_trial != null: _context_trial.set_draft(get_draft())
 	_refresh_neuron()
 	_refresh_part()
 	_refresh_starters()
@@ -559,10 +553,6 @@ func _build_culture() -> void:
 	_context_details.selection_enabled = true
 	_context_details.mouse_filter = Control.MOUSE_FILTER_PASS
 	page.add_child(_context_details)
-	_context_trial = ContextTrialSlip.new()
-	_context_trial.name = "ContextTrialSlip"
-	page.add_child(_context_trial)
-	_context_trial.configure(_catalog, _rules)
 	_circulation_toggle = _button(page, "", "CirculationToggle")
 	_circulation_toggle.focus_mode = Control.FOCUS_NONE
 	_circulation_toggle.add_theme_font_size_override("font_size", 13)
@@ -884,8 +874,6 @@ func _layout_culture_sheet(w: float,h: float) -> void:
 	_place(_context_slice,Rect2(0,0,w,maxf(240,h)))
 	_place(_context_details,Rect2())
 	_context_details.hide()
-	_place(_context_trial,Rect2(w * .055, h * .018, w * .315, maxf(96.0, h * .155)))
-	_context_trial.show()
 	if _circulation_toggle != null:
 		_place(_circulation_toggle, Rect2(w * .405, h * .934, w * .54, maxf(28.0, h * .05)))
 		_circulation_toggle.show()
@@ -998,7 +986,7 @@ func inspection() -> Dictionary:
 		"source_hover":{"visible":_source_hover.visible,"text":_source_hover.content_text(),"sources":_source_hover_records.duplicate(true),"rect":_source_hover.get_global_rect(),"mouse_filter":_source_hover.mouse_filter,"receipt":_source_hover.inspection()},"neuron_visible":_neuron.is_visible_in_tree(),"part_details_visible":_part_content.is_visible_in_tree(),"language_selector_visible":false,"specimen_art":{"visible":false},
 		"part_rect":_part_content.get_global_rect(),"neuron_rect":_neuron.get_global_rect(),
 		"starter_options":_starter.item_count,"inventory_sources":_design.get("inventory_sources",[]).duplicate(true),
-		"context_slice":_context_slice.inspection(),"context_trial":context_trial_inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
+		"context_slice":_context_slice.inspection(),"culture_instruction_visible":_context_details.is_visible_in_tree(),
 		"overview":{"name":_overview_name.text,"data":_summary_text,"columns":_overview_data.columns,"cells":_summary_inspection(),"name_rect":_overview_name.get_global_rect(),"data_rect":_overview_data.get_global_rect()},
 		"spread_tree":_spread_tree.inspection(),"spread_layout":_spread_layout_inspection(),"module_slot_rects":_physical_clips.map(func(clip: Control)->Rect2:return clip.get_global_rect()),
 		"sheet_pages":_pages.keys(),"state_mutation":"signals only; authoritative simulation applies resources"}
@@ -1497,17 +1485,6 @@ func module_availability() -> Dictionary:
 func _escape(value: String) -> String:
 	return value.replace("[", "[lb]")
 
-
-func set_context_trial(country_id: String, country_title: String, fitness: Dictionary) -> void:
-	if _context_trial != null: _context_trial.set_report(country_id, country_title, fitness, get_draft())
-
-func reset_context_trial() -> void:
-	if _context_trial != null: _context_trial.reset()
-
-func context_trial_inspection() -> Dictionary:
-	var info: Dictionary = _context_trial.inspection() if _context_trial != null else {}
-	info.visible = _context_trial != null and _context_trial.is_visible_in_tree()
-	return info
 
 func context_slice() -> Control:
 	return _context_slice

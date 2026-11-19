@@ -564,16 +564,6 @@
     "zh_CN": "衍生新梗海外落地回链",
     "en": "Spin-off backlink return"
   },
-  "LOC_TRIAL_FIT_SCORE": {
-    "source": "当地契合度：%.0f%%",
-    "zh_CN": "当地契合度：%.0f%%",
-    "en": "Local fit: %.0f%%"
-  },
-  "LOC_TRIAL_FIT_SHIFT": {
-    "source": "当地契合度：%.0f%% → %.0f%%",
-    "zh_CN": "当地契合度：%.0f%% → %.0f%%",
-    "en": "Local fit: %.0f%% -> %.0f%%"
-  },
   "LOC_CULTIVATE_OPEN_SPREAD": {
     "source": "扩散状态：公开传播（点击切换小圈子限流）",
     "zh_CN": "扩散状态：公开传播（点击切换小圈子限流）",

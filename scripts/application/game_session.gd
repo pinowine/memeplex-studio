@@ -31,10 +31,6 @@ var _direct_starter_selection := false
 var _direct_starter_index := -1
 var _shell: CanvasLayer
 var _tutorial_country := -1
-var _context_trial_queued := false
-var _context_trial_signature := ""
-var _context_trial_seed := -1
-var _context_trial_skills: Array = []
 
 func _ready() -> void:
 	set_process(false)
@@ -155,7 +151,6 @@ func _process(delta: float) -> void:
 		atlas._update_clock()
 		atlas.set_speed(clock_speed())
 	hud.layout_for_date(desk.clock_rect())
-	_queue_context_trial()
 
 func _studio_selected() -> void:
 	if not _ready_to_run: return
@@ -580,7 +575,6 @@ func _render() -> void:
 	if not authored.is_empty() and str(editing.get("preset_id", "")) == str(authored.preset_id) and editing.get("community_changes", []) != authored.get("community_changes", []):
 		editing.community_changes = authored.get("community_changes", []).duplicate(true)
 		hud.set_draft(editing)
-	_context_trial_skills = Array(snapshot.get("design_state", {}).get("unlocked_skills", []))
 	if _ready_to_run:
 		_sync_setup()
 		spread.update_simulation(simulation, snapshot.world_competition)
@@ -588,7 +582,6 @@ func _render() -> void:
 		_refresh_meme_reader(snapshot)
 		if _shell != null: _shell.context_guidance.observe_world(snapshot.world_competition)
 		hud.set_legend(spread.legend_rows())
-		_queue_context_trial()
 
 func _show_meme_details(id: String) -> void:
 	if not _ready_to_run or not startup_ready() or _interface_paused(): return
@@ -635,33 +628,6 @@ func focus_meme_on_map(id: String) -> void:
 	if desk.focus_component("sheet/map"):
 		hud.show_sheet("map")
 		atlas.select_meme(id)
-
-func _queue_context_trial() -> void:
-	if _context_trial_queued or not _ready_to_run or desk.get("_active_sheet") != "cultivate": return
-	_context_trial_queued = true
-	_update_context_trial.call_deferred()
-
-func _update_context_trial() -> void:
-	_context_trial_queued = false
-	if not _ready_to_run or desk.get("_active_sheet") != "cultivate": return
-	var editor: Control = hud.design_workbench()
-	if _context_trial_seed != simulation.seed_value:
-		_context_trial_seed = simulation.seed_value
-		_context_trial_signature = ""
-		editor.reset_context_trial()
-	var country_id := simulation.country_id
-	var country_title := simulation.country_title
-	if atlas.selected_country >= 0 and atlas.selected_country < atlas.settings.countries.size():
-		var country: Resource = atlas.settings.countries[atlas.selected_country]
-		country_id = str(country.id)
-		country_title = tr(country.short_name_key)
-	var draft: Dictionary = hud.get_draft()
-	var signature := JSON.stringify([country_id, country_title, draft, _context_trial_skills])
-	if signature == _context_trial_signature: return
-	_context_trial_signature = signature
-	# A drag may request several steps; compare only its settled draft once per frame.
-	var report: Dictionary = {} if country_id.is_empty() else simulation.draft_fitness(draft).get("countries", {}).get(country_id, {})
-	editor.set_context_trial(country_id, country_title, report)
 
 func inspection_state() -> Dictionary:
 	return {"setup_stage":_setup_stage(), "startup_ready":startup_ready(), "simulation":simulation.snapshot(), "hud":hud.inspection(), "spread":spread.inspection(), "catalog_path":catalog.resource_path, "map_seed":_map_seed, "clock":atlas.clock.inspection(), "shell":_shell.inspection() if _shell != null else {}}

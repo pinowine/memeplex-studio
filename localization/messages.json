@@ -1739,11 +1739,6 @@
     "zh_CN": "未填写对象",
     "en": "No target entered"
   },
-  "LOC_UNREGISTERED_0DB3DB44": {
-    "source": "未登记",
-    "zh_CN": "未登记",
-    "en": "Unregistered"
-  },
   "LOC_OPPOSITION_454F03C9": {
     "source": "反对",
     "zh_CN": "反对",
@@ -1794,130 +1789,10 @@
     "zh_CN": "空位",
     "en": "Empty slot"
   },
-  "LOC_STANCE_MATCH_EDBC6BA3": {
-    "source": "立场匹配",
-    "zh_CN": "立场匹配",
-    "en": "Stance match"
-  },
-  "LOC_AUDIENCE_MATCH_34064507": {
-    "source": "群体匹配",
-    "zh_CN": "群体匹配",
-    "en": "Audience match"
-  },
-  "LOC_EXPRESSION_MATCH_E0D7CCB1": {
-    "source": "表达匹配",
-    "zh_CN": "表达匹配",
-    "en": "Expression match"
-  },
-  "LOC_TOPIC_MATCH_A34617ED": {
-    "source": "话题匹配",
-    "zh_CN": "话题匹配",
-    "en": "Topic match"
-  },
-  "LOC_CONTEXT_REACH_B6C0B3C4": {
-    "source": "语境可达",
-    "zh_CN": "语境可达",
-    "en": "Context reach"
-  },
-  "LOC_PRAGMATIC_MATCH_4CD83BF1": {
-    "source": "语用匹配",
-    "zh_CN": "语用匹配",
-    "en": "Pragmatic match"
-  },
-  "LOC_LANGUAGE_MATCH_A7B82A01": {
-    "source": "语言匹配",
-    "zh_CN": "语言匹配",
-    "en": "Language match"
-  },
-  "LOC_THE_CURRENT_DESTINATION_HAS_NO_COMPLETE_FINITE_D0A25525": {
-    "source": "当前落点没有完整、有限的匹配分项。",
-    "zh_CN": "当前落点没有完整、有限的匹配分项。",
-    "en": "The current destination has no complete, finite match breakdown."
-  },
-  "LOC_NOT_INSTALLED_3F136C06": {
-    "source": "未放入",
-    "zh_CN": "未放入",
-    "en": "Not installed"
-  },
-  "LOC_REGISTERED_F_F_21CB4430": {
-    "source": "已登记 %.1f / %.1f",
-    "zh_CN": "已登记 %.1f / %.1f",
-    "en": "Registered %.1f / %.1f"
-  },
-  "LOC_REGISTERED_5F2F3886": {
-    "source": "已登记",
-    "zh_CN": "已登记",
-    "en": "Registered"
-  },
-  "LOC_NO_DESTINATION_SELECTED_SELECT_ONE_BEFORE_RECORDING_11E79B86": {
-    "source": "未选落点 · 选定后再记录匹配",
-    "zh_CN": "未选落点 · 选定后再记录匹配",
-    "en": "No destination selected · Select one before recording a match"
-  },
-  "LOC_NO_COMPARABLE_RECORD_YET_8ABD12B3": {
-    "source": "暂无可比记录",
-    "zh_CN": "暂无可比记录",
-    "en": "No comparable record yet"
-  },
-  "LOC_CURRENT_BASELINE_NO_BEFORE_AFTER_CHANGE_YET_02EFA6DD": {
-    "source": "当前基准 · 尚无修改前后差值",
-    "zh_CN": "当前基准 · 尚无修改前后差值",
-    "en": "Current baseline · No before/after change yet"
-  },
-  "LOC_RECENT_CHANGE_BB3F1A6A": {
-    "source": "最近变化 · ",
-    "zh_CN": "最近变化 · ",
-    "en": "Recent change · "
-  },
-  "LOC_NO_DESTINATION_SELECTED_63D1DE60": {
-    "source": "未选落点",
-    "zh_CN": "未选落点",
-    "en": "No destination selected"
-  },
-  "LOC_AUDIENCE_C7845353": {
-    "source": " · 群体 ",
-    "zh_CN": " · 群体 ",
-    "en": " · Audience "
-  },
-  "LOC_TOPICS_7D9B6617": {
-    "source": " · 话题 ",
-    "zh_CN": " · 话题 ",
-    "en": " · Topics "
-  },
-  "LOC_PRAGMATIC_TARGET_5E569867": {
-    "source": " · 语用对象 ",
-    "zh_CN": " · 语用对象 ",
-    "en": " · Pragmatic target "
-  },
-  "LOC_STANCE_5AA7DD45": {
-    "source": "立场 ",
-    "zh_CN": "立场 ",
-    "en": "Stance "
-  },
-  "LOC_TRIAL_MATCH_4B9CC20A": {
-    "source": "试配记录 / ",
-    "zh_CN": "试配记录 / ",
-    "en": "Trial match / "
-  },
-  "LOC_LANGUAGE_3E2D7373": {
-    "source": "语言 ",
-    "zh_CN": "语言 ",
-    "en": "Language "
-  },
-  "LOC_TOPICS_61BF0397": {
-    "source": "话题 ",
-    "zh_CN": "话题 ",
-    "en": "Topics "
-  },
   "LOC_PRAGMATIC_TARGET_8EC18981": {
     "source": "语用对象 ",
     "zh_CN": "语用对象 ",
     "en": "Pragmatic target "
-  },
-  "LOC_A_MATCH_RECORD_NOT_A_PREDICTION_OF_EE8169CC": {
-    "source": "匹配记录，非支持或采用预测。",
-    "zh_CN": "匹配记录，非支持或采用预测。",
-    "en": "A match record, not a prediction of support or adoption."
   },
   "LOC_TEXT_DD818618": {
     "source": "文本",
