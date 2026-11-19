@@ -1,47 +1,47 @@
 {
   "LOC_MENTOR_FREEDOM": {
     "source": "自由点数。往这边走，你的模因会更倾向于自由。至于大家会不会自由地曲解它……那是另一回事。",
-    "zh_CN": "自由点数。往这边走，你的模因会更偏向自由。至于受众会不会顺便自由地曲解你的意思……我一般不替人打包票。\n\n“对于他自己，对于他自己的身心，个人拥有主权。”\n约翰·斯图亚特·密尔《论自由》第一章（1859）",
+    "zh_CN": "自由点数。往这边走，你的模因会更倾向于自由。至于大家会不会自由地曲解它……那是另一回事。\n\n“对于他自己，对于他自己的身心，个人拥有主权。”\n约翰·斯图亚特·密尔《论自由》第一章（1859）",
     "en": "Liberty points. Spend these to move your meme toward liberty.\n\n“Over himself, over his own body and mind, the individual is sovereign.”\nJohn Stuart Mill, On Liberty, chapter 1 (1859)"
   },
   "LOC_MENTOR_AUTHORITY": {
     "source": "威权点数。它能让你的模因往威权那边靠。提醒一下，有人听你的，不代表你说得对。",
-    "zh_CN": "威权点数，用来让模因的口气更偏威权一点。先提个醒，底下有人照着做，往往只是怕麻烦，不见得是真服你。\n\n“合法使用暴力的垄断权”\n马克斯·韦伯《以政治为业》（1919）",
+    "zh_CN": "威权点数。它能让你的模因往威权那边靠。提醒一下，有人听你的，不代表你说得对。\n\n“合法使用暴力的垄断权”\n马克斯·韦伯《以政治为业》（1919）",
     "en": "Authority points move your meme toward authority.\n\n“the monopoly of the legitimate use of physical force”\nMax Weber, Politics as a Vocation (1919)"
   },
   "LOC_MENTOR_EQUALITY": {
     "source": "平等点数。把模因往平等的方向推一点。至少在转发按钮面前，大家暂时都是一样的。",
-    "zh_CN": "平等点数。把模因往平等那边推一点……至少在点转发按钮这件事上，大家确实都只有一票。\n\n“人人生而平等”\n马丁·路德·金《我有一个梦想》（1963）",
+    "zh_CN": "平等点数。把模因往平等的方向推一点。至少在转发按钮面前，大家暂时都是一样的。\n\n“人人生而平等”\n马丁·路德·金《我有一个梦想》（1963）",
     "en": "Equality points push the meme toward equality.\n\n“all men are created equal”\nMartin Luther King Jr., I Have a Dream (1963)"
   },
   "LOC_MENTOR_HIERARCHY": {
     "source": "等级点数。它会把你的模因推向等级。谁在上面、谁在下面……通常正是大家争论的部分。",
-    "zh_CN": "等级点数。往这边调，话里自然会分出个高低上下。说起来，评论区吵得最凶的通常也就是谁该排前面。\n\n“所有动物一律平等，但有些动物比其他动物更加平等。”\n乔治·奥威尔《动物农场》第10章（1945）",
+    "zh_CN": "等级点数。它会把你的模因推向等级。谁在上面、谁在下面……通常正是大家争论的部分。\n\n“所有动物一律平等，但有些动物比其他动物更加平等。”\n乔治·奥威尔《动物农场》第10章（1945）",
     "en": "Hierarchy points move your meme toward hierarchy.\n\n“All animals are equal, but some animals are more equal than others.”\nGeorge Orwell, Animal Farm, chapter 10 (1945)"
   },
   "LOC_MENTOR_SINCERE": {
     "source": "真诚点数。让你的模因更像是在认真说话。别笑，有时候真诚反而是最难让人相信的。",
-    "zh_CN": "真诚点数。让你的模因听起来是在掏心窝子说话。你别笑，现在网上大家防备心重，老老实实说话反而最容易被当成演的。\n\n“我们想得太多，感受得太少。”\n查理·卓别林《大独裁者》（1940）",
+    "zh_CN": "真诚点数。让你的模因更像是在认真说话。别笑，有时候真诚反而是最难让人相信的。\n\n“我们想得太多，感受得太少。”\n查理·卓别林《大独裁者》（1940）",
     "en": "Sincerity points make your meme sound more earnest.\n\n“Because I’m Worth It”\nL’Oréal Paris: Because I’m Worth It campaign"
   },
   "LOC_MENTOR_IRONIC": {
     "source": "反讽点数。给你的模因添一点话外音。记住，别人没听懂，不一定是别人的问题。",
-    "zh_CN": "反讽点数，给模因加点阴阳怪气的弦外之音。不过先说好哦，万一有人真照字面意思信了，你可没地方找人评理去。\n\n“这样挺好。”\nGunshow《着火了》，KC Green",
+    "zh_CN": "反讽点数。给你的模因添一点话外音。记住，别人没听懂，不一定是别人的问题。\n\n“这样挺好。”\nGunshow《着火了》，KC Green",
     "en": "Irony points add a little meaning between the lines.\n\n“This is fine.”\nGunshow: On Fire, KC Green"
   },
   "LOC_MENTOR_SUPPORT": {
     "source": "支持点数。让你的模因更倾向于站在某件事这边。站队之前，最好先看看队伍朝哪儿走。",
-    "zh_CN": "支持点数。让模因明确站在某件事那边，帮着一块儿吆喝。当然，站过去之前最好先看一眼那帮人正往哪儿走。\n\n“你能行。”\n《蔚蓝》商店介绍，Maddy Makes Games",
+    "zh_CN": "支持点数。让你的模因更倾向于站在某件事这边。站队之前，最好先看看队伍朝哪儿走。\n\n“你能行。”\n《蔚蓝》商店介绍，Maddy Makes Games",
     "en": "Support points make your meme lean in favor of something.\n\n“You can do this.”\nCeleste store description, Maddy Makes Games"
   },
   "LOC_MENTOR_OPPOSITION": {
     "source": "反对点数。它让你的模因更倾向于说“不”。很好，不过反对什么，最好还是讲清楚。",
-    "zh_CN": "反对点数，专门用来唱反调的。骂归骂，到底在反对哪件事还是得让人听出来，不然光剩吵架了。\n\n“你刚才说的那些差不多就是些疯话罢了……”\n《军团要塞2：过期失效》，Valve",
+    "zh_CN": "反对点数。它让你的模因更倾向于说“不”。很好，不过反对什么，最好还是讲清楚。\n\n“你刚才说的那些差不多就是些疯话罢了……”\n《军团要塞2：过期失效》，Valve",
     "en": "Opposition points make your meme more inclined to say no.\n\n“Everything you just said was insane...”\nTeam Fortress 2: Expiration Date, Valve"
   },
   "LOC_HANDSET_HINT": {
     "source": "有来电时点击听筒接听，再次点击可以挂断。",
-    "zh_CN": "来电话时点一下听筒接起来，聊完了再点一下就能挂断。",
+    "zh_CN": "有来电时点击听筒接听，再次点击可以挂断。",
     "en": "Click the receiver to answer an incoming call. Click it again to hang up."
   }
 }

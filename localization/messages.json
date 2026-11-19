@@ -1926,7 +1926,7 @@
   },
   "LOC_THE_LINE_WORKS_WHETHER_THE_MESSAGE_DESERVES_CE70DE5C": {
     "source": "线路是通的。消息是否值得转发，是另一笔账。",
-    "zh_CN": "电话线倒是通着。至于传过来的话值不值得信，你自己掂量。",
+    "zh_CN": "线路是通的。消息是否值得转发，是另一笔账。",
     "en": "The line works. Whether the message deserves forwarding is a separate calculation."
   },
   "LOC_COLLECTED_CONTACT_FE5E6233": {
@@ -7146,12 +7146,12 @@
   },
   "LOC_GUIDANCE_FIRST_COMPETITOR": {
     "source": "地图上出现了别人的模因。它们也在争取注意力；不同颜色区分家族，空心圈表示出生或投放位置，实心点是各国采用人数的抽样。",
-    "zh_CN": "啊哦，地图上冒出别人家的模因了，这下有人跟你抢注意力咯。不同颜色代表不同路数，空心圈是老窝，实心点是各地跟着玩的人……离你还远的话倒也不用太慌。",
+    "zh_CN": "啊哦，地图上出现了别人的模因，它们也在争取注意力。不同颜色代表不同家族，空心圈是起点，实心点是各地采用的人数……如果离你还很远，大可不必担心。",
     "en": "Another meme has appeared on the map. It competes for attention too. Colors distinguish families; hollow circles mark origins or launch sites, and solid dots sample adoption by country."
   },
   "LOC_GUIDANCE_FIRST_MUTATION": {
     "source": "你的模因已经被别人改写了。回到编辑页时，先看自己的最终表达，再决定下一次修改。外部突变有自己的来源和传播轨迹；它不会自动改掉你手里的原稿。",
-    "zh_CN": "早晚会有这一天的……外头有人把你的模因拿去二创了。回编辑页的时候记得先看一眼现在的成品长什么样，再决定要不要往回扳一扳。当然，你要是懒得管、想看它自己野蛮生长，我也没意见哦~",
+    "zh_CN": "这也是不可避免的……你的模因已经被别人改写了。回到编辑页时，先看自己的最终表达，再决定是否要修改。或者，你也可以接受这个世界自己的运转？",
     "en": "Someone has remixed your meme. Here in the editor, check your own final expression before deciding what to change next. An external mutation has its own origin and propagation history; it does not automatically replace your draft."
   },
   "LOC_GUIDANCE_GOT_IT": {
@@ -7311,7 +7311,7 @@
   },
   "LOC_GUIDANCE_DEVIATION": {
     "source": "你的模因会随着时间、事件和你的编辑逐渐偏离原意，当偏移度超过50%时，它会变成一种新的模因──不再受到你的管控。如果你想要避免这一点，可以尝试避免修改过多的原模因，或者点一些“传播”节点以增强你模因的包容度。",
-    "zh_CN": "欸，盯一眼这条线。时间一长、外头闹点事，再加上你自己来回改，模因的意思就会一点点跑偏。等偏移度跨过 50% 那条虚线，它可就分家单干、不归你管了……不想辛辛苦苦养大的项目跟别人姓，平时下手别改太猛，或者去传播页点几个稳住原意的能力。",
+    "zh_CN": "注意一下这条线。随着时间、事件和你自己的修改，模因会慢慢偏离原意；一旦偏移度超过 50%，它就会独立出去，不再受你管控了。想避免这一点的话，平时别改动太多原模因，或者去传播页点一些提升包容度的节点。",
     "en": "Your meme gradually drifts from its original meaning through time, events and your edits. Above 50 percent deviation it becomes a new meme beyond your control. To avoid this, keep more of the original meme or research Transmission nodes to increase its tolerance."
   }
 }

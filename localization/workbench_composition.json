@@ -426,22 +426,22 @@
   },
   "LOC_GUIDANCE_MUTATION_NAVIGATE": {
     "source": "欸，有人改写了你的模因。去编辑页看看吧，我给你指一下改在哪儿。",
-    "zh_CN": "欸，外头有人动手改了你的模因。先翻到编辑页来，我指给你看哪儿变了。",
+    "zh_CN": "欸，有人改写了你的模因。去编辑页看看吧，我给你指一下改在哪儿。",
     "en": "Someone has rewritten your meme. Come to the editor and I’ll show you what changed."
   },
   "LOC_GUIDANCE_COMPETITION_NAVIGATE": {
     "source": "啊哦，别人的模因也来了。打开地图，我指给你看。",
-    "zh_CN": "啊哦，外头野生的模因也冒头了。打开地图，我指给你看它在哪儿折腾。",
+    "zh_CN": "啊哦，别人的模因也来了。打开地图，我指给你看。",
     "en": "Another meme has arrived. Open the map and I’ll point it out."
   },
   "LOC_GUIDANCE_MUTATION_EFFECT": {
     "source": "你看，外面的人做了这些改动：\n%s\n它们已经用在下方的表达和含义里了，也会和你之后的修改一起生效。接不接受它，就看你咯。",
-    "zh_CN": "喏，外头那帮人给你加了点料：\n%s\n底下的表达和含义已经跟着变了，往后你再动手改也会叠在这上面……算不算帮倒忙，你自己掂量咯。",
+    "zh_CN": "你看，外面的人做了这些改动：\n%s\n它们已经用在下方的表达和含义里了，也会和你之后的修改一起生效。接不接受，就看你自己的意思了。",
     "en": "Here is what people changed:\n%s\nYou can see it in the expression and meaning below. It will also combine with your later edits."
   },
   "LOC_GUIDANCE_MUTATION_SPLIT": {
     "source": "你看，外面的人做了这些改动：\n%s\n它已经偏离得足够远，分成另一条模因了。你的原稿保留着，这张卡记录的是它怎么变出去的。",
-    "zh_CN": "喏，外头那帮人做了这些改动：\n%s\n这回步子迈得太大，直接分家变成另一条独立模因了。好在你手里的原稿还在，这张卡就当留个分家纪念吧。",
+    "zh_CN": "你看，外面的人做了这些改动：\n%s\n它已经偏离得足够远，分成另一条模因了。你的原稿保留着，这张卡记录的是它怎么变出去的。",
     "en": "Here is what people changed:\n%s\nIt moved far enough to become a separate meme. Your original remains; this card records how the new one branched off."
   },
   "LOC_EXTERNAL_REPHRASE_PATCH": {
