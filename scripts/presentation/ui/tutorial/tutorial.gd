@@ -230,14 +230,14 @@ func allows_input(event: InputEvent) -> bool:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 		if key == KEY_ESCAPE and bool(_steps[_index].get("starter_choices", false)): return true
 		if bool(_steps[_index].get("starter_choices", false)) and key in [KEY_TAB, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_SPACE, KEY_ENTER, KEY_KP_ENTER]: return true
-		if key == KEY_ESCAPE and bool(_steps[_index].get("contextual", false)):
-			if event.pressed and not event.echo: skip()
-			return false
 		if key == KEY_ESCAPE and (str(_steps[_index].get("action", "")) == "overview_returned" or str(_steps[_index].get("target", "")).begins_with("map/")):
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
 		if _return_overview and key == KEY_ESCAPE:
 			if event.pressed and not event.echo: overview_requested.emit()
+			return false
+		if key == KEY_ESCAPE and bool(_steps[_index].get("contextual", false)):
+			if event.pressed and not event.echo: skip()
 			return false
 		if key == KEY_ESCAPE: return true
 		if _return_overview: return false

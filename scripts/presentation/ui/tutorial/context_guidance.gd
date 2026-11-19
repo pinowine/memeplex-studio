@@ -21,6 +21,7 @@ func configure(owner_shell: Node) -> void:
 	shell.add_child(mentor)
 	mentor.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mentor.set_input_target_provider(shell._tutorial_input_targets, shell._tutorial_input_contains)
+	mentor.overview_requested.connect(page._return_to_desktop)
 	mentor.step_changed.connect(func(id: String, _step: Dictionary):
 		if id == "mutation":
 			var editor: Control = page.hud.design_workbench()
@@ -74,11 +75,18 @@ func _process(_delta: float) -> void:
 		_source_id = _mutation_queue[0] if id == "mutation" else str(progress[id].source_id)
 		if id == "mutation": page.hud.design_workbench()._select_variant(_source_id)
 		var steps: Array[Dictionary] = [{"id":id, "text":LESSONS[id], "emotion":EMOTIONS[id], "action":"continue", "target":id, "contextual":true, "no_blur":true, "map_navigation":id == "competition"}]
-		if id in ["mutation", "competition"]:
-			if not str(page.desk._camera.inspection().target).begins_with("sheet/"): page.desk.return_overview()
-			var sheet := "edit" if id == "mutation" else "map"
-			if page.desk._active_sheet != sheet:
-				steps.push_front({"id":id+"_navigate", "text":"LOC_GUIDANCE_"+id.to_upper()+"_NAVIGATE", "emotion":EMOTIONS[id], "action":"sheet_selected", "match":{"id":sheet}, "target":"sheet/"+sheet, "contextual":true, "no_blur":true})
+		var camera: Dictionary = page.desk._camera.inspection()
+		var destination := {"deviation":"crt", "mutation":"sheet/edit", "competition":"sheet/map"}
+		if str(camera.target) != str(destination[id]):
+			var navigation := {"id":id+"_navigate", "text":"LOC_GUIDANCE_"+id.to_upper()+"_NAVIGATE", "emotion":EMOTIONS[id], "contextual":true, "no_blur":true}
+			if id == "deviation":
+				navigation.merge({"action":"component_focused", "match":{"id":"monitor"}, "target":"desktop/monitor"})
+			else:
+				var sheet := "edit" if id == "mutation" else "map"
+				navigation.merge({"action":"sheet_selected", "match":{"id":sheet}, "target":"sheet/"+sheet})
+			steps.push_front(navigation)
+			if str(camera.state) != "overview":
+				steps.push_front({"id":id+"_overview", "text":"LOC_GUIDANCE_RETURN_TO_DESK", "emotion":EMOTIONS[id], "action":"overview_returned", "contextual":true, "no_blur":true})
 		if id == "mutation":
 			steps[-1].target = "editor/expression"
 			steps[-1].scroll = true
