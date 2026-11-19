@@ -13,8 +13,8 @@ func _init(desk: Control) -> void:
 func hover_target_at(point: Vector2) -> Dictionary:
 	return _hover_targets.target_at(point)
 
-func control_hover_target(control: Control) -> Dictionary:
-	return _hover_targets.control_target(control)
+func control_hover_target(control: Control, point: Vector2 = Vector2.INF) -> Dictionary:
+	return _hover_targets.control_target(control, point)
 
 func control_cursor_shape(control: Control, point: Vector2 = Vector2.INF) -> int:
 	return _hover_targets.control_cursor_shape(control, point)

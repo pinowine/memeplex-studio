@@ -440,25 +440,27 @@ func _update_hover() -> int:
 		hover_outline.clear()
 		return _popup_cursor_shape(window as PopupMenu)
 	var root_control := get_viewport().gui_get_hovered_control()
-	var target: Dictionary = desktop.control_hover_target(root_control)
+	var root_point := get_viewport().get_mouse_position()
+	var target: Dictionary = desktop.control_hover_target(root_control, root_point)
 	if not target.is_empty():
 		_show_hover_target(target)
 		return target.cursor_shape
 	if desktop.foreground_ui_handles(get_viewport().get_mouse_position()):
 		hover_outline.clear()
 		return desktop.foreground_cursor_shape(get_viewport().get_mouse_position())
-	if root_control != null and root_control != modal_image and (root_control.mouse_filter == Control.MOUSE_FILTER_STOP or desktop.control_cursor_shape(root_control) != Input.CURSOR_ARROW):
+	if root_control != null and root_control != modal_image and (root_control.mouse_filter == Control.MOUSE_FILTER_STOP or desktop.control_cursor_shape(root_control, root_point) != Input.CURSOR_ARROW):
 		hover_outline.clear()
-		return desktop.control_cursor_shape(root_control)
+		return desktop.control_cursor_shape(root_control, root_point)
 	if modal_image.visible:
-		target = desktop.control_hover_target(logical.gui_get_hovered_control())
+		var modal_point: Vector2 = input_router.modal_to_logical(root_point)
+		target = desktop.control_hover_target(logical.gui_get_hovered_control(), modal_point)
 		if not target.is_empty():
 			var polygon: PackedVector2Array = target.polygon
 			var rect: Rect2 = input_router.modal_rect()
 			for index in polygon.size(): polygon[index] = rect.position + polygon[index] * rect.size / logical.get_visible_rect().size
 			hover_outline.show_polygon(str(target.key), polygon)
 		else: hover_outline.clear()
-		return target.cursor_shape if not target.is_empty() else desktop.control_cursor_shape(logical.gui_get_hovered_control())
+		return target.cursor_shape if not target.is_empty() else desktop.control_cursor_shape(logical.gui_get_hovered_control(), modal_point)
 	if page.presentation_blocks_input():
 		hover_outline.clear()
 		return _blocked_cursor_shape(get_viewport().get_mouse_position())
