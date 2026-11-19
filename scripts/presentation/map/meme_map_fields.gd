@@ -87,16 +87,18 @@ class TagChip extends PanelContainer:
 		_label.add_theme_font_size_override("font_size", Typography.point_size("label"))
 		line.add_child(_label)
 
-	func configure(tag: Dictionary, interactive: bool = true, compact: bool = false) -> void:
+	func configure(tag: Dictionary, interactive: bool = true, compact: bool = false, show_icon: bool = true) -> void:
 		help_info = tag.get("hover_info", {})
 		help_title = str(tag.text)
 		help_body = str(tag.help)
 		help_kind = str(tag.kind)
 		_label.text = help_title
+		_icon.visible = show_icon
 		var font_size := Typography.point_size("annotation" if compact else "label")
 		_label.add_theme_font_size_override("font_size", font_size)
 		_icon.custom_minimum_size = Vector2(14, 14) if compact else Vector2(16, 16)
-		custom_minimum_size.x = minf(120.0 if compact else 256.0, ceilf(Typography.font("label").get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + (30.0 if compact else 34.0)))
+		var margin := (12.0 if compact else 16.0) if not show_icon else (30.0 if compact else 34.0)
+		custom_minimum_size.x = minf(120.0 if compact else 256.0, ceilf(Typography.font("label").get_string_size(help_title, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + margin))
 		_icon.kind = help_kind
 		var ink: Color
 		var fill: Color

@@ -209,9 +209,7 @@ func _rebuild(interactive_countries: bool) -> void:
 			_row_views.append({"section":section_index, "index":row_index, "label":label, "value":value, "tags":tags, "context":context})
 
 func _configure_country_tag(chip: Control, row: Dictionary, interactive: bool) -> void:
-	chip.configure({"text":str(row.label), "help":str(row.help), "kind":"group", "hover_info":row.get("hover_info", {})}, interactive)
-	chip.get("_icon").hide()
-	chip.custom_minimum_size.x = minf(256.0, ceilf(Typography.font("label").get_string_size(str(row.label), HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 14.0))
+	chip.configure({"text":str(row.label), "help":str(row.help), "kind":"group", "hover_info":row.get("hover_info", {})}, interactive, false, false)
 	chip.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	chip.mouse_filter = Control.MOUSE_FILTER_STOP if interactive else Control.MOUSE_FILTER_IGNORE
 
