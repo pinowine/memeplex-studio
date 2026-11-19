@@ -67,6 +67,14 @@
   "LOC_EVENT_RESPONSE_IRONY": {"source":"讽刺倾向","zh_CN":"讽刺倾向","en":"Preference for irony"},
   "LOC_EVENT_RESPONSE_IRONY_HELP": {"source":"当地人借助反话、隐喻和解构表达态度的倾向。少数意见与威权环境之间的张力会提高这个值。","zh_CN":"当地人借助反话、隐喻和解构表达态度的倾向。少数意见与威权环境之间的张力会提高这个值。","en":"The preference for irony, metaphor, and reinterpretation when expressing a reaction. Minority views under an authoritarian environment increase this preference."},
   "LOC_EVENT_UNDERSTOOD": {"source":"知道了","zh_CN":"知道了","en":"Got it"},
+  "LOC_EVENT_CHOICE_RIDE": {"source":"顺着风向接梗","zh_CN":"顺着风向接梗","en":"Ride the mood"},
+  "LOC_EVENT_CHOICE_RIDE_HELP": {"source":"顺着当地当下的反应推一把。情绪对路时涨一波当地采用并进账 6 点经费；撞上逆风或反感场面则会掉信任、掉采用并拉高偏移。","zh_CN":"顺着当地当下的反应推一把。情绪对路时涨一波当地采用并进账 6 点经费；撞上逆风或反感场面则会掉信任、掉采用并拉高偏移。","en":"Lean into the local mood. Matching the reaction boosts local adoption and earns 6 Meme points; misreading a hostile or grim event costs trust, sheds local adopters, and adds drift."},
+  "LOC_EVENT_CHOICE_CLARIFY": {"source":"重申原本意思","zh_CN":"重申原本意思","en":"Clarify the point"},
+  "LOC_EVENT_CHOICE_CLARIFY_HELP": {"source":"不蹭这波热闹，把话头拉回原本的意思。当地短期曝光略收，换取偏移度回退 7% 并稳住受众信任。","zh_CN":"不蹭这波热闹，把话头拉回原本的意思。当地短期曝光略收，换取偏移度回退 7% 并稳住受众信任。","en":"Step back from the noise and restate what the phrase meant. Trims local exposure slightly while pulling deviation down by 7 percent and steadying audience trust."},
+  "LOC_EVENT_CHOICE_REMIX": {"source":"放任借题发挥","zh_CN":"放任借题发挥","en":"Let people spin it"},
+  "LOC_EVENT_CHOICE_REMIX_HELP": {"source":"任由当地网友借这起消息改词发挥；若当前开启了小圈子限流，则顺势撤掉当地热度。正常扩散下当地采用小涨，偏移度上升 9%。","zh_CN":"任由当地网友借这起消息改词发挥；若当前开启了小圈子限流，则顺势撤掉当地热度。正常扩散下当地采用小涨，偏移度上升 9%。","en":"Let local readers spin the phrase around the news, or wind down local heat if circulation is restricted. Under open sharing, nudges local adoption up while raising deviation by 9 percent."},
+  "LOC_EVENT_CHOICE_RIDE_BONUS": {"source":"顺风接梗回响","zh_CN":"顺风接梗回响","en":"Timely event tie-in"},
+  "LOC_EVENT_CHOICE_RIDE_BACKFIRE": {"source":"逆风硬蹭招致当地受众反感，热度下滑且意思进一步跑偏。","zh_CN":"逆风硬蹭招致当地受众反感，热度下滑且意思进一步跑偏。","en":"Forcing a tie-in against the local mood alienated readers and pushed the meaning further off course."},
   "LOC_DEVIATION_DELTA": {"source":"偏移度 %+.1f%%","zh_CN":"偏移度 %+.1f%%","en":"Deviation %+.1f%%"},
   "LOC_EVENT_MATERIALS": {"source":"材料：","zh_CN":"材料：","en":"Materials: "}
 }

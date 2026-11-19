@@ -266,14 +266,14 @@ func _on_event(event: Dictionary) -> void:
 	hud.show_event(event)
 	atlas.set_speed(clock_speed())
 
-func _acknowledge() -> void:
+func _acknowledge(choice_id: String = "") -> void:
 	if hud.menu_mode() != "": return
 	if simulation.phase != "event":
 		hud.dismiss_fax()
 		atlas.set_speed(clock_speed())
 		return
 	hud.dismiss_fax()
-	simulation.acknowledge_event()
+	simulation.acknowledge_event(choice_id)
 	atlas.set_speed(clock_speed())
 
 func _interface_paused() -> bool:
@@ -313,10 +313,6 @@ func _open_settings() -> void:
 func _input(event: InputEvent) -> void:
 	if not _ready_to_run or not event is InputEventKey or not event.pressed or event.echo: return
 	var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
-	if key == KEY_SPACE and hud.menu_mode().is_empty() and hud.get_node("%EventCard").visible:
-		_acknowledge()
-		get_viewport().set_input_as_handled()
-		return
 	if key == KEY_ESCAPE:
 		if _shell != null and _shell.main_menu.visible:
 			_shell.main_menu.back()

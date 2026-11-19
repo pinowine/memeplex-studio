@@ -765,6 +765,11 @@ func _schedule_events() -> void:
 	var arrivals := EventScheduler.arrival_count(catalog.event_clock, seed_value, hour, _event_clock_arrivals)
 	if events.size() >= arrivals: return
 	if not events.is_empty() and hour - int(events[-1].hour) < catalog.event_clock.minimum_interval_hours(): return
+	if not deployments.is_empty() and hour <= 120:
+		var correspondent := _foreign_correspondent_event()
+		if not correspondent.is_empty():
+			_execute_event(correspondent.definition, str(correspondent.country_id))
+			return
 	if hour >= 420 and _needs_major_competitor():
 		var major := _choose_major_competitor_event()
 		if not major.is_empty():
@@ -775,6 +780,28 @@ func _schedule_events() -> void:
 	var definition := EventScheduler.choose_event(_eligible_events(), hour, catalog.gameplay_rules.event_time_scale,
 		event_counts, last_event_hours, _event_condition_values(), _rng, catalog.gameplay_rules.country(cid), float(contributions[cid]) > 0.0)
 	if definition != null: _execute_event(definition, cid)
+
+func _foreign_correspondent_event() -> Dictionary:
+	var origin_cid := str(deployments[0].country_id)
+	var primary_langs: Array = catalog.gameplay_rules.country(origin_cid).get("primary_languages", [])
+	if primary_langs.is_empty(): return {}
+	var needed_cards: Array[String] = []
+	for lang: Variant in primary_langs:
+		var card_id := "language_" + str(lang)
+		if design_state.card_owned("language", card_id): return {}
+		for existing: Dictionary in events:
+			for reward: Dictionary in existing.get("design_rewards", []):
+				if str(reward.get("kind", "")) == "language" and str(reward.get("id", "")) == card_id: return {}
+		needed_cards.append(card_id)
+	var fallback: MemeDemoEvent = null
+	for definition: MemeDemoEvent in _eligible_events():
+		for reward: Dictionary in definition.design_rewards:
+			if str(reward.get("kind", "")) == "language" and str(reward.get("id", "")) in needed_cards:
+				if definition.origin == &"world":
+					return {"definition":definition, "country_id":origin_cid}
+				if fallback == null and not _event_target(origin_cid, definition).is_empty():
+					fallback = definition
+	return {"definition":fallback, "country_id":origin_cid} if fallback != null else {}
 
 func _needs_major_competitor() -> bool:
 	var view: Dictionary = competition.snapshot(variants, false)
@@ -1109,7 +1136,90 @@ func _open_next_event() -> void:
 	status = DeskLocalization.source("LOC_EVENT_PAUSE_NARRATIVE_AND_ACTUAL_EFFECTS_ARE_C7BD1B68")
 	event_raised.emit(active_event.duplicate(true))
 
-func acknowledge_event() -> void:
+func event_choice_aligned(paper: Dictionary, profile_data: Dictionary) -> bool:
+	var response: Dictionary = paper.get("response", {})
+	if str(paper.get("category", "")) == "hinder" or float(response.get("spread", 0.0)) < -0.05:
+		return false
+	if not response.get("topic_ids") is Array:
+		return true
+	var pref := EventResponse.preference(response, profile_data)
+	if pref < 0.97: return false
+	if pref > 1.02: return true
+	var pragmatic: Array = profile_data.get("pragmatic_position", [0.0, 0.0])
+	var sentiment := float(response.get("sentiment", 0.0))
+	var irony := float(response.get("irony", 0.0))
+	if sentiment > 0.15 and float(pragmatic[1]) > 0.28: return false
+	if sentiment < -0.15 and float(pragmatic[1]) < -0.25: return false
+	if irony < 0.22 and float(pragmatic[0]) > 0.45 and sentiment < 0.0: return false
+	return true
+
+func _apply_event_choice(paper: Dictionary, choice_id: String) -> void:
+	if choice_id not in ["ride_trend", "clarify_origin", "let_remix"] or str(paper.get("definition_id", "")) == "world_war_three": return
+	if current_variant_id.is_empty(): return
+	var active_id := _active_variant_id(current_variant_id)
+	var raw := variant_by_id(active_id)
+	if raw.is_empty() or bool(raw.get("retired", false)): return
+	var live_prof: Dictionary = competition.live_profile(active_id)
+	var ev_cid := str(paper.get("country_id", country_id))
+	if not competition.has_country(ev_cid): ev_cid = country_id
+	var has_target_country: bool = competition.has_country(ev_cid)
+	var floor_pressure := -Deviation.raw_semantic(raw.get("deviation_anchor", raw), Lifecycle.content(raw))
+	match choice_id:
+		"ride_trend":
+			if event_choice_aligned(paper, live_prof):
+				if has_target_country:
+					var c_state: Dictionary = competition._state.countries[ev_cid]
+					var pop := int(competition._state.populations[ev_cid])
+					if int(c_state.exposed.get(active_id, 0)) == 0:
+						var room := maxi(0, pop - competition._sum(c_state.exposed))
+						c_state.exposed[active_id] = mini(floori(pop * 0.025), room)
+					competition.adoption_pulse(active_id, 0.35, ev_cid)
+				economy.reward("event_ride:" + str(paper.instance_id), 6, DeskLocalization.source("LOC_EVENT_CHOICE_RIDE_BONUS"), hour)
+				var delta := 0.025 * (0.65 if "usage_example" in live_prof.get("skill_ids", []) else 1.0)
+				raw.deviation_pressure = clampf(maxf(floor_pressure, float(raw.get("deviation_pressure", 0.0)) + delta), -0.35, 1.0)
+				_check_deviation(raw)
+			else:
+				if has_target_country:
+					var c_state: Dictionary = competition._state.countries[ev_cid]
+					c_state.adopted[active_id] = floori(float(c_state.adopted.get(active_id, 0)) * 0.82)
+				for gid: Variant in live_prof.get("group_ids", [str(live_prof.get("group_id", ""))]):
+					var key := str(gid)
+					if group_state.has(key):
+						group_state[key].trust = clampf(float(group_state[key].trust) - 0.12, 0.05, 1.0)
+				raw.deviation_pressure = clampf(maxf(floor_pressure, float(raw.get("deviation_pressure", 0.0)) + 0.08), -0.35, 1.0)
+				status = DeskLocalization.source("LOC_EVENT_CHOICE_RIDE_BACKFIRE")
+				_check_deviation(raw)
+		"clarify_origin":
+			if has_target_country:
+				var c_state: Dictionary = competition._state.countries[ev_cid]
+				var cur_adopted := int(c_state.adopted.get(active_id, 0))
+				c_state.exposed[active_id] = maxi(cur_adopted, floori(float(c_state.exposed.get(active_id, 0)) * 0.92))
+			for gid: Variant in live_prof.get("group_ids", [str(live_prof.get("group_id", ""))]):
+				var key := str(gid)
+				if group_state.has(key):
+					group_state[key].trust = clampf(float(group_state[key].trust) + 0.04, 0.05, 1.0)
+			raw.deviation_pressure = maxf(floor_pressure, float(raw.get("deviation_pressure", 0.0)) - 0.07)
+		"let_remix":
+			if str(live_prof.get("reuse_permission", "unknown")) == "restricted":
+				if has_target_country:
+					var c_state: Dictionary = competition._state.countries[ev_cid]
+					var next_ad := floori(float(c_state.adopted.get(active_id, 0)) * 0.75)
+					c_state.adopted[active_id] = next_ad
+					c_state.exposed[active_id] = maxi(next_ad, floori(float(c_state.exposed.get(active_id, 0)) * 0.75))
+			else:
+				if has_target_country:
+					var c_state: Dictionary = competition._state.countries[ev_cid]
+					var pop := int(competition._state.populations[ev_cid])
+					if int(c_state.exposed.get(active_id, 0)) == 0:
+						var room := maxi(0, pop - competition._sum(c_state.exposed))
+						c_state.exposed[active_id] = mini(floori(pop * 0.015), room)
+					competition.adoption_pulse(active_id, 0.16, ev_cid)
+				raw.deviation_pressure = clampf(maxf(floor_pressure, float(raw.get("deviation_pressure", 0.0)) + 0.09), -0.35, 1.0)
+				_check_deviation(raw)
+	if not current_variant_id.is_empty() and not bool(endgame.war_started) and phase != "complete":
+		competition.record_publication(variants, current_variant_id, country_id, hour)
+
+func acknowledge_event(choice_id: String = "") -> void:
 	if phase != "event" or active_event.is_empty():
 		return
 	var paper := active_event.duplicate(true)
@@ -1132,8 +1242,11 @@ func acknowledge_event() -> void:
 	for event in events:
 		if event.instance_id == id:
 			event.acknowledged = true
+			if choice_id in ["ride_trend", "clarify_origin", "let_remix"]:
+				event.response_choice = choice_id
 			var definition := _event_definition(str(event.definition_id))
 			if definition != null and not event.get("design_rewards",[]).is_empty(): event.reward_text = DeskLocalization.source_join("", ["LOC_CLAIMED_9C9021A0", _reward_summary(event.design_rewards)])
+	_apply_event_choice(paper, choice_id)
 	active_event = {}
 	phase = "running"
 	speed = resume_speed

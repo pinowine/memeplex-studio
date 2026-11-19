@@ -108,10 +108,11 @@ func _init() -> void:
 	visibility_changed.connect(_hide_hover)
 	_scroll.get_v_scroll_bar().value_changed.connect(func(_value: float): _hide_hover())
 
-func add_action_button(button: Button) -> void:
+func add_action_button(control: Control) -> void:
 	var layout := _footer.get_parent()
-	button.reparent(layout, false)
-	layout.move_child(button, _footer.get_index())
+	if control.get_parent() == null: layout.add_child(control)
+	else: control.reparent(layout, false)
+	layout.move_child(control, _footer.get_index())
 
 func mount_hover_overlay(parent: Node) -> void:
 	var previous := _hover.get_parent()
