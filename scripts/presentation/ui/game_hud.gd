@@ -4,13 +4,11 @@ signal country_selection_requested
 signal speed_requested(value: int)
 signal step_requested
 signal workbench_requested
-signal tools_requested
 signal save_requested
 signal load_requested
 signal restart_requested
 signal event_acknowledged
 signal settings_requested
-signal developer_requested
 signal quit_requested
 signal menu_close_requested
 signal design_action_requested(action: String, params: Dictionary)
@@ -65,12 +63,10 @@ func _ready() -> void:
 	%Preferences.pressed.connect(func(): settings_requested.emit())
 	%SelectCountry.pressed.connect(func() -> void: country_selection_requested.emit())
 	%Create.pressed.connect(func() -> void: workbench_requested.emit())
-	%Tools.pressed.connect(func() -> void: tools_requested.emit())
 	%Save.pressed.connect(func() -> void: save_requested.emit())
 	%Load.pressed.connect(func() -> void: load_requested.emit())
 	%Restart.pressed.connect(func() -> void: restart_requested.emit())
 	%Quit.pressed.connect(func() -> void: quit_requested.emit())
-	%DeveloperClose.pressed.connect(func() -> void: menu_close_requested.emit())
 	%Fullscreen.pressed.connect(_toggle_fullscreen)
 	%Pause.pressed.connect(func() -> void: speed_requested.emit(0))
 	%Speed1.pressed.connect(func() -> void: speed_requested.emit(1))
@@ -386,19 +382,15 @@ func inspection() -> Dictionary:
 
 
 func set_menu(mode: String) -> void:
-	if mode not in ["", "settings", "preferences", "developer"]:
+	if mode not in ["", "settings", "preferences"]:
 		push_error("Unknown demo menu: " + mode)
 		return
 	_menu_mode = mode
 	%SettingsMenu.visible = mode == "settings"
-	%DeveloperMenu.visible = mode == "developer"
-	%DeveloperStatus.text = DeskLocalization.format_text("LOC_CURRENT_CONTENT_D_CASE_PRESETS_THE_EVENT_922995D7", _presets.size())
 	_refresh_modal()
 	if mode == "settings":
 		layout_screen_modals()
 		%Resume.grab_focus()
-	elif mode == "developer":
-		%Tools.grab_focus()
 
 
 func menu_mode() -> String:
@@ -450,7 +442,6 @@ func _refresh_modal() -> void:
 		%ModalShade.z_index = 29
 		%ModalShade.move_to_front()
 		%SettingsMenu.move_to_front()
-		%DeveloperMenu.move_to_front()
 	else:
 		%ModalShade.z_index = 10
 		var index := mini(%EventCard.get_index(), %ResultCard.get_index())
@@ -507,7 +498,7 @@ func _install_screen_modals() -> void:
 	_screen_modals.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(_screen_modals)
 	_screen_modals.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	for panel: Control in [%ModalShade,%EventCard,%ResultCard,%SettingsMenu,%DeveloperMenu]:
+	for panel: Control in [%ModalShade,%EventCard,%ResultCard,%SettingsMenu]:
 		panel.reparent(_screen_modals,false)
 	%EventCard.mount_hover_overlay(_screen_modals)
 	%ModalShade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -527,14 +518,8 @@ func layout_screen_modals() -> void:
 	var available := (view-Vector2(96,96)).max(Vector2(1,1))
 	var paper_size := Vector2(620, 900).min(available)
 	_desk_place(%EventCard, Rect2((view-paper_size)*.5, paper_size))
-	for panel: Control in [%SettingsMenu,%DeveloperMenu]:
-		var desired := Vector2(600,650)
-		if panel == %SettingsMenu:
-			var column: VBoxContainer = panel.get_node("Column")
-			ReceiptUI.layout_menu(panel, column, view)
-			continue
-		var dimensions := desired.max(panel.get_combined_minimum_size()).min(available)
-		_desk_place(panel,Rect2((view-dimensions)*.5,dimensions))
+	var column: VBoxContainer = %SettingsMenu.get_node("Column")
+	ReceiptUI.layout_menu(%SettingsMenu, column, view)
 
 
 func _on_kernel_selected(index: int) -> void:

@@ -1,9 +1,4 @@
 {
-  "LOC_OPENING_THE_BOOKS_IS_NOT_THE_SAME_E82A344C": {
-    "source": "账本摊开不等于账已结清，先核对那些看起来最安静的数字。",
-    "zh_CN": "先核对桌面上变动最少的几项数字。",
-    "en": "Opening the books is not the same as settling them. Check the quiet-looking numbers first."
-  },
   "LOC_OPENING_PICKUP_TITLE": {
     "source": "接听",
     "zh_CN": "接听",
@@ -334,16 +329,6 @@
     "zh_CN": "拖动实心点可以调整立场和语用，每格 0.1。离开空心起点会消耗对应方向的点数，拖回起点时归还。",
     "en": "Drag the solid dot to adjust stance or pragmatics in steps of 0.1. Moving away from the hollow origin spends points for that direction; moving back returns them."
   },
-  "LOC_OPENING_CONTEXT_REMOVE_TITLE": {
-    "source": "取出话题卡",
-    "zh_CN": "取出话题卡",
-    "en": "Take out a topic card"
-  },
-  "LOC_OPENING_CONTEXT_REMOVE_TEXT": {
-    "source": "先练习换话题。把槽里已经装好的话题卡拖到箭头指向的桌面空处。槽位会空出来，卡片仍然在你手里。",
-    "zh_CN": "先练习换话题吧。把槽里已经装好的话题卡拖到箭头指向的桌面空处。",
-    "en": "Let’s practise changing topics. Drag the installed topic card onto the clear desk space indicated by the arrow. Its slot becomes empty, and you keep the card."
-  },
   "LOC_OPENING_CONTEXT_ITEM_TITLE": {
     "source": "装回话题卡",
     "zh_CN": "装上语言卡",
@@ -538,11 +523,6 @@
     "source": "你的模因在这个国家因为语言不匹配，可能没有多少人能看懂。即便如此还要继续的话，我也不会管你的哦~",
     "zh_CN": "你的模因在这个国家因为语言不匹配，可能没有多少人能看懂。即便如此还要继续的话，我也不会管你的哦~",
     "en": "Your meme’s language does not match this country, so few people may understand it. If you still want to go ahead, I won’t stop you~"
-  },
-  "LOC_MUTATION_NOTICE": {
-    "source": "有人把你的模因改写了。\n\n现在的表达：\n%s\n\n现在的含义：\n%s",
-    "zh_CN": "有人把你的模因改写了。\n\n现在的表达：\n%s\n\n现在的含义：\n%s",
-    "en": "Someone has rewritten your meme.\n\nCurrent expression:\n%s\n\nCurrent meaning:\n%s"
   },
   "LOC_OPENING_LANGUAGE_CORRECTED": {
     "source": "很好，你已经学会了阅读。",

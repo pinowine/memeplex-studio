@@ -33,17 +33,6 @@ func context_resource(id: String) -> Dictionary:
 				return entry
 	return {}
 
-func event_reward_entries(kind: String) -> Array[Dictionary]:
-	var entries: Array[Dictionary] = []
-	if kind == "module":
-		return modules
-	if context_definitions != null:
-		for entry: Dictionary in context_definitions.entries:
-			if str(entry.get("kind", "")) == kind:
-				entries.append(entry)
-	return entries
-
-## 草稿资源和读档记录都走此入口，避免编辑器与领取动作各写一份物品规则。
 func validate_event_rewards(rewards: Array) -> PackedStringArray:
 	var errors := PackedStringArray()
 	if rewards.size() > EVENT_REWARD_LIMIT:

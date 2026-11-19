@@ -1,0 +1,39 @@
+[gd_scene format=4]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_umwyy"]
+_surfaces = [{
+"aabb": AABB(-0.073, 0, -0.165, 0.146, 0.0664, 0.33),
+"format": 34359738369,
+"primitive": 0,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("BoGVvQAAAADD9Si+BoGVvQAAAADD9Sg+BoGVvbn8hz3D9Si+BoGVvbn8hz3D9Sg+BoGVPQAAAADD9Si+BoGVPQAAAADD9Sg+BoGVPbn8hz3D9Si+BoGVPbn8hz3D9Sg+")
+}]
+
+[node name="MemeplexDeskAssets" type="Node3D" unique_id=1543914971]
+
+[node name="receipt_paper" type="Node3D" parent="." unique_id=2067057880]
+metadata/extras = {
+"asset_id": "receipt_paper",
+"asset_role": "paper",
+"integration_status": "runtime_binding_metadata",
+"reference": "Physical sheet geometry and conventional paper construction",
+"unit": "metre"
+}
+
+[node name="receipt_paper__ContentOrigin" type="Node3D" parent="receipt_paper" unique_id=525423687]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0004, 0)
+metadata/extras = {
+"mount_role": "content_surface_origin"
+}
+
+[node name="receipt_paper__PaperSurface" type="MeshInstance3D" parent="receipt_paper" unique_id=56301282]
+mesh = SubResource("ArrayMesh_umwyy")
+metadata/extras = {
+"content_plane_axes_godot": "u:+X, v:+Z; normal:+Y",
+"content_size_m": [0.146, 0.33],
+"hit_box_size_m": [0.146, 0.003, 0.33],
+"intentionally_open_surface": false,
+"interaction_role": "content_surface",
+"uv_origin_gltf": "top_left"
+}

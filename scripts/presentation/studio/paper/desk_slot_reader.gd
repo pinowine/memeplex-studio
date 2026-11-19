@@ -389,10 +389,6 @@ func _layout_paper() -> void:
 		_stack_host.size = next_rect.size
 		if changed: stack_layout_changed.emit()
 
-func text_layout_inspection() -> Dictionary:
-	return {"complete_title":_title,"full_title_in_body":_full_title_in_body,"choices_scrollable":_choice_scroll != null and _choice_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_AUTO,"choice_count":_choice_buttons.size(),"rendered_body":_body if str(_details.get("document_kind", "")) in ["event", "meme"] else (_body_label.text if _built else "")}
-
-
 func _animate_to(target: float) -> void:
 	var serial := _generation
 	_motion = create_tween()

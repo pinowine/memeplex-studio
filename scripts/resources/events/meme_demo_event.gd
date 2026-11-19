@@ -142,22 +142,6 @@ func _validate_response(errors: PackedStringArray) -> void:
 		if not value.is_finite() or absf(value.x) > 1.0 or absf(value.y) > 1.0:
 			errors.append("Mutation deltas must have finite coordinates in [-1, 1]")
 
-func effect_summary() -> String:
-	var descriptions := PackedStringArray()
-	for effect in effects:
-		if effect != null:
-			descriptions.append(effect.describe())
-	if not external_preset_id.is_empty():
-		descriptions.append(DeskLocalization.source_format("LOC_CREATES_AN_INDEPENDENT_ENVIRONMENTAL_FAMILY_PRESET_S_65E572E8", external_preset_id))
-	return DeskLocalization.source_join("；",descriptions)
-
-func design_reward_summary() -> String:
-	var parts := PackedStringArray()
-	for reward in design_rewards:
-		var entry: Dictionary = DESIGN_RULES.reward_resource(str(reward.get("kind", "")), str(reward.get("id", "")))
-		parts.append(DeskLocalization.source_format("%s ×%d",[str(entry.get("title",reward.get("id",""))),int(reward.get("count",0))],[0]))
-	return DeskLocalization.source_join("、",parts)
-
 func impact_summary(remix_allowed: bool = true) -> String:
 	var labels := {"policy":DeskLocalization.source("LOC_POLITICS_50ECCBD0"), "cost_of_living":DeskLocalization.source("LOC_COST_OF_LIVING_2A2CD785"), "work":DeskLocalization.source("LOC_LABOUR_E82F854C"), "platform_tools":DeskLocalization.source("LOC_PLATFORM_TOOLS_8C108BA1"), "sport":DeskLocalization.source("LOC_SPORTS_EF7BE5BE"), "education":DeskLocalization.source("LOC_EDUCATION_C883995F"), "identity":DeskLocalization.source("LOC_IDENTITY_2A9C9E99"), "language":DeskLocalization.source("LOC_LANGUAGE_9F6FEE1A"), "entertainment":DeskLocalization.source("LOC_CULTURAL_ACTIVITIES_2995B8F6"), "archive":DeskLocalization.source("LOC_ARCHIVE_B03D2FBD"), "trust":DeskLocalization.source("LOC_TRUST_TOPICS_63F5BD9E"), "community":DeskLocalization.source("LOC_COMMUNITY_ED6613C5")}
 	var parts := PackedStringArray()

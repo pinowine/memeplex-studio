@@ -53,11 +53,3 @@ func _draw(canvas_item: RID, rect: Rect2) -> void:
 		while x < rect.end.x-CUT_INSET:
 			RenderingServer.canvas_item_add_line(canvas_item,Vector2(x,y),Vector2(minf(x+4,rect.end.x-CUT_INSET),y),Color(SECONDARY_INK,.35),.75,true)
 			x += 8
-
-static func apply_tooltip_theme(target: Theme, font: Font = null, font_size: int = 14) -> void:
-	target.set_stylebox("panel","TooltipPanel",load("res://data/presentation/ui/receipt_tooltip_style.tres"))
-	target.set_font("font","TooltipLabel",font if font != null else FONT)
-	target.set_font_size("font_size","TooltipLabel",font_size)
-	target.set_color("font_color","TooltipLabel",INK)
-	target.set_color("font_shadow_color","TooltipLabel",Color.TRANSPARENT)
-	target.set_constant("outline_size","TooltipLabel",0)

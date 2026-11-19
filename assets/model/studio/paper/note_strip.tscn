@@ -1,0 +1,39 @@
+[gd_scene format=4]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_hupt7"]
+_surfaces = [{
+"aabb": AABB(-0.205, 0, -0.037, 0.41, 0.0624, 0.074),
+"format": 34359738369,
+"primitive": 0,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("hetRvgAAAABQjRe9hetRvgAAAABQjRc9hetRviSXfz1QjRe9hetRviSXfz1QjRc9hetRPgAAAABQjRe9hetRPgAAAABQjRc9hetRPiSXfz1QjRe9hetRPiSXfz1QjRc9")
+}]
+
+[node name="MemeplexDeskAssets" type="Node3D" unique_id=1989753086]
+
+[node name="note_strip" type="Node3D" parent="." unique_id=1004333300]
+metadata/extras = {
+"asset_id": "note_strip",
+"asset_role": "paper",
+"integration_status": "runtime_binding_metadata",
+"reference": "Physical sheet geometry and conventional paper construction",
+"unit": "metre"
+}
+
+[node name="note_strip__ContentOrigin" type="Node3D" parent="note_strip" unique_id=676389619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0004, 0)
+metadata/extras = {
+"mount_role": "content_surface_origin"
+}
+
+[node name="note_strip__PaperSurface" type="MeshInstance3D" parent="note_strip" unique_id=1479670971]
+mesh = SubResource("ArrayMesh_hupt7")
+metadata/extras = {
+"content_plane_axes_godot": "u:+X, v:+Z; normal:+Y",
+"content_size_m": [0.41, 0.074],
+"hit_box_size_m": [0.41, 0.003, 0.074],
+"intentionally_open_surface": false,
+"interaction_role": "content_surface",
+"uv_origin_gltf": "top_left"
+}

@@ -4,7 +4,7 @@ extends RefCounted
 const PainterMaterials := preload("res://scripts/rendering/materials/painter_materials.gd")
 const AUTHORING_PATH := "res://art_source/substance_painter/studio/support/fullscene/studio_fullscene_high.fbx"
 const FBX_PATH := "res://assets/model/studio/environment/studio_fullscene.fbx"
-const ASSEMBLY_PATH := "res://assets/model/studio/environment/desk_assembly.glb"
+const ASSEMBLY_PATH := "res://assets/model/studio/environment/desk_assembly.tscn"
 const MODEL_DIRECTORY := "res://assets/model/studio/paper/"
 
 var errors: Array[String] = []
@@ -71,7 +71,7 @@ func paper_template(asset_id: String) -> Node3D:
 			return null
 		_asset_frames[asset_id] = _frame(asset, assembly)
 		assembly.free()
-	var template := _instantiate(MODEL_DIRECTORY + asset_id + ".glb")
+	var template := _instantiate(MODEL_DIRECTORY + asset_id + ".tscn")
 	if template == null:
 		return null
 	var report := _replace_geometry(template, asset_id, _asset_frames[asset_id])

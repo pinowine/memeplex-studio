@@ -1,0 +1,39 @@
+[gd_scene format=4]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_n0bt6"]
+_surfaces = [{
+"aabb": AABB(-0.105, 0, -0.1485, 0.21, 0.062399995, 0.297),
+"format": 34359738369,
+"primitive": 0,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("PQrXvQAAAABiEBi+PQrXvQAAAABiEBg+PQrXvSOXfz1iEBi+PQrXvSOXfz1iEBg+PQrXPQAAAABiEBi+PQrXPQAAAABiEBg+PQrXPSOXfz1iEBi+PQrXPSOXfz1iEBg+")
+}]
+
+[node name="MemeplexDeskAssets" type="Node3D" unique_id=1768857990]
+
+[node name="fax_paper" type="Node3D" parent="." unique_id=816571008]
+metadata/extras = {
+"asset_id": "fax_paper",
+"asset_role": "paper",
+"integration_status": "runtime_binding_metadata",
+"reference": "Physical sheet geometry and conventional paper construction",
+"unit": "metre"
+}
+
+[node name="fax_paper__ContentOrigin" type="Node3D" parent="fax_paper" unique_id=1126948333]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0004, 0)
+metadata/extras = {
+"mount_role": "content_surface_origin"
+}
+
+[node name="fax_paper__PaperSurface" type="MeshInstance3D" parent="fax_paper" unique_id=215906961]
+mesh = SubResource("ArrayMesh_n0bt6")
+metadata/extras = {
+"content_plane_axes_godot": "u:+X, v:+Z; normal:+Y",
+"content_size_m": [0.21, 0.297],
+"hit_box_size_m": [0.21, 0.003, 0.297],
+"intentionally_open_surface": false,
+"interaction_role": "content_surface",
+"uv_origin_gltf": "top_left"
+}

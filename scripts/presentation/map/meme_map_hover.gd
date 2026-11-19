@@ -63,9 +63,6 @@ func set_meme_details(details: Dictionary) -> void:
 		_meme_scroll.scroll_vertical = 0
 	_layout_content()
 
-func is_meme_hover() -> bool:
-	return _meme_mode
-
 func scroll_details(direction: int) -> bool:
 	if not _meme_mode: return false
 	var scrollbar := _meme_scroll.get_v_scroll_bar()

@@ -1,9 +1,4 @@
 {
-  "MAP_MEME_COUNT": {
-    "source": "模因 %d",
-    "zh_CN": "模因 %d",
-    "en": "Memes %d"
-  },
   "MAP_MEME_EMPTY": {
     "source": "尚无模因",
     "zh_CN": "尚无模因",
@@ -64,55 +59,10 @@
     "zh_CN": "尚未传播",
     "en": "Not yet spreading"
   },
-  "MM_GLOBAL_ADOPTION": {
-    "source": "全球采用",
-    "zh_CN": "全球采用",
-    "en": "Global adoption"
-  },
-  "MM_GLOBAL_EXPOSURE": {
-    "source": "全球曝光",
-    "zh_CN": "全球曝光",
-    "en": "Global exposure"
-  },
-  "MM_GLOBAL_ATTENTION": {
-    "source": "全球注意力",
-    "zh_CN": "全球注意力",
-    "en": "Global attention"
-  },
   "MM_SPREAD": {
     "source": "传播度",
     "zh_CN": "传播度",
     "en": "Spread"
-  },
-  "MM_CHANNEL": {
-    "source": "渠道",
-    "zh_CN": "渠道",
-    "en": "Channel"
-  },
-  "MM_REACH": {
-    "source": "触达系数",
-    "zh_CN": "触达系数",
-    "en": "Reach factor"
-  },
-  "MM_LANGUAGE_ACCESS": {
-    "source": "语言可达性",
-    "zh_CN": "语言可达性",
-    "en": "Language access"
-  },
-  "MM_RECOGNIZABILITY": {
-    "source": "可识别度",
-    "zh_CN": "可识别度",
-    "en": "Recognizability"
-  },
-  "MM_CONTEXT_DEPENDENCY": {
-    "source": "语境依赖",
-    "zh_CN": "语境依赖",
-    "en": "Context dependence"
-  },
-  "MM_REMIX_COST": {
-    "source": "改写成本",
-    "zh_CN": "改写成本",
-    "en": "Remix cost"
   },
   "MM_EXPRESSION": {
     "source": "表达强度",
@@ -134,21 +84,6 @@
     "zh_CN": "含义",
     "en": "Meaning"
   },
-  "MM_ADOPTION": {
-    "source": "采用人数",
-    "zh_CN": "采用人数",
-    "en": "Adoption"
-  },
-  "MM_EXPOSURE": {
-    "source": "曝光人数",
-    "zh_CN": "曝光人数",
-    "en": "Exposure"
-  },
-  "MM_ATTENTION": {
-    "source": "注意力",
-    "zh_CN": "注意力",
-    "en": "Attention"
-  },
   "MM_HELP_NAME": {
     "source": "这个模因的独立名称。完整表达和实际含义在详情中分别显示。",
     "zh_CN": "模因的独立名称。完整表达与实际含义见详情。",
@@ -159,21 +94,6 @@
     "zh_CN": "模因首次发布或诞生的国家。",
     "en": "The country where this meme was first published or born. Later spread does not change its origin."
   },
-  "MM_HELP_ADOPTION": {
-    "source": "当前全球采用这个模因的人数。各模因的采用人数互不重复。",
-    "zh_CN": "当前全球采用这个模因的人数。各模因的采用人数互不重复。",
-    "en": "People currently adopting this meme worldwide. Adoption counts are disjoint across memes."
-  },
-  "MM_HELP_EXPOSURE": {
-    "source": "当前全球接触这个模因的人数，包含采用者。",
-    "zh_CN": "当前全球接触这个模因的人数，包含采用者。",
-    "en": "People currently exposed to this meme worldwide, including adopters."
-  },
-  "MM_HELP_ATTENTION": {
-    "source": "当前分配给这个模因的全球注意力规模。它影响后续曝光和采用。",
-    "zh_CN": "当前分配给这个模因的全球注意力规模。它影响后续曝光和采用。",
-    "en": "The current worldwide attention allocation for this meme. It affects later exposure and adoption."
-  },
   "MM_HELP_SPREAD": {
     "source": "采用、曝光和注意力各自占全球容量的比例，取平均得到传播度，最高为100%。",
     "zh_CN": "采用、曝光和注意力各自占全球容量的比例，取平均得到传播度，最高为100%。",
@@ -183,21 +103,6 @@
     "source": "悬停国家名称，高亮该国的这个模因传播点。",
     "zh_CN": "悬停国家名，高亮该国的模因传播点。",
     "en": "Hover the country name to highlight this meme’s points in that country."
-  },
-  "MM_HELP_LOCAL_ADOPTION": {
-    "source": "当前在这个国家采用这个模因的人数。",
-    "zh_CN": "当前在这个国家采用这个模因的人数。",
-    "en": "People currently adopting this meme in this country."
-  },
-  "MM_HELP_LOCAL_EXPOSURE": {
-    "source": "当前在这个国家接触这个模因的人数，包含采用者。",
-    "zh_CN": "当前在这个国家接触这个模因的人数，包含采用者。",
-    "en": "People currently exposed to this meme in this country, including adopters."
-  },
-  "MM_HELP_LOCAL_ATTENTION": {
-    "source": "当前该国分配给这个模因的注意力规模。",
-    "zh_CN": "当前该国分配给这个模因的注意力规模。",
-    "en": "The current attention allocation for this meme in this country."
   },
   "MM_HELP_EXPRESSION_TEXT": {
     "source": "这个模因实际传播的文字。语境和改写可能让它与最初版本不同。",
@@ -254,41 +159,6 @@
     "zh_CN": "模因说话偏真诚还是反讽、支持还是反对，拿来对照当地受众的口味。",
     "en": "How this meme conveys sincerity or irony, and support or opposition, used to match country context."
   },
-  "MM_HELP_DETACHED": {
-    "source": "这一层已经脱离表达，在传播适配中使用中性匹配值。",
-    "zh_CN": "这一项没接入当前表达，算契合度时按居中处理。",
-    "en": "This layer is detached from the expression and uses a neutral match in transmission fitness."
-  },
-  "MM_HELP_CHANNEL": {
-    "source": "发布这个模因时使用的渠道，决定基础触达系数。",
-    "zh_CN": "投放时走的基础渠道，决定起步能触达多少人。",
-    "en": "The channel used to publish this meme, which determines its base reach factor."
-  },
-  "MM_HELP_REACH": {
-    "source": "渠道触达系数结合已学习传播技能后的实际倍数，用来放大传播压力。",
-    "zh_CN": "基础渠道叠加上已点亮的传播能力后，实际能把传播声势放大多少倍。",
-    "en": "The actual reach multiplier after channel reach and learned transmission skills, used to scale transmission pressure."
-  },
-  "MM_HELP_LANGUAGE_ACCESS": {
-    "source": "语言可达性是可理解性计算的一部分，与可识别度和语境依赖共同作用。",
-    "zh_CN": "当地人能跨过多少语言门槛，和可识别度、语境依赖一块儿决定好不好懂。",
-    "en": "Language access contributes to comprehension together with recognizability and context dependence."
-  },
-  "MM_HELP_RECOGNIZABILITY": {
-    "source": "表达被识别的程度，与语言可达性共同影响可理解性。",
-    "zh_CN": "句式或梗的特征有多好认，和语言可达性一块儿决定好不好懂。",
-    "en": "How recognizable the expression is, contributing to comprehension alongside language access."
-  },
-  "MM_HELP_CONTEXT_DEPENDENCY": {
-    "source": "对特定人群语境的依赖。依赖越高，人群不匹配时可理解性降低越多。",
-    "zh_CN": "有多挑圈子。依赖越高，传到不对口的群体眼里就越像天书。",
-    "en": "Dependence on a particular audience context. Higher dependence reduces comprehension more when that audience does not match."
-  },
-  "MM_HELP_REMIX_COST": {
-    "source": "外部群体继续传播和改写的成本，用于计算群体复用系数，进而影响传播压力。",
-    "zh_CN": "外人拿去接话或二创有多费劲；门槛越低，大家越乐意跟着改和转。",
-    "en": "The cost of community reuse and remixing. It contributes to the reuse factor that scales transmission pressure."
-  },
   "MM_HELP_EXPRESSION": {
     "source": "根据实际表达中不同字符数计算的表达强度，用于竞争适配。",
     "zh_CN": "按成品字句的丰富程度算出的表达分量，和别的模因同台抢注意力时会用到。",
@@ -303,16 +173,6 @@
     "source": "模因监控",
     "zh_CN": "模因监控",
     "en": "Meme monitor"
-  },
-  "MAP_MEME_COLLAPSE": {
-    "source": "收起监控",
-    "zh_CN": "收起监控",
-    "en": "Collapse monitor"
-  },
-  "MAP_MEME_EXPAND": {
-    "source": "展开监控",
-    "zh_CN": "展开监控",
-    "en": "Expand monitor"
   },
   "MM_GROWTH": {
     "source": "增长率",
@@ -338,36 +198,6 @@
     "source": "结局",
     "zh_CN": "结局",
     "en": "Outcome"
-  },
-  "MM_ENDING_REASON": {
-    "source": "本次传播观察已结束。",
-    "zh_CN": "本次传播观察已结束。",
-    "en": "This transmission run has ended."
-  },
-  "MM_ENDING_COMMENT": {
-    "source": "每个模因保留独立的传播结果。",
-    "zh_CN": "每个模因保留独立的传播结果。",
-    "en": "Each meme retains its own transmission result."
-  },
-  "MM_ENDING_MEMES": {
-    "source": "模因数量",
-    "zh_CN": "模因数量",
-    "en": "Meme count"
-  },
-  "MM_ENDING_OWN": {
-    "source": "己方采用",
-    "zh_CN": "己方采用",
-    "en": "Your meme adoption"
-  },
-  "MM_ENDING_OTHER": {
-    "source": "其他模因采用",
-    "zh_CN": "其他模因采用",
-    "en": "Other meme adoption"
-  },
-  "MM_ENDING_UNADOPTED": {
-    "source": "未采用份额",
-    "zh_CN": "未采用份额",
-    "en": "Unadopted share"
   },
   "MM_ENDING_STATISTICS": {
     "source": "时间 %d 小时 · 世界人口 %d · 模因 %d · 模因点 %s",
@@ -454,75 +284,30 @@
     "zh_CN": "火花",
     "en": "Spark"
   },
-  "MEME_REWRITE_OBSERVED": {
-    "source": "群体 %s 更新了模因表达。",
-    "zh_CN": "群体 %s 更新了模因表达。",
-    "en": "Community %s changed the meme expression."
-  },
-  "MM_ENDING_LINEAGE_DIVERSITY_REASON": {
-    "source": "你的谱系已有至少两种模因，合计覆盖至少60%的世界人口。",
-    "zh_CN": "你的谱系已有至少两种模因，合计覆盖至少60%的世界人口。",
-    "en": "Your lineage contains at least two distinct memes and reaches at least 60 percent of the world population."
-  },
-  "MM_ENDING_AUTONOMOUS_LINEAGE_COMMENT": {
-    "source": "接力已不再由你安排，它仍在延续。",
-    "zh_CN": "后代自行接力，继续流传。",
-    "en": "You no longer direct the relay, but it continues."
-  },
   "MM_ENDING_PLAYER_EXTINCTION_TITLE": {
     "source": "最后的回声",
     "zh_CN": "最后的回声",
     "en": "Last echo"
-  },
-  "MM_ENDING_EXTINCTION_TITLE": {
-    "source": "传播终止",
-    "zh_CN": "传播终止",
-    "en": "Transmission ended"
   },
   "MM_ENDING_BALANCED_DUEL_REASON": {
     "source": "你的表达与%s站在了相近的传播位置。",
     "zh_CN": "你的表达与%s站在了相近的传播位置。",
     "en": "Your expression and %s now hold comparable ground."
   },
-  "MM_ENDING_COMPETITOR_EQUILIBRIUM_REASON": {
-    "source": "你的谱系与外部模因已稳定共存720模拟小时。",
-    "zh_CN": "你的谱系与外部模因已稳定共存720模拟小时。",
-    "en": "Your lineage and outside memes have coexisted stably for 720 simulated hours."
-  },
   "MM_ENDING_BEST_SUBSTITUTE_REASON": {
     "source": "你熟悉的结构换了一张面孔，街头如今念着%s。",
     "zh_CN": "你熟悉的结构换了一张面孔，街头如今念着%s。",
     "en": "A familiar structure has a new face. The streets now speak the name %s."
-  },
-  "MM_ENDING_BALANCED_DUEL_COMMENT": {
-    "source": "两种声音各有听众，街头的话题来回流动。",
-    "zh_CN": "两种声音各有听众，街头的话题来回流动。",
-    "en": "Both voices have listeners, and conversation moves between them."
   },
   "MM_ENDING_FORGOTTEN_TITLE": {
     "source": "无人接话",
     "zh_CN": "无人接话",
     "en": "Forgotten"
   },
-  "MM_ENDING_BEST_SUBSTITUTE_COMMENT": {
-    "source": "新的表达接过了话题的中心。",
-    "zh_CN": "新的表达接过了话题的中心。",
-    "en": "The new expression has taken the centre of the conversation."
-  },
-  "MM_ENDING_AUTONOMOUS_LINEAGE_REASON": {
-    "source": "无人控制的突变后代已覆盖至少10%的世界人口，并持续24模拟小时。",
-    "zh_CN": "无人控制的突变后代已覆盖至少10%的世界人口，并持续24模拟小时。",
-    "en": "Uncontrolled mutant descendants have reached at least 10 percent of the world population and persisted for 24 simulated hours."
-  },
   "MM_ENDING_CURRENT_ADOPTION": {
     "source": "当前模因采用",
     "zh_CN": "当前模因采用",
     "en": "Current meme adoption"
-  },
-  "MM_ENDING_COMPETITOR_EQUILIBRIUM_COMMENT": {
-    "source": "别人的表达留下了位置，你的表达也没有消失。",
-    "zh_CN": "你的表达和别人的表达各自延续。",
-    "en": "Other expressions have found a place without erasing yours."
   },
   "MM_ENDING_WORLD_EXTINCTION_TITLE": {
     "source": "人类灭绝",
@@ -533,16 +318,6 @@
     "source": "流行符号",
     "zh_CN": "流行符号",
     "en": "Viral icon"
-  },
-  "MM_ENDING_WORLD_EXTINCTION_SCENE": {
-    "source": "字句留在纸上，地图归于寂静。",
-    "zh_CN": "字句留在纸上，地图归于寂静。",
-    "en": "Words remain on paper as the map falls silent."
-  },
-  "MM_ENDING_VIRAL_ICON_COMMENT": {
-    "source": "人们借它接话，也用它讲自己的事。",
-    "zh_CN": "人们借它接话，也用它讲自己的事。",
-    "en": "People use it to answer one another and tell their own stories."
   },
   "MM_ENDING_TARGET_COUNTRY": {
     "source": "目标国家",
@@ -559,35 +334,10 @@
     "zh_CN": "承载这句话的最后一个地方归于寂静。",
     "en": "The last place carrying this phrase has fallen silent."
   },
-  "MM_ENDING_PLAYER_EXTINCTION_SCENE": {
-    "source": "余下的世界继续转动，这段传播在此封存。",
-    "zh_CN": "余下的世界继续转动，这段传播在此封存。",
-    "en": "The rest of the world keeps turning as this transmission is sealed away."
-  },
-  "MM_ENDING_LINEAGE_DIVERSITY_COMMENT": {
-    "source": "同一来源长出了不同的表达。",
-    "zh_CN": "同一来源长出了不同的表达。",
-    "en": "Different expressions have grown from the same source."
-  },
-  "MM_ENDING_SUCCESSFUL_ADAPTATION_COMMENT": {
-    "source": "一次调整，让更多人愿意接过这句话。",
-    "zh_CN": "一次调整，让更多人愿意接过这句话。",
-    "en": "A change has given more people a reason to carry the phrase."
-  },
   "MM_ENDING_BEST_SUBSTITUTE_TITLE": {
     "source": "最佳代餐",
     "zh_CN": "最佳代餐",
     "en": "Best substitute"
-  },
-  "MM_ENDING_PLAYER_EXTINCTION_COMMENT": {
-    "source": "你的传播在这里停下。这不是胜利。",
-    "zh_CN": "你的传播在这里停下。",
-    "en": "Your transmission stops here. This is not a victory."
-  },
-  "MM_ENDING_OWN_WORLD_REASON": {
-    "source": "你仍拥有的模因已被至少60%的世界人口采用。",
-    "zh_CN": "你仍拥有的模因已被至少60%的世界人口采用。",
-    "en": "Memes you still own have been adopted by at least 60 percent of the world population."
   },
   "MM_ENDING_LOCAL_CLASSIC_REASON": {
     "source": "在%s，这句话成了熟人之间的暗号。",
@@ -599,25 +349,10 @@
     "zh_CN": "势均力敌",
     "en": "Balanced duel"
   },
-  "MM_ENDING_WORLD_EXTINCTION_COMMENT": {
-    "source": "没有人能接住下一句话。这不是胜利。",
-    "zh_CN": "最后一句话随人声一同沉寂。",
-    "en": "No one remains to carry the next phrase. This is not a victory."
-  },
   "MM_ENDING_LOCAL_CLASSIC_TITLE": {
     "source": "圈层经典",
     "zh_CN": "圈层经典",
     "en": "Local classic"
-  },
-  "MM_ENDING_LOCAL_CLASSIC_COMMENT": {
-    "source": "每次说起它，都有人会心一笑。",
-    "zh_CN": "每次说起它，都有人会心一笑。",
-    "en": "Each time it is said, someone smiles in recognition."
-  },
-  "MM_ENDING_NEW_EXPRESSION": {
-    "source": "新表达",
-    "zh_CN": "新表达",
-    "en": "New expression"
   },
   "MM_ENDING_TARGET_MEME": {
     "source": "当前模因",
@@ -643,26 +378,6 @@
     "source": "这句话留在纸上，街头的话题已经转向别处。",
     "zh_CN": "这句话留在纸上，街头的话题已经转向别处。",
     "en": "The phrase rests on paper as conversation in the street moves elsewhere."
-  },
-  "MM_ENDING_FORGOTTEN_COMMENT": {
-    "source": "你收起这一页，新的创作仍在前面。",
-    "zh_CN": "你收起这一页，桌上还留着空白的稿纸。",
-    "en": "You put this page away. Another creation lies ahead."
-  },
-  "MM_ENDING_OWN_WORLD_COMMENT": {
-    "source": "你的表达走得很远，归属仍在你手中。",
-    "zh_CN": "你的表达走得很远，归属仍在你手中。",
-    "en": "Your expression has travelled far, and its ownership remains yours."
-  },
-  "MM_PRIMARY_LANGUAGE": {
-    "source": "主语言",
-    "zh_CN": "主语言",
-    "en": "Primary"
-  },
-  "MM_SECONDARY_LANGUAGE": {
-    "source": "习得",
-    "zh_CN": "习得",
-    "en": "Learned"
   },
   "MM_PRIMARY_SHORT": {
     "source": "主",

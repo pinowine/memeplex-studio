@@ -222,20 +222,6 @@ func _route_slopes(ordered: Array[int], bed: PackedFloat32Array) -> void:
 					selected = next
 		downstream[index] = selected
 
-func routing_height_at(point: Vector2) -> float:
-	var local := point / step
-	var x := clampi(floori(local.x), 0, columns - 2)
-	var y := clampi(floori(local.y), 0, rows - 2)
-	var t := local - Vector2(x, y)
-	var ids := PackedInt32Array([y * columns + x, y * columns + x + 1, (y + 1) * columns + x, (y + 1) * columns + x + 1])
-	if bed_heights[ids[0]] + bed_heights[ids[3]] <= bed_heights[ids[1]] + bed_heights[ids[2]]:
-		if t.x >= t.y:
-			return drainage_heights[ids[0]] * (1.0 - t.x) + drainage_heights[ids[1]] * (t.x - t.y) + drainage_heights[ids[3]] * t.y
-		return drainage_heights[ids[0]] * (1.0 - t.y) + drainage_heights[ids[2]] * (t.y - t.x) + drainage_heights[ids[3]] * t.x
-	if t.x + t.y <= 1.0:
-		return drainage_heights[ids[0]] * (1.0 - t.x - t.y) + drainage_heights[ids[1]] * t.x + drainage_heights[ids[2]] * t.y
-	return drainage_heights[ids[1]] * (1.0 - t.y) + drainage_heights[ids[2]] * (1.0 - t.x) + drainage_heights[ids[3]] * (t.x + t.y - 1.0)
-
 func _accumulate(ordered: Array[int]) -> void:
 	accumulation.fill(0.0)
 	for index in ordered:

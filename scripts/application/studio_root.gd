@@ -617,15 +617,6 @@ func project_target(target: Variant) -> Variant:
 		return result
 	return target
 
-func interaction_inspection() -> Dictionary:
-	var report: Dictionary = content.inspection()
-	report.phonebook_removed = not _node("contact_book").is_visible_in_tree()
-	report.button_feedback = button_feedback.inspection()
-	report.hover_outline = hover_outline.inspection()
-	report.cursor_shape = cursor_shape
-	report.paper_masks = paper_masks.inspection()
-	return report
-
 func inspection() -> Dictionary:
 	return {"enabled":ready_3d,"source_fbx":FbxAssembly.FBX_PATH,"whitebox":whitebox,"fbx":fbx_loader.inspection(),"projection":"orthographic","overview_height_m":overview_height_m,"camera_size_m":camera.size if camera != null else 0.0,"controls":buttons.size(),"content":content.inspection(),"receiver_cord":cord_endpoints,"input":input_router.inspection() if input_router != null else {},"hovered":hovered,"source_size":logical.size,"shader":half_tone.material.shader.resource_path if half_tone!=null else "","startup_error":startup_error,"renderer":RenderingServer.get_current_rendering_method()}
 

@@ -354,9 +354,6 @@ func axis_reachable_offsets(layer: String) -> Array:
 		result.append([maxi(bounds.x, -negative), mini(bounds.y, positive)])
 	return result
 
-func token_balance(id: String) -> int:
-	return maxi(0,_context_available(id)-_locked_token(id))
-
 func _axis_token(layer: String, axis: String, direction: int) -> String:
 	for entry: Dictionary in rules.context_definitions.entries:
 		if str(entry.kind) == layer+"_token" and str(entry.get("axis","")) == axis and int(entry.get("direction",0)) == direction: return str(entry.id)
@@ -696,9 +693,6 @@ func author_marks_valid(draft: Dictionary, state: Dictionary = {}) -> bool:
 		if seen.has(key): return false
 		seen[key] = true
 	return true
-
-func skill_applied(id: String) -> bool:
-	return id in _state.unlocked_skills
 
 func _strip_effects(draft: Dictionary, effects: Array) -> void:
 	for effect: Dictionary in effects:

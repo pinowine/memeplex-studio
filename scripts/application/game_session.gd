@@ -65,7 +65,6 @@ func _ready() -> void:
 	hud.restart_requested.connect(_restart)
 	hud.event_acknowledged.connect(_acknowledge)
 	hud.settings_requested.connect(_open_settings)
-	hud.developer_requested.connect(func(): _toggle_menu("developer"))
 	hud.quit_requested.connect(func(): get_tree().quit())
 	hud.menu_close_requested.connect(_close_menu)
 	hud.design_action_requested.connect(_design_action)
@@ -334,8 +333,6 @@ func _input(event: InputEvent) -> void:
 			if hud.menu_mode() != "": _close_menu()
 			else: _shell.main_menu.close_settings()
 		else: _toggle_menu("settings")
-	elif key == KEY_D and event.ctrl_pressed:
-		_toggle_menu("developer")
 	else:
 		var focus := get_viewport().gui_get_focus_owner()
 		if focus is LineEdit or focus is TextEdit or hud.modal_visible() or (_shell != null and _shell.blocks_input()): return

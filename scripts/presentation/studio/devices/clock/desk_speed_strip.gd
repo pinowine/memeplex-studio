@@ -3,7 +3,7 @@ extends Control
 
 signal speed_requested(value: int)
 
-const ART_PATH := "res://assets/image/textures/studio/desk/speed_strip.png"
+const HardwareFrames := preload("res://scripts/presentation/studio/desk/hardware_frames.gd")
 const SOURCE_SIZE := Vector2(2058, 764)
 const SOURCE_REGION := Rect2(95, 55, 1880, 650)
 const KEY_RECTS := [Rect2(271, 160, 445, 402), Rect2(799, 160, 447, 402), Rect2(1337, 160, 447, 402)]
@@ -62,7 +62,7 @@ func _ready() -> void:
 	_paper = TextureRect.new()
 	_paper.name = "PrintedSpeedPlate"
 	var plate := AtlasTexture.new()
-	plate.atlas = load(ART_PATH)
+	plate.atlas = HardwareFrames.texture(SOURCE_SIZE)
 	plate.region = SOURCE_REGION
 	_paper.texture = plate
 	_paper.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -157,6 +157,5 @@ func inspection() -> Dictionary:
 	return {"component":"independent_three_speed_strip", "speed":_speed,
 		"enabled":not _buttons.is_empty() and not _buttons[0].disabled,
 		"button_count":_buttons.size(), "rect":get_global_rect(), "parent":str(get_parent().get_path()),
-		"art_path":ART_PATH,"source_size":SOURCE_SIZE,"source_region":SOURCE_REGION,"key_source_rects":KEY_RECTS,"keys":keys,
+		"source_size":SOURCE_SIZE,"source_region":SOURCE_REGION,"key_source_rects":KEY_RECTS,"keys":keys,
 		"hovered":hovered,"feedback":feedback,"feedback_scope":"individual_keys","wholeplate_animation":false}
-

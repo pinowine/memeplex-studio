@@ -147,14 +147,8 @@ func set_interaction_enabled(value: bool) -> void:
 	if not value: cancel_drag()
 	mouse_filter = MOUSE_FILTER_STOP if value else MOUSE_FILTER_IGNORE
 
-func set_committed(value: bool) -> void:
-	_committed = value
-
 func is_dragging() -> bool:
 	return _dragging
-
-func can_collect() -> bool:
-	return _enabled and is_visible_in_tree() and not _pressed and not _dragging and not _committed
 
 func _gui_input(event: InputEvent) -> void:
 	if not _enabled or _pressed: return

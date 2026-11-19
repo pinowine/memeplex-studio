@@ -389,12 +389,6 @@ func _update_union_masks() -> void:
 		_active_stamp = stamp
 
 
-func union_image(active: bool = true) -> Image:
-	var layer: Dictionary = _union_layers.get("active" if active else "scaffold",{})
-	if layer.is_empty(): return null
-	return (layer.viewport as SubViewport).get_texture().get_image()
-
-
 func _draw() -> void:
 	_update_union_masks()
 	if size.x > 0.0 and _skills.size() > 1:

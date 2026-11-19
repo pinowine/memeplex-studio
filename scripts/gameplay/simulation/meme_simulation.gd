@@ -182,15 +182,6 @@ func bind_world(world: RefCounted, settings: Resource) -> PackedStringArray:
 	if publish_count > 0: return PackedStringArray([DeskLocalization.source("LOC_THE_WORLD_CANNOT_BE_REPLACED_AFTER_FIRST_58DB6321")])
 	return competition.bind_world(world,settings)
 
-func draft_fitness(draft: Dictionary) -> Dictionary:
-	var data := draft.duplicate(true)
-	data.patch_ids = ExpressionText.patch_ids(data)
-	data.flow_skill_ids = design_state.snapshot().unlocked_skills.duplicate()
-	var profile_data: Dictionary = competition.profile(data)
-	var countries := {}
-	for row: Dictionary in catalog.gameplay_rules.countries: countries[str(row.id)] = competition.fitness(profile_data,str(row.id))
-	return {"countries":countries,"profile":profile_data,"evidence_status":"game_policy"}
-
 func _required_context_errors() -> PackedStringArray:
 	return design_state.required_context_errors()
 
@@ -348,14 +339,6 @@ func context_draft() -> Dictionary:
 		if draft.has(key): draft[key] = PackedStringArray(draft[key])
 	return draft
 
-func claim_design_reward(instance_id: String) -> PackedStringArray:
-	for event in events:
-		if str(event.instance_id) == instance_id:
-			var errors: PackedStringArray = design_state.claim_event(event)
-			if errors.is_empty(): changed.emit()
-			return errors
-	return PackedStringArray([DeskLocalization.source("LOC_THIS_EVENT_INSTANCE_IS_UNREGISTERED_ITS_PAPER_65A0ED66")])
-
 func request_event_material(instance_id: String, kind: String, id: String) -> PackedStringArray:
 	for event: Dictionary in events:
 		if str(event.instance_id) != instance_id: continue
@@ -364,9 +347,6 @@ func request_event_material(instance_id: String, kind: String, id: String) -> Pa
 		if errors.is_empty(): changed.emit()
 		return errors
 	return PackedStringArray([DeskLocalization.source("LOC_THIS_SUPPLY_SLIP_HAS_NO_EVENT_SOURCE_7B92D1B9")])
-
-func claim_event_material(instance_id: String, kind: String, id: String) -> PackedStringArray:
-	return request_event_material(instance_id,kind,id)
 
 func event_materials(design: Dictionary = {}) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
@@ -736,12 +716,6 @@ func _produce_template_variants() -> void:
 		attention = competition.snapshot(variants, false).attention
 		status = DeskLocalization.source("LOC_PROP_TEMPLATE_REUSE")
 		return
-
-
-func template_rewrite_distance(parent: Dictionary, mutation: Dictionary) -> float:
-	var composed: Dictionary = mutation.get("composition", {})
-	var candidate := {"text":str(composed.get("expression", "")), "meaning":str(composed.get("meaning", "")), "meaning_id":str(composed.get("meaning_id", "")), "flow_profile":competition.profile(mutation.get("flow_draft", {}))}
-	return MonitorMetrics.deviation(parent.get("deviation_anchor", Lifecycle.semantic_snapshot(parent)), candidate)
 
 
 func totals_state() -> Dictionary:

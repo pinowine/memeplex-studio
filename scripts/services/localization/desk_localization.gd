@@ -467,21 +467,6 @@ static func edit_value(edit: LineEdit) -> String:
 		return str(state.canonical)
 	return edit.text
 
-static func bind_text_edit(edit: TextEdit, canonical: String, localize_default: bool = false) -> void:
-	if localize_default: canonical = source(canonical)
-	edit.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-	edit.set_meta(EDIT_META, {"canonical":canonical, "localize_default":localize_default, "user_edited":false})
-	if not edit.has_meta(EDIT_CONNECTED_META):
-		edit.text_changed.connect(_text_edit_changed.bind(weakref(edit)))
-		edit.set_meta(EDIT_CONNECTED_META, true)
-	_refresh_text_edit(edit)
-
-static func text_edit_value(edit: TextEdit) -> String:
-	if edit.has_meta(EDIT_META):
-		var state: Dictionary = edit.get_meta(EDIT_META)
-		return str(state.canonical)
-	return edit.text
-
 static func lines(values: Array) -> PackedStringArray:
 	var translated := PackedStringArray()
 	for value: Variant in values: translated.append(text(str(value)))
@@ -491,14 +476,6 @@ static func refresh_edits(root: Node) -> void:
 	if root is LineEdit and root.has_meta(EDIT_META): _refresh_edit(root)
 	elif root is TextEdit and root.has_meta(EDIT_META): _refresh_text_edit(root)
 	for child: Node in root.get_children(): refresh_edits(child)
-
-static func coverage_report() -> Dictionary:
-	var missing: Array = _missing.keys()
-	missing.sort()
-	return {"initialized":_initialized, "locale":TranslationServer.get_locale(), "message_count":_records.size(), "dynamic_message_count":_dynamic_messages.size(), "table_paths":_table_paths.duplicate(), "load_error":_load_error, "load_errors":_load_errors.duplicate(), "last_reload_errors":_last_reload_errors.duplicate(), "missing_sources":missing}
-
-static func clear_missing() -> void:
-	_missing.clear()
 
 static func _edit_changed(value: String, reference: WeakRef) -> void:
 	var edit := reference.get_ref() as LineEdit

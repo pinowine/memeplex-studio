@@ -71,11 +71,6 @@ func set_details(details: Dictionary, interactive_countries: bool = true) -> voi
 		else:
 			for index in view.tags.size(): view.tags[index].configure(row.tags[index], interactive_countries, bool(view.context))
 
-func set_compact_layout(value: bool) -> void:
-	if _compact_layout == value: return
-	_compact_layout = value
-	if not _details.is_empty(): set_details(_details, _interactive_countries)
-
 func inspection() -> Dictionary:
 	var rows: Array[Dictionary] = []
 	for section: Dictionary in _details.get("sections", []):

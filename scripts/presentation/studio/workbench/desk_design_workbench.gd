@@ -1243,16 +1243,6 @@ func accept_tabletop_item(kind: String,id: String,global_position: Vector2) -> b
 	return _context_slice.accept_tabletop_item(kind,id,global_position)
 
 
-func show_material(kind: String,id: String) -> void:
-	if kind=="module":
-		select_tab("edit")
-		show_module(id)
-		return
-	select_tab("cultivate")
-	var layer: String = {"language":"language","group":"group","topic":"topics","stance_token":"stance","pragmatic_token":"pragmatic"}.get(kind,"")
-	if not layer.is_empty(): _context_slice.select_layer(layer)
-
-
 func _module_content(id: String) -> String:
 	return str(_rules.find("modules", id).get("content", ""))
 

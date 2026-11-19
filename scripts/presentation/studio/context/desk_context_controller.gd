@@ -37,8 +37,3 @@ func move_axes(layers: Callable, perform_action: Callable, layer: String, target
 	if requested == offsets: return
 	_sequence += 1
 	perform_action.call("move_context_axes", {"layer":layer, "target_offsets":requested, "request_id":"%s:%s:%d" % [_prefix, _session, _sequence]})
-
-func move_axis(layers: Callable, perform_action: Callable, layer: String, axis: int, target: int) -> void:
-	var requested: Array = layers.call().get(layer, {}).get("offsets", [0, 0]).duplicate()
-	requested[axis] = target
-	move_axes(layers, perform_action, layer, requested)

@@ -76,24 +76,6 @@ func set_bounds(view_rect: Rect2) -> bool:
 	_bounds = view_rect
 	return true
 
-func set_blockers(rectangles: Array) -> bool:
-	var accepted: Array[Rect2] = []
-	for rectangle in rectangles:
-		if not rectangle is Rect2 or not _valid_rect(rectangle):
-			return false
-		accepted.append(rectangle)
-	_blockers = accepted
-	return true
-
-func add_exclusion(id: StringName, node: Control) -> bool:
-	if not _props.has(id) or not is_instance_valid(node):
-		return false
-	if not _exclusions.has(id):
-		_exclusions[id] = []
-	if not _exclusions[id].has(node):
-		_exclusions[id].append(node)
-	return true
-
 func set_enabled(value: bool) -> void:
 	enabled = value
 
@@ -298,56 +280,6 @@ func _swept_intersects(current: Rect2, candidate: Rect2, obstacle: Rect2) -> boo
 			if enter > leave:
 				return false
 	return enter <= leave and leave >= 0.0 and enter <= 1.0
-
-func placements() -> Dictionary:
-	var result := {}
-	for id in _order:
-		if _live_prop(id) and _props[id].movable:
-			var point := (_props[id].node as Control).global_position
-			result[String(id)] = {"x": point.x, "y": point.y}
-	return result
-
-func apply_placements(layout: Dictionary) -> PackedStringArray:
-	var errors := PackedStringArray()
-	var targets := {}
-	for key in layout:
-		var id := StringName(str(key))
-		if not _live_prop(id) or not _props[id].movable:
-			errors.append("Unknown or fixed prop: %s" % id)
-			continue
-		var value: Variant = layout[key]
-		if not value is Dictionary or not _number(value.get("x")) or not _number(value.get("y")):
-			errors.append("Invalid position: %s" % id)
-			continue
-		targets[id] = Vector2(float(value.x), float(value.y))
-	if not errors.is_empty():
-		return errors
-	var rectangles := {}
-	var hit_rectangles := {}
-	for id in _order:
-		if _live_prop(id):
-			rectangles[id] = _collision_view_rect(id, targets.get(id))
-			hit_rectangles[id] = _view_rect(id, targets.get(id))
-	for id in targets:
-		var rectangle: Rect2 = rectangles[id]
-		if _valid_rect(_bounds) and not _bounds.encloses(hit_rectangles[id]):
-			errors.append("Out of bounds: %s" % id)
-		if _props[id].blocking:
-			for other in rectangles:
-				if other != id and _props[other].blocking and rectangle.intersects(rectangles[other], false):
-					errors.append("Collision: %s / %s" % [id, other])
-		for obstacle in _blockers:
-			if rectangle.intersects(obstacle, false):
-				errors.append("Collision: %s / static" % id)
-	if not errors.is_empty():
-		return errors
-	# Saved placement is validated as one transaction, not replayed as a drag path.
-	for id in targets:
-		var node := _props[id].node as Control
-		if not node.global_position.is_equal_approx(targets[id]):
-			node.global_position = targets[id]
-			moved.emit(id, node.global_position)
-	return errors
 
 func inspection() -> Dictionary:
 	var props := []

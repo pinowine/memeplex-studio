@@ -34,7 +34,7 @@ func configure(owner_page: Node2D) -> void:
 	add_child(loading)
 	main_menu = MainMenu.new()
 	main_menu.name = "MainMenu"
-	main_menu.configure({"existing_background":true,"settings_path":"user://meme_interface.cfg"})
+	main_menu.configure({"settings_path":"user://meme_interface.cfg"})
 	add_child(main_menu)
 	main_menu.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	tutorial = Tutorial.new()

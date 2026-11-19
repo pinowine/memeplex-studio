@@ -4,14 +4,6 @@
 
 [resource]
 script = ExtResource("1")
-shadows_enabled = true
-shadow_offset = Vector2(9, 12)
-shadow_blur = 9.0
-shadow_opacity = 0.34
-ao_radius = 4.0
-ao_strength = 0.35
-shadow_color = Color(0.12, 0.1, 0.08, 1)
-event_feed_duration = 0.85
 log_chars_per_second = 240.0
 log_feed_speed = 600.0
 dot_pitch = 14.0

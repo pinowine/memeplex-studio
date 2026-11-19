@@ -92,14 +92,6 @@ func sync_state(design: Dictionary) -> void:
 func set_action_callback(callback: Callable) -> void:
 	_action_callback = callback
 
-func set_resource_factory(factory: Callable) -> void:
-	_resource_factory = factory
-	for graphic: Control in _resource_graphics.values():
-		remove_child(graphic)
-		graphic.queue_free()
-	_resource_graphics.clear()
-	_refresh()
-
 func set_drag_preview_parent(parent: Control) -> void:
 	_drag_preview_parent = parent
 

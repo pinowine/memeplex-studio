@@ -134,10 +134,6 @@ func configure(steps: Array[Dictionary] = [], target_provider: Callable = Callab
 	_index = clampi(_index, 0, _steps.size() - 1)
 	_refresh()
 
-func set_target_provider(provider: Callable) -> void:
-	_provider = provider
-	_refresh()
-
 func set_drag_target_provider(provider: Callable) -> void:
 	_drag_provider = provider
 	_refresh()
@@ -319,15 +315,6 @@ func begin() -> void:
 	_card_placed = false
 	_open()
 
-func set_step(id: String) -> bool:
-	for index in _steps.size():
-		if str(_steps[index].get("id", "")) == id:
-			_index = index
-			_hint_only = false
-			_open()
-			return true
-	return false
-
 func observe_action(id: String, payload: Dictionary = {}) -> bool:
 	if not _active or _blocked or _hint_only: return false
 	var step := _steps[_index]
@@ -351,10 +338,6 @@ func advance() -> void:
 func skip() -> void:
 	if not _active: return
 	_close(true)
-
-func reenter_hint() -> void:
-	_hint_only = _completed
-	_open()
 
 func set_interaction_blocked(blocked: bool) -> void:
 	if _blocked == blocked: return

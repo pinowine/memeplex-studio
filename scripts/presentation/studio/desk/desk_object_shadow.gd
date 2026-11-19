@@ -93,19 +93,6 @@ func configure(source_texture: Texture2D, drawn_size: Vector2 = Vector2.ZERO, ke
 	return _draw_rect
 
 
-func place_rect(rect: Rect2) -> void:
-	_disconnect_source()
-	_draw_rect = Rect2(Vector2.ZERO, rect.size)
-	_base_position = rect.position
-	_object_size = rect.size.max(Vector2.ZERO)
-	_base_pivot = Vector2.ZERO
-	_has_object_rect = true
-	rotation = 0.0
-	scale = Vector2.ONE
-	visible = rect.has_area() and texture != null
-	apply_parameters()
-
-
 func bind_source(source: TextureRect) -> void:
 	_disconnect_source()
 	if source == null or source == self:

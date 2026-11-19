@@ -169,10 +169,6 @@ func set_interaction_enabled(enabled: bool) -> void:
 	if not enabled: source_hover_ended.emit()
 
 
-func expression_control() -> Control:
-	return _expression_host
-
-
 func current_text() -> String:
 	return _translated(_segments,_fallback)
 

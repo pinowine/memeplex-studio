@@ -316,20 +316,6 @@ func set_enabled(value: bool, loose_only := false) -> void:
 	# Camera travel blocks dragging without removing physical paper from the desk.
 	queue_redraw()
 
-func set_event_output_mode(value: bool) -> void:
-	if value == _event_output_mode: return
-	_event_output_mode = value
-	for card: Dictionary in _cards.values(): card.event_placed = false
-	_layout_inventory()
-	queue_redraw()
-
-func release_event_cards(_record: Dictionary, _page: Control) -> void:
-	# Event rewards remain on their printed sheet until the authority accepts a drag.
-	_layout_inventory()
-
-func set_spawn_area(area: Rect2) -> void:
-	set_storage_area(area)
-
 func set_storage_area(area: Rect2) -> void:
 	if not area.position.is_finite() or not area.size.is_finite() or not area.has_area(): return
 	_spawn_area = area
@@ -839,13 +825,6 @@ func _unclamp(key: String) -> void:
 	node.rotation=rotation-get_global_transform().get_rotation()
 	node.scale=global_scale/get_global_transform().get_scale()
 	release_module.emit(slot,card.id)
-
-func remember_event_position(record: Dictionary, point: Vector2) -> void:
-	if not point.is_finite(): return
-	_event_positions[_event_key(record)] = get_global_transform_with_canvas().affine_inverse()*point
-
-func discard_event_position(record: Dictionary) -> void:
-	_event_positions.erase(_event_key(record))
 
 func _event_key(record: Dictionary) -> String:
 	return "%s/%s/%s" % [str(record.get("instance_id", "")), str(record.get("kind", "")), str(record.get("id", ""))]

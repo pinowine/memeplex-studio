@@ -157,7 +157,7 @@ func camera_pose() -> Dictionary:
 	return {"position":_desk._camera.position, "rotation":_desk._camera.rotation, "zoom":_desk._camera.zoom}
 
 func clock_angles() -> Vector2:
-	return Vector2(_desk._clock_presenter._season.rotation, _desk._clock_presenter._day.rotation)
+	return _desk._clock_presenter.angles()
 
 func handset_connected() -> bool:
 	return _desk._fax.call_connected()
@@ -250,19 +250,14 @@ func sync_raster_presentation(viewport_rect: Rect2, can_interact: bool) -> void:
 	var reader: Control = _desk._slot_reader
 	if reader.is_visible_in_tree() and reader._viewport_rect != viewport_rect:
 		reader._on_viewport_resized()
-	_desk._environment.hide()
 	_desk._art.phonebook.hide()
-	for id in ["desk_surface", "crt", "fax", "printer", "phonebook", "clock", "speed"]:
+	for id in ["crt", "fax", "printer", "phonebook", "clock", "speed"]:
 		_desk._art[id].self_modulate.a = 0.0
-	for shadow in _desk._shadows.values(): shadow.hide()
-	for wire in _desk._wires.values(): wire.hide()
 	for hover_id in _desk._hover:
 		var item: Variant = _desk._hover[hover_id]
 		if item is Dictionary:
 			for value in item.values():
 				if value is TextureRect and value.name == "TornHover": value.hide()
-	_desk._clock_presenter._season.hide()
-	_desk._clock_presenter._day.hide()
 	_desk._monitor._button_art.modulate.a = 0.0
 	_desk._speed_strip._paper.self_modulate.a = 0.0
 	for button in _desk._speed_strip._buttons: button.modulate.a = 0.0

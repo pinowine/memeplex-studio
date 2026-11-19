@@ -25,12 +25,6 @@ func configure(identity: String,kernel_id: String="stance") -> void:
 	_growth=0.0
 	_refresh()
 
-func set_growth(value: float) -> void:
-	if not is_finite(value):return
-	_growth=clampf(value,0.0,1.0)
-	_target_growth=_growth
-	_refresh()
-
 func grow() -> void:
 	_target_growth=1.0
 

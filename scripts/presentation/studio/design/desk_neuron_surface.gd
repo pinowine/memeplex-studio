@@ -86,9 +86,6 @@ func _draw() -> void:
 		draw_arc(centre,radius,0,TAU,20,record.get("ink",Color("41483d")),.65,true)
 		draw_circle(centre+Vector2(-.4,.2),radius*.43,record.get("ink",Color("485046")))
 
-func mask_image() -> Image:
-	return _viewport.get_texture().get_image() if _viewport!=null else null
-
 func inspection() -> Dictionary:
 	return {"cells":_cells.duplicate(true),"links":_links.duplicate(true),"nucleus_count":_cells.size(),"updates":_updates,"pixel_scale":PIXEL_SCALE,
 		"style":"ink_neuronal_arbor","shader":InkShader.resource_path,"mouse_filter":mouse_filter,"tooltip":tooltip_text}

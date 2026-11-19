@@ -63,11 +63,3 @@ static func reuse_factor(permission: String, replaceable_slot_count: int, requir
 	var permission_factor := 0.6 if permission == "conditional" else 1.0
 	var replaceability := float(replaceable_slot_count) / maxf(1.0, required_slot_count)
 	return permission_factor * (0.3 + 0.7 * replaceability) * (1.0 - remix_cost * 0.7) * (1.0 - context_dependency * 0.5)
-
-static func remix_text(event_definition_id: String, parent_text: String) -> String:
-	match event_definition_id:
-		"cross_language": return DeskLocalization.source("LOC_NOT_A_PRIVILEGE_JUST_A_DAILY_TRIP_2AD74700")
-		"platform_tool": return DeskLocalization.source_format("%s%s", ["LOC_REFILLING_THIS_TEMPLATE_WITH_MY_DAILY_BILLS_1E146C57", parent_text], [0])
-		"semantic_split": return DeskLocalization.source("LOC_HIGHER_FARES_ARE_FAIR_THOSE_WHO_USE_C60A8DAE")
-		"critical_quote": return DeskLocalization.source("LOC_IRONIC_QUOTATION_YOU_CALL_THIS_FAIR_I_3FDE3BB4")
-	return DeskLocalization.source_format("%s%s", ["LOC_AUDIENCE_REWRITE_FD322DDD", parent_text], [0])

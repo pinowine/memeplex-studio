@@ -953,12 +953,6 @@ func _on_output_state_changed() -> void:
 func contacts_snapshot() -> Array[Dictionary]:
 	return _call_session.contacts.duplicate(true)
 
-func has_unread_event() -> bool:
-	return not _output.active_event.is_empty()
-
-func event_delivered(instance_id: String) -> bool:
-	return instance_id in _output.read_event_ids
-
 func interaction_focused() -> bool:
 	return _focused
 

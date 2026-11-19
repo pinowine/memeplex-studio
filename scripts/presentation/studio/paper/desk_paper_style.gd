@@ -97,12 +97,6 @@ static func suppress_tooltips(root: Node) -> void:
 	for child: Node in root.get_children(): suppress_tooltips(child)
 
 
-static func set_tooltip_allowed(control: Control, allowed: bool = true) -> void:
-	if control == null: return
-	control.set_meta("allow_paper_tooltip",allowed)
-	if not allowed: control.tooltip_text = ""
-	if control is Button: apply_button(control,allowed)
-
 static func suppress_item_tooltip(list: ItemList, index: int) -> void:
 	if not bool(list.get_meta("allow_paper_tooltip", false)):
 		list.set_item_tooltip(index, "")

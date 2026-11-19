@@ -22,7 +22,6 @@ var _effect_buses := PackedStringArray(["SFX", "BGS", "MFX"])
 var _ui: Control
 var _load_available := false
 var _continue_available := false
-var _existing_background := false
 var _last_error := OK
 var _settings_in_game := false
 var _binding_capture := ""
@@ -71,7 +70,6 @@ func configure(options: Dictionary = {}) -> void:
 	settings_path = str(options.get("settings_path", settings_path))
 	_music_bus = str(options.get("music_bus", _music_bus))
 	_effect_buses = PackedStringArray(options.get("effect_buses", _effect_buses))
-	_existing_background = bool(options.get("existing_background", false))
 	if is_instance_valid(_ui):
 		load_settings()
 		_layout()
@@ -396,7 +394,6 @@ func _refresh_labels() -> void:
 
 func _layout() -> void:
 	if not is_instance_valid(_ui): return
-	_ui.get_node("Background").visible = not _existing_background
 	_ui.get_node("Shade").visible = not _ui.get_node("MenuPanel").visible
 	_ui.get_node("Version").visible = _ui.get_node("MenuPanel").visible
 	var menu: Control = _ui.get_node("MenuPanel")

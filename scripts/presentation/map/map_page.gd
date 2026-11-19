@@ -169,9 +169,6 @@ func select_country(index: int) -> void:
 	_update_launch_marker()
 	_update_hover()
 
-func focus_country(index: int) -> void:
-	_focus_world_position(world.territories[index].anchor, 1.4)
-
 func _focus_world_position(point: Vector2, zoom_factor: float) -> void:
 	_stop_country_focus()
 	target_zoom = clampf(maxf(camera.zoom.x, overview_zoom * zoom_factor), minimum_zoom, maximum_zoom)
@@ -516,25 +513,6 @@ func _on_map_exited() -> void:
 	panning = false
 	terrain.set_highlight(-1, selected_country)
 	_update_hover()
-
-func geometry_inspection() -> Dictionary:
-	var areas: Array[float] = []
-	var isolated: Array[int] = []
-	var bounds := Rect2(settings.world_size, Vector2.ZERO)
-	var vertices: int = 0
-	var land_area: float = 0.0
-	for i in world.territories.size():
-		var territory := world.territories[i]
-		areas.append(territory.area)
-		land_area += territory.area
-		if territory.neighbors.is_empty():
-			isolated.append(i)
-		for outline in territory.outlines:
-			vertices += outline.size()
-			for point in outline:
-				bounds = bounds.expand(point)
-	return {"representation":"vector", "land_fraction":land_area/(settings.world_size.x*settings.world_size.y), "coast_stroke":false, "border_width_world":settings.border_width, "country_areas":areas, "land_groups":world.groups.size(), "isolated":isolated,
-		"screen_fixed_labels":true, "territory_aligned_labels":true, "smooth_zoom":true,"elevation_noise":"Perlin FBM","visible_noise_texture":false,"enclaves":world.enclaves.size(),"river_sources":world.terrain.sources.size(),"river_confluences":world.terrain.junctions.size(),"lake_basins":world.terrain.lake_basins.size(), "detail_level":detail_level, "vertices":vertices, "terrain_type":terrain.get_class(), "fingerprint":world.fingerprint()}
 
 func inspection_state() -> Dictionary:
 	return {"marker_projection_updates":_marker_projection_updates, "marker_projection_cache_hits":_marker_projection_cache_hits, "clock_presentation_updates":_clock_presentation_updates, "seed":world.seed_value, "countries":settings.countries.size(), "groups":world.groups.size(), "fingerprint":world.fingerprint(),

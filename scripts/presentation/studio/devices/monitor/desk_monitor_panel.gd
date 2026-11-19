@@ -7,7 +7,6 @@ signal mode_changed(mode_id: String)
 const MemeScreen := preload("res://scripts/presentation/studio/devices/monitor/desk_meme_monitor.gd")
 const TokenGraphic := preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
 const InventoryScreen := preload("res://scripts/presentation/studio/devices/monitor/desk_crt_inventory_screen.gd")
-const BUTTON_ART := "res://assets/image/textures/studio/desk/monitor_keys_inset.png"
 const BUTTON_ART_REGION := Rect2(320, 215, 1345, 400)
 const KEY_FACES := [Rect2(18, 15, 395, 370), Rect2(480, 15, 395, 370), Rect2(940, 15, 395, 370)]
 const MODES := ["meme", "stance", "pragmatic"]
@@ -116,13 +115,6 @@ func _ready() -> void:
 	_button_art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_button_art.stretch_mode = TextureRect.STRETCH_SCALE
 	_button_art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if ResourceLoader.exists(BUTTON_ART):
-		# The generated source has large transparent margins. Crop those margins,
-		# not the socket rims, so the keys fill the monitor's lower metalwork.
-		var sockets := AtlasTexture.new()
-		sockets.atlas = load(BUTTON_ART)
-		sockets.region = BUTTON_ART_REGION
-		_button_art.texture = sockets
 	add_child(_button_art)
 	for index in MODES.size():
 		var button := Button.new()
@@ -348,7 +340,7 @@ func inspection() -> Dictionary:
 	for index in _buttons.size():
 		var button := _buttons[index]
 		buttons.append({"id":MODES[index], "text":button.text, "rect":button.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, button.size), "local_size":button.size, "selected":button.button_pressed, "disabled":button.disabled, "feedback":_feedback[index].inspection(), "parent":str(button.get_parent().get_path())})
-	result.merge({"component":"machine_attached_monitor_console", "mode":_mode, "mode_ids":MODES.duplicate(), "mode_change_count":_mode_change_count, "enabled":_enabled, "token_enabled":_token_enabled, "buttons":buttons, "button_art":BUTTON_ART, "button_art_region":BUTTON_ART_REGION, "button_mount":"individual_sockets_in_existing_chassis", "button_art_loaded":_button_art != null and _button_art.texture != null, "buttons_machine_local_rect":_buttons_rect, "screen_machine_local_rect":_screen_rect, "interactive_viewport_rects":interactive_viewport_rects(), "inventory_cells":inventory_viewport_cells(), "inventory":_inventory.inspection() if _inventory != null else {}, "token_pressed":_pressed, "token_dragging":_dragging, "drag_id":_drag_id, "release_count":_release_count, "cancel_count":_cancel_count, "mutates_inventory":false, "machine_parent":str(get_parent().get_path()) if get_parent() != null else "", "curve_preserved_across_modes":true}, true)
+	result.merge({"component":"machine_attached_monitor_console", "mode":_mode, "mode_ids":MODES.duplicate(), "mode_change_count":_mode_change_count, "enabled":_enabled, "token_enabled":_token_enabled, "buttons":buttons, "button_art_region":BUTTON_ART_REGION, "button_mount":"individual_sockets_in_existing_chassis", "buttons_machine_local_rect":_buttons_rect, "screen_machine_local_rect":_screen_rect, "interactive_viewport_rects":interactive_viewport_rects(), "inventory_cells":inventory_viewport_cells(), "inventory":_inventory.inspection() if _inventory != null else {}, "token_pressed":_pressed, "token_dragging":_dragging, "drag_id":_drag_id, "release_count":_release_count, "cancel_count":_cancel_count, "mutates_inventory":false, "machine_parent":str(get_parent().get_path()) if get_parent() != null else "", "curve_preserved_across_modes":true}, true)
 	return result
 
 func _notification(what: int) -> void:

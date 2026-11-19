@@ -3,7 +3,7 @@ extends Control
 const DESK_SIZE := Vector2(1600, 900)
 const MATERIAL_STORAGE_RECT := Rect2(672, 64, 540, 104)
 const TOKEN_AXIS_MOVES := {"freedom":[0,-1],"authority":[0,1],"equality":[1,-1],"hierarchy":[1,1],"sincere":[0,-1],"ironic":[0,1],"support":[1,-1],"opposition":[1,1]}
-const RoomEnvironment := preload("res://scripts/presentation/studio/desk/desk_environment.gd")
+const HardwareFrames := preload("res://scripts/presentation/studio/desk/hardware_frames.gd")
 const CameraRig := preload("res://scripts/presentation/studio/desk/desk_camera_rig.gd")
 
 const ShadowObject := preload("res://scripts/presentation/studio/desk/desk_object_shadow.gd")
@@ -29,7 +29,6 @@ const FAX_SLOT := Rect2(418, 134, 650, 4)
 @export var presentation: DeskPresentation = preload("res://data/presentation/studio/desk_presentation.tres")
 
 var _token_request_index := 0
-var _environment: Control
 var _component_target := ""
 var _occluder_positions: Dictionary = {}
 var _occluder_motion: Tween
@@ -40,7 +39,6 @@ var _pending_sheet := ""
 var _page: Node2D
 var _art: Dictionary = {}
 var _textures: Dictionary = {}
-var _shadows: Dictionary = {}
 var _hover: Dictionary = {}
 var _paper: StyleBoxTexture
 var _stack: Control
@@ -68,7 +66,6 @@ var _event_archive: Dictionary = {}
 var _dependent_updates := 0
 var _props: DeskPropInteraction
 var _light: Node2D
-var _wires: Dictionary = {}
 var _book_contacts: Control
 var _placed := false
 var _registered := false
@@ -222,29 +219,15 @@ func _ready() -> void:
 	process_priority = 30
 	for id in ["paper_texture", "blank_print_paper"]:
 		_textures[id] = load("res://assets/image/textures/studio/desk/" + id + ".png") as Texture2D
-	for id in ["fax_downward", "phonebook", "stamp_prop", "stamp_67", "landscape_paper", "map_print_paper", "design_print_paper", "map_square_note", "design_square_note"]:
+	for id in ["stamp_67", "landscape_paper", "map_print_paper", "design_print_paper", "map_square_note", "design_square_note"]:
 		_textures[id] = load("res://assets/image/textures/studio/desk/" + id + ".png") as Texture2D
 	_textures.portrait_67 = preload("res://assets/image/textures/studio/desk/portrait_67.svg")
-	_textures.fax = _textures.fax_downward
-	_textures.crt = load("res://assets/image/textures/studio/desk/monitor_body.png")
-	_textures.desk_surface = load("res://assets/image/textures/studio/desk/wood_grain.png")
-	_textures.stamp = _textures.stamp_prop
-	_textures.folder = load("res://assets/image/textures/studio/desk/folder_closed.png")
-	_textures.folder_open = load("res://assets/image/textures/studio/desk/folder_open.png")
-	_textures.note = load("res://assets/image/textures/studio/desk/ruled_note.png")
-	_textures.tape = load("res://assets/image/textures/studio/desk/clear_tape.png")
-	var printer := AtlasTexture.new()
-	printer.atlas = load("res://assets/image/textures/studio/desk/receipt_printer.png")
-	printer.region = PRINTER_CROP
-	_textures.printer = printer
-	_art.desk_surface = _image("DeskSurface", _textures.desk_surface, self)
-	var wood := ShaderMaterial.new()
-	wood.shader = load("res://shaders/studio/desk_wood_surface.gdshader")
-	_art.desk_surface.material = wood
-	_environment = RoomEnvironment.new()
-	_environment.name = "FiniteDeskEnvironment"
-	add_child(_environment)
-	_environment.configure(_art.desk_surface)
+	_textures.fax = HardwareFrames.texture(Vector2(1312, 1199))
+	_textures.crt = HardwareFrames.texture(Vector2(1430, 1100))
+	_textures.phonebook = HardwareFrames.texture(Vector2(1484, 1060))
+	_textures.stamp = HardwareFrames.texture(Vector2(1254, 1254))
+	_textures.folder = HardwareFrames.texture(Vector2(1586, 992))
+	_textures.printer = HardwareFrames.texture(PRINTER_CROP.size)
 
 
 func _image(id: String, texture: Texture2D, parent: Node) -> TextureRect:
@@ -256,14 +239,6 @@ func _image(id: String, texture: Texture2D, parent: Node) -> TextureRect:
 	image.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	parent.add_child(image)
 	return image
-
-
-func _shadow(id: String, texture: Texture2D, parent: Node) -> Control:
-	var shade := ShadowObject.new()
-	shade.name = id
-	parent.add_child(shade)
-	shade.configure(texture)
-	return shade
 
 
 func configure(page: Node2D) -> void:
@@ -315,16 +290,11 @@ func configure(page: Node2D) -> void:
 	_clock_presenter = load("res://scripts/presentation/studio/devices/clock/desk_clock_presenter.gd").new()
 	_clock = _clock_presenter.configure(page.atlas)
 	_art.clock = _clock_presenter.image_node()
-	_art.clock.material = _screen_ink(_art.clock.texture)
-	_shadows.clock = _shadow("ClockShadow", _art.clock.texture, _art.clock.get_parent())
-	_shadows.clock.z_index = -2
 	for id in ["phonebook", "stamp", "folder", "crt", "printer", "fax"]:
-		_shadows[id] = _shadow(id.to_pascal_case() + "Shadow", _textures[id], page.hud)
 		_art[id] = _image(id.to_pascal_case(), _textures[id], page.hud)
 		_art[id].stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		_art[id].material = _screen_ink(_textures[id])
+		_art[id].self_modulate.a = 0.0
 		var depth: int = {"phonebook":1, "stamp":24, "folder":4, "crt":5, "fax":8, "printer":10}[id]
-		_shadows[id].z_index = depth - 1
 		_art[id].z_index = depth
 	_book_contacts = RuledContacts.new()
 	_book_contacts.name = "CollectedPhones"
@@ -337,9 +307,6 @@ func configure(page: Node2D) -> void:
 	page.hud.add_child(_speed_strip)
 	_speed_strip.speed_requested.connect(page._set_speed)
 	_art.speed = _speed_strip.background_node()
-	_art.speed.material = _screen_ink(_art.speed.texture)
-	_shadows.speed = _shadow("SpeedStripShadow", _art.speed.texture, _speed_strip)
-	_shadows.speed.z_index = -1
 	_printer = LogPrinter.new()
 	_printer.name = "LogPrinter"
 	_printer.font_size = 13
@@ -386,16 +353,6 @@ func configure(page: Node2D) -> void:
 	_props.hovered.connect(_prop_hovered)
 	# Reverse tree input order gives desk props first refusal before fax focus.
 	_props.reparent(page.hud)
-	for id in ["fax", "printer"]:
-		var cable := TextureRect.new()
-		cable.name = "TelephoneCable" if id == "fax" else "DataCable"
-		cable.texture = load("res://assets/image/textures/studio/desk/equipment_cable.png")
-		cable.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		cable.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		cable.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-		cable.z_index = 0
-		page.hud.add_child(cable)
-		_wires[id] = cable
 	_page.hud.configure_desk(Rect2(1, 1, 1, 1), self)
 	# Subscribe only after every layout dependency exists; aspect changes can resize synchronously.
 	resized.connect(_layout)
@@ -671,7 +628,6 @@ func _place(node: Control, rect: Rect2) -> void:
 func _layout() -> void:
 	if _page == null or not is_node_ready(): return
 	var view := DESK_SIZE
-	_environment.layout_area()
 	_light.position = Vector2(560,-180)
 	_prop(_art.crt,Rect2(24,-24,365,315),-0.06)
 	_place(_clock,Rect2(408,-24,224,224))
@@ -680,9 +636,7 @@ func _layout() -> void:
 	_prop(_art.fax,Rect2(1288,645,312,255),-0.23)
 	_prop(_art.phonebook,Rect2(1188,745,165,120),0.42)
 	_art.folder.hide()
-	_shadows.folder.hide()
 	_art.stamp.hide()
-	_shadows.stamp.hide()
 	_placed = true
 	_stack_rect = Rect2(125,155,1140,740)
 	_stack.layout_area(_stack_rect)
@@ -743,32 +697,7 @@ func _update_prop_dependents() -> void:
 	_layout_receipt(view)
 	_layout_monitor()
 	_fax.layout_station(_art.fax.get_global_rect(), Rect2(Vector2.ZERO, view), FAX_SLOT)
-	# Raster cables share the machine transform; their far ends leave the finite desk.
-	_layout_cable("fax", _art.fax, Vector2(270,180), Vector2(140,215), 2.35)
-	_layout_cable("printer", _art.printer, Vector2(234,68), Vector2(110,166), 0.1)
-	for id in _art:
-		if _art[id].material is ShaderMaterial:
-			_art[id].material.set_shader_parameter("light_position", _light.global_position)
-	refresh_shadows()
 	_update_hover_geometry()
-
-
-func refresh_shadows(ids: Array = []) -> void:
-	for id in (_shadows.keys() if ids.is_empty() else ids):
-		var source: TextureRect = _art[id]
-		var shade: Control = _shadows[id]
-		var center := source.get_global_transform() * (source.size * 0.5)
-		var distance := 1.6 if id == "speed" else presentation.shadow_offset.length()
-		var direction := (center - _light.global_position).normalized() * distance
-		shade.shadow_offset = source.get_global_transform().affine_inverse().basis_xform(direction)
-		shade.shadow_blur = 1.2 if id == "speed" else presentation.shadow_blur
-		shade.shadow_opacity = presentation.shadow_opacity
-		shade.ao_radius = 1.5 if id == "speed" else presentation.ao_radius
-		shade.ao_strength = presentation.ao_strength
-		shade.shadow_color = presentation.shadow_color
-		shade.sync_from(source)
-		shade.visible = presentation.shadows_enabled and source.visible
-		shade.apply_parameters()
 
 
 func _register_props() -> void:
@@ -855,7 +784,6 @@ func _prop_moved(id: StringName, _point: Vector2) -> void:
 		if _token_boxes.has(layer): _token_boxes[layer].set_meta("inventory_docked",false)
 	# Moving one prop must not relayout stationary machines and their paper.
 	if String(id) == "crt": _layout_monitor()
-	if _shadows.has(String(id)): refresh_shadows([String(id)])
 	if _hover.has(String(id)): _update_hover_item(_hover[String(id)])
 	if String(id) == "stamp" and not _restoring_placement:
 		_fax.stamp_at(_art.stamp.get_global_transform() * (_art.stamp.size * 0.5))
@@ -1061,10 +989,6 @@ func receive_event(event: Dictionary) -> void:
 	_update_contacts()
 
 
-func event_ready() -> bool:
-	return _fax != null and _fax.inspection().event_state == "ready"
-
-
 func sync_state(state: Dictionary) -> void:
 	for box: Control in _token_boxes.values(): box.sync_state(state)
 	if _material_cards != null:
@@ -1149,8 +1073,6 @@ func _process(_delta: float) -> void:
 	var fax_focused := _fax.interaction_focused()
 	var archive_focused := false
 	_art.stamp.visible = false
-	_shadows.stamp.visible = presentation.shadows_enabled and _art.stamp.visible
-	_shadows.folder.visible = false
 	_art.folder.visible = false
 	var blocked: bool = (_camera != null and _camera.inspection().state in ["travelling","returning"]) or _page.hud.modal_visible() or _stack.is_switching() or (_page._shell != null and _page._shell.blocks_input())
 	_sync_reader_blocks()
@@ -1180,9 +1102,7 @@ func _process(_delta: float) -> void:
 
 
 func inspection() -> Dictionary:
-	var shades: Dictionary = {}
-	for id in _shadows: shades[id] = _shadows[id].inspection()
-	return {"component_details":_component_detail_inspection(),"environment":_environment.inspection(),"fixed_layout":true,"world_size":DESK_SIZE,"desktop_camera":_camera.inspection() if _camera != null else {},"revealed_focus":_revealed_focus,"focus_reveal_count":_focus_reveal_count,"free_placement_enabled":false,"layout_persistence_enabled":false,"layout_version":8,"reference_layout":true,"handwritten_font":Handwriting.FONT.resource_path,"slot_details":_slot_detail_inspection(),"hover_strip":_hover_strip.inspection() if _hover_strip != null else {},"wood_texels_per_world":1254.0/384.0,"active_sheet":_active_sheet,"stack_rect":_stack_rect,"map_rect":_stack.map_rect(),
+	return {"component_details":_component_detail_inspection(),"fixed_layout":true,"world_size":DESK_SIZE,"desktop_camera":_camera.inspection() if _camera != null else {},"revealed_focus":_revealed_focus,"focus_reveal_count":_focus_reveal_count,"free_placement_enabled":false,"layout_persistence_enabled":false,"layout_version":8,"reference_layout":true,"handwritten_font":Handwriting.FONT.resource_path,"slot_details":_slot_detail_inspection(),"hover_strip":_hover_strip.inspection() if _hover_strip != null else {},"active_sheet":_active_sheet,"stack_rect":_stack_rect,"map_rect":_stack.map_rect(),
 		"tabletop_materials":_material_cards.inspection() if _material_cards != null else {},
 		"archive":{}, "speed_strip":_speed_strip.inspection(),"token_boxes":{},"token_drawers_merged":true,"material_storage_visible":_material_storage_visible,"dependent_updates":_dependent_updates,"receipt_layer":_receipt_layer.layer,
 		"paper_stack":_stack.inspection(), "fax_station":_fax.inspection(), "interaction":_props.inspection(),
@@ -1190,19 +1110,11 @@ func inspection() -> Dictionary:
 		"fax_rect":_art.fax.get_global_rect(),"folder_rect":_art.folder.get_global_rect(),"printer_rect":_art.printer.get_global_rect(),
 		"crt_rect":_art.crt.get_global_rect(),"crt_texture":_textures.crt.resource_path,"crt_below_printer":_monitor.z_index < _art.printer.z_index,
 		"printer_outlet":_outlet,"receipt_width":_outlet_width,"receipt_rotation":_printer.rotation,"log_printer":_printer.inspection(),
-		"meme_monitor":_monitor.inspection(),"wires":{"fax":_wires.fax.texture.resource_path,"printer":_wires.printer.texture.resource_path},
+		"meme_monitor":_monitor.inspection(),
 		"light_point_fixed":true,"light_position":_light.global_position,"light_height":_light.get_meta("height"),
-		"silkscreen_shader":FixedInk.resource_path,"hover_shader":TornHover.resource_path,"shadows":shades,
+		"silkscreen_shader":FixedInk.resource_path,"hover_shader":TornHover.resource_path,
 		"paper_texture":_textures.map_print_paper.resource_path,"layout_error":_layout_error}
 
-
-func _layout_cable(id: String, machine: Control, port: Vector2, dimensions: Vector2, angle: float) -> void:
-	var cable: TextureRect = _wires[id]
-	cable.size = dimensions
-	cable.pivot_offset = Vector2.ZERO
-	cable.rotation = machine.rotation + angle
-	# The generated connector is at source UV (.13,.92); its tip meets the socket.
-	cable.position = machine.get_global_transform() * port - (Vector2(.13,.92) * dimensions).rotated(cable.rotation)
 
 func _move_occluder(id: String, offset: Vector2) -> void:
 	if _page.has_meta("studio3d"): return

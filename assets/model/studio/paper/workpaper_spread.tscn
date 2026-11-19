@@ -1,0 +1,67 @@
+[gd_scene format=4]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_o558g"]
+_surfaces = [{
+"aabb": AABB(-0.57, 0, -0.37, 1.14, 0.064399995, 0.74),
+"format": 34359738369,
+"primitive": 0,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("hesRvwAAAACkcL2+hesRvwAAAACkcL0+hesRvyXkgz2kcL2+hesRvyXkgz2kcL0+hesRPwAAAACkcL2+hesRPwAAAACkcL0+hesRPyXkgz2kcL2+hesRPyXkgz2kcL0+")
+}]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4g6bu"]
+_surfaces = [{
+"aabb": AABB(-0.055, -0.0006, -0.0225, 0.11, 0.0012, 0.045),
+"format": 34359738369,
+"primitive": 0,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("rkdhvVJJHbrsUbi8rkdhvVJJHbrsUbg8rkdhvVJJHTrsUbi8rkdhvVJJHTrsUbg8rkdhPVJJHbrsUbi8rkdhPVJJHbrsUbg8rkdhPVJJHTrsUbi8rkdhPVJJHTrsUbg8")
+}]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ncyui"]
+_surfaces = [{
+"aabb": AABB(-0.020454, -2.5e-05, -0.0046920003, 0.040836003, 5e-05, 0.008400001),
+"format": 34359738369,
+"primitive": 0,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("Jo+nvBe30bdav5m7Jo+nvBe30bfsAXM7Jo+nvBe30Tdav5m7Jo+nvBe30TfsAXM7KPimPBe30bdav5m7KPimPBe30bfsAXM7KPimPBe30Tdav5m7KPimPBe30TfsAXM7")
+}]
+
+[node name="MemeplexDeskAssets" type="Node3D" unique_id=719990475]
+
+[node name="workpaper_spread" type="Node3D" parent="." unique_id=1568625778]
+metadata/extras = {
+"asset_id": "workpaper_spread",
+"asset_role": "paper",
+"integration_status": "runtime_binding_metadata",
+"reference": "Physical sheet geometry and conventional paper construction",
+"unit": "metre"
+}
+
+[node name="workpaper_spread__ContentOrigin" type="Node3D" parent="workpaper_spread" unique_id=1835389356]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0004, 0)
+metadata/extras = {
+"mount_role": "content_surface_origin"
+}
+
+[node name="workpaper_spread__PaperSurface" type="MeshInstance3D" parent="workpaper_spread" unique_id=2062076809]
+mesh = SubResource("ArrayMesh_o558g")
+metadata/extras = {
+"content_plane_axes_godot": "u:+X, v:+Z; normal:+Y",
+"content_size_m": [1.14, 0.74],
+"hit_box_size_m": [1.14, 0.003, 0.74],
+"intentionally_open_surface": false,
+"interaction_role": "content_surface",
+"uv_origin_gltf": "top_left"
+}
+
+[node name="workpaper_spread__Tab" type="MeshInstance3D" parent="workpaper_spread" unique_id=1654983665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.61, 0.0006, 0.235)
+mesh = SubResource("ArrayMesh_4g6bu")
+
+[node name="workpaper_spread__TabLegend" type="MeshInstance3D" parent="workpaper_spread" unique_id=380447067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.61, 0.0014, 0.235)
+mesh = SubResource("ArrayMesh_ncyui")

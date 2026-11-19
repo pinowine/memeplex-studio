@@ -612,38 +612,6 @@ func export_offsets() -> Dictionary:
 		result[id] = {"x":offset.x,"y":offset.y}
 	return result
 
-func import_offsets(offsets: Dictionary, bounds: Rect2 = Rect2()) -> PackedStringArray:
-	var errors := PackedStringArray()
-	if _switching or not _area.has_area():
-		errors.append("Paper is switching or not configured.")
-		return errors
-	var targets := {}
-	for key in offsets:
-		var id := _canonical(str(key))
-		if not _sheets.has(id) or targets.has(id):
-			errors.append("Unknown or duplicate paper: %s" % key)
-			continue
-		var value: Variant = offsets[key]
-		if not value is Dictionary or not _number(value.get("x")) or not _number(value.get("y")):
-			errors.append("Invalid paper offset: %s" % id)
-			continue
-		targets[id] = Vector2(float(value.x), float(value.y))
-	if not errors.is_empty(): return errors
-	if not bounds.has_area(): bounds = get_viewport_rect().grow(96.0)
-	for id in targets:
-		var sheet := _sheets[id] as Control
-		var tab := _tabs[id] as Control
-		var target: Vector2 = _area.position + Vector2(targets[id]) + _back_offset(id)
-		var transform := sheet.get_global_transform_with_canvas()
-		transform.origin += sheet.get_canvas_transform().basis_xform(target - sheet.position)
-		if not bounds.encloses(transform * Rect2(tab.position, tab.size)):
-			errors.append("Paper tab out of bounds: %s" % id)
-	if not errors.is_empty(): return errors
-	_capture_offsets()
-	for id in targets: _offsets[id] = targets[id]
-	_apply_layout()
-	return errors
-
 func _number(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))
 
@@ -658,9 +626,6 @@ func inspection() -> Dictionary:
 
 	result.merge({"tab_anchor_sheet":"each_own_sheet","tab_attachment_rect":(_sheets[_active] as Control).get_global_transform_with_canvas()*_tab_attachment_rect(),"tab_edge_overlap":TAB_EDGE_OVERLAP})
 	return result
-
-func content_host(id: String) -> Control:
-	return _contents.get(_canonical(id)) as Control
 
 func _paper_profile(id: String) -> Dictionary:
 	var profile: Dictionary = PAPER_PROFILES[id].duplicate(true)
