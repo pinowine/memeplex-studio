@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_coastal_fog_ferry_halt"
+category = &"nature"
+origin = &"world"
+title = "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_TITLE"
+narrative = "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_COMMENT"
+topic_ids = PackedStringArray("transport", "tourism", "trade")
+response_profile = {"attention": -0.2, "spread": -0.25, "production": -0.2, "sentiment": -0.2, "authority_affinity": 0.1, "freedom_affinity": -0.05, "equality_affinity": 0.1, "hierarchy_affinity": -0.05, "controversy": 0.3, "positive_frames": ["LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_NEGATIVE"], "group_reactions": {"commuters": -0.25, "service_workers": -0.2, "diasporas": -0.15}}
+external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift", "fatigue")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 0.9
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 8.0
+attention_duration_hours = 12.0
+attention_decay = &"constant"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind": "pragmatic_token", "id": "sincere", "count": 1}])

@@ -2408,5 +2408,575 @@
     "source": "任务还没完，人先服气了。",
     "zh_CN": "任务还没完，人先服气了。",
     "en": "The task isn't done. The resistance is."
+  },
+  "LOC_EVENT_WORLD_VACANCY_SURCHARGE_TITLE": {
+    "source": "市议会对空置满半年的住宅开征阶梯附加税",
+    "zh_CN": "市议会对空置满半年的住宅开征阶梯附加税",
+    "en": "City council imposes tiered surcharge on homes vacant for six months"
+  },
+  "LOC_EVENT_WORLD_VACANCY_SURCHARGE_NARRATIVE": {
+    "source": "%s通过空置房阶梯附加税条例，按水电表连续六个月的最低读数认定空置。条例尚未正式生效，二手交易网上已冒出一批专门代客定时放水开灯的跑腿挂单。",
+    "zh_CN": "%s通过空置房阶梯附加税条例，按水电表连续六个月的最低读数认定空置。条例尚未正式生效，二手交易网上已冒出一批专门代客定时放水开灯的跑腿挂单。",
+    "en": "%s passes a tiered surcharge on vacant homes, using six months of near-zero water and power readings as proof. Before enforcement even starts, classifieds fill up with runners offering to turn taps and lights on once a month."
+  },
+  "LOC_EVENT_WORLD_VACANCY_SURCHARGE_COMMENT": {
+    "source": "按水电表读数查空置，结果先催出一门上门拧水龙头的生意……条文写得再细，最先赚到钱的永远是跑腿的。",
+    "zh_CN": "按水电表读数查空置，结果先催出一门上门拧水龙头的生意……条文写得再细，最先赚到钱的永远是跑腿的。",
+    "en": "Use utility meters to catch empty flats and within a week someone is selling tap-turning visits by the hour. The errand runners always figure out the fee schedule fastest."
+  },
+  "LOC_EVENT_WORLD_VACANCY_SURCHARGE_POSITIVE": {
+    "source": "屯着几套房等涨价的人总算要掏点持房成本了",
+    "zh_CN": "屯着几套房等涨价的人总算要掏点持房成本了",
+    "en": "People sitting on three empty flats waiting for prices to climb finally have to pay to hold them"
+  },
+  "LOC_EVENT_WORLD_VACANCY_SURCHARGE_POSITIVE_ALT": {
+    "source": "晚上亮灯的窗户多了，整栋楼看着也没那么冷清",
+    "zh_CN": "晚上亮灯的窗户多了，整栋楼看着也没那么冷清",
+    "en": "More lit windows at night already make our block feel less like a storage locker"
+  },
+  "LOC_EVENT_WORLD_VACANCY_SURCHARGE_NEGATIVE": {
+    "source": "每个月花几十块雇人上门冲两下马桶，税单照样落不到头上",
+    "zh_CN": "每个月花几十块雇人上门冲两下马桶，税单照样落不到头上",
+    "en": "Pay someone pocket change once a month to flush the toilet twice and the surcharge never touches you"
+  },
+  "LOC_EVENT_WORLD_VACANCY_SURCHARGE_NEGATIVE_ALT": {
+    "source": "外派去邻城干活大半年，回来还得先自证没在屯房",
+    "zh_CN": "外派去邻城干活大半年，回来还得先自证没在屯房",
+    "en": "Get sent to another city for a six-month job and you come home to paperwork proving you live in your own flat"
+  },
+  "LOC_EVENT_WORLD_CLINIC_NIGHT_TRIAGE_TITLE": {
+    "source": "公立医院夜间急诊对轻症加收分诊费",
+    "zh_CN": "公立医院夜间急诊对轻症加收分诊费",
+    "en": "Public hospitals add night-shift triage fee for non-urgent visits"
+  },
+  "LOC_EVENT_WORLD_CLINIC_NIGHT_TRIAGE_NARRATIVE": {
+    "source": "%s卫生署在公立医院试行夜间急诊分级收费，晚十点后被判定为非紧急症状的患者需额外缴纳分诊费。不少上晚班的店员抱怨白天门诊根本请不出假，下班看病反而要先多掏钱。",
+    "zh_CN": "%s卫生署在公立医院试行夜间急诊分级收费，晚十点后被判定为非紧急症状的患者需额外缴纳分诊费。不少上晚班的店员抱怨白天门诊根本请不出假，下班看病反而要先多掏钱。",
+    "en": "Health authorities in %s introduce tiered night charges at public emergency wards, billing extra after ten p.m. when symptoms are judged non-urgent. Evening shop staff complain they cannot get time off for daytime clinics and now pay extra after closing."
+  },
+  "LOC_EVENT_WORLD_CLINIC_NIGHT_TRIAGE_COMMENT": {
+    "source": "白天请假扣全勤，半夜挂号收加急，哦~合着生病这事儿最好也卡着午休那一个钟头解决。",
+    "zh_CN": "白天请假扣全勤，半夜挂号收加急，哦~合着生病这事儿最好也卡着午休那一个钟头解决。",
+    "en": "Lose your attendance bonus if you take a morning off, or pay a surcharge if you show up after ten. Apparently a considerate fever is supposed to book itself into your lunch break."
+  },
+  "LOC_EVENT_WORLD_CLINIC_NIGHT_TRIAGE_POSITIVE": {
+    "source": "急诊走廊半夜总算不用被开感冒药的人堵得转不开身了",
+    "zh_CN": "急诊走廊半夜总算不用被开感冒药的人堵得转不开身了",
+    "en": "Night nurses can finally reach stretcher patients without stepping around twenty people waiting on cough syrup"
+  },
+  "LOC_EVENT_WORLD_CLINIC_NIGHT_TRIAGE_NEGATIVE": {
+    "source": "晚上十一点才收工的人，发烧难道还得挑个白天发作",
+    "zh_CN": "晚上十一点才收工的人，发烧难道还得挑个白天发作",
+    "en": "When your shift ends at eleven, you don't get to schedule your earache for two in the afternoon"
+  },
+  "LOC_EVENT_WORLD_SEASONAL_VISA_QUOTA_TITLE": {
+    "source": "内政部削减采收季短期农渔劳工配额",
+    "zh_CN": "内政部削减采收季短期农渔劳工配额",
+    "en": "Interior ministry cuts seasonal farm and harbor work permits"
+  },
+  "LOC_EVENT_WORLD_SEASONAL_VISA_QUOTA_NARRATIVE": {
+    "source": "%s内政部将本季短期农渔业劳工签证配额下调三成，并要求雇主补交全套宿舍核验表。南岸几座果园眼看果子熟透却凑不够采摘工，只得在省道边竖牌高薪招临时帮手。",
+    "zh_CN": "%s内政部将本季短期农渔业劳工签证配额下调三成，并要求雇主补交全套宿舍核验表。南岸几座果园眼看果子熟透却凑不够采摘工，只得在省道边竖牌高薪招临时帮手。",
+    "en": "%s cuts seasonal farm and fishing work permits by thirty percent and requires fresh dormitory inspections from employers. With fruit ripening on the branch, southern orchards put up roadside signs offering cash by the crate for day pickers."
+  },
+  "LOC_EVENT_WORLD_SEASONAL_VISA_QUOTA_COMMENT": {
+    "source": "表格还在科员桌上排队，果子已经熟得往地上掉了，这种时候去集市看一眼价签，比读多少份公报都明白。",
+    "zh_CN": "表格还在科员桌上排队，果子已经熟得往地上掉了，这种时候去集市看一眼价签，比读多少份公报都明白。",
+    "en": "The forms are still sitting in an inbox while ripe fruit drops into the grass. Walk past the market stalls next week and the price tags will tell you the rest."
+  },
+  "LOC_EVENT_WORLD_SEASONAL_VISA_QUOTA_POSITIVE": {
+    "source": "先把雇主提供的工棚条件卡严实了，省得年年出劳务纠纷",
+    "zh_CN": "先把雇主提供的工棚条件卡严实了，省得年年出劳务纠纷",
+    "en": "Forcing growers to pass bunkhouse checks first beats cleaning up unpaid-wage disputes after harvest"
+  },
+  "LOC_EVENT_WORLD_SEASONAL_VISA_QUOTA_NEGATIVE": {
+    "source": "树上的果子可不会等表格盖完章再往下掉，到头来还是菜篮子涨价",
+    "zh_CN": "树上的果子可不会等表格盖完章再往下掉，到头来还是菜篮子涨价",
+    "en": "Ripe fruit won't wait on a rubber stamp, and shoppers end up paying for every crate left rotting"
+  },
+  "LOC_EVENT_WORLD_PORT_CUSTOMS_INSPECTION_TITLE": {
+    "source": "海关对进港冷链与散货货柜实行逐批开箱查验",
+    "zh_CN": "海关对进港冷链与散货货柜实行逐批开箱查验",
+    "en": "Customs orders batch-by-batch container checks at deep-water ports"
+  },
+  "LOC_EVENT_WORLD_PORT_CUSTOMS_INSPECTION_NARRATIVE": {
+    "source": "%s海关以查缉虚报产地为由，将两座深水港的货柜开箱率临时提至六成。港区外排起十几公里长的集卡车队，城里烘焙坊和五金铺的进口原料双双断档。",
+    "zh_CN": "%s海关以查缉虚报产地为由，将两座深水港的货柜开箱率临时提至六成。港区外排起十几公里长的集卡车队，城里烘焙坊和五金铺的进口原料双双断档。",
+    "en": "Citing false origin labels, %s customs raises container opening rates at two deep-water ports to sixty percent. Container trucks back up for miles outside the gates, leaving city bakeries and hardware shops short of imported stock."
+  },
+  "LOC_EVENT_WORLD_PORT_CUSTOMS_INSPECTION_COMMENT": {
+    "source": "说是严查虚报产地，结果连城里面包房等着用的一批黄油也堵在码头外头晒太阳……这下连下午茶都跟着吃紧了。",
+    "zh_CN": "说是严查虚报产地，结果连城里面包房等着用的一批黄油也堵在码头外头晒太阳……这下连下午茶都跟着吃紧了。",
+    "en": "They went looking for relabeled cargo and stranded the pastry butter out on the highway in the sun too. Even afternoon tea is feeling the squeeze now."
+  },
+  "LOC_EVENT_WORLD_PORT_CUSTOMS_INSPECTION_POSITIVE": {
+    "source": "把贴假标签混进来的次品拦在码头外头，老实报关的商铺才不吃亏",
+    "zh_CN": "把贴假标签混进来的次品拦在码头外头，老实报关的商铺才不吃亏",
+    "en": "Stopping relabeled junk at the docks is the only way honest importers stop getting undercut"
+  },
+  "LOC_EVENT_WORLD_PORT_CUSTOMS_INSPECTION_NEGATIVE": {
+    "source": "冷柜在日头底下排三天队，里头的鲜货就算没毛病也先蔫了一半",
+    "zh_CN": "冷柜在日头底下排三天队，里头的鲜货就算没毛病也先蔫了一半",
+    "en": "Leave reefers idling in port queues for three days and clean produce still comes out half spoiled"
+  },
+  "LOC_EVENT_WORLD_OLD_TOWN_TOURIST_PASS_TITLE": {
+    "source": "老城区对非本地住户试行周末入街预约券",
+    "zh_CN": "老城区对非本地住户试行周末入街预约券",
+    "en": "Old quarter introduces weekend entry passes for non-residents"
+  },
+  "LOC_EVENT_WORLD_OLD_TOWN_TOURIST_PASS_NARRATIVE": {
+    "source": "%s文旅署在老城石板街入口加装核验桩，周末非本街住户需提前申领免费预约券方可入内。巷子里的老住户总算能推窗睡个午觉，临街小吃铺却对着少了一半客流的石阶直叹气。",
+    "zh_CN": "%s文旅署在老城石板街入口加装核验桩，周末非本街住户需提前申领免费预约券方可入内。巷子里的老住户总算能推窗睡个午觉，临街小吃铺却对着少了一半客流的石阶直叹气。",
+    "en": "%s installs check-in posts at the entrances to its cobbled old quarter, requiring free advance passes for weekend visitors. Upstairs residents finally get an afternoon nap with the windows open, while ground-floor snack stalls stare at half-empty steps."
+  },
+  "LOC_EVENT_WORLD_OLD_TOWN_TOURIST_PASS_COMMENT": {
+    "source": "住楼上的嫌吵，开铺子的怕冷清，同一条石板街上下两层楼的心思从来就没齐过。",
+    "zh_CN": "住楼上的嫌吵，开铺子的怕冷清，同一条石板街上下两层楼的心思从来就没齐过。",
+    "en": "Upstairs wants quiet and downstairs wants foot traffic. Two floors of the same stone house rarely pray for the same weekend."
+  },
+  "LOC_EVENT_WORLD_OLD_TOWN_TOURIST_PASS_POSITIVE": {
+    "source": "巷口总算听不见举小旗喊集合的扩音器了，晾在窗外的衣服也能喘口气",
+    "zh_CN": "巷口总算听不见举小旗喊集合的扩音器了，晾在窗外的衣服也能喘口气",
+    "en": "No more tour megaphones under our bedroom windows every Saturday morning"
+  },
+  "LOC_EVENT_WORLD_OLD_TOWN_TOURIST_PASS_NEGATIVE": {
+    "source": "散客嫌领券麻烦掉头去了隔壁商圈，巷子里的铺面房租可没跟着打折",
+    "zh_CN": "散客嫌领券麻烦掉头去了隔壁商圈，巷子里的铺面房租可没跟着打折",
+    "en": "Casual visitors skip the pass form and walk to the mall next door, while our shop rent stays right where it was"
+  },
+  "LOC_EVENT_WORLD_GRANDPARENT_RECIPE_ARCHIVE_TITLE": {
+    "source": "社区食堂把老人手写菜谱影印成借阅小册",
+    "zh_CN": "社区食堂把老人手写菜谱影印成借阅小册",
+    "en": "Neighborhood canteens print booklets of elders' handwritten recipes"
+  },
+  "LOC_EVENT_WORLD_GRANDPARENT_RECIPE_ARCHIVE_NARRATIVE": {
+    "source": "%s十几家社区食堂收集街坊老人记在旧挂历背面的家常菜做法，原样影印成小册子摆在打饭窗口供人翻看。不少在外租房的年轻人拍下满是油点的“盐放少许”页，打视频电话回家逐句核对分量。",
+    "zh_CN": "%s十几家社区食堂收集街坊老人记在旧挂历背面的家常菜做法，原样影印成小册子摆在打饭窗口供人翻看。不少在外租房的年轻人拍下满是油点的“盐放少许”页，打视频电话回家逐句核对分量。",
+    "en": "More than a dozen neighborhood canteens in %s collect home recipes jotted on the backs of old wall calendars and photocopy them into counter booklets. Young renters photograph grease-spotted pages reading \"add a pinch of salt\" and call home to ask how big a pinch is."
+  },
+  "LOC_EVENT_WORLD_GRANDPARENT_RECIPE_ARCHIVE_COMMENT": {
+    "source": "我以前照家里老人留的方子炖过一回肉，上面写着“盐抓一小撮”，做出来咸得灌了三杯水……手掌大小这事儿真没法遗传。",
+    "zh_CN": "我以前照家里老人留的方子炖过一回肉，上面写着“盐抓一小撮”，做出来咸得灌了三杯水……手掌大小这事儿真没法遗传。",
+    "en": "I once cooked stew from an old family note that called for \"one small handful of salt\" and drank three glasses of water afterward. Hand sizes don't pass down cleanly."
+  },
+  "LOC_EVENT_WORLD_GRANDPARENT_RECIPE_ARCHIVE_POSITIVE": {
+    "source": "挂历背面那句“火候看锅边冒小泡”，比什么精确到克的教程都亲切",
+    "zh_CN": "挂历背面那句“火候看锅边冒小泡”，比什么精确到克的教程都亲切",
+    "en": "A note on an old calendar saying \"simmer until tiny bubbles ring the pot\" beats any kitchen-scale chart"
+  },
+  "LOC_EVENT_WORLD_GRANDPARENT_RECIPE_ARCHIVE_NEGATIVE": {
+    "source": "长辈写的“酱油绕锅一圈”到底是多大一口锅，新手照着做还是容易翻车",
+    "zh_CN": "长辈写的“酱油绕锅一圈”到底是多大一口锅，新手照着做还是容易翻车",
+    "en": "\"Pour soy sauce once around the rim\" tells a beginner nothing about how wide grandma's wok was"
+  },
+  "LOC_EVENT_WORLD_HARBOR_ROWING_DERBY_TITLE": {
+    "source": "船厂与渡轮班组在港区水道举行业余划艇赛",
+    "zh_CN": "船厂与渡轮班组在港区水道举行业余划艇赛",
+    "en": "Shipyard and ferry crews race amateur rowboats across inner harbor"
+  },
+  "LOC_EVENT_WORLD_HARBOR_ROWING_DERBY_NARRATIVE": {
+    "source": "%s三座码头的修船工、渡轮水手和货场调度员凑出十二支业余划艇队，趁周末退潮前横渡内港水道。两岸轮渡乘客干脆挤在甲板栏杆边敲着保温杯，替自己平时常坐的那班船呐喊。",
+    "zh_CN": "%s三座码头的修船工、渡轮水手和货场调度员凑出十二支业余划艇队，趁周末退潮前横渡内港水道。两岸轮渡乘客干脆挤在甲板栏杆边敲着保温杯，替自己平时常坐的那班船呐喊。",
+    "en": "Shipfitters, ferry deckhands and yard dispatchers from three piers in %s field twelve amateur rowboat crews for a low-tide sprint across the inner harbor. Commuters crowd the ferry rails banging thermoses to cheer on whichever boat crew runs their weekday route."
+  },
+  "LOC_EVENT_WORLD_HARBOR_ROWING_DERBY_COMMENT": {
+    "source": "自己天天坐的那班渡轮下水比赛，换谁站在甲板上都得跟着喊两嗓子，哪怕周一早上迟到骂的也是这同一拨开船的。",
+    "zh_CN": "自己天天坐的那班渡轮下水比赛，换谁站在甲板上都得跟着喊两嗓子，哪怕周一早上迟到骂的也是这同一拨开船的。",
+    "en": "Everyone cheers when their regular weekday ferry crew takes the lead, even if they were grumbling about the exact same crew docking late on Monday morning."
+  },
+  "LOC_EVENT_WORLD_HARBOR_ROWING_DERBY_POSITIVE": {
+    "source": "平时天天坐四号码头那班渡轮，看他们划赢了比看职业联赛还来劲",
+    "zh_CN": "平时天天坐四号码头那班渡轮，看他们划赢了比看职业联赛还来劲",
+    "en": "Watching Pier Four's crew pull ahead feels better than any televised league final"
+  },
+  "LOC_EVENT_WORLD_HARBOR_ROWING_DERBY_NEGATIVE": {
+    "source": "水道临时封航两个钟头，急着过江送货的小货车全排在引桥上干等",
+    "zh_CN": "水道临时封航两个钟头，急着过江送货的小货车全排在引桥上干等",
+    "en": "Closing the channel for two hours leaves delivery vans stuck baking on the approach ramp"
+  },
+  "LOC_EVENT_WORLD_BILINGUAL_STREET_SIGNS_TITLE": {
+    "source": "市政厅统一翻修老街双语店招引来拼写之争",
+    "zh_CN": "市政厅统一翻修老街双语店招引来拼写之争",
+    "en": "City hall's standardized bilingual shop signs stir spelling dispute"
+  },
+  "LOC_EVENT_WORLD_BILINGUAL_STREET_SIGNS_NARRATIVE": {
+    "source": "%s市政厅出资替码头侨民街重做防风店招，却把早年侨民按口音拼写的旧街名一律改成了标准转写。几家开了三代人的杂货铺连夜把拆下来的旧铁牌重新挂回橱窗里头。",
+    "zh_CN": "%s市政厅出资替码头侨民街重做防风店招，却把早年侨民按口音拼写的旧街名一律改成了标准转写。几家开了三代人的杂货铺连夜把拆下来的旧铁牌重新挂回橱窗里头。",
+    "en": "City hall in %s funds stormproof shop signs along the harbor migrant quarter, replacing decades-old phonetic spellings with textbook romanization. Several third-generation grocers hang their battered tin signs right back up inside the front window."
+  },
+  "LOC_EVENT_WORLD_BILINGUAL_STREET_SIGNS_COMMENT": {
+    "source": "新招牌字正腔圆，老主顾抬头却先找橱窗里那块掉漆的旧铁皮，毕竟有些地名一旦改得太标准，听着就像没人住过似的。",
+    "zh_CN": "新招牌字正腔圆，老主顾抬头却先找橱窗里那块掉漆的旧铁皮，毕竟有些地名一旦改得太标准，听着就像没人住过似的。",
+    "en": "The new signs spell everything by the handbook, yet regulars still look for the chipped tin plate in the window. Clean up an old port spelling too much and it sounds like nobody ever lived there."
+  },
+  "LOC_EVENT_WORLD_BILINGUAL_STREET_SIGNS_POSITIVE": {
+    "source": "标上统一转写之后，外地来的邮差和救护车总算不会在巷子里绕晕了",
+    "zh_CN": "标上统一转写之后，外地来的邮差和救护车总算不会在巷子里绕晕了",
+    "en": "Consistent street spellings mean new couriers and ambulance drivers stop circling the wrong alley"
+  },
+  "LOC_EVENT_WORLD_BILINGUAL_STREET_SIGNS_NEGATIVE": {
+    "source": "老铁牌上那个歪歪扭扭的旧拼法才是当年下船落脚的记号，改整齐了反倒像连锁商场",
+    "zh_CN": "老铁牌上那个歪歪扭扭的旧拼法才是当年下船落脚的记号，改整齐了反倒像连锁商场",
+    "en": "Those crooked old spellings were how our grandparents wrote home from the pier; now the block looks like an airport mall"
+  },
+  "LOC_EVENT_WORLD_SUMMER_GRID_BROWNOUT_TITLE": {
+    "source": "连晴高温迫使电网启动工业错峰与晚间降压",
+    "zh_CN": "连晴高温迫使电网启动工业错峰与晚间降压",
+    "en": "Nine-day heatwave forces factory night shifts and evening brownouts"
+  },
+  "LOC_EVENT_WORLD_SUMMER_GRID_BROWNOUT_NARRATIVE": {
+    "source": "%s连续九天气温突破历史极值，配电网负荷逼近红线。电力公司要求重工业园区改上夜班，并对老旧住宅区实施晚高峰降压供电，五金店里的充电小风扇一晚上卖断了货。",
+    "zh_CN": "%s连续九天气温突破历史极值，配电网负荷逼近红线。电力公司要求重工业园区改上夜班，并对老旧住宅区实施晚高峰降压供电，五金店里的充电小风扇一晚上卖断了货。",
+    "en": "Nine straight days of record heat push %s's power grid to its limit. Utilities move heavy industry onto midnight shifts and lower voltage across older apartment blocks during dinner hours, clearing hardware shelves of rechargeable fans overnight."
+  },
+  "LOC_EVENT_WORLD_SUMMER_GRID_BROWNOUT_COMMENT": {
+    "source": "写字楼里开着十九度冷气发倡议书叫大家心静自然凉，老居民楼里的电扇转得跟叹气一样慢……这温度计怕不是装在两个季节里。",
+    "zh_CN": "写字楼里开着十九度冷气发倡议书叫大家心静自然凉，老居民楼里的电扇转得跟叹气一样慢……这温度计怕不是装在两个季节里。",
+    "en": "Someone in a chilled glass tower typed up a poster about staying calm to beat the heat while ceiling fans in old walk-ups barely turn. You'd think the two buildings were in different seasons."
+  },
+  "LOC_EVENT_WORLD_SUMMER_GRID_BROWNOUT_POSITIVE": {
+    "source": "先把高耗能厂房挪去半夜开工，总好过整片城区突然拉闸断电",
+    "zh_CN": "先把高耗能厂房挪去半夜开工，总好过整片城区突然拉闸断电",
+    "en": "Shifting big smelters past midnight beats blowing a transformer and blacking out half the city"
+  },
+  "LOC_EVENT_WORLD_SUMMER_GRID_BROWNOUT_NEGATIVE": {
+    "source": "老楼一到晚饭点空调就只吹自然风，上夜班的工人白天回宿舍更是热得合不上眼",
+    "zh_CN": "老楼一到晚饭点空调就只吹自然风，上夜班的工人白天回宿舍更是热得合不上眼",
+    "en": "Old flats get warm air out of the AC at suppertime, and night-shift workers can't sleep through noon heat in the dorms"
+  },
+  "LOC_EVENT_WORLD_ORCHARD_LATE_HAIL_TITLE": {
+    "source": "反常冰雹半小时砸穿河谷成片育苗大棚",
+    "zh_CN": "反常冰雹半小时砸穿河谷成片育苗大棚",
+    "en": "Freak spring hailstorm shreds valley greenhouses and young pears"
+  },
+  "LOC_EVENT_WORLD_ORCHARD_LATE_HAIL_NARRATIVE": {
+    "source": "%s内陆河谷在春播返青期突降鸡蛋大小的冰雹，半小时内砸穿数千亩塑料菜棚与刚挂果的梨园。果农干脆把带雹坑的青梨成筐拉进城里早市，按熬梨膏的原料半价甩卖。",
+    "zh_CN": "%s内陆河谷在春播返青期突降鸡蛋大小的冰雹，半小时内砸穿数千亩塑料菜棚与刚挂果的梨园。果农干脆把带雹坑的青梨成筐拉进城里早市，按熬梨膏的原料半价甩卖。",
+    "en": "Egg-sized hail batters an inland valley in %s during spring budding, tearing through plastic vegetable tunnels and young pear orchards in half an hour. Growers haul crates of bruised green pears straight to morning markets at half price for jam and syrup."
+  },
+  "LOC_EVENT_WORLD_ORCHARD_LATE_HAIL_COMMENT": {
+    "source": "半年心血半个钟头就砸成了果酱料，早市上拎两袋便宜梨回家的人心里其实也清楚，下个月菜价准得找补回来。",
+    "zh_CN": "半年心血半个钟头就砸成了果酱料，早市上拎两袋便宜梨回家的人心里其实也清楚，下个月菜价准得找补回来。",
+    "en": "Half a year's orchard work turns into jam stock in thirty minutes. Even shoppers carrying home cheap bruised pears know next month's grocery bill will collect the difference."
+  },
+  "LOC_EVENT_WORLD_ORCHARD_LATE_HAIL_POSITIVE": {
+    "source": "满筐带坑的果子熬成梨膏一点不糟蹋，早市大伙儿顺手多拎两袋也算搭把手",
+    "zh_CN": "满筐带坑的果子熬成梨膏一点不糟蹋，早市大伙儿顺手多拎两袋也算搭把手",
+    "en": "Bruised pears cook down fine into syrup, and buying two extra bags at the morning stall helps growers clear the trucks"
+  },
+  "LOC_EVENT_WORLD_ORCHARD_LATE_HAIL_NEGATIVE": {
+    "source": "农业险定损员光排期下乡就要等半个月，破棚子可等不起下一场冷雨",
+    "zh_CN": "农业险定损员光排期下乡就要等半个月，破棚子可等不起下一场冷雨",
+    "en": "Crop-insurance adjusters are booked out for two weeks, and torn greenhouse film won't survive the next cold rain"
+  },
+  "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_TITLE": {
+    "source": "罕见平流浓雾迫使海峡客货轮全线停航",
+    "zh_CN": "罕见平流浓雾迫使海峡客货轮全线停航",
+    "en": "Three-day sea fog halts all passenger and freight ferries across strait"
+  },
+  "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_NARRATIVE": {
+    "source": "%s沿海连续三天笼罩在能见度不足五十米的平流浓雾中，跨海渡轮与近海货船全线停航。滞留港口的旅客把候船大厅长椅拼成临时铺位，连离岛报摊上摆的都是三天前的旧日报。",
+    "zh_CN": "%s沿海连续三天笼罩在能见度不足五十米的平流浓雾中，跨海渡轮与近海货船全线停航。滞留港口的旅客把候船大厅长椅拼成临时铺位，连离岛报摊上摆的都是三天前的旧日报。",
+    "en": "Advection fog cuts visibility below fifty meters along %s's coast for three days, grounding cross-strait ferries and coastal freighters. Stranded passengers push terminal benches together for beds while island newsstands keep displaying Tuesday's paper."
+  },
+  "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_COMMENT": {
+    "source": "大雾把船全摁在港里，连岛上报摊卖的都是大前天的旧报纸……难得有这么几天，满城人不用追着新消息跑。",
+    "zh_CN": "大雾把船全摁在港里，连岛上报摊卖的都是大前天的旧报纸……难得有这么几天，满城人不用追着新消息跑。",
+    "en": "With every boat tied to the pier and island kiosks still stacked with three-day-old papers, people get a rare excuse to stop chasing whatever happened five minutes ago."
+  },
+  "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_POSITIVE": {
+    "source": "船长宁可在码头多等两天也不盲开进雾区，平平安安比赶那点班期强多了",
+    "zh_CN": "船长宁可在码头多等两天也不盲开进雾区，平平安安比赶那点班期强多了",
+    "en": "Waiting out zero-visibility fog in harbor beats steering a full ferry blind into a freight lane"
+  },
+  "LOC_EVENT_WORLD_COASTAL_FOG_FERRY_HALT_NEGATIVE": {
+    "source": "人困在候船厅吃第三桶泡面就算了，连岛上便利店的鲜奶架子都快搬空了",
+    "zh_CN": "人困在候船厅吃第三桶泡面就算了，连岛上便利店的鲜奶架子都快搬空了",
+    "en": "Three bowls of terminal instant noodles later, the island convenience stores are down to their last cartons of milk"
+  },
+  "LOC_EVENT_WORLD_DEEP_WELL_MICROBE_FIND_TITLE": {
+    "source": "科考队在千米深废盐矿卤水中发现噬碳菌群",
+    "zh_CN": "科考队在千米深废盐矿卤水中发现噬碳菌群",
+    "en": "Geologists find carbon-eating microbes in flooded salt mine"
+  },
+  "LOC_EVENT_WORLD_DEEP_WELL_MICROBE_FIND_NARRATIVE": {
+    "source": "%s地质研究所抽检一座停产盐矿的深层热卤水时，意外分离出一种靠吞食溶解二氧化碳繁殖的耐高温古菌。枯燥的显微镜染色延时录像被学生配上鼓点传上网，三天播放破了百万。",
+    "zh_CN": "%s地质研究所抽检一座停产盐矿的深层热卤水时，意外分离出一种靠吞食溶解二氧化碳繁殖的耐高温古菌。枯燥的显微镜染色延时录像被学生配上鼓点传上网，三天播放破了百万。",
+    "en": "Sampling hot brine a kilometer down an abandoned salt mine, geologists in %s isolate a heat-loving archaeon that feeds on dissolved carbon dioxide. A grad student sets the microscope time-lapse to a drumbeat, racking up a million views in three days."
+  },
+  "LOC_EVENT_WORLD_DEEP_WELL_MICROBE_FIND_COMMENT": {
+    "source": "菌群还在培养皿里慢慢吐泡泡呢，外头卖概念股的倒先把庆功宴开上了，哦~科学进展哪有他们编故事跑得快。",
+    "zh_CN": "菌群还在培养皿里慢慢吐泡泡呢，外头卖概念股的倒先把庆功宴开上了，哦~科学进展哪有他们编故事跑得快。",
+    "en": "The microbes are still barely bubbling in a dish and stock-chat promoters are already pricing carbon miracles into mining shares. Lab cultures never grow half as fast as a sales pitch."
+  },
+  "LOC_EVENT_WORLD_DEEP_WELL_MICROBE_FIND_POSITIVE": {
+    "source": "谁能想到荒了二十年的老盐井底下，藏着这么一群闷头吃碳的小东西",
+    "zh_CN": "谁能想到荒了二十年的老盐井底下，藏着这么一群闷头吃碳的小东西",
+    "en": "Twenty years after the salt shaft closed, something down in the dark has been quietly eating carbon the whole time"
+  },
+  "LOC_EVENT_WORLD_DEEP_WELL_MICROBE_FIND_NEGATIVE": {
+    "source": "实验室里刚养活几管子菌，股票群里居然已经有人开始炒盐矿周边的地皮了",
+    "zh_CN": "实验室里刚养活几管子菌，股票群里居然已经有人开始炒盐矿周边的地皮了",
+    "en": "The lab has three test tubes alive and speculators are already flipping land around the old minehead"
+  },
+  "LOC_EVENT_WORLD_AUTONOMOUS_FREIGHT_CORRIDOR_TITLE": {
+    "source": "交通部在货运干线划出夜间无人重卡专用车道",
+    "zh_CN": "交通部在货运干线划出夜间无人重卡专用车道",
+    "en": "Transport ministry reserves night highway lane for driverless heavy trucks"
+  },
+  "LOC_EVENT_WORLD_AUTONOMOUS_FREIGHT_CORRIDOR_NARRATIVE": {
+    "source": "%s交通部将两条跨区高速的最右侧车道设为晚十点至早五点的无人驾驶重卡专道，社会车辆误入即抓拍扣分。长途卡车司机吐槽服务区车位本就不够，如今连夜路慢车道都让给了铁疙瘩。",
+    "zh_CN": "%s交通部将两条跨区高速的最右侧车道设为晚十点至早五点的无人驾驶重卡专道，社会车辆误入即抓拍扣分。长途卡车司机吐槽服务区车位本就不够，如今连夜路慢车道都让给了铁疙瘩。",
+    "en": "%s reserves the right-hand lane on two freight highways from ten p.m. to five a.m. exclusively for autonomous heavy trucks, fining human drivers caught on camera inside it. Long-haul truckers complain rest-stop parking was already scarce before machines got their own lane."
+  },
+  "LOC_EVENT_WORLD_AUTONOMOUS_FREIGHT_CORRIDOR_COMMENT": {
+    "source": "给机器专门划条道倒是不怕它打瞌睡，就是苦了隔壁车道握方向盘的老师傅，半夜跟一排没司机的重卡并排跑，心里总归有点发毛。",
+    "zh_CN": "给机器专门划条道倒是不怕它打瞌睡，就是苦了隔壁车道握方向盘的老师傅，半夜跟一排没司机的重卡并排跑，心里总归有点发毛。",
+    "en": "A dedicated lane keeps the robots out of traffic, sure, though driving at two in the morning beside a convoy of dark empty cabs still gives veteran truckers the creeps."
+  },
+  "LOC_EVENT_WORLD_AUTONOMOUS_FREIGHT_CORRIDOR_POSITIVE": {
+    "source": "半夜跑长途最怕疲劳走神，让雷达车队走固定专道反而少了追尾风险",
+    "zh_CN": "半夜跑长途最怕疲劳走神，让雷达车队走固定专道反而少了追尾风险",
+    "en": "Keeping radar-guided freight convoys in one predictable night lane cuts down on drowsy rear-end crashes"
+  },
+  "LOC_EVENT_WORLD_AUTONOMOUS_FREIGHT_CORRIDOR_NEGATIVE": {
+    "source": "活人司机在服务区抢不到一张睡觉的铺位，路上倒先给无人车腾出整条好道",
+    "zh_CN": "活人司机在服务区抢不到一张睡觉的铺位，路上倒先给无人车腾出整条好道",
+    "en": "Human drivers can't find a legal rest-area berth at midnight, yet driverless rigs get a freshly paved lane to themselves"
+  },
+  "LOC_EVENT_WORLD_WEARABLE_ELDER_ALARM_TITLE": {
+    "source": "社区配发的跌倒监测手环把剁饺子馅误判为求救",
+    "zh_CN": "社区配发的跌倒监测手环把剁饺子馅误判为求救",
+    "en": "Free elder fall-detection wristbands mistake dumpling chopping for emergencies"
+  },
+  "LOC_EVENT_WORLD_WEARABLE_ELDER_ALARM_NARRATIVE": {
+    "source": "%s民政署向独居老人免费配发智能跌倒报警手环，不料加速度传感器过于灵敏，节日前夕上百户老人剁肉馅和拍蒜时触发自动呼救，把社区卫生站的急救电话打成了占线。",
+    "zh_CN": "%s民政署向独居老人免费配发智能跌倒报警手环，不料加速度传感器过于灵敏，节日前夕上百户老人剁肉馅和拍蒜时触发自动呼救，把社区卫生站的急救电话打成了占线。",
+    "en": "Social services in %s hand out free fall-detection wristbands to seniors living alone, only for overly sensitive motion sensors to read holiday meat-mincing and garlic-smashing as falls. Hundreds of kitchen false alarms jam neighborhood clinic lines before dinner."
+  },
+  "LOC_EVENT_WORLD_WEARABLE_ELDER_ALARM_COMMENT": {
+    "source": "一拍蒜就报警，一剁肉馅救护车就往楼下冲，写算法的年轻人八成顿顿点外卖，压根没见过案板上的动静。",
+    "zh_CN": "一拍蒜就报警，一剁肉馅救护车就往楼下冲，写算法的年轻人八成顿顿点外卖，压根没见过案板上的动静。",
+    "en": "Smash one clove of garlic and an ambulance rolls down the street. Whoever tuned that sensor probably lives on takeout and has never heard a grandmother work a chopping board."
+  },
+  "LOC_EVENT_WORLD_WEARABLE_ELDER_ALARM_POSITIVE": {
+    "source": "宁可手环多响几回闹个乌龙，也比真摔倒在屋里没人知道强得多",
+    "zh_CN": "宁可手环多响几回闹个乌龙，也比真摔倒在屋里没人知道强得多",
+    "en": "Ten awkward kitchen callbacks still beat one real fall going unnoticed in an empty flat"
+  },
+  "LOC_EVENT_WORLD_WEARABLE_ELDER_ALARM_NEGATIVE": {
+    "source": "救护车一晚上白跑十几趟剁肉馅的门牌号，真急着救命的电话反倒挤不进去了",
+    "zh_CN": "救护车一晚上白跑十几趟剁肉馅的门牌号，真急着救命的电话反倒挤不进去了",
+    "en": "Dispatchers chasing a dozen dumpling-chopping alerts can't pick up the one call that's an actual stroke"
+  },
+  "LOC_EVENT_WORLD_OPEN_LAB_RETRACTION_TITLE": {
+    "source": "大学实验室全程直播复现超导样品当场测出夹子松动",
+    "zh_CN": "大学实验室全程直播复现超导样品当场测出夹子松动",
+    "en": "Livestreamed superconductor replication ends with a loose alligator clip"
+  },
+  "LOC_EVENT_WORLD_OPEN_LAB_RETRACTION_NARRATIVE": {
+    "source": "%s理工学院开直播复现近期轰动学界的新型超导配方，数万观众守在屏幕前盯了六个钟头，最后镜头拍到所谓“电阻归零”只是探针鳄鱼夹没夹紧。主讲教授当场叹了口气，顺手把直播回放留作大一实验课反面教材。",
+    "zh_CN": "%s理工学院开直播复现近期轰动学界的新型超导配方，数万观众守在屏幕前盯了六个钟头，最后镜头拍到所谓“电阻归零”只是探针鳄鱼夹没夹紧。主讲教授当场叹了口气，顺手把直播回放留作大一实验课反面教材。",
+    "en": "An institute of technology in %s livestreams a six-hour attempt to reproduce a hyped superconductor sample for tens of thousands of viewers, only to zoom in and find the \"zero-resistance drop\" came from a loose probe clip. The lead professor sighs on mic and archives the stream for first-year lab safety."
+  },
+  "LOC_EVENT_WORLD_OPEN_LAB_RETRACTION_COMMENT": {
+    "source": "几万人熬夜盯着屏幕等见证历史，最后见证了一只没夹紧的鳄鱼夹……不过那位教授没删回放直接留着当教材，倒是个敞亮人。",
+    "zh_CN": "几万人熬夜盯着屏幕等见证历史，最后见证了一只没夹紧的鳄鱼夹……不过那位教授没删回放直接留着当教材，倒是个敞亮人。",
+    "en": "Forty thousand people stayed up past midnight to witness history and witnessed a wobbly alligator clip instead. Leaving the recording up for freshmen takes a good sport, though."
+  },
+  "LOC_EVENT_WORLD_OPEN_LAB_RETRACTION_POSITIVE": {
+    "source": "敢开着镜头当众把错处查个水落石出，比藏着原始数据发十篇公关稿体面多了",
+    "zh_CN": "敢开着镜头当众把错处查个水落石出，比藏着原始数据发十篇公关稿体面多了",
+    "en": "Debugging your own mistake live on camera is ten times more honest than hiding raw data behind press releases"
+  },
+  "LOC_EVENT_WORLD_OPEN_LAB_RETRACTION_POSITIVE_ALT": {
+    "source": "大一新生看这一场直播，往后四年做实验准保记得先拧紧鳄鱼夹",
+    "zh_CN": "大一新生看这一场直播，往后四年做实验准保记得先拧紧鳄鱼夹",
+    "en": "Every physics freshman who watched that stream will check their probe clips twice for the next four years"
+  },
+  "LOC_EVENT_WORLD_OPEN_LAB_RETRACTION_NEGATIVE": {
+    "source": "连夹子松没松都没核对清楚就敢往外发快讯，白白吊了大伙儿一礼拜胃口",
+    "zh_CN": "连夹子松没松都没核对清楚就敢往外发快讯，白白吊了大伙儿一礼拜胃口",
+    "en": "A whole week of breathless headlines over a Loose Wire 101 mistake nobody checked before tweeting"
+  },
+  "LOC_EVENT_WORLD_OPEN_LAB_RETRACTION_NEGATIVE_ALT": {
+    "source": "正经科研经费最后全变成了直播间里的弹幕笑料，看着实在让人泄气",
+    "zh_CN": "正经科研经费最后全变成了直播间里的弹幕笑料，看着实在让人泄气",
+    "en": "Turning lab verification into chat-room spectacle makes people shrug at real findings next time"
+  },
+  "LOC_EVENT_WORLD_SMART_METER_BILLING_GLITCH_TITLE": {
+    "source": "换装远程智能燃气表后多片小区月费骤增",
+    "zh_CN": "换装远程智能燃气表后多片小区月费骤增",
+    "en": "Monthly gas charges jump across estates after smart-meter swap"
+  },
+  "LOC_EVENT_WORLD_SMART_METER_BILLING_GLITCH_NARRATIVE": {
+    "source": "%s燃气集团完成远程智能表具更换后的首月，上千户居民晒出比往年同期翻了一倍的扣费短信，连整月出差空锁着的屋子也产生了估抄气费。营业厅门口排起长队，住户纷纷翻出三年前的纸质缴费条逐月核对。",
+    "zh_CN": "%s燃气集团完成远程智能表具更换后的首月，上千户居民晒出比往年同期翻了一倍的扣费短信，连整月出差空锁着的屋子也产生了估抄气费。营业厅门口排起长队，住户纷纷翻出三年前的纸质缴费条逐月核对。",
+    "en": "In the first billing cycle after %s's gas utility installs remote smart meters, thousands of households post auto-debit texts double last year's usage, including flats locked up empty all month. Residents queue outside service halls clutching yellowed paper receipts from three winters back."
+  },
+  "LOC_EVENT_WORLD_SMART_METER_BILLING_GLITCH_COMMENT": {
+    "source": "屋里一个月没开火也能跑出几十方气，难不成灶台半夜自己起来烧水喝？也难怪街坊们把几年前的旧收费条都压在抽屉底舍不得扔。",
+    "zh_CN": "屋里一个月没开火也能跑出几十方气，难不成灶台半夜自己起来烧水喝？也难怪街坊们把几年前的旧收费条都压在抽屉底舍不得扔。",
+    "en": "Locked flats burning thirty cubic meters of gas on their own, as if the stove got up at night to boil tea. No wonder older neighbors hoard paper receipts in biscuit tins."
+  },
+  "LOC_EVENT_WORLD_SMART_METER_BILLING_GLITCH_POSITIVE": {
+    "source": "燃气公司已经承诺逐户重校脉冲系数，多扣的气费下月原路退回",
+    "zh_CN": "燃气公司已经承诺逐户重校脉冲系数，多扣的气费下月原路退回",
+    "en": "The utility agreed to recalibrate pulse ratios block by block and refund every overcharged cubic meter"
+  },
+  "LOC_EVENT_WORLD_SMART_METER_BILLING_GLITCH_NEGATIVE": {
+    "source": "说是升级成无人远程抄表更准，怎么出故障永远是往多了估、没见往少了算过",
+    "zh_CN": "说是升级成无人远程抄表更准，怎么出故障永远是往多了估、没见往少了算过",
+    "en": "Funny how every automated billing bug somehow rounds double upward and never fifty cents in the customer's favor"
+  },
+  "LOC_EVENT_WORLD_REMITTANCE_FEE_BOYCOTT_TITLE": {
+    "source": "跨境小额汇款软件上调固定手续费引来换汇互助帖",
+    "zh_CN": "跨境小额汇款软件上调固定手续费引来换汇互助帖",
+    "en": "Remittance apps double flat fee on small transfers, sparking pooled-send threads"
+  },
+  "LOC_EVENT_WORLD_REMITTANCE_FEE_BOYCOTT_NARRATIVE": {
+    "source": "%s两家主流跨境钱包同时把每笔小额汇款的固定手续费提高一倍，在外务工人员每月寄回家里的生活费平白被啃掉一截。同乡论坛连夜置顶了按月合单转账与顺路捎年货的熟人核验帖。",
+    "zh_CN": "%s两家主流跨境钱包同时把每笔小额汇款的固定手续费提高一倍，在外务工人员每月寄回家里的生活费平白被啃掉一截。同乡论坛连夜置顶了按月合单转账与顺路捎年货的熟人核验帖。",
+    "en": "Two major cross-border wallet apps in %s double their flat fee on small remittances, taking a bite out of monthly family support sent by migrant workers. Hometown forums pin verified threads for pooling monthly transfers by village and carrying goods home in person."
+  },
+  "LOC_EVENT_WORLD_REMITTANCE_FEE_BOYCOTT_COMMENT": {
+    "source": "大额转账免服务费，偏偏盯着每月往老家寄几百块生活费的人收双倍过路钱，这算盘珠子崩得隔着半个地球都听见响了。",
+    "zh_CN": "大额转账免服务费，偏偏盯着每月往老家寄几百块生活费的人收双倍过路钱，这算盘珠子崩得隔着半个地球都听见响了。",
+    "en": "Wire ten thousand for free, or pay double to send your mother grocery money on the fifth of the month. You can hear that abacus clacking from across the ocean."
+  },
+  "LOC_EVENT_WORLD_REMITTANCE_FEE_BOYCOTT_POSITIVE": {
+    "source": "逼得同乡群把合单核验的流程理得清清楚楚，省下的手续费够给家里老人多买两桶油",
+    "zh_CN": "逼得同乡群把合单核验的流程理得清清楚楚，省下的手续费够给家里老人多买两桶油",
+    "en": "Pooling transfers with three families from the same town saves enough fees to buy my parents two extra jugs of cooking oil"
+  },
+  "LOC_EVENT_WORLD_REMITTANCE_FEE_BOYCOTT_NEGATIVE": {
+    "source": "辛苦端盘子攒下那点零碎钱，往家里寄一回就得先被平台刮走一层皮",
+    "zh_CN": "辛苦端盘子攒下那点零碎钱，往家里寄一回就得先被平台刮走一层皮",
+    "en": "Wash dishes all month for spare change and the app skims an hour's pay before your family sees a coin"
+  },
+  "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_TITLE": {
+    "source": "“床头摆切开洋葱可防流感”短视频在亲友群刷屏",
+    "zh_CN": "“床头摆切开洋葱可防流感”短视频在亲友群刷屏",
+    "en": "Viral \"sliced bedside onion absorbs flu\" clip clears market stalls"
+  },
+  "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_NARRATIVE": {
+    "source": "一条声称卧室四角摆生洋葱即可吸走空气病毒的短视频在%s亲友群疯狂转发，菜市场紫皮洋葱两天涨了四成。呼吸科医生拍视频苦口婆心辟谣，底下最高赞评论却在追问白皮洋葱管不管用。",
+    "zh_CN": "一条声称卧室四角摆生洋葱即可吸走空气病毒的短视频在%s亲友群疯狂转发，菜市场紫皮洋葱两天涨了四成。呼吸科医生拍视频苦口婆心辟谣，底下最高赞评论却在追问白皮洋葱管不管用。",
+    "en": "A short clip claiming raw quartered onions in bedroom corners soak up airborne flu sweeps family chats in %s, pushing purple onion prices up forty percent in two days. Pulmonologists post tired explainer videos, and the top reply asks if yellow onions work too."
+  },
+  "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_COMMENT": {
+    "source": "医生在镜头前嗓子都快喊劈了，底下第一排热评还在诚心发问白皮的管不管用……哦~在省事儿的偏方面前，教科书向来抢不过菜篮子。",
+    "zh_CN": "医生在镜头前嗓子都快喊劈了，底下第一排热评还在诚心发问白皮的管不管用……哦~在省事儿的偏方面前，教科书向来抢不过菜篮子。",
+    "en": "A lung specialist spends ten minutes explaining viral droplets and the top comment earnestly asks whether white onions are strong enough. Textbooks rarely stand a chance against a cheap kitchen remedy."
+  },
+  "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_POSITIVE": {
+    "source": "几块钱买两颗洋葱切开摆着图个安心，就算没神效，明天拿去炒鸡蛋也不亏",
+    "zh_CN": "几块钱买两颗洋葱切开摆着图个安心，就算没神效，明天拿去炒鸡蛋也不亏",
+    "en": "Two onions on a saucer cost almost nothing, and if they don't catch a virus we can still fry them with eggs tomorrow"
+  },
+  "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_NEGATIVE": {
+    "source": "发着高烧不去挂号非在枕头边熏洋葱，等熏得满眼通红还得多挂一个眼科",
+    "zh_CN": "发着高烧不去挂号非在枕头边熏洋葱，等熏得满眼通红还得多挂一个眼科",
+    "en": "Skip the clinic with a high fever to sleep beside chopped onions and you'll need an eye doctor by morning too"
+  },
+  "LOC_EVENT_WORLD_MEME_SATURATION_BURNOUT_TITLE": {
+    "source": "热榜连日撞梗催生网友自发“周末静音清屏”行动",
+    "zh_CN": "热榜连日撞梗催生网友自发“周末静音清屏”行动",
+    "en": "Weeks of copycat trending posts spark user-led \"quiet timeline weekend\""
+  },
+  "LOC_EVENT_WORLD_MEME_SATURATION_BURNOUT_NARRATIVE": {
+    "source": "%s几大社交平台连续两周被同一种句式的跟风帖刷屏，连市政通知与洗衣粉广告都在套用同一句俏皮话。大批烦透了的用户干脆在周末集体换上静音头像，只发旧书摘抄和窗外风景照洗眼睛。",
+    "zh_CN": "%s几大社交平台连续两周被同一种句式的跟风帖刷屏，连市政通知与洗衣粉广告都在套用同一句俏皮话。大批烦透了的用户干脆在周末集体换上静音头像，只发旧书摘抄和窗外风景照洗眼睛。",
+    "en": "After two straight weeks of identical punchline templates flooding feeds in %s, right down to municipal notices and laundry-powder ads, fed-up users mute trending tags for the weekend and post only book pages and window clouds."
+  },
+  "LOC_EVENT_WORLD_MEME_SATURATION_BURNOUT_COMMENT": {
+    "source": "连卖洗衣粉的都在用同一个梗跟你套近乎的时候，这句俏皮话基本也就到头了，关掉热榜清静两天挺好。",
+    "zh_CN": "连卖洗衣粉的都在用同一个梗跟你套近乎的时候，这句俏皮话基本也就到头了，关掉热榜清静两天挺好。",
+    "en": "Once detergent commercials start winking at you with the exact same punchline, the joke has earned a decent burial. Muting the feed for a weekend sounds sensible."
+  },
+  "LOC_EVENT_WORLD_MEME_SATURATION_BURNOUT_POSITIVE": {
+    "source": "把那几个翻来覆去嚼烂了的热词全屏蔽掉，时间线总算像个正常人说话的地方了",
+    "zh_CN": "把那几个翻来覆去嚼烂了的热词全屏蔽掉，时间线总算像个正常人说话的地方了",
+    "en": "Mute five overchewed catchphrases and the timeline suddenly sounds like actual people talking again"
+  },
+  "LOC_EVENT_WORLD_MEME_SATURATION_BURNOUT_NEGATIVE": {
+    "source": "刚想顺手发张图凑个热闹，一抬头发现全群都在晒静音截图，反倒显得自己慢半拍",
+    "zh_CN": "刚想顺手发张图凑个热闹，一抬头发现全群都在晒静音截图，反倒显得自己慢半拍",
+    "en": "By the time you finally learn the joke, the whole group chat has moved on to bragging about muting it"
+  },
+  "LOC_EVENT_TRANSMISSION_DIASPORA_VOICE_NOTE_TITLE": {
+    "source": "跨城夜班大巴与同乡语音群接力转述这条模因",
+    "zh_CN": "跨城夜班大巴与同乡语音群接力转述这条模因",
+    "en": "Overnight coach riders and hometown voice chats pass the meme along"
+  },
+  "LOC_EVENT_TRANSMISSION_DIASPORA_VOICE_NOTE_NARRATIVE": {
+    "source": "%s跑跨城夜班车的务工者把这条模因念进几十秒的方言语音条，顺手转进老乡找活群与餐馆后厨群，没刷过原帖的人听一遍也跟着挂在了嘴边。",
+    "zh_CN": "%s跑跨城夜班车的务工者把这条模因念进几十秒的方言语音条，顺手转进老乡找活群与餐馆后厨群，没刷过原帖的人听一遍也跟着挂在了嘴边。",
+    "en": "Workers riding overnight coaches in %s record the meme in short dialect voice notes and forward them into hometown job-board and kitchen-staff chats, where people who never saw the original post pick it up by ear."
+  },
+  "LOC_EVENT_TRANSMISSION_DIASPORA_VOICE_NOTE_COMMENT": {
+    "source": "连字都不用打，六十秒语音条带着大巴发动机的嗡嗡声就传遍了半个后厨……顺嘴的话，搁哪儿都能自己长腿。",
+    "zh_CN": "连字都不用打，六十秒语音条带着大巴发动机的嗡嗡声就传遍了半个后厨……顺嘴的话，搁哪儿都能自己长腿。",
+    "en": "Nobody even typed it out; one voice clip with coach-engine hum in the background carried it through half the restaurant kitchens in town. A line that rolls off the tongue finds its own legs."
+  },
+  "LOC_EVENT_TRANSMISSION_DIASPORA_VOICE_NOTE_POSITIVE": {
+    "source": "用老家口音念出来味道一下子就对了，连不爱看长字的叔伯都听乐了",
+    "zh_CN": "用老家口音念出来味道一下子就对了，连不爱看长字的叔伯都听乐了",
+    "en": "Hearing it read aloud in a hometown accent makes even uncles who skip text posts laugh out loud"
+  },
+  "LOC_EVENT_TRANSMISSION_DIASPORA_VOICE_NOTE_NEGATIVE": {
+    "source": "语音条一传三手连原话是谁写的都没影了，只剩一串带口音的顺口溜",
+    "zh_CN": "语音条一传三手连原话是谁写的都没影了，只剩一串带口音的顺口溜",
+    "en": "Three voice-note forwards later, nobody remembers where the line started"
+  },
+  "LOC_EVENT_TRANSMISSION_CLINIC_WAITING_BOARD_TITLE": {
+    "source": "门诊叫号屏与街坊群把模因和挂号房租账拼成搭档",
+    "zh_CN": "门诊叫号屏与街坊群把模因和挂号房租账拼成搭档",
+    "en": "Clinic waiting-room posts fuse meme with rent and grocery gripes"
+  },
+  "LOC_EVENT_TRANSMISSION_CLINIC_WAITING_BOARD_NARRATIVE": {
+    "source": "%s社区门诊候诊的居民一边盯着叫号屏，一边把这条模因跟挂号排队、房租续约和菜价上涨的吐槽拼在同一张截图里转发。原本单指一件事的说法，渐渐变成了过日子磕绊的统称。",
+    "zh_CN": "%s社区门诊候诊的居民一边盯着叫号屏，一边把这条模因跟挂号排队、房租续约和菜价上涨的吐槽拼在同一张截图里转发。原本单指一件事的说法，渐渐变成了过日子磕绊的统称。",
+    "en": "Patients watching queue boards at neighborhood clinics in %s pair the meme in one screenshot with complaints about clinic waits, lease renewals and vegetable prices. A line aimed at one headache widens into shorthand for everyday wear and tear."
+  },
+  "LOC_EVENT_TRANSMISSION_CLINIC_WAITING_BOARD_COMMENT": {
+    "source": "坐在门诊长椅上等叫号最容易把前阵子的烦心事一并翻出来，房租菜价往一块儿一凑，你这句词算是彻底住进街坊嘴里了。",
+    "zh_CN": "坐在门诊长椅上等叫号最容易把前阵子的烦心事一并翻出来，房租菜价往一块儿一凑，你这句词算是彻底住进街坊嘴里了。",
+    "en": "Half an hour on a plastic clinic bench is plenty of time to remember the rent notice and the price of greens too. Once neighbors bundle all three together, your line moves in for good."
+  },
+  "LOC_EVENT_TRANSMISSION_CLINIC_WAITING_BOARD_POSITIVE": {
+    "source": "挂号单和买菜小票往旁边一摆，不用多解释大伙儿也懂这口气",
+    "zh_CN": "挂号单和买菜小票往旁边一摆，不用多解释大伙儿也懂这口气",
+    "en": "Put a clinic queue slip next to a market receipt and nobody in the chat needs the joke explained"
+  },
+  "LOC_EVENT_TRANSMISSION_CLINIC_WAITING_BOARD_NEGATIVE": {
+    "source": "什么柴米油盐的苦水都往里头装，原先那点机灵劲儿倒被冲淡了",
+    "zh_CN": "什么柴米油盐的苦水都往里头装，原先那点机灵劲儿倒被冲淡了",
+    "en": "Stuff every household errand into the same punchline and its original edge wears flat"
+  },
+  "LOC_EVENT_TRANSMISSION_OFFICIAL_SAFETY_POSTER_TITLE": {
+    "source": "车站与校门口的反光横幅生硬套用模因令原梗迅速降温",
+    "zh_CN": "车站与校门口的反光横幅生硬套用模因令原梗迅速降温",
+    "en": "Station safety banners borrow the meme, cooling off young users"
+  },
+  "LOC_EVENT_TRANSMISSION_OFFICIAL_SAFETY_POSTER_NARRATIVE": {
+    "source": "%s交通宣教科把这条正火的模因改了半句韵脚，印成红底黄字的安全横幅挂满地铁闸机口与中学围栏。原本拿它开玩笑的学生和通勤族见状，纷纷在群里宣布这句词已经“寿终正寝”。",
+    "zh_CN": "%s交通宣教科把这条正火的模因改了半句韵脚，印成红底黄字的安全横幅挂满地铁闸机口与中学围栏。原本拿它开玩笑的学生和通勤族见状，纷纷在群里宣布这句词已经“寿终正寝”。",
+    "en": "Traffic-safety offices in %s tweak half a rhyme of the trending meme and hang it on yellow-lettered banners at subway gates and school fences. Students and commuters who used it all week promptly declare the joke dead in their group chats."
+  },
+  "LOC_EVENT_TRANSMISSION_OFFICIAL_SAFETY_POSTER_COMMENT": {
+    "source": "一旦被印成红底黄字挂上学校铁栏杆，再机灵的俏皮话也得当场立正站好……欸，想给一个热梗退烧，真没比这更管用的法子了。",
+    "zh_CN": "一旦被印成红底黄字挂上学校铁栏杆，再机灵的俏皮话也得当场立正站好……欸，想给一个热梗退烧，真没比这更管用的法子了。",
+    "en": "Nothing takes the mischief out of a catchphrase faster than printing it in block letters on a school fence. If someone wanted to cool a trend on purpose, they couldn't do better."
+  },
+  "LOC_EVENT_TRANSMISSION_OFFICIAL_SAFETY_POSTER_POSITIVE": {
+    "source": "路过闸机抬头看一眼还真记住了那条安全提醒，宣教科这回不算白忙活",
+    "zh_CN": "路过闸机抬头看一眼还真记住了那条安全提醒，宣教科这回不算白忙活",
+    "en": "Cringe all you want, everyone walking through the turnstile actually read the safety reminder twice"
+  },
+  "LOC_EVENT_TRANSMISSION_OFFICIAL_SAFETY_POSTER_NEGATIVE": {
+    "source": "昨天还在群里发得起劲，今天一见它挂在校门口横幅上，瞬间脚趾抠地再也不想用了",
+    "zh_CN": "昨天还在群里发得起劲，今天一见它挂在校门口横幅上，瞬间脚趾抠地再也不想用了",
+    "en": "Used it ten times yesterday, saw it hanging on the high-school gate this morning, never typing it again"
   }
 }

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="MemeDemoEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/events/meme_demo_event.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"world_viral_allergy_hoax"
+category = &"internet"
+origin = &"world"
+title = "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_TITLE"
+narrative = "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_NARRATIVE"
+mentor_comment = "LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_COMMENT"
+topic_ids = PackedStringArray("healthcare", "food", "public_safety")
+response_profile = {"attention": 0.65, "spread": 0.38, "production": 0.75, "sentiment": -0.1, "authority_affinity": 0.15, "freedom_affinity": -0.05, "equality_affinity": 0.05, "hierarchy_affinity": 0.05, "controversy": 0.7, "positive_frames": ["LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_POSITIVE"], "negative_frames": ["LOC_EVENT_WORLD_VIRAL_ALLERGY_HOAX_NEGATIVE"], "group_reactions": {"health_workers": -0.35, "educators": -0.25, "agricultural_workers": 0.2, "retirees": 0.15}}
+external_preset_id = &""
+mutation_kind = &""
+mutation_topic_ids = PackedStringArray()
+mutation_stance_delta = Vector2(0.0, 0.0)
+mutation_pragmatic_delta = Vector2(0.0, 0.0)
+operation_ids = PackedStringArray("attention_shift", "contest")
+trigger_mode = &"random"
+start_hour = 0.0
+weight = 1.0
+occurrence_chance = 1.0
+cooldown_hours = 24.0
+max_occurrences = 1
+physical_duration_hours = 6.0
+attention_duration_hours = 16.0
+attention_decay = &"linear"
+discovery_ids = PackedStringArray()
+evidence_status = &"design"
+design_rewards = Array[Dictionary]([{"kind": "module", "id": "module_stance", "count": 1}])
