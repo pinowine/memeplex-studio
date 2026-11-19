@@ -71,4 +71,7 @@ static func render(catalog: MemeDemoCatalog, draft: Dictionary) -> String:
 			if str(kernel.id) == str(draft.get("kernel_id", "")):
 				for slot: String in kernel.required_slots: parts.append(str(slots.get(slot, "")))
 	parts.append_array(authored_patches)
-	return "\n".join(parts)
+	var expression := "\n".join(parts)
+	if not preset_defaults and not defaults:
+		DeskLocalization.register_display(expression, expression, expression)
+	return expression
