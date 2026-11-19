@@ -31,6 +31,7 @@ const DesignWorkbench = preload("res://scripts/presentation/studio/workbench/des
 @onready var _slot_edits: Array[LineEdit] = [%SlotEdit0, %SlotEdit1, %SlotEdit2, %SlotEdit3, %SlotEdit4]
 
 var _screen_modals: Control
+var _modal_viewport: Viewport
 var _event_slide: Tween
 var _event: Dictionary = {}
 var _locale_catalog: Resource
@@ -491,6 +492,7 @@ func _install_screen_modals() -> void:
 	var layer := CanvasLayer.new()
 	layer.name = "ScreenSpaceMenus"
 	layer.layer = 60
+	if _modal_viewport != null: layer.custom_viewport = _modal_viewport
 	add_child(layer)
 	_screen_modals = Control.new()
 	_screen_modals.name = "MenuLayout"
@@ -507,7 +509,7 @@ func _install_screen_modals() -> void:
 
 
 func set_modal_viewport(viewport: Viewport) -> void:
-	_screen_modals.get_parent().custom_viewport = viewport
+	_modal_viewport = viewport
 
 
 func layout_screen_modals() -> void:

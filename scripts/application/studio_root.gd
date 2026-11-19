@@ -124,6 +124,7 @@ func _ready() -> void:
 		return
 	await _loading.present("LOC_LOADING_CONTENT")
 	desktop = page.create_studio_adapter()
+	_setup_postprocess()
 	desktop.prepare()
 	_layout_equipment()
 	if not paper_masks.configure(desktop.paper_masks()):
@@ -146,7 +147,6 @@ func _ready() -> void:
 	handset_cord.name = "ConnectedCoiledReceiverCable"
 	add_child(handset_cord)
 	_update_handset(true)
-	_setup_postprocess()
 	add_child(hover_outline)
 	hover_outline.configure(camera)
 	get_window().focus_exited.connect(_cancel_input)
