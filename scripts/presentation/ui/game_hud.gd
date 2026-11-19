@@ -78,8 +78,10 @@ func _ready() -> void:
 	%Step.pressed.connect(func() -> void: step_requested.emit())
 	%Return.pressed.connect(func() -> void: workbench_requested.emit())
 	%EventContinue.pressed.connect(func() -> void: event_acknowledged.emit())
+	%EventCard.font_scale = 1.15
 	%EventCard.add_action_button(%EventContinue)
 	%EventContinue.theme = ReceiptUI.create_theme()
+	%EventContinue.add_theme_font_size_override("font_size", 16)
 	ReceiptUI.primary(%EventContinue)
 	%Recreate.pressed.connect(func() -> void: workbench_requested.emit())
 	%ResultRestart.pressed.connect(func() -> void: restart_requested.emit())
@@ -508,6 +510,7 @@ func _install_screen_modals() -> void:
 	_screen_modals.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	for panel: Control in [%ModalShade,%EventCard,%ResultCard,%SettingsMenu,%DeveloperMenu]:
 		panel.reparent(_screen_modals,false)
+	%EventCard.mount_hover_overlay(_screen_modals)
 	%ModalShade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	layout_screen_modals()
 	_refresh_modal()

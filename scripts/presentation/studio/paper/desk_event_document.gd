@@ -57,6 +57,7 @@ var _impact_labels: Array[RichTextLabel] = []
 var _portrait: TextureRect
 var _hover: PanelContainer
 var _numbers := RegEx.create_from_string("[-+]?[0-9]+(?:[.,][0-9]+)*(?:%|％)?")
+var font_scale := 1.0
 var scroll_vertical: int:
 	get: return _scroll.scroll_vertical
 	set(value): _scroll.scroll_vertical = value
@@ -112,6 +113,14 @@ func add_action_button(button: Button) -> void:
 	button.reparent(layout, false)
 	layout.move_child(button, _footer.get_index())
 
+func mount_hover_overlay(parent: Node) -> void:
+	var previous := _hover.get_parent()
+	_hover.reparent(parent, false)
+	_hover.z_index = 25
+	if previous is CanvasLayer and previous.get_parent() == self:
+		remove_child(previous)
+		previous.queue_free()
+
 func set_details(details: Dictionary) -> void:
 	var blocks: Array[Dictionary] = []
 	for section: Dictionary in details.sections:
@@ -164,6 +173,7 @@ func set_blocks(blocks: Array[Dictionary], full_title: String = "") -> void:
 		title.add_theme_constant_override("line_spacing", 0)
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		if size.x > 64.0: title.size.x = size.x - 64.0
 		headline.add_child(title)
 	for block: Dictionary in blocks:
 		match str(block.get("role", "")):
@@ -211,7 +221,7 @@ func _add_metadata(block: Dictionary) -> void:
 	timestamp.autowrap_mode = TextServer.AUTOWRAP_OFF
 	timestamp.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	timestamp.add_theme_constant_override("line_separation", 0)
-	timestamp.custom_minimum_size.x = ceilf(ReceiptHover.BODY_FONT.get_string_size(date_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 11).x) + 2
+	timestamp.custom_minimum_size.x = ceilf(timestamp.get_theme_font("normal_font").get_string_size(date_text, HORIZONTAL_ALIGNMENT_LEFT, -1, timestamp.get_theme_font_size("normal_font_size")).x) + 2
 	timestamp.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	timestamp.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	timestamp.add_text(date_text)
@@ -234,7 +244,7 @@ func _compact_field(field: Dictionary, node_name: String, font_size: int, ink: C
 	label.add_theme_constant_override("line_separation", 0)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	label.custom_minimum_size.x = ceilf(ReceiptHover.BODY_FONT.get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("normal_font_size")).x) + 2
+	label.custom_minimum_size.x = ceilf(label.get_theme_font("normal_font").get_string_size(str(field.text), HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("normal_font_size")).x) + 2
 	_write_field(label, field, 0, ink)
 	_bind_fields(label, [field])
 	return label
@@ -324,7 +334,7 @@ func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) ->
 	section.add_child(row)
 	var label := _body(12, Style.SECONDARY_INK)
 	label.name = "ImpactLabel"
-	label.custom_minimum_size.x = 72
+	label.custom_minimum_size.x = ceilf(72.0 * float(label.get_theme_font_size("normal_font_size")) / 10.0)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	row.add_child(label)
 	var values := VBoxContainer.new()
@@ -342,7 +352,7 @@ func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) ->
 	values.add_child(stats)
 	var amount := _body(14, Style.INK)
 	amount.name = "ImpactAmount"
-	amount.custom_minimum_size.x = 48
+	amount.custom_minimum_size.x = ceilf(48.0 * float(amount.get_theme_font_size("normal_font_size")) / 12.0)
 	amount.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	stats.add_child(amount)
 	var duration := _body(12, Style.SECONDARY_INK)
@@ -397,7 +407,7 @@ func _bind_fields(label: RichTextLabel, segments: Array) -> void:
 		else:
 			_hover.set_content(str(field.tooltip_title), [], str(field.tooltip_body), {"kind":str(field.field_kind), "note":str(field.get("tooltip_note", ""))})
 		_hover.show()
-		_hover.fit_at(get_viewport().get_mouse_position(), get_viewport().get_visible_rect()))
+		_hover._follow_pointer())
 	label.meta_clicked.connect(func(meta: Variant):
 		var id := str(segments[int(meta)].get("variant_id", ""))
 		if not id.is_empty():
@@ -422,7 +432,7 @@ func _add_comment(block: Dictionary) -> void:
 	_portrait.texture = PORTRAIT
 	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_portrait.custom_minimum_size = Vector2(56, 56)
+	_portrait.custom_minimum_size = Vector2.ONE * roundf(56.0 * font_scale)
 	_portrait.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_portrait.ready.connect(_portrait.set_emotion.bind("thinking"))
@@ -435,22 +445,25 @@ func _add_comment(block: Dictionary) -> void:
 	content.add_child(body)
 	body.add_text(str(block.content))
 
+func _scaled_size(font_size: int) -> int:
+	return Typography.normalized_size(font_size) if is_equal_approx(font_scale, 1.0) else roundi(font_size * font_scale)
+
 func _label(text: String, font_size: int, ink: Color) -> Label:
 	var text_role := Typography.role_for_size(font_size)
-	font_size = Typography.normalized_size(font_size)
+	font_size = _scaled_size(font_size)
 	var label := Label.new()
 	label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	label.text = text
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_font_override("font", ReceiptHover.BODY_FONT)
-	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", ink)
 	Typography.apply_control(label, text_role, true)
+	label.add_theme_font_size_override("font_size", font_size)
 	return label
 
 func _body(font_size: int, ink: Color) -> RichTextLabel:
 	var text_role := Typography.role_for_size(font_size)
-	font_size = Typography.normalized_size(font_size)
+	font_size = _scaled_size(font_size)
 	var body := RichTextLabel.new()
 	body.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	body.fit_content = true
@@ -461,11 +474,11 @@ func _body(font_size: int, ink: Color) -> RichTextLabel:
 	body.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	body.add_theme_font_override("normal_font", ReceiptHover.BODY_FONT)
 	body.add_theme_font_override("bold_font", ReceiptHover.BOLD_FONT)
-	body.add_theme_font_size_override("normal_font_size", font_size)
-	body.add_theme_font_size_override("bold_font_size", font_size)
 	body.add_theme_color_override("default_color", ink)
 	body.add_theme_constant_override("line_separation", 4)
 	Typography.apply_control(body, text_role, true)
+	for key: String in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size"]:
+		body.add_theme_font_size_override(key, font_size)
 	return body
 
 func _write_content(label: RichTextLabel, text: String) -> void:
