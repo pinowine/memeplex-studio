@@ -2,7 +2,7 @@ extends RefCounted
 
 const Typography = preload("res://scripts/presentation/ui/components/desk_typography.gd")
 
-const FONT := preload("res://assets/image/fonts/handwritten_font.tres")
+const FONT := preload("res://assets/image/fonts/body_medium_font.tres")
 const BODY_FONT := preload("res://assets/image/fonts/development_font.tres")
 const MEDIUM_FONT := preload("res://assets/image/fonts/body_medium_font.tres")
 const SEMIBOLD_FONT := preload("res://assets/image/fonts/body_semibold_font.tres")

@@ -22,14 +22,6 @@ Other assets include adapted third-party icons and procedural graphics.
 Godot Engine: MIT license. Engine and bundled-component notices for executable
 distribution are available at https://godotengine.org/license/
 
-LXGW WenKai Regular: Copyright 2021-2026 LXGW;
-Copyright 2020 The Klee Project Authors.
-SIL Open Font License, Version 1.1.
-Official source: https://github.com/lxgw/LxgwWenKai
-Bundled font: assets/image/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf
-The font is redistributed unchanged. Full copyright notices, Reserved Font Names,
-additional permission and licence: assets/image/fonts/lxgw-wenkai/OFL.txt
-
 Noto Sans SC Variable: Copyright 2014-2021 Adobe, with Reserved Font Name
 "Source".
 SIL Open Font License, Version 1.1.
@@ -58,3 +50,17 @@ Official source: https://github.com/googlefonts/noto-emoji
 Distribution: https://github.com/google/fonts/tree/main/ofl/notoemoji
 Bundled font: assets/image/fonts/noto-emoji/NotoEmoji-VF.ttf
 The font is redistributed unchanged. Full licence: assets/image/fonts/noto-emoji/OFL.txt
+
+Noto Sans Arabic Variable: Copyright 2022 The Noto Project Authors.
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/notofonts/arabic
+Bundled font: assets/image/fonts/notosansarabic/NotoSansArabic[wdth,wght].ttf
+The font is redistributed unchanged. Full licence:
+assets/image/fonts/notosansarabic/OFL.txt
+
+Noto Sans Devanagari Variable: Copyright 2022 The Noto Project Authors.
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/notofonts/devanagari
+Bundled font: assets/image/fonts/notosansdevanagari/NotoSansDevanagari[wdth,wght].ttf
+The font is redistributed unchanged. Full licence:
+assets/image/fonts/notosansdevanagari/OFL.txt

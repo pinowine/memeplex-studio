@@ -256,7 +256,7 @@ func hover_details(viewport_point: Vector2) -> String:
 
 
 func _apply_handwriting() -> void:
-	_handwritten_font = preload("res://assets/image/fonts/handwritten_font.tres")
+	_handwritten_font = preload("res://assets/image/fonts/body_medium_font.tres")
 	var paper_theme := theme.duplicate() as Theme if theme != null else Theme.new()
 	paper_theme.default_font = BODY_FONT
 	paper_theme.set_font("font", "Button", BODY_SEMIBOLD_FONT)

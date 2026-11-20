@@ -14,7 +14,7 @@ const A4_RATIO: float = 297.0 / 210.0
 const KEY_ZONES := [Rect2(800,536,52,50),Rect2(871,536,52,50),Rect2(943,536,52,50),Rect2(800,600,52,50),Rect2(871,600,52,50),Rect2(943,600,52,50),Rect2(800,665,52,50),Rect2(871,665,52,50),Rect2(943,665,52,50),Rect2(800,729,52,52),Rect2(871,729,52,52),Rect2(943,729,52,52)]
 const OutputPage := preload("res://scripts/presentation/studio/devices/fax/desk_fax_output_page.gd")
 const PRINT_HEADING_FONT := preload("res://assets/image/fonts/print_heading_font.tres")
-const HANDWRITTEN_FONT := preload("res://assets/image/fonts/handwritten_font.tres")
+const HANDWRITTEN_FONT := preload("res://assets/image/fonts/body_medium_font.tres")
 static var REPLIES = preload("res://scripts/presentation/studio/devices/fax/fax_call_session.gd").REPLIES
 
 var shade: ColorRect

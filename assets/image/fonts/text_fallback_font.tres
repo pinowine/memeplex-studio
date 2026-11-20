@@ -1,7 +1,7 @@
 [gd_resource type="FontVariation" load_steps=6 format=3]
 
 [ext_resource type="FontFile" path="res://assets/image/fonts/noto-sans/NotoSans-VF.ttf" id="latin"]
-[ext_resource type="FontFile" path="res://assets/image/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf" id="cjk"]
+[ext_resource type="FontFile" path="res://assets/image/fonts/noto-sans-sc/NotoSansSC-VF.ttf" id="cjk"]
 [ext_resource type="FontFile" path="res://assets/image/fonts/noto-emoji/NotoEmoji-VF.ttf" id="emoji"]
 [ext_resource type="FontFile" path="res://assets/image/fonts/notosansarabic/NotoSansArabic[wdth,wght].ttf" id="arabic"]
 [ext_resource type="FontFile" path="res://assets/image/fonts/notosansdevanagari/NotoSansDevanagari[wdth,wght].ttf" id="devanagari"]
