@@ -120,7 +120,7 @@ func tick() -> void:
 	_season_icon.texture = (_hud.get_node("SeasonIcons").get_child(season_index) as TextureRect).texture
 	_season_label.position.x = season_left + 16.0
 	_season_label.size.x = season_width
-	_fit_text(_weather, "%s · %s" % [DeskLocalization.text("LOC_DAY_0201C422") if daylit else DeskLocalization.text("LOC_NIGHT_A519542A"), _weather_word(weather)], 9)
+	_fit_text(_weather, _weather_word(weather), 9)
 	_speed.hide()
 	for id in ["ClockFace", "SeasonIcons", "IndexMark", "WeatherLabel"]:
 		var node := _hud.get_node_or_null(id) as CanvasItem
