@@ -510,8 +510,6 @@ func _install_screen_modals() -> void:
 
 func set_modal_viewport(viewport: Viewport) -> void:
 	_modal_viewport = viewport
-	if _screen_modals != null:
-		(_screen_modals.get_parent() as CanvasLayer).custom_viewport = viewport
 
 
 func layout_screen_modals() -> void:

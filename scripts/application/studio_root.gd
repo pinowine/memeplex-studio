@@ -36,6 +36,7 @@ var _cursor := GameCursors.new()
 var ready_3d := false
 var half_tone: ColorRect
 var modal_image: TextureRect
+var _modal_viewport: SubViewport
 var _modal_margins: Array[ColorRect] = []
 var studio_wide := false
 var startup_error := ""
@@ -97,6 +98,15 @@ func _ready() -> void:
 	logical.transparent_bg = true
 	logical.handle_input_locally = true
 	logical.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	_modal_viewport = SubViewport.new()
+	_modal_viewport.name = "ScreenSpaceModalViewport"
+	_modal_viewport.size = logical.size
+	_modal_viewport.size_2d_override = logical.size_2d_override
+	_modal_viewport.size_2d_override_stretch = true
+	_modal_viewport.disable_3d = true
+	_modal_viewport.transparent_bg = true
+	_modal_viewport.msaa_2d = logical.msaa_2d
+	add_child(_modal_viewport)
 	add_child(logical)
 	var page_scene := load("res://scenes/studio/desk/game_page.tscn") as PackedScene
 	if page_scene == null:
@@ -114,6 +124,8 @@ func _ready() -> void:
 	projection.pointer_unprojection = logical_pointer_from_root
 	projection.target_projection = project_target
 	page.set_meta("studio3d", projection)
+	# Canvas layers keep their viewport's signal bindings from tree entry.
+	page.get_node("DemoLayer/HUD").set_modal_viewport(_modal_viewport)
 	logical.add_child(page)
 	if not page.initialization_complete:
 		await page.initialization_finished
@@ -299,22 +311,12 @@ func _setup_postprocess() -> void:
 	half_tone.visible = false
 	layer.add_child(half_tone)
 	# Keep desktop ink out of the texture composited over the 3D scene.
-	var modal_viewport := SubViewport.new()
-	modal_viewport.name = "ScreenSpaceModalViewport"
-	modal_viewport.size = logical.size
-	modal_viewport.size_2d_override = logical.size_2d_override
-	modal_viewport.size_2d_override_stretch = true
-	modal_viewport.disable_3d = true
-	modal_viewport.transparent_bg = true
-	modal_viewport.msaa_2d = logical.msaa_2d
-	add_child(modal_viewport)
-	page.hud.set_modal_viewport(modal_viewport)
 	var modal_layer := CanvasLayer.new()
 	modal_layer.layer = 80
 	add_child(modal_layer)
 	modal_image = TextureRect.new()
 	modal_image.name = "ScreenSpaceModalContent"
-	modal_image.texture = modal_viewport.get_texture()
+	modal_image.texture = _modal_viewport.get_texture()
 	# SubViewport textures already contain premultiplied color.
 	var modal_material := CanvasItemMaterial.new()
 	modal_material.blend_mode = CanvasItemMaterial.BLEND_MODE_PREMULT_ALPHA
