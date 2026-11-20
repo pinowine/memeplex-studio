@@ -38,6 +38,7 @@ var _section_rules: Array[Dictionary] = []
 var _row_glyphs: Array[Dictionary] = []
 var _tag_panels: Array[Dictionary] = []
 var _grouped_bars: Array[Dictionary] = []
+var _axis_plots: Array[Dictionary] = []
 var _icon_rect := Rect2()
 var _badge_rect := Rect2()
 var _footer_number: TextParagraph
@@ -118,7 +119,7 @@ func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 	return Rect2(position,extent)
 
 func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
-	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label", "bar_label":"label", "bar_primary":"label"}.get(role, "body"))
+	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "axis_label":"annotation", "context_tag":"label", "bar_label":"label", "bar_primary":"label"}.get(role, "body"))
 	if role in ["quote", "annotation"]: text_role = role
 	font_size = Typography.point_size(text_role)
 	font = Typography.SEMIBOLD_FONT if role == "bar_primary" else Typography.font(text_role)
@@ -166,6 +167,7 @@ func _layout_content() -> void:
 	_row_glyphs.clear()
 	_tag_panels.clear()
 	_grouped_bars.clear()
+	_axis_plots.clear()
 	_badge_rect = Rect2()
 	var width := _layout_width-PADDING.x*2.0
 	var y := PADDING.y
@@ -180,12 +182,16 @@ func _layout_content() -> void:
 		_icon_rect.position.y += (header_height-_icon_rect.size.y)*.5
 		y += header_height
 		var badge := str(_presentation.get("badge",""))
+		var axes: Array = _presentation.get("axes", [])
+		var axes_top := y + 6
 		if not badge.is_empty():
 			y += 6
 			var badge_width := minf(width-40,BODY_FONT.get_string_size(badge,HORIZONTAL_ALIGNMENT_LEFT,-1,Typography.point_size("annotation")).x+12)
+			if not axes.is_empty(): badge_width = minf(badge_width, 104)
 			var badge_height := _add_text(badge,Vector2(title_x+6,y+3),badge_width-12,BODY_FONT,11,ReceiptStyle.INK,"badge",HORIZONTAL_ALIGNMENT_CENTER)+6
 			_badge_rect = Rect2(title_x,y,badge_width,badge_height)
 			y += badge_height
+		if not axes.is_empty(): y = maxf(y, _layout_axes(axes, axes_top, width))
 		y = maxf(y,_icon_rect.end.y)+GROUP_GAP
 	var metric_value := str(_presentation.get("metric_value",""))
 	if not metric_value.is_empty():
@@ -261,6 +267,23 @@ func _layout_content() -> void:
 	size = custom_minimum_size
 	queue_redraw()
 
+func _layout_axes(axes: Array, top: float, width: float) -> float:
+	var chart_width := (width - 152 - GROUP_GAP) * .5
+	for index in axes.size():
+		var axis: Dictionary = axes[index]
+		var left := PADDING.x + 152 + index * (chart_width + GROUP_GAP)
+		var stance := str(axis.kind) == "stance"
+		var keys := ["LOC_FREEDOM_D1047EED", "LOC_AUTHORITY_E9D827BA", "LOC_EQUALITY_14DD2491", "LOC_HIERARCHY_33771717"] if stance else ["LOC_SINCERITY_8BB7FF57", "LOC_IRONY_06D9BA32", "LOC_SUPPORT_D93373F8", "LOC_OPPOSITION_454F03C9"]
+		var ink := ReceiptStyle.SECTION_PURPLE if stance else ReceiptStyle.SECTION_TEAL
+		var plot := Rect2(left + 24, top + 20, chart_width - 48, 48)
+		var point: Array = axis.point
+		_axis_plots.append({"rect":plot, "point":plot.get_center() + Vector2(float(point[0]), float(point[1])) * plot.size * .5, "color":ink})
+		_add_text(DeskLocalization.text(keys[0]), Vector2(left, top + 46), chart_width * .5, BODY_FONT, 12, ink, "axis_label")
+		_add_text(DeskLocalization.text(keys[1]), Vector2(left + chart_width * .5, top + 46), chart_width * .5, BODY_FONT, 12, ink, "axis_label", HORIZONTAL_ALIGNMENT_RIGHT)
+		_add_text(DeskLocalization.text(keys[2]), Vector2(left, top), chart_width, BODY_FONT, 12, ink, "axis_label", HORIZONTAL_ALIGNMENT_CENTER)
+		_add_text(DeskLocalization.text(keys[3]), Vector2(left, top + 72), chart_width, BODY_FONT, 12, ink, "axis_label", HORIZONTAL_ALIGNMENT_CENTER)
+	return top + 92
+
 func _layout_grouped_bars(top: float, width: float) -> float:
 	var column_width := (width - ROW_GAP * 2) / 3.0
 	var bottom := top
@@ -283,6 +306,14 @@ func _layout_grouped_bars(top: float, width: float) -> float:
 	return bottom
 
 func _draw() -> void:
+	for axis: Dictionary in _axis_plots:
+		var plot: Rect2 = axis.rect
+		var center := plot.get_center()
+		var ink: Color = axis.color
+		draw_rect(plot, Color(ink, .04))
+		draw_line(Vector2(plot.position.x, center.y), Vector2(plot.end.x, center.y), Color(ink, .45), 1, true)
+		draw_line(Vector2(center.x, plot.position.y), Vector2(center.x, plot.end.y), Color(ink, .45), 1, true)
+		draw_circle(axis.point, 4, ink)
 	for bar: Dictionary in _grouped_bars:
 		var rect: Rect2 = bar.rect
 		draw_rect(rect, Color(bar.color, .12))
