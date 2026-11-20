@@ -279,3 +279,20 @@ MAP_LATITUDE_CANCER,北回归线 · 23.44°N,Tropic of Cancer · 23.44°N
 MAP_LATITUDE_EQUATOR,赤道 · 0°,Equator · 0°
 MAP_LATITUDE_CAPRICORN,南回归线 · 23.44°S,Tropic of Capricorn · 23.44°S
 MAP_LATITUDE_ANTARCTIC,南极圈 · 66.56°S,Antarctic Circle · 66.56°S
+LOC_GRAPHICS_PRESET,画质预设,Quality preset
+LOC_GRAPHICS_LOW,低,Low
+LOC_GRAPHICS_MEDIUM,中,Medium
+LOC_GRAPHICS_HIGH,高,High
+LOC_GRAPHICS_ULTRA,极高,Ultra
+LOC_GRAPHICS_CUSTOM,自定义,Custom
+LOC_GRAPHICS_STANDARD,标准,Standard
+LOC_GRAPHICS_OFF,关闭,Off
+LOC_GRAPHICS_UNLIMITED,不限,Unlimited
+LOC_GRAPHICS_FRAME_LIMIT,帧率上限,Frame limit
+LOC_GRAPHICS_RENDER_SCALE,3D 渲染比例,3D render scale
+LOC_GRAPHICS_CANVAS_SCALE,界面清晰度,Interface clarity
+LOC_GRAPHICS_MSAA_3D,3D 抗锯齿,3D anti-aliasing
+LOC_GRAPHICS_MSAA_2D,界面抗锯齿,Interface anti-aliasing
+LOC_GRAPHICS_SHADOWS,实时阴影,Real-time shadows
+LOC_GRAPHICS_SSAO,环境光遮蔽,Ambient occlusion
+LOC_GRAPHICS_SSIL,间接光照,Indirect lighting

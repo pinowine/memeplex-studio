@@ -12,11 +12,13 @@ const Typography = preload("res://scripts/presentation/ui/components/desk_typogr
 const TEMPLATE = preload("res://scenes/ui/menus/main_menu.tscn")
 const ReceiptUI = preload("res://scripts/presentation/studio/paper/desk_receipt_ui.gd")
 const DisplaySettings = preload("res://scripts/presentation/ui/menus/display_settings.gd")
+const GraphicsSettings = preload("res://scripts/rendering/graphics_settings.gd")
 const KeyBindings = preload("res://scripts/presentation/ui/menus/key_bindings.gd")
+const VIDEO_ROWS := "VideoPanel/Content/Options/Rows/"
 const LABELS := ["LOC_MEMEPLEX_STUDIO_3D1D137F", "LOC_MAIN_NEW_GAME", "LOC_MAIN_LOAD_GAME", "LOC_SETTINGS_DF3D58C7", "LOC_QUIT_498E1D59", "LOC_LANGUAGE_9F6FEE1A", "LOC_MUSIC_DB951421", "LOC_EFFECTS_5E9D80D0", "LOC_BACK_572CF45B", "LOC_SWITCH_THE_INTERFACE_AND_AUTHORED_CONTENT_BETWEEN_3AF98B71"]
 
 var settings_path := "user://meme_interface.cfg"
-var _settings := {"language": "en", "music": 1.0, "effects": 1.0, "guide_enabled": true, "typewriter_enabled": true, "typewriter_speed": 1.0, "key_bindings": {}}
+var _settings := {"language": "en", "music": 1.0, "effects": 1.0, "guide_enabled": true, "typewriter_enabled": true, "typewriter_speed": 1.0, "key_bindings": {}, "graphics": GraphicsSettings.preset("medium")}
 var _music_bus := "BGM"
 var _effect_buses := PackedStringArray(["SFX", "BGS", "MFX"])
 var _ui: Control
@@ -49,9 +51,10 @@ func _ready() -> void:
 	_ui.get_node("KeysPanel/Content/Reset").pressed.connect(reset_key_bindings)
 	_ui.get_node("SettingsPanel/Content/Video").pressed.connect(open_video_settings)
 	_ui.get_node("VideoPanel/Content/Back").pressed.connect(close_video_settings)
-	_ui.get_node("VideoPanel/Content/ResolutionRow/Resolution").item_selected.connect(func(index: int): set_display_setting("resolution", _resolutions[index]))
-	_ui.get_node("VideoPanel/Content/Fullscreen").toggled.connect(func(value: bool): set_display_setting("fullscreen", value))
-	_ui.get_node("VideoPanel/Content/VSync").toggled.connect(func(value: bool): set_display_setting("vsync", value))
+	_ui.get_node(VIDEO_ROWS + "ResolutionRow/Resolution").item_selected.connect(func(index: int): set_display_setting("resolution", _resolutions[index]))
+	_ui.get_node(VIDEO_ROWS + "Fullscreen").toggled.connect(func(value: bool): set_display_setting("fullscreen", value))
+	_ui.get_node(VIDEO_ROWS + "VSync").toggled.connect(func(value: bool): set_display_setting("vsync", value))
+	_install_graphics_settings()
 	_install_key_bindings()
 	for entry: Array in [["Music", "music"], ["Effects", "effects"]]:
 		var slider: HSlider = _ui.get_node("SettingsPanel/Content/" + entry[0] + "Row/" + entry[0])
@@ -189,7 +192,7 @@ func close_key_bindings() -> void:
 func open_video_settings() -> void:
 	_ui.get_node("SettingsPanel").hide()
 	_ui.get_node("VideoPanel").show()
-	_ui.get_node("VideoPanel/Content/Fullscreen").grab_focus()
+	_ui.get_node(VIDEO_ROWS + "PresetRow/Preset").grab_focus()
 	_layout()
 
 func close_video_settings() -> void:
@@ -204,15 +207,49 @@ func set_display_setting(key: String, value: Variant) -> Error:
 	return save_settings()
 
 func _refresh_display_labels() -> void:
-	var options: OptionButton = _ui.get_node("VideoPanel/Content/ResolutionRow/Resolution")
+	var options: OptionButton = _ui.get_node(VIDEO_ROWS + "ResolutionRow/Resolution")
 	var selected: Vector2i = DisplayServer.screen_get_size(get_window().current_screen) if _settings.display.fullscreen else _settings.display.resolution
 	_resolutions = DisplaySettings.resolutions(get_window(), selected)
 	options.clear()
 	for dimensions: Vector2i in _resolutions: options.add_item("%d × %d" % [dimensions.x, dimensions.y])
 	options.select(_resolutions.find(selected))
 	options.disabled = bool(_settings.display.fullscreen)
-	_ui.get_node("VideoPanel/Content/Fullscreen").set_pressed_no_signal(_settings.display.fullscreen)
-	_ui.get_node("VideoPanel/Content/VSync").set_pressed_no_signal(_settings.display.vsync)
+	_ui.get_node(VIDEO_ROWS + "Fullscreen").set_pressed_no_signal(_settings.display.fullscreen)
+	_ui.get_node(VIDEO_ROWS + "VSync").set_pressed_no_signal(_settings.display.vsync)
+
+func _install_graphics_settings() -> void:
+	var presets: OptionButton = _ui.get_node(VIDEO_ROWS + "PresetRow/Preset")
+	for label: String in GraphicsSettings.PRESET_LABELS: presets.add_item(label)
+	presets.set_item_disabled(4, true)
+	presets.item_selected.connect(func(index: int): set_graphics_preset(GraphicsSettings.PRESET_IDS[index]))
+	for key: String in GraphicsSettings.OPTIONS:
+		var options: OptionButton = _ui.get_node(VIDEO_ROWS + key + "Row/Value")
+		for label: String in GraphicsSettings.OPTIONS[key].labels: options.add_item(label)
+		options.item_selected.connect(func(index: int): set_graphics_setting(key, GraphicsSettings.OPTIONS[key].values[index]))
+	for key: String in ["shadows", "ssao", "ssil"]:
+		_ui.get_node(VIDEO_ROWS + key).toggled.connect(func(value: bool): set_graphics_setting(key, value))
+
+func graphics_settings() -> Dictionary:
+	return _settings.graphics.duplicate()
+
+func set_graphics_preset(id: String) -> Error:
+	var frame_limit: int = _settings.graphics.frame_limit
+	_settings.graphics = GraphicsSettings.preset(id)
+	_settings.graphics.frame_limit = frame_limit
+	return save_settings()
+
+func set_graphics_setting(key: String, value: Variant) -> Error:
+	_settings.graphics[key] = value
+	if key != "frame_limit": _settings.graphics.preset = "custom"
+	return save_settings()
+
+func _refresh_graphics_labels() -> void:
+	var selected: int = GraphicsSettings.PRESET_IDS.find(_settings.graphics.preset)
+	_ui.get_node(VIDEO_ROWS + "PresetRow/Preset").select(4 if selected < 0 else selected)
+	for key: String in GraphicsSettings.OPTIONS:
+		_ui.get_node(VIDEO_ROWS + key + "Row/Value").select(GraphicsSettings.OPTIONS[key].values.find(_settings.graphics[key]))
+	for key: String in ["shadows", "ssao", "ssil"]:
+		_ui.get_node(VIDEO_ROWS + key).set_pressed_no_signal(_settings.graphics[key])
 
 func _install_key_bindings() -> void:
 	var rows: VBoxContainer = _ui.get_node("KeysPanel/Content/BindingScroll/Rows")
@@ -313,6 +350,7 @@ func load_settings() -> Error:
 	_settings.display = DisplaySettings.current(get_window())
 	for key: String in _settings.display: _settings.display[key] = config.get_value("display", key, _settings.display[key])
 	DisplaySettings.apply(get_window(), _settings.display)
+	_settings.graphics = GraphicsSettings.read(config)
 	var guide: Variant = config.get_value("interface", "guide_enabled", true)
 	_settings.guide_enabled = guide if guide is bool else true
 	_settings.typewriter_enabled = bool(config.get_value("interface", "typewriter_enabled", true))
@@ -329,11 +367,13 @@ func load_settings() -> Error:
 	TranslationServer.set_locale(_settings.language)
 	_apply_audio()
 	_refresh_labels()
+	settings_changed.emit(_settings.duplicate(true))
 	return error if _last_error == OK else _last_error
 
 func save_settings() -> Error:
 	var config := ConfigFile.new()
 	for key: String in _settings.display: config.set_value("display", key, _settings.display[key])
+	for key: String in _settings.graphics: config.set_value("graphics", key, _settings.graphics[key])
 	config.set_value("interface", "language", _settings.language)
 	config.set_value("interface", "guide_enabled", _settings.guide_enabled)
 	config.set_value("interface", "typewriter_enabled", _settings.typewriter_enabled)
@@ -388,6 +428,7 @@ func _refresh_labels() -> void:
 		_ui.get_node("SettingsPanel/Content/" + pair[0] + "Row/" + pair[0] + "Value").text = "%d%%" % roundi(float(_settings[pair[1]]) * 100)
 	_refresh_binding_labels()
 	_refresh_display_labels()
+	_refresh_graphics_labels()
 	set_load_available(_load_available)
 	_layout()
 	_layout.call_deferred()

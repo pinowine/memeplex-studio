@@ -99,6 +99,10 @@ func configure(target: MeshInstance3D, source: Control, source_rect: Rect2, _log
 func _process(_delta: float) -> void:
 	sync()
 
+func set_antialiasing(msaa: Viewport.MSAA) -> void:
+	_viewport.msaa_2d = msaa
+	_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+
 func sync() -> void:
 	if not is_instance_valid(_source) or not is_instance_valid(_viewport): return
 	if _source.has_method("screen_presentation"):

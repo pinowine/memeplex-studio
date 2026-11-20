@@ -9,6 +9,7 @@ const PaperMasks := preload("res://scripts/rendering/paper/paper_masks.gd")
 const PaperFeed := preload("res://scripts/rendering/paper/paper_feed.gd")
 const HoverOutline := preload("res://scripts/rendering/feedback/hover_outline.gd")
 const LoadingScreen := preload("res://scripts/presentation/ui/menus/loading_screen.gd")
+const GraphicsSettings := preload("res://scripts/rendering/graphics_settings.gd")
 
 @export var whitebox := false
 @export_range(0.1, 3.0, 0.001) var overview_height_m := 0.914
@@ -44,6 +45,8 @@ var handset_cord: MeshInstance3D
 var handset_connected := false
 var cord_endpoints: Dictionary = {}
 var _loading := LoadingScreen.new()
+var _graphics: Dictionary = {}
+var _shadow_lights: Array[Light3D] = []
 
 func _ready() -> void:
 	add_child(_cursor)
@@ -88,11 +91,11 @@ func _ready() -> void:
 	logical = SubViewport.new()
 	logical.name = "Authoritative2DContent"
 	# Keep desk/input units fixed while preserving small overview glyphs in the backing texture.
-	logical.size = LOGICAL_SIZE * 2
+	logical.size = LOGICAL_SIZE
 	logical.size_2d_override = LOGICAL_SIZE
 	logical.size_2d_override_stretch = true
 	logical.disable_3d = true
-	logical.msaa_2d = Viewport.MSAA_4X
+	logical.msaa_2d = Viewport.MSAA_2X
 	# Oversampled bitmap glyphs need mip filtering when the desk is reduced.
 	logical.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	logical.transparent_bg = true
@@ -171,7 +174,9 @@ func _ready() -> void:
 	page.atlas.finish_label_layout()
 	logical.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	ready_3d = true
-	_resize_content_viewports()
+	var menu: Control = page._shell.main_menu
+	menu.settings_changed.connect(func(settings: Dictionary): _apply_graphics_settings(settings.graphics))
+	_apply_graphics_settings(menu.graphics_settings())
 	RenderingServer.frame_pre_draw.connect(_sync_content_capture)
 	await _loading.prepare_rendering()
 	_loading.finish()
@@ -222,10 +227,10 @@ func _setup_lighting() -> void:
 	env.ambient_light_color = Color("b8c8d3")
 	env.ambient_light_energy = .30
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.ssao_enabled = true
+	env.ssao_enabled = false
 	env.ssao_radius = .10
 	env.ssao_intensity = 1.2
-	env.ssil_enabled = true
+	env.ssil_enabled = false
 	environment.environment = env
 	add_child(environment)
 	var sun := DirectionalLight3D.new()
@@ -237,6 +242,7 @@ func _setup_lighting() -> void:
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_max_distance = 8.0
 	add_child(sun)
+	_shadow_lights.append(sun)
 	for point in [Vector3(-.6,1.2,-.5), Vector3(.8,1.5,-.9)]:
 		var fill := OmniLight3D.new()
 		fill.position = point
@@ -254,6 +260,7 @@ func _setup_lighting() -> void:
 	lamp.light_color = Color("ffe4ae")
 	lamp.shadow_enabled = true
 	add_child(lamp)
+	_shadow_lights.append(lamp)
 	lamp.look_at(Vector3(-.60,0,-.25))
 
 
@@ -575,10 +582,25 @@ func _resized() -> void:
 		desktop.return_overview()
 
 func _resize_content_viewports() -> void:
-	var pixels := Vector2(get_window().size)
-	var factor := maxf(2.0, maxf(pixels.x / LOGICAL_SIZE.x, pixels.y / LOGICAL_SIZE.y))
-	logical.size = Vector2i(Vector2(LOGICAL_SIZE) * factor)
-	get_node("ScreenSpaceModalViewport").size = logical.size
+	logical.size = GraphicsSettings.canvas_size(get_window().size, LOGICAL_SIZE, _graphics.canvas_scale)
+	# Menus retain native text resolution when the 3D scene is scaled down.
+	_modal_viewport.size = GraphicsSettings.canvas_size(get_window().size, LOGICAL_SIZE, 1.0)
+
+func _apply_graphics_settings(settings: Dictionary) -> void:
+	if settings == _graphics: return
+	_graphics = settings.duplicate()
+	get_viewport().scaling_3d_scale = _graphics.render_scale
+	get_viewport().msaa_3d = _graphics.msaa_3d
+	logical.msaa_2d = _graphics.msaa_2d
+	_modal_viewport.msaa_2d = _graphics.msaa_2d
+	for screen in content.screen_surfaces:
+		screen.set_antialiasing(_graphics.msaa_2d)
+	for light in _shadow_lights: light.shadow_enabled = _graphics.shadows
+	var environment: Environment = get_node("PhysicalStudioEnvironment").environment
+	environment.ssao_enabled = _graphics.ssao
+	environment.ssil_enabled = _graphics.ssil
+	Engine.max_fps = _graphics.frame_limit
+	_resize_content_viewports()
 
 func project_target(target: Variant) -> Variant:
 	if target is Dictionary and target.has("hardware_key"):

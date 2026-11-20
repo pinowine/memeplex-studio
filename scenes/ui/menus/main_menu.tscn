@@ -304,28 +304,139 @@ theme_override_fonts/font = ExtResource("3")
 layout_mode = 2
 custom_minimum_size = Vector2(0, 12)
 
-[node name="ResolutionRow" type="HBoxContainer" parent="VideoPanel/Content"]
+[node name="Options" type="ScrollContainer" parent="VideoPanel/Content"]
+custom_minimum_size = Vector2(536, 430)
+layout_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Rows" type="VBoxContainer" parent="VideoPanel/Content/Options"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="PresetRow" type="HBoxContainer" parent="VideoPanel/Content/Options/Rows"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="VideoPanel/Content/ResolutionRow"]
-layout_mode = 2
-text = "LOC_VIDEO_RESOLUTION"
-
-[node name="Resolution" type="OptionButton" parent="VideoPanel/Content/ResolutionRow"]
+[node name="Label" type="Label" parent="VideoPanel/Content/Options/Rows/PresetRow"]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "LOC_GRAPHICS_PRESET"
 
-[node name="Fullscreen" type="CheckButton" parent="VideoPanel/Content"]
+[node name="Preset" type="OptionButton" parent="VideoPanel/Content/Options/Rows/PresetRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(196, 0)
+
+[node name="ResolutionRow" type="HBoxContainer" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VideoPanel/Content/Options/Rows/ResolutionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LOC_VIDEO_RESOLUTION"
+
+[node name="Resolution" type="OptionButton" parent="VideoPanel/Content/Options/Rows/ResolutionRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(196, 0)
+
+[node name="Fullscreen" type="CheckButton" parent="VideoPanel/Content/Options/Rows"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 text = "LOC_VIDEO_FULLSCREEN"
 
-[node name="VSync" type="CheckButton" parent="VideoPanel/Content"]
+[node name="VSync" type="CheckButton" parent="VideoPanel/Content/Options/Rows"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 44)
 text = "LOC_VIDEO_VSYNC"
+
+[node name="frame_limitRow" type="HBoxContainer" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VideoPanel/Content/Options/Rows/frame_limitRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LOC_GRAPHICS_FRAME_LIMIT"
+
+[node name="Value" type="OptionButton" parent="VideoPanel/Content/Options/Rows/frame_limitRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(196, 0)
+
+[node name="render_scaleRow" type="HBoxContainer" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VideoPanel/Content/Options/Rows/render_scaleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LOC_GRAPHICS_RENDER_SCALE"
+
+[node name="Value" type="OptionButton" parent="VideoPanel/Content/Options/Rows/render_scaleRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(196, 0)
+
+[node name="canvas_scaleRow" type="HBoxContainer" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VideoPanel/Content/Options/Rows/canvas_scaleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LOC_GRAPHICS_CANVAS_SCALE"
+
+[node name="Value" type="OptionButton" parent="VideoPanel/Content/Options/Rows/canvas_scaleRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(196, 0)
+
+[node name="msaa_3dRow" type="HBoxContainer" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VideoPanel/Content/Options/Rows/msaa_3dRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LOC_GRAPHICS_MSAA_3D"
+
+[node name="Value" type="OptionButton" parent="VideoPanel/Content/Options/Rows/msaa_3dRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(196, 0)
+
+[node name="msaa_2dRow" type="HBoxContainer" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VideoPanel/Content/Options/Rows/msaa_2dRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LOC_GRAPHICS_MSAA_2D"
+
+[node name="Value" type="OptionButton" parent="VideoPanel/Content/Options/Rows/msaa_2dRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(196, 0)
+
+[node name="shadows" type="CheckButton" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "LOC_GRAPHICS_SHADOWS"
+
+[node name="ssao" type="CheckButton" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "LOC_GRAPHICS_SSAO"
+
+[node name="ssil" type="CheckButton" parent="VideoPanel/Content/Options/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "LOC_GRAPHICS_SSIL"
 
 [node name="Back" type="Button" parent="VideoPanel/Content"]
 layout_mode = 2
