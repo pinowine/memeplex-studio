@@ -356,8 +356,8 @@
   },
   "LOC_OPENING_SPREAD_TREE_TEXT": {
     "source": "左侧的传播能力树从文本传播出发，连接无障碍传播、开源共创和社群接力三条路线。连线表示依赖关系。",
-    "zh_CN": "能力树从上方的“文本传播”开始，往下分成“解释原意”“配图与模板”“开放二创”三条路线。节点之间的连线表示前置顺序。",
-    "en": "The ability tree starts from “Text post” at the top and branches into three routes: “Explain origin,” “Image & template” and “Open remix.” Lines between nodes show what needs to be unlocked first."
+    "zh_CN": "能力树从上方的“文本传播”开始，往下分成三条路线。连线表示需要先解锁哪些能力。",
+    "en": "The ability tree starts from “Text post” at the top and branches into three routes below. The lines show which abilities you need to unlock first."
   },
   "LOC_OPENING_SPREAD_DETAILS_TITLE": {
     "source": "能力详情",
