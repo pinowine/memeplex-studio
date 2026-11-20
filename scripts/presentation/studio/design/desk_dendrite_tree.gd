@@ -13,9 +13,8 @@ const TextLayout = preload("res://scripts/presentation/studio/context/desk_conte
 const LabelFont = preload("res://assets/image/fonts/body_medium_font.tres")
 const SelectedFont = preload("res://assets/image/fonts/body_bold_font.tres")
 const ACCENT := Color("41675f")
-const ROUTE_TITLES := ["LOC_PROP_ROUTE_ORIGIN", "LOC_PROP_ROUTE_TEMPLATE", "LOC_PROP_ROUTE_REMIX"]
 const UNION_PIXEL_SCALE := 2
-const NODE_ROW_SPACING := 110.0
+const NODE_ROW_SPACING := 88.0
 const NODE_TOP_MARGIN := 36.0
 const NODE_BOTTOM_MARGIN := 84.0
 const NODE_HIT_RADIUS := 18.0
@@ -220,12 +219,16 @@ func _rebuild() -> void:
 	_layout_depths = structure.depths
 	_vertical_layout = true
 	_edge_records.clear()
-	var lane_width := (size.x - 24.0) / 3.0
-	_label_width = maxf(40, lane_width - 44.0)
+	var lane_width := minf(208, (size.x - 48.0) / 3.0)
+	var left := (size.x - lane_width * 3.0) * .5
+	_label_width = maxf(40, lane_width - 64.0)
 	for skill: Dictionary in _skills:
 		var id := str(skill.id)
 		var slot: Vector2 = structure.positions[id]
-		_points[id] = Vector2(12.0 + lane_width * slot.x + 22.0, NODE_TOP_MARGIN + slot.y * NODE_ROW_SPACING)
+		var rng := RandomNumberGenerator.new()
+		rng.seed = id.hash()
+		var offset := Vector2(rng.randf_range(-12, 12), rng.randf_range(-8, 8)) if slot.y > 0 else Vector2.ZERO
+		_points[id] = Vector2(left + lane_width * slot.x + 24.0, NODE_TOP_MARGIN + slot.y * NODE_ROW_SPACING) + offset
 	for skill: Dictionary in _skills:
 		var id := str(skill.id)
 		var parents: Array = _dependencies(skill)
@@ -265,10 +268,12 @@ func _refresh_labels() -> void:
 		var id := str(skill.get("id", ""))
 		if not _points.has(id): continue
 		var point: Vector2 = _points[id]
-		var area := Rect2(point + Vector2(22, -31), Vector2(width, 62))
+		var area := Rect2(point + Vector2(24, -28), Vector2(width, 56))
 		var label := TextLayout.fit_text(SelectedFont, DeskLocalization.text(str(skill.get("title", ""))), area, 15, 13, 3)
 		var glyph_rect := Rect2()
 		for line: Dictionary in label.lines:
+			line.baseline.x += area.position.x - line.rect.position.x
+			line.rect.position.x = area.position.x
 			glyph_rect = line.rect if not glyph_rect.has_area() else glyph_rect.merge(line.rect)
 		label.glyph_rect = glyph_rect
 		_label_layouts[id] = label
@@ -391,12 +396,6 @@ func _update_union_masks() -> void:
 
 func _draw() -> void:
 	_update_union_masks()
-	if size.x > 0.0 and _skills.size() > 1:
-		var lane_width := (size.x - 24.0) / 3.0
-		var header_y := NODE_TOP_MARGIN + NODE_ROW_SPACING - 44.0
-		for column in ROUTE_TITLES.size():
-			var x := 12.0 + lane_width * float(column) + 14.0
-			draw_string(SelectedFont, Vector2(x, header_y), DeskLocalization.text(ROUTE_TITLES[column]), HORIZONTAL_ALIGNMENT_LEFT, lane_width - 20.0, 14, Color(INK, .68))
 	for skill: Dictionary in _skills:
 		var id := str(skill.get("id",""))
 		if not _points.has(id): continue
