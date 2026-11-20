@@ -238,6 +238,7 @@ func sync_state(snapshot: Dictionary) -> void:
 	relevant.war_started = bool(snapshot.get("world_competition", {}).get("endgame", {}).get("war_started", false))
 	if _state == relevant: return
 	_state=relevant.duplicate(true)
+	var design_changed := _design != design
 	var previous_modules: Array = _design.get("module_slots", [])
 	_design=design.duplicate(true)
 	var slots: Array=_design.get("module_slots",[])
@@ -248,11 +249,13 @@ func sync_state(snapshot: Dictionary) -> void:
 			_selected_variant = ""
 	if _selected_installed_slot>=0 and (_selected_installed_slot>=slots.size() or str(slots[_selected_installed_slot]).is_empty()): _selected_installed_slot=-1
 	_sync_count+=1
-	_refresh_culture()
-	_refresh_neuron()
+	# Income changes skill affordability without changing the expression or its context.
+	if design_changed:
+		_refresh_culture()
+		_refresh_neuron()
+		_refresh_part()
+		_refresh_overview()
 	_refresh_skills()
-	_refresh_part()
-	_refresh_overview()
 
 
 func select_tab(id: String) -> void:

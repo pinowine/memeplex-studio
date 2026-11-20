@@ -768,7 +768,10 @@ func _effective_source_creator(raw: Dictionary, visible: Dictionary, by_id: Dict
 	return str(visible.creator)
 
 
-## 展示快照不复制操作历史；所有返回的容器都与权威状态隔离。
+func context_draft() -> Dictionary:
+	return _state.context_draft.duplicate(true)
+
+## Presentation snapshots omit the operation log and own their containers.
 func snapshot(variants: Array = []) -> Dictionary:
 	var result := {}
 	for field: String in _state:

@@ -328,7 +328,7 @@ func _check_deviation(raw: Dictionary) -> void:
 	queue_guidance("mutation", str(child.id))
 
 func context_draft() -> Dictionary:
-	var draft: Dictionary = design_state.snapshot().context_draft.duplicate(true)
+	var draft: Dictionary = design_state.context_draft()
 	if not current_variant_id.is_empty():
 		var active := Lifecycle.content(variant_by_id(current_variant_id))
 		if bool(active.get("owned", false)):
@@ -718,8 +718,8 @@ func _produce_template_variants() -> void:
 		return
 
 
-func totals_state() -> Dictionary:
-	var view: Dictionary = competition.snapshot(variants,false)
+func totals_state(view: Dictionary = {}) -> Dictionary:
+	if view.is_empty(): view = competition.snapshot(variants,false)
 	var fatigue := 0.0
 	for state: Dictionary in group_state.values(): fatigue += float(state.fatigue)
 	return {"exposed":view.exposed,"adopted":view.adopted,"owned_adopted":view.owned_adopted,"lineage_adopted":view.lineage_adopted,"fatigue":fatigue/maxf(1.0,group_state.size())}
@@ -1186,7 +1186,8 @@ func _finish(result: Dictionary) -> void:
 	completed.emit(snapshot())
 
 func snapshot() -> Dictionary:
-	var state := totals_state()
+	var world: Dictionary = competition.snapshot(variants)
+	var state := totals_state(world)
 	state.merge({"hour":hour, "run_end_hour":run_end_hour, "phase":phase, "speed":speed, "resume_speed":resume_speed, "country_id":country_id, "country_title":country_title, "status":status, "variants":competition.active_variants(variants).size(), "events":events.duplicate(true), "lineage":competition.active_variants(variants), "discoveries":discoveries.duplicate(), "meme_points":economy.balance, "point_cost":catalog.first_publish_cost if publish_count == 0 else 0, "economy_log":economy.lines(), "attention_budget":attention.budget, "attention_player":attention.player, "attention_external":attention.external, "attention_background":attention.background, "purchase_system":"not_designed"})
 	state.propagation_research_ready = propagation_research_ready()
 	state.publish_count = publish_count
@@ -1195,7 +1196,7 @@ func snapshot() -> Dictionary:
 	state.current_variant_id = current_variant_id
 	state.guide_progress = guidance_progress()
 	state.gameplay = {"mode":gameplay_mode(),"day":float(hour)/24.0,"horizon_hours":run_end_hour,"active_seconds":competition._state.active_seconds,"hours_per_active_second":catalog.gameplay_rules.hours_per_active_second}
-	state.world_competition = competition.snapshot(variants)
+	state.world_competition = world
 	_update_meme_trends(state.world_competition, state.lineage)
 	state.meme_trends = _meme_trends.duplicate(true)
 	state.world_competition.ending = ending.duplicate(true)
