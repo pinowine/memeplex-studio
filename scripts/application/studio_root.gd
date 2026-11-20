@@ -159,6 +159,7 @@ func _ready() -> void:
 	page.atlas.finish_label_layout()
 	logical.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	ready_3d = true
+	_resize_content_viewports()
 	RenderingServer.frame_pre_draw.connect(_sync_content_capture)
 	await _loading.prepare_rendering()
 	_loading.finish()
@@ -567,7 +568,15 @@ func _cancel_input() -> void:
 
 func _resized() -> void:
 	_cancel_input()
-	if ready_3d: desktop.return_overview()
+	if ready_3d:
+		_resize_content_viewports()
+		desktop.return_overview()
+
+func _resize_content_viewports() -> void:
+	var pixels := Vector2(get_window().size)
+	var factor := maxf(2.0, maxf(pixels.x / LOGICAL_SIZE.x, pixels.y / LOGICAL_SIZE.y))
+	logical.size = Vector2i(Vector2(LOGICAL_SIZE) * factor)
+	get_node("ScreenSpaceModalViewport").size = logical.size
 
 func project_target(target: Variant) -> Variant:
 	if target is Dictionary and target.has("hardware_key"):
