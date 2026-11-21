@@ -415,7 +415,6 @@ func configure(page: Node2D) -> void:
 	_slot_reader.receipt_scrolled.connect(func(anchor: Dictionary): _printer.set_receipt_anchor(anchor))
 	_slot_reader.stack_layout_changed.connect(_layout_focused_stack)
 	_slot_reader.option_selected.connect(_reader_choice_selected)
-	_slot_reader.choice_hovered.connect(_reader_choice_hovered)
 	_slot_reader.contact_selected.connect(func(index: int): _fax.select_contact(index))
 	var hover_notes := CanvasLayer.new()
 	hover_notes.name = "DeskHoverNotes"
@@ -1229,9 +1228,6 @@ func _reader_choice_selected(index: int) -> void:
 		elif index == 3: _fax.commit_starter_choice()
 	else:
 		_fax.choose_response(index)
-
-func _reader_choice_hovered(index: int) -> void:
-	if _page._shell != null: _page._shell.hover_starter(index)
 
 func _printer_details_changed() -> void:
 	if _component_target == "printer" and _camera != null and _camera.inspection().state == "focused": _show_component_details()

@@ -56,8 +56,8 @@
   },
   "LOC_OPENING_STARTER_TEXT": {
     "source": "这里有三个基础模因。把鼠标移上去看看，选一个你顺眼的。审美问题，我暂时不计入绩效。",
-    "zh_CN": "这里有三个基础模因，把鼠标移上去可以看看各自的特点。既然你是新手，我建议先挑一个你能理解的。",
-    "en": "Here are three base memes. Hover over them to see how each one works. Since you’re new here, I’d start with one you understand."
+    "zh_CN": "先挑一个你看得懂的模因，想好了就点“确定选择”。",
+    "en": "Pick a meme you get, then confirm your choice."
   },
   "LOC_OPENING_STARTER_CONFIRM_TITLE": {
     "source": "确定选择",

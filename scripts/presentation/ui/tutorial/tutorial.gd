@@ -77,7 +77,6 @@ var _typewriter_speed := 1.0
 var _body_text := ""
 var _hover_target := ""
 var _hover_text := ""
-var _starter_options: Array = []
 var _starter_selected := -1
 var _actions: BoxContainer
 
@@ -117,7 +116,6 @@ func _ready() -> void:
 	_ui.get_node("SilentSkip").pressed.connect(_skip_pressed)
 	ReceiptUI.primary(_actions.get_node("Continue"))
 	_ui.get_node("Card/StarterChoices").preview_requested.connect(func(index: int): starter_preview_requested.emit(index))
-	_ui.get_node("Card/StarterChoices").hovered.connect(_hover_starter)
 	if _steps.is_empty(): _steps = default_steps()
 	resized.connect(_refresh)
 	resized.connect(_cancel_pointer)
@@ -144,16 +142,9 @@ func is_choosing_starter() -> bool:
 	return _active and bool(_steps[_index].get("starter_choices", false))
 
 func set_starter_options(options: Array, selected_index: int = -1) -> void:
-	_starter_options = options.duplicate(true)
 	_starter_selected = selected_index
-	_ui.get_node("Card/StarterChoices").set_options(_starter_options, selected_index)
+	_ui.get_node("Card/StarterChoices").set_options(options, selected_index)
 	_refresh()
-
-func _hover_starter(index: int) -> void:
-	if index < 0:
-		clear_hover()
-	else:
-		set_hover("starter/%d" % index, str(_starter_options[index].context_hint))
 
 func _continue_pressed() -> void:
 	var step := _steps[_index]

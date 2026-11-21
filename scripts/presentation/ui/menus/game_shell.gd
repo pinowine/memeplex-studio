@@ -53,7 +53,7 @@ func configure(owner_page: Node2D) -> void:
 	starter_dialog.name = "StarterSelection67"
 	add_child(starter_dialog)
 	starter_dialog.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var starter_steps: Array[Dictionary] = [{"id":"starter_direct", "action":"starter_chosen", "text":"LOC_OPENING_STARTER_TEXT", "emotion":"curious", "starter_choices":true, "centered":true, "no_blur":true, "hover":true}]
+	var starter_steps: Array[Dictionary] = [{"id":"starter_direct", "action":"starter_chosen", "text":"LOC_OPENING_STARTER_TEXT", "emotion":"curious", "starter_choices":true, "centered":true, "no_blur":true}]
 	starter_dialog.configure(starter_steps)
 	starter_dialog.starter_preview_requested.connect(page._direct_starter_choice)
 	starter_dialog.starter_confirm_requested.connect(func(): page._direct_starter_choice(page.simulation.starter_options().size()))
@@ -278,10 +278,6 @@ func _logical_target(id: String) -> Variant:
 		"spread/skill": return _skill_target(editor)
 		"map/country": return _country_target()
 		"map/confirm": return page.atlas.get_node("%StudioConfirm")
-	if id.begins_with("fax/option/"):
-		var buttons: Array = page.desk._slot_reader._choice_buttons
-		var index := int(id.get_slice("/", 2))
-		return buttons[index] if index >= 0 and index < buttons.size() else null
 	if id.begins_with("desktop/stack/"): return page.desk._material_cards._stack_surfaces.get(id.get_slice("/", 2))
 	if id.begins_with("monitor/button/"): return page.desk._monitor._buttons[int(id.get_slice("/", 2))]
 	if id.begins_with("monitor/value/"):
@@ -558,14 +554,6 @@ func _tutorial_requires_overview(target_id: String) -> bool:
 	var camera: Dictionary = page.desk._camera.inspection()
 	if target_id == "speed" and str(camera.target) == "speed": return false
 	return str(camera.state) in ["focused", "travelling"]
-
-func hover_starter(index: int) -> void:
-	if not tutorial._active or str(tutorial._steps[tutorial._index].id) not in ["starter", "starter_confirm"]: return
-	if index < 0 or index >= 3:
-		tutorial.clear_hover()
-		return
-	var option: Dictionary = page.simulation.starter_options()[index]
-	tutorial.set_hover("fax/option/%d" % index, str(option.context_hint))
 
 func _process(_delta: float) -> void:
 	if tutorial == null or not tutorial._active: return

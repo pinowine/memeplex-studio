@@ -2,7 +2,6 @@ extends Control
 
 signal closed
 signal option_selected(index: int)
-signal choice_hovered(index: int)
 signal contact_selected(index: int)
 signal stack_layout_changed
 signal meme_selected(id: String)
@@ -483,9 +482,7 @@ func _build_choices(details: Dictionary) -> void:
 			button.add_theme_stylebox_override("pressed", hover)
 			card.minimum_size_changed.connect(_layout_paper.call_deferred)
 		if not contacts.is_empty(): button.pressed.connect(func(): contact_selected.emit(index))
-		else:
-			button.pressed.connect(func(): option_selected.emit(index))
-			button.mouse_entered.connect(func(): choice_hovered.emit(index))
+		else: button.pressed.connect(func(): option_selected.emit(index))
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and _built:

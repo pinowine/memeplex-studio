@@ -2,7 +2,6 @@
 extends ScrollContainer
 
 signal preview_requested(index: int)
-signal hovered(index: int)
 
 const ContextCard = preload("res://scripts/presentation/studio/paper/starter_context_card.gd")
 const ReceiptStyle = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
@@ -26,7 +25,6 @@ func _ready() -> void:
 	_grid.add_theme_constant_override("v_separation", int(GAP))
 	add_child(_grid)
 	resized.connect(_layout_cards)
-	mouse_exited.connect(func(): hovered.emit(-1))
 
 func set_options(options: Array, selected: int) -> void:
 	var records := options.duplicate(true)
@@ -57,10 +55,6 @@ func set_options(options: Array, selected: int) -> void:
 		mark.add_theme_color_override("font_color", ReceiptStyle.SECTION_TEAL)
 		button.add_child(mark)
 		button.pressed.connect(func(): preview_requested.emit(index))
-		button.mouse_entered.connect(func(): hovered.emit(index))
-		button.mouse_exited.connect(func(): hovered.emit(-1))
-		button.focus_entered.connect(func(): hovered.emit(index))
-		button.focus_exited.connect(func(): hovered.emit(-1))
 		_buttons.append(button)
 		_cards.append(card)
 		_marks.append(mark)

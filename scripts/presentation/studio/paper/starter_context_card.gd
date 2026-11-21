@@ -23,7 +23,7 @@ static func sample_text(record: Dictionary) -> String:
 	parts.append(str(composed.expression))
 	return DeskLocalization.source_join("\n",parts)
 
-func configure(record: Dictionary, font: Font, show_description: bool = true) -> void:
+func configure(record: Dictionary, font: Font, show_context: bool = true) -> void:
 	_record = record.duplicate(true)
 	_font = font
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -34,7 +34,8 @@ func configure(record: Dictionary, font: Font, show_description: bool = true) ->
 		var sample_label := _label(sample,16)
 		sample_label.name = "StarterSample"
 		add_child(sample_label)
-	if show_description: add_child(_label(str(record.description), 13))
+	add_child(_label(str(record.description), 13))
+	if not show_context: return
 	var grid := VBoxContainer.new()
 	grid.name = "DefaultContext"
 	grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -110,4 +111,4 @@ func _notification(what: int) -> void:
 func inspection() -> Dictionary:
 	var tags: Array = []
 	for field: Dictionary in _tag_fields: tags.append(field.flow.inspection())
-	return {"preset_id":_record.get("id", ""), "default_context":_record.get("default_context", {}).duplicate(true), "fields":5, "separate_labels":_localized.size(), "context_tags":tags}
+	return {"preset_id":_record.get("id", ""), "default_context":_record.get("default_context", {}).duplicate(true), "fields":_tag_fields.size(), "separate_labels":_localized.size(), "context_tags":tags}
