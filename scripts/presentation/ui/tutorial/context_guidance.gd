@@ -1,17 +1,14 @@
 extends Node
 
 const Tutorial = preload("res://scripts/presentation/ui/tutorial/tutorial.gd")
+const LESSON_ORDER := ["deviation", "mutation", "competition"]
 const LESSONS := {"deviation":"LOC_GUIDANCE_DEVIATION", "competition":"LOC_GUIDANCE_FIRST_COMPETITOR", "mutation":"LOC_GUIDANCE_FIRST_MUTATION"}
 const EMOTIONS := {"deviation":"concerned", "competition":"concerned", "mutation":"curious"}
 var page: Node
 var shell: Node
 var mentor: Control
 var enabled := true
-var _lesson_id := ""
 var _source_id := ""
-var _mutation_queue: Array[String] = []
-var _seen_mutations: Dictionary = {}
-var _world_seed := -1
 
 func configure(owner_shell: Node) -> void:
 	shell = owner_shell
@@ -29,52 +26,46 @@ func configure(owner_shell: Node) -> void:
 
 func set_enabled(value: bool) -> void:
 	enabled = value
+	if not enabled: close()
 
 func close() -> void:
 	if mentor == null: return
 	mentor.skip()
 	mentor.hide()
 
-func _record(id: String, source_id: String) -> void:
-	page.simulation.queue_guidance(id, source_id)
-
 func observe_world(world: Dictionary) -> void:
 	if page == null or page.simulation == null: return
-	if _world_seed != int(world.world_seed):
-		_world_seed = int(world.world_seed)
-		_seen_mutations.clear()
-		_mutation_queue.clear()
+	var progress: Dictionary = page.simulation.guidance_progress()
+	if progress.has("deviation") and progress.has("mutation") and progress.has("competition"): return
 	for variant: Dictionary in world.get("variants", []):
 		var raw: Dictionary = page.simulation.variant_by_id(str(variant.id))
-		var current: Dictionary = page.simulation.Lifecycle.content(raw)
-		if bool(current.get("controlled", false)) and page.simulation.Deviation.total(raw.deviation_anchor, current) > .1:
-			_record("deviation", str(raw.id))
-		if str(raw.creator) != "player" and raw.get("origin_ids", []).is_empty() and not page.simulation.guidance_progress().has("competition"):
-			_record("competition", str(raw.id))
-		if str(raw.creator) != "player" and not raw.get("parent_ids", []).is_empty() and not raw.get("origin_ids", []).is_empty() and not _seen_mutations.has(str(variant.id)):
-			_seen_mutations[str(variant.id)] = true
-			_mutation_queue.append(str(variant.id))
-			_record("mutation", str(variant.id))
+		if not progress.has("deviation"):
+			var current: Dictionary = page.simulation.Lifecycle.content(raw)
+			if bool(current.get("controlled", false)) and page.simulation.Deviation.total(raw.deviation_anchor, current) > .1:
+				page.simulation.queue_guidance("deviation", str(raw.id))
+		if str(raw.creator) == "player": continue
+		var lesson := "competition" if raw.get("origin_ids", []).is_empty() else "mutation"
+		if not progress.has(lesson): page.simulation.queue_guidance(lesson, str(raw.id))
 
 func _process(_delta: float) -> void:
 	if mentor == null or not page._ready_to_run: return
 	var progress: Dictionary = page.simulation.guidance_progress()
-	var blocked: bool = shell.main_mode or shell.main_menu.visible or shell.ending.visible or page.hud.modal_visible() or shell.tutorial._active or not page.startup_ready()
+	if not enabled:
+		for id: String in LESSON_ORDER:
+			if progress.has(id) and not bool(progress[id].shown): page.simulation.mark_guidance_shown(id)
+		return
+	var blocked: bool = shell.blocks_input() or page.hud.modal_visible() or shell.tutorial._active or not page.startup_ready()
 	if mentor._active:
 		mentor.set_interaction_blocked(blocked)
 		mentor.visible = not blocked
 		mentor.set_process_input(mentor.visible)
 		return
 	if blocked: return
-	progress = page.simulation.guidance_progress()
-	for id: String in ["deviation", "mutation", "competition"]:
-		if id == "mutation":
-			if _mutation_queue.is_empty(): continue
-		elif not progress.has(id) or bool(progress[id].shown): continue
-		_lesson_id = id
-		_source_id = _mutation_queue[0] if id == "mutation" else str(progress[id].source_id)
+	for id: String in LESSON_ORDER:
+		if not progress.has(id) or bool(progress[id].shown): continue
+		_source_id = str(progress[id].source_id)
 		if id == "mutation": page.hud.design_workbench()._select_variant(_source_id)
-		var steps: Array[Dictionary] = [{"id":id, "text":LESSONS[id], "emotion":EMOTIONS[id], "action":"continue", "target":id, "contextual":true, "no_blur":true, "map_navigation":id == "competition"}]
+		var steps: Array[Dictionary] = [{"id":id, "text":LESSONS[id], "emotion":EMOTIONS[id], "action":"continue", "target":id, "contextual":true, "no_blur":true}]
 		var camera: Dictionary = page.desk._camera.inspection()
 		var destination := {"deviation":"crt", "mutation":"sheet/edit", "competition":"sheet/map"}
 		if str(camera.target) != str(destination[id]):
@@ -94,7 +85,6 @@ func _process(_delta: float) -> void:
 			var change_text: String = page.hud.design_workbench().community_change_text(raw)
 			var key := "LOC_GUIDANCE_MUTATION_SPLIT" if not bool(raw.get("effective_content", raw).get("owned", raw.owned)) else "LOC_GUIDANCE_MUTATION_EFFECT"
 			steps[-1].text = DeskLocalization.format_text(key, change_text)
-			_mutation_queue.pop_front()
 		if id == "deviation":
 			page.desk._monitor.set_mode("meme")
 			steps[-1].target = "monitor/curve"

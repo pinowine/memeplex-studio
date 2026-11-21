@@ -158,14 +158,19 @@ func _hover_starter(index: int) -> void:
 		set_hover("starter/%d" % index, str(_starter_options[index].context_hint))
 
 func _continue_pressed() -> void:
-	if bool(_steps[_index].get("starter_choices", false)):
+	var step := _steps[_index]
+	if bool(step.get("starter_choices", false)):
 		starter_confirm_requested.emit()
+	elif _is_contextual_overview(step):
+		overview_requested.emit()
 	else:
 		advance()
 
+func _is_contextual_overview(step: Dictionary) -> bool:
+	return bool(step.get("contextual", false)) and str(step.get("action", "")) == "overview_returned"
+
 func _skip_pressed() -> void:
 	if not _active: return
-	skip()
 	skip_requested.emit()
 
 func set_hover(target_id: String, text_key: String = "") -> void:
@@ -232,10 +237,7 @@ func allows_input(event: InputEvent) -> bool:
 		if _return_overview and key == KEY_ESCAPE:
 			if event.pressed and not event.echo: overview_requested.emit()
 			return false
-		if key == KEY_ESCAPE and bool(_steps[_index].get("contextual", false)):
-			if event.pressed and not event.echo: skip()
-			return false
-		if key == KEY_ESCAPE: return true
+		if key == KEY_ESCAPE: return not bool(_steps[_index].get("contextual", false))
 		if _return_overview: return false
 		if str(_steps[_index].get("action", "")) == "speed_changed":
 			for action: String in KeyBindings.SPEED_ACTION_IDS:
@@ -451,8 +453,10 @@ func _refresh() -> void:
 			body.add_text(text)
 		body.pop()
 	var next: Button = _actions.get_node("Continue")
+	var return_to_desk := _is_contextual_overview(step)
 	next.text = DeskLocalization.text("LOC_GUIDANCE_GOT_IT") if bool(step.get("contextual", false)) else ((DeskLocalization.text("LOC_HIDE_HINT_FC06733C")) if _hint_only else (DeskLocalization.text("LOC_CONTINUE_7C969119")))
-	var requires_action := not _hint_only and str(step.get("action", "continue")) != "continue"
+	if return_to_desk: next.text = DeskLocalization.text("LOC_OPENING_RETURN_DESK_TITLE")
+	var requires_action := not _hint_only and not return_to_desk and str(step.get("action", "continue")) != "continue"
 	if choosing:
 		next.text = DeskLocalization.text("LOC_GUIDE_CONFIRM_CHOICE")
 		next.disabled = not _active or _blocked or _transitioning or _starter_selected < 0

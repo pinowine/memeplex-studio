@@ -156,6 +156,7 @@ func _ready() -> void:
 	input_router = InputRouter.new()
 	input_router.configure(camera, logical, get_viewport(), buttons, content.screen_surfaces, content.bindings, button_feedback, desktop)
 	page._shell.tutorial.pointer_cancelled.connect(_cancel_input)
+	page._shell.context_guidance.mentor.pointer_cancelled.connect(_cancel_input)
 	_node("fax_machine__HandsetCord").hide()
 	_node("fax_machine__ReceiverCordJack").reparent(_node("fax_machine__HandsetPivot"),true)
 	handset_cord = MeshInstance3D.new()
@@ -469,7 +470,8 @@ func _update_hover() -> int:
 		hover_outline.clear()
 		return _blocked_cursor_shape(get_viewport().get_mouse_position())
 	var point := get_viewport().get_mouse_position()
-	if not page._shell.tutorial.allows_hover(point):
+	var mentor: Control = page._shell.context_guidance.mentor
+	if not page._shell.tutorial.allows_hover(point) or (mentor.visible and not mentor.allows_hover(point)):
 		hover_outline.clear()
 		return _blocked_cursor_shape(point)
 	var desktop_position: Vector2 = logical.get_canvas_transform() * input_router.desktop_point(point)

@@ -63,8 +63,7 @@ func configure(owner_page: Node2D) -> void:
 	tutorial.finished.connect(func(skipped: bool):
 		if skipped and not main_mode: _settle_text_propagation()
 		if skipped and page.desk._fax.inspection().focused: page.desk._show_component_details())
-	tutorial.skip_requested.connect(func():
-		if not page.startup_ready(): page._show_direct_starters())
+	tutorial.skip_requested.connect(_skip_all_guidance)
 	ending = Summary.new()
 	ending.name = "Ending67"
 	add_child(ending)
@@ -119,6 +118,10 @@ func enter_game(guide: bool) -> void:
 func blocks_input() -> bool:
 	return main_mode or main_menu.visible or ending.visible or loading.visible
 
+func _skip_all_guidance() -> void:
+	var error: Error = main_menu.set_guide_enabled(false)
+	if error != OK: push_warning("Could not turn off 67's guidance: %s" % error_string(error))
+
 func _sync_guide_settings(_settings: Dictionary) -> void:
 	var enabled: bool = main_menu.guide_enabled()
 	page.hud.set_guide_enabled(enabled)
@@ -127,8 +130,8 @@ func _sync_guide_settings(_settings: Dictionary) -> void:
 		mentor.set_typewriter_speed(main_menu.typewriter_speed())
 	context_guidance.set_enabled(enabled)
 	if not enabled:
-		tutorial.skip()
-		if not main_mode: _settle_text_propagation()
+		if tutorial._active: tutorial.skip()
+		elif not main_mode: _settle_text_propagation()
 		if not main_mode and not page.startup_ready(): page._show_direct_starters()
 
 func _settle_text_propagation() -> void:
