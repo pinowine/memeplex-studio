@@ -27,6 +27,7 @@ var _layout_revision := 0
 var _corner_tape: Array[TextureRect] = []
 var _receipt: PanelContainer
 var pointer_source: Callable
+var pointer_avoidance: Callable
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -224,6 +225,7 @@ func _layout() -> void:
 			_receipt = ReceiptHover.new()
 			_receipt.name = "HoverReceipt"
 			_receipt.set_pointer_source(pointer_source)
+			_receipt.set_pointer_avoidance(pointer_avoidance)
 			add_child(_receipt)
 		_receipt.set_width(float(_hover.get("hover_width", size.x)))
 		_receipt.set_content(_heading,_receipt_rows,_detail,_receipt_presentation)

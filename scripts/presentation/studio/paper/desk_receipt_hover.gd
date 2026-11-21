@@ -29,6 +29,7 @@ var _fit_bounds := Rect2()
 var _pointer_following := false
 var _pointer_viewport := Vector2.ZERO
 var _pointer_source: Callable
+var _pointer_avoidance: Callable
 var _layout_revision := 0
 var _barcode_rect := Rect2()
 var _barcode_bars: Array[Rect2] = []
@@ -65,12 +66,21 @@ func set_pointer_following(enabled: bool) -> void:
 func set_pointer_source(source: Callable) -> void:
 	_pointer_source = source
 
+func set_pointer_avoidance(avoidance: Callable) -> void:
+	_pointer_avoidance = avoidance
+
 func _follow_pointer() -> void:
 	var viewport := get_viewport()
 	_pointer_viewport = _pointer_source.call() if _pointer_source.is_valid() else viewport.get_mouse_position()
 	var parent_to_viewport := get_global_transform_with_canvas()*get_transform().affine_inverse()
 	var to_parent := parent_to_viewport.affine_inverse()
-	fit_at(to_parent*_pointer_viewport,to_parent*viewport.get_visible_rect())
+	var bounds := to_parent * viewport.get_visible_rect()
+	var fitted := fit_at(to_parent * _pointer_viewport, bounds)
+	if not _pointer_avoidance.is_valid(): return
+	var avoid: Rect2 = _pointer_avoidance.call()
+	if avoid.has_area():
+		var available := bounds.grow(-SCREEN_MARGIN)
+		_avoid_pointer_overlap(fitted.size, available.position, (available.end - fitted.size).max(available.position), (to_parent * avoid).grow(SCREEN_MARGIN))
 
 func set_content(title: String, rows: Array, body: String = "", presentation: Dictionary = {}) -> void:
 	_title = title
@@ -117,6 +127,19 @@ func fit_at(point: Vector2, bounds: Rect2) -> Rect2:
 	if origin.y+extent.y > available.end.y: origin.y=point.y-extent.y-16
 	position = origin.clamp(available.position,(available.end-extent).max(available.position))
 	return Rect2(position,extent)
+
+func _avoid_pointer_overlap(extent: Vector2, lower: Vector2, upper: Vector2, avoid: Rect2) -> void:
+	var overlap := Rect2(position, extent).intersection(avoid).get_area()
+	if is_zero_approx(overlap): return
+	var origin := position
+	var options := [Vector2(avoid.position.x - extent.x, origin.y), Vector2(avoid.end.x, origin.y),
+		Vector2(origin.x, avoid.position.y - extent.y), Vector2(origin.x, avoid.end.y)]
+	for option: Vector2 in options:
+		var candidate := option.clamp(lower, upper)
+		var area := Rect2(candidate, extent).intersection(avoid).get_area()
+		if area < overlap or (is_equal_approx(area, overlap) and candidate.distance_squared_to(origin) < position.distance_squared_to(origin)):
+			position = candidate
+			overlap = area
 
 func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
 	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label", "bar_label":"label", "bar_primary":"label"}.get(role, "body"))

@@ -72,6 +72,9 @@ func configure(owner_page: Node2D) -> void:
 	context_guidance.name = "ContextGuidance"
 	add_child(context_guidance)
 	context_guidance.configure(self)
+	page.desk._hover_strip.pointer_avoidance = _guidance_dialogue_rect
+	page.hud.design_workbench()._source_hover.set_pointer_avoidance(_guidance_dialogue_rect)
+	page.atlas.hover_note.set_pointer_avoidance(_guidance_dialogue_rect)
 	main_menu.settings_changed.connect(_sync_guide_settings)
 	main_menu.settings_closed.connect(func(): page.hud.set_menu("settings"))
 	_sync_guide_settings({})
@@ -145,6 +148,12 @@ func pauses_clock() -> bool:
 
 func guidance_handles_point(point: Vector2) -> bool:
 	return tutorial.handles_viewport_point(point) or starter_dialog.handles_viewport_point(point) or (context_guidance != null and context_guidance.mentor.handles_viewport_point(point))
+
+func _guidance_dialogue_rect() -> Rect2:
+	for guide: Control in [tutorial, starter_dialog, context_guidance.mentor]:
+		var rectangle: Rect2 = guide.dialogue_rect()
+		if rectangle.has_area(): return rectangle
+	return Rect2()
 
 func is_choosing_starter() -> bool:
 	return tutorial.is_choosing_starter() or starter_dialog.is_choosing_starter()
@@ -536,10 +545,9 @@ func _country_target() -> Control:
 
 func _tutorial_reserved_areas() -> Array:
 	var rectangles: Array = []
-	var hover: Control = page.desk._hover_strip
-	if hover.is_visible_in_tree(): rectangles.append(hover._receipt.get_global_rect())
-	var source_hover: Control = page.hud.design_workbench()._source_hover
-	if source_hover.is_visible_in_tree(): rectangles.append(source_hover.get_global_rect())
+	if page.desk._revealed_focus == "sheet/spread":
+		var tree: Control = page.hud.design_workbench()._spread_tree_scroll
+		if tree.is_visible_in_tree(): rectangles.append(_tutorial_project_rect(tree))
 	var reader: Control = page.desk._slot_reader
 	if reader != null and reader.is_visible_in_tree():
 		rectangles.append(reader.inspection().target_rect)

@@ -21,10 +21,9 @@ const Portrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait
 const Arrow = preload("res://scripts/presentation/ui/tutorial/tutorial_arrow.gd")
 const DragArrow = preload("res://scripts/presentation/ui/tutorial/tutorial_drag_arrow.gd")
 const CARD_MARGIN := 20.0
-const TARGET_GAP := 52.0
+const CARD_CLEARANCE := 8.0
 const MAX_ARROW_LENGTH := 72.0
 const TYPE_SPEED := 32.0
-const FOLLOW_RATE := 8.0
 const FocusShader = preload("res://shaders/ui/tutorial_focus.gdshader")
 
 class TypewriterEffect extends RichTextEffect:
@@ -63,7 +62,6 @@ var _display_index := 0
 var _transition: Tween
 var _transitioning := false
 var _appearance := 0.0
-var _card_position := Vector2.ZERO
 var _card_destination := Vector2.ZERO
 var _card_placed := false
 var _focus: ColorRect
@@ -81,7 +79,7 @@ var _hover_target := ""
 var _hover_text := ""
 var _starter_options: Array = []
 var _starter_selected := -1
-var _actions: HBoxContainer
+var _actions: BoxContainer
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -101,18 +99,18 @@ func _ready() -> void:
 	focus_layer.add_child(_focus)
 	_focus.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_focus.hide()
+	visibility_changed.connect(func(): focus_layer.visible = is_visible_in_tree())
 	_ui = TEMPLATE.instantiate()
 	add_child(_ui)
 	_actions = _ui.get_node("Card/Content/Actions")
 	_ui.get_node("Card/Content/Body").install_effect(_typewriter)
 	_arrow = Arrow.new()
 	_arrow.name = "GuideArrow"
-	add_child(_arrow)
+	focus_layer.add_child(_arrow)
 	_arrow.hide()
 	_drag_arrow = DragArrow.new()
 	_drag_arrow.name = "DragGuideArrow"
-	add_child(_drag_arrow)
-	move_child(_drag_arrow, 1)
+	focus_layer.add_child(_drag_arrow)
 	_drag_arrow.hide()
 	_actions.get_node("Continue").pressed.connect(_continue_pressed)
 	_actions.get_node("Skip").pressed.connect(_skip_pressed)
@@ -393,8 +391,8 @@ func _present_step() -> void:
 	_stop_transition()
 	_hover_target = ""
 	_hover_text = ""
+	if bool(_steps[_display_index].get("centered", false)): _card_placed = false
 	_display_index = _index
-	_card_placed = false
 	_typewriter.progress = 0.0 if _typewriter_enabled else _body_text.length() + 3.0
 	_transitioning = false
 	_appearance = 1.0
@@ -415,10 +413,6 @@ func _set_appearance(value: float) -> void:
 func _process(delta: float) -> void:
 	if not visible: return
 	_refresh()
-	var weight := 1.0 - exp(-FOLLOW_RATE * delta)
-	_card_position = _card_position.lerp(_card_destination, weight)
-	_ui.get_node("Card").position = _card_position
-	_update_arrow(Rect2(_card_position, _ui.get_node("Card").size))
 	if _active and not _transitioning and _typewriter_enabled:
 		var speed := TYPE_SPEED * _typewriter_speed * (1.8 if TranslationServer.get_locale().begins_with("en") else 1.0)
 		_typewriter.progress = minf(_typewriter.progress + delta * speed, _body_text.length() + 3.0)
@@ -427,7 +421,6 @@ func _refresh() -> void:
 	if not is_instance_valid(_ui) or _steps.is_empty(): return
 	_display_index = clampi(_display_index, 0, _steps.size() - 1)
 	var step := _steps[_display_index]
-	var fixed_card := bool(step.get("fixed_card", false))
 	var choosing := bool(step.get("starter_choices", false))
 	var choices: Control = _ui.get_node("Card/StarterChoices")
 	choices.visible = choosing
@@ -472,14 +465,8 @@ func _refresh() -> void:
 	silent_skip.text = DeskLocalization.text("LOC_SKIP_EXPLANATION_2786614D")
 	silent_skip.disabled = not _active or _blocked
 	silent_skip.position = Vector2(size.x - silent_skip.size.x - CARD_MARGIN, CARD_MARGIN)
-	_target = Rect2()
-	var target_id := _hover_target if _display_index == _index and not _hover_target.is_empty() else str(step.get("target", ""))
-	if _provider.is_valid() and not target_id.is_empty():
-		var target: Variant = _provider.call(target_id)
-		if target is Control and target.is_visible_in_tree():
-			var transform: Transform2D = get_global_transform_with_canvas().affine_inverse() * target.get_global_transform_with_canvas()
-			_target = transform * Rect2(Vector2.ZERO, target.size)
-		elif target is Rect2: _target = get_global_transform_with_canvas().affine_inverse() * target
+	var lesson_target := _target_rect(str(step.get("target", "")))
+	_target = _target_rect(_hover_target) if _display_index == _index and not _hover_target.is_empty() else lesson_target
 	_drag_source = Rect2()
 	_drag_source_test = Callable()
 	if _pointer_mode != "drag": _drag_drop_test = Callable()
@@ -492,6 +479,7 @@ func _refresh() -> void:
 			_drag_source_test = drag_targets.get("accepts_point", Callable())
 			if _pointer_mode != "drag": _drag_drop_test = drag_targets.get("accepts_drop", Callable())
 			_target = inverse * drag_targets.target
+			lesson_target = _target
 	# Offscreen or missing targets never receive a speculative pointer.
 	_target = _target.intersection(Rect2(Vector2.ZERO, size))
 	if _drag_source.has_area():
@@ -507,16 +495,10 @@ func _refresh() -> void:
 	if _drag_source.has_area(): _avoid_rects.append(_drag_source)
 	var card: Control = _ui.get_node("Card")
 	var compact := size.x < 900 or size.y < 560
-	var width := minf(600 if bool(step.get("centered", false)) else 500, size.x - CARD_MARGIN * 2.0)
-	if choosing: width = minf(1040, size.x - CARD_MARGIN * 2.0)
-	var minimum_width := minf(344.0, size.x - CARD_MARGIN * 2.0)
-	# The live phone paper reserves the right side, including while it slides in.
-	for rectangle: Rect2 in _avoid_rects:
-		if not fixed_card and not bool(step.get("centered", false)) and rectangle.get_center().x > size.x * .5:
-			width = minf(width, maxf(minimum_width, rectangle.position.x - CARD_MARGIN * 2.0 - TARGET_GAP))
-	if not fixed_card and not bool(step.get("centered", false)) and _target.has_area():
-		var side_width := maxf(_target.position.x, size.x - _target.end.x) - CARD_MARGIN - TARGET_GAP
-		if side_width >= minimum_width: width = minf(width, side_width)
+	var width := 600.0 if bool(step.get("centered", false)) else 500.0
+	if bool(step.get("side_card", false)): width = 310.0
+	if choosing: width = 1040.0
+	width = minf(width, size.x - CARD_MARGIN * 2.0)
 	var portrait: Control = card.get_node("Portrait67")
 	portrait.visible = true
 	portrait.position = Vector2(24, 24)
@@ -535,6 +517,7 @@ func _refresh() -> void:
 	card.size = Vector2(width, minimum_height)
 	var content: Control = card.get_node("Content")
 	var narrow := width < 400
+	_actions.vertical = narrow and not choosing
 	content.position = Vector2(24, 88) if narrow else Vector2(88 if compact else 112, 24)
 	var separation := 16
 	if content.get_theme_constant("separation") != separation: content.add_theme_constant_override("separation", separation)
@@ -560,19 +543,13 @@ func _refresh() -> void:
 	else:
 		body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		_actions.alignment = BoxContainer.ALIGNMENT_BEGIN
-	if _card_placed and (fixed_card or bool(step.get("map_navigation", false))):
-		_card_destination = _card_destination.clamp(Vector2.ONE * CARD_MARGIN, (size - card.size - Vector2.ONE * CARD_MARGIN).max(Vector2.ONE * CARD_MARGIN))
-	else:
-		_card_destination = _place_card(card.size)
-	if not _card_placed:
-		_card_position = _card_destination
-		_card_placed = true
+	_card_destination = _place_card(card.size, lesson_target.intersection(Rect2(Vector2.ZERO, size)))
+	_card_placed = not silent
 	card.scale = Vector2.ONE
-	card.position = _card_position
+	card.position = _card_destination
 	_ui.modulate.a = smoothstep(0.0, 0.25, _appearance)
 	_update_focus()
-	# Card and pointer follow their projected destinations without changing scale.
-	_update_arrow(Rect2(_card_position, card.size))
+	_update_arrow(card.get_rect())
 	queue_redraw()
 
 func _add_hover_text(body: RichTextLabel, text: String) -> void:
@@ -602,51 +579,48 @@ func _update_focus() -> void:
 	_focus_material.set_shader_parameter("focus_rect", Vector4(_target.position.x, _target.position.y, _target.size.x, _target.size.y))
 	_focus_material.set_shader_parameter("source_rect", Vector4(_drag_source.position.x, _drag_source.position.y, _drag_source.size.x, _drag_source.size.y))
 
-func _place_card(dimensions: Vector2) -> Vector2:
+func _target_rect(id: String) -> Rect2:
+	if id.is_empty() or not _provider.is_valid(): return Rect2()
+	var target: Variant = _provider.call(id)
+	var inverse := get_global_transform_with_canvas().affine_inverse()
+	if target is Control and target.is_visible_in_tree():
+		return inverse * target.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, target.size)
+	if target is Rect2: return inverse * target
+	return Rect2()
+
+func _place_card(dimensions: Vector2, target: Rect2) -> Vector2:
 	if bool(_steps[_display_index].get("centered", false)):
 		return (size - dimensions) * 0.5
-	var candidates: Array[Vector2] = []
-	if _target.has_area():
-		# Three alignments per edge keep the bubble close even near a screen corner.
-		for alignment: float in [0.5, 0.0, 1.0]:
-			var x := lerpf(_target.position.x, _target.end.x, alignment) - dimensions.x * alignment
-			var y := lerpf(_target.position.y, _target.end.y, alignment) - dimensions.y * alignment
-			candidates.append(Vector2(_target.end.x + TARGET_GAP, y))
-			candidates.append(Vector2(_target.position.x - dimensions.x - TARGET_GAP, y))
-			candidates.append(Vector2(x, _target.position.y - dimensions.y - TARGET_GAP))
-			candidates.append(Vector2(x, _target.end.y + TARGET_GAP))
-	else:
-		# General dialogue has a quiet resting position and no implied target.
-		candidates.append(Vector2((size.x - dimensions.x) * 0.5, size.y - dimensions.y - 36))
-		candidates.append(Vector2(CARD_MARGIN, size.y - dimensions.y - 36))
-		candidates.append(Vector2(CARD_MARGIN, CARD_MARGIN))
-	for reserved: Rect2 in _avoid_rects:
-		candidates.append(Vector2(reserved.position.x - dimensions.x - TARGET_GAP, reserved.get_center().y - dimensions.y * .5))
-		candidates.append(Vector2(reserved.end.x + TARGET_GAP, reserved.get_center().y - dimensions.y * .5))
-		candidates.append(Vector2(reserved.get_center().x - dimensions.x * .5, reserved.position.y - dimensions.y - TARGET_GAP))
-		candidates.append(Vector2(reserved.get_center().x - dimensions.x * .5, reserved.end.y + TARGET_GAP))
-	var best := Vector2.ZERO
-	var best_score := INF
 	var lower := Vector2.ONE * CARD_MARGIN
 	var upper := (size - dimensions - lower).max(lower)
+	var top_right := Vector2(upper.x, lower.y)
+	var best := _card_destination.clamp(lower, upper) if _card_placed else top_right
+	var best_overlap := _card_overlap(Rect2(best, dimensions), target)
+	if is_zero_approx(best_overlap): return best
+	var reference := best
+	var candidates: Array[Vector2] = [top_right, lower, upper, Vector2(lower.x, upper.y)]
+	var obstacles := _avoid_rects.duplicate()
+	if target.has_area(): obstacles.push_front(target)
+	for obstacle: Rect2 in obstacles:
+		candidates.append(Vector2(obstacle.position.x - dimensions.x - CARD_CLEARANCE, reference.y))
+		candidates.append(Vector2(obstacle.end.x + CARD_CLEARANCE, reference.y))
+		candidates.append(Vector2(reference.x, obstacle.position.y - dimensions.y - CARD_CLEARANCE))
+		candidates.append(Vector2(reference.x, obstacle.end.y + CARD_CLEARANCE))
 	for candidate: Vector2 in candidates:
 		var point := candidate.clamp(lower, upper)
-		var rectangle := Rect2(point, dimensions)
-		var score := 0.0
-		if _target.has_area():
-			score += rectangle.intersection(_target.grow(12)).get_area() * 100.0
-			var endpoints := _nearest_edges(rectangle, _target)
-			score += absf(endpoints[0].distance_to(endpoints[1]) - TARGET_GAP) * 6.0
-		for reserved: Rect2 in _avoid_rects:
-			score += rectangle.intersection(reserved.grow(12)).get_area() * 100.0
-		if _drag_source.has_area() and _drag_arrow.intersects_rect(rectangle.grow(10)):
-			score += 50000.0
-		# Small stability bias prevents flipping sides while the camera settles.
-		score += point.distance_to(_card_position) * 0.01 if _target.has_area() else float(candidates.find(candidate))
-		if score < best_score:
-			best_score = score
+		var overlap := _card_overlap(Rect2(point, dimensions), target)
+		if overlap < best_overlap or (is_equal_approx(overlap, best_overlap) and point.distance_squared_to(reference) < best.distance_squared_to(reference)):
+			best_overlap = overlap
 			best = point
 	return best
+
+func _card_overlap(card: Rect2, target: Rect2) -> float:
+	var padded := card.grow(CARD_CLEARANCE)
+	var overlap := padded.intersection(target).get_area() * 2.0
+	for reserved: Rect2 in _avoid_rects:
+		overlap += padded.intersection(reserved).get_area()
+	if _drag_source.has_area() and _drag_arrow.intersects_rect(padded): overlap += 500.0
+	return overlap
 
 func _nearest_edges(card: Rect2, target: Rect2) -> PackedVector2Array:
 	var from := card.get_center()
@@ -713,6 +687,12 @@ func handles_viewport_point(point: Vector2) -> bool:
 		var local := button.get_global_transform_with_canvas().affine_inverse() * point
 		if Rect2(Vector2.ZERO, button.size).has_point(local): return true
 	return false
+
+func dialogue_rect() -> Rect2:
+	if not _active or not is_visible_in_tree(): return Rect2()
+	var card: Control = _ui.get_node("Card")
+	if not card.visible: return Rect2()
+	return card.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, card.size)
 
 func inspection() -> Dictionary:
 	return {"active": _active, "step": {} if _steps.is_empty() else _steps[_index].duplicate(true), "index": _index, "count": _steps.size(), "completed": _completed, "blocked": _blocked, "hint_only": _hint_only, "target_rect": _target, "history": _history.duplicate(true), "fixed_wait_seconds": 0, "blocks_desktop": _active and not _hint_only, "portrait": "res://assets/image/textures/studio/desk/portrait_67.svg", "card_rect": _ui.get_node("Card").get_rect() if _ui != null else Rect2(), "avoid_rects": _avoid_rects.duplicate(), "arrow_visible": _arrow_visible, "arrow_length": _arrow_from.distance_to(_arrow_to) if _arrow_visible else 0.0, "arrow":_arrow.inspection() if _arrow != null else {}, "return_overview":_return_overview, "transitioning": _transitioning, "appearance": _appearance, "display_index": _display_index, "dialogue_visible": _ui.get_node("Card").visible if _ui != null else false, "body_text":_body_text, "hover_target":_hover_target, "emotion":str(_steps[_index].get("emotion", "")), "centered":bool(_steps[_index].get("centered", false)), "portrait_rotation":_ui.get_node("Card/Portrait67").rotation if _ui != null else 0.0, "portrait_scale":_ui.get_node("Card/Portrait67").scale if _ui != null else Vector2.ONE, "card_destination":_card_destination, "card_scale":_ui.get_node("Card").scale if _ui != null else Vector2.ONE, "focus_visible":_focus.visible if _focus != null else false, "source_rect":_drag_source, "text_source":_ui.get_node("Card/Content/Body").get_meta(&"text_workbench_source", {}) if _ui != null else {}}
