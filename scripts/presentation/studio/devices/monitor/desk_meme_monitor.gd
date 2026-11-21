@@ -3,6 +3,7 @@ extends Control
 
 const TrendChart = preload("res://scripts/presentation/ui/components/spread_trend_chart.gd")
 const Details = preload("res://scripts/presentation/map/meme_map_details.gd")
+const BALANCE_FONT_SCALE := 1.7
 
 @export var font_size: int = 13
 @export var screen_padding: float = 10.0
@@ -115,6 +116,7 @@ func inspection() -> Dictionary:
 		"curve_x_mode": "hour", "curve_range": _trend.value_range(),
 		"layout_mode": "compact" if _compact() else "full",
 		"title_rect": _title_rect(), "balance_rect": _balance_rect(), "axis_rect": _axis_rect(),
+		"balance_text_layout": _balance_text_layout(),
 		"title_text_layout": _title_text_layout(),
 		"measurement": "Language spread and weighted meaning deviation", "tracked_language":_language_id,
 		"language_title":_language_title, "spread_history":_spread_history.duplicate(true),
@@ -185,11 +187,13 @@ func _draw() -> void:
 	var padding := _padding()
 	var fs := 11 if _compact() else _font_size()
 	_draw_mono(font, _language_title, Vector2(padding,padding+font.get_ascent(fs)), fs, ink_color)
-	_draw_mono(font, "Meme %d" % _balance, Vector2(padding,padding+fs+6+font.get_ascent(fs)), fs, ink_color)
-	var top := padding + (fs + 6) * 2.0
+	var balance := _balance_text_layout()
+	_draw_mono(font, "Meme", Vector2(padding, balance.baseline.y), fs, ink_color)
+	_draw_mono(font, balance.text, balance.baseline, balance.font_size, ink_color)
+	var plot := _plot_rect()
 	_trend.font_size = fs
-	_trend.position = Vector2(padding, top)
-	_trend.size = Vector2(maxf(0,size.x-padding*2),maxf(0,size.y-top-padding))
+	_trend.position = plot.position
+	_trend.size = plot.size
 
 
 func _draw_compact(font: Font) -> void:
@@ -249,9 +253,8 @@ func _trim_history() -> bool:
 
 func _plot_rect() -> Rect2:
 	var padding := _padding()
-	var row_height := float((11 if _compact() else _font_size()) + 6)
-	var top := padding + row_height * 3.0
-	return Rect2(padding, top, maxf(0.0, size.x-padding*2), maxf(0.0,size.y-padding-top-row_height))
+	var top := _balance_rect().end.y + 6.0
+	return Rect2(padding, top, maxf(0.0, size.x-padding*2), maxf(0.0,size.y-padding-top))
 
 
 func _compact() -> bool:
@@ -263,8 +266,28 @@ func _title_rect() -> Rect2:
 
 
 func _balance_rect() -> Rect2:
-	var top := _padding() + float((11 if _compact() else _font_size()) + 6)
-	return _row_rect(top, 18.0 if _compact() else float(_font_size() + 10))
+	var fs := 11 if _compact() else _font_size()
+	var font := get_theme_font("font", "Label")
+	return _row_rect(_padding() + fs + 6, ceilf(font.get_height(roundi(fs * BALANCE_FONT_SCALE))))
+
+func _balance_text_layout() -> Dictionary:
+	var font := get_theme_font("font", "Label")
+	var fs := 11 if _compact() else _font_size()
+	var preferred := roundi(fs * BALANCE_FONT_SCALE)
+	var points_size := preferred
+	var rect := _balance_rect()
+	var offset := _balance_width(font, "Meme ", fs)
+	var text := str(_balance)
+	var width := _balance_width(font, text, points_size)
+	while offset + width > rect.size.x and points_size > fs:
+		points_size -= 1
+		width = _balance_width(font, text, points_size)
+	var baseline := rect.position + Vector2(offset, font.get_ascent(preferred))
+	return {"text":text, "font_size":points_size, "baseline":baseline, "fits":offset + width <= rect.size.x}
+
+func _balance_width(font: Font, text: String, fs: int) -> float:
+	if _presentation_mirror: return font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, fs).x
+	return _mono_text_width(font, text, fs)
 
 
 func _axis_rect() -> Rect2:
