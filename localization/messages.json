@@ -4131,8 +4131,8 @@
   },
   "LOC_PRESS_ESC_TO_RETURN_TO_THE_MAIN_445EA13C": {
     "source": "按 Esc，回到主桌面。",
-    "zh_CN": "按 Esc，回到主桌面。",
-    "en": "Press Esc to return to the main desk."
+    "zh_CN": "按 Esc 或点击鼠标右键回到桌面。",
+    "en": "Press Esc or right-click to return to the desk."
   },
   "LOC_PATCH_70F56533": {
     "source": "补丁",

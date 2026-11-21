@@ -306,8 +306,7 @@ func _open_settings() -> void:
 
 func _input(event: InputEvent) -> void:
 	if not _ready_to_run or not event is InputEventKey or not event.pressed or event.echo: return
-	var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
-	if key == KEY_ESCAPE:
+	if KeyBindings.is_desk_back(event):
 		if _shell != null and _shell.main_menu.visible:
 			_shell.main_menu.back()
 			get_viewport().set_input_as_handled()
@@ -316,17 +315,7 @@ func _input(event: InputEvent) -> void:
 			_toggle_menu("settings")
 			get_viewport().set_input_as_handled()
 			return
-		if hud.menu_mode() == "" and desk != null and desk._slot_reader.is_visible_in_tree() and str(desk._slot_reader._details.get("document_kind", "")) == "meme":
-			desk._slot_reader.hide_details()
-			_on_meme_reader_closed()
-			get_viewport().set_input_as_handled()
-			return
-		if hud.menu_mode() == "" and desk != null and desk.slot_details_active():
-			desk.close_slot_details()
-			get_viewport().set_input_as_handled()
-			return
-		if hud.menu_mode() == "" and desk != null and desk._camera != null and desk._camera.inspection().state != "overview":
-			_return_to_desktop()
+		if _return_from_focused_view():
 			get_viewport().set_input_as_handled()
 			return
 		if _shell != null and _shell.main_mode:
@@ -348,6 +337,23 @@ func _input(event: InputEvent) -> void:
 		elif KeyBindings.matches(event, "speed_fast"): _set_speed(2)
 		else: return
 	get_viewport().set_input_as_handled()
+
+func _right_click_back() -> bool:
+	if hud.modal_visible() or _shell.blocks_input() or _shell.is_choosing_starter(): return false
+	return _return_from_focused_view()
+
+func _return_from_focused_view() -> bool:
+	if hud.menu_mode() != "": return false
+	if desk._slot_reader.is_visible_in_tree() and str(desk._slot_reader._details.get("document_kind", "")) == "meme":
+		desk._slot_reader.hide_details()
+		_on_meme_reader_closed()
+	elif desk.slot_details_active():
+		desk.close_slot_details()
+	elif desk._camera.inspection().state != "overview":
+		_return_to_desktop()
+	else:
+		return false
+	return true
 
 func _focus_shortcut(event: InputEventKey) -> bool:
 	if desk._fax_phone_focused(): return false

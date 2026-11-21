@@ -70,6 +70,12 @@ static func assign(action: String, event: InputEventKey) -> Error:
 static func matches(event: InputEventKey, action: String) -> bool:
 	return _event_code(event) == int(_bindings[action])
 
+static func is_desk_back(event: InputEvent) -> bool:
+	if event is InputEventMouseButton: return event.button_index == MOUSE_BUTTON_RIGHT
+	if event is InputEventKey:
+		return (event.physical_keycode if event.physical_keycode != 0 else event.keycode) == KEY_ESCAPE
+	return false
+
 static func display_name(action: String) -> String:
 	return OS.get_keycode_string(_bindings[action])
 

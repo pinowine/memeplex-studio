@@ -225,19 +225,20 @@ func allows_input(event: InputEvent) -> bool:
 			if event.pressed: _pointer_mode = "guide"
 			return true
 	if _transitioning: return false
+	var step := _steps[_index]
+	if KeyBindings.is_desk_back(event):
+		if bool(step.get("starter_choices", false)): return event is InputEventKey
+		if _return_overview or str(step.get("action", "")) == "overview_returned" or str(step.get("target", "")).begins_with("map/"):
+			if event.is_pressed() and not event.is_echo():
+				_cancel_pointer()
+				overview_requested.emit()
+			return false
+		return not bool(step.get("contextual", false))
 	if event is InputEventKey:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
-		if key == KEY_ESCAPE and bool(_steps[_index].get("starter_choices", false)): return true
-		if bool(_steps[_index].get("starter_choices", false)) and key in [KEY_TAB, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_SPACE, KEY_ENTER, KEY_KP_ENTER]: return true
-		if key == KEY_ESCAPE and (str(_steps[_index].get("action", "")) == "overview_returned" or str(_steps[_index].get("target", "")).begins_with("map/")):
-			if event.pressed and not event.echo: overview_requested.emit()
-			return false
-		if _return_overview and key == KEY_ESCAPE:
-			if event.pressed and not event.echo: overview_requested.emit()
-			return false
-		if key == KEY_ESCAPE: return not bool(_steps[_index].get("contextual", false))
+		if bool(step.get("starter_choices", false)) and key in [KEY_TAB, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_SPACE, KEY_ENTER, KEY_KP_ENTER]: return true
 		if _return_overview: return false
-		if str(_steps[_index].get("action", "")) == "speed_changed":
+		if str(step.get("action", "")) == "speed_changed":
 			for action: String in KeyBindings.SPEED_ACTION_IDS:
 				if KeyBindings.matches(event, action): return true
 		return false

@@ -557,6 +557,12 @@ func _show_hover_target(target: Dictionary) -> void:
 		polygon = projected
 	hover_outline.show_polygon(hovered, polygon, target.get("texture"))
 
+func _input(event: InputEvent) -> void:
+	# The foreground paper can consume mouse input before it reaches the desk viewport.
+	if ready_3d and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and page._right_click_back():
+		_cancel_input()
+		get_viewport().set_input_as_handled()
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not ready_3d: return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F8:

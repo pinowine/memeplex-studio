@@ -456,8 +456,8 @@
   },
   "LOC_GUIDE_STARTER_CONFIRMED": {
     "source": "选好了？按Esc可以回到桌面。",
-    "zh_CN": "选好了？按 Esc 就能回到桌面。",
-    "en": "All picked out? Press Esc to head back to the desk."
+    "zh_CN": "选好了？按 Esc 或点击鼠标右键回到桌面。",
+    "en": "All picked out? Press Esc or right-click to head back to the desk."
   },
   "LOC_OPENING_DIRECT_MAP_HINT": {
     "source": "修改你的开局模因，然后去地图选国家；点破投放气泡才会开始。",
