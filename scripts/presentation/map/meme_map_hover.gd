@@ -24,9 +24,6 @@ var _meme_root: VBoxContainer
 var _meme_scroll: ScrollContainer
 var _meme_content: VBoxContainer
 var _meme_title: Label
-var _meme_share_label: Label
-var _meme_share_value: Label
-var _meme_deviation: Label
 var _meme_meaning: Label
 var _meme_chart: Control
 var _meme_tags: HFlowContainer
@@ -52,9 +49,6 @@ func set_meme_details(details: Dictionary) -> void:
 	_build_meme_content()
 	_meme_root.show()
 	_meme_title.text = str(details.title)
-	_meme_share_label.text = str(details.share_label)
-	_meme_share_value.text = str(details.share_value)
-	_meme_deviation.text = "%s %.1f%%" % [DeskLocalization.text("MM_DEVIATION"), float(details.get("deviation", 0.0)) * 100.0]
 	_meme_meaning.text = str(details.get("meaning", ""))
 	_meme_chart.set_samples(details.get("history", []))
 	_update_tags(details.context_tags)
@@ -72,7 +66,7 @@ func scroll_details(direction: int) -> bool:
 
 func content_text() -> String:
 	if not _meme_mode: return super.content_text()
-	var lines := PackedStringArray([str(_meme_details.title), str(_meme_details.share_label) + "  " + str(_meme_details.share_value)])
+	var lines := PackedStringArray([str(_meme_details.title)])
 	for tag: Dictionary in _meme_details.context_tags: lines.append(str(tag.text))
 	return "\n".join(lines)
 
@@ -120,24 +114,8 @@ func _build_meme_content() -> void:
 	_meme_title.name = "MemeHoverTitle"
 	_meme_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	header.add_child(_meme_title)
-	var share := HBoxContainer.new()
-	share.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	share.add_theme_constant_override("separation", 12)
-	_meme_content.add_child(share)
-	_meme_share_label = _meme_label(12, MemeHandwriting.BODY_FONT, ReceiptStyle.SECONDARY_INK)
-	_meme_share_label.name = "MemeHoverShareLabel"
-	share.add_child(_meme_share_label)
-	_meme_share_value = _meme_label(16, MemeHandwriting.BOLD_FONT, ReceiptStyle.SECTION_TEAL)
-	_meme_share_value.name = "MemeHoverShareValue"
-	_meme_share_value.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_meme_share_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_meme_share_value.size_flags_horizontal = Control.SIZE_SHRINK_END
-	share.add_child(_meme_share_value)
-	_meme_deviation = _meme_label(12, MemeHandwriting.BODY_FONT, ReceiptStyle.SECONDARY_INK)
-	_meme_content.add_child(_meme_deviation)
 	_meme_chart = TrendChart.new()
-	_meme_chart.show_deviation = false
-	_meme_chart.show_labels = false
+	_meme_chart.values_in_labels = false
 	_meme_content.add_child(_meme_chart)
 	_meme_meaning = _meme_label(14, MemeHandwriting.BODY_FONT, ReceiptStyle.INK)
 	_meme_content.add_child(_meme_meaning)
@@ -233,10 +211,6 @@ func inspection() -> Dictionary:
 	if _meme_mode:
 		var scrollbar := _meme_scroll.get_v_scroll_bar()
 		state.details = _meme_details.duplicate(true)
-		state.share_label = _meme_share_label.text
-		state.share_value = _meme_share_value.text
-		state.share_value_rect = _meme_share_value.get_global_rect()
-		state.share_value_minimum_size = _meme_share_value.get_combined_minimum_size()
 		state.tag_chips = _tag_chips.map(func(chip: Control): return chip.inspection())
 		state.tag_row_count = _meme_tags.get_line_count()
 		state.scroll_vertical = _meme_scroll.scroll_vertical

@@ -31,7 +31,7 @@ var _country_tags: Dictionary = {}
 var _country_flows: Array[HFlowContainer] = []
 var _compact_layout := false
 var _interactive_countries := true
-var _trend_charts: Array[Control] = []
+var _trend_chart: Control
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -54,7 +54,7 @@ func set_details(details: Dictionary, interactive_countries: bool = true) -> voi
 	if key != _layout_key:
 		_layout_key = key
 		_rebuild(interactive_countries)
-	for chart: Control in _trend_charts: chart.set_samples(details.get("history", []))
+	if _trend_chart != null: _trend_chart.set_samples(details.get("history", []))
 	for header: Dictionary in _headers:
 		var section: Dictionary = details.sections[int(header.section)]
 		_assign_help(header.control, str(section.title), str(section.help), str(section.kind), interactive_countries, section.get("hover_info", {}))
@@ -96,7 +96,7 @@ func _rebuild(interactive_countries: bool) -> void:
 	_help_controls.clear()
 	_country_tags.clear()
 	_country_flows.clear()
-	_trend_charts.clear()
+	_trend_chart = null
 	for section_index in _details.sections.size():
 		var section: Dictionary = _details.sections[section_index]
 		var section_body := VBoxContainer.new()
@@ -142,12 +142,11 @@ func _rebuild(interactive_countries: bool) -> void:
 		content.add_theme_constant_override("separation", 8)
 		section_body.add_child(content)
 		if str(section.kind) == "metric":
-			var chart := TrendChart.new()
-			chart.name = "MemeSpreadAndDeviation"
-			chart.show_labels = false
-			chart.custom_minimum_size.y = 112
-			content.add_child(chart)
-			_trend_charts.append(chart)
+			_trend_chart = TrendChart.new()
+			_trend_chart.name = "Trend_spread_deviation"
+			_trend_chart.values_in_labels = false
+			_trend_chart.custom_minimum_size.y = 104
+			content.add_child(_trend_chart)
 		if str(section.kind) == "group" and section.rows.is_empty():
 			var empty := _label(DeskLocalization.text("MM_NO_SPREAD"), 14, Style.SECONDARY_INK)
 			_assign_help(empty, str(section.title), str(section.help), str(section.kind), interactive_countries)

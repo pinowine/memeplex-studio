@@ -23,7 +23,7 @@ static func build(snapshot: Dictionary, catalog: MemeDemoCatalog, variant_id: St
 		content_rows.append(_row("MM_MEANING", str(identity.meaning), "MM_HELP_MEANING"))
 	var sections: Array[Dictionary] = [
 		_section("MM_CONTENT", "meme", "MM_HELP_CONTENT", content_rows),
-		_section("MM_TRANSMISSION", "metric", "MM_HELP_TRANSMISSION", _transmission_rows(snapshot, variant_id))]
+		_section("MM_TRANSMISSION", "metric", "MM_HELP_TRANSMISSION", [])]
 	sections.append(_section("MM_COUNTRIES", "group", "MM_HELP_COUNTRIES", _country_rows(world, variant_id, country_titles)))
 	sections.append(_section("MM_CONTEXT", "language", "MM_HELP_CONTEXT", _context_rows(profile, catalog)))
 	var origin := str(variant.origin_country)
@@ -129,14 +129,6 @@ static func monitor_metrics(snapshot: Dictionary, variant_id: String) -> Diction
 	var raw := _raw_variant(snapshot, variant_id)
 	var initial := MonitorMetrics.initial_variant(snapshot.lineage, raw)
 	return {"spread":spread, "growth":float(variant.get("monitor_growth", 0.0)), "deviation":Deviation.total(initial, raw), "deviation_threshold":load("res://scripts/gameplay/propagation/propagation_rules.gd").new().split_threshold(.5, raw, {"flow_draft":raw.get("flow_draft", {})})}
-
-static func _transmission_rows(snapshot: Dictionary, variant_id: String) -> Array[Dictionary]:
-	var metrics := monitor_metrics(snapshot, variant_id)
-	var growth := float(metrics.growth) * 100.0
-	return [
-		_row("MM_SPREAD", _share(float(metrics.spread)), "MM_HELP_SPREAD"),
-		_row("MM_DEVIATION", _percentage(float(metrics.deviation)), "MM_HELP_DEVIATION"),
-		_row("MM_GROWTH", ("+" if growth > 0.0 else "") + "%.1f%%" % growth, "MM_HELP_GROWTH")]
 
 static func _points(value: float) -> String:
 	return "%.1f" % (value * 100.0)

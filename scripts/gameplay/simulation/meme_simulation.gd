@@ -1212,7 +1212,7 @@ func _update_meme_trends(world: Dictionary, active_variants: Array) -> void:
 	for row: Dictionary in world.variants:
 		var raw: Dictionary = raw_by_id[str(row.id)]
 		var initial := MonitorMetrics.initial_variant(variants, raw)
-		var sample := {"hour":hour, "spread":float(row.monitor_spread), "deviation":Deviation.total(initial,raw), "deviation_threshold":deviation_threshold(raw)}
+		var sample := {"hour":hour, "spread":float(row.monitor_spread), "growth":float(row.monitor_growth), "deviation":Deviation.total(initial,raw), "deviation_threshold":deviation_threshold(raw)}
 		var key := str(row.meme_id)
 		if not _meme_trends.has(key): _meme_trends[key] = []
 		var history: Array = _meme_trends[key]
