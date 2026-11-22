@@ -56,8 +56,8 @@
   },
   "LOC_PROP_NODE_TEXT_EFFECT": {
     "source": "开放基础文字发布，初始分化线50%，偏移度随时间自然增长。",
-    "zh_CN": "开放基础文字发布。初始分化阈值为 50%，意思会随时间慢慢自然跑偏。",
-    "en": "Unlock basic text publication. The split threshold starts at 50 percent and meaning drifts slowly over time."
+    "zh_CN": "plain\t基础文字发布\t开放\nplain\t分化阈值\t初始为 50%\ndrift\t自然模因偏移率\t随时间累积",
+    "en": "plain\tBasic text publishing\tUnlocked\nplain\tSplit threshold\tStarts at 50%\ndrift\tNatural meme drift\tBuilds over time"
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_TITLE": {
     "source": "附带出处",
@@ -71,8 +71,8 @@
   },
   "LOC_PROP_NODE_CONTEXT_NOTE_EFFECT": {
     "source": "语境依赖降至60%，偏移度立即降6%，自然跑偏减慢30%，传播速度降8%。",
-    "zh_CN": "跨人群理解阻力降至原来的 60%。当前偏移度降低 6%，平时跑偏减慢 30%；帖子变长后，传播速度减慢 8%。",
-    "en": "Cut context dependency to 60 percent. Deviation drops by 6 points and natural drift slows by 30 percent, while spread speed slows by 8 percent."
+    "zh_CN": "plain\t跨人群理解阻力\t降至原来的 60%\ndrift\t当前偏移度\t立即降低 6 个百分点\ndrift\t自然模因偏移率\t−30%\nspread\t传播速度\t−8%",
+    "en": "plain\tContext dependency\tReduced to 60%\ndrift\tCurrent deviation\t−6 percentage points now\ndrift\tNatural meme drift\t−30%\nspread\tSpread speed\t−8%"
   },
   "LOC_PROP_NODE_USAGE_EXAMPLE_TITLE": {
     "source": "用法示例",
@@ -86,8 +86,8 @@
   },
   "LOC_PROP_NODE_USAGE_EXAMPLE_EFFECT": {
     "source": "偏移度立即降8%，后续改稿与事件引发的偏移减少35%。",
-    "zh_CN": "当前偏移度降低 8%；往后改稿或遇上新闻事件时，涨出来的偏移减少 35%。",
-    "en": "Deviation drops by 8 points. Later edits and news events add 35 percent less deviation."
+    "zh_CN": "drift\t当前偏移度\t立即降低 8 个百分点\ndrift\t改稿与事件引发的偏移\t−35%",
+    "en": "drift\tCurrent deviation\t−8 percentage points now\ndrift\tDeviation from edits and events\t−35%"
   },
   "LOC_PROP_NODE_MISUSE_CORRECTION_TITLE": {
     "source": "误用纠偏",
@@ -101,8 +101,8 @@
   },
   "LOC_PROP_NODE_MISUSE_CORRECTION_EFFECT": {
     "source": "偏移度每小时自动回退0.025%，可把已涨高的偏移慢慢拉回。",
-    "zh_CN": "偏移度每小时自动回退 0.025%，就算之前已经被带歪了，也能随时间慢慢降回来。",
-    "en": "Deviation recovers by 0.025 percentage points per hour, pulling drifted memes back toward their original meaning."
+    "zh_CN": "drift\t当前偏移度\t每小时额外回退 0.032 个百分点",
+    "en": "drift\tCurrent deviation\tRecovers an extra 0.032 percentage points per hour"
   },
   "LOC_PROP_NODE_MEME_ENTRY_TITLE": {
     "source": "词条归档",
@@ -116,8 +116,8 @@
   },
   "LOC_PROP_NODE_MEME_ENTRY_EFFECT": {
     "source": "偏移度立即降10%，自然跑偏减慢70%；偏移不高于20%时本国留存提高且负面事件冲击减半，传播速度降5%。",
-    "zh_CN": "当前偏移度降低 10%，平时跑偏减慢 70%。偏移保持在 20% 以内时，本国受众留存提高 20%、负面事件波动减半；野生改图减少，传播速度减慢 5%。",
-    "en": "Deviation drops by 10 points and natural drift slows by 70 percent. While deviation stays at or below 20 percent, local retention rises by 20 percent and negative event swings are halved; spread speed slows by 5 percent."
+    "zh_CN": "drift\t当前偏移度\t立即降低 10 个百分点\ndrift\t自然模因偏移率\t−70%\nplain\t偏移度不高于 20% 时\t本国受众留存 +20%，负面事件影响减半\nspread\t传播速度\t−5%",
+    "en": "drift\tCurrent deviation\t−10 percentage points now\ndrift\tNatural meme drift\t−70%\nplain\tWhile deviation is at most 20%\tLocal retention +20%; negative event impact halved\nspread\tSpread speed\t−5%"
   },
   "LOC_PROP_NODE_IMAGE_TITLE": {
     "source": "做成配图",
@@ -131,8 +131,8 @@
   },
   "LOC_PROP_NODE_IMAGE_EFFECT": {
     "source": "传播速度加20%，画面部分语言障碍降低90%；看图发挥增多，自然跑偏加快15%。",
-    "zh_CN": "传播速度提高 20%，不懂原文的外国受众也能看画面猜懂大半；看图发挥的人变多，平时跑偏加快 15%。",
-    "en": "Spread speed rises by 20 percent and visual cues cut language barriers by 90 percent for the pictured action, while natural drift speeds up by 15 percent."
+    "zh_CN": "spread\t传播速度\t+20%\nplain\t画面线索的语言障碍\t−90%\ndrift\t自然模因偏移率\t+15%",
+    "en": "spread\tSpread speed\t+20%\nplain\tLanguage barriers for visual cues\t−90%\ndrift\tNatural meme drift\t+15%"
   },
   "LOC_PROP_NODE_TRANSLATED_CAPTION_TITLE": {
     "source": "多语配字",
@@ -146,8 +146,8 @@
   },
   "LOC_PROP_NODE_TRANSLATED_CAPTION_EFFECT": {
     "source": "主流外语按看懂结算并垫高其余语种理解度，分化阈值提高至65%。",
-    "zh_CN": "常见平台外语直接按看懂计算，其他外语理解度也明显提高；版式统一后，分化阈值从 50% 提高到 65%。",
-    "en": "Deliver translated text and captions for supported languages while raising foreign readability floors. The split threshold rises from 50 percent to 65 percent."
+    "zh_CN": "plain\t语言覆盖\t支持的外语按看懂结算；其他外语的可理解度也提高\nplain\t分化阈值\t提高到 65%",
+    "en": "plain\tLanguage coverage\tSupported languages are readable; other languages get a higher readability floor\nplain\tSplit threshold\tRaised to 65%"
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_TITLE": {
     "source": "填空模板",
@@ -161,8 +161,8 @@
   },
   "LOC_PROP_NODE_PUBLIC_TEMPLATE_EFFECT": {
     "source": "传播速度再加20%，每48小时有社区填词续热；分化阈值提高至80%，培育页换话题与调坐标偏移减半。",
-    "zh_CN": "传播速度再提高 20%，每 48 小时有网友填新词帮原梗续新鲜度；分化阈值提高到 80%，培育页换话题、调坐标引发的偏移减半。",
-    "en": "Spread speed rises by another 20 percent and community fills refresh interest every 48 hours. The split threshold rises to 80 percent, and context edits add half as much deviation."
+    "zh_CN": "spread\t传播速度\t再提高 20%\nplain\t社区填词\t每 48 小时为原模因补充新鲜度\nplain\t分化阈值\t提高到 80%\ndrift\t换话题与调坐标引发的偏移\t减半",
+    "en": "spread\tSpread speed\tAnother +20%\nplain\tCommunity fills\tRefresh interest every 48 hours\nplain\tSplit threshold\tRaised to 80%\ndrift\tDeviation from topic and axis edits\tHalved"
   },
   "LOC_PROP_NODE_FORM_ANCHOR_TITLE": {
     "source": "看图识梗",
@@ -176,8 +176,8 @@
   },
   "LOC_PROP_NODE_FORM_ANCHOR_EFFECT": {
     "source": "分化阈值提高至90%，每10%偏移为原梗加5%注意力权重；长期不更新时热度消退加快20%。",
-    "zh_CN": "分化阈值提高到 90%；别人改得越花原梗越火，当前偏移度每满 10% 给原梗加 5% 注意力权重。代价是模板看多了容易腻，长期不改稿时退潮加快 20%。",
-    "en": "Raise the split threshold to 90 percent and add 5 percent attention weight per 10 points of current deviation. Without fresh edits, template fatigue speeds decay up by 20 percent."
+    "zh_CN": "plain\t分化阈值\t提高到 90%\nplain\t原模因注意力\t偏移每增加 10 个百分点，权重提高 5%\nplain\t长期未改稿时热度消退\t加快 20%",
+    "en": "plain\tSplit threshold\tRaised to 90%\nplain\tOriginal meme attention\t+5% weight per 10 percentage points of deviation\nplain\tInterest decay without fresh edits\t+20%"
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_TITLE": {
     "source": "放出原图素材",
@@ -191,8 +191,8 @@
   },
   "LOC_PROP_NODE_SOURCE_PACKAGE_EFFECT": {
     "source": "传播速度加25%；偏移撞线时原梗保留现有补丁和语境不回档，把超额偏移剥出去生成1个独立新梗并清零自身偏移压力。",
-    "zh_CN": "传播速度提高 25%，社区二创成本降至 40%。偏移撞上分化线时，你手里的原梗保留现有改动不回档，把超出的偏移分出去长成 1 个独立新梗，自身偏移归零并恢复新鲜度。",
-    "en": "Spread speed rises by 25 percent and remix cost drops to 40 percent. Crossing the split line keeps your current edits intact, spins excess drift off into an independent meme, resets your drift, and refreshes interest."
+    "zh_CN": "spread\t传播速度\t+25%\nplain\t社区二创成本\t降至原来的 40%\nplain\t跨过分化阈值时\t超额偏移生成独立模因；原模因保留改动、偏移归零并恢复新鲜度",
+    "en": "spread\tSpread speed\t+25%\nplain\tRemix cost\tReduced to 40%\nplain\tOn crossing the split threshold\tExcess drift forms a spin-off. The original keeps its edits, resets its deviation and regains freshness"
   },
   "LOC_PROP_NODE_FREE_REMIX_TITLE": {
     "source": "欢迎断章取义",
@@ -206,8 +206,8 @@
   },
   "LOC_PROP_NODE_FREE_REMIX_EFFECT": {
     "source": "每36小时触发社区自动改写，自然跑偏速度翻倍，分化阈值降至38%。",
-    "zh_CN": "社区自动改写缩短到每 36 小时一次，平时跑偏速度翻倍，分化阈值降到 38%，更容易生出独立新梗。",
-    "en": "Attempt a community remix every 36 hours, double natural drift speed, and lower the split threshold to 38 percent."
+    "zh_CN": "plain\t社区自动改写\t每 36 小时尝试一次\ndrift\t自然模因偏移率\t翻倍\nplain\t分化阈值\t降到 38%",
+    "en": "plain\tCommunity remix attempt\tEvery 36 hours\ndrift\tNatural meme drift\tDoubled\nplain\tSplit threshold\tLowered to 38%"
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_TITLE": {
     "source": "出处回链",
@@ -221,8 +221,8 @@
   },
   "LOC_PROP_NODE_DERIVATIVE_BACKLINK_EFFECT": {
     "source": "衍生与分化新梗每获新曝光按30%给原梗带回曝光，每在新国家采用满5%返还8点Meme。",
-    "zh_CN": "分出去的新梗在各地每多一拨人刷到，按 30% 给原梗带回曝光；它每在一个国家采用率满 5%，给你带回 8 点 Meme 经费。",
-    "en": "External derivatives and spin-offs return 30 percent of newly gained local exposure to the parent meme and grant 8 Meme points whenever one reaches 5 percent adoption in a country."
+    "zh_CN": "spread\t原模因回流\t衍生模因的 30% 新增曝光回流给原模因\nplain\tMeme 点数回报\t衍生模因每在一个国家采用率达到 5%，获得 8 点",
+    "en": "spread\tExposure returned to the original\tNew exposure from spin-offs × 30%\nplain\tMeme point reward\tEarn 8 points for each country where a spin-off reaches 5% adoption"
   },
   "LOC_PROP_NODE_SPINOFF_MOMENTUM_TITLE": {
     "source": "衍生接力",
@@ -236,8 +236,8 @@
   },
   "LOC_PROP_NODE_SPINOFF_MOMENTUM_EFFECT": {
     "source": "分化阈值降至28%；新分化独立梗继承当地35%已曝光人数且传播速度高35%，疏于维护原梗时可能被其反超。",
-    "zh_CN": "分化阈值降到 28%。新分出去的独立梗直接继承原梗在当地 35% 的已曝光人数，自身传播速度提高 35%；能替你在外挤掉野生对手，但若原梗不继续维护，也可能被它反超。",
-    "en": "Lower the split threshold to 28 percent. Newly split memes inherit 35 percent of local exposure and gain 35 percent faster spread, crowding out outside rivals while risking overtaking an unmaintained original."
+    "zh_CN": "plain\t分化阈值\t降到 28%\nplain\t分裂模因继承当地曝光\t原模因的 35%\nspread\t分裂模因传播速度\t+35%",
+    "en": "plain\tSplit threshold\tLowered to 28%\nplain\tLocal exposure inherited by spin-offs\tParent meme exposure × 35%\nspread\tSpin-off spread speed\t+35%"
   },
   "LOC_PROP_ROUTE_ORIGIN": {
     "source": "解释原意",
@@ -296,8 +296,8 @@
   },
   "LOC_PROP_TEXT_REQUIRED": {
     "source": "研究文本传播",
-    "zh_CN": "研究文本传播",
-    "en": "Research text propagation"
+    "zh_CN": "研究文字发帖",
+    "en": "Research Text post"
   },
   "LOC_PROP_TEMPLATE_REUSE": {
     "source": "社区填写了公开模板",

@@ -784,6 +784,9 @@ func _skill_info(id: String) -> Dictionary:
 	var cost := int(skill.get("cost", 0))
 	var description := DeskLocalization.text(str(skill.get("description", "")))
 	var effect := DeskLocalization.text(str(skill.get("effect_text", "")))
+	var effect_rows := _effect_rows(effect)
+	if not effect_rows.is_empty():
+		effect = "\n".join(effect_rows.map(func(row: Dictionary): return "- %s  %s" % [row.category, row.value]))
 	var delivery: Dictionary = _state.get("propagation_delivery", {})
 	if route == "template" and delivery.has("format"):
 		var format_key := "LOC_PROP_FORMAT_" + str(delivery.format).to_upper()
@@ -792,7 +795,16 @@ func _skill_info(id: String) -> Dictionary:
 		for language: String in delivery.get("languages", []): languages.append(DeskLocalization.text("LOC_LANGUAGE_" + language.to_upper()))
 		if not languages.is_empty(): description += "\n" + DeskLocalization.format_text("LOC_PROP_COVERED_LANGUAGES", " / ".join(languages))
 	var status := "unlocked" if unlocked else ("locked" if not prerequisites_met else ("research_pending" if not research_ready else ("unaffordable" if balance < cost else "available")))
-	return {"title":DeskLocalization.text(str(skill.title)), "balance":balance, "cost":cost, "status":status, "route":route, "research_ready":research_ready, "dependencies":skill.get("requires", []).duplicate(), "requires_any":skill.get("requires_any", []).duplicate(), "description":description, "effect":effect}
+	return {"title":DeskLocalization.text(str(skill.title)), "balance":balance, "cost":cost, "status":status, "route":route, "research_ready":research_ready, "dependencies":skill.get("requires", []).duplicate(), "requires_any":skill.get("requires_any", []).duplicate(), "description":description, "effect":effect, "effect_rows":effect_rows}
+
+func _effect_rows(copy: String) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	# The localized columns are metric, label and value. Legacy prose has no columns.
+	for line: String in copy.split("\n", false):
+		var fields := line.split("\t", true, 2)
+		if fields.size() != 3: return []
+		rows.append({"kind":"propagation_effect", "metric":fields[0], "category":fields[1], "value":fields[2]})
+	return rows
 
 
 func _ensure_spread_skill_visible(id: String) -> void:
@@ -1022,8 +1034,10 @@ func _spread_hover(viewport_point: Vector2) -> Dictionary:
 	var id: String = _spread_tree._hit_id(local)
 	if id.is_empty(): return {}
 	var info := _skill_info(id)
-	return {"kind":"spread", "id":id, "title":info.title, "hover_description":info.effect, "hover_note":DeskLocalization.text("LOC_PROP_NODE_" + id.to_upper() + "_REFERENCE"),
-		"rows":_skill_hover_rows(info)}
+	var rows := _skill_hover_rows(info)
+	rows.append_array(info.effect_rows)
+	return {"kind":"spread", "id":id, "title":info.title, "hover_width":368.0, "hover_description":info.effect if info.effect_rows.is_empty() else "", "hover_note":DeskLocalization.text("LOC_PROP_NODE_" + id.to_upper() + "_REFERENCE"),
+		"rows":rows}
 
 
 func _skill_hover_rows(info: Dictionary) -> Array[Dictionary]:
@@ -1044,8 +1058,8 @@ func _skill_hover_rows(info: Dictionary) -> Array[Dictionary]:
 			var alternatives := PackedStringArray()
 			for id: String in info.requires_any: alternatives.append(DeskLocalization.text(str(_rules.find("skills", id).title)))
 			if not alternatives.is_empty(): dependencies.append(DeskLocalization.format_text("LOC_PROP_ANY_PREREQUISITE", " / ".join(alternatives)))
-			status = DeskLocalization.text("LOC_PROP_PREREQUISITES") + ": " + ", ".join(dependencies)
-	rows.append({"value":status})
+			rows.append({"kind":"prerequisite", "category":DeskLocalization.text("LOC_PROP_PREREQUISITES"), "value":", ".join(dependencies)})
+	if not status.is_empty(): rows.append({"value":status})
 	return rows
 
 

@@ -11,6 +11,7 @@ const PADDING := Vector2(16,16)
 const BOTTOM_PADDING := 20.0
 const GROUP_GAP := 16.0
 const ROW_GAP := 8.0
+const EFFECT_MARKER_WIDTH := 14.0
 const SCREEN_MARGIN := 8.0
 const BARCODE_HEIGHT := 20.0
 const FOOTER_HEIGHT := 24.0
@@ -143,6 +144,8 @@ func _avoid_pointer_overlap(extent: Vector2, lower: Vector2, upper: Vector2, avo
 
 func _add_text(text: String, at: Vector2, width: float, font: Font, font_size: int, color: Color, role: String, alignment: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> float:
 	var text_role := str({"title":"section", "metric_value":"title", "metric_label":"table_header", "category":"table_header", "value":"body", "body":"body", "note":"reference", "badge":"annotation", "context_tag":"label", "bar_label":"label", "bar_primary":"label"}.get(role, "body"))
+	if role in ["effect_marker", "effect_label", "prerequisite_label"]: text_role = "table_header"
+	if role == "effect_value": text_role = "hint"
 	if role in ["quote", "annotation"]: text_role = role
 	font_size = Typography.point_size(text_role)
 	font = Typography.SEMIBOLD_FONT if role == "bar_primary" else Typography.font(text_role)
@@ -224,10 +227,17 @@ func _layout_content() -> void:
 		y += label_height+4
 		y += _add_text(metric_value,Vector2(PADDING.x,y),width,BOLD_FONT,32,ReceiptStyle.INK,"metric_value")+GROUP_GAP
 	var label_width := 0.0
+	var effect_label_width := 0.0
+	var effect_font := Typography.font("table_header")
+	var effect_size := Typography.point_size("table_header")
 	for row: Dictionary in _rows:
 		if row.has("tags"): continue
+		if str(row.get("kind", "")) == "propagation_effect":
+			effect_label_width = maxf(effect_label_width, effect_font.get_string_size(str(row.category), HORIZONTAL_ALIGNMENT_LEFT, -1, effect_size).x)
+			continue
 		label_width = maxf(label_width,BOLD_FONT.get_string_size(str(row.get("category","")),HORIZONTAL_ALIGNMENT_LEFT,-1,Typography.point_size("table_header")).x+24)
 	label_width = minf(label_width,width*.5)
+	effect_label_width = minf(ceilf(effect_label_width) + 2.0, (width - EFFECT_MARKER_WIDTH - ROW_GAP) * .68)
 	var column_layout := bool(_presentation.get("columns", false))
 	var column_bottom := y
 	var grouped_bars := bool(_presentation.get("grouped_bars", false))
@@ -247,13 +257,18 @@ func _layout_content() -> void:
 			y = _add_tags(row.tags, y, width)
 			if index < _rows.size()-1: y += ROW_GAP
 			continue
+		if str(row.get("kind", "")) == "propagation_effect":
+			y = _add_effect_row(row, y, width, effect_label_width)
+			continue
 		var category := str(row.get("category",""))
 		var value := str(row.get("value",""))
 		var row_height := 0.0
 		var value_x := PADDING.x
 		if not category.is_empty():
 			var kind := str(row.get("kind","source"))
-			var category_height := _add_text(category,Vector2(PADDING.x+24,y+2),label_width-24,BOLD_FONT,12,ReceiptStyle.SECONDARY_INK,"category")
+			var category_ink := ReceiptStyle.SECTION_PURPLE if kind == "prerequisite" else ReceiptStyle.SECONDARY_INK
+			var category_role := "prerequisite_label" if kind == "prerequisite" else "category"
+			var category_height := _add_text(category,Vector2(PADDING.x+24,y+2),label_width-24,BOLD_FONT,12,category_ink,category_role)
 			_row_glyphs.append({"rect":Rect2(PADDING.x,y+2+(category_height-16)*.5,16,16),"kind":kind,"color":_section_color(kind)})
 			row_height = category_height+2
 			value_x += label_width+ROW_GAP
@@ -291,6 +306,17 @@ func _layout_content() -> void:
 	custom_minimum_size = Vector2(_layout_width,height)
 	size = custom_minimum_size
 	queue_redraw()
+
+func _add_effect_row(row: Dictionary, y: float, width: float, label_width: float) -> float:
+	var metric := str(row.metric)
+	var label_ink := Typography.ACCENT if metric == "spread" else (ReceiptStyle.SECTION_PURPLE if metric == "drift" else ReceiptStyle.SECTION_BROWN)
+	var value_ink := Typography.ACCENT if metric == "spread" else ReceiptStyle.INK
+	var x := PADDING.x + EFFECT_MARKER_WIDTH
+	_add_text("•", Vector2(PADDING.x, y), 12.0, BODY_FONT, 12, label_ink, "effect_marker")
+	var label_height := _add_text(str(row.category), Vector2(x, y), label_width, BOLD_FONT, 12, label_ink, "effect_label")
+	var value_x := x + label_width + ROW_GAP
+	var value_height := _add_text(str(row.value), Vector2(value_x, y), PADDING.x + width - value_x, BODY_FONT, 12, value_ink, "effect_value")
+	return y + maxf(label_height, value_height) + ROW_GAP
 
 func _layout_axes(axes: Array, area: Rect2) -> void:
 	var chart_width := (area.size.x - GROUP_GAP) * .5
@@ -362,7 +388,7 @@ func _draw() -> void:
 	_footer_number.draw(get_canvas_item(),Vector2(_barcode_rect.end.x+8,_barcode_rect.end.y-_footer_number.get_size().y),ReceiptStyle.SECONDARY_INK)
 
 func _section_color(kind: String) -> Color:
-	if kind in ["patch","module","stance","stance_token","pragmatic","pragmatic_token"]: return ReceiptStyle.SECTION_PURPLE
+	if kind in ["patch","module","stance","stance_token","pragmatic","pragmatic_token","prerequisite"]: return ReceiptStyle.SECTION_PURPLE
 	if kind in ["topic","source"]: return ReceiptStyle.SECTION_BROWN
 	return ReceiptStyle.SECTION_TEAL
 

@@ -409,6 +409,13 @@ func _process(delta: float) -> void:
 		var speed := TYPE_SPEED * _typewriter_speed * (1.8 if TranslationServer.get_locale().begins_with("en") else 1.0)
 		_typewriter.progress = minf(_typewriter.progress + delta * speed, _body_text.length() + 3.0)
 
+func _step_text(step: Dictionary, hover_key: String) -> String:
+	if not hover_key.is_empty(): return DeskLocalization.text(hover_key)
+	var key := str(step.get("text", ""))
+	var arguments: Array = step.get("text_args", [])
+	if arguments.is_empty(): return DeskLocalization.text(key)
+	return DeskLocalization.format_text(key, arguments.map(func(item: String): return DeskLocalization.text(item)))
+
 func _refresh() -> void:
 	if not is_instance_valid(_ui) or _steps.is_empty(): return
 	_display_index = clampi(_display_index, 0, _steps.size() - 1)
@@ -421,8 +428,9 @@ func _refresh() -> void:
 	if _actions.get_parent() != action_parent: _actions.reparent(action_parent, false)
 	_return_overview = _overview_provider.is_valid() and bool(_overview_provider.call(str(step.get("target", ""))))
 	_ui.get_node("Card/Content/Title").text = DeskLocalization.text(str(step.get("title", "")))
-	var text_key := _hover_text if _display_index == _index and not _hover_text.is_empty() else str(step.get("text", ""))
-	var text := DeskLocalization.text(text_key)
+	var hover_key := _hover_text if _display_index == _index else ""
+	var text_key := hover_key if not hover_key.is_empty() else str(step.get("text", ""))
+	var text := _step_text(step, hover_key)
 	var body: RichTextLabel = _ui.get_node("Card/Content/Body")
 	body.custom_minimum_size.y = 72 if choosing else 0
 	body.set_meta(&"text_workbench_source", DeskLocalization.text_source(text_key))

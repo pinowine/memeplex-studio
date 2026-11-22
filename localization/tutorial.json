@@ -371,8 +371,8 @@
   },
   "LOC_OPENING_SKILL_TITLE": {
     "source": "研究文本传播",
-    "zh_CN": "研究文本传播",
-    "en": "Research text propagation"
+    "zh_CN": "研究文字发帖",
+    "en": "Research Text post"
   },
   "LOC_OPENING_SKILL_TEXT": {
     "source": "用初始10 MEME研究文本传播；跳过教程也会结算这笔费用。首次真实采用奖励20 MEME，并开放三条路线的研究。",
@@ -528,5 +528,15 @@
     "source": "很好，你已经学会了阅读。",
     "zh_CN": "很好，你已经学会了阅读。",
     "en": "Good. You have learned to read."
+  },
+  "LOC_OPENING_SPREAD_TREE_WITH_SKILL": {
+    "source": "传播树从“%s”节点开始。",
+    "zh_CN": "能力树从上方的“%s”开始，往下分成三条路线。连线表示需要先解锁哪些能力。",
+    "en": "The tree starts with “%s” at the top and splits into three routes. The lines show which abilities to unlock first."
+  },
+  "LOC_OPENING_RESEARCH_WITH_SKILL": {
+    "source": "先研究“%s”再投放模因。",
+    "zh_CN": "按住“%s”节点或名称 1.5 秒，花费初始的 10 Meme 完成研究。首次有人采用你的模因后，会奖励 20 Meme，并开放后续路线。",
+    "en": "Hold “%s” or its label for 1.5 seconds to spend your starting 10 Meme on research. Your first adopter earns you 20 Meme and opens the other routes."
   }
 }
