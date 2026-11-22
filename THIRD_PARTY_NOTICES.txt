@@ -29,6 +29,12 @@ Official source: https://github.com/notofonts/noto-cjk
 Bundled font: assets/image/fonts/noto-sans-sc/NotoSansSC-VF.ttf
 The font is redistributed unchanged. Full licence: assets/image/fonts/noto-sans-sc/OFL.txt
 
+Noto Sans KR Regular: Copyright 2014-2021 Adobe.
+SIL Open Font License, Version 1.1.
+Official source: https://github.com/notofonts/noto-cjk/tree/Sans2.004
+Bundled font: assets/image/fonts/noto-sans-kr/NotoSansKR-Regular.otf
+The font is redistributed unchanged. Full licence: assets/image/fonts/noto-sans-kr/OFL.txt
+
 Source Han Serif CN: Copyright 2017 Adobe Systems Incorporated, with Reserved
 Font Name "Source".
 SIL Open Font License, Version 1.1.
