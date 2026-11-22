@@ -1172,10 +1172,14 @@ func event_details(record: Dictionary) -> Dictionary:
 		details.sections[0].country_field = _event_country_field(record)
 		details.sections[0].body = DeskLocalization.source_join("\n", [details.sections[0].event_type, details.sections[0].country_title, timestamp])
 	var segments := EventImpactText.build(record, _page.catalog, _page.simulation.variants)
-	if not segments.is_empty():
+	# A printed page keeps its original record even after the event is acknowledged.
+	var reward_source: Dictionary = _event_archive.get(str(record.get("instance_id", "")), record)
+	var rewards := EventImpactText.reward_previews(reward_source, _page.catalog)
+	var tendencies := EventImpactText.tendencies(record.get("response", {}), _page.catalog.gameplay_rules.country(str(record.get("country_id", ""))))
+	if not segments.is_empty() or not rewards.is_empty() or not tendencies.is_empty():
 		var content := PackedStringArray()
 		for segment: Dictionary in segments: content.append(str(segment.text))
-		var section := {"body":"".join(content), "segments":segments, "kind":"impact", "role":"impact"}
+		var section := {"body":"".join(content), "segments":segments, "reward_cards":rewards, "tendencies":tendencies, "kind":"impact", "role":"impact"}
 		if str(details.sections.back().get("role", "")) == "commentary": details.sections.insert(details.sections.size() - 1, section)
 		else: details.sections.append(section)
 	return details

@@ -5,6 +5,8 @@ signal initialization_progress(stage: String)
 var _meme_reader_id := ""
 var _meme_reader_meme_id := ""
 var _meme_reader_country_id := ""
+var _meme_navigation_id := ""
+var _meme_navigation_started := false
 
 var initialization_complete := false
 var initialization_error: Error = ERR_UNCONFIGURED
@@ -64,6 +66,7 @@ func _ready() -> void:
 	hud.load_requested.connect(_load)
 	hud.restart_requested.connect(_restart)
 	hud.event_acknowledged.connect(_acknowledge)
+	hud.event_meme_selected.connect(_on_event_meme_selected)
 	hud.settings_requested.connect(_open_settings)
 	hud.quit_requested.connect(func(): get_tree().quit())
 	hud.menu_close_requested.connect(_close_menu)
@@ -150,6 +153,8 @@ func _process(delta: float) -> void:
 		atlas._update_clock()
 		atlas.set_speed(clock_speed())
 	hud.layout_for_date(desk.clock_rect())
+
+	_continue_meme_navigation()
 
 func _studio_selected() -> void:
 	if not _ready_to_run: return
@@ -376,6 +381,7 @@ func _save() -> void:
 	_render()
 
 func _load() -> bool:
+	_clear_meme_navigation()
 	var error := store.load_run(simulation, SAVE_PATH)
 	if error != OK:
 		simulation.status = DeskLocalization.source_format("LOC_LOAD_REJECTED_THE_CURRENT_RUN_IS_UNCHANGED_58D375FE", [error_string(error), DeskLocalization.source_join("; ", store.last_errors)], [1])
@@ -410,6 +416,7 @@ func _load() -> bool:
 	return true
 
 func _restart() -> void:
+	_clear_meme_navigation()
 	await _shell.loading.present("LOC_LOADING_STARTING")
 	if _shell != null: _shell.context_guidance.close()
 	if not _load_catalog():
@@ -628,9 +635,35 @@ func _on_meme_reader_closed() -> void:
 	atlas._on_ledger_country_hovered("", "")
 
 func focus_meme_on_map(id: String) -> void:
-	if desk.focus_component("sheet/map"):
+	_meme_navigation_id = id
+	_meme_navigation_started = false
+	_continue_meme_navigation()
+
+func _on_event_meme_selected(id: String) -> void:
+	if hud.menu_mode() != "": return
+	_acknowledge()
+	focus_meme_on_map(id)
+
+func _clear_meme_navigation() -> void:
+	_meme_navigation_id = ""
+	_meme_navigation_started = false
+
+func _continue_meme_navigation() -> void:
+	if _meme_navigation_id.is_empty() or hud.modal_visible() or _shell.blocks_input() or desk._stack.is_switching(): return
+	if not _meme_navigation_started:
+		if not desk.focus_component("sheet/map"): return
 		hud.show_sheet("map")
-		atlas.select_meme(id)
+		_meme_navigation_started = true
+		return
+	if str(desk._camera.inspection().target) != "sheet/map":
+		_clear_meme_navigation()
+		return
+	if desk._revealed_focus != "sheet/map": return
+	var id := simulation._active_variant_id(_meme_navigation_id)
+	_clear_meme_navigation()
+	if id.is_empty(): return
+	atlas.select_meme(id)
+	_show_meme_details(id)
 
 func inspection_state() -> Dictionary:
 	return {"setup_stage":_setup_stage(), "startup_ready":startup_ready(), "simulation":simulation.snapshot(), "hud":hud.inspection(), "spread":spread.inspection(), "catalog_path":catalog.resource_path, "map_seed":_map_seed, "clock":atlas.clock.inspection(), "shell":_shell.inspection() if _shell != null else {}}
@@ -659,6 +692,7 @@ func _load_from_main() -> void:
 	_shell.loading.finish()
 
 func _return_to_main() -> void:
+	_clear_meme_navigation()
 	atlas.set_speed(0)
 	hud.set_menu("")
 	hud.get_node("%ResultCard").hide()

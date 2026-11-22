@@ -1,4 +1,6 @@
 {
+  "LOC_EVENT_TENDENCY_PLOT_STANCE": {"source":"事件立场倾向","zh_CN":"立场倾向","en":"Stance tendency"},
+  "LOC_EVENT_TENDENCY_PLOT_PRAGMATIC": {"source":"事件语用倾向","zh_CN":"语用倾向","en":"Tone tendency"},
   "LOC_EVENT_SECTION_SCOPE": {"source":"影响范围","zh_CN":"影响范围","en":"Scope"},
   "LOC_EVENT_SECTION_EFFECTS": {"source":"传播变化","zh_CN":"传播变化","en":"Circulation changes"},
   "LOC_EVENT_SECTION_AUDIENCE": {"source":"受众反应","zh_CN":"受众反应","en":"Audience reactions"},

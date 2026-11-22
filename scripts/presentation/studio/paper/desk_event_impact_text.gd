@@ -2,6 +2,8 @@ extends RefCounted
 
 const CardCopy = preload("res://scripts/presentation/studio/paper/desk_material_card_copy.gd")
 const Identity = preload("res://scripts/presentation/memes/meme_identity.gd")
+const MEDIUM_IMPACT := 0.10
+const STRONG_IMPACT := 0.20
 
 const METRICS := {
 	"attention":["LOC_EVENT_IMPACT_ATTRACTION", "LOC_EVENT_IMPACT_ATTRACTION_HELP", "LOC_EVENT_NOTE_ATTRACTION"],
@@ -15,13 +17,6 @@ const METRICS := {
 	"deviation":["MM_DEVIATION", "MM_HELP_DEVIATION", ""]
 }
 
-const COHORTS := {
-	"freedom_equality":"LOC_EVENT_COHORT_FREEDOM_EQUALITY",
-	"freedom_hierarchy":"LOC_EVENT_COHORT_FREEDOM_HIERARCHY",
-	"authority_equality":"LOC_EVENT_COHORT_AUTHORITY_EQUALITY",
-	"authority_hierarchy":"LOC_EVENT_COHORT_AUTHORITY_HIERARCHY"
-}
-
 static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array) -> Array[Dictionary]:
 	var segments: Array[Dictionary] = []
 	if record.is_empty(): return segments
@@ -33,12 +28,10 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 				break
 		_append_clause(segments, [_field("LOC_EVENT_RESPONSE_TARGET", "LOC_EVENT_RESPONSE_TARGET_HELP", "meme", ""), _meme_text(str(record.target_variant_id), name)], "scope")
 	var response: Dictionary = record.get("response", {})
-	if not response.is_empty(): _append_response(segments, response, record, catalog)
-	var created := {"remix":0, "independent":0}
+	if not response.is_empty(): _append_response(segments, response, catalog)
 	var produced: Array[Dictionary] = []
 	for variant: Dictionary in variants:
 		if str(variant.id) in record.competition_variant_ids:
-			created["independent" if variant.parent_ids.is_empty() else "remix"] += 1
 			produced.append(variant)
 	for effect: Dictionary in record.get("applied_effects", []):
 		var kind := str(effect.effect_id)
@@ -53,30 +46,48 @@ static func build(record: Dictionary, catalog: MemeDemoCatalog, variants: Array)
 		clause.append(_field(str(metric[0]), help, "metric", str(metric[2])))
 		if kind in ["attention", "channel_reach", "trust", "fatigue", "revival"]:
 			clause.append_array(_groups(PackedStringArray(effect.group_ids), catalog))
-		match kind:
-			"attention", "channel_reach", "trust", "fatigue", "revival":
-				var amount: float = -float(effect.amount) if kind == "fatigue" else float(effect.amount)
-				clause.append(_amount(" " + _signed((maxf(0.05, 1.0 + amount) - 1.0) * 100.0) + "%"))
-				clause.append(_duration(float(effect.duration_hours)))
-			"adoption":
-				clause.append(_amount(" " + _signed(effect.amount * 100.0) + "%"))
-			"semantic_shift":
-				clause.append(_amount(" = " + _number(effect.amount * 100.0) + "%"))
-			"deviation":
-				clause.append(_amount(" " + _signed(effect.amount * 100.0) + "%"))
-			"remix":
-				clause.append(_amount(" +%d" % int(created.remix)))
-		_append_clause(segments, clause, "variants" if kind == "remix" else "effects")
+		var amount := float(effect.amount)
+		if is_zero_approx(amount): continue
+		if clause.size() > 1: clause.append(_text("  "))
+		clause.append(_impact_arrows(amount))
+		_append_clause(segments, clause, "effects")
 	for variant: Dictionary in produced:
 		var kind := "INDEPENDENT" if variant.parent_ids.is_empty() else "REMIX"
 		_append_clause(segments, [_field("LOC_EVENT_IMPACT_" + kind, "LOC_EVENT_IMPACT_" + kind + "_HELP", "meme", "LOC_EVENT_NOTE_" + kind), _meme_text(str(variant.id), Identity.name(catalog, variant))], "variants")
-	for reward: Dictionary in record.design_rewards:
-		var entry: Dictionary = catalog.DESIGN_RULES.reward_resource(str(reward.kind), str(reward.id))
-		_append_clause(segments, [_field("LOC_EVENT_REWARD_KIND_" + str(reward.kind).to_upper(), "LOC_EVENT_REWARD_MATERIAL_HELP", str(reward.kind), ""),
-			_resource_field(entry, str(reward.kind)), _amount(" ×%d" % int(reward.count))], "rewards")
 	return segments
 
-static func _append_response(segments: Array[Dictionary], response: Dictionary, record: Dictionary, catalog: MemeDemoCatalog) -> void:
+static func tendencies(response: Dictionary, country: Dictionary) -> Array[Dictionary]:
+	if response.is_empty(): return []
+	var stance := _point(country.stance)
+	var pragmatic := _point(country.pragmatic)
+	var reaction_stance := Vector2.ZERO
+	var reaction_tone := Vector2.ZERO
+	var weight_total := 0.0
+	# Show the profile of the people reacting most strongly, not a permanent country change.
+	for cohort: Dictionary in response.cohorts:
+		var weight := float(cohort.share) * absf(float(cohort.sentiment))
+		reaction_stance += _point(cohort.stance) * weight
+		reaction_tone += _point(cohort.pragmatic) * weight
+		weight_total += weight
+	return [
+		{"kind":"stance", "from":stance, "to":reaction_stance / weight_total if weight_total > 0.0 else stance},
+		{"kind":"pragmatic", "from":pragmatic, "to":reaction_tone / weight_total if weight_total > 0.0 else pragmatic}
+	]
+
+static func reward_previews(record: Dictionary, catalog: MemeDemoCatalog) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	for reward: Dictionary in record.get("design_rewards", []):
+		var kind := str(reward.kind)
+		var entry: Dictionary = catalog.DESIGN_RULES.reward_resource(kind, str(reward.id)).duplicate(true)
+		entry.merge({"id":str(reward.id), "kind":kind, "count":int(reward.count),
+			"source_label":str(record.title), "received":bool(record.get("acknowledged", false))}, true)
+		rows.append(entry)
+	return rows
+
+static func _point(pair: Array) -> Vector2:
+	return Vector2(float(pair[0]), float(pair[1]))
+
+static func _append_response(segments: Array[Dictionary], response: Dictionary, catalog: MemeDemoCatalog) -> void:
 	var topics: Array[Dictionary] = [_field("LOC_EVENT_RESPONSE_RELATED_TOPICS", "LOC_EVENT_RESPONSE_RELATED_TOPICS_HELP", "topic", "")]
 	for topic_id: String in response.topic_ids:
 		var id := "topic_" + topic_id
@@ -87,27 +98,14 @@ static func _append_response(segments: Array[Dictionary], response: Dictionary, 
 	for metric: String in ["attention", "spread", "production"]:
 		var amount := float(response[metric])
 		if is_zero_approx(amount): continue
-		var changes: Array[Dictionary] = [_field("LOC_EVENT_RESPONSE_" + metric.to_upper(), "LOC_EVENT_RESPONSE_" + metric.to_upper() + "_HELP", "metric", ""),
-			_amount(_signed(amount * 100.0) + "%"), _duration(float(record.response_duration_hours))]
+		var changes: Array[Dictionary] = [_field("LOC_EVENT_RESPONSE_" + metric.to_upper(), "LOC_EVENT_RESPONSE_" + metric.to_upper() + "_HELP", "metric", ""), _impact_arrows(amount)]
 		_append_clause(segments, changes, "effects")
-	var sentiment := float(response.sentiment)
-	if not is_zero_approx(sentiment):
-		_append_clause(segments, [_text("LOC_EVENT_RESPONSE_EXPRESSION_PREFERENCE"), _expression(sentiment, catalog), _text("LOC_EVENT_RESPONSE_PREFERRED")], "audience")
-	var dissent: Dictionary = {}
-	for cohort: Dictionary in response.cohorts:
-		if is_zero_approx(float(cohort.share)): continue
-		if float(cohort.sentiment) * sentiment >= 0.0: continue
-		if dissent.is_empty() or float(cohort.sentiment) * sentiment < float(dissent.sentiment) * sentiment: dissent = cohort
-	if not dissent.is_empty():
-		var audience := _field(DeskLocalization.source_join("", [str(COHORTS[str(dissent.id)]), DeskLocalization.source_format("LOC_EVENT_RESPONSE_POPULATION_SHARE", _number(float(dissent.share) * 100.0))]), "LOC_EVENT_RESPONSE_COHORT_HELP", "group", "")
-		var clause: Array[Dictionary] = [audience, _expression(float(dissent.sentiment), catalog), _text("LOC_EVENT_RESPONSE_PREFERRED")]
-		if float(dissent.irony) >= 0.15:
-			clause.append(_text("  "))
-			clause.append(_irony(catalog))
-			clause.append(_text(" " + _number(float(dissent.irony) * 100.0) + "%"))
-		_append_clause(segments, clause, "audience")
-	elif float(response.irony) >= 0.15:
-		_append_clause(segments, [_irony(catalog), _amount(" " + _number(float(response.irony) * 100.0) + "%")], "audience")
+
+static func _impact_arrows(amount: float) -> Dictionary:
+	var direction := 1 if amount > 0.0 else -1
+	var magnitude := absf(amount)
+	var count := 1 + int(magnitude >= MEDIUM_IMPACT) + int(magnitude >= STRONG_IMPACT)
+	return {"text":("↑" if direction > 0 else "↓").repeat(count), "impact_direction":direction}
 
 static func _groups(ids: PackedStringArray, catalog: MemeDemoCatalog) -> Array[Dictionary]:
 	var segments: Array[Dictionary] = []
@@ -126,25 +124,11 @@ static func _append_clause(segments: Array[Dictionary], clause: Array[Dictionary
 		clause[index]["impact_group"] = group
 		clause[index]["impact_role"] = "label" if index == 0 else str(clause[index].get("impact_role", "value"))
 		segments.append(clause[index])
-		if index == 0:
+		if index == 0 and clause.size() > 1:
 			var gap := _text("  ")
 			gap["impact_role"] = "value"
 			gap["impact_group"] = group
 			segments.append(gap)
-
-static func _amount(value: String) -> Dictionary:
-	return {"text":value, "impact_role":"amount"}
-
-static func _duration(hours: float) -> Dictionary:
-	return {"text":DeskLocalization.source_format("LOC_EVENT_IMPACT_DURATION", _number(hours)), "impact_role":"duration"}
-
-static func _expression(sentiment: float, catalog: MemeDemoCatalog) -> Dictionary:
-	var id := "support" if sentiment > 0.0 else "opposition"
-	var title := "LOC_EVENT_RESPONSE_POSITIVE_TERM" if sentiment > 0.0 else "LOC_EVENT_RESPONSE_NEGATIVE_TERM"
-	return _resource_field(catalog.DESIGN_RULES.context_resource(id), "pragmatic_token", title)
-
-static func _irony(catalog: MemeDemoCatalog) -> Dictionary:
-	return _resource_field(catalog.DESIGN_RULES.context_resource("ironic"), "pragmatic_token", "LOC_EVENT_RESPONSE_IRONY")
 
 static func _resource_field(entry: Dictionary, kind: String, title: String = "") -> Dictionary:
 	var id := str(entry.id)
@@ -161,9 +145,3 @@ static func _text(value: String) -> Dictionary:
 
 static func _meme_text(id: String, value: String) -> Dictionary:
 	return {"text":"  " + value, "variant_id":id, "field_kind":"meme"}
-
-static func _number(value: float) -> String:
-	return ("%.3f" % value).trim_suffix("000").trim_suffix("00").trim_suffix("0").trim_suffix(".")
-
-static func _signed(value: float) -> String:
-	return ("+" if value >= 0.0 else "") + _number(value)

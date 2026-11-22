@@ -12,6 +12,8 @@ const PaperStyle = preload("res://scripts/presentation/studio/paper/desk_paper_s
 const Style = preload("res://scripts/presentation/studio/paper/desk_receipt_style.gd")
 const Glyph = preload("res://scripts/presentation/studio/paper/desk_receipt_glyph.gd")
 const CardFace = preload("res://scripts/presentation/studio/paper/desk_material_card_face.gd")
+const ResourceGraphic = preload("res://scripts/presentation/studio/context/desk_context_resource_graphic.gd")
+const Rules = preload("res://data/rules/design_rules.tres")
 const MentorPortrait = preload("res://scripts/presentation/ui/tutorial/mentor_portrait.gd")
 const PORTRAIT = preload("res://assets/image/textures/studio/desk/portrait_67.svg")
 const ReceiptHover = preload("res://scripts/presentation/studio/paper/desk_receipt_hover.gd")
@@ -38,6 +40,111 @@ class SectionIcon extends Control:
 
 	func _draw() -> void:
 		Glyph.draw(self, Rect2(Vector2.ZERO, Vector2(24, 24)), kind, ink)
+
+class TendencyPlot extends Control:
+	const PLOT_SIDE := 182.0
+	const LABEL_INSET := 8.0
+	const MIN_ARROW_TRAVEL := 16.0
+
+	var before := Vector2.ZERO
+	var after := Vector2.ZERO
+	var ink := Style.SECTION_TEAL
+	var labels: PackedStringArray
+	var progress := 0.0
+
+	func _ready() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		custom_minimum_size = Vector2(0, PLOT_SIDE + 2.0)
+		size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		resized.connect(queue_redraw)
+		if before.is_equal_approx(after):
+			progress = 1.0
+		else:
+			create_tween().tween_method(_move_marker, 0.0, 1.0, .44).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+	func _move_marker(value: float) -> void:
+		progress = value
+		queue_redraw()
+
+	func _draw() -> void:
+		var font := Typography.font("hint")
+		var fs := Typography.point_size("hint")
+		var bounds := _frame_rect()
+		if not bounds.has_area(): return
+		var center := bounds.get_center()
+		var captions := _axis_label_rects(bounds, font, fs)
+		draw_rect(bounds, Color(ink, .06))
+		draw_rect(bounds, Color(ink, .28), false)
+		var axis_ink := Color(ink, .35)
+		draw_line(Vector2(bounds.position.x + LABEL_INSET, center.y), Vector2(bounds.end.x - LABEL_INSET, center.y), axis_ink, 1.0, true)
+		draw_line(Vector2(center.x, captions[2].end.y + 3.0), Vector2(center.x, captions[3].position.y - 3.0), axis_ink, 1.0, true)
+		for index in captions.size():
+			var area := captions[index]
+			draw_string(font, area.position + Vector2(0, font.get_ascent(fs)), labels[index], HORIZONTAL_ALIGNMENT_LEFT, area.size.x, fs, Style.SECONDARY_INK)
+		var positions := _plot_positions(bounds, font.get_height(fs))
+		var from := positions[0]
+		var destination := positions[1]
+		var arrow := _displacement_arrow(positions)
+		if not arrow.is_empty():
+			var direction := from.direction_to(destination)
+			draw_arc(from, 5, 0.0, TAU, 20, ink, 1.4, true)
+			if from.distance_to(destination) > 22.0:
+				draw_dashed_line(from + direction * 5.0, arrow[1], ink, 1.4, 4.0, true)
+			else:
+				draw_line(arrow[1] - direction * 12.0, arrow[1], ink, 1.4, true)
+			draw_polyline(arrow, ink, 1.8, true)
+		draw_circle(from.lerp(destination, progress), 4.0, ink, true, -1.0, true)
+
+	func _frame_rect() -> Rect2:
+		var side := clampf(minf(size.x, size.y) - 2.0, 0.0, PLOT_SIDE)
+		var dimensions := Vector2.ONE * side
+		return Rect2((size - dimensions) * .5, dimensions)
+
+	func _axis_label_rects(frame: Rect2, font: Font, font_size: int) -> Array[Rect2]:
+		var inner := frame.grow(-LABEL_INSET)
+		var center := frame.get_center()
+		var height := ceilf(font.get_height(font_size))
+		var boxes: Array[Rect2] = []
+		for index in labels.size():
+			var width := minf(inner.size.x * .5, ceilf(font.get_string_size(labels[index], HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x) + 1.0)
+			var x := center.x - width * .5
+			var y := center.y + 5.0
+			match index:
+				0: x = inner.position.x
+				1: x = inner.end.x - width
+				2: y = inner.position.y
+				3: y = inner.end.y - height
+			boxes.append(Rect2(Vector2(x, y), Vector2(width, height)))
+		return boxes
+
+	func _plot_positions(frame: Rect2, label_height: float) -> PackedVector2Array:
+		var center := frame.get_center()
+		var extent := maxf(0.0, frame.size.x * .5 - maxf(22.0, LABEL_INSET + label_height + 4.0))
+		return PackedVector2Array([center + before * extent, center + after * extent])
+
+	func _displacement_arrow(positions: PackedVector2Array) -> PackedVector2Array:
+		var from := positions[0]
+		var destination := positions[1]
+		if from.distance_squared_to(destination) < MIN_ARROW_TRAVEL * MIN_ARROW_TRAVEL:
+			return PackedVector2Array()
+		return _shift_arrow(from, destination)
+
+	func _shift_arrow(from: Vector2, destination: Vector2) -> PackedVector2Array:
+		var offset := destination - from
+		if offset.is_zero_approx(): return PackedVector2Array()
+		var direction := offset.normalized()
+		var tip := destination - direction * 6.0
+		var tail := tip - direction * 7.0
+		var wing := direction.orthogonal() * 4.0
+		return PackedVector2Array([tail + wing, tip, tail - wing])
+
+	func inspection() -> Dictionary:
+		var frame := _frame_rect()
+		var font := Typography.font("hint")
+		var fs := Typography.point_size("hint")
+		return {"from":before, "to":after, "progress":progress, "frame":frame,
+			"axis_label_rects":_axis_label_rects(frame, font, fs),
+			"arrow":_displacement_arrow(_plot_positions(frame, font.get_height(fs)))}
 
 var _meme_mode := false
 var _meme_details: Dictionary = {}
@@ -304,6 +411,8 @@ func _add_impact(block: Dictionary) -> void:
 	var segments: Array = block.get("segments", [])
 	_impact.set_meta("segments", segments)
 	var groups := {}
+	var rewards: Array = block.get("reward_cards", [])
+	var tendencies: Array = block.get("tendencies", [])
 	var indices: Array[int] = []
 	for index in segments.size():
 		var segment: Dictionary = segments[index]
@@ -314,8 +423,8 @@ func _add_impact(block: Dictionary) -> void:
 			indices.append(index)
 	_collect_impact_row(groups, segments, indices)
 	var icons := {"scope":"language", "effects":"impact", "audience":"group", "variants":"source", "rewards":"reward"}
-	for group: String in ["scope", "effects", "audience", "variants", "rewards"]:
-		if not groups.has(group): continue
+	for group: String in ["scope", "effects", "variants", "rewards", "audience"]:
+		if not groups.has(group) and not (group == "rewards" and not rewards.is_empty()) and not (group == "audience" and not tendencies.is_empty()): continue
 		var section := VBoxContainer.new()
 		section.name = "ImpactGroup_" + group
 		section.add_theme_constant_override("separation", 6)
@@ -329,7 +438,57 @@ func _add_impact(block: Dictionary) -> void:
 		title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		title.add_theme_font_override("font", ReceiptHover.BOLD_FONT)
 		heading.add_child(title)
-		for row_indices: Array in groups[group]: _add_impact_row(section, segments, row_indices)
+		for row_indices: Array in groups.get(group, []): _add_impact_row(section, segments, row_indices)
+		if group == "audience": _add_tendencies(section, tendencies)
+		if group == "rewards" and not rewards.is_empty():
+			_add_reward_cards(section, rewards, bool(rewards[0].get("received", false)))
+
+func _add_reward_cards(section: VBoxContainer, rewards: Array, received: bool) -> void:
+	var tray := HFlowContainer.new()
+	tray.name = "RewardCards"
+	tray.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tray.add_theme_constant_override("h_separation", 8)
+	section.add_child(tray)
+	for record: Dictionary in rewards:
+		var preview: Control
+		if str(record.kind) in ["stance_token", "pragmatic_token"]:
+			preview = ResourceGraphic.new()
+			preview.configure(record)
+			preview.custom_minimum_size = Vector2(54, 54)
+			if received: preview.self_modulate.a = .74
+		else:
+			preview = CardFace.new()
+			preview.configure(record, Typography.font("body"))
+			preview.placement = CardFace.Placement.FIXED
+			preview.custom_minimum_size = CardFace.minimum_card_size(str(record.kind)) * 1.25
+			preview.paper_view = received
+			preview.shadow_enabled = not received
+		preview.name = "RewardCard_" + str(record.id)
+		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tray.add_child(preview)
+
+func _add_tendencies(section: VBoxContainer, tendencies: Array) -> void:
+	var plots := HBoxContainer.new()
+	plots.add_theme_constant_override("separation", 16)
+	section.add_child(plots)
+	for row: Dictionary in tendencies:
+		var kind := str(row.kind)
+		var stance := kind == "stance"
+		var keys := ["freedom", "authority", "equality", "hierarchy"] if stance else ["sincere", "ironic", "support", "opposition"]
+		var group := VBoxContainer.new()
+		group.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		plots.add_child(group)
+		var ink := Style.SECTION_PURPLE if stance else Style.SECTION_TEAL
+		var title := _label(DeskLocalization.text("LOC_EVENT_TENDENCY_PLOT_" + kind.to_upper()), 14, ink)
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		group.add_child(title)
+		var plot := TendencyPlot.new()
+		plot.name = "TendencyPlot_" + kind
+		plot.ink = ink
+		plot.labels = PackedStringArray(keys.map(func(id: String): return DeskLocalization.text(str(Rules.context_resource(id).title))))
+		plot.before = row["from"]
+		plot.after = row["to"]
+		group.add_child(plot)
 
 func _collect_impact_row(groups: Dictionary, segments: Array, indices: Array[int]) -> void:
 	if indices.is_empty(): return
@@ -344,8 +503,6 @@ func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) ->
 	var label := _body(12, Style.SECONDARY_INK)
 	label.name = "ImpactLabel"
 	label.custom_minimum_size.x = ceilf(72.0 * float(label.get_theme_font_size("normal_font_size")) / 10.0)
-	if str(segments[int(indices[0])].impact_group) == "audience":
-		label.custom_minimum_size.x = maxf(label.custom_minimum_size.x, label.get_theme_font("normal_font").get_string_size(str(segments[int(indices[0])].text), HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("normal_font_size")).x + 2)
 	label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	row.add_child(label)
 	var values := VBoxContainer.new()
@@ -362,39 +519,31 @@ func _add_impact_row(section: VBoxContainer, segments: Array, indices: Array) ->
 	tags.add_theme_constant_override("h_separation", 4)
 	tags.add_theme_constant_override("v_separation", 4)
 	values.add_child(tags)
-	var stats := HBoxContainer.new()
-	stats.name = "ImpactNumbers"
-	stats.add_theme_constant_override("separation", 8)
-	values.add_child(stats)
-	var amount := _body(14, Style.INK)
-	amount.name = "ImpactAmount"
-	amount.custom_minimum_size.x = ceilf(48.0 * float(amount.get_theme_font_size("normal_font_size")) / 12.0)
-	amount.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	stats.add_child(amount)
-	var duration := _body(12, Style.SECONDARY_INK)
-	duration.name = "ImpactDuration"
-	stats.add_child(duration)
 	for index: int in indices:
 		var segment: Dictionary = segments[index]
 		match str(segment.get("impact_role", "value")):
 			"label": _write_impact_field(label, segment, index)
-			"amount": _write_impact_field(amount, segment, index)
-			"duration": _write_impact_field(duration, segment, index)
 			_:
 				if str(segment.get("field_kind", "")) == "topic" and segment.has("resource_id"):
 					tags.add_child(_tag_field(segment, "Topic_" + str(segment.resource_id)))
 				else: _write_impact_field(body, segment, index)
-	for field_label: RichTextLabel in [label, body, amount, duration]:
+	for field_label: RichTextLabel in [label, body]:
 		_bind_fields(field_label, segments)
 		field_label.visible = not field_label.get_parsed_text().strip_edges().is_empty()
-	stats.visible = amount.visible or duration.visible
 	tags.visible = tags.get_child_count() > 0
-	if str(segments[int(indices[0])].impact_group) == "rewards":
-		stats.reparent(row)
-		stats.size_flags_horizontal = Control.SIZE_SHRINK_END
-		stats.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	if not body.visible and not tags.visible:
+		values.hide()
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 func _write_impact_field(label: RichTextLabel, field: Dictionary, index: int) -> void:
+	var direction := int(field.get("impact_direction", 0))
+	if direction != 0:
+		label.push_bold()
+		label.push_color(Style.SECTION_TEAL if direction > 0 else Style.SECTION_BROWN)
+		label.add_text(str(field.text))
+		label.pop()
+		label.pop()
+		return
 	var rendered := field
 	if label.get_total_character_count() == 0:
 		rendered = field.duplicate()

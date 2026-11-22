@@ -8,6 +8,7 @@ signal save_requested
 signal load_requested
 signal restart_requested
 signal event_acknowledged
+signal event_meme_selected(id: String)
 signal settings_requested
 signal quit_requested
 signal menu_close_requested
@@ -33,6 +34,7 @@ const DesignWorkbench = preload("res://scripts/presentation/studio/workbench/des
 var _screen_modals: Control
 var _modal_viewport: Viewport
 var _event_slide: Tween
+var _event_slide_progress := 1.0
 var _event: Dictionary = {}
 var _locale_catalog: Resource
 var _guide_enabled := true
@@ -76,6 +78,7 @@ func _ready() -> void:
 	%Return.pressed.connect(func() -> void: workbench_requested.emit())
 	%EventContinue.focus_mode = Control.FOCUS_NONE
 	%EventContinue.pressed.connect(func() -> void: event_acknowledged.emit())
+	%EventCard.meme_selected.connect(func(id: String): event_meme_selected.emit(id))
 	%EventCard.font_scale = 1.15
 	%EventCard.add_action_button(%EventContinue)
 	%EventContinue.theme = ReceiptUI.create_theme()
@@ -321,15 +324,13 @@ func render(state: Dictionary) -> void:
 func show_event(event: Dictionary) -> void:
 	_event = event.duplicate(true)
 	%EventCard.set_details(_desk_controller.event_details(event))
-	%EventCard.show()
 	%EventContinue.disabled = false
 	%EventContinue.text = DeskLocalization.text("LOC_EVENT_UNDERSTOOD")
-	layout_screen_modals()
 	if _event_slide != null and _event_slide.is_valid(): _event_slide.kill()
-	var destination: Vector2 = %EventCard.position
-	%EventCard.position.y = _screen_modals.size.y if _screen_modals != null else size.y
+	_set_event_slide(0.0)
+	%EventCard.show()
 	_event_slide = create_tween()
-	_event_slide.tween_property(%EventCard, "position", destination, .38).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_event_slide.tween_method(_set_event_slide, 0.0, 1.0, .38).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_refresh_modal()
 	if _desk_controller != null: _desk_controller.receive_event(event)
 
@@ -435,7 +436,7 @@ func set_legend(rows: Array[Dictionary]) -> void:
 
 func _refresh_modal() -> void:
 	%ModalShade.visible = modal_visible() and _menu_mode != "preferences"
-	%ModalShade.color = Color(0.04, 0.05, 0.04, 0.40) if _menu_mode in ["settings", "preferences"] else Color(0.14, 0.14, 0.14, 0.64)
+	_update_modal_shade()
 	%Create.disabled = modal_visible()
 	%EventContinue.disabled = not _menu_mode.is_empty()
 	# The same shade intercepts the event card while a menu is above it.
@@ -449,6 +450,9 @@ func _refresh_modal() -> void:
 		if %ModalShade.get_index() < index: index -= 1
 		%ModalShade.get_parent().move_child(%ModalShade, index)
 
+func _update_modal_shade() -> void:
+	var alpha := .64 * _event_slide_progress if %EventCard.visible else .64
+	%ModalShade.color = Color(0.04, 0.05, 0.04, 0.40) if not _menu_mode.is_empty() else Color(0.14, 0.14, 0.14, alpha)
 
 func _layout_panels() -> void:
 	if not is_node_ready():
@@ -517,11 +521,21 @@ func layout_screen_modals() -> void:
 	var view := get_viewport_rect().size
 	_screen_modals.position = Vector2.ZERO
 	_screen_modals.size = view
-	var available := (view-Vector2(96,96)).max(Vector2(1,1))
-	var paper_size := Vector2(620, 900).min(available)
-	_desk_place(%EventCard, Rect2((view-paper_size)*.5, paper_size))
+	_layout_event_card(view)
 	var column: VBoxContainer = %SettingsMenu.get_node("Column")
 	ReceiptUI.layout_menu(%SettingsMenu, column, view)
+
+func _set_event_slide(progress: float) -> void:
+	_event_slide_progress = progress
+	_update_modal_shade()
+	_layout_event_card(_screen_modals.size if _screen_modals != null else size)
+
+func _layout_event_card(view: Vector2) -> void:
+	var available := (view-Vector2(96,96)).max(Vector2(1,1))
+	var paper_size := Vector2(620, 900).min(available)
+	var position := (view - paper_size) * .5
+	position.y = lerpf(view.y, position.y, _event_slide_progress)
+	_desk_place(%EventCard, Rect2(position, paper_size))
 
 
 func _on_kernel_selected(index: int) -> void:

@@ -537,7 +537,7 @@ func _refresh_translation(reset_scroll: bool) -> void:
 			for segment: Dictionary in segments: pieces.append(str(segment.text))
 			content = "".join(pieces)
 		var paragraph := heading + ("\n" if not heading.is_empty() and not content.is_empty() else "") + content
-		if not paragraph.is_empty():
+		if not paragraph.is_empty() or section.has("reward_cards") or section.has("tendencies"):
 			if str(section.get("role", "")) == "effects":
 				for id: String in _details.get("display_terms", {}):
 					var term := RegEx.create_from_string("\\b" + id + "\\b")
@@ -546,7 +546,8 @@ func _refresh_translation(reset_scroll: bool) -> void:
 			_body_blocks.append({"heading":heading, "content":content, "role":str(section.get("role", "")), "kind":str(section.get("kind", "source")),
 				"event_type":_localized_block(str(section.get("event_type", ""))), "event_type_help":_localized_block(str(section.get("event_type_help", ""))),
 				"event_type_note":_localized_block(str(section.get("event_type_note", ""))), "country_title":_localized_block(str(section.get("country_title", ""))),
-				"timestamp":_localized_block(str(section.get("timestamp", ""))), "event_fields":event_fields, "country_field":country_field, "segments":segments})
+				"timestamp":_localized_block(str(section.get("timestamp", ""))), "event_fields":event_fields, "country_field":country_field, "segments":segments,
+				"reward_cards":section.get("reward_cards", []), "tendencies":section.get("tendencies", [])})
 	_body = "\n\n".join(paragraphs)
 	_title_label.text = _title
 	_rendered_body_key = ""
