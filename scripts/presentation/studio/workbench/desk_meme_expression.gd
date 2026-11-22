@@ -51,6 +51,7 @@ var _labels: Array[RichTextLabel] = []
 var _rows: Array[Dictionary] = []
 var _layout_kind := "plain"
 var _interaction_enabled := true
+var _compact_preview := false
 
 
 func _init() -> void:
@@ -60,16 +61,17 @@ func _init() -> void:
 	add_theme_constant_override("separation",SPACE*2)
 
 
-func configure(preset_id: String, expression_segments: Array, context_segments: Array, fallback: String = "") -> void:
+func configure(preset_id: String, expression_segments: Array, context_segments: Array, fallback: String = "", compact_preview: bool = false) -> void:
 	_preset_id = preset_id
 	_segments = expression_segments.duplicate(true)
 	_context_segments = context_segments.duplicate(true)
 	_fallback = fallback
+	_compact_preview = compact_preview
 	_rebuild()
 
 
 func set_segments(segments: Array, plain_text: String = "") -> void:
-	configure(_preset_id,segments,_context_segments,plain_text)
+	configure(_preset_id,segments,_context_segments,plain_text,_compact_preview)
 
 
 func _rebuild() -> void:
@@ -82,13 +84,13 @@ func _rebuild() -> void:
 	_context_label = null
 	_layout_kind = {"versailles_2020":"post","nobody_2020":"dialogue","ok_boomer_2020":"reply"}.get(_preset_id,"plain")
 	if not _context_segments.is_empty():
-		var quote := _surface(self,"quote",SPACE*2,0,SPACE,0)
+		var quote := _surface(self,"plain" if _compact_preview else "quote",0 if _compact_preview else SPACE*2,0,SPACE,0)
 		quote.name = "ContextQuote"
 		_context_label = _readout(quote,_context_segments,"",SECONDARY_INK)
 		_context_label.name = "ContextText"
 	var surface_kind := "plain" if _layout_kind == "dialogue" else _layout_kind
 	var left := SPACE*8 if _layout_kind == "post" else (SPACE*2 if _layout_kind == "reply" else 0)
-	var padding := SPACE*2 if _layout_kind in ["post","reply"] else 0
+	var padding := (SPACE if _compact_preview else SPACE*2) if _layout_kind in ["post","reply"] else 0
 	_expression_host = _surface(self,surface_kind,left,padding,padding,padding)
 	_expression_host.name = "ExpressionBody"
 	if _layout_kind == "dialogue":
@@ -104,14 +106,15 @@ func _rebuild() -> void:
 func _build_dialogue() -> void:
 	var stack := VBoxContainer.new()
 	stack.name = "SpeakingLines"
-	stack.mouse_filter = Control.MOUSE_FILTER_PASS
+	stack.mouse_filter = Control.MOUSE_FILTER_IGNORE if _compact_preview else Control.MOUSE_FILTER_PASS
 	stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	stack.add_theme_constant_override("separation",SPACE*2)
+	stack.add_theme_constant_override("separation",SPACE if _compact_preview else SPACE*2)
 	_expression_host.add_child(stack)
 	var lines := _split_lines()
+	var speaker_inset := SPACE * (2 if _compact_preview else 3)
 	for index in lines.size():
 		var speaking := index == lines.size()-1
-		var row := _surface(stack,"speaker" if speaking else "plain",SPACE*3 if speaking else 0,0,0,0)
+		var row := _surface(stack,"speaker" if speaking and not _compact_preview else "plain",speaker_inset if speaking else 0,0,0,0)
 		row.name = "SpeakingLine%d" % index
 		var label := _readout(row,lines[index],"",INK if speaking else SECONDARY_INK)
 		label.name = "LineText"
@@ -138,6 +141,7 @@ func _split_lines() -> Array[Array]:
 func _surface(parent: Node, kind: String, left: int, top: int, right: int, bottom: int) -> MarginContainer:
 	var surface := ExpressionSurface.new()
 	surface.kind = kind
+	if _compact_preview: surface.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for pair: Array in [["left",left],["top",top],["right",right],["bottom",bottom]]:
 		surface.add_theme_constant_override("margin_"+str(pair[0]),int(pair[1]))
 	parent.add_child(surface)
@@ -164,9 +168,14 @@ func _forward_source(sources: Array, excerpt: String) -> void:
 
 func set_interaction_enabled(enabled: bool) -> void:
 	_interaction_enabled = enabled
+	if _compact_preview: mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for label: RichTextLabel in _labels:
 		label.mouse_filter = Control.MOUSE_FILTER_PASS if enabled else Control.MOUSE_FILTER_IGNORE
 	if not enabled: source_hover_ended.emit()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and _compact_preview and is_node_ready():
+		_rebuild.call_deferred()
 
 
 func current_text() -> String:

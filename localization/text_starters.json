@@ -26,8 +26,8 @@
   },
   "LOC_TEXT_STARTER_VERSAILLES_HINT": {
     "source": "把成绩说成轻松得来，等别人听出炫耀。起量更快，遇上事件时偏移波动更大。",
-    "zh_CN": "一开始更容易传开，但碰上新闻，原意也更容易被带跑。",
-    "en": "Catches on quickly, but a news story can send its meaning in a different direction."
+    "zh_CN": "初始传播更快，但因为表述对象比较具体狭窄，容易在传播中出现转义。",
+    "en": "It spreads faster at first, but its narrow subject makes its meaning more likely to shift as it gets passed around."
   },
   "LOC_TEXT_STARTER_NOBODY_TITLE": {
     "source": "Nobody：没人问起",
@@ -56,8 +56,8 @@
   },
   "LOC_TEXT_STARTER_NOBODY_HINT": {
     "source": "先留一句无人发问的空白，再写谁忍不住说了什么。混搭群体和话题不折损，平时自然跑偏略快。",
-    "zh_CN": "换话题、换人群都用得上，但传来传去也更容易变味。",
-    "en": "Works for all sorts of topics and audiences, but the meaning changes more easily as people pass it around."
+    "zh_CN": "对话题、目标人群的依赖较低，但表达取向不一定稳定。",
+    "en": "It depends less on the topic or intended audience, but the tone it conveys can shift."
   },
   "LOC_TEXT_STARTER_BOOMER_TITLE": {
     "source": "OK boomer：结束说教",
@@ -86,7 +86,7 @@
   },
   "LOC_TEXT_STARTER_BOOMER_HINT": {
     "source": "用一句短回复打断代际说教。立场语气对路时爆发更强，自然跑偏最慢。",
-    "zh_CN": "对上当地人的口味时传得快，原意也比较稳；但别人不吃这一套，就很难传开。",
-    "en": "Spreads fast where the tone lands and keeps its meaning well, but stalls where people don’t take to it."
+    "zh_CN": "对合适的语言和群体加成较高，但在不合适的文化环境内极难传播。",
+    "en": "It gets a strong boost from the right language and audience, but barely spreads in cultures where it doesn’t fit."
   }
 }
